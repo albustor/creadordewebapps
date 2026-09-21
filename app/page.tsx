@@ -44,16 +44,6 @@ export default function HomePage() {
   const [regPassword, setRegPassword] = useState("");
   const [regMensaje, setRegMensaje] = useState<{ tipo: "exito" | "error"; texto: string } | null>(null);
 
-  // Carga inicial
-  if (!isInitialized) {
-    return (
-      <div className="min-h-[70vh] flex flex-col items-center justify-center p-6 space-y-4">
-        <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-        <div className="text-sm font-bold text-slate-600">Cargando entorno...</div>
-      </div>
-    );
-  }
-
   // Manejador de Login
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
