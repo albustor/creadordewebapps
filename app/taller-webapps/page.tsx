@@ -618,12 +618,12 @@ function CreadorWebAppsContenido() {
                   </select>
                 </div>
 
-                {/* 3. Indicador de logro oficial (Programa Nacional de Informática Educativa - MEP) */}
+                {/* 3. Indicador de logro curricular */}
                 <div className="p-4 bg-emerald-50/80 border border-emerald-300 rounded-xl space-y-2 text-xs shadow-2xs">
                   <div className="flex items-center justify-between">
                     <span className="text-[11px] font-black uppercase text-emerald-950 flex items-center gap-1.5">
                       <Target size={16} weight="bold" className="text-emerald-700" />
-                      Indicador de logro oficial (Programa Nacional de Informática Educativa - MEP):
+                      Indicador de logro curricular:
                     </span>
                     <span className="px-2 py-0.5 bg-emerald-800 text-white font-mono font-bold text-[10px] rounded shadow-2xs">
                       {indicadorSeleccionado.codigo}
@@ -803,21 +803,21 @@ function CreadorWebAppsContenido() {
               </div>
             </div>
 
-            {/* TARJETA 3: Contexto Estudiantil & Ejes Transversales */}
+            {/* TARJETA 3: Contexto estudiantil y valores transversales */}
             <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-mepCard space-y-4">
               <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                 <h2 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-2">
                   <House size={18} weight="duotone" className="text-emerald-700" />
-                  <span>3. Elementos de Contexto Estudiantil & Valores Transversales</span>
+                  <span>3. Elementos de contexto estudiantil y valores transversales</span>
                 </h2>
                 <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                  Formación Integral
+                  Formación integral
                 </span>
               </div>
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Vínculo con el Hogar y Entorno Comunitario:
+                  Vínculo con el hogar y entorno comunitario:
                 </label>
                 <textarea
                   rows={2}
@@ -828,18 +828,18 @@ function CreadorWebAppsContenido() {
                 />
               </div>
 
-              {/* Ejes Transversales de Convivencia */}
+              {/* Ejes transversales de convivencia */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-2">
-                  Ejes Transversales de Convivencia y Prevención Escolar:
+                  Ejes transversales de convivencia y prevención escolar:
                 </label>
                 <div className="flex flex-wrap gap-2">
                   {[
-                    "Prevención del Ciberacoso y Bullying",
-                    "Prevención del Consumo de Drogas",
-                    "Ética Digital y Uso Responsable de Redes",
-                    "Trabajo Colaborativo y Empatía",
-                    "Cuidado del Medio Ambiente y Sostenibilidad",
+                    "Prevención del ciberacoso y bullying",
+                    "Prevención del consumo de drogas",
+                    "Ética digital y uso responsable de redes",
+                    "Trabajo colaborativo y empatía",
+                    "Cuidado del medio ambiente y sostenibilidad",
                   ].map((eje) => {
                     const sel = ejesTransversalesSeleccionados.includes(eje);
                     return (
@@ -861,13 +861,13 @@ function CreadorWebAppsContenido() {
                 </div>
               </div>
 
-              {/* Valores Transversales */}
+              {/* Valores transversales */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-2">
-                  Valores Transversales a Fortalecer:
+                  Valores transversales a fortalecer:
                 </label>
                 <div className="flex flex-wrap gap-2">
-                  {["Respeto a la Diversidad", "Solidaridad", "Honestidad Académica", "Responsabilidad", "Pensamiento Crítico"].map(
+                  {["Respeto a la diversidad", "Solidaridad", "Honestidad académica", "Responsabilidad", "Pensamiento crítico"].map(
                     (val) => {
                       const sel = valoresSeleccionados.includes(val);
                       return (
@@ -891,12 +891,12 @@ function CreadorWebAppsContenido() {
               </div>
             </div>
 
-            {/* TARJETA 4: Recursos Tecnológicos del Aula & Secciones */}
+            {/* TARJETA 4: Recursos tecnológicos del aula y secciones */}
             <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-mepCard space-y-4">
               <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                 <h2 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-2">
                   <Desktop size={18} weight="duotone" className="text-purple-700" />
-                  <span>4. Recursos Tecnológicos del Aula & Secciones</span>
+                  <span>4. Recursos tecnológicos del aula y secciones</span>
                 </h2>
                 <span className="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded border border-purple-200">
                   Infraestructura
@@ -905,10 +905,10 @@ function CreadorWebAppsContenido() {
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                 {[
-                  { id: "Celulares en Parejas o Individuales (Touch-First)", label: "Celulares (Móvil)", icon: <DeviceMobile size={20} /> },
+                  { id: "Celulares en Parejas o Individuales (Touch-First)", label: "Celulares (móvil)", icon: <DeviceMobile size={20} /> },
                   { id: "Laboratorio con Computadoras Fijas (Teclado/Mouse)", label: "Laboratorio PC", icon: <Desktop size={20} /> },
-                  { id: "Tabletas Desconectadas (Offline SafeStorage)", label: "Tabletas Offline", icon: <DeviceMobile size={20} /> },
-                  { id: "Proyector en Pizarra de Aula (Botones Grandes)", label: "Proyector Pizarra", icon: <ChalkboardTeacher size={20} /> },
+                  { id: "Tabletas Desconectadas (Offline SafeStorage)", label: "Tabletas offline", icon: <DeviceMobile size={20} /> },
+                  { id: "Proyector en Pizarra de Aula (Botones Grandes)", label: "Proyector pizarra", icon: <ChalkboardTeacher size={20} /> },
                 ].map((rec) => {
                   const sel = recursoTecnologico === rec.id;
                   return (
@@ -931,7 +931,7 @@ function CreadorWebAppsContenido() {
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Secciones Habilitadas para esta WebApp:
+                  Secciones habilitadas para esta webapp:
                 </label>
                 <input
                   type="text"
@@ -943,28 +943,28 @@ function CreadorWebAppsContenido() {
               </div>
             </div>
 
-            {/* TARJETA 5: DUA Universal & Ajustes NEE */}
+            {/* TARJETA 5: DUA universal y ajustes NEE */}
             <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-mepCard space-y-4">
               <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                 <div className="flex items-center gap-2">
                   <HandHeart size={20} weight="duotone" className="text-rose-600" />
                   <h2 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider">
-                    5. DUA Universal & Ajustes NEE
+                    5. DUA universal y apoyos educativos
                   </h2>
                 </div>
                 <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 text-[10px] font-black">
-                  DUA Permanente Activo
+                  DUA permanente activo
                 </span>
               </div>
 
               <div className="p-3 bg-emerald-50/60 border border-emerald-200 rounded-xl text-xs text-emerald-950 flex items-center gap-2">
                 <CheckCircle size={18} weight="fill" className="text-emerald-600 shrink-0" />
                 <span>
-                  <strong>Diseño Universal para el Aprendizaje (DUA):</strong> Integrado permanentemente en el 100% de las WebApps (apoyos visuales, auditivos Web Audio API y navegación accesible).
+                  <strong>Diseño universal para el aprendizaje (DUA):</strong> Integrado permanentemente en el 100% de las webapps (apoyos visuales, auditivos Web Audio API y navegación accesible).
                 </span>
               </div>
 
-              {/* Interruptor para Recurso Individualizado NEE */}
+              {/* Interruptor para recurso individualizado NEE */}
               <div className="pt-2">
                 <label className="flex items-center gap-3 cursor-pointer select-none">
                   <input
@@ -974,7 +974,7 @@ function CreadorWebAppsContenido() {
                     className="w-4 h-4 rounded text-emerald-600 border-slate-300 focus:ring-emerald-500"
                   />
                   <span className="text-xs font-extrabold text-slate-900">
-                    ¿Generar Versión Individualizada para Estudiante con Necesidad Educativa Especial (NEE)?
+                    ¿Generar versión individualizada para estudiante con apoyo educativo específico?
                   </span>
                 </label>
               </div>
@@ -983,15 +983,15 @@ function CreadorWebAppsContenido() {
                 <div className="p-4 bg-amber-50/70 border border-amber-300 rounded-2xl space-y-3 animate-fadeIn">
                   <div className="flex items-center gap-2 text-xs font-extrabold text-amber-900">
                     <Tag size={16} weight="bold" />
-                    <span>Configuración del Recurso Individualizado:</span>
+                    <span>Configuración del recurso individualizado:</span>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {[
-                      { id: "ACCESO", label: "Adecuación de Acceso (Lectura Fácil, Tipografía)" },
-                      { id: "NO_SIGNIFICATIVA", label: "Adecuación No Significativa (Micro-Pasos, Pistas)" },
-                      { id: "SIGNIFICATIVA", label: "Adecuación Significativa (Procedural Simplificado)" },
-                      { id: "PERSONALIZADA", label: "Instrucción Específica Personalizada" },
+                      { id: "ACCESO", label: "Adecuación de acceso (lectura fácil, tipografía)" },
+                      { id: "NO_SIGNIFICATIVA", label: "Adecuación no significativa (micro-pasos, pistas)" },
+                      { id: "SIGNIFICATIVA", label: "Adecuación significativa (procedimental simplificado)" },
+                      { id: "PERSONALIZADA", label: "Instrucción específica personalizada" },
                     ].map((tipo) => (
                       <button
                         type="button"
@@ -1010,7 +1010,7 @@ function CreadorWebAppsContenido() {
 
                   <div>
                     <label className="block text-[11px] font-bold text-amber-900 mb-1">
-                      Pautas y Ajustes Específicos para este Estudiante:
+                      Pautas y ajustes específicos para este estudiante:
                     </label>
                     <textarea
                       rows={2}

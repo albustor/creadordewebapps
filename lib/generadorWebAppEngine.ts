@@ -105,53 +105,53 @@ export function generarPromptParaIAExterna(opts: OpcionesGeneracionWebApp): stri
 • La WebApp debe estar optimizada especialmente para este estudiante garantizando su autonomía y éxito formativo.`
     : `\n🌿 [BASE TRANSVERSAL DUA ACTIVA]: Diseño Universal para el Aprendizaje 100% integrado (múltiples formas de representación, expresión y motivación).`;
 
-  return `Actúa como un Desarrollador Web Senior y Diseñador Instruccional Especialista en Formación Tecnológica para Educación Secundaria (III Ciclo: 7°, 8° y 9° año - Dimensión 1 y Dimensión 2).
+  return `Actúa como un desarrollador web senior y diseñador instruccional especialista en formación tecnológica para educación secundaria (III Ciclo: 7°, 8° y 9° año - Dimensión 1 y Dimensión 2).
 
-Crea un archivo HTML ÚNICO (.html) completamente autónomo (Single-File: HTML + CSS en <style> + JS en <script>) que SE ADAPTE 100% AL INDICADOR CURRICULAR, AL CONTEXTO ESPECÍFICO DEL DOCENTE Y A LA DINÁMICA DE GAMIFICACIÓN SELECCIONADA:
+Crea un archivo HTML ÚNICO (.html) completamente autónomo (Single-File: HTML + CSS en <style> + JS en <script>) que se adapte 100% al indicador curricular, al contexto específico del docente y a la dinámica de gamificación seleccionada:
 
 ============================================================
 📋 ESPECIFICACIONES CURRICULARES Y CONTEXTUALES
 ============================================================
-• Título de la Actividad: "${opts.titulo}"
-• Área de Conocimiento: ${opts.asignatura}
-• Nivel Educativo: ${opts.nivel} (Secundaria)
-• Componente de Evaluación: Trabajo Cotidiano (Formativo)
-• Marco Curricular de Referencia: Programa Nacional de Informática Educativa del Departamento de Recursos Tecnológicos en Educación (DRTE - MEP)
-• Indicador de Logro a Desarrollar: [${opts.indicadorCodigo}] ${opts.indicadorNombre}
-• Saber Conceptual (Saber): ${opts.saberConceptual} - ${opts.saberTitulo}
-• Saber Procedimental (Saber Hacer): ${opts.saberProcedimental || "Aplica, diseña y resuelve problemas"}
-• Saber Actitudinal (Saber Ser): ${opts.saberActitudinal || "Gusto por la precisión y perseverancia ante el error"}
+• Título de la actividad: "${opts.titulo}"
+• Área de conocimiento: ${opts.asignatura}
+• Nivel educativo: ${opts.nivel} (Secundaria)
+• Componente de evaluación: Trabajo cotidiano (formativo)
+• Marco curricular de referencia: Programa de Formación Tecnológica (III Ciclo de Secundaria)
+• Indicador de logro a desarrollar: [${opts.indicadorCodigo}] ${opts.indicadorNombre}
+• Saber conceptual (saber): ${opts.saberConceptual} - ${opts.saberTitulo}
+• Saber procedimental (saber hacer): ${opts.saberProcedimental || "Aplica, diseña y resuelve problemas"}
+• Saber actitudinal (saber ser): ${opts.saberActitudinal || "Gusto por la precisión y perseverancia ante el error"}
 
 ============================================================
-🎮 DINÁMICA DE GAMIFICACIÓN Y VÍNCULO EMOCIONAL ADOLESCENTE
+🎮 DINÁMICA DE GAMIFICACIÓN Y VÍNCULO EMOCIONAL
 ============================================================
-• Arquetipo de Gamificación: "${opts.mecanica}"
-• Vínculo Emocional: Integra mecánicas familiares y atractivas para estudiantes de 12 a 16 años (estilo Minecraft/crafteo, Roblox/checkpoints, Among Us/detección de fallos o Cyber-RPG según aplique), con micro-animaciones CSS dinámicas, sonidos procedurales Web Audio API, efectos visuales tipo partículas/canvas y sensación de logro constante sin perder el rigor pedagógico del indicador.
+• Arquetipo de gamificación: "${opts.mecanica}"
+• Vínculo emocional: Integra mecánicas familiares y atractivas para estudiantes de 12 a 16 años (estilo Minecraft/crafteo, Roblox/checkpoints, Among Us/detección de fallos o Cyber-RPG según aplique), con micro-animaciones CSS dinámicas, sonidos procedurales Web Audio API, efectos visuales tipo partículas/canvas y sensación de logro constante sin perder el rigor pedagógico del indicador.
 
 ============================================================
 🏠 ELEMENTOS DE CONTEXTO ESTUDIANTIL Y VALORES TRANSVERSALES
 ============================================================
-• Contexto del Hogar y Vida Cotidiana: ${opts.elementosContextoEstudiantil || "Vínculo con situaciones de la vida real, comunidad escolar y entorno familiar."}
-• Ejes Transversales y Valores Formativos: ${valoresTxt}
-• Infraestructura y Recursos Tecnológicos del Aula: ${opts.recursoTecnologicoAula || "Dispositivos móviles / Laboratorio de informática con o sin internet"}
+• Contexto del hogar y vida cotidiana: ${opts.elementosContextoEstudiantil || "Vínculo con situaciones de la vida real, comunidad escolar y entorno familiar."}
+• Ejes transversales y valores formativos: ${valoresTxt}
+• Infraestructura y recursos tecnológicos del aula: ${opts.recursoTecnologicoAula || "Dispositivos móviles / Laboratorio de informática con o sin internet"}
 ${neeInfo}
 
 ============================================================
 🎯 ESTRUCTURA PEDAGÓGICA (4 FASES INTEGRADAS)
 ============================================================
 1. IDENTIFICACIÓN INICIAL (FASE 0):
-   - Formulario de entrada donde el estudiante escribe su Nombre Completo y selecciona su Sección (${opts.seccionesDisponibles ? opts.seccionesDisponibles.join(", ") : "7-1, 7-2, 8-1, 9-1"}).
+   - Formulario de entrada donde el estudiante escribe su nombre completo y selecciona su sección (${opts.seccionesDisponibles ? opts.seccionesDisponibles.join(", ") : "7-1, 7-2, 8-1, 9-1"}).
 
 2. FASE 1 (APRENDER - Saber):
    - Explicación clara, amigable y visual de los conceptos fundamentales que sustentan este indicador.
    - Apoyo visual interactivo (diagramas SVG, tarjetas conceptuales o glosario ilustrado).
 
-3. FASE 2 (COMPRENDER - Saber Hacer Inicial):
+3. FASE 2 (COMPRENDER - Saber hacer inicial):
    - Validación inmediata del aprendizaje mediante reactivos interactivos situados en el contexto estudiantil.
 ${preguntasTxt}
 
-4. FASE 3 (SIMULACIÓN INTERACTIVA & GAMIFICACIÓN - Aplicación Práctica):
-   - MOTOR INTERACTIVO TOTALMENTE ADAPTADO al arquetipo "${opts.mecanica}" y a la naturaleza técnica de este indicador:
+4. FASE 3 (SIMULACIÓN INTERACTIVA & GAMIFICACIÓN - Aplicación práctica):
+   - Motor interactivo totalmente adaptado al arquetipo "${opts.mecanica}" y a la naturaleza técnica de este indicador:
      * Si es estilo Sandbox/Minecraft: recolección de piezas/bloques y crafteo de la solución lógica/circuito.
      * Si es estilo Obby/Roblox: progreso por salas o checkpoints con puertas lógicas que se abren al acertar.
      * Si es estilo Among Us/Anomalías: detector de fallos/bugs ocultos en la red, base de datos o algoritmo.
@@ -160,7 +160,7 @@ ${preguntasTxt}
      * Si es quiz arcade: multiplicador de racha, efectos de confeti y retroalimentación inmediata.
    - Retroalimentación sonora procedural inmediata (Web Audio API nativa sin archivos externos).
 
-5. FASE 4 (VALORACIÓN FORMATIVA - Evaluación y Telemetría):
+5. FASE 4 (VALORACIÓN FORMATIVA - Evaluación y telemetría):
    - Rúbrica formativa según el nivel de logro alcanzado (Inicial, Intermedio, Avanzado).
    - Generación de comprobante con código único y token de integridad SHA-256.
    - Envío de telemetría automática mediante Webhook a Google Sheets (mode: 'no-cors') y botón de Código QR offline de respaldo.
