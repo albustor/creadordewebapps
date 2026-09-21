@@ -33,6 +33,9 @@ export interface PayloadTelemetria {
   horaInicio?: string;
   horaEntrega?: string;
   fechaEntrega?: string;
+  cog?: string[];
+  retosPracticos?: any;
+  reflexionParteC?: any;
 }
 
 const SECRET_SALT = "CreadorWebApps-Token-Integridad-2026-Secret";

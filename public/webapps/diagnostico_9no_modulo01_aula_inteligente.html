@@ -802,9 +802,9 @@
           </div>
           <div>
             <label style="display: block; font-size: 11px; font-weight: 700; color: #334155; margin-bottom: 4px;">
-              Correo Oficial MEP: <span style="color: #64748b; font-weight: normal;">(Opcional)</span>
+              Correo Institucional / Oficial: <span style="color: #64748b; font-weight: normal;">(Opcional)</span>
             </label>
-            <input type="email" id="inputEstudianteCorreo" placeholder="ejemplo@est.mep.go.cr" style="width: 100%; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; color: #0f172a; font-size: 11.5px; outline: none;" oninput="validarDatosEstudiante()">
+            <input type="email" id="inputEstudianteCorreo" placeholder="ejemplo@institucion.ed.cr" style="width: 100%; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; color: #0f172a; font-size: 11.5px; outline: none;" oninput="validarDatosEstudiante()">
           </div>
         </div>
 
@@ -828,7 +828,7 @@
         </div>
       </div>
 
-      <!-- SITUACIÓN-PROBLEMA: AULA INTELIGENTE (DOCUMENTO BASE MEP) -->
+      <!-- SITUACIÓN-PROBLEMA: AULA INTELIGENTE (DOCUMENTO BASE OFICIAL) -->
       <div class="situacion-box">
         <h2 style="font-size: 1.15rem; color: #0369a1; margin-bottom: 6px; font-weight: 800;">
           🏫 2. Situación-problema: Aula inteligente
@@ -858,7 +858,7 @@
             Parte A • Área Cognoscitiva (Documento Base)
           </span>
           <h2 style="font-size: 1.15rem; color: #0f172a; margin-top: 2px; font-weight: 900;">
-            Conocimientos Previos (10 Ítems Oficiales MEP)
+            Conocimientos Previos (10 Ítems Oficiales)
           </h2>
         </div>
         <span id="contadorRespuestas" style="font-size: 11px; color: #0369a1; font-weight: 800; background: #e0f2fe; padding: 4px 8px; border-radius: 6px; border: 1px solid #7dd3fc;">
@@ -1347,13 +1347,13 @@
     </div>
 
     <!-- ==================================================================== -->
-    <!-- ETAPA 4: PARTE C – REFLEXIÓN INDIVIDUAL (DOCUMENTO BASE MEP)         -->
+    <!-- ETAPA 4: PARTE C – REFLEXIÓN INDIVIDUAL (DOCUMENTO BASE OFICIAL)     -->
     <!-- ==================================================================== -->
     <div id="seccion4" class="card" style="display: none;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
         <div>
           <span class="mep-badge" style="background: #fef3c7; border-color: #fde68a; color: #92400e;">
-            Parte C • Reflexión Individual (Documento Base MEP)
+            Parte C • Reflexión Individual (Documento Base)
           </span>
           <h2 style="font-size: 1.15rem; color: #0f172a; margin-top: 2px; font-weight: 900;">
             Autopercepción y Actitudes del Pensador Computacional
@@ -1420,7 +1420,7 @@
         <input type="text" id="inputReflexion4" placeholder="Escribe tus intereses o metas para este Módulo 1..." style="width: 100%; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 6px; padding: 8px 12px; color: #0f172a; font-size: 12px; outline: none;">
       </div>
 
-      <!-- PREGUNTA 5 DE REFLEXIÓN (DOCUMENTO BASE MEP: CÓMO TE SENTISTE) -->
+      <!-- PREGUNTA 5 DE REFLEXIÓN (DOCUMENTO BASE: CÓMO TE SENTISTE) -->
       <div class="reflexion-container" style="border: 1.5px solid #fde68a; background: #fffbeb;">
         <label style="display: block; font-size: 13px; font-weight: 800; color: #92400e; margin-bottom: 4px;">
           5. ¿Cómo te sentiste enfrentando el reto?
@@ -1483,7 +1483,7 @@
         </div>
 
         <div style="margin-top: 12px; font-size: 11.5px; color: #334155;" id="tokenHashLabelFinal">
-          <strong>HASH DE SEGURIDAD:</strong> <span style="color: #15803d; font-family: monospace; font-weight: 800;">MEP9-VALIDADO</span>
+          <strong>HASH DE SEGURIDAD:</strong> <span style="color: #15803d; font-family: monospace; font-weight: 800;">DIAG9-VALIDADO</span>
         </div>
       </div>
 
@@ -1527,7 +1527,7 @@
           <p style="margin-top: 4px; color: #1e293b;">Gusto por la precisión, aprendizaje del error, persistencia ante dificultades, colaboración y autopercepción del nivel de comodidad/apoyo.</p>
         </div>
         <div style="background: #f8fafc; border: 1.5px dashed #7dd3fc; padding: 10px; border-radius: 8px; font-size: 11px; color: #0369a1;">
-          <strong>Escala Oficial MEP:</strong> Nivel A = Realiza autónomamente | Nivel B = Con apoyo ocasional | Nivel C = Requiere acompañamiento constante.
+          <strong>Escala Oficial:</strong> Nivel A = Realiza autónomamente | Nivel B = Con apoyo ocasional | Nivel C = Requiere acompañamiento constante.
         </div>
       </div>
 
@@ -1556,7 +1556,7 @@
   <script>
     var CONFIG = {
       webAppId: "diag-9no-mod01-aula-inteligente",
-      webAppTitulo: "Diagnóstico Integrado 9° - Aula Inteligente (MEP 2026)",
+      webAppTitulo: "Diagnóstico Integrado 9°: «Aula Inteligente» - Formación Tecnológica 2026",
       docenteId: "DOC-DRE01-7729",
       nivel: "9° Año - Secundaria",
       totalItems: 10,
@@ -1925,6 +1925,7 @@
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
       guardarProgresoEnLocalStorage();
+      enviarProgresoEnTiempoReal();
 
       if (num === 3) {
         setTimeout(function() {
@@ -1934,6 +1935,93 @@
       } else if (num === 5) {
         finalizarDiagnostico();
       }
+    }
+
+    function calcularVectorCognitivo() {
+      var cog = [];
+      for (var i = 1; i <= 10; i++) {
+        var resp = estado.respuestasCognoscitivas[i];
+        if (resp !== undefined && resp !== null) {
+          cog.push(resp.correcta ? "L" : "RA");
+        } else {
+          cog.push("ED");
+        }
+      }
+      return cog;
+    }
+
+    function enviarProgresoEnTiempoReal() {
+      var nombreEst = (estado.estudianteNombre || "").trim();
+      var seccionEst = estado.seccionGrupo || "Sección 9-1";
+      if (!nombreEst) return;
+
+      var aciertos = 0;
+      for (var k in estado.respuestasCognoscitivas) {
+        if (estado.respuestasCognoscitivas[k].correcta) aciertos++;
+      }
+      var totalRespondidas = Object.keys(estado.respuestasCognoscitivas).length;
+      var porc = totalRespondidas > 0 ? Math.round((aciertos / CONFIG.totalItems) * 100) : 0;
+      var ahora = new Date();
+      var fechaStr = ahora.toLocaleDateString("es-CR", { day: "2-digit", month: "2-digit", year: "numeric" });
+      var horaStr = ahora.toLocaleTimeString("es-CR", { hour: "2-digit", minute: "2-digit" });
+      var timeEpoch = ahora.getTime();
+      var cogVec = calcularVectorCognitivo();
+
+      var payload = {
+        webAppId: CONFIG.webAppId,
+        webAppTitulo: CONFIG.webAppTitulo,
+        docenteId: CONFIG.docenteId,
+        estudianteNombre: nombreEst,
+        estudianteCedula: estado.estudianteCedula || "",
+        estudianteCorreo: estado.estudianteCorreo || "",
+        seccionOGrupo: seccionEst,
+        tipoActividad: "diagnostico",
+        estadoProgreso: estado.seccionActual === 5 ? "completado" : "en_progreso",
+        fechaEntrega: fechaStr,
+        horaInicio: estado.horaInicio || horaStr,
+        horaEntrega: estado.seccionActual === 5 ? horaStr : "",
+        timestampEpoch: timeEpoch,
+        timestamp: timeEpoch,
+        puntaje: porc,
+        puntajeMaximo: 100,
+        porcentaje: porc,
+        nivelLogro: porc >= 80 ? "Avanzado" : (porc >= 60 ? "Intermedio" : "Inicial"),
+        tiempoSegundos: Math.round((timeEpoch - (estado.tiempoInicio || timeEpoch)) / 1000),
+        totalReactivos: CONFIG.totalItems,
+        aciertos: aciertos,
+        fallos: totalRespondidas - aciertos,
+        cog: cogVec,
+        retosPracticos: {
+          reto1Conexion: (Object.values(estado.cables || {}).filter(Boolean).length) + "/5 terminales validados",
+          reto2Actuador: estado.actuadorActual || "LED",
+          reto3Diagnostico: estado.reto3Diagnostico ? (estado.reto3Diagnostico.correcta ? "Correcto (Pin A0 analógico)" : "Revisado") : "Pendiente",
+          reto3Corregido: !!(estado.cables && estado.cables.ldr_sig)
+        },
+        reflexionParteC: estado.reflexion || {}
+      };
+
+      // 1. Guardar en localStorage para sincronización instantánea entre pestañas
+      try {
+        var registros = JSON.parse(localStorage.getItem("diagnosticos_mep_9no") || "[]");
+        var idx = registros.findIndex(function(r) {
+          return r && r.estudianteNombre && r.estudianteNombre.toLowerCase().trim() === nombreEst.toLowerCase() && (r.seccionOGrupo || "").toLowerCase().trim() === seccionEst.toLowerCase().trim();
+        });
+        if (idx >= 0) {
+          registros[idx] = Object.assign({}, registros[idx], payload);
+        } else {
+          registros.push(payload);
+        }
+        localStorage.setItem("diagnosticos_mep_9no", JSON.stringify(registros));
+      } catch(e) {}
+
+      // 2. Transmitir en segundo plano al servidor central
+      try {
+        fetch(CONFIG.urlTelemetria, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        }).catch(function() {});
+      } catch(e) {}
     }
 
     function responderItem(itemNum, opcionIdx, esCorrecta, retroTexto) {
@@ -1959,6 +2047,7 @@
       playBeep(esCorrecta ? 800 : 250, "sine", 0.12);
       actualizarContadorItems();
       guardarProgresoEnLocalStorage();
+      enviarProgresoEnTiempoReal();
     }
 
     function seleccionarOpcionReflexion(numPregunta, valor, btnEl) {
@@ -1973,6 +2062,7 @@
       btnEl.classList.add("correcta");
       playBeep(650, "sine", 0.08);
       guardarProgresoEnLocalStorage();
+      enviarProgresoEnTiempoReal();
     }
 
     function seleccionarSentimiento(sentimiento, numCard) {
@@ -1986,6 +2076,7 @@
       }
       playBeep(800, "sine", 0.1);
       guardarProgresoEnLocalStorage();
+      enviarProgresoEnTiempoReal();
     }
 
     function actualizarContadorItems() {
@@ -2351,6 +2442,8 @@
         retro.style.display = "block";
       }
       playBeep(esCorrecta ? 850 : 250, "sine", 0.12);
+      guardarProgresoEnLocalStorage();
+      enviarProgresoEnTiempoReal();
     }
 
     function seleccionarJustificacionReto3(opc, texto, btnEl) {
@@ -2368,10 +2461,13 @@
       }
       actualizarTextoExplicacionReto3(txtArea ? txtArea.value : texto);
       playBeep(700, "sine", 0.08);
+      guardarProgresoEnLocalStorage();
+      enviarProgresoEnTiempoReal();
     }
 
     function actualizarTextoExplicacionReto3(val) {
       estado.reto3Explicacion = (val || "").trim();
+      guardarProgresoEnLocalStorage();
     }
 
     function avanzarSubReto() {
@@ -2385,10 +2481,14 @@
         playBeep(1000, "sine", 0.15);
         logSerial("🎉 Reto 1 completado exitosamente. Pasando al Reto 2...", "ok");
         cambiarSubReto(2);
+        guardarProgresoEnLocalStorage();
+        enviarProgresoEnTiempoReal();
       } else if (subRetoActual === 2) {
         playBeep(1000, "sine", 0.15);
         logSerial("🎉 Reto 2 completado exitosamente. Pasando al Reto 3...", "ok");
         cambiarSubReto(3);
+        guardarProgresoEnLocalStorage();
+        enviarProgresoEnTiempoReal();
       } else if (subRetoActual === 3) {
         if (!estado.cables.ldr_sig) {
           alert("⚠️ En el Reto 3, debes conectar la señal del sensor LDR al pin A0 del Microcontrolador para completar la corrección física.");
@@ -2400,6 +2500,8 @@
         }
         playBeep(1100, "sine", 0.2);
         logSerial("🎉 Reto 3 (Depuración y Justificación) completado. Avanzando a la Parte C...", "ok");
+        guardarProgresoEnLocalStorage();
+        enviarProgresoEnTiempoReal();
         irASeccion(4);
       }
     }
@@ -2687,7 +2789,7 @@
 
       // Generar Token SHA-256 Simple y Robusto
       var rawString = nombreEst + "|" + (estado.estudianteCedula || "SINCED") + "|" + seccionEst + "|" + timeEpoch + "|" + aciertos;
-      var hashToken = "MEP9-" + Math.abs(rawString.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0)).toString(16).toUpperCase() + "-" + Math.floor(1000 + Math.random() * 9000);
+      var hashToken = "DIAG9-" + Math.abs(rawString.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0)).toString(16).toUpperCase() + "-" + Math.floor(1000 + Math.random() * 9000);
 
       var payload = {
         webAppId: CONFIG.webAppId,
@@ -2711,12 +2813,13 @@
         totalReactivos: CONFIG.totalItems,
         aciertos: aciertos,
         fallos: CONFIG.totalItems - aciertos,
+        cog: calcularVectorCognitivo(),
         hashVerificacion: hashToken,
         tokenAntiFraude: hashToken,
         dimensiones: {
           cognoscitiva: porc + "% (" + aciertos + "/10)",
           psicomotora: "Reto 1: Conexión Básica OK (5/5) | Reto 2: Actuador " + (estado.actuadorActual || "LED") + " | Reto 3: Depuración y Justificación " + (estado.reto3Diagnostico && estado.reto3Diagnostico.correcta ? "Acertada" : "Completada"),
-          socioafectiva: "Sentimiento: " + estado.reflexion.sentimiento + " | Reflexión MEP Completada"
+          socioafectiva: "Sentimiento: " + (estado.reflexion.sentimiento || "Completado") + " | Reflexión Oficial Completada"
         },
         retosPracticos: {
           reto1Conexion: "5/5 terminales validados",
