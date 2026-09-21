@@ -8,17 +8,22 @@
   
   <style>
     :root {
-      --bg-primary: #0b1120;
-      --bg-surface: #1e293b;
-      --bg-card: #0f172a;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --brand: #2563eb;
+      --bg-primary: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-card: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --brand: #0284c7;
+      --brand-light: #e0f2fe;
       --accent: #10b981;
+      --accent-light: #dcfce7;
       --warning: #f59e0b;
+      --warning-light: #fef3c7;
       --danger: #ef4444;
-      --border: #334155;
-      --border-focus: #38bdf8;
+      --danger-light: #fee2e2;
+      --border: #e2e8f0;
+      --border-focus: #0284c7;
+      --table-header: #f1f5f9;
     }
 
     * {
@@ -38,16 +43,16 @@
 
     /* HEADER OFICIAL */
     header {
-      background: linear-gradient(135deg, #001f3f 0%, #003366 50%, #0055a5 100%);
-      color: white;
-      padding: 12px 18px;
+      background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 50%, #eff6ff 100%);
+      color: #0f172a;
+      padding: 12px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 10px;
-      border-bottom: 2px solid #0284c7;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      gap: 12px;
+      border-bottom: 2px solid #38bdf8;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
       position: sticky;
       top: 0;
       z-index: 100;
@@ -56,14 +61,15 @@
     .mep-badge {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      padding: 3px 8px;
+      gap: 5px;
+      background: #e0f2fe;
+      border: 1px solid #7dd3fc;
+      color: #0369a1;
+      padding: 3px 9px;
       border-radius: 9999px;
-      font-size: 10px;
+      font-size: 10.5px;
       font-weight: 800;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.3px;
       text-transform: uppercase;
     }
 
@@ -75,9 +81,9 @@
     }
 
     button, .btn {
-      background: var(--brand);
-      color: white;
-      border: 1px solid rgba(255,255,255,0.15);
+      background: #0284c7;
+      color: #ffffff;
+      border: 1px solid #0369a1;
       padding: 8px 14px;
       border-radius: 8px;
       font-weight: 700;
@@ -91,59 +97,74 @@
       user-select: none;
       min-height: 36px;
       text-decoration: none;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
 
     button:hover, .btn:hover {
-      filter: brightness(1.15);
+      background: #0369a1;
       transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.12);
     }
 
-    .btn-secondary { background: #334155; color: #f8fafc; }
-    .btn-accent { background: #059669; }
-    .btn-warning { background: #d97706; }
-    .btn-danger { background: #dc2626; }
-    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
-    .btn-estudiante { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); border-color: #38bdf8; }
+    .btn-secondary { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
+    .btn-secondary:hover { background: #e2e8f0; color: #0f172a; }
+    .btn-accent { background: #10b981; border-color: #059669; color: white; }
+    .btn-accent:hover { background: #059669; }
+    .btn-warning { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+    .btn-warning:hover { background: #fde68a; }
+    .btn-danger { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
+    .btn-danger:hover { background: #fca5a5; }
+    .btn-outline { background: #ffffff; border: 1px solid #cbd5e1; color: #334155; }
+    .btn-outline:hover { background: #f8fafc; border-color: #94a3b8; }
+    .btn-estudiante { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); border-color: #0284c7; color: white; }
+    .btn-online-hub { background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); border-color: #7c3aed; color: white; }
 
     /* NAVEGACIÓN DE VISTAS */
     .view-nav {
       max-width: 1200px;
-      margin: 14px auto 0;
+      margin: 16px auto 0;
       padding: 0 16px;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
+      gap: 8px;
       width: 100%;
     }
 
     .view-tab {
-      padding: 10px 6px;
+      padding: 10px 8px;
       text-align: center;
-      background: #1e293b;
-      border: 1.5px solid #334155;
-      border-radius: 8px;
-      font-size: 11px;
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 11.5px;
       font-weight: 800;
-      color: #94a3b8;
+      color: #64748b;
       cursor: pointer;
       transition: all 0.2s;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 2px;
+      gap: 3px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+    }
+
+    .view-tab:hover {
+      border-color: #7dd3fc;
+      background: #f8fafc;
+      color: #0369a1;
     }
 
     .view-tab.activa {
-      background: linear-gradient(180deg, #1e3a8a 0%, #172554 100%);
-      border-color: #38bdf8;
-      color: #38bdf8;
-      box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+      background: #e0f2fe;
+      border-color: #0284c7;
+      color: #0369a1;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.15);
     }
 
     /* CONTENEDOR PRINCIPAL */
     .main-container {
       max-width: 1200px;
-      margin: 14px auto 30px;
+      margin: 16px auto 30px;
       padding: 0 16px;
       flex: 1;
       width: 100%;
@@ -151,10 +172,10 @@
 
     .card {
       background: var(--bg-card);
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--border);
       border-radius: 14px;
-      padding: 18px;
-      box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+      padding: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
       margin-bottom: 20px;
     }
 
@@ -167,60 +188,45 @@
     }
 
     .custom-table th {
-      background: #1e293b;
-      color: #38bdf8;
+      background: #f1f5f9;
+      color: #1e293b;
       padding: 10px 8px;
       text-align: left;
-      border: 1px solid #334155;
+      border: 1px solid #cbd5e1;
       font-weight: 800;
     }
 
     .custom-table td {
       padding: 8px;
-      border: 1px solid #334155;
-      color: #cbd5e1;
-      background: #0f172a;
+      border: 1px solid #e2e8f0;
+      color: #334155;
+      background: #ffffff;
+    }
+
+    .custom-table tr:nth-child(even) td {
+      background: #f8fafc;
     }
 
     .custom-table tr:hover td {
-      background: #1e293b;
+      background: #f0f9ff;
     }
 
-    /* FORMULARIOS DE RÚBRICA */
-    .rubric-row {
-      display: grid;
-      grid-template-columns: 2.2fr 1.3fr 1.5fr;
-      gap: 10px;
-      align-items: center;
-      padding: 8px 10px;
-      border-bottom: 1px solid #334155;
-      background: #0f172a;
-      border-radius: 6px;
-      margin-bottom: 4px;
-    }
-
-    .rubric-header {
-      background: #1e293b;
-      font-weight: 800;
-      color: #38bdf8;
-      font-size: 11.5px;
-      border: 1px solid #334155;
-    }
-
+    /* FORMULARIOS DE RÚBRICA Y SEGMENTOS */
     .segmented-control {
       display: flex;
-      border-radius: 6px;
+      border-radius: 8px;
       overflow: hidden;
-      border: 1px solid #334155;
+      border: 1.5px solid #cbd5e1;
+      background: #f8fafc;
     }
 
     .segmented-btn {
       flex: 1;
-      background: #1e293b;
-      color: #94a3b8;
+      background: #ffffff;
+      color: #64748b;
       border: none;
       padding: 6px 4px;
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 800;
       cursor: pointer;
       min-height: 28px;
@@ -228,195 +234,90 @@
       transition: all 0.15s;
     }
 
-    .segmented-btn.active-logrado { background: #064e3b; color: #34d399; font-weight: 900; }
-    .segmented-btn.active-desarrollo { background: #78350f; color: #fbbf24; font-weight: 900; }
-    .segmented-btn.active-apoyo { background: #7f1d1d; color: #fca5a5; font-weight: 900; }
-    .segmented-btn.active-a { background: #064e3b; color: #34d399; font-weight: 900; }
-    .segmented-btn.active-b { background: #78350f; color: #fbbf24; font-weight: 900; }
-    .segmented-btn.active-c { background: #7f1d1d; color: #fca5a5; font-weight: 900; }
+    .segmented-btn:not(:last-child) {
+      border-right: 1px solid #e2e8f0;
+    }
+
+    .segmented-btn.active-logrado, .segmented-btn.active-a {
+      background: #dcfce7 !important;
+      color: #15803d !important;
+      font-weight: 900;
+    }
+    
+    .segmented-btn.active-desarrollo, .segmented-btn.active-b {
+      background: #fef3c7 !important;
+      color: #b45309 !important;
+      font-weight: 900;
+    }
+
+    .segmented-btn.active-apoyo, .segmented-btn.active-c {
+      background: #fee2e2 !important;
+      color: #b91c1c !important;
+      font-weight: 900;
+    }
 
     .rubric-obs-input {
       width: 100%;
-      background: #1e293b;
-      border: 1px solid #334155;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
       border-radius: 6px;
       padding: 6px 8px;
-      color: white;
-      font-size: 11px;
+      color: #0f172a;
+      font-size: 11.5px;
       outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .rubric-obs-input:focus {
+      border-color: #0284c7;
+      box-shadow: 0 0 0 2px rgba(2,132,199,0.15);
     }
 
     .student-pill {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 12px;
-      background: #1e293b;
-      border: 1.5px solid #334155;
-      border-radius: 8px;
+      padding: 10px 14px;
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
       margin-bottom: 6px;
       cursor: pointer;
       transition: all 0.2s;
     }
 
     .student-pill:hover {
-      border-color: #38bdf8;
+      border-color: #0284c7;
+      background: #f0f9ff;
       transform: translateX(2px);
     }
 
     .student-pill.selected {
-      background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
-      border-color: #38bdf8;
-      box-shadow: 0 0 10px rgba(56,189,248,0.25);
+      background: #e0f2fe;
+      border-color: #0284c7;
+      box-shadow: 0 2px 6px rgba(2,132,199,0.15);
     }
 
     .badge-status {
-      font-size: 10px;
+      font-size: 10.5px;
       font-weight: 800;
-      padding: 2px 6px;
-      border-radius: 4px;
-    }
-
-    .badge-completado { background: #064e3b; color: #34d399; border: 1px solid #10b981; }
-    .badge-pendiente { background: #78350f; color: #fbbf24; border: 1px solid #f59e0b; }
-
-    /* ESTILOS DE ACORDEÓN HORIZONTAL POR ESTUDIANTE EN OBSERVACIÓN DOCENTE */
-    .student-accordion-card {
-      background: #0f172a;
-      border: 1.5px solid #334155;
-      border-radius: 12px;
-      margin-bottom: 14px;
-      transition: all 0.25s ease;
-      overflow: hidden;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
-    }
-
-    .student-accordion-card:hover {
-      border-color: #38bdf8;
-    }
-
-    .student-accordion-card.expanded {
-      border-color: #38bdf8;
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
-    }
-
-    .student-accordion-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 16px;
-      background: #1e293b;
-      cursor: pointer;
-      user-select: none;
-      border-bottom: 1px solid transparent;
-      transition: background 0.2s;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .student-accordion-card.expanded .student-accordion-header {
-      border-bottom-color: #334155;
-      background: linear-gradient(90deg, #1e3a8a 0%, #1e293b 100%);
-    }
-
-    .student-info-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 240px;
-    }
-
-    .student-avatar {
-      width: 38px;
-      height: 38px;
-      border-radius: 8px;
-      background: #0f172a;
-      border: 1.5px solid #38bdf8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      flex-shrink: 0;
-    }
-
-    .student-name-title {
-      font-size: 14px;
-      font-weight: 900;
-      color: #f8fafc;
-      letter-spacing: -0.2px;
-      margin: 0;
-    }
-
-    .student-meta-sub {
-      font-size: 11px;
-      color: #94a3b8;
-      margin-top: 1px;
-    }
-
-    .student-badges-mid {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .student-actions-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .accordion-toggle-btn {
-      background: #0f172a;
-      border: 1px solid #38bdf8;
-      color: #38bdf8;
+      padding: 3px 7px;
       border-radius: 6px;
-      padding: 5px 10px;
-      font-size: 11px;
-      font-weight: 800;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      transition: all 0.2s;
+      justify-content: center;
+      gap: 4px;
     }
 
-    .accordion-toggle-btn:hover {
-      background: #38bdf8;
-      color: #0f172a;
-    }
-
-    .chevron-icon {
-      transition: transform 0.25s ease;
-      display: inline-block;
-    }
-
-    .student-accordion-card.expanded .chevron-icon {
-      transform: rotate(180deg);
-    }
-
-    .student-accordion-body {
-      display: none;
-      padding: 16px;
-      background: #090e17;
-      animation: fadeInAccordion 0.2s ease-in-out;
-    }
-
-    .student-accordion-card.expanded .student-accordion-body {
-      display: block;
-    }
-
-    @keyframes fadeInAccordion {
-      from { opacity: 0; transform: translateY(-4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    .badge-completado { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+    .badge-pendiente { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+    .badge-alerta { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
 
     /* VISTA DE IMPRESIÓN OFICIAL */
     @media print {
       body { background: white !important; color: black !important; }
-      header, .view-nav, .top-tools, .btn, .no-print, .accordion-toggle-btn { display: none !important; }
-      .card, .student-accordion-card { box-shadow: none !important; border: 1px solid #ccc !important; background: white !important; color: black !important; }
-      .student-accordion-body { display: block !important; }
+      header, .view-nav, .top-tools, .btn, .no-print { display: none !important; }
+      .card { box-shadow: none !important; border: 1px solid #ccc !important; background: white !important; color: black !important; }
       .custom-table th, .custom-table td { color: black !important; background: white !important; border-color: #333 !important; }
       .print-only { display: block !important; }
     }
@@ -427,7 +328,7 @@
       display: none;
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
+      background: rgba(15, 23, 42, 0.45);
       backdrop-filter: blur(4px);
       justify-content: center;
       align-items: center;
@@ -436,52 +337,49 @@
     }
 
     .modal-content {
-      background: #0f172a;
-      border: 2px solid #38bdf8;
+      background: #ffffff;
+      border: 2px solid #0284c7;
       border-radius: 14px;
-      padding: 20px;
+      padding: 22px;
       max-width: 600px;
       width: 100%;
       max-height: 90vh;
       overflow-y: auto;
-      box-shadow: 0 0 30px rgba(56, 189, 248, 0.3);
-      color: #f8fafc;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      color: #0f172a;
     }
 
     @media (max-width: 768px) {
       .view-nav { grid-template-columns: repeat(2, 1fr); }
-      .rubric-row { grid-template-columns: 1fr; }
-      .student-accordion-header { flex-direction: column; align-items: flex-start; }
-      .student-actions-right { width: 100%; justify-content: flex-end; }
     }
   </style>
 </head>
 <body>
 
-  <!-- HEADER OFICIAL MEP -->
+  <!-- HEADER OFICIAL MEP (PALETA CLARA PASTEL) -->
   <header>
-    <div style="display: flex; align-items: center; gap: 8px;">
-      <div style="width: 32px; height: 32px; border-radius: 6px; background: white; display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <div style="width: 36px; height: 36px; border-radius: 8px; background: #ffffff; border: 1.5px solid #7dd3fc; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
         👨‍🏫
       </div>
       <div>
         <div class="mep-badge">
           <span>Ministerio de Educación Pública • PNFT 2026</span>
         </div>
-        <h1 style="font-size: 0.95rem; font-weight: 900; letter-spacing: -0.2px; margin-top: 1px;">
+        <h1 style="font-size: 1rem; font-weight: 900; letter-spacing: -0.2px; margin-top: 1px; color: #0f172a;">
           Evaluador Diagnóstico Docente: 9° Año (Módulo 1)
         </h1>
       </div>
     </div>
 
     <div class="top-tools">
-      <a href="/webapps/diagnostico_9no_modulo01_aula_inteligente.html" target="_blank" class="btn btn-estudiante" style="font-size: 11px; padding: 4px 10px; min-height: 28px;" title="Abrir WebApp del Estudiante">
+      <a href="/webapps/diagnostico_9no_modulo01_aula_inteligente.html" target="_blank" class="btn btn-estudiante" style="font-size: 11.5px; padding: 5px 12px;" title="Abrir WebApp del Estudiante">
         💡 Ver App Estudiante
       </a>
-      <button class="btn btn-accent" style="font-size: 11px; padding: 4px 10px; min-height: 28px;" onclick="exportarExcelConsolidado()">
+      <button class="btn btn-accent" style="font-size: 11.5px; padding: 5px 12px;" onclick="exportarExcelConsolidado()">
         📊 Exportar Excel
       </button>
-      <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; min-height: 28px;" onclick="imprimirReporteOficial()">
+      <button class="btn btn-secondary" style="font-size: 11.5px; padding: 5px 12px;" onclick="imprimirReporteOficial()">
         🖨️ Imprimir Acta MEP
       </button>
     </div>
@@ -490,20 +388,20 @@
   <!-- NAVEGADOR DE 4 VISTAS DOCENTES -->
   <nav class="view-nav no-print">
     <div class="view-tab activa" id="tabV1" onclick="cambiarVista(1)">
-      <span>1. ESTUDIANTES</span>
-      <span>Carga de Lista & Sección</span>
+      <span style="font-weight: 900;">1. ESTUDIANTES</span>
+      <span style="font-size: 10px; color: #64748b;">Carga de Lista & Sección</span>
     </div>
     <div class="view-tab" id="tabV2" onclick="cambiarVista(2)">
-      <span>2. OBSERVACIÓN DOCENTE</span>
-      <span>Psicomotora & Socioafectiva</span>
+      <span style="font-weight: 900;">2. OBSERVACIÓN DOCENTE</span>
+      <span style="font-size: 10px; color: #64748b;">Psicomotora & Socioafectiva</span>
     </div>
     <div class="view-tab" id="tabV3" onclick="cambiarVista(3)">
-      <span>3. SISTEMATIZACIÓN</span>
-      <span>Indicadores de Logro (Pág. 15)</span>
+      <span style="font-weight: 900;">3. SISTEMATIZACIÓN</span>
+      <span style="font-size: 10px; color: #64748b;">Indicadores de Logro (Pág. 15)</span>
     </div>
     <div class="view-tab" id="tabV4" onclick="cambiarVista(4)">
-      <span>4. DECISIONES</span>
-      <span>Criterios Pedagógicos MEP</span>
+      <span style="font-weight: 900;">4. DECISIONES</span>
+      <span style="font-size: 10px; color: #64748b;">Criterios Pedagógicos MEP</span>
     </div>
   </nav>
 
@@ -513,18 +411,18 @@
     <!-- VISTA 1: CARGA PREVIA DE ESTUDIANTES (ARCHIVO ADJUNTO O LISTADO)     -->
     <!-- ==================================================================== -->
     <div id="vista1" class="card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
         <div>
-          <span class="mep-badge" style="background: #1e3a8a; border-color: #38bdf8; color: #93c5fd;">
+          <span class="mep-badge">
             Paso 1 • Gestión de Nómina
           </span>
-          <h2 style="font-size: 1.2rem; color: #f8fafc; margin-top: 2px;">
+          <h2 style="font-size: 1.25rem; color: #0f172a; font-weight: 900; margin-top: 4px;">
             Cargar Lista de Estudiantes y Secciones
           </h2>
         </div>
         <div style="display: flex; gap: 6px;">
           <button class="btn btn-accent" onclick="cargarSeccionDemo('9-1')">
-            ⚡ Cargar Demo 9-1 (10 Estudiantes)
+            ⚡ Cargar Demo 9-1 (5 Estudiantes)
           </button>
           <button class="btn btn-secondary" onclick="cargarSeccionDemo('9-2')">
             ⚡ Demo 9-2
@@ -535,12 +433,12 @@
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
         
         <!-- CARGA DE ARCHIVO ADJUNTO -->
-        <div style="background: #1e293b; border: 1.5px dashed #38bdf8; border-radius: 12px; padding: 14px; text-align: center;">
-          <div style="font-size: 28px; margin-bottom: 4px;">📂</div>
-          <strong style="font-size: 12.5px; color: #38bdf8; display: block; margin-bottom: 4px;">
+        <div style="background: #f8fafc; border: 2px dashed #7dd3fc; border-radius: 12px; padding: 16px; text-align: center;">
+          <div style="font-size: 30px; margin-bottom: 4px;">📂</div>
+          <strong style="font-size: 13px; color: #0369a1; display: block; margin-bottom: 4px;">
             Subir Archivo Adjunto de Estudiantes
           </strong>
-          <p style="font-size: 11px; color: #94a3b8; margin-bottom: 10px;">
+          <p style="font-size: 11.5px; color: #64748b; margin-bottom: 12px;">
             Compatible con listas en formato <strong>.CSV, .TXT o Excel (.xlsx)</strong> (Columnas: Nombre, Apellidos, Sección).
           </p>
 
@@ -551,37 +449,37 @@
         </div>
 
         <!-- PEGAR TEXTO DIRECTO -->
-        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 14px;">
-          <strong style="font-size: 12.5px; color: #f8fafc; display: block; margin-bottom: 4px;">
+        <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 14px;">
+          <strong style="font-size: 12.5px; color: #0f172a; display: block; margin-bottom: 4px;">
             O Pegar Listado Rápido (Línea por Línea):
           </strong>
-          <textarea id="txtEstudiantesPegar" placeholder="Ejemplo:&#10;Valeria Montero Jiménez, Sección 9-1&#10;Kevin Morales Vargas, Sección 9-1&#10;Sofía Castro Navarro, Sección 9-1" rows="3" style="width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 6px 8px; color: white; font-size: 11px; outline: none; margin-bottom: 6px;"></textarea>
-          <button class="btn btn-secondary" style="width: 100%; font-size: 11px;" onclick="importarTextoPegado()">
+          <textarea id="txtEstudiantesPegar" placeholder="Ejemplo:&#10;Valeria Montero Jiménez, Sección 9-1&#10;Kevin Morales Vargas, Sección 9-1&#10;Sofía Castro Navarro, Sección 9-1" rows="3" style="width: 100%; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px; color: #0f172a; font-size: 11.5px; outline: none; margin-bottom: 8px;"></textarea>
+          <button class="btn btn-secondary" style="width: 100%; font-size: 11.5px;" onclick="importarTextoPegado()">
             ➕ Procesar e Incorporar a la Nómina
           </button>
         </div>
       </div>
 
       <!-- LISTA DE ESTUDIANTES CARGADOS -->
-      <div style="background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 12px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <strong style="font-size: 12.5px; color: #38bdf8;">
+      <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <strong style="font-size: 13px; color: #0369a1;">
             📋 Nómina Actual de Estudiantes (<span id="totalEstudiantesContador">0</span> registrados)
           </strong>
-          <div style="display: flex; gap: 6px;">
-            <select id="filtroSeccion" style="background: #1e293b; border: 1px solid #334155; color: white; border-radius: 6px; padding: 4px 8px; font-size: 11px;" onchange="renderizarListaEstudiantes()">
+          <div style="display: flex; gap: 8px;">
+            <select id="filtroSeccion" style="background: #f8fafc; border: 1px solid #cbd5e1; color: #0f172a; border-radius: 6px; padding: 5px 10px; font-size: 11.5px;" onchange="renderizarListaEstudiantes()">
               <option value="TODAS">Todas las Secciones</option>
               <option value="Sección 9-1">Sección 9-1</option>
               <option value="Sección 9-2">Sección 9-2</option>
               <option value="Sección 9-3">Sección 9-3</option>
             </select>
-            <button class="btn btn-danger" style="font-size: 10.5px; padding: 3px 6px; min-height: 24px;" onclick="limpiarNomina()">
+            <button class="btn btn-danger" style="font-size: 11px; padding: 4px 8px; min-height: 26px;" onclick="limpiarNomina()">
               🗑️ Vaciar Nómina
             </button>
           </div>
         </div>
 
-        <div id="contenedorListaEstudiantes" style="max-height: 280px; overflow-y: auto; padding-right: 4px;">
+        <div id="contenedorListaEstudiantes" style="max-height: 300px; overflow-y: auto; padding-right: 4px;">
           <!-- Se inyecta dinámicamente -->
         </div>
       </div>
@@ -593,53 +491,53 @@
     <div id="vista2" class="card" style="display: none;">
       
       <!-- TOOLBAR SUPERIOR DE OBSERVACIÓN DOCENTE -->
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
         <div>
-          <span class="mep-badge" style="background: #1e3a8a; border-color: #38bdf8; color: #93c5fd;">
+          <span class="mep-badge">
             Instrumento de Observación Docente • Evaluación 100% Formativa
           </span>
-          <h2 style="font-size: 1.25rem; color: #f8fafc; font-weight: 900; margin-top: 2px;">
+          <h2 style="font-size: 1.25rem; color: #0f172a; font-weight: 900; margin-top: 4px;">
             2. Matriz de Observación en Vivo por Áreas (Formato Hoja de Cálculo)
           </h2>
-          <p style="font-size: 11.5px; color: #94a3b8; margin-top: 2px;">
-            Los estudiantes se listan verticalmente a la izquierda. Seleccione el área arriba para desplegar las columnas de conductas y marcar los niveles formativos en un clic.
+          <p style="font-size: 11.5px; color: #64748b; margin-top: 2px;">
+            Los estudiantes se listan verticalmente a la izquierda. Seleccione el área arriba para desplegar las conductas e <strong>indicadores de logro</strong> y marcar los niveles formativos en un clic.
           </p>
         </div>
 
-        <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
-          <button class="btn btn-accent" style="font-size: 11px; padding: 5px 12px;" onclick="mostrarModalEscanerQR()">
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <button class="btn btn-accent" style="font-size: 11.5px; padding: 6px 12px;" onclick="mostrarModalEscanerQR()">
             📷 Escanear QR Alumno
           </button>
-          <button class="btn btn-secondary" style="font-size: 11px; padding: 5px 12px;" onclick="guardarTodoElGrupo()">
+          <button class="btn btn-secondary" style="font-size: 11.5px; padding: 6px 12px;" onclick="guardarTodoElGrupo()">
             💾 Guardar Toda la Sección
           </button>
         </div>
       </div>
 
       <!-- PESTAÑAS DE ÁREA SUPERIORES (ENCABEZADOS DE COLUMNA A1, B1, C1) -->
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px;">
-        <button type="button" id="tabAreaPsi" class="view-tab activa" onclick="cambiarAreaObservacion('psi')" style="padding: 10px 8px; font-size: 12px; border-color: #34d399; color: #34d399;">
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px;">
+        <button type="button" id="tabAreaPsi" class="view-tab activa" onclick="cambiarAreaObservacion('psi')" style="padding: 12px 10px; font-size: 12px; border-color: #86efac; color: #15803d; background: #dcfce7;">
           <span style="font-size: 13px; font-weight: 900;">🖐️ 1. ÁREA PSICOMOTORA</span>
-          <span style="font-size: 10px; color: #94a3b8; font-weight: normal;">6 Conductas Reto «Conecta el Prototipo»</span>
+          <span style="font-size: 10px; color: #166534; font-weight: normal;">6 Conductas Reto «Conecta el Prototipo»</span>
         </button>
 
-        <button type="button" id="tabAreaSoc" class="view-tab" onclick="cambiarAreaObservacion('soc')" style="padding: 10px 8px; font-size: 12px; border-color: #fbbf24; color: #fbbf24;">
+        <button type="button" id="tabAreaSoc" class="view-tab" onclick="cambiarAreaObservacion('soc')" style="padding: 12px 10px; font-size: 12px; border-color: #fde68a; color: #b45309; background: #ffffff;">
           <span style="font-size: 13px; font-weight: 900;">❤️ 2. ÁREA SOCIOAFECTIVA</span>
-          <span style="font-size: 10px; color: #94a3b8; font-weight: normal;">7 Conductas Actitudinales (Ser y Convivir)</span>
+          <span style="font-size: 10px; color: #92400e; font-weight: normal;">7 Conductas Actitudinales (Ser y Convivir)</span>
         </button>
 
-        <button type="button" id="tabAreaCog" class="view-tab" onclick="cambiarAreaObservacion('cog')" style="padding: 10px 8px; font-size: 12px; border-color: #38bdf8; color: #38bdf8;">
+        <button type="button" id="tabAreaCog" class="view-tab" onclick="cambiarAreaObservacion('cog')" style="padding: 12px 10px; font-size: 12px; border-color: #7dd3fc; color: #0369a1; background: #ffffff;">
           <span style="font-size: 13px; font-weight: 900;">🧠 3. ÁREA COGNITIVA</span>
-          <span style="font-size: 10px; color: #94a3b8; font-weight: normal;">10 Indicadores de Logro (Sincronizado WebApp)</span>
+          <span style="font-size: 10px; color: #0284c7; font-weight: normal;">10 Indicadores de Logro (Sincronizado WebApp)</span>
         </button>
       </div>
 
       <!-- BARRA DE FILTRO Y BÚSQUEDA RÁPIDA -->
-      <div style="background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 8px 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+      <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 10px 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
         <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 260px;">
-          <span style="font-size: 13px;">🔍</span>
-          <input type="text" id="inputBuscarEstudianteObs" placeholder="Buscar estudiante por nombre o apellido..." style="width: 100%; max-width: 300px; background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 5px 8px; color: white; font-size: 11.5px; outline: none;" oninput="renderizarMatrizObservacion()">
-          <select id="filtroSeccionObs" style="background: #0f172a; border: 1px solid #334155; color: white; border-radius: 6px; padding: 5px 8px; font-size: 11.5px;" onchange="renderizarMatrizObservacion()">
+          <span style="font-size: 14px;">🔍</span>
+          <input type="text" id="inputBuscarEstudianteObs" placeholder="Buscar estudiante por nombre o apellido..." style="width: 100%; max-width: 300px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 6px 10px; color: #0f172a; font-size: 11.5px; outline: none;" oninput="renderizarMatrizObservacion()">
+          <select id="filtroSeccionObs" style="background: #ffffff; border: 1px solid #cbd5e1; color: #0f172a; border-radius: 6px; padding: 6px 10px; font-size: 11.5px;" onchange="renderizarMatrizObservacion()">
             <option value="TODAS">Todas las Secciones</option>
             <option value="Sección 9-1">Sección 9-1</option>
             <option value="Sección 9-2">Sección 9-2</option>
@@ -647,18 +545,18 @@
           </select>
         </div>
 
-        <div style="display: flex; gap: 8px; align-items: center;">
-          <button type="button" class="btn btn-outline" style="font-size: 10.5px; padding: 3px 8px; min-height: 26px;" id="btnMarcarTodoNivelA" onclick="marcarTodoGrupoNivelA()">
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <button type="button" class="btn btn-outline" style="font-size: 11px; padding: 4px 10px; min-height: 28px;" id="btnMarcarTodoNivelA" onclick="marcarTodoGrupoNivelA()">
             ⚡ Marcar Toda la Sección Nivel A
           </button>
-          <div style="font-size: 11px; color: #cbd5e1; margin-left: 6px;">
-            Total: <strong style="color: #38bdf8;" id="cntTotalObs">0</strong> • Evaluados: <strong style="color: #34d399;" id="cntEvaluadosObs">0</strong>
+          <div style="font-size: 11.5px; color: #475569; margin-left: 4px;">
+            Total: <strong style="color: #0284c7;" id="cntTotalObs">0</strong> • Evaluados: <strong style="color: #15803d;" id="cntEvaluadosObs">0</strong>
           </div>
         </div>
       </div>
 
       <!-- CONTENEDOR DE TABLA/MATRIZ EN VIVO TIPO EXCEL -->
-      <div style="background: #0f172a; border: 1.5px solid #38bdf8; border-radius: 12px; padding: 12px; overflow-x: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+      <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 14px; overflow-x: auto; box-shadow: 0 2px 10px rgba(0,0,0,0.04);">
         <table class="custom-table" id="tablaMatrizObservacion" style="min-width: 900px; width: 100%;">
           <thead id="theadMatrizObservacion">
             <!-- Encabezados inyectados por JS según el área seleccionada -->
@@ -675,20 +573,20 @@
     <!-- VISTA 3: SISTEMATIZACIÓN DE DESEMPEÑOS Y LOGROS (OFICIAL PÁG. 15 MEP)-->
     <!-- ==================================================================== -->
     <div id="vista3" class="card" style="display: none;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
         <div>
-          <span class="mep-badge" style="background: #1e3a8a; border-color: #38bdf8; color: #93c5fd;">
+          <span class="mep-badge">
             Instrumento Oficial • Pág. 15 MEP
           </span>
-          <h2 style="font-size: 1.25rem; color: #f8fafc; font-weight: 900; margin-top: 2px;">
+          <h2 style="font-size: 1.25rem; color: #0f172a; font-weight: 900; margin-top: 4px;">
             d. Sistematización de Desempeños y Logros (Evaluación 100% Formativa)
           </h2>
-          <p style="font-size: 11.5px; color: #94a3b8; margin-top: 2px;">
-            Registro formativo de las respuestas y evidencias de cada persona estudiante en los 10 planteamientos e indicadores de desempeño.
+          <p style="font-size: 11.5px; color: #64748b; margin-top: 2px;">
+            Registro formativo oficial de las evidencias y nivel de logro de cada persona estudiante en los <strong>Indicadores de Aprendizaje de Logro</strong> (Ind. 1 al Ind. 10).
           </p>
         </div>
 
-        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
           <button class="btn btn-accent" onclick="exportarExcelConsolidado()">
             📊 Descargar Matriz Excel Oficial
           </button>
@@ -699,56 +597,72 @@
       </div>
 
       <!-- ESCALA FORMATIVA OFICIAL -->
-      <div style="display: flex; align-items: center; gap: 12px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 8px 12px; margin-bottom: 12px; font-size: 11px; flex-wrap: wrap;">
-        <span style="font-weight: 800; color: #cbd5e1;">Escala de Desempeño:</span>
-        <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="badge-status" style="background: #064e3b; color: #34d399; border: 1px solid #10b981;">L</span> <strong>Logrado</strong> (Dominio autónomo)</span>
-        <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="badge-status" style="background: #78350f; color: #fbbf24; border: 1px solid #f59e0b;">ED</span> <strong>En Desarrollo</strong> (Requiere mediación)</span>
-        <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="badge-status" style="background: #7f1d1d; color: #fca5a5; border: 1px solid #ef4444;">RA</span> <strong>Requiere Acompañamiento</strong> (Apoyo focalizado)</span>
+      <div style="display: flex; align-items: center; gap: 14px; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; font-size: 11.5px; flex-wrap: wrap;">
+        <span style="font-weight: 800; color: #0f172a;">Escala de Desempeño:</span>
+        <span style="display: inline-flex; align-items: center; gap: 6px;"><span class="badge-status badge-completado">L</span> <strong>Logrado</strong> (Dominio autónomo)</span>
+        <span style="display: inline-flex; align-items: center; gap: 6px;"><span class="badge-status badge-pendiente">ED</span> <strong>En Desarrollo</strong> (Requiere mediación)</span>
+        <span style="display: inline-flex; align-items: center; gap: 6px;"><span class="badge-status badge-alerta">RA</span> <strong>Requiere Acompañamiento</strong> (Apoyo focalizado)</span>
       </div>
 
-      <!-- TABLA MATRIZ OFICIAL MEP PÁG 15 -->
-      <div style="background: #0f172a; border: 1.5px solid #38bdf8; border-radius: 12px; padding: 14px; overflow-x: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
-        <table class="custom-table" id="tablaSistematizacionOficial" style="min-width: 950px;">
+      <!-- TABLA MATRIZ OFICIAL MEP PÁG 15 (CON INDICADORES DE APRENDIZAJE DE LOGRO Ind. 1 a Ind. 10) -->
+      <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 14px; overflow-x: auto; box-shadow: 0 2px 10px rgba(0,0,0,0.04);">
+        <table class="custom-table" id="tablaSistematizacionOficial" style="min-width: 980px;">
           <thead>
-            <tr style="background: #1e293b; text-align: center;">
-              <th style="width: 140px; text-align: left; position: sticky; left: 0; background: #1e293b; z-index: 10;">Estudiantes</th>
-              <th title="Microcontrolador (Lógica y procesamiento)">Ap. 1</th>
-              <th title="Sensor y Actuador (Entrada / Salida)">Ap. 2</th>
-              <th title="Entrada, Proceso y Salida (Flujo E-P-S)">Ap. 3</th>
-              <th title="Fuente de Energía y Voltaje">Ap. 4</th>
-              <th title="Conversión Energética">Ap. 5</th>
-              <th title="Conductores y Aislantes">Ap. 6</th>
-              <th title="Circuito Simple y Cierre">Ap. 7</th>
-              <th title="Ley de Ohm Cualitativa">Ap. 8</th>
-              <th title="Reto Conecta el Prototipo (Simulador 2D)">Ap. 9</th>
-              <th title="Reflexión y Seguridad en el Laboratorio">Ap. 10</th>
-              <th style="min-width: 280px; text-align: left;">Descripción del desempeño individual o grupal<br><span style="font-size: 9.5px; font-weight: normal; color: #94a3b8;">(Logros observados y aspectos a considerar en el desarrollo)</span></th>
+            <tr style="background: #f1f5f9; text-align: center;">
+              <th style="width: 170px; text-align: left; position: sticky; left: 0; background: #f1f5f9; z-index: 10; border-right: 2px solid #cbd5e1;">Estudiantes (Nómina)</th>
+              <th title="Ind. 1: Microcontrolador (Lógica y procesamiento)">Ind. 1</th>
+              <th title="Ind. 2: Sensor y Actuador (Entrada / Salida)">Ind. 2</th>
+              <th title="Ind. 3: Entrada, Proceso y Salida (Flujo E-P-S)">Ind. 3</th>
+              <th title="Ind. 4: Fuente de Energía y Voltaje">Ind. 4</th>
+              <th title="Ind. 5: Conversión Energética">Ind. 5</th>
+              <th title="Ind. 6: Conductores y Aislantes">Ind. 6</th>
+              <th title="Ind. 7: Circuito Simple y Cierre">Ind. 7</th>
+              <th title="Ind. 8: Ley de Ohm Cualitativa">Ind. 8</th>
+              <th title="Ind. 9: Reto Conecta el Prototipo (Simulador 2D)">Ind. 9</th>
+              <th title="Ind. 10: Reflexión y Seguridad en el Laboratorio">Ind. 10</th>
+              <th style="min-width: 280px; text-align: left;">Descripción del desempeño individual y Acciones de Acompañamiento<br><span style="font-size: 9.5px; font-weight: normal; color: #64748b;">(Logros observados, fortalezas y plan de recuperación individual)</span></th>
             </tr>
           </thead>
           <tbody id="tbodySistematizacionMatriz">
-            <!-- Filas inyectadas dinámicamente con las celdas de Ap1 a Ap10 y descripción editable -->
+            <!-- Filas inyectadas dinámicamente con las celdas de Ind. 1 a Ind. 10 y descripción editable -->
           </tbody>
         </table>
       </div>
 
-      <!-- RESUMEN DE CRITERIOS PEDAGÓGICOS DEL GRUPO -->
-      <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 16px; margin-top: 16px;">
-        <h3 style="font-size: 13.5px; color: #38bdf8; font-weight: 800; margin-bottom: 8px;">
-          📌 Síntesis Formativa Grupal para la Mediación Posterior:
-        </h3>
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; font-size: 11.5px;">
-          <div style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 10px;">
-            <strong style="color: #60a5fa; display: block; margin-bottom: 4px;">🧠 Dimensión Cognoscitiva:</strong>
-            <span id="resumenGrupoCognitivo">Mayor fortaleza en identificación de sensores y lógica E-P-S; se debe reforzar polaridad y cálculo cualitativo de resistencia.</span>
+      <!-- ACCIONES DE RECUPERACIÓN Y ACOMPAÑAMIENTO GRUPAL (SISTEMATIZACIÓN Y VINCULACIÓN A LA WEB) -->
+      <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 18px; margin-top: 18px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <h3 style="font-size: 13.5px; color: #0369a1; font-weight: 800;">
+            📌 Síntesis y Acciones de Recuperación y Acompañamiento Grupal:
+          </h3>
+          <a href="/" target="_blank" class="btn btn-online-hub" style="font-size: 11px; padding: 4px 10px;">
+            🌐 Abrir Dashboard Web de Inteligencia Artificial ➔
+          </a>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; font-size: 11.5px; margin-bottom: 12px;">
+          <div style="background: #ffffff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 12px;">
+            <strong style="color: #0369a1; display: block; margin-bottom: 4px;">🧠 Dimensión Cognoscitiva:</strong>
+            <span id="resumenGrupoCognitivo">Fortaleza alta en identificación de sensores y flujo E-P-S (85% Logrado). Acciones: Taller guiado sobre polaridad y cálculo cualitativo de resistencia antes de la práctica en protoboard real.</span>
           </div>
-          <div style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 10px;">
-            <strong style="color: #34d399; display: block; margin-bottom: 4px;">🖐️ Dimensión Psicomotora:</strong>
-            <span id="resumenGrupoPsicomotor">Destreza adecuada en el conexionado sobre protoboard virtual; acompañar en la correspondencia espacial de pines 5V y GND.</span>
+          <div style="background: #ffffff; border: 1px solid #bbf7d0; border-radius: 10px; padding: 12px;">
+            <strong style="color: #15803d; display: block; margin-bottom: 4px;">🖐️ Dimensión Psicomotora:</strong>
+            <span id="resumenGrupoPsicomotor">Destreza adecuada en el conexionado simulado (78% Nivel A). Acciones: Proporcionar tarjetas de correspondencia física para pines 5V/GND y ejercicios de ensamble con guía visual.</span>
           </div>
-          <div style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 10px;">
-            <strong style="color: #fbbf24; display: block; margin-bottom: 4px;">❤️ Dimensión Socioafectiva:</strong>
-            <span id="resumenGrupoSocio">Actitud positiva ante el error y perseverancia en las pruebas; fomentar el diálogo constructivo en el trabajo por parejas.</span>
+          <div style="background: #ffffff; border: 1px solid #fde68a; border-radius: 10px; padding: 12px;">
+            <strong style="color: #b45309; display: block; margin-bottom: 4px;">❤️ Dimensión Socioafectiva:</strong>
+            <span id="resumenGrupoSocio">Excelente persistencia ante el error en simulación (90% Nivel A). Acciones: Consolidar el trabajo colaborativo en parejas mixtas para co-evaluación solidaria.</span>
           </div>
+        </div>
+
+        <div style="background: #e0f2fe; border: 1px solid #7dd3fc; border-radius: 8px; padding: 10px 14px; font-size: 11.5px; color: #0369a1; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <strong>💡 ¿Deseas análisis predictivo con IA y generación de reportes automáticos por sección?</strong>
+            <span style="display: block; font-size: 11px; color: #0c4a6e;">Ingresa al Dashboard central en línea para visualizar estadísticas macro, tendencias por centro educativo y descarga de actas oficiales MEP en PDF.</span>
+          </div>
+          <a href="/" target="_blank" class="btn btn-estudiante" style="font-size: 11px; padding: 4px 12px;">
+            Explorar en Línea
+          </a>
         </div>
       </div>
     </div>
@@ -757,78 +671,78 @@
     <!-- VISTA 4: CRITERIOS PARA LA TOMA DE DECISIONES PEDAGÓGICAS (MEP)     -->
     <!-- ==================================================================== -->
     <div id="vista4" class="card" style="display: none;">
-      <span class="mep-badge" style="background: #1e3a8a; border-color: #38bdf8; color: #93c5fd; margin-bottom: 6px;">
+      <span class="mep-badge" style="margin-bottom: 6px;">
         Página 10 Oficial MEP
       </span>
-      <h2 style="font-size: 1.25rem; color: #38bdf8; margin-bottom: 12px; font-weight: 900;">
+      <h2 style="font-size: 1.25rem; color: #0369a1; margin-bottom: 12px; font-weight: 900;">
         10. Criterios para la Toma de Decisiones Pedagógicas y Planeamiento
       </h2>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 12px;">
         
-        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px;">
-          <strong style="color: #f59e0b; display: block; margin-bottom: 4px;">
+        <div style="background: #f8fafc; border: 1.5px solid #fde68a; border-radius: 10px; padding: 14px;">
+          <strong style="color: #b45309; display: block; margin-bottom: 4px;">
             ⚠️ Si la mayoría presenta dificultad en algoritmo o secuenciación:
           </strong>
-          <p style="color: #cbd5e1; line-height: 1.45;">
+          <p style="color: #334155; line-height: 1.45;">
             Iniciar con situaciones concretas de descomposición, secuencias y representación de algoritmos antes de aumentar la complejidad de programación.
           </p>
         </div>
 
-        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px;">
-          <strong style="color: #38bdf8; display: block; margin-bottom: 4px;">
+        <div style="background: #f8fafc; border: 1.5px solid #7dd3fc; border-radius: 10px; padding: 14px;">
+          <strong style="color: #0369a1; display: block; margin-bottom: 4px;">
             🔌 Si la dificultad se concentra en sensor, actuador o microcontrolador:
           </strong>
-          <p style="color: #cbd5e1; line-height: 1.45;">
+          <p style="color: #334155; line-height: 1.45;">
             Planificar una exploración guiada de componentes, entradas, procesamiento y salidas mediante simulación o prototipado guiado.
           </p>
         </div>
 
-        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px;">
-          <strong style="color: #ef4444; display: block; margin-bottom: 4px;">
+        <div style="background: #f8fafc; border: 1.5px solid #fca5a5; border-radius: 10px; padding: 14px;">
+          <strong style="color: #b91c1c; display: block; margin-bottom: 4px;">
             🐛 Si hay dificultad para depurar:
           </strong>
-          <p style="color: #cbd5e1; line-height: 1.45;">
+          <p style="color: #334155; line-height: 1.45;">
             Incorporar retos breves de prueba–error–corrección y verbalización del proceso de depuración técnica.
           </p>
         </div>
 
-        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px;">
-          <strong style="color: #a78bfa; display: block; margin-bottom: 4px;">
+        <div style="background: #f8fafc; border: 1.5px solid #e9d5ff; border-radius: 10px; padding: 14px;">
+          <strong style="color: #6d28d9; display: block; margin-bottom: 4px;">
             ❤️ Si la dificultad principal es socioafectiva:
           </strong>
-          <p style="color: #cbd5e1; line-height: 1.45;">
+          <p style="color: #334155; line-height: 1.45;">
             Diseñar actividades de iteración, colaboración y resolución de problemas con acompañamiento gradual y refuerzo positivo.
           </p>
         </div>
 
-        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px;">
-          <strong style="color: #fca5a5; display: block; margin-bottom: 4px;">
+        <div style="background: #f8fafc; border: 1.5px solid #fed7aa; border-radius: 10px; padding: 14px;">
+          <strong style="color: #c2410c; display: block; margin-bottom: 4px;">
             🖐️ Si hay dificultades psicomotoras en orientación espacial o conexiones:
           </strong>
-          <p style="color: #cbd5e1; line-height: 1.45;">
+          <p style="color: #334155; line-height: 1.45;">
             Proporcionar tareas progresivas de organización espacial, seguimiento de instrucciones y ejecución de secuencias antes de avanzar a prototipos más complejos.
           </p>
         </div>
 
-        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px;">
-          <strong style="color: #34d399; display: block; margin-bottom: 4px;">
+        <div style="background: #f8fafc; border: 1.5px solid #86efac; border-radius: 10px; padding: 14px;">
+          <strong style="color: #15803d; display: block; margin-bottom: 4px;">
             🚀 Si el grupo muestra dominio inicial alto:
           </strong>
-          <p style="color: #cbd5e1; line-height: 1.45;">
+          <p style="color: #334155; line-height: 1.45;">
             Aumentar gradualmente la complejidad, incorporando datos, automatización y prototipos con mayor autonomía.
           </p>
         </div>
 
       </div>
 
-      <div style="margin-top: 16px; background: rgba(56, 189, 248, 0.1); border: 1.5px solid #38bdf8; border-radius: 8px; padding: 12px; font-size: 12px; color: #93c5fd;">
+      <div style="margin-top: 16px; background: #e0f2fe; border: 1.5px solid #7dd3fc; border-radius: 10px; padding: 14px; font-size: 12px; color: #0369a1;">
         <strong>11. Recomendaciones Oficiales para la Mediación Docente:</strong>
         <ul style="margin-top: 6px; margin-left: 18px; line-height: 1.5;">
           <li>Aplicar el diagnóstico antes de desarrollar formalmente los nuevos aprendizajes del Módulo 1.</li>
           <li>No convertir los resultados en una calificación sumativa punitiva.</li>
           <li>Utilizar los hallazgos para ajustar la mediación, agrupamientos, apoyos, ritmo y secuencia de las primeras actividades de aula.</li>
-          <li>Mantener los indicadores de logro de la Guía docente con su redacción textual cuando se incorporen al planeamiento.</li>
+          <li>Mantener los <strong>indicadores de logro</strong> de la Guía docente con su redacción textual cuando se incorporen al planeamiento.</li>
         </ul>
       </div>
     </div>
@@ -838,18 +752,18 @@
   <!-- MODAL ESCÁNER QR DE ALUMNOS -->
   <div id="modalEscanerQR" class="modal">
     <div class="modal-content" style="max-width: 480px; text-align: center;">
-      <h3 style="color: #38bdf8; margin-bottom: 6px; font-size: 1.2rem;">📷 Sincronización QR del Estudiante</h3>
-      <p style="font-size: 11.5px; color: #cbd5e1; margin-bottom: 12px;">
+      <h3 style="color: #0369a1; margin-bottom: 6px; font-size: 1.25rem;">📷 Sincronización QR del Estudiante</h3>
+      <p style="font-size: 11.5px; color: #64748b; margin-bottom: 12px;">
         Pega el código o token de respaldo generado en la pantalla del estudiante:
       </p>
 
-      <textarea id="inputTokenQR" placeholder="Pega aquí el código (Ej: MEP-9NO-M01|Valeria Montero|9-1|COG:10/10|PSI:A|SOC:Muy cómodo/a)" rows="3" style="width: 100%; background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 8px; color: white; font-size: 11.5px; outline: none; margin-bottom: 10px;"></textarea>
+      <textarea id="inputTokenQR" placeholder="Pega aquí el código (Ej: MEP-9NO-M01|Valeria Montero|9-1|COG:10/10|PSI:A|SOC:Muy cómodo/a)" rows="3" style="width: 100%; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 8px; color: #0f172a; font-size: 11.5px; outline: none; margin-bottom: 12px;"></textarea>
 
       <div style="display: flex; gap: 8px; justify-content: center;">
         <button class="btn btn-accent" onclick="procesarTokenQRManual()">
           ⚡ Aplicar e Importar al Estudiante
         </button>
-        <button class="btn btn-outline" onclick="cerrarModalEscanerQR()">
+        <button class="btn btn-secondary" onclick="cerrarModalEscanerQR()">
           Cancelar
         </button>
       </div>
@@ -1135,13 +1049,13 @@
         var nombresPsiCortos = ["P1. Espacio", "P2. Precisión", "P3. Secuencia", "P4. Pines", "P5. Corrección", "P6. Autonomía"];
         CONDUCTAS_PSICOMOTORAS.forEach(function(cd, j) {
           thConductas += '<th style="text-align:center; min-width: 105px; font-size: 11px; cursor: pointer;" title="' + cd + ' (Clic para ver conducta completa)">' +
-            '<span style="color:#34d399; font-weight:800; display:block;">' + nombresPsiCortos[j] + '</span>' +
-            '<span style="font-size:9.5px; color:#94a3b8; font-weight:normal;">Escala A/B/C</span>' +
+            '<span style="color:#15803d; font-weight:800; display:block;">' + nombresPsiCortos[j] + '</span>' +
+            '<span style="font-size:9.5px; color:#64748b; font-weight:normal;">Escala A/B/C</span>' +
           '</th>';
         });
 
-        thead.innerHTML = '<tr style="background:#1e293b;">' +
-          '<th style="width: 220px; position: sticky; left: 0; background: #1e293b; z-index: 10;">Persona Estudiante (Nómina)</th>' +
+        thead.innerHTML = '<tr style="background:#f1f5f9;">' +
+          '<th style="width: 220px; position: sticky; left: 0; background: #f1f5f9; z-index: 10; border-right: 2px solid #cbd5e1;">Persona Estudiante (Nómina)</th>' +
           thConductas +
           '<th style="text-align:center; min-width: 120px;">Nivel Psicomotor</th>' +
           '<th style="min-width: 200px;">Observación Pedagógica del Docente</th>' +
@@ -1152,13 +1066,13 @@
         var nombresSocCortos = ["S1. Precisión", "S2. Error/Aprender", "S3. Flexibilidad", "S4. Resiliencia", "S5. Comunicación", "S6. Colaboración", "S7. Ética/Uso"];
         CONDUCTAS_SOCIOAFECTIVAS.forEach(function(sc, k) {
           thSoc += '<th style="text-align:center; min-width: 105px; font-size: 11px; cursor: pointer;" title="' + sc + ' (Clic para ver conducta completa)">' +
-            '<span style="color:#fbbf24; font-weight:800; display:block;">' + nombresSocCortos[k] + '</span>' +
-            '<span style="font-size:9.5px; color:#94a3b8; font-weight:normal;">Escala A/B/C</span>' +
+            '<span style="color:#b45309; font-weight:800; display:block;">' + nombresSocCortos[k] + '</span>' +
+            '<span style="font-size:9.5px; color:#64748b; font-weight:normal;">Escala A/B/C</span>' +
           '</th>';
         });
 
-        thead.innerHTML = '<tr style="background:#1e293b;">' +
-          '<th style="width: 220px; position: sticky; left: 0; background: #1e293b; z-index: 10;">Persona Estudiante (Nómina)</th>' +
+        thead.innerHTML = '<tr style="background:#f1f5f9;">' +
+          '<th style="width: 220px; position: sticky; left: 0; background: #f1f5f9; z-index: 10; border-right: 2px solid #cbd5e1;">Persona Estudiante (Nómina)</th>' +
           thSoc +
           '<th style="text-align:center; min-width: 120px;">Nivel Socioafectivo</th>' +
           '<th style="min-width: 200px;">Observación Pedagógica del Docente</th>' +
@@ -1166,16 +1080,28 @@
         '</tr>';
       } else if (area === 'cog') {
         var thCog = "";
-        var nombresCogCortos = ["Ap1. Control", "Ap2. Sensor", "Ap3. E-P-S", "Ap4. Fuente", "Ap5. Conv. E", "Ap6. Conduc.", "Ap7. Circuito", "Ap8. Ohm", "Ap9. Sim 2D", "Ap10. Reflex."];
+        var nombresCogCortos = ["Ind 1. Control", "Ind 2. Sensor", "Ind 3. E-P-S", "Ind 4. Fuente", "Ind 5. Conv. E", "Ind 6. Conduc.", "Ind 7. Circuito", "Ind 8. Ohm", "Ind 9. Sim 2D", "Ind 10. Reflex."];
+        var titulosCompletos = [
+          "Ind. 1: Microcontrolador (Lógica y procesamiento)",
+          "Ind. 2: Sensor y Actuador (Entrada / Salida)",
+          "Ind. 3: Entrada, Proceso y Salida (Flujo E-P-S)",
+          "Ind. 4: Fuente de Energía y Voltaje",
+          "Ind. 5: Conversión Energética",
+          "Ind. 6: Conductores y Aislantes",
+          "Ind. 7: Circuito Simple y Cierre",
+          "Ind. 8: Ley de Ohm Cualitativa",
+          "Ind. 9: Reto Conecta el Prototipo (Simulador 2D)",
+          "Ind. 10: Reflexión y Seguridad en el Laboratorio"
+        ];
         for (var i = 0; i < 10; i++) {
-          thCog += '<th style="text-align:center; min-width: 75px; font-size: 11px;">' +
-            '<span style="color:#38bdf8; font-weight:800; display:block;">' + nombresCogCortos[i] + '</span>' +
-            '<span style="font-size:9.5px; color:#94a3b8; font-weight:normal;">L / ED / RA</span>' +
+          thCog += '<th style="text-align:center; min-width: 80px; font-size: 11px;" title="' + titulosCompletos[i] + '">' +
+            '<span style="color:#0369a1; font-weight:800; display:block;">' + nombresCogCortos[i] + '</span>' +
+            '<span style="font-size:9.5px; color:#64748b; font-weight:normal;">L / ED / RA</span>' +
           '</th>';
         }
 
-        thead.innerHTML = '<tr style="background:#1e293b;">' +
-          '<th style="width: 220px; position: sticky; left: 0; background: #1e293b; z-index: 10;">Persona Estudiante (Nómina)</th>' +
+        thead.innerHTML = '<tr style="background:#f1f5f9;">' +
+          '<th style="width: 220px; position: sticky; left: 0; background: #f1f5f9; z-index: 10; border-right: 2px solid #cbd5e1;">Persona Estudiante (Nómina)</th>' +
           thCog +
           '<th style="text-align:center; min-width: 110px;">Total Logrados</th>' +
           '<th style="text-align:center; min-width: 140px;">Sincronización WebApp</th>' +
@@ -1186,7 +1112,7 @@
       tbody.innerHTML = "";
 
       if (filtrados.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="12" style="text-align: center; padding: 30px; color: #94a3b8;">No se encontraron estudiantes para la sección seleccionada.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="12" style="text-align: center; padding: 30px; color: #64748b;">No se encontraron estudiantes para la sección seleccionada.</td></tr>';
         return;
       }
 
@@ -1202,11 +1128,11 @@
         tr.id = "filaEstudianteMatriz_" + realIdx;
 
         // Columna Izquierda Fija: Nombre del Estudiante
-        var tdEstudiante = '<td style="position: sticky; left: 0; background: #0f172a; z-index: 5; font-weight: 700; color: white;">' +
-          '<div style="font-size: 12px;">' + (realIdx + 1) + '. ' + est.nombre + '</div>' +
-          '<div style="font-size: 10px; color: #94a3b8; font-weight: normal; margin-top: 1px;">' +
-            '<span style="color: #38bdf8;">' + est.seccion + '</span>' +
-            (est.horaEntrega ? ' • <span style="color:#34d399;">🕒 ' + est.horaEntrega + '</span>' : ' • <span style="color:#fbbf24;">⏳ Pendiente</span>') +
+        var tdEstudiante = '<td style="position: sticky; left: 0; background: #ffffff; z-index: 5; font-weight: 700; color: #0f172a; border-right: 2px solid #e2e8f0;">' +
+          '<div style="font-size: 12px; color: #0f172a;">' + (realIdx + 1) + '. ' + est.nombre + '</div>' +
+          '<div style="font-size: 10.5px; color: #64748b; font-weight: normal; margin-top: 1px;">' +
+            '<span style="color: #0284c7; font-weight: 700;">' + est.seccion + '</span>' +
+            (est.horaEntrega ? ' • <span style="color:#15803d; font-weight:700;">🕒 ' + est.horaEntrega + '</span>' : ' • <span style="color:#b45309;">⏳ Pendiente</span>') +
           '</div>' +
         '</td>';
 
@@ -1224,14 +1150,14 @@
           });
 
           var numA = est.psi.filter(function(x){ return x === 'A'; }).length;
-          var badgePsi = numA >= 5 ? '<span class="badge-status badge-completado">🟢 Autónomo (' + numA + '/6 A)</span>' : (numA >= 3 ? '<span class="badge-status badge-pendiente">🟡 Con Apoyo (' + numA + '/6 A)</span>' : '<span class="badge-status" style="background:#7f1d1d; color:#fca5a5; border:1px solid #ef4444;">🔴 Acompañamiento</span>');
+          var badgePsi = numA >= 5 ? '<span class="badge-status badge-completado">🟢 Autónomo (' + numA + '/6 A)</span>' : (numA >= 3 ? '<span class="badge-status badge-pendiente">🟡 Con Apoyo (' + numA + '/6 A)</span>' : '<span class="badge-status badge-alerta">🔴 Acompañamiento</span>');
 
           var obsVal = est.obsPsiGeneral || (est.obsPsi ? est.obsPsi[0] : "") || "";
 
           tr.innerHTML = tdEstudiante + celdasPsi +
             '<td style="text-align:center;">' + badgePsi + '</td>' +
             '<td><input type="text" class="rubric-obs-input" placeholder="Observación psicomotora..." value="' + obsVal.replace(/"/g, '&quot;') + '" onchange="actualizarObsPsiGeneral(' + realIdx + ', this.value)"></td>' +
-            '<td style="text-align:center;"><button class="btn btn-accent" style="font-size:10px; padding:3px 6px; min-height:24px;" onclick="guardarFilaEstudiante(' + realIdx + ')">💾</button></td>';
+            '<td style="text-align:center;"><button class="btn btn-accent" style="font-size:10.5px; padding:3px 7px; min-height:24px;" onclick="guardarFilaEstudiante(' + realIdx + ')">💾</button></td>';
 
         } else if (area === 'soc') {
           var celdasSoc = "";
@@ -1247,22 +1173,22 @@
           });
 
           var numSA = est.soc.filter(function(x){ return x === 'A'; }).length;
-          var badgeSoc = numSA >= 6 ? '<span class="badge-status badge-completado">🟢 Consistente (' + numSA + '/7 A)</span>' : (numSA >= 4 ? '<span class="badge-status badge-pendiente">🟡 Intermitente (' + numSA + '/7 A)</span>' : '<span class="badge-status" style="background:#7f1d1d; color:#fca5a5; border:1px solid #ef4444;">🔴 Acompañamiento</span>');
+          var badgeSoc = numSA >= 6 ? '<span class="badge-status badge-completado">🟢 Consistente (' + numSA + '/7 A)</span>' : (numSA >= 4 ? '<span class="badge-status badge-pendiente">🟡 Intermitente (' + numSA + '/7 A)</span>' : '<span class="badge-status badge-alerta">🔴 Acompañamiento</span>');
 
           var obsSocVal = est.obsSocGeneral || (est.obsSoc ? est.obsSoc[0] : "") || "";
 
           tr.innerHTML = tdEstudiante + celdasSoc +
             '<td style="text-align:center;">' + badgeSoc + '</td>' +
             '<td><input type="text" class="rubric-obs-input" placeholder="Observación actitudinal..." value="' + obsSocVal.replace(/"/g, '&quot;') + '" onchange="actualizarObsSocGeneral(' + realIdx + ', this.value)"></td>' +
-            '<td style="text-align:center;"><button class="btn btn-accent" style="font-size:10px; padding:3px 6px; min-height:24px;" onclick="guardarFilaEstudiante(' + realIdx + ')">💾</button></td>';
+            '<td style="text-align:center;"><button class="btn btn-accent" style="font-size:10.5px; padding:3px 7px; min-height:24px;" onclick="guardarFilaEstudiante(' + realIdx + ')">💾</button></td>';
 
         } else if (area === 'cog') {
           var celdasCog = "";
           for (var i = 0; i < 10; i++) {
             var valC = (est.cog && est.cog[i]) ? est.cog[i] : "ED";
-            var bgStyle = valC === "L" ? "background:#064e3b; color:#34d399; border:1px solid #10b981;" : (valC === "RA" ? "background:#7f1d1d; color:#fca5a5; border:1px solid #ef4444;" : "background:#78350f; color:#fbbf24; border:1px solid #f59e0b;");
+            var bgStyle = valC === "L" ? "background:#dcfce7; color:#15803d; border:1px solid #86efac;" : (valC === "RA" ? "background:#fee2e2; color:#b91c1c; border:1px solid #fca5a5;" : "background:#fef3c7; color:#b45309; border:1px solid #fde68a;");
             celdasCog += '<td style="text-align:center; padding: 4px;">' +
-              '<button type="button" class="badge-status" style="' + bgStyle + ' cursor: pointer; font-size: 11px; padding: 3px 6px; border-radius: 4px;" onclick="toggleValCogMatriz(' + realIdx + ', ' + i + ')">' + valC + '</button>' +
+              '<button type="button" class="badge-status" style="' + bgStyle + ' cursor: pointer; font-size: 11px; padding: 4px 7px; border-radius: 6px;" onclick="toggleValCogMatriz(' + realIdx + ', ' + i + ')">' + valC + '</button>' +
             '</td>';
           }
 
@@ -1271,7 +1197,7 @@
 
           tr.innerHTML = tdEstudiante + celdasCog +
             '<td style="text-align:center;"><span class="badge-status ' + (porc >= 80 ? 'badge-completado' : 'badge-pendiente') + '">' + numL + '/10 (' + porc + '%)</span></td>' +
-            '<td style="text-align:center; font-size:11px; color:#cbd5e1;">' + (est.evaluado || est.horaEntrega ? '✅ QR ' + (est.horaEntrega || '08:00') : '⏳ Pendiente WebApp') + '</td>';
+            '<td style="text-align:center; font-size:11px; color:#334155;">' + (est.evaluado || est.horaEntrega ? '✅ QR ' + (est.horaEntrega || '08:00') : '⏳ Pendiente WebApp') + '</td>';
         }
 
         tbody.appendChild(tr);
@@ -1368,7 +1294,7 @@
       alert("✅ Toda la nómina de estudiantes ha sido guardada y sincronizada.");
     }
 
-    /* MATRIZ DE SISTEMATIZACIÓN OFICIAL MEP PÁG. 15 */
+    /* MATRIZ DE SISTEMATIZACIÓN OFICIAL MEP PÁG. 15 (INDICADORES DE APRENDIZAJE DE LOGRO) */
     function renderizarConsolidadoGrupal() {
       var tbody = document.getElementById("tbodySistematizacionMatriz");
       if (!tbody) return;
@@ -1380,15 +1306,15 @@
         var celdasAp = "";
         for (var i = 0; i < 10; i++) {
           var val = (est.cog && est.cog[i]) ? est.cog[i] : "ED";
-          var badgeClass = val === "L" ? "background:#064e3b; color:#34d399; border:1px solid #10b981;" : (val === "RA" ? "background:#7f1d1d; color:#fca5a5; border:1px solid #ef4444;" : "background:#78350f; color:#fbbf24; border:1px solid #f59e0b;");
-          celdasAp += '<td style="text-align:center; padding: 6px 4px;"><span class="badge-status" style="' + badgeClass + ' font-size:10.5px; padding: 2px 6px;">' + val + '</span></td>';
+          var badgeClass = val === "L" ? "background:#dcfce7; color:#15803d; border:1px solid #86efac;" : (val === "RA" ? "background:#fee2e2; color:#b91c1c; border:1px solid #fca5a5;" : "background:#fef3c7; color:#b45309; border:1px solid #fde68a;");
+          celdasAp += '<td style="text-align:center; padding: 6px 4px;"><span class="badge-status" style="' + badgeClass + ' font-size:11px; padding: 3px 6px;">' + val + '</span></td>';
         }
 
         var descDefault = est.descripcionDesempeno || (est.evaluado ? "Identifica conceptos de microcontroladores y sensores con autonomía. Acompañar en conexionado y polaridad de pines." : "Pendiente de diagnóstico.");
 
-        tr.innerHTML = '<td style="font-weight:700; color:white; position:sticky; left:0; background:#0f172a; z-index:5;">' + (idx+1) + '. ' + est.nombre + '<span style="display:block; font-size:10px; color:#94a3b8; font-weight:normal;">' + est.seccion + (est.horaEntrega ? ' • ' + est.horaEntrega : '') + '</span></td>' +
+        tr.innerHTML = '<td style="font-weight:700; color:#0f172a; position:sticky; left:0; background:#ffffff; z-index:5; border-right: 2px solid #e2e8f0;">' + (idx+1) + '. ' + est.nombre + '<span style="display:block; font-size:10.5px; color:#64748b; font-weight:normal;">' + est.seccion + (est.horaEntrega ? ' • ' + est.horaEntrega : '') + '</span></td>' +
           celdasAp +
-          '<td><textarea class="rubric-obs-input" rows="2" style="font-size:11px; resize:vertical; min-height:42px;" onchange="actualizarDescripcionEstudiante(' + idx + ', this.value)" placeholder="Describa el desempeño observado, fortalezas y consideraciones para el desarrollo...">' + descDefault + '</textarea></td>';
+          '<td><textarea class="rubric-obs-input" rows="2" style="font-size:11.5px; resize:vertical; min-height:42px;" onchange="actualizarDescripcionEstudiante(' + idx + ', this.value)" placeholder="Describa fortalezas observadas y acciones individuales de recuperación / acompañamiento...">' + descDefault + '</textarea></td>';
 
         tbody.appendChild(tr);
       });
@@ -1403,7 +1329,7 @@
     }
 
     function exportarExcelConsolidado() {
-      var csv = ["Estudiante,Seccion,Hora_Entrega,Condicion,Ap1_Microcontrolador,Ap2_SensorActuador,Ap3_FlujoEPS,Ap4_FuenteEnergia,Ap5_ConversionEnergia,Ap6_ConductoresAislantes,Ap7_CircuitoSimple,Ap8_LeyOhm,Ap9_Simulacion2D,Ap10_ReflexionSeguridad,Descripcion_Desempeno_Formativo"];
+      var csv = ["Estudiante,Seccion,Hora_Entrega,Condicion,Ind1_Microcontrolador,Ind2_SensorActuador,Ind3_FlujoEPS,Ind4_FuenteEnergia,Ind5_ConversionEnergia,Ind6_ConductoresAislantes,Ind7_CircuitoSimple,Ind8_LeyOhm,Ind9_Simulacion2D,Ind10_ReflexionSeguridad,Descripcion_Desempeno_Formativo_y_Acompanamiento"];
       estadoDocente.estudiantes.forEach(function(e) {
         var apVals = [];
         for (var i = 0; i < 10; i++) {
@@ -1423,7 +1349,7 @@
       var blob = new Blob(["\uFEFF" + csv.join("\n")], { type: "text/csv;charset=utf-8;" });
       var a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
-      a.download = "Sistematizacion_Desempenos_Logros_9no_MEP_Pag15.csv";
+      a.download = "Sistematizacion_Indicadores_Logro_9no_MEP_Pag15.csv";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);

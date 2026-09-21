@@ -12,19 +12,19 @@
   
   <style>
     :root {
-      --bg-primary: #0b1120;
-      --bg-surface: #1e293b;
-      --bg-card: #0f172a;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --brand: #2563eb;
-      --brand-glow: rgba(37, 99, 235, 0.4);
+      --bg-primary: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-card: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --brand: #0284c7;
+      --brand-glow: rgba(2, 132, 199, 0.2);
       --accent: #10b981;
-      --accent-glow: rgba(16, 185, 129, 0.4);
+      --accent-glow: rgba(16, 185, 129, 0.2);
       --warning: #f59e0b;
       --danger: #ef4444;
-      --border: #334155;
-      --border-focus: #38bdf8;
+      --border: #e2e8f0;
+      --border-focus: #0284c7;
     }
 
     * {
@@ -45,18 +45,18 @@
       overflow-x: hidden;
     }
 
-    /* HEADER OFICIAL MEP */
+    /* HEADER OFICIAL MEP (PALETA CLARA PASTEL) */
     header {
-      background: linear-gradient(135deg, #001f3f 0%, #003366 50%, #0055a5 100%);
-      color: white;
-      padding: 10px 14px;
+      background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 50%, #eff6ff 100%);
+      color: #0f172a;
+      padding: 10px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 8px;
-      border-bottom: 2px solid #0284c7;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      gap: 10px;
+      border-bottom: 2px solid #38bdf8;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
       position: sticky;
       top: 0;
       z-index: 100;
@@ -66,13 +66,14 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: #e0f2fe;
+      border: 1px solid #7dd3fc;
+      color: #0369a1;
       padding: 3px 8px;
       border-radius: 9999px;
-      font-size: 10px;
+      font-size: 10.5px;
       font-weight: 800;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.3px;
       text-transform: uppercase;
     }
 
@@ -86,7 +87,7 @@
     button, .btn {
       background: var(--brand);
       color: white;
-      border: 1px solid rgba(255,255,255,0.15);
+      border: 1px solid #0369a1;
       padding: 7px 12px;
       border-radius: 8px;
       font-weight: 700;
@@ -100,69 +101,84 @@
       user-select: none;
       min-height: 36px;
       text-decoration: none;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     }
 
     button:hover, .btn:hover {
-      filter: brightness(1.15);
+      background: #0369a1;
       transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
     }
 
     button:active, .btn:active {
       transform: translateY(0);
-      filter: brightness(0.9);
+      filter: brightness(0.95);
     }
 
-    .btn-secondary { background: #334155; color: #f8fafc; }
-    .btn-accent { background: #059669; }
-    .btn-warning { background: #d97706; }
-    .btn-danger { background: #dc2626; }
-    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
-    .btn-docente { background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%); border-color: #a78bfa; }
+    .btn-secondary { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
+    .btn-secondary:hover { background: #e2e8f0; color: #0f172a; }
+    .btn-accent { background: #10b981; border-color: #059669; color: white; }
+    .btn-accent:hover { background: #059669; }
+    .btn-warning { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+    .btn-warning:hover { background: #fde68a; }
+    .btn-danger { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
+    .btn-danger:hover { background: #fca5a5; }
+    .btn-outline { background: #ffffff; border: 1px solid #cbd5e1; color: #334155; }
+    .btn-outline:hover { background: #f8fafc; border-color: #94a3b8; }
+    .btn-docente { background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); border-color: #7c3aed; color: white; }
 
     /* NAVEGADOR DE 5 ETAPAS (OFICIALES MEP) */
     .nav-tabs {
       max-width: 1040px;
-      margin: 12px auto 0;
+      margin: 14px auto 0;
       padding: 0 12px;
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 4px;
+      gap: 6px;
       width: 100%;
     }
 
     .nav-tab {
-      padding: 8px 3px;
+      padding: 9px 4px;
       text-align: center;
-      background: #1e293b;
-      border: 1.5px solid #334155;
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
       border-radius: 8px;
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 800;
-      color: #94a3b8;
+      color: #64748b;
       cursor: pointer;
       transition: all 0.2s;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 2px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+
+    .nav-tab:hover {
+      border-color: #7dd3fc;
+      background: #f8fafc;
+      color: #0369a1;
     }
 
     .nav-tab.activa {
-      background: linear-gradient(180deg, #1e3a8a 0%, #172554 100%);
-      border-color: #38bdf8;
-      color: #38bdf8;
-      box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+      background: #e0f2fe;
+      border-color: #0284c7;
+      color: #0369a1;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.15);
     }
 
     .nav-tab.completada {
-      border-color: #10b981;
-      color: #34d399;
+      border-color: #86efac;
+      color: #15803d;
+      background: #f0fdf4;
     }
 
     /* CONTENEDOR PRINCIPAL */
     .main-container {
       max-width: 1040px;
-      margin: 12px auto 30px;
+      margin: 14px auto 30px;
       padding: 0 12px;
       flex: 1;
       width: 100%;
@@ -170,94 +186,101 @@
 
     .card {
       background: var(--bg-card);
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--border);
       border-radius: 14px;
-      padding: 16px;
-      box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+      padding: 18px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
       margin-bottom: 20px;
     }
 
     .situacion-box {
-      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-      border: 1px solid #38bdf8;
+      background: #e0f2fe;
+      border: 1.5px solid #7dd3fc;
       border-radius: 12px;
-      padding: 14px;
+      padding: 16px;
       margin-bottom: 16px;
+      color: #0369a1;
     }
 
     .item-card {
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 10px;
-      padding: 14px;
-      margin-bottom: 14px;
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.02);
     }
 
     .item-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .item-num {
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 900;
-      color: #38bdf8;
+      color: #0369a1;
       text-transform: uppercase;
-      background: rgba(56, 189, 248, 0.1);
-      padding: 2px 6px;
-      border-radius: 4px;
-      border: 1px solid rgba(56, 189, 248, 0.2);
+      background: #e0f2fe;
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid #7dd3fc;
     }
 
     .opcion-btn {
       display: block;
       width: 100%;
       text-align: left;
-      background: #0f172a;
-      color: #cbd5e1;
-      border: 1.5px solid #334155;
-      padding: 10px 12px;
+      background: #ffffff;
+      color: #1e293b;
+      border: 1.5px solid #cbd5e1;
+      padding: 11px 14px;
       border-radius: 8px;
       margin-bottom: 8px;
       font-size: 12px;
       cursor: pointer;
       transition: all 0.2s;
-      line-height: 1.4;
-    }
-
-    .opcion-btn.correcta {
-      background: #064e3b !important;
-      border-color: #10b981 !important;
-      color: #a7f3d0 !important;
-      font-weight: 700;
-    }
-
-    .opcion-btn.incorrecta {
-      background: #7f1d1d !important;
-      border-color: #ef4444 !important;
-      color: #fecaca !important;
-    }
-
-    .retro-box {
-      font-size: 11px;
-      padding: 8px 10px;
-      border-radius: 6px;
-      margin-top: 6px;
-      display: none;
       line-height: 1.45;
     }
 
-    .retro-ok { background: rgba(16,185,129,0.15); border: 1px solid #10b981; color: #6ee7b7; }
-    .retro-err { background: rgba(239,68,68,0.15); border: 1px solid #ef4444; color: #fca5a5; }
+    .opcion-btn:hover {
+      background: #f0f9ff;
+      border-color: #7dd3fc;
+    }
+
+    .opcion-btn.correcta {
+      background: #dcfce7 !important;
+      border-color: #10b981 !important;
+      color: #15803d !important;
+      font-weight: 800;
+    }
+
+    .opcion-btn.incorrecta {
+      background: #fee2e2 !important;
+      border-color: #ef4444 !important;
+      color: #b91c1c !important;
+    }
+
+    .retro-box {
+      font-size: 11.5px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin-top: 8px;
+      display: none;
+      line-height: 1.5;
+    }
+
+    .retro-ok { background: #dcfce7; border: 1px solid #86efac; color: #15803d; }
+    .retro-err { background: #fee2e2; border: 1px solid #fca5a5; color: #b91c1c; }
 
     /* SIMULACIÓN Y HARDWARE RESPONSIVO */
     .sim-panel-header {
-      background: #0f172a;
-      border: 1px solid #334155;
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
       border-radius: 12px;
-      padding: 12px;
+      padding: 14px;
       margin-bottom: 14px;
       display: flex;
       flex-direction: column;
@@ -272,13 +295,13 @@
     }
 
     .banco-hardware-container {
-      background: #090e17;
-      border: 1.5px solid #1e293b;
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
       border-radius: 12px;
-      padding: 10px 8px;
+      padding: 12px 10px;
       position: relative;
       overflow: hidden;
-      box-shadow: inset 0 0 25px rgba(0,0,0,0.8);
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.03);
     }
 
     .hardware-workspace {
@@ -286,7 +309,7 @@
       min-height: 230px;
       display: grid;
       grid-template-columns: 1fr 1.15fr 1fr;
-      gap: 6px;
+      gap: 8px;
       align-items: stretch;
       z-index: 10;
     }
@@ -305,7 +328,7 @@
       fill: none;
       stroke-width: 3.5;
       stroke-linecap: round;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.9));
+      filter: drop-shadow(0 1px 3px rgba(0,0,0,0.25));
       transition: stroke-dashoffset 0.5s ease;
     }
 
@@ -319,12 +342,12 @@
     }
 
     .hardware-card {
-      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-      border: 1.5px solid #334155;
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
       border-radius: 10px;
-      padding: 8px 4px;
+      padding: 8px 6px;
       text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
       position: relative;
       display: flex;
       flex-direction: column;
@@ -332,32 +355,32 @@
     }
 
     .hardware-card.highlight {
-      border-color: #38bdf8;
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+      border-color: #0284c7;
+      box-shadow: 0 0 12px rgba(2, 132, 199, 0.2);
     }
 
     .pcb-mcu {
-      background: linear-gradient(135deg, #064e3b 0%, #022c22 100%);
-      border: 1.5px solid #059669;
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
     }
 
     .chip-ic {
-      background: #0f172a;
-      border: 1px solid #475569;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
       border-radius: 4px;
       padding: 4px 2px;
       margin: 4px auto;
       width: 85%;
-      color: #94a3b8;
+      color: #0f172a;
       font-family: monospace;
-      font-size: 8px;
+      font-size: 8.5px;
       font-weight: 800;
       letter-spacing: 0.5px;
     }
 
     .led-pwr {
-      width: 6px;
-      height: 6px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       background: #10b981;
       box-shadow: 0 0 6px #10b981;
@@ -365,8 +388,8 @@
     }
 
     .led-rx-tx {
-      width: 5px;
-      height: 5px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
       background: #f59e0b;
       box-shadow: 0 0 6px #f59e0b;
@@ -375,7 +398,7 @@
     }
 
     @keyframes blinkTx {
-      from { opacity: 0.2; }
+      from { opacity: 0.3; }
       to { opacity: 1; }
     }
 
@@ -385,42 +408,47 @@
       justify-content: center;
       padding: 5px 2px;
       border-radius: 5px;
-      font-size: 9.5px;
+      font-size: 10px;
       font-weight: 800;
       margin: 2px 0;
       cursor: pointer;
-      background: #1e293b;
-      color: #cbd5e1;
-      border: 1.5px solid #475569;
+      background: #f1f5f9;
+      color: #1e293b;
+      border: 1.5px solid #cbd5e1;
       transition: all 0.15s;
       user-select: none;
       min-height: 28px;
     }
 
+    .pin-terminal:hover {
+      background: #e0f2fe;
+      border-color: #7dd3fc;
+    }
+
     .pin-terminal.connected {
-      background: #059669 !important;
-      color: white !important;
-      border-color: #34d399 !important;
-      box-shadow: 0 0 8px rgba(52, 211, 153, 0.5);
+      background: #dcfce7 !important;
+      color: #15803d !important;
+      border-color: #10b981 !important;
+      box-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
     }
 
     .pin-terminal.selected-for-wire {
-      background: #d97706 !important;
-      color: white !important;
-      border-color: #fbbf24 !important;
+      background: #fef3c7 !important;
+      color: #b45309 !important;
+      border-color: #f59e0b !important;
       animation: pulseWirePin 0.8s infinite alternate;
     }
 
     @keyframes pulseWirePin {
       from { transform: scale(1); }
-      to { transform: scale(1.08); box-shadow: 0 0 10px #fbbf24; }
+      to { transform: scale(1.05); box-shadow: 0 0 8px #f59e0b; }
     }
 
     .aula-sim-container {
-      background: #020617;
-      border: 1.5px solid #1e293b;
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
       border-radius: 12px;
-      padding: 10px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -430,9 +458,9 @@
       position: relative;
       height: 140px;
       border-radius: 8px;
-      border: 1.5px solid #334155;
+      border: 1.5px solid #cbd5e1;
       overflow: hidden;
-      background: #090d16;
+      background: #ffffff;
     }
 
     #aulaCanvas2D {
@@ -442,8 +470,8 @@
     }
 
     .telemetria-box {
-      background: #090e17;
-      border: 1px solid #1e293b;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
       border-radius: 8px;
       padding: 8px 10px;
     }
@@ -451,8 +479,8 @@
     .osciloscopio-frame {
       position: relative;
       height: 60px;
-      background: #020617;
-      border: 1px solid #1e293b;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
       border-radius: 6px;
       overflow: hidden;
     }
@@ -471,15 +499,15 @@
     }
 
     .dmm-tile {
-      background: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 5px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
       padding: 4px 2px;
       text-align: center;
     }
 
     .dmm-label {
-      font-size: 7.5px;
+      font-size: 8px;
       font-weight: 800;
       color: #64748b;
       text-transform: uppercase;
@@ -488,18 +516,18 @@
     .dmm-val {
       font-size: 11px;
       font-weight: 900;
-      color: #38bdf8;
+      color: #0284c7;
       font-family: monospace;
       margin-top: 1px;
     }
 
     .serial-station-wrapper {
-      background: #020617;
-      border: 2px solid #1e3a8a;
+      background: #f8fafc;
+      border: 2px solid #7dd3fc;
       border-radius: 12px;
       padding: 12px;
       margin-top: 12px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     }
 
     .serial-station-header {
@@ -512,36 +540,35 @@
     }
 
     .serial-log-container {
-      background: #030712;
-      border: 1.5px solid #1e293b;
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
       border-radius: 8px;
       padding: 10px 12px;
       font-family: 'Consolas', 'Courier New', Courier, monospace;
       font-size: 11px;
-      color: #4ade80;
+      color: #15803d;
       height: 115px;
       overflow-y: auto;
       line-height: 1.45;
-      box-shadow: inset 0 0 12px rgba(0,0,0,0.9);
     }
 
     .serial-time {
-      color: #f59e0b;
+      color: #b45309;
       font-weight: bold;
       margin-right: 4px;
     }
 
-    .serial-ok { color: #34d399; font-weight: bold; }
-    .serial-warn { color: #fbbf24; }
-    .serial-info { color: #38bdf8; }
+    .serial-ok { color: #15803d; font-weight: bold; }
+    .serial-warn { color: #b45309; }
+    .serial-info { color: #0284c7; }
 
     .eps-pipeline {
       display: grid;
       grid-template-columns: 1fr auto 1fr auto 1fr;
       align-items: center;
       gap: 4px;
-      background: #0f172a;
-      border: 1px solid #334155;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
       border-radius: 6px;
       padding: 6px 8px;
       font-size: 9.5px;
@@ -550,24 +577,24 @@
     }
 
     .eps-stage {
-      background: #1e293b;
-      border: 1px solid #475569;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
       border-radius: 4px;
       padding: 3px 4px;
-      color: #cbd5e1;
+      color: #475569;
     }
 
     .eps-stage.active {
-      background: #064e3b;
+      background: #dcfce7;
       border-color: #10b981;
-      color: #a7f3d0;
-      box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+      color: #15803d;
+      box-shadow: 0 0 6px rgba(16, 185, 129, 0.3);
     }
 
     /* ESTILOS PARTE C: REFLEXIÓN INDIVIDUAL */
     .reflexion-container {
-      background: #1e293b;
-      border: 1px solid #334155;
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
       border-radius: 12px;
       padding: 16px;
       margin-bottom: 16px;
@@ -581,8 +608,8 @@
     }
 
     .sentimiento-card {
-      background: #0f172a;
-      border: 1.5px solid #334155;
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
       border-radius: 10px;
       padding: 12px 8px;
       text-align: center;
@@ -590,11 +617,16 @@
       transition: all 0.2s;
     }
 
+    .sentimiento-card:hover {
+      background: #f0f9ff;
+      border-color: #7dd3fc;
+    }
+
     .sentimiento-card.selected {
-      background: #1e3a8a;
-      border-color: #38bdf8;
-      box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
-      color: #38bdf8;
+      background: #e0f2fe;
+      border-color: #0284c7;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.2);
+      color: #0369a1;
       font-weight: 800;
     }
 
@@ -602,7 +634,7 @@
       display: none;
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
+      background: rgba(15, 23, 42, 0.45);
       backdrop-filter: blur(4px);
       justify-content: center;
       align-items: center;
@@ -611,16 +643,16 @@
     }
 
     .modal-content {
-      background: #0f172a;
-      border: 2px solid #38bdf8;
+      background: #ffffff;
+      border: 2px solid #0284c7;
       border-radius: 14px;
-      padding: 20px;
+      padding: 22px;
       max-width: 600px;
       width: 100%;
       max-height: 90vh;
       overflow-y: auto;
-      box-shadow: 0 0 30px rgba(56, 189, 248, 0.3);
-      color: #f8fafc;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      color: #0f172a;
     }
 
     @media (max-width: 768px) {
@@ -722,30 +754,30 @@
       </div>
 
       <!-- FORMULARIO DE IDENTIFICACIÓN OFICIAL -->
-      <div style="background: #1e293b; border: 1.5px solid #38bdf8; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 16px rgba(56, 189, 248, 0.15);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
-          <h3 style="font-size: 13.5px; color: #38bdf8; font-weight: 800; margin: 0;">
+      <div style="background: #ffffff; border: 1.5px solid #7dd3fc; border-radius: 12px; padding: 18px; margin-bottom: 16px; box-shadow: 0 2px 10px rgba(2, 132, 199, 0.08);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
+          <h3 style="font-size: 13.5px; color: #0369a1; font-weight: 800; margin: 0;">
             👤 Datos de Identificación del Estudiante:
           </h3>
-          <button type="button" onclick="mostrarModalPWA()" class="btn btn-outline" style="font-size: 10.5px; padding: 3px 8px; min-height: 26px; border-color: #38bdf8; color: #38bdf8;">
+          <button type="button" onclick="mostrarModalPWA()" class="btn btn-outline" style="font-size: 11px; padding: 4px 10px; min-height: 28px; border-color: #7dd3fc; color: #0369a1;">
             📲 ¿Cómo instalar como App?
           </button>
         </div>
         
-        <div style="display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 12px; margin-bottom: 10px;">
+        <div style="display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 12px; margin-bottom: 12px;">
           <div>
-            <label style="display: block; font-size: 11px; font-weight: 700; color: #cbd5e1; margin-bottom: 4px;">
+            <label style="display: block; font-size: 11.5px; font-weight: 700; color: #334155; margin-bottom: 4px;">
               Nombre y Apellidos Completos: <span style="color: #ef4444;">* (Obligatorio)</span>
             </label>
-            <input type="text" id="inputEstudianteNombre" placeholder="Ej: Kevin Morales Vargas" style="width: 100%; background: #0f172a; border: 1.5px solid #334155; border-radius: 8px; padding: 9px 12px; color: white; font-size: 13px; font-weight: 600; outline: none;" oninput="formatearNombreEstudiante(this); validarDatosEstudiante();" onblur="validarDatosEstudiante();">
-            <span style="font-size: 10px; color: #94a3b8; display: block; margin-top: 2px;">Debe incluir tu nombre y al menos dos apellidos (ej. Juan Pérez Mora).</span>
+            <input type="text" id="inputEstudianteNombre" placeholder="Ej: Kevin Morales Vargas" style="width: 100%; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 9px 12px; color: #0f172a; font-size: 13px; font-weight: 600; outline: none;" oninput="formatearNombreEstudiante(this); validarDatosEstudiante();" onblur="validarDatosEstudiante();">
+            <span style="font-size: 10.5px; color: #64748b; display: block; margin-top: 3px;">Debe incluir tu nombre y al menos dos apellidos (ej. Juan Pérez Mora).</span>
           </div>
 
           <div>
-            <label style="display: block; font-size: 11px; font-weight: 700; color: #cbd5e1; margin-bottom: 4px;">
+            <label style="display: block; font-size: 11.5px; font-weight: 700; color: #334155; margin-bottom: 4px;">
               Sección / Grupo: <span style="color: #ef4444;">*</span>
             </label>
-            <select id="selectSeccion" style="width: 100%; background: #0f172a; border: 1.5px solid #334155; border-radius: 8px; padding: 9px 12px; color: white; font-size: 13px; font-weight: 700; outline: none;" onchange="validarDatosEstudiante()">
+            <select id="selectSeccion" style="width: 100%; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 9px 12px; color: #0f172a; font-size: 13px; font-weight: 700; outline: none;" onchange="validarDatosEstudiante()">
               <option value="Sección 9-1">Sección 9-1</option>
               <option value="Sección 9-2">Sección 9-2</option>
               <option value="Sección 9-3">Sección 9-3</option>
@@ -758,50 +790,50 @@
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 10px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
           <div>
-            <label style="display: block; font-size: 10.5px; font-weight: 700; color: #cbd5e1; margin-bottom: 4px;">
-              Cédula / Identificación: <span style="color: #94a3b8; font-weight: normal;">(Opcional)</span>
+            <label style="display: block; font-size: 11px; font-weight: 700; color: #334155; margin-bottom: 4px;">
+              Cédula / Identificación: <span style="color: #64748b; font-weight: normal;">(Opcional)</span>
             </label>
-            <input type="text" id="inputEstudianteCedula" placeholder="Ej: 1-1234-5678" style="width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 7px 10px; color: #cbd5e1; font-size: 11.5px; outline: none;" oninput="validarDatosEstudiante()">
+            <input type="text" id="inputEstudianteCedula" placeholder="Ej: 1-1234-5678" style="width: 100%; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; color: #0f172a; font-size: 11.5px; outline: none;" oninput="validarDatosEstudiante()">
           </div>
           <div>
-            <label style="display: block; font-size: 10.5px; font-weight: 700; color: #cbd5e1; margin-bottom: 4px;">
-              Correo Oficial MEP: <span style="color: #94a3b8; font-weight: normal;">(Opcional)</span>
+            <label style="display: block; font-size: 11px; font-weight: 700; color: #334155; margin-bottom: 4px;">
+              Correo Oficial MEP: <span style="color: #64748b; font-weight: normal;">(Opcional)</span>
             </label>
-            <input type="email" id="inputEstudianteCorreo" placeholder="ejemplo@est.mep.go.cr" style="width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 7px 10px; color: #cbd5e1; font-size: 11.5px; outline: none;" oninput="validarDatosEstudiante()">
+            <input type="email" id="inputEstudianteCorreo" placeholder="ejemplo@est.mep.go.cr" style="width: 100%; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; color: #0f172a; font-size: 11.5px; outline: none;" oninput="validarDatosEstudiante()">
           </div>
         </div>
 
         <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; margin-bottom: 8px;">
           <div>
-            <label style="display: block; font-size: 10.5px; font-weight: 700; color: #94a3b8; margin-bottom: 4px;">
+            <label style="display: block; font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 4px;">
               Centro Educativo:
             </label>
-            <input type="text" id="inputCentroEducativo" value="Colegio Técnico Profesional / Liceo" style="width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 7px 10px; color: #cbd5e1; font-size: 11.5px; outline: none;">
+            <input type="text" id="inputCentroEducativo" value="Colegio Técnico Profesional / Liceo" style="width: 100%; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; color: #334155; font-size: 11.5px; outline: none;">
           </div>
           <div>
-            <label style="display: block; font-size: 10.5px; font-weight: 700; color: #94a3b8; margin-bottom: 4px;">
+            <label style="display: block; font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 4px;">
               Docente Evaluador:
             </label>
-            <input type="text" id="inputDocente" value="Prof. Alberto Bustos Ortega" style="width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 7px 10px; color: #cbd5e1; font-size: 11.5px; outline: none;">
+            <input type="text" id="inputDocente" value="Prof. Alberto Bustos Ortega" style="width: 100%; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; color: #334155; font-size: 11.5px; outline: none;">
           </div>
         </div>
 
-        <div id="msgValidacionDatos" style="font-size: 11px; color: #f59e0b; font-weight: 600; padding: 4px 0;">
+        <div id="msgValidacionDatos" style="font-size: 11.5px; color: #b45309; font-weight: 700; padding: 4px 0;">
           ⚠️ Ingresa tu Nombre y al menos dos Apellidos completos para habilitar la prueba.
         </div>
       </div>
 
       <!-- SITUACIÓN-PROBLEMA: AULA INTELIGENTE (DOCUMENTO BASE MEP) -->
       <div class="situacion-box">
-        <h2 style="font-size: 1.15rem; color: #38bdf8; margin-bottom: 6px;">
+        <h2 style="font-size: 1.15rem; color: #0369a1; margin-bottom: 6px; font-weight: 800;">
           🏫 2. Situación-problema: Aula inteligente
         </h2>
-        <p style="font-size: 12.5px; color: #cbd5e1; line-height: 1.5; margin-bottom: 8px;">
+        <p style="font-size: 12.5px; color: #334155; line-height: 1.55; margin-bottom: 8px;">
           El laboratorio desea implementar un sistema que permita <strong>encender una luz automáticamente cuando exista poca iluminación</strong>. Para ello se dispone de un <strong>microcontrolador</strong>, un <strong>sensor</strong> y un <strong>actuador</strong>. Tu tarea será analizar la situación y realizar una primera propuesta de solución.
         </p>
-        <div style="background: rgba(56, 189, 248, 0.1); border-left: 3px solid #38bdf8; padding: 8px 10px; border-radius: 4px; font-size: 11.5px; color: #93c5fd;">
+        <div style="background: #ffffff; border-left: 3.5px solid #0284c7; padding: 10px 12px; border-radius: 6px; font-size: 11.5px; color: #0369a1;">
           <strong>Importante:</strong> durante esta actividad el docente observará tu proceso de trabajo. No se espera que todo quede perfecto; interesa conocer cómo piensas, cómo pruebas una solución y cómo reaccionas cuando algo no funciona.
         </div>
       </div>
