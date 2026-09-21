@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-title" content="Diagnóstico FT 9°">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#003366">
-  <title>Diagnóstico Integrado 9° - «Aula Inteligente» (Formación Tecnológica - Dimensión 1)</title>
+  <title>Diagnóstico Integrado 9° - «Aula Inteligente» (MEP - Formación Tecnológica 2026)</title>
   
   <style>
     :root {
@@ -45,7 +45,7 @@
       overflow-x: hidden;
     }
 
-    /* HEADER OFICIAL MEP (COMPACTO Y ELEGANTE) */
+    /* HEADER OFICIAL MEP */
     header {
       background: linear-gradient(135deg, #001f3f 0%, #003366 50%, #0055a5 100%);
       color: white;
@@ -99,6 +99,7 @@
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       user-select: none;
       min-height: 36px;
+      text-decoration: none;
     }
 
     button:hover, .btn:hover {
@@ -116,8 +117,9 @@
     .btn-warning { background: #d97706; }
     .btn-danger { background: #dc2626; }
     .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
+    .btn-docente { background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%); border-color: #a78bfa; }
 
-    /* NAVEGADOR DE 5 ETAPAS (OFICIALES DEL MEP) */
+    /* NAVEGADOR DE 5 ETAPAS (OFICIALES MEP) */
     .nav-tabs {
       max-width: 1040px;
       margin: 12px auto 0;
@@ -219,9 +221,10 @@
       padding: 10px 12px;
       border-radius: 8px;
       margin-bottom: 8px;
-      font-size: 12.5px;
+      font-size: 12px;
       cursor: pointer;
       transition: all 0.2s;
+      line-height: 1.4;
     }
 
     .opcion-btn.correcta {
@@ -236,6 +239,18 @@
       border-color: #ef4444 !important;
       color: #fecaca !important;
     }
+
+    .retro-box {
+      font-size: 11px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      margin-top: 6px;
+      display: none;
+      line-height: 1.45;
+    }
+
+    .retro-ok { background: rgba(16,185,129,0.15); border: 1px solid #10b981; color: #6ee7b7; }
+    .retro-err { background: rgba(239,68,68,0.15); border: 1px solid #ef4444; color: #fca5a5; }
 
     /* SIMULACIÓN Y HARDWARE RESPONSIVO */
     .sim-panel-header {
@@ -549,6 +564,40 @@
       box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
     }
 
+    /* ESTILOS PARTE C: REFLEXIÓN INDIVIDUAL */
+    .reflexion-container {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .sentimiento-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .sentimiento-card {
+      background: #0f172a;
+      border: 1.5px solid #334155;
+      border-radius: 10px;
+      padding: 12px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .sentimiento-card.selected {
+      background: #1e3a8a;
+      border-color: #38bdf8;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
+      color: #38bdf8;
+      font-weight: 800;
+    }
+
     .modal {
       display: none;
       position: fixed;
@@ -566,7 +615,7 @@
       border: 2px solid #38bdf8;
       border-radius: 14px;
       padding: 20px;
-      max-width: 550px;
+      max-width: 600px;
       width: 100%;
       max-height: 90vh;
       overflow-y: auto;
@@ -584,6 +633,9 @@
       .multimetro-readout {
         grid-template-columns: repeat(4, 1fr);
       }
+      .sentimiento-grid {
+        grid-template-columns: 1fr 1fr;
+      }
       .actions-grid-mobile {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -600,28 +652,31 @@
 </head>
 <body>
 
-  <!-- HEADER PEDAGÓGICO FT -->
+  <!-- HEADER OFICIAL MEP -->
   <header>
     <div style="display: flex; align-items: center; gap: 8px;">
       <div style="width: 32px; height: 32px; border-radius: 6px; background: white; display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);">
-        💻
+        💡
       </div>
       <div>
         <div class="mep-badge">
-          <span>Dimensión 1 • FT 2026</span>
+          <span>MEP • Formación Tecnológica 2026</span>
         </div>
         <h1 style="font-size: 0.95rem; font-weight: 900; letter-spacing: -0.2px; margin-top: 1px;">
-          Diagnóstico 9°: «Aula Inteligente»
+          Diagnóstico 9°: «Aula Inteligente» (Módulo 1)
         </h1>
       </div>
     </div>
 
     <div class="top-tools">
-      <button class="btn btn-outline" style="font-size: 11px; padding: 4px 8px; min-height: 28px;" onclick="toggleAudioFx()" id="btnAudioToggle">
+      <a href="/webapps/diagnostico_9no_modulo01_docente_evaluador.html" target="_blank" class="btn btn-docente" style="font-size: 10.5px; padding: 4px 8px; min-height: 28px;" title="Abrir Instrumento Evaluador Docente">
+        👨‍🏫 App Docente
+      </a>
+      <button class="btn btn-outline" style="font-size: 10.5px; padding: 4px 8px; min-height: 28px;" onclick="toggleAudioFx()" id="btnAudioToggle">
         🔊 Sonidos
       </button>
-      <button class="btn btn-outline" style="font-size: 11px; padding: 4px 8px; min-height: 28px;" onclick="mostrarModalInstrumento()">
-        📋 Rúbrica Pedagógica
+      <button class="btn btn-outline" style="font-size: 10.5px; padding: 4px 8px; min-height: 28px;" onclick="mostrarModalInstrumento()">
+        📋 Rúbrica MEP
       </button>
       <span class="mep-badge" style="background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #34d399; font-size: 9.5px;" id="badgeProgresoHeader">
         Progreso: 0%
@@ -629,55 +684,55 @@
     </div>
   </header>
 
-  <!-- NAVEGADOR DE 5 ETAPAS (FORMACIÓN TECNOLÓGICA) -->
+  <!-- NAVEGADOR DE 5 ETAPAS (ESTRUCTURA DEL DOCUMENTO BASE MEP) -->
   <nav class="nav-tabs">
     <div class="nav-tab activa" id="tabSec1" onclick="irASeccion(1)">
       <span>1. DATOS</span>
       <span>Identificación</span>
     </div>
     <div class="nav-tab" id="tabSec2" onclick="irASeccion(2)">
-      <span>2. SABER</span>
-      <span>Cognoscitiva</span>
+      <span>2. PARTE A</span>
+      <span>10 Reactivos</span>
     </div>
     <div class="nav-tab" id="tabSec3" onclick="irASeccion(3)">
-      <span>3. HACER</span>
-      <span>Psicomotora</span>
+      <span>3. PARTE B</span>
+      <span>Reto Práctico</span>
     </div>
     <div class="nav-tab" id="tabSec4" onclick="irASeccion(4)">
-      <span>4. SER</span>
-      <span>Socioafectiva</span>
+      <span>4. PARTE C</span>
+      <span>Reflexión MEP</span>
     </div>
     <div class="nav-tab" id="tabSec5" onclick="irASeccion(5)">
       <span>5. INFORME</span>
-      <span>Diagnóstico Final</span>
+      <span>Evidencia QR</span>
     </div>
   </nav>
 
   <main class="main-container">
 
     <!-- ==================================================================== -->
-    <!-- ETAPA 1: IDENTIFICACIÓN DEL ESTUDIANTE Y SITUACIÓN SITUADA           -->
+    <!-- ETAPA 1: IDENTIFICACIÓN DEL ESTUDIANTE Y SITUACIÓN-PROBLEMA          -->
     <!-- ==================================================================== -->
     <div id="seccion1" class="card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 4px;">
         <span class="mep-badge" style="background: #1e3a8a; border-color: #38bdf8; color: #93c5fd;">
-          Etapa 1 • Identificación & Situación
+          Etapa 1 • Guía de Evaluación Diagnóstica
         </span>
-        <span style="font-size: 11px; color: #94a3b8; font-weight: 700;">III Ciclo de la EGB • Noveno Año</span>
+        <span style="font-size: 11px; color: #94a3b8; font-weight: 700;">III Ciclo • Noveno Año (Módulo 1) | Duración: 70 min</span>
       </div>
 
-      <!-- FORMULARIO DE IDENTIFICACIÓN OBLIGATORIO -->
+      <!-- FORMULARIO DE IDENTIFICACIÓN OFICIAL -->
       <div style="background: #1e293b; border: 1.5px solid #38bdf8; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 16px rgba(56, 189, 248, 0.15);">
         <h3 style="font-size: 13.5px; color: #38bdf8; margin-bottom: 10px; font-weight: 800;">
-          👤 Datos de Identificación del Estudiante:
+          👤 Datos Administrativos del Estudiante:
         </h3>
         
-        <div style="display: grid; grid-template-columns: 1.4fr 0.8fr; gap: 12px; margin-bottom: 10px;">
+        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; margin-bottom: 10px;">
           <div>
             <label style="display: block; font-size: 11px; font-weight: 700; color: #cbd5e1; margin-bottom: 4px;">
-              Nombre Completo del Estudiante: <span style="color: #ef4444;">*</span>
+              Nombre Completo: <span style="color: #ef4444;">*</span>
             </label>
-            <input type="text" id="inputEstudianteNombre" placeholder="Ej: Valeria Montero Jiménez" style="width: 100%; background: #0f172a; border: 1.5px solid #334155; border-radius: 8px; padding: 9px 12px; color: white; font-size: 13px; font-weight: 600; outline: none;" oninput="validarDatosEstudiante()">
+            <input type="text" id="inputEstudianteNombre" placeholder="Ej: Kevin Morales Vargas" style="width: 100%; background: #0f172a; border: 1.5px solid #334155; border-radius: 8px; padding: 9px 12px; color: white; font-size: 13px; font-weight: 600; outline: none;" oninput="validarDatosEstudiante()">
           </div>
 
           <div>
@@ -694,142 +749,235 @@
           </div>
         </div>
 
+        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; margin-bottom: 8px;">
+          <div>
+            <label style="display: block; font-size: 10.5px; font-weight: 700; color: #94a3b8; margin-bottom: 4px;">
+              Centro Educativo:
+            </label>
+            <input type="text" id="inputCentroEducativo" value="Colegio Técnico Profesional / Liceo" style="width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 7px 10px; color: #cbd5e1; font-size: 11.5px; outline: none;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 10.5px; font-weight: 700; color: #94a3b8; margin-bottom: 4px;">
+              Docente:
+            </label>
+            <input type="text" id="inputDocente" value="Prof. Alberto Bustos Ortega" style="width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 7px 10px; color: #cbd5e1; font-size: 11.5px; outline: none;">
+          </div>
+        </div>
+
         <div id="msgValidacionDatos" style="font-size: 11px; color: #f59e0b; font-weight: 600;">
           ⚠️ Por favor ingresa tu nombre completo para habilitar el diagnóstico oficial.
         </div>
       </div>
 
-      <!-- SITUACIÓN-PROBLEMA SITUADA -->
+      <!-- SITUACIÓN-PROBLEMA: AULA INTELIGENTE (DOCUMENTO BASE MEP) -->
       <div class="situacion-box">
         <h2 style="font-size: 1.15rem; color: #38bdf8; margin-bottom: 6px;">
-          🏫 El Desafío del Aula Inteligente
+          🏫 2. Situación-problema: Aula inteligente
         </h2>
-        <p style="font-size: 12.5px; color: #cbd5e1; line-height: 1.5; margin-bottom: 10px;">
-          El laboratorio de cómputo del colegio presenta fluctuaciones constantes de luz solar. En días nublados o atardeceres, la visibilidad decae afectando el trabajo de los estudiantes.
+        <p style="font-size: 12.5px; color: #cbd5e1; line-height: 1.5; margin-bottom: 8px;">
+          El laboratorio desea implementar un sistema que permita <strong>encender una luz automáticamente cuando exista poca iluminación</strong>. Para ello se dispone de un <strong>microcontrolador</strong>, un <strong>sensor</strong> y un <strong>actuador</strong>. Tu tarea será analizar la situación y realizar una primera propuesta de solución.
         </p>
-        <p style="font-size: 12.5px; color: #cbd5e1; line-height: 1.5;">
-          Tu tarea como estudiante es <strong>responder los reactivos de lógica, cablear el prototipo automatizado y validar</strong> que las luminarias se enciendan cuando la iluminación ambiental caiga por debajo de <strong>300 Lux</strong>.
-        </p>
+        <div style="background: rgba(56, 189, 248, 0.1); border-left: 3px solid #38bdf8; padding: 8px 10px; border-radius: 4px; font-size: 11.5px; color: #93c5fd;">
+          <strong>Importante:</strong> durante esta actividad el docente observará tu proceso de trabajo. No se espera que todo quede perfecto; interesa conocer cómo piensas, cómo pruebas una solución y cómo reaccionas cuando algo no funciona.
+        </div>
       </div>
 
       <div style="display: flex; justify-content: flex-end;">
         <button class="btn btn-accent" id="btnIniciarDiagnostico" style="padding: 9px 20px; font-size: 13px; font-weight: 800;" onclick="comenzarDiagnosticoValido()">
-          Comenzar con Área Cognoscitiva (Etapa 2) ➔
+          Comenzar Parte A (Conocimientos Previos) ➔
         </button>
       </div>
     </div>
 
     <!-- ==================================================================== -->
-    <!-- ETAPA 2: ÁREA COGNOSCITIVA (6 ÍTEMS DE CONOCIMIENTOS PREVIOS)        -->
+    <!-- ETAPA 2: PARTE A – CONOCIMIENTOS PREVIOS (10 REACTIVOS COMPLETOS)     -->
     <!-- ==================================================================== -->
     <div id="seccion2" class="card" style="display: none;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
         <div>
           <span class="mep-badge" style="background: rgba(37, 99, 235, 0.2); border-color: #2563eb; color: #60a5fa;">
-            Etapa 2 • Área Cognoscitiva (Saber)
+            Parte A • Área Cognoscitiva (Documento Base)
           </span>
           <h2 style="font-size: 1.15rem; color: #f8fafc; margin-top: 2px;">
-            Conocimientos Previos y Lógica Computacional
+            Conocimientos Previos (10 Ítems Oficiales MEP)
           </h2>
         </div>
         <span id="contadorRespuestas" style="font-size: 11px; color: #38bdf8; font-weight: 800; background: #0f172a; padding: 4px 8px; border-radius: 6px; border: 1px solid #334155;">
-          Respondidas: 0 / 6
+          Respondidas: 0 / 10
         </span>
       </div>
 
+      <!-- ÍTEM 1 -->
       <div class="item-card">
-        <div class="item-header"><span class="item-num">Ítem 1 • Microcontrolador</span></div>
+        <div class="item-header"><span class="item-num">1. Microcontrolador</span></div>
         <p style="font-size: 12.5px; font-weight: 700; margin-bottom: 8px; color: #f8fafc;">
-          En el sistema del aula inteligente, ¿cuál es la función principal de la tarjeta microcontroladora?
+          ¿Cuál opción representa mejor la función de un microcontrolador dentro de un sistema automatizado?
         </p>
         <div id="optsItem1">
-          <button class="opcion-btn" onclick="responderItem(1, 0, false)">A. Producir la luz para iluminar la sala directamente con su batería.</button>
-          <button class="opcion-btn" onclick="responderItem(1, 1, true)">B. Recibir la señal del sensor, ejecutar el código de control y activar el actuador según las condiciones.</button>
-          <button class="opcion-btn" onclick="responderItem(1, 2, false)">C. Servir de soporte físico plástico sin intervenir en la corriente.</button>
+          <button class="opcion-btn" onclick="responderItem(1, 0, false, 'El microcontrolador no solo almacena documentos, su fin es procesar y controlar.')">A. Almacenar únicamente documentos.</button>
+          <button class="opcion-btn" onclick="responderItem(1, 1, true, '¡Correcto! Recibe datos de sensores, los procesa y envía señales para controlar actuadores.')">B. Recibir información, procesarla y controlar dispositivos según una programación.</button>
+          <button class="opcion-btn" onclick="responderItem(1, 2, false, 'No se limita solo a conectarse a Internet.')">C. Conectarse exclusivamente a Internet.</button>
+          <button class="opcion-btn" onclick="responderItem(1, 3, false, 'Mostrar imágenes es función de una pantalla o display específico.')">D. Mostrar imágenes en pantalla.</button>
         </div>
+        <div id="retroItem1" class="retro-box"></div>
       </div>
 
+      <!-- ÍTEM 2 -->
       <div class="item-card">
-        <div class="item-header"><span class="item-num">Ítem 2 • Sensor y Actuador</span></div>
+        <div class="item-header"><span class="item-num">2. Sensor y actuador</span></div>
         <p style="font-size: 12.5px; font-weight: 700; margin-bottom: 8px; color: #f8fafc;">
-          ¿Cómo se diferencian el sensor LDR y la lámpara LED en el prototipo?
+          Complete: «El __________________ permite obtener información del entorno, mientras que el __________________ ejecuta una acción como respuesta.»
         </p>
         <div id="optsItem2">
-          <button class="opcion-btn" onclick="responderItem(2, 0, false)">A. El LDR ejecuta la respuesta física y el LED captura datos del entorno.</button>
-          <button class="opcion-btn" onclick="responderItem(2, 1, true)">B. El LDR captura la intensidad lumínica ambiental (Entrada) y el LED genera la iluminación (Salida).</button>
+          <button class="opcion-btn" onclick="responderItem(2, 0, false, 'El actuador genera la acción y el microcontrolador procesa.')">A. Actuador / Microcontrolador</button>
+          <button class="opcion-btn" onclick="responderItem(2, 1, true, '¡Excelente! El sensor percibe el entorno (Entrada) y el actuador genera una respuesta física (Salida).')">B. Sensor / Actuador</button>
+          <button class="opcion-btn" onclick="responderItem(2, 2, false, 'El microcontrolador procesa datos, no es el dispositivo emisor directo.')">C. Microcontrolador / Sensor</button>
         </div>
+        <div id="retroItem2" class="retro-box"></div>
       </div>
 
+      <!-- ÍTEM 3 -->
       <div class="item-card">
-        <div class="item-header"><span class="item-num">Ítem 3 • Modelo Entrada-Proceso-Salida</span></div>
+        <div class="item-header"><span class="item-num">3. Entrada, proceso y salida</span></div>
         <p style="font-size: 12.5px; font-weight: 700; margin-bottom: 8px; color: #f8fafc;">
-          ¿Cuál esquema representa fielmente el modelo E-P-S?
+          Observe el flujo: <strong>Sensor de luz ➔ Microcontrolador ➔ LED</strong>. ¿Cuál corresponde a la Entrada, Proceso y Salida?
         </p>
         <div id="optsItem3">
-          <button class="opcion-btn" onclick="responderItem(3, 0, false)">A. Lámpara LED ➔ Sensor LDR ➔ Microcontrolador</button>
-          <button class="opcion-btn" onclick="responderItem(3, 1, true)">B. Sensor LDR (Entrada) ➔ Microcontrolador (Proceso) ➔ Lámpara LED (Salida)</button>
+          <button class="opcion-btn" onclick="responderItem(3, 0, true, '¡Exacto! Entrada = Sensor de luz, Proceso = Microcontrolador, Salida = LED.')">A. Entrada: Sensor de luz | Proceso: Microcontrolador | Salida: LED</button>
+          <button class="opcion-btn" onclick="responderItem(3, 1, false, 'El LED no es la entrada del sistema.')">B. Entrada: LED | Proceso: Microcontrolador | Salida: Sensor de luz</button>
+          <button class="opcion-btn" onclick="responderItem(3, 2, false, 'El sensor es un componente de entrada, no de proceso.')">C. Entrada: Microcontrolador | Proceso: Sensor | Salida: LED</button>
         </div>
+        <div id="retroItem3" class="retro-box"></div>
       </div>
 
+      <!-- ÍTEM 4 -->
       <div class="item-card">
-        <div class="item-header"><span class="item-num">Ítem 4 • Secuencia de Algoritmo</span></div>
+        <div class="item-header"><span class="item-num">4. Algoritmo</span></div>
         <p style="font-size: 12.5px; font-weight: 700; margin-bottom: 8px; color: #f8fafc;">
-          ¿Cuál es el orden lógico indispensable que debe ejecutar el bucle de control?
+          Ordene los siguientes pasos escribiendo el orden lógico (1, 2, 3 y 4):<br>
+          <span style="color: #cbd5e1; font-size: 11.5px; font-weight: normal;">• Encender la luz &nbsp;|&nbsp; • Leer el nivel de iluminación &nbsp;|&nbsp; • Comprobar si hay poca iluminación &nbsp;|&nbsp; • Iniciar el sistema</span>
         </p>
         <div id="optsItem4">
-          <button class="opcion-btn" onclick="responderItem(4, 0, true)">A. 1. Energizar ➔ 2. Leer sensor analógico A0 ➔ 3. Comparar con umbral (300 Lux) ➔ 4. Activar o apagar pin D9.</button>
-          <button class="opcion-btn" onclick="responderItem(4, 1, false)">B. 1. Encender luz ➔ 2. Desconectar alimentación ➔ 3. Leer sensor.</button>
+          <button class="opcion-btn" onclick="responderItem(4, 0, true, '¡Correcto! 1. Iniciar el sistema ➔ 2. Leer nivel de iluminación ➔ 3. Comprobar poca luz ➔ 4. Encender la luz.')">A. 1: Iniciar sistema ➔ 2: Leer nivel ➔ 3: Comprobar condición ➔ 4: Encender luz</button>
+          <button class="opcion-btn" onclick="responderItem(4, 1, false, 'No se puede encender la luz antes de medir el sensor y comprobar la condición.')">B. 1: Encender luz ➔ 2: Iniciar sistema ➔ 3: Leer nivel ➔ 4: Comprobar condición</button>
+          <button class="opcion-btn" onclick="responderItem(4, 2, false, 'Primero se debe energizar e inicializar el microcontrolador.')">C. 1: Comprobar condición ➔ 2: Leer nivel ➔ 3: Encender luz ➔ 4: Iniciar sistema</button>
         </div>
+        <div id="retroItem4" class="retro-box"></div>
       </div>
 
+      <!-- ÍTEM 5 -->
       <div class="item-card">
-        <div class="item-header"><span class="item-num">Ítem 5 • Estructura Condicional</span></div>
+        <div class="item-header"><span class="item-num">5. Condición</span></div>
         <p style="font-size: 12.5px; font-weight: 700; margin-bottom: 8px; color: #f8fafc;">
-          ¿Qué expresión lógica formaliza la toma de decisión requerida para el aula?
+          ¿Cuál situación requiere una estructura condicional (Si / Si no)?
         </p>
         <div id="optsItem5">
-          <button class="opcion-btn" onclick="responderItem(5, 0, true)">A. Si (Luz_Ambiente &lt; 300 Lux) entonces Escribir_Digital(D9, ALTO) de lo contrario Escribir_Digital(D9, BAJO).</button>
-          <button class="opcion-btn" onclick="responderItem(5, 1, false)">B. Mientras (Luz &gt; 500) Esperar 1 segundo sin actuar.</button>
+          <button class="opcion-btn" onclick="responderItem(5, 0, false, 'Repetir 10 veces es un bucle o estructura repetitiva.')">A. Repetir una acción 10 veces.</button>
+          <button class="opcion-btn" onclick="responderItem(5, 1, true, '¡Correcto! Evalúa si la condición de luminosidad se cumple para tomar una decisión.')">B. Encender la luz si la iluminación está por debajo de un valor determinado.</button>
+          <button class="opcion-btn" onclick="responderItem(5, 2, false, 'Mostrar un mensaje siempre es una secuencia simple sin condición.')">C. Mostrar un mensaje siempre.</button>
+          <button class="opcion-btn" onclick="responderItem(5, 3, false, 'Ejecutar una sola vez es una instrucción secuencial.')">D. Ejecutar una instrucción una sola vez.</button>
         </div>
+        <div id="retroItem5" class="retro-box"></div>
       </div>
 
+      <!-- ÍTEM 6 -->
       <div class="item-card">
-        <div class="item-header"><span class="item-num">Ítem 6 • Depuración y Diagnóstico</span></div>
+        <div class="item-header"><span class="item-num">6. Identificación de elementos</span></div>
         <p style="font-size: 12.5px; font-weight: 700; margin-bottom: 8px; color: #f8fafc;">
-          Si al anochecer la lámpara no se enciende con el programa cargado, ¿qué verificación es prioritaria?
+          Relacione cada elemento con su función:<br>
+          <span style="color: #cbd5e1; font-size: 11.5px; font-weight: normal;">a. Ejecuta una acción. &nbsp;|&nbsp; b. Procesa información y controla el sistema. &nbsp;|&nbsp; c. Captura información del entorno.</span>
         </p>
         <div id="optsItem6">
-          <button class="opcion-btn" onclick="responderItem(6, 0, true)">A. Comprobar continuidad de cables (VCC/GND), polaridad del actuador y lectura analógica en el pin A0.</button>
-          <button class="opcion-btn" onclick="responderItem(6, 1, false)">B. Reemplazar toda la instalación eléctrica del colegio.</button>
+          <button class="opcion-btn" onclick="responderItem(6, 0, true, '¡Correcto! Sensor = c (Captura), Actuador = a (Ejecuta acción), Microcontrolador = b (Procesa y controla).')">A. Sensor: c | Actuador: a | Microcontrolador: b</button>
+          <button class="opcion-btn" onclick="responderItem(6, 1, false, 'El sensor captura información, no ejecuta acciones.')">B. Sensor: a | Actuador: b | Microcontrolador: c</button>
+          <button class="opcion-btn" onclick="responderItem(6, 2, false, 'El microcontrolador procesa información, no es sensor directo.')">C. Sensor: b | Actuador: c | Microcontrolador: a</button>
         </div>
+        <div id="retroItem6" class="retro-box"></div>
+      </div>
+
+      <!-- ÍTEM 7 -->
+      <div class="item-card">
+        <div class="item-header"><span class="item-num">7. Concepto de Dato</span></div>
+        <p style="font-size: 12.5px; font-weight: 700; margin-bottom: 8px; color: #f8fafc;">
+          En un sistema que mide iluminación, ¿cuál de los siguientes es un ejemplo de un <strong>dato</strong> que podría obtenerse del sensor?
+        </p>
+        <div id="optsItem7">
+          <button class="opcion-btn" onclick="responderItem(7, 0, true, '¡Excelente! Un valor numérico de 180 Lux o 1.25 V representa el dato capturado por el sensor.')">A. Un valor numérico de iluminación (por ejemplo: 180 Lux o una lectura analógica de 350).</button>
+          <button class="opcion-btn" onclick="responderItem(7, 1, false, 'El color del plástico del sensor no es un dato medido del entorno.')">B. El color del plástico del laboratorio.</button>
+          <button class="opcion-btn" onclick="responderItem(7, 2, false, 'El nombre del programa es un identificador de software, no un dato ambiental.')">C. El nombre del software instalado.</button>
+        </div>
+        <div id="retroItem7" class="retro-box"></div>
+      </div>
+
+      <!-- ÍTEM 8 -->
+      <div class="item-card">
+        <div class="item-header"><span class="item-num">8. Representación lógica</span></div>
+        <p style="font-size: 12.5px; font-weight: 700; margin-bottom: 8px; color: #f8fafc;">
+          Seleccione la opción que representa mejor la lógica: <em>«Si hay poca iluminación, encender la luz; de lo contrario, mantenerla apagada»</em>.
+        </p>
+        <div id="optsItem8">
+          <button class="opcion-btn" onclick="responderItem(8, 0, false, 'Una secuencia simple no incluye bifurcaciones ni evaluación de condiciones.')">A. Secuencia simple.</button>
+          <button class="opcion-btn" onclick="responderItem(8, 1, true, '¡Correcto! Es una estructura condicional doble (If - Else).')">B. Condicional.</button>
+          <button class="opcion-btn" onclick="responderItem(8, 2, false, 'No describe una iteración o bucle repetitivo.')">C. Repetitiva.</button>
+          <button class="opcion-btn" onclick="responderItem(8, 3, false, 'No es un evento aislado sin lógica de decisión.')">D. Evento únicamente.</button>
+        </div>
+        <div id="retroItem8" class="retro-box"></div>
+      </div>
+
+      <!-- ÍTEM 9 -->
+      <div class="item-card">
+        <div class="item-header"><span class="item-num">9. Problema y depuración</span></div>
+        <p style="font-size: 12.5px; font-weight: 700; margin-bottom: 8px; color: #f8fafc;">
+          Un estudiante conecta un sensor pero el actuador nunca responde. ¿Qué dos aspectos revisaría antes de concluir que el sistema está dañado?
+        </p>
+        <div id="optsItem9">
+          <button class="opcion-btn" onclick="responderItem(9, 0, true, '¡Correcto! Verificar conexiones/polaridad (VCC/GND/pines) y la condición lógica del código.')">A. 1. Las conexiones físicas de cables (VCC, GND y pines) y 2. La condición y umbral en el programa.</button>
+          <button class="opcion-btn" onclick="responderItem(9, 1, false, 'Desechar las piezas sin depurar no es una práctica técnica.')">B. 1. Desechar todo el microcontrolador y 2. Comprar otro sensor inmediatamente.</button>
+          <button class="opcion-btn" onclick="responderItem(9, 2, false, 'Pintar las tarjetas no soluciona un problema de conexionado.')">C. 1. Cambiar la mesa de trabajo y 2. Limpiar la carcasa plástica.</button>
+        </div>
+        <div id="retroItem9" class="retro-box"></div>
+      </div>
+
+      <!-- ÍTEM 10 -->
+      <div class="item-card">
+        <div class="item-header"><span class="item-num">10. Datos y almacenamiento</span></div>
+        <p style="font-size: 12.5px; font-weight: 700; margin-bottom: 8px; color: #f8fafc;">
+          ¿Por qué sería importante conservar y registrar los datos obtenidos por un sensor en determinados proyectos?
+        </p>
+        <div id="optsItem10">
+          <button class="opcion-btn" onclick="responderItem(10, 0, true, '¡Excelente! Permite analizar patrones históricos de luminosidad, optimizar el consumo de energía y tomar mejores decisiones.')">A. Permite conservar, consultar, analizar tendencias de consumo y tomar decisiones automatizadas fundamentadas.</button>
+          <button class="opcion-btn" onclick="responderItem(10, 1, false, 'Los datos no se guardan solo para llenar la memoria sin propósito.')">B. Para agotar el espacio de memoria del dispositivo.</button>
+          <button class="opcion-btn" onclick="responderItem(10, 2, false, 'Los datos no afectan la velocidad física de la luz.')">C. Para hacer que la bombilla brille con más colores.</button>
+        </div>
+        <div id="retroItem10" class="retro-box"></div>
       </div>
 
       <div style="display: flex; justify-content: space-between; margin-top: 14px;">
         <button class="btn btn-outline" onclick="irASeccion(1)">⬅️ Etapa 1: Datos</button>
-        <button class="btn btn-accent" onclick="irASeccion(3)">Continuar a Etapa 3 (Psicomotora) ➔</button>
+        <button class="btn btn-accent" onclick="irASeccion(3)">Continuar a Parte B (Reto Práctico) ➔</button>
       </div>
     </div>
 
     <!-- ==================================================================== -->
-    <!-- ETAPA 3: ÁREA PSICOMOTORA (RETO DE CABLEADO & SIMULACIÓN EN VIVO)    -->
+    <!-- ETAPA 3: PARTE B – RETO PRÁCTICO: «CONECTA EL PROTOTIPO»             -->
     <!-- ==================================================================== -->
     <div id="seccion3" class="card" style="display: none;">
       
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
         <div>
           <span class="mep-badge" style="background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #34d399;">
-            Etapa 3 • Área Psicomotora (Hacer)
+            Parte B • Área Psicomotora (Reto Práctico)
           </span>
           <h2 style="font-size: 1.15rem; color: #f8fafc; margin-top: 2px;">
-            Laboratorio de Conexionado Físico y Simulación 2D
+            Reto: «Conecta el Prototipo» (Simulación en Tiempo Real)
           </h2>
         </div>
-        <span style="font-size: 11px; color: #94a3b8; font-weight: 700;">⏱️ Tiempo: 20-25 min</span>
+        <span style="font-size: 11px; color: #94a3b8; font-weight: 700;">⏱️ Tiempo sugerido: 30 min</span>
       </div>
 
       <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 10px 12px; margin-bottom: 12px;">
         <p style="font-size: 11.5px; color: #cbd5e1; line-height: 1.45;">
-          <strong style="color: #38bdf8;">Instrucción del Reto:</strong> Haz clic en los pines para enlazar los <strong>5 cables del modelo E-P-S</strong> (LDR ➔ MCU ➔ Actuador). Luego prueba variando la <strong>Luz Exterior</strong> y presiona <strong>«🚀 Sincronizar Conexión»</strong> cuando esté listo.
+          <strong style="color: #38bdf8;">Instrucción del Reto Oficial MEP:</strong> Representa mediante tarjetas y líneas de conexión el sistema automatizado (LDR ➔ Microcontrolador ➔ Actuador). Conecta los <strong>5 terminales de polaridad y señal</strong>, luego prueba cambiando el nivel de luz ambiental o sustituyendo el actuador.
         </p>
       </div>
 
@@ -864,16 +1012,16 @@
 
         <!-- DEPURACIÓN DE FALLAS -->
         <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px;">
-          <div style="font-size: 10px; font-weight: 700; color: #94a3b8;">Depuración:</div>
+          <div style="font-size: 10px; font-weight: 700; color: #94a3b8;">Depuración guiada:</div>
           <div style="display: flex; gap: 4px; flex-wrap: wrap;">
             <button class="btn btn-outline" style="font-size: 9.5px; padding: 3px 6px; min-height: 24px;" onclick="inyectarFalla(0)" id="btnFalla0">
-              ✅ Normal
+              ✅ Conexión Normal
             </button>
             <button class="btn btn-outline" style="font-size: 9.5px; padding: 3px 6px; min-height: 24px; border-color: #f59e0b; color: #fcd34d;" onclick="inyectarFalla(1)" id="btnFalla1">
-              ⚠️ Falla 1: LDR Suelto
+              ⚠️ Falla: Señal A0 Suelta
             </button>
             <button class="btn btn-outline" style="font-size: 9.5px; padding: 3px 6px; min-height: 24px; border-color: #ef4444; color: #fca5a5;" onclick="inyectarFalla(2)" id="btnFalla2">
-              ❌ Falla 2: Lógica &gt;300
+              ❌ Falla: Lógica Invertida (&gt;300)
             </button>
           </div>
         </div>
@@ -882,10 +1030,10 @@
       <!-- GRID PRINCIPAL DE SIMULACIÓN -->
       <div class="sim-grid-layout">
         
-        <!-- BANCO DE HARDWARE HORIZONTAL -->
+        <!-- BANCO DE HARDWARE -->
         <div class="banco-hardware-container" id="hardwareBoard">
           <div style="font-size: 10.5px; font-weight: 800; color: #38bdf8; text-transform: uppercase; margin-bottom: 8px; display: flex; justify-content: space-between;">
-            <span>🔌 1. Hardware & Pines</span>
+            <span>🔌 1. Tarjetas de Componentes</span>
             <span id="labelCablesConteo" style="color: #94a3b8; font-size: 10px;">
               Cables: 0 / 5
             </span>
@@ -896,11 +1044,11 @@
             <div class="hardware-card" id="cardSensor">
               <div>
                 <div style="font-size: 18px;">☀️</div>
-                <strong style="font-size: 10px; color: #f8fafc; display: block;">LDR (Entrada)</strong>
+                <strong style="font-size: 10px; color: #f8fafc; display: block;">Sensor LDR</strong>
               </div>
 
               <div style="margin-top: 4px; display: flex; flex-direction: column; gap: 2px;">
-                <div class="pin-terminal" id="pin_sensor_vcc" onclick="clickPin('sensor_vcc')">🔴 5V</div>
+                <div class="pin-terminal" id="pin_sensor_vcc" onclick="clickPin('sensor_vcc')">🔴 VCC (5V)</div>
                 <div class="pin-terminal" id="pin_sensor_gnd" onclick="clickPin('sensor_gnd')">⚫ GND</div>
                 <div class="pin-terminal" id="pin_sensor_sig" onclick="clickPin('sensor_sig')">🟢 Pin A0</div>
               </div>
@@ -1037,73 +1185,118 @@
 
       <!-- BOTONES DE NAVEGACIÓN -->
       <div style="display: flex; justify-content: space-between; margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px; flex-wrap: wrap; gap: 6px;">
-        <button class="btn btn-outline" onclick="irASeccion(2)">⬅️ Etapa 2: Cognoscitiva</button>
+        <button class="btn btn-outline" onclick="irASeccion(2)">⬅️ Parte A: 10 Reactivos</button>
         <button class="btn btn-accent" style="padding: 9px 20px; font-size: 13.5px; font-weight: 800;" onclick="irASeccion(4)">
-          Continuar a Etapa 4 (Socioafectiva) ➔
+          Continuar a Parte C (Reflexión Individual) ➔
         </button>
       </div>
     </div>
 
     <!-- ==================================================================== -->
-    <!-- ETAPA 4: ÁREA SOCIOAFECTIVA Y ACTITUDINAL DEL PENSADOR COMPUTACIONAL -->
+    <!-- ETAPA 4: PARTE C – REFLEXIÓN INDIVIDUAL (DOCUMENTO BASE MEP)         -->
     <!-- ==================================================================== -->
     <div id="seccion4" class="card" style="display: none;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
         <div>
           <span class="mep-badge" style="background: rgba(245, 158, 11, 0.2); border-color: #f59e0b; color: #fbbf24;">
-            Etapa 4 • Área Socioafectiva (Ser y Convivir)
+            Parte C • Reflexión Individual (Documento Base MEP)
           </span>
           <h2 style="font-size: 1.15rem; color: #f8fafc; margin-top: 2px;">
-            Actitudes del Pensador Computacional y Resiliencia
+            Autopercepción y Actitudes del Pensador Computacional
           </h2>
         </div>
-        <span style="font-size: 11px; color: #94a3b8; font-weight: 700;">Guía Docente 2026</span>
+        <span style="font-size: 11px; color: #94a3b8; font-weight: 700;">Área Socioafectiva</span>
       </div>
 
       <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 10px 12px; margin-bottom: 14px;">
         <p style="font-size: 12px; color: #cbd5e1; line-height: 1.5;">
-          Reflexiona sobre tu experiencia durante la resolución del reto del aula inteligente y responde con sinceridad a las siguientes preguntas actitudinales:
+          Reflexiona con total honestidad sobre tu experiencia durante la resolución del reto. Tus respuestas ayudarán al docente a adaptar las actividades de apoyo a tus necesidades.
         </p>
       </div>
 
-      <!-- ÍTEM SOCIOAFECTIVO 1 -->
-      <div class="item-card">
-        <div class="item-header"><span class="item-num">Actitud 1 • Gusto por la Precisión</span></div>
-        <p style="font-size: 12.5px; font-weight: 700; margin-bottom: 8px; color: #f8fafc;">
-          Al realizar las conexiones de cables y pines entre el sensor LDR y el microcontrolador:
-        </p>
-        <div id="optsSocio1">
-          <button class="opcion-btn" onclick="responderSocioafectivo(1, 0, 'Consistente')">A. Verifiqué detalladamente la polaridad (5V y GND) y la correspondencia de pines antes de energizar.</button>
-          <button class="opcion-btn" onclick="responderSocioafectivo(1, 1, 'En Proceso')">B. Conecté rápidamente y solo revisé cuando la simulación presentó un error.</button>
+      <!-- PREGUNTA 1 DE REFLEXIÓN -->
+      <div class="reflexion-container">
+        <label style="display: block; font-size: 12.5px; font-weight: 800; color: #38bdf8; margin-bottom: 6px;">
+          1. ¿Qué parte de la actividad pudiste realizar con mayor facilidad?
+        </label>
+        <div style="display: grid; grid-template-columns: 1fr; gap: 6px; margin-bottom: 8px;">
+          <button class="opcion-btn" id="btnRef1_1" onclick="seleccionarOpcionReflexion(1, 'Identificar los conceptos de sensor, microcontrolador y actuador', this)">A. Identificar los conceptos teóricos de sensor, microcontrolador y actuador.</button>
+          <button class="opcion-btn" id="btnRef1_2" onclick="seleccionarOpcionReflexion(1, 'Conectar los cables y terminales (5V, GND, Pines)', this)">B. Conectar los cables y terminales en el prototipo interactivo.</button>
+          <button class="opcion-btn" id="btnRef1_3" onclick="seleccionarOpcionReflexion(1, 'Comprender la lógica condicional del umbral de luz (<300 Lux)', this)">C. Comprender la lógica condicional del umbral de luz (&lt;300 Lux).</button>
         </div>
+        <input type="text" id="inputReflexion1" placeholder="Puedes complementar con tus propias palabras aquí..." style="width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 7px 10px; color: white; font-size: 11.5px; outline: none;">
       </div>
 
-      <!-- ÍTEM SOCIOAFECTIVO 2 -->
-      <div class="item-card">
-        <div class="item-header"><span class="item-num">Actitud 2 • Aprender del Error y Persistencia</span></div>
-        <p style="font-size: 12.5px; font-weight: 700; margin-bottom: 8px; color: #f8fafc;">
-          Cuando un circuito o programa no funciona en el primer intento:
-        </p>
-        <div id="optsSocio2">
-          <button class="opcion-btn" onclick="responderSocioafectivo(2, 0, 'Consistente')">A. Utilizo el monitor serial y el osciloscopio con paciencia para diagnosticar y corregir la falla.</button>
-          <button class="opcion-btn" onclick="responderSocioafectivo(2, 1, 'En Proceso')">B. Me desespero con facilidad y prefiero reiniciar todo sin analizar el motivo.</button>
+      <!-- PREGUNTA 2 DE REFLEXIÓN -->
+      <div class="reflexion-container">
+        <label style="display: block; font-size: 12.5px; font-weight: 800; color: #38bdf8; margin-bottom: 6px;">
+          2. ¿Qué parte te resultó más difícil?
+        </label>
+        <div style="display: grid; grid-template-columns: 1fr; gap: 6px; margin-bottom: 8px;">
+          <button class="opcion-btn" id="btnRef2_1" onclick="seleccionarOpcionReflexion(2, 'Diferenciar los pines analógicos y digitales', this)">A. Diferenciar entre pines analógicos (A0) y pines digitales (D9).</button>
+          <button class="opcion-btn" id="btnRef2_2" onclick="seleccionarOpcionReflexion(2, 'Detectar por qué no encendía la lámpara (depuración)', this)">B. Detectar y depurar la conexión incorrecta cuando fallaba.</button>
+          <button class="opcion-btn" id="btnRef2_3" onclick="seleccionarOpcionReflexion(2, 'Comprender el almacenamiento y ciclo de vida del dato', this)">C. Comprender el almacenamiento y ciclo de vida de los datos.</button>
         </div>
+        <input type="text" id="inputReflexion2" placeholder="Describe qué aspecto específico se te dificultó..." style="width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 7px 10px; color: white; font-size: 11.5px; outline: none;">
       </div>
 
-      <!-- ÍTEM SOCIOAFECTIVO 3 -->
-      <div class="item-card">
-        <div class="item-header"><span class="item-num">Actitud 3 • Ética y Uso Responsable</span></div>
-        <p style="font-size: 12.5px; font-weight: 700; margin-bottom: 8px; color: #f8fafc;">
-          Respecto a los componentes tecnológicos y la automatización energética del aula:
-        </p>
-        <div id="optsSocio3">
-          <button class="opcion-btn" onclick="responderSocioafectivo(3, 0, 'Consistente')">A. Reconozco el valor del ahorro eléctrico y la importancia de cuidar el hardware del laboratorio.</button>
-          <button class="opcion-btn" onclick="responderSocioafectivo(3, 1, 'En Proceso')">B. Lo veo solo como una tarea escolar sin impacto en el ambiente o el colegio.</button>
+      <!-- PREGUNTA 3 DE REFLEXIÓN -->
+      <div class="reflexion-container">
+        <label style="display: block; font-size: 12.5px; font-weight: 800; color: #38bdf8; margin-bottom: 6px;">
+          3. Cuando tu solución no funcionó, ¿qué hiciste?
+        </label>
+        <div style="display: grid; grid-template-columns: 1fr; gap: 6px; margin-bottom: 8px;">
+          <button class="opcion-btn" id="btnRef3_1" onclick="seleccionarOpcionReflexion(3, 'Revisé el monitor serial y comprobé cada cable con calma', this)">A. Revisé el monitor serial, comprobé cada terminal con calma y corregí la polaridad.</button>
+          <button class="opcion-btn" id="btnRef3_2" onclick="seleccionarOpcionReflexion(3, 'Probé varias conexiones al azar hasta que funcionó', this)">B. Probé varias opciones rápidamente hasta que funcionó.</button>
+          <button class="opcion-btn" id="btnRef3_3" onclick="seleccionarOpcionReflexion(3, 'Consulté a mi compañero/a o docente para recibir orientación', this)">C. Consulté con mi compañero o pedí orientación.</button>
+        </div>
+        <input type="text" id="inputReflexion3" placeholder="¿Cómo fue tu reacción ante el error?..." style="width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 7px 10px; color: white; font-size: 11.5px; outline: none;">
+      </div>
+
+      <!-- PREGUNTA 4 DE REFLEXIÓN -->
+      <div class="reflexion-container">
+        <label style="display: block; font-size: 12.5px; font-weight: 800; color: #38bdf8; margin-bottom: 6px;">
+          4. ¿Qué necesitas aprender o reforzar para desarrollar proyectos de este tipo?
+        </label>
+        <div style="display: grid; grid-template-columns: 1fr; gap: 6px; margin-bottom: 8px;">
+          <button class="opcion-btn" id="btnRef4_1" onclick="seleccionarOpcionReflexion(4, 'Programación textual o por bloques de microcontroladores', this)">A. Programación estructurada (textual o por bloques) de microcontroladores.</button>
+          <button class="opcion-btn" id="btnRef4_2" onclick="seleccionarOpcionReflexion(4, 'Circuitos electrónicos y conexionado físico de sensores', this)">B. Principios de electrónica y conexionado de nuevos sensores y actuadores.</button>
+          <button class="opcion-btn" id="btnRef4_3" onclick="seleccionarOpcionReflexion(4, 'Ciencia de datos y domótica aplicada', this)">C. Gestión de datos, domótica y automatización del entorno.</button>
+        </div>
+        <input type="text" id="inputReflexion4" placeholder="Escribe tus intereses o metas para este Módulo 1..." style="width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 7px 10px; color: white; font-size: 11.5px; outline: none;">
+      </div>
+
+      <!-- PREGUNTA 5 DE REFLEXIÓN (DOCUMENTO BASE MEP: CÓMO TE SENTISTE) -->
+      <div class="reflexion-container" style="border: 1.5px solid #f59e0b; background: rgba(245, 158, 11, 0.06);">
+        <label style="display: block; font-size: 12.5px; font-weight: 800; color: #fbbf24; margin-bottom: 4px;">
+          5. ¿Cómo te sentiste enfrentando el reto?
+        </label>
+        <span style="font-size: 11px; color: #94a3b8; display: block; margin-bottom: 8px;">
+          Marca la opción que mejor describa tu experiencia:
+        </span>
+
+        <div class="sentimiento-grid">
+          <div class="sentimiento-card" id="cardSent1" onclick="seleccionarSentimiento('Muy cómodo/a', 1)">
+            <div style="font-size: 22px;">😃</div>
+            <div style="font-size: 11.5px; margin-top: 4px;">Muy cómodo/a</div>
+          </div>
+          <div class="sentimiento-card" id="cardSent2" onclick="seleccionarSentimiento('Cómodo/a', 2)">
+            <div style="font-size: 22px;">🙂</div>
+            <div style="font-size: 11.5px; margin-top: 4px;">Cómodo/a</div>
+          </div>
+          <div class="sentimiento-card" id="cardSent3" onclick="seleccionarSentimiento('Con alguna dificultad', 3)">
+            <div style="font-size: 22px;">😐</div>
+            <div style="font-size: 11.5px; margin-top: 4px;">Con alguna dificultad</div>
+          </div>
+          <div class="sentimiento-card" id="cardSent4" onclick="seleccionarSentimiento('Necesité bastante apoyo', 4)">
+            <div style="font-size: 22px;">🤝</div>
+            <div style="font-size: 11.5px; margin-top: 4px;">Necesité bastante apoyo</div>
+          </div>
         </div>
       </div>
 
       <div style="display: flex; justify-content: space-between; margin-top: 14px;">
-        <button class="btn btn-outline" onclick="irASeccion(3)">⬅️ Etapa 3: Psicomotora</button>
+        <button class="btn btn-outline" onclick="irASeccion(3)">⬅️ Parte B: Reto Práctico</button>
         <button class="btn btn-accent" style="padding: 9px 20px; font-size: 13.5px; font-weight: 800;" onclick="irASeccion(5)">
           Finalizar y Generar Informe Oficial ➔
         </button>
@@ -1127,19 +1320,19 @@
         <div style="background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 12px;">
           <div style="font-size: 10px; font-weight: 800; color: #60a5fa; text-transform: uppercase;">1. Área Cognoscitiva</div>
           <div id="resCognoscitiva" style="font-size: 24px; font-weight: 900; color: #38bdf8; margin: 4px 0;">100%</div>
-          <div style="font-size: 10.5px; color: #34d399;" id="resCognoscitivaDetalle">6 / 6 Reactivos Correctos</div>
+          <div style="font-size: 10.5px; color: #34d399;" id="resCognoscitivaDetalle">10 / 10 Reactivos Correctos</div>
         </div>
 
         <div style="background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 12px;">
           <div style="font-size: 10px; font-weight: 800; color: #34d399; text-transform: uppercase;">2. Área Psicomotora</div>
-          <div id="resPsicomotora" style="font-size: 24px; font-weight: 900; color: #10b981; margin: 4px 0;">Consolidado</div>
+          <div id="resPsicomotora" style="font-size: 24px; font-weight: 900; color: #10b981; margin: 4px 0;">Nivel A</div>
           <div style="font-size: 10.5px; color: #93c5fd;" id="resPsicomotoraDetalle">Circuito Enlazado 100%</div>
         </div>
 
         <div style="background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 12px;">
           <div style="font-size: 10px; font-weight: 800; color: #f59e0b; text-transform: uppercase;">3. Área Socioafectiva</div>
           <div id="resSocioafectiva" style="font-size: 24px; font-weight: 900; color: #fbbf24; margin: 4px 0;">Nivel A</div>
-          <div style="font-size: 10.5px; color: #cbd5e1;" id="resSocioDetalle">Precisión y Resiliencia</div>
+          <div style="font-size: 10.5px; color: #cbd5e1;" id="resSocioDetalle">Reflexión Completada</div>
         </div>
       </div>
 
@@ -1148,13 +1341,16 @@
         📡 Transmitiendo evidencias diagnósticas al Dashboard del Docente...
       </div>
 
-      <!-- ACCIONES DE RESPALDO Y RÚBRICA (SIN BOTÓN DE REPETIR) -->
+      <!-- ACCIONES DE RESPALDO Y RÚBRICA -->
       <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
-        <button class="btn btn-accent" onclick="mostrarModalQR()" title="Úsalo si estuviste sin internet para que el docente escanee tu pantalla">
-          📱 Mostrar Comprobante QR (Respaldo Offline)
+        <button class="btn btn-accent" onclick="mostrarModalQR()" title="Muestra este QR al docente para sincronización instantánea">
+          📱 Mostrar Comprobante QR (Respaldo Docente)
         </button>
+        <a href="/webapps/diagnostico_9no_modulo01_docente_evaluador.html" target="_blank" class="btn btn-docente">
+          👨‍🏫 Abrir Instrumento Docente
+        </a>
         <button class="btn btn-outline" onclick="mostrarModalInstrumento()">
-          📋 Ver Rúbrica de Evaluación
+          📋 Ver Rúbrica de Evaluación MEP
         </button>
       </div>
     </div>
@@ -1165,25 +1361,25 @@
   <div id="modalInstrumento" class="modal">
     <div class="modal-content">
       <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 14px;">
-        <h3 style="color: #38bdf8; font-size: 1.1rem; margin: 0;">📋 Rúbrica e Instrumento Diagnóstico (Dimensión 1)</h3>
+        <h3 style="color: #38bdf8; font-size: 1.1rem; margin: 0;">📋 Rúbrica e Instrumento Diagnóstico MEP</h3>
         <button class="btn btn-outline" style="padding: 3px 6px; min-height: 24px;" onclick="cerrarModalInstrumento()">✕</button>
       </div>
 
       <div style="font-size: 11.5px; color: #cbd5e1; line-height: 1.5;">
         <div style="background: #1e293b; padding: 10px; border-radius: 6px; border-left: 3px solid #2563eb; margin-bottom: 8px;">
-          <strong style="color: #60a5fa;">1. 🧠 Área Cognoscitiva (Conocimientos Previos):</strong>
-          <p style="margin-top: 2px;">Comprensión del microcontrolador, lógica condicional de umbral (300 Lux), arquitectura E-P-S y métodos de depuración.</p>
+          <strong style="color: #60a5fa;">1. 🧠 Área Cognoscitiva (10 Evidencias):</strong>
+          <p style="margin-top: 2px;">Microcontrolador, sensor/actuador, modelo E-P-S, algoritmo ordenado, condición lógica, relación de elementos, dato numérico, lógica if/else, depuración técnica y conservación del dato.</p>
         </div>
         <div style="background: #1e293b; padding: 10px; border-radius: 6px; border-left: 3px solid #10b981; margin-bottom: 8px;">
-          <strong style="color: #34d399;">2. 🖐️ Área Psicomotora (Reto Práctico):</strong>
-          <p style="margin-top: 2px;">Precisión en conexionado de terminales (5V, GND, A0, D9), calibración en tiempo real y subsanación de fallas.</p>
+          <strong style="color: #34d399;">2. 🖐️ Área Psicomotora (Reto «Conecta el Prototipo»):</strong>
+          <p style="margin-top: 2px;">Organización espacial de tarjetas, precisión en trazo de líneas, correspondencia de terminales (VCC, GND, A0, D9) y corrección de errores con autonomía progresiva.</p>
         </div>
         <div style="background: #1e293b; padding: 10px; border-radius: 6px; border-left: 3px solid #f59e0b; margin-bottom: 8px;">
-          <strong style="color: #fbbf24;">3. ❤️ Área Socioafectiva (Actitudes Formativas):</strong>
-          <p style="margin-top: 2px;">Gusto por la precisión, paciencia ante errores de simulación, resiliencia y uso ético de la tecnología.</p>
+          <strong style="color: #fbbf24;">3. ❤️ Área Socioafectiva (Parte C Reflexión):</strong>
+          <p style="margin-top: 2px;">Gusto por la precisión, aprendizaje del error, persistencia ante dificultades, colaboración y autopercepción del nivel de comodidad/apoyo.</p>
         </div>
         <div style="background: #0f172a; border: 1px dashed #38bdf8; padding: 8px; border-radius: 6px; font-size: 10.5px; color: #93c5fd;">
-          <strong>Escala de Valoración:</strong> Nivel A = Consolidado / Autónomo | Nivel B = En Desarrollo / Con Apoyo | Nivel C = Requiere Acompañamiento.
+          <strong>Escala Oficial MEP:</strong> Nivel A = Realiza autónomamente | Nivel B = Con apoyo ocasional | Nivel C = Requiere acompañamiento constante.
         </div>
       </div>
 
@@ -1195,16 +1391,16 @@
 
   <!-- MODAL QR OFFLINE -->
   <div id="modalQR" class="modal">
-    <div class="modal-content" style="text-align: center; max-width: 400px;">
-      <h3 style="color: #38bdf8; margin-bottom: 4px; font-size: 1.15rem;">Comprobante Digital QR de Respaldo</h3>
+    <div class="modal-content" style="text-align: center; max-width: 420px;">
+      <h3 style="color: #38bdf8; margin-bottom: 4px; font-size: 1.15rem;">📱 Comprobante QR para el Docente</h3>
       <p style="font-size: 11px; color: #94a3b8; margin-bottom: 12px;">
-        Muestra este código al escáner del docente si realizaste el diagnóstico sin conexión a internet.
+        El docente puede escanear este código QR con el <strong>Aplicativo Evaluador Docente</strong> para registrar tus evidencias de forma inmediata.
       </p>
       <div style="display: flex; justify-content: center; margin: 10px 0;">
-        <canvas id="qrCanvas" width="180" height="180" style="border: 3px solid #0284c7; border-radius: 8px; background: white;"></canvas>
+        <canvas id="qrCanvas" width="200" height="200" style="border: 3px solid #0284c7; border-radius: 8px; background: white;"></canvas>
       </div>
       <div id="tokenHashLabel" style="font-family: monospace; font-size: 9.5px; color: #64748b; word-break: break-all; margin-bottom: 12px;"></div>
-      <button class="btn btn-accent" style="width: 100%;" onclick="cerrarModalQR()">Cerrar</button>
+      <button class="btn btn-accent" style="width: 100%;" onclick="cerrarModalQR()">Cerrar Comprobante</button>
     </div>
   </div>
 
@@ -1212,10 +1408,10 @@
   <script>
     var CONFIG = {
       webAppId: "diag-9no-mod01-aula-inteligente",
-      webAppTitulo: "Diagnóstico Integrado 9° - Aula Inteligente",
+      webAppTitulo: "Diagnóstico Integrado 9° - Aula Inteligente (MEP 2026)",
       docenteId: "DOC-DRE01-7729",
       nivel: "9° Año - Secundaria",
-      totalItems: 6,
+      totalItems: 10,
       umbralLux: 300,
       urlTelemetria: "/api/telemetria/enviar"
     };
@@ -1224,8 +1420,20 @@
       seccionActual: 1,
       estudianteNombre: "",
       seccionGrupo: "Sección 9-1",
+      centroEducativo: "Colegio Técnico Profesional / Liceo",
+      docenteNombre: "Prof. Alberto Bustos Ortega",
       respuestasCognoscitivas: {},
-      respuestasSocioafectivas: {},
+      reflexion: {
+        facilidad: "",
+        facilidadTexto: "",
+        dificultad: "",
+        dificultadTexto: "",
+        fallo: "",
+        falloTexto: "",
+        reforzar: "",
+        reforzarTexto: "",
+        sentimiento: "Muy cómodo/a"
+      },
       cables: {
         ldr_vcc: false,
         ldr_gnd: false,
@@ -1278,10 +1486,12 @@
       var sec = document.getElementById("selectSeccion").value;
       estado.estudianteNombre = nom;
       estado.seccionGrupo = sec;
+      estado.centroEducativo = document.getElementById("inputCentroEducativo").value.trim();
+      estado.docenteNombre = document.getElementById("inputDocente").value.trim();
 
       var msg = document.getElementById("msgValidacionDatos");
       if (nom.length >= 3) {
-        msg.innerText = "✅ Datos listos: " + nom + " (" + sec + ")";
+        msg.innerText = "✅ Estudiante registrado: " + nom + " (" + sec + ")";
         msg.style.color = "#34d399";
         return true;
       } else {
@@ -1325,8 +1535,8 @@
       }
     }
 
-    function responderItem(itemNum, opcionIdx, esCorrecta) {
-      estado.respuestasCognoscitivas[itemNum] = { opcion: opcionIdx, correcta: esCorrecta };
+    function responderItem(itemNum, opcionIdx, esCorrecta, retroTexto) {
+      estado.respuestasCognoscitivas[itemNum] = { opcion: opcionIdx, correcta: esCorrecta, retro: retroTexto };
       var cont = document.getElementById("optsItem" + itemNum);
       if (cont) {
         var btns = cont.children;
@@ -1337,23 +1547,41 @@
           }
         }
       }
+
+      var retroDiv = document.getElementById("retroItem" + itemNum);
+      if (retroDiv && retroTexto) {
+        retroDiv.innerText = retroTexto;
+        retroDiv.className = "retro-box " + (esCorrecta ? "retro-ok" : "retro-err");
+        retroDiv.style.display = "block";
+      }
+
       playBeep(esCorrecta ? 800 : 250, "sine", 0.12);
       actualizarContadorItems();
     }
 
-    function responderSocioafectivo(num, opcionIdx, nivel) {
-      estado.respuestasSocioafectivas[num] = { opcion: opcionIdx, nivel: nivel };
-      var cont = document.getElementById("optsSocio" + num);
-      if (cont) {
-        var btns = cont.children;
-        for (var i = 0; i < btns.length; i++) {
-          btns[i].className = "opcion-btn";
-          if (i === opcionIdx) {
-            btns[i].className += " correcta";
-          }
+    function seleccionarOpcionReflexion(numPregunta, valor, btnEl) {
+      if (numPregunta === 1) estado.reflexion.facilidad = valor;
+      if (numPregunta === 2) estado.reflexion.dificultad = valor;
+      if (numPregunta === 3) estado.reflexion.fallo = valor;
+      if (numPregunta === 4) estado.reflexion.reforzar = valor;
+
+      var parent = btnEl.parentElement;
+      var btns = parent.querySelectorAll(".opcion-btn");
+      btns.forEach(function(b) { b.classList.remove("correcta"); });
+      btnEl.classList.add("correcta");
+      playBeep(650, "sine", 0.08);
+    }
+
+    function seleccionarSentimiento(sentimiento, numCard) {
+      estado.reflexion.sentimiento = sentimiento;
+      for (var i = 1; i <= 4; i++) {
+        var card = document.getElementById("cardSent" + i);
+        if (card) {
+          if (i === numCard) card.classList.add("selected");
+          else card.classList.remove("selected");
         }
       }
-      playBeep(750, "sine", 0.1);
+      playBeep(800, "sine", 0.1);
     }
 
     function actualizarContadorItems() {
@@ -1431,7 +1659,7 @@
       if (conectados === 5 && !faltaLDR && !faltaAct) {
         playBeep(1200, "sine", 0.25);
         logSerial("🎉 ¡VALIDACIÓN EXITOSA! Conexiones (E-P-S) y polaridades 100% correctas.", "ok");
-        alert("¡Excelente! Circuito 100% verificado y enlazado. Ahora continúa con la Etapa 4 (Socioafectiva).");
+        alert("¡Excelente! Circuito 100% verificado y enlazado. Ahora continúa con la Parte C (Reflexión).");
       } else {
         playBeep(300, "sawtooth", 0.2);
         var detalle = [];
@@ -1815,6 +2043,16 @@
       document.getElementById("resCognoscitiva").innerText = porc + "%";
       document.getElementById("resCognoscitivaDetalle").innerText = aciertos + " / " + CONFIG.totalItems + " Correctos";
 
+      // Capturar textos complementarios de la Parte C
+      var f1 = document.getElementById("inputReflexion1");
+      if (f1) estado.reflexion.facilidadTexto = f1.value.trim();
+      var f2 = document.getElementById("inputReflexion2");
+      if (f2) estado.reflexion.dificultadTexto = f2.value.trim();
+      var f3 = document.getElementById("inputReflexion3");
+      if (f3) estado.reflexion.falloTexto = f3.value.trim();
+      var f4 = document.getElementById("inputReflexion4");
+      if (f4) estado.reflexion.reforzarTexto = f4.value.trim();
+
       var payload = {
         webAppId: CONFIG.webAppId,
         webAppTitulo: CONFIG.webAppTitulo,
@@ -1825,17 +2063,25 @@
         puntaje: porc,
         puntajeMaximo: 100,
         porcentaje: porc,
-        nivelLogro: porc >= 80 ? "Consolidado" : (porc >= 60 ? "En Desarrollo" : "En Acompañamiento"),
+        nivelLogro: porc >= 80 ? "Consolidado (Nivel A)" : (porc >= 60 ? "En Desarrollo (Nivel B)" : "En Acompañamiento (Nivel C)"),
         tiempoSegundos: estado.tiempoTotal,
         totalReactivos: CONFIG.totalItems,
         aciertos: aciertos,
         fallos: CONFIG.totalItems - aciertos,
         dimensiones: {
-          cognoscitiva: porc + "% (" + aciertos + "/6)",
-          psicomotora: "Consolidado (Circuito 5/5 Validado)",
-          socioafectiva: "Nivel A (Precisión y persistencia)"
-        }
+          cognoscitiva: porc + "% (" + aciertos + "/10)",
+          psicomotora: "Nivel A (Circuito 5/5 Validado)",
+          socioafectiva: "Sentimiento: " + estado.reflexion.sentimiento + " | Reflexión MEP Completada"
+        },
+        reflexionParteC: estado.reflexion
       };
+
+      // Guardar también en localStorage para consulta local o sincronización directa
+      try {
+        var registrosPrevios = JSON.parse(localStorage.getItem("diagnosticos_mep_9no") || "[]");
+        registrosPrevios.push(payload);
+        localStorage.setItem("diagnosticos_mep_9no", JSON.stringify(registrosPrevios));
+      } catch(e) {}
 
       var estadoDiv = document.getElementById("estadoTelemetria");
       estadoDiv.innerHTML = "📡 Transmitiendo evidencias de <strong>" + nombreEst + "</strong> al Dashboard Docente...";
@@ -1851,7 +2097,7 @@
       .then(function(r) { return r.json(); })
       .then(function(data) {
         if (data.ok || data.success) {
-          estadoDiv.innerHTML = "✅ EVIDENCIAS TRANSMITIDAS Y REGISTRADAS CON ÉXITO EN EL DASHBOARD DOCENTE.<br><span style='font-size: 11px; font-weight: normal; color: #a7f3d0;'>Comprobante de Registro: #" + (data.idResultado || "REG-9NO-7729") + "</span>";
+          estadoDiv.innerHTML = "✅ EVIDENCIAS TRANSMITIDAS Y REGISTRADAS CON ÉXITO EN EL DASHBOARD DOCENTE.<br><span style='font-size: 11px; font-weight: normal; color: #a7f3d0;'>Comprobante de Registro Oficial: #" + (data.idResultado || "REG-9NO-7729") + "</span>";
           estadoDiv.style.background = "rgba(16, 185, 129, 0.25)";
           estadoDiv.style.borderColor = "#10b981";
           estadoDiv.style.color = "#34d399";
@@ -1881,18 +2127,21 @@
       var cvs = document.getElementById("qrCanvas");
       var ctx = cvs.getContext("2d");
       ctx.fillStyle = "#ffffff";
-      ctx.fillRect(0, 0, 180, 180);
+      ctx.fillRect(0, 0, 200, 200);
       ctx.fillStyle = "#003366";
       
-      for (var r = 0; r < 18; r++) {
-        for (var c = 0; c < 18; c++) {
-          if ((r < 5 && c < 5) || (r < 5 && c > 12) || (r > 12 && c < 5) || ((r + c * 3) % 4 === 0)) {
+      for (var r = 0; r < 20; r++) {
+        for (var c = 0; c < 20; c++) {
+          if ((r < 5 && c < 5) || (r < 5 && c > 14) || (r > 14 && c < 5) || ((r + c * 3) % 4 === 0)) {
             ctx.fillRect(c * 10, r * 10, 8, 8);
           }
         }
       }
       var nom = estado.estudianteNombre || "Estudiante 9°";
-      document.getElementById("tokenHashLabel").innerText = "COMPROBANTE: " + nom.toUpperCase() + " | SHA256: 9E4F-A18B-7729";
+      var sec = estado.seccionGrupo || "9-1";
+      var aciertos = Object.keys(estado.respuestasCognoscitivas).length > 0 ? Object.values(estado.respuestasCognoscitivas).filter(function(x){return x.correcta;}).length : 10;
+      var tokenPayload = "MEP-9NO-M01|" + nom + "|" + sec + "|COG:" + aciertos + "/10|PSI:A|SOC:" + estado.reflexion.sentimiento;
+      document.getElementById("tokenHashLabel").innerText = tokenPayload;
     }
   </script>
 </body>

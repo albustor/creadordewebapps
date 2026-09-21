@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { useDocente } from "@/context/DocenteContext";
 import {
   generarPromptParaIAExterna,
@@ -28,6 +29,10 @@ import {
   Heart,
   ShieldCheck,
   ChalkboardTeacher,
+  ArrowSquareOut,
+  Table,
+  Scales,
+  UserCheck,
 } from "@phosphor-icons/react";
 
 export default function DiagnosticoPage() {
@@ -44,13 +49,14 @@ export default function DiagnosticoPage() {
   const [codigoHTMLGenerado, setCodigoHTMLGenerado] = useState("");
   const [promptGenerado, setPromptGenerado] = useState("");
   const [copiadoPrompt, setCopiadoPrompt] = useState(false);
-  const [vistaActiva, setVistaActiva] = useState<"formulario" | "preview">("formulario");
+  const [vistaActiva, setVistaActiva] = useState<"formulario" | "preview" | "comparativa">("formulario");
   const [modalProyeccionAbierto, setModalProyeccionAbierto] = useState(false);
+  const [modalComparativaAbierto, setModalComparativaAbierto] = useState(false);
   const [webAppGuardadaId, setWebAppGuardadaId] = useState<string | null>(null);
 
   // Cargar ejemplo base oficial del MEP (Diagnóstico 9° - Aula Inteligente)
   const cargarEjemploOficialMEP = () => {
-    setNombreArchivo("Diagnostico_Formacion_Tecnologica_9no_Modul0_01.docx");
+    setNombreArchivo("Diagnostico_Formacion_Tecnologica_9no_Modulo_01.docx");
     const textoEjemplo = `MINISTERIO DE EDUCACIÓN PÚBLICA
 Programa Nacional de Formación Tecnológica - Guía de Evaluación Diagnóstica
 FORMACIÓN TECNOLÓGICA – III CICLO (NOVENO AÑO – MÓDULO 1)
@@ -59,27 +65,33 @@ DIAGNÓSTICO INTEGRADO: Áreas cognoscitiva, socioafectiva y psicomotora
 1. Situación-Problema: «Aula Inteligente»
 El laboratorio de informática de tu colegio desea implementar un sistema automatizado que permita encender una luz automáticamente cuando exista poca iluminación ambiental. Para ello se dispone de un microcontrolador, un sensor de luz (LDR) y un actuador (iluminación LED).
 
-2. Parte A – Conocimientos Previos (Área Cognoscitiva - 10 Ítems):
+2. Parte A – Conocimientos Previos (Área Cognoscitiva - 10 Ítems Oficiales MEP):
 - Ítem 1 (Microcontrolador): Recibir información de sensores, procesarla y controlar dispositivos según su programación.
 - Ítem 2 (Sensor y Actuador): El sensor obtiene información del entorno y el actuador ejecuta una acción de respuesta.
-- Ítem 3 (Modelo E-P-S): Sensor de luz -> Microcontrolador -> LED.
+- Ítem 3 (Modelo E-P-S): Sensor de luz (Entrada) -> Microcontrolador (Proceso) -> LED (Salida).
 - Ítem 4 (Algoritmo): 1. Iniciar sistema, 2. Leer sensor, 3. Comprobar condición de poca luz, 4. Encender LED.
-- Ítem 5 (Condicional): Encender luz si la iluminación está por debajo de un umbral.
-- Ítem 6 (Relación): Sensor = Captura, Actuador = Ejecuta, Microcontrolador = Procesa.
-- Ítem 7 (Dato): Valor analógico de 250 Lux (nivel de luz).
-- Ítem 8 (Lógica): Estructura Condicional Doble (If / Else).
-- Ítem 9 (Depuración): Revisar polaridad, alimentación, conexiones de pines y código.
-- Ítem 10 (Almacenamiento): Conservar datos para analizar patrones históricos de consumo y tomar decisiones informadas.
+- Ítem 5 (Condicional): Encender luz si la iluminación está por debajo de un umbral (< 300 Lux).
+- Ítem 6 (Relación de elementos): Sensor = Captura entorno, Actuador = Ejecuta acción, Microcontrolador = Procesa y controla.
+- Ítem 7 (Concepto de Dato): Valor numérico o analógico obtenido por el sensor (ej. 180 Lux / 1.05 V).
+- Ítem 8 (Lógica condicional): Estructura Condicional Doble (Si - De lo contrario).
+- Ítem 9 (Problema y depuración): Revisar conexiones físicas (VCC, GND, pines A0/D9), alimentación y condiciones del programa.
+- Ítem 10 (Almacenamiento y ciclo de vida): Conservar datos para analizar patrones históricos de consumo y tomar decisiones informadas.
 
 3. Parte B – Reto Práctico: «Conecta el prototipo» (Área Psicomotora / Simulación en Tiempo Real):
 Representar mediante tarjetas y líneas de conexión un sistema automatizado con microcontrolador, sensor y actuador. Manipular pines, calibrar nivel de iluminación ambiental y corregir errores de cableado.
 
-4. Listas de Observación Socioafectiva y Psicomotora (Docente):
-- Gusto por la precisión y cuidado de detalles en el diseño del circuito.
+4. Parte C – Reflexión Individual (Área Socioafectiva):
+1. Mayor facilidad en la actividad.
+2. Mayor dificultad encontrada.
+3. Reacción y actitud ante el error.
+4. Necesidad de refuerzo identificada.
+5. Escala de autopercepción y comodidad (Muy cómodo/a, Cómodo/a, Con alguna dificultad, Necesité bastante apoyo).
+
+5. Guía Docente y Listas de Observación (Escala A / B / C):
+- Gusto por la precisión y cuidado de detalles en el conexionado.
 - Aprende del error y lo utiliza como oportunidad de mejora.
 - Tolerancia a la frustración, paciencia y persistencia.
-- Colaboración respetuosa en parejas y manejo ético de materiales.
-Escala Oficial MEP: A (Autónomo/Consistente), B (Apoyo ocasional), C (Requiere acompañamiento).`;
+- Manejo ético y seguro de componentes.`;
 
     setTextoDocumento(textoEjemplo);
   };
@@ -234,289 +246,354 @@ Escala Oficial MEP: A (Autónomo/Consistente), B (Apoyo ocasional), C (Requiere 
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      {/* Cabecera */}
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      {/* Cabecera Principal */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
         <div>
           <span className="text-xs font-bold text-blue-700 uppercase tracking-widest block">
-            Módulo de Entrada Curricular
+            Módulo de Entrada Curricular • Formación Tecnológica 2026
           </span>
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900">
-            Diagnóstico Integrado de Formación Tecnológica (III Ciclo)
+            Diagnóstico Integrado 9°: «Aula Inteligente»
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500">
-            Interpretación en las 3 Áreas: 🧠 Cognoscitiva, 🖐️ Psicomotora y ❤️ Socioafectiva con Simulación y Telemetría SHA-256
+          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+            Evaluación formativa oficial en las 3 Dimensiones: 🧠 Cognoscitiva, 🖐️ Psicomotora y ❤️ Socioafectiva (Módulo 1)
           </p>
         </div>
 
-        {diagnostico && (
-          <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-200">
-            <button
-              onClick={() => setVistaActiva("formulario")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all ${
-                vistaActiva === "formulario"
-                  ? "bg-white text-blue-900 shadow-xs"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              <Sliders size={16} weight="bold" />
-              <span>Propuesta & Instrumento</span>
-            </button>
-            <button
-              onClick={() => setVistaActiva("preview")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all ${
-                vistaActiva === "preview"
-                  ? "bg-blue-700 text-white shadow-xs"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              <Eye size={16} weight="bold" />
-              <span>Probar WebApp con Simulador</span>
-            </button>
-          </div>
-        )}
+        <div className="flex items-center gap-2 flex-wrap">
+          <button
+            onClick={() => setModalComparativaAbierto(true)}
+            className="flex items-center gap-2 px-4 py-2.5 bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-300 rounded-xl text-xs font-bold shadow-xs transition-all"
+          >
+            <Scales size={16} weight="bold" className="text-purple-700" />
+            <span>Ver Cuadro Comparativo MEP</span>
+          </button>
+        </div>
       </div>
 
-      {vistaActiva === "formulario" ? (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Columna Izquierda: Zona de Carga de Documento (6 cols) */}
-          <div className="lg:col-span-6 space-y-6">
-            <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-mepCard space-y-5">
-              <div className="flex justify-between items-center">
-                <h2 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-                  <FileText size={20} className="text-blue-700" weight="duotone" />
-                  <span>Documento del Diagnóstico</span>
-                </h2>
-                <span className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg">
-                  Subida Directa
-                </span>
-              </div>
-
-              {/* Zona Drag & Drop */}
-              <div
-                onDragOver={(e) => {
-                  e.preventDefault();
-                  setArrastrando(true);
-                }}
-                onDragLeave={() => setArrastrando(false)}
-                onDrop={handleDrop}
-                className={`border-2 border-dashed rounded-xl p-6 text-center transition-all ${
-                  arrastrando
-                    ? "border-blue-600 bg-blue-50/60"
-                    : "border-slate-300 hover:border-blue-400 bg-slate-50/50"
-                }`}
-              >
-                <UploadSimple size={32} className="mx-auto text-blue-700 mb-2" />
-                <span className="text-xs font-bold text-slate-700 block">
-                  {nombreArchivo ? `Archivo cargado: ${nombreArchivo}` : "Arrastra y suelta aquí tu archivo de diagnóstico"}
-                </span>
-                <span className="text-[11px] text-slate-500 block mt-0.5">
-                  Formatos compatibles: .docx, .doc, .txt, .pdf o texto plano
-                </span>
-
-                <label className="inline-block mt-3 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white text-xs font-bold rounded-xl cursor-pointer transition-colors shadow-xs">
-                  <span>Examinar Archivo</span>
-                  <input
-                    type="file"
-                    accept=".txt,.doc,.docx,.pdf"
-                    className="hidden"
-                    onChange={(e) => e.target.files && e.target.files[0] && procesarArchivo(e.target.files[0])}
-                  />
-                </label>
-              </div>
-
-              {/* Área de Texto Directo */}
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Contenido extraído del diagnóstico:
-                </label>
-                <textarea
-                  value={textoDocumento}
-                  onChange={(e) => setTextoDocumento(e.target.value)}
-                  placeholder="Pega aquí el texto de tu instrumento diagnóstico o documento curricular..."
-                  rows={9}
-                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white font-sans leading-relaxed"
-                />
-              </div>
-
-              {/* Botón de Procesamiento */}
-              <button
-                type="button"
-                onClick={procesarDiagnosticoYGenerarTodo}
-                disabled={analizando || !textoDocumento.trim()}
-                className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-900 to-slate-900 hover:from-blue-800 hover:to-slate-800 text-white font-extrabold py-3.5 px-4 rounded-xl text-xs transition-all shadow-md hover:shadow-lg disabled:opacity-50"
-              >
-                {analizando ? (
-                  <>
-                    <ArrowsClockwise size={18} className="animate-spin" />
-                    <span>Analizando las 3 Áreas y Estructurando WebApp...</span>
-                  </>
-                ) : (
-                  <>
-                    <Cpu size={18} weight="bold" />
-                    <span>Interpretar Diagnóstico & Generar WebApp Interactiva</span>
-                  </>
-                )}
-              </button>
+      {/* TARJETAS DESTACADAS: APLICATIVOS OFICIALES (ESTUDIANTE Y DOCENTE) */}
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        
+        {/* WebApp del Estudiante */}
+        <div className="bg-gradient-to-br from-blue-950 via-slate-900 to-blue-900 border-2 border-blue-500/80 rounded-2xl p-6 text-white shadow-xl flex flex-col justify-between relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl group-hover:scale-125 transition-transform" />
+          <div className="space-y-3 relative z-10">
+            <div className="flex items-center justify-between">
+              <span className="px-2.5 py-0.5 rounded-full bg-blue-500/20 text-sky-300 border border-blue-400/30 text-[10px] font-extrabold uppercase tracking-wider">
+                WebApp para el Estudiante
+              </span>
+              <span className="text-xs font-bold text-sky-200">70 min sugeridos</span>
             </div>
+            <h3 className="text-lg font-black text-white flex items-center gap-2">
+              <Lightbulb size={22} className="text-amber-400" weight="fill" />
+              <span>Diagnóstico 9°: «Aula Inteligente»</span>
+            </h3>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              Incluye los <strong>10 reactivos de la Parte A</strong>, el laboratorio interactivo 2D del <strong>Reto «Conecta el Prototipo»</strong> con verificación de terminales (5V, GND, A0, D9) y la <strong>Reflexión Individual de la Parte C</strong> con comprobante QR offline.
+            </p>
           </div>
 
-          {/* Columna Derecha: Resultado Automático (6 cols) */}
-          <div className="lg:col-span-6 space-y-6">
+          <div className="pt-6 flex flex-wrap items-center gap-2 relative z-10">
+            <a
+              href="/webapps/diagnostico_9no_modulo01_aula_inteligente.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-black text-xs rounded-xl shadow-md hover:shadow-lg transition-all"
+            >
+              <span>Abrir App Estudiante</span>
+              <ArrowSquareOut size={16} weight="bold" />
+            </a>
+            <a
+              href="/webapps/diagnostico_9no_modulo01_aula_inteligente.html"
+              download="diagnostico_9no_modulo01_aula_inteligente.html"
+              className="inline-flex items-center gap-1.5 px-3 py-2 bg-slate-800/80 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl border border-slate-700 transition-colors"
+            >
+              <DownloadSimple size={15} weight="bold" />
+              <span>Descargar .HTML</span>
+            </a>
+          </div>
+        </div>
+
+        {/* WebApp del Docente Evaluador */}
+        <div className="bg-gradient-to-br from-purple-950 via-slate-900 to-indigo-950 border-2 border-purple-500/80 rounded-2xl p-6 text-white shadow-xl flex flex-col justify-between relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl group-hover:scale-125 transition-transform" />
+          <div className="space-y-3 relative z-10">
+            <div className="flex items-center justify-between">
+              <span className="px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-400/30 text-[10px] font-extrabold uppercase tracking-wider">
+                Aplicativo para el Docente
+              </span>
+              <span className="text-xs font-bold text-purple-200">Guía Oficial MEP</span>
+            </div>
+            <h3 className="text-lg font-black text-white flex items-center gap-2">
+              <UserCheck size={22} className="text-emerald-400" weight="fill" />
+              <span>Evaluador Docente & Nómina de Estudiantes</span>
+            </h3>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              Permite <strong>cargar nóminas mediante archivo adjunto (.xlsx, .csv o texto)</strong>, calificar individualmente las 10 evidencias cognoscitivas, 6 psicomotoras y 7 socioafectivas, escanear QR de estudiantes y generar el consolidado grupal oficial.
+            </p>
+          </div>
+
+          <div className="pt-6 flex flex-wrap items-center gap-2 relative z-10">
+            <a
+              href="/webapps/diagnostico_9no_modulo01_docente_evaluador.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black text-xs rounded-xl shadow-md hover:shadow-lg transition-all"
+            >
+              <span>Abrir App Docente</span>
+              <ArrowSquareOut size={16} weight="bold" />
+            </a>
+            <a
+              href="/webapps/diagnostico_9no_modulo01_docente_evaluador.html"
+              download="diagnostico_9no_modulo01_docente_evaluador.html"
+              className="inline-flex items-center gap-1.5 px-3 py-2 bg-slate-800/80 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl border border-slate-700 transition-colors"
+            >
+              <DownloadSimple size={15} weight="bold" />
+              <span>Descargar .HTML</span>
+            </a>
+          </div>
+        </div>
+
+      </section>
+
+      {/* GENERADOR Y ANALIZADOR DE DOCUMENTOS PERSONALIZADOS */}
+      <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
+          <div>
+            <h2 className="text-lg font-black text-slate-900 flex items-center gap-2">
+              <Cpu size={22} className="text-blue-700" weight="duotone" />
+              <span>Analizar Otro Documento Curricular de Diagnóstico</span>
+            </h2>
+            <p className="text-xs text-slate-500">
+              Sube otra guía de diagnóstico para extraer los indicadores de logro y generar una WebApp personalizada.
+            </p>
+          </div>
+          <button
+            onClick={cargarEjemploOficialMEP}
+            className="px-3 py-1.5 bg-blue-100 hover:bg-blue-200 text-blue-900 font-bold text-xs rounded-xl transition-colors shrink-0"
+          >
+            ⚡ Cargar Texto Base del Diagnóstico 9°
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Formulario */}
+          <div className="lg:col-span-6 space-y-4">
+            <div
+              onDragOver={(e) => {
+                e.preventDefault();
+                setArrastrando(true);
+              }}
+              onDragLeave={() => setArrastrando(false)}
+              onDrop={handleDrop}
+              className={`border-2 border-dashed rounded-xl p-6 text-center transition-all ${
+                arrastrando
+                  ? "border-blue-600 bg-blue-50/60"
+                  : "border-slate-300 hover:border-blue-400 bg-white"
+              }`}
+            >
+              <UploadSimple size={30} className="mx-auto text-blue-700 mb-2" />
+              <span className="text-xs font-bold text-slate-700 block">
+                {nombreArchivo ? `Archivo cargado: ${nombreArchivo}` : "Arrastra y suelta aquí tu archivo de diagnóstico"}
+              </span>
+              <label className="inline-block mt-3 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white text-xs font-bold rounded-xl cursor-pointer transition-colors shadow-xs">
+                <span>Examinar Archivo</span>
+                <input
+                  type="file"
+                  accept=".txt,.doc,.docx,.pdf"
+                  className="hidden"
+                  onChange={(e) => e.target.files && e.target.files[0] && procesarArchivo(e.target.files[0])}
+                />
+              </label>
+            </div>
+
+            <textarea
+              value={textoDocumento}
+              onChange={(e) => setTextoDocumento(e.target.value)}
+              placeholder="Pega aquí el contenido curricular o indicadores del diagnóstico..."
+              rows={6}
+              className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs focus:outline-none focus:border-blue-600 font-sans leading-relaxed"
+            />
+
+            <button
+              type="button"
+              onClick={procesarDiagnosticoYGenerarTodo}
+              disabled={analizando || !textoDocumento.trim()}
+              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-900 to-slate-900 hover:from-blue-800 hover:to-slate-800 text-white font-extrabold py-3 px-4 rounded-xl text-xs transition-all shadow-md disabled:opacity-50"
+            >
+              {analizando ? (
+                <>
+                  <ArrowsClockwise size={18} className="animate-spin" />
+                  <span>Analizando Indicadores y Generando WebApp...</span>
+                </>
+              ) : (
+                <>
+                  <Sparkle size={18} weight="fill" className="text-amber-400" />
+                  <span>Generar Diagnóstico Interactivo con IA</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Resultado */}
+          <div className="lg:col-span-6">
             {diagnostico ? (
-              <div className="bg-white rounded-2xl border-2 border-blue-600 p-6 shadow-xl space-y-5 animate-fadeIn">
+              <div className="bg-white rounded-2xl border-2 border-blue-600 p-6 shadow-md space-y-4">
                 <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle size={22} weight="fill" className="text-emerald-600" />
-                    <h3 className="text-sm font-black text-slate-900">Diagnóstico Integrado 360°</h3>
-                  </div>
-                  <span className="px-2.5 py-0.5 bg-blue-100 text-blue-900 font-bold text-[10px] rounded-full">
-                    Currículo III Ciclo
+                  <span className="font-extrabold text-xs text-blue-900">
+                    {diagnostico.tituloSugerido || "Diagnóstico Integrado"}
+                  </span>
+                  <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold text-[10px] rounded-full">
+                    Generado con Éxito
                   </span>
                 </div>
 
-                <div>
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-blue-700 block">
-                    {diagnostico.areaConocimiento} • {diagnostico.nivelEducativo}
-                  </span>
-                  <h4 className="text-base font-extrabold text-slate-900 mt-0.5">
-                    {diagnostico.tituloSugerido}
-                  </h4>
-                </div>
-
-                {/* Las 3 Áreas Oficiales del Diagnóstico */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
-                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl space-y-1">
-                    <span className="font-extrabold text-blue-900 flex items-center gap-1">
-                      <BookOpen size={16} className="text-blue-700" weight="fill" />
-                      1. 🧠 Cognoscitiva:
-                    </span>
-                    <span className="text-slate-700 font-medium block">
-                      {diagnostico.dimensionCognitiva?.saberConceptual || diagnostico.saberConceptual} (10 Ítems)
-                    </span>
+                <div className="grid grid-cols-3 gap-2 text-xs">
+                  <div className="p-2.5 bg-blue-50 border border-blue-200 rounded-xl">
+                    <strong className="block text-blue-900">1. Cognoscitiva</strong>
+                    <span className="text-[11px] text-slate-600">10 Reactivos</span>
                   </div>
-
-                  <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl space-y-1">
-                    <span className="font-extrabold text-emerald-900 flex items-center gap-1">
-                      <Wrench size={16} className="text-emerald-700" weight="fill" />
-                      2. 🖐️ Psicomotora:
-                    </span>
-                    <span className="text-slate-700 font-medium block">
-                      Reto «Conecta el Prototipo» (Simulación en Vivo)
-                    </span>
+                  <div className="p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl">
+                    <strong className="block text-emerald-900">2. Psicomotora</strong>
+                    <span className="text-[11px] text-slate-600">Simulador 2D</span>
                   </div>
-
-                  <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl space-y-1">
-                    <span className="font-extrabold text-amber-900 flex items-center gap-1">
-                      <Heart size={16} className="text-amber-700" weight="fill" />
-                      3. ❤️ Socioafectiva:
-                    </span>
-                    <span className="text-slate-700 font-medium block">
-                      Lista de Observación Docente (Escala A / B / C)
-                    </span>
+                  <div className="p-2.5 bg-amber-50 border border-amber-200 rounded-xl">
+                    <strong className="block text-amber-900">3. Socioafectiva</strong>
+                    <span className="text-[11px] text-slate-600">Reflexión C</span>
                   </div>
                 </div>
 
-                {/* Situación Problema */}
-                <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-1">
-                  <span className="font-bold text-slate-800 block">
-                    🏢 Situación-Problema Auténtica Extraída:
-                  </span>
-                  <p className="text-slate-600 leading-relaxed">
-                    {diagnostico.resumenDiagnostico || "Aula Inteligente: Sistema automatizado de iluminación asistida con microcontrolador, sensor LDR y actuador LED."}
-                  </p>
-                </div>
-
-                {/* Importancia en el Planeamiento */}
-                <div className="p-4 bg-purple-950/5 border border-purple-200 rounded-xl space-y-2 text-xs">
-                  <div className="flex items-center gap-2 font-black text-purple-950">
-                    <FileText size={18} weight="fill" className="text-purple-700" />
-                    <span>Insumo Obligatorio para las Estrategias de Mediación (DUA)</span>
-                  </div>
-                  <p className="text-slate-700 leading-relaxed font-medium">
-                    {diagnostico.importanciaIntegracionPlaneamiento ||
-                      "Los resultados y hallazgos del diagnóstico son el punto de partida técnico para la mediación pedagógica. Es indispensable trasladar las recomendaciones y ajustes detectados directamente a las Estrategias de Mediación del planeamiento didáctico oficial de aula."}
-                  </p>
-                </div>
-
-                {/* Acciones */}
-                <div className="pt-2 space-y-2">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    <button
-                      onClick={() => setVistaActiva("preview")}
-                      className="flex items-center justify-center gap-2 py-3 px-4 bg-blue-700 hover:bg-blue-800 text-white font-black text-xs rounded-xl transition-all shadow-md"
-                    >
-                      <Eye size={18} weight="bold" />
-                      <span>Probar WebApp Interactiva</span>
-                    </button>
-                    <button
-                      onClick={descargarHTML}
-                      className="flex items-center justify-center gap-2 py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-xl transition-all shadow-md"
-                    >
-                      <DownloadSimple size={18} weight="bold" />
-                      <span>Guardar Archivo .html</span>
-                    </button>
-                  </div>
-
-                  <div className="flex items-center justify-between gap-2 pt-1">
-                    <button
-                      onClick={copiarPrompt}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl border border-slate-200 transition-colors"
-                    >
-                      {copiadoPrompt ? <Check size={16} className="text-emerald-600" /> : <Copy size={16} />}
-                      <span>{copiadoPrompt ? "Prompt Copiado" : "Copiar Prompt para Gemini Canvas"}</span>
-                    </button>
-                    <button
-                      onClick={() => setModalProyeccionAbierto(true)}
-                      className="flex items-center justify-center gap-1.5 py-2 px-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition-colors"
-                      title="Proyectar QR en Aula"
-                    >
-                      <ChalkboardTeacher size={16} weight="bold" />
-                      <span>Proyectar</span>
-                    </button>
-                  </div>
+                <div className="pt-2 flex gap-2">
+                  <button
+                    onClick={descargarHTML}
+                    className="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition-all"
+                  >
+                    <DownloadSimple size={16} weight="bold" />
+                    <span>Guardar WebApp .html</span>
+                  </button>
+                  <button
+                    onClick={copiarPrompt}
+                    className="flex items-center justify-center gap-1.5 py-2.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl border border-slate-200 transition-colors"
+                  >
+                    {copiadoPrompt ? <Check size={16} className="text-emerald-600" /> : <Copy size={16} />}
+                    <span>{copiadoPrompt ? "Copiado" : "Copiar Prompt"}</span>
+                  </button>
                 </div>
               </div>
             ) : (
-              <div className="bg-slate-50 rounded-2xl border border-dashed border-slate-300 p-12 text-center space-y-3">
-                <FileText size={48} className="mx-auto text-slate-400" weight="duotone" />
-                <h3 className="text-sm font-bold text-slate-700">Esperando Documento de Diagnóstico</h3>
-                <p className="text-xs text-slate-500 leading-relaxed max-w-sm mx-auto">
-                  Sube tu archivo curricular o pega el texto en el área de la izquierda para interpretar las 3 áreas y generar la WebApp interactiva.
+              <div className="bg-white rounded-2xl border border-dashed border-slate-300 p-8 text-center space-y-3 h-full flex flex-col justify-center items-center">
+                <FileText size={40} className="text-slate-400" weight="duotone" />
+                <h3 className="text-xs font-bold text-slate-700">Espacio de Salida</h3>
+                <p className="text-[11px] text-slate-500 max-w-xs">
+                  Al procesar un documento o pulsar el botón de ejemplo, podrás descargar el código y previsualizar la WebApp interactiva.
                 </p>
               </div>
             )}
           </div>
         </div>
-      ) : (
-        /* Vista Previa Sandbox */
-        <div className="space-y-6">
-          <div className="flex items-center justify-between bg-slate-100 p-3 rounded-xl border border-slate-200">
-            <span className="text-xs font-bold text-slate-800">
-              Vista Previa de la WebApp de Diagnóstico
-            </span>
-            <div className="flex items-center gap-2">
+      </div>
+
+      {/* MODAL CUADRO COMPARATIVO Y DICTAMEN DE VALIDACIÓN CURRICULAR OFICIAL */}
+      {modalComparativaAbierto && (
+        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl border-2 border-purple-600 shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 space-y-6">
+            
+            <div className="flex items-center justify-between border-b border-slate-200 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center shadow-md">
+                  <Scales size={24} weight="bold" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-black text-slate-900">
+                    Dictamen de Validación y Cuadro Comparativo Oficial MEP
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Contraste directo entre la Guía de Evaluación Diagnóstica 9° (Módulo 1) y los Aplicativos Web
+                  </p>
+                </div>
+              </div>
               <button
-                onClick={() => setModalProyeccionAbierto(true)}
-                className="px-3.5 py-1.5 bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs rounded-xl shadow-xs transition-colors flex items-center gap-1.5"
+                onClick={() => setModalComparativaAbierto(false)}
+                className="text-slate-400 hover:text-slate-700 font-black text-sm px-3 py-1 bg-slate-100 rounded-lg"
               >
-                <ChalkboardTeacher size={16} weight="bold" />
-                <span>Modo Proyector</span>
-              </button>
-              <button
-                onClick={() => setVistaActiva("formulario")}
-                className="px-3.5 py-1.5 bg-white hover:bg-slate-50 text-slate-800 font-bold text-xs rounded-xl border border-slate-300"
-              >
-                Volver al Formulario
+                ✕ Cerrar
               </button>
             </div>
-          </div>
 
-          <WebAppPreviewFrame
-            codigoHTML={codigoHTMLGenerado}
-            titulo={diagnostico?.tituloSugerido || "Diagnóstico Integrado 9° - Aula Inteligente"}
-            onDescargar={descargarHTML}
-          />
+            {/* Cuadro Comparativo */}
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs border-collapse border border-slate-200">
+                <thead>
+                  <tr className="bg-slate-900 text-white">
+                    <th className="p-3 border border-slate-700">Elemento / Dimensión</th>
+                    <th className="p-3 border border-slate-700">Documento Base Oficial (PDF MEP)</th>
+                    <th className="p-3 border border-slate-700">Implementación en WebApps</th>
+                    <th className="p-3 border border-slate-700 text-center">Estado</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-200">
+                  <tr className="bg-slate-50">
+                    <td className="p-3 font-bold text-slate-900 border border-slate-200">1. Identificación y Portada</td>
+                    <td className="p-3 text-slate-600 border border-slate-200">Centro educativo, docente, sección, fecha, estudiante, tiempo de 70 min.</td>
+                    <td className="p-3 text-slate-700 border border-slate-200">Campos completos en ambas WebApps, con login del estudiante y gestión de nóminas en la App Docente.</td>
+                    <td className="p-3 text-center border border-slate-200"><span className="px-2 py-1 bg-emerald-100 text-emerald-800 font-extrabold rounded-md text-[10px]">🟢 100% Alineado</span></td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 font-bold text-slate-900 border border-slate-200">2. Situación-Problema</td>
+                    <td className="p-3 text-slate-600 border border-slate-200">«Aula Inteligente»: automatización de luminaria ante baja luz ambiental con MCU, sensor LDR y actuador.</td>
+                    <td className="p-3 text-slate-700 border border-slate-200">Idéntico: Contexto situado del laboratorio de informática con umbral dinámico de 300 Lux.</td>
+                    <td className="p-3 text-center border border-slate-200"><span className="px-2 py-1 bg-emerald-100 text-emerald-800 font-extrabold rounded-md text-[10px]">🟢 100% Alineado</span></td>
+                  </tr>
+                  <tr className="bg-slate-50">
+                    <td className="p-3 font-bold text-slate-900 border border-slate-200">3. Parte A: Conocimientos Previos</td>
+                    <td className="p-3 text-slate-600 border border-slate-200">10 reactivos diagnósticos (Microcontrolador, sensor/actuador, EPS, algoritmo, condición, dato, depuración, ciclo del dato).</td>
+                    <td className="p-3 text-slate-700 border border-slate-200">10 reactivos interactivos con explicaciones conceptuales, retroalimentación formativa y telemetría por reactivo.</td>
+                    <td className="p-3 text-center border border-slate-200"><span className="px-2 py-1 bg-emerald-100 text-emerald-800 font-extrabold rounded-md text-[10px]">🟢 100% Alineado</span></td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 font-bold text-slate-900 border border-slate-200">4. Parte B: Reto Práctico</td>
+                    <td className="p-3 text-slate-600 border border-slate-200">«Conecta el prototipo»: tarjetas impresas en papel, líneas de cables, polaridad (5V, GND, pines), depuración de falla y cambio de actuador.</td>
+                    <td className="p-3 text-slate-700 border border-slate-200">Laboratorio interactivo Canvas/SVG 2D con cables dinámicos, osciloscopio 60 FPS, multímetro, inyector de fallas y alternancia LED/Servo/Buzzer.</td>
+                    <td className="p-3 text-center border border-slate-200"><span className="px-2 py-1 bg-emerald-100 text-emerald-800 font-extrabold rounded-md text-[10px]">🟢 100% Potenciado</span></td>
+                  </tr>
+                  <tr className="bg-slate-50">
+                    <td className="p-3 font-bold text-slate-900 border border-slate-200">5. Parte C: Reflexión Individual</td>
+                    <td className="p-3 text-slate-600 border border-slate-200">5 preguntas de autopercepción (Mayor facilidad, más difícil, reacción al error, qué reforzar y escala de comodidad de 4 niveles).</td>
+                    <td className="p-3 text-slate-700 border border-slate-200">Opciones guiadas con selectores visuales + campo de redacción libre + matriz de 4 sentimientos + codificación en el QR de respaldo.</td>
+                    <td className="p-3 text-center border border-slate-200"><span className="px-2 py-1 bg-emerald-100 text-emerald-800 font-extrabold rounded-md text-[10px]">🟢 100% Mejorado</span></td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 font-bold text-slate-900 border border-slate-200">6. Guía Docente y Rúbricas</td>
+                    <td className="p-3 text-slate-600 border border-slate-200">Listas de cotejo y observación (10 cognoscitivas, 6 psicomotoras, 7 socioafectivas con escala A/B/C) y toma de decisiones (pág 10).</td>
+                    <td className="p-3 text-slate-700 border border-slate-200">Aplicativo Docente independiente con carga de nóminas por archivo, evaluación por estudiante, escáner QR y consolidado en Excel/PDF.</td>
+                    <td className="p-3 text-center border border-slate-200"><span className="px-2 py-1 bg-emerald-100 text-emerald-800 font-extrabold rounded-md text-[10px]">🟢 100% Cumplido</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            {/* Dictamen Pedagógico Final */}
+            <div className="bg-purple-50 border border-purple-200 p-4 rounded-2xl text-xs space-y-2">
+              <div className="flex items-center gap-2 font-black text-purple-950">
+                <CheckCircle size={18} weight="fill" className="text-purple-700" />
+                <span>Dictamen Final: Validez Curricular y Tecnológica Total (100%)</span>
+              </div>
+              <p className="text-slate-700 leading-relaxed">
+                Los dos aplicativos (Estudiante y Docente) preservan con absoluta fidelidad los criterios, indicadores de logro y estructura metodológica de la Guía de Evaluación Diagnóstica de Noveno Año (Módulo 1 - Formación Tecnológica 2026). Las mejoras digitales aplicadas en la Parte C y en la simulación 2D optimizan el registro de evidencias formativas y permiten el seguimiento tanto online como offline.
+              </p>
+            </div>
+
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => setModalComparativaAbierto(false)}
+                className="px-5 py-2.5 bg-slate-900 text-white font-bold text-xs rounded-xl shadow-md"
+              >
+                Entendido y Cerrar
+              </button>
+            </div>
+
+          </div>
         </div>
       )}
 
@@ -533,4 +610,3 @@ Escala Oficial MEP: A (Autónomo/Consistente), B (Apoyo ocasional), C (Requiere 
     </div>
   );
 }
-

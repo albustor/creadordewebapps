@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#003366">
+  <title>Aplicativo Docente: Registro y Evaluación Diagnóstica 9° (Módulo 1 - MEP)</title>
+  
+  <style>
+    :root {
+      --bg-primary: #0b1120;
+      --bg-surface: #1e293b;
+      --bg-card: #0f172a;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --brand: #2563eb;
+      --accent: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --border: #334155;
+      --border-focus: #38bdf8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER OFICIAL */
+    header {
+      background: linear-gradient(135deg, #001f3f 0%, #003366 50%, #0055a5 100%);
+      color: white;
+      padding: 12px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      border-bottom: 2px solid #0284c7;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .mep-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 3px 8px;
+      border-radius: 9999px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+
+    .top-tools {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    button, .btn {
+      background: var(--brand);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      user-select: none;
+      min-height: 36px;
+      text-decoration: none;
+    }
+
+    button:hover, .btn:hover {
+      filter: brightness(1.15);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary { background: #334155; color: #f8fafc; }
+    .btn-accent { background: #059669; }
+    .btn-warning { background: #d97706; }
+    .btn-danger { background: #dc2626; }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
+    .btn-estudiante { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); border-color: #38bdf8; }
+
+    /* NAVEGACIÓN DE VISTAS */
+    .view-nav {
+      max-width: 1200px;
+      margin: 14px auto 0;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      width: 100%;
+    }
+
+    .view-tab {
+      padding: 10px 6px;
+      text-align: center;
+      background: #1e293b;
+      border: 1.5px solid #334155;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .view-tab.activa {
+      background: linear-gradient(180deg, #1e3a8a 0%, #172554 100%);
+      border-color: #38bdf8;
+      color: #38bdf8;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+    }
+
+    /* CONTENEDOR PRINCIPAL */
+    .main-container {
+      max-width: 1200px;
+      margin: 14px auto 30px;
+      padding: 0 16px;
+      flex: 1;
+      width: 100%;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+      margin-bottom: 20px;
+    }
+
+    /* TABLAS Y LISTADOS */
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-top: 10px;
+    }
+
+    .custom-table th {
+      background: #1e293b;
+      color: #38bdf8;
+      padding: 10px 8px;
+      text-align: left;
+      border: 1px solid #334155;
+      font-weight: 800;
+    }
+
+    .custom-table td {
+      padding: 8px;
+      border: 1px solid #334155;
+      color: #cbd5e1;
+      background: #0f172a;
+    }
+
+    .custom-table tr:hover td {
+      background: #1e293b;
+    }
+
+    /* FORMULARIOS DE RÚBRICA */
+    .rubric-row {
+      display: grid;
+      grid-template-columns: 2.2fr 1.3fr 1.5fr;
+      gap: 10px;
+      align-items: center;
+      padding: 8px 10px;
+      border-bottom: 1px solid #334155;
+      background: #0f172a;
+      border-radius: 6px;
+      margin-bottom: 4px;
+    }
+
+    .rubric-header {
+      background: #1e293b;
+      font-weight: 800;
+      color: #38bdf8;
+      font-size: 11.5px;
+      border: 1px solid #334155;
+    }
+
+    .segmented-control {
+      display: flex;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid #334155;
+    }
+
+    .segmented-btn {
+      flex: 1;
+      background: #1e293b;
+      color: #94a3b8;
+      border: none;
+      padding: 6px 4px;
+      font-size: 10.5px;
+      font-weight: 800;
+      cursor: pointer;
+      min-height: 28px;
+      border-radius: 0;
+      transition: all 0.15s;
+    }
+
+    .segmented-btn.active-logrado { background: #064e3b; color: #34d399; font-weight: 900; }
+    .segmented-btn.active-desarrollo { background: #78350f; color: #fbbf24; font-weight: 900; }
+    .segmented-btn.active-apoyo { background: #7f1d1d; color: #fca5a5; font-weight: 900; }
+    .segmented-btn.active-a { background: #064e3b; color: #34d399; font-weight: 900; }
+    .segmented-btn.active-b { background: #78350f; color: #fbbf24; font-weight: 900; }
+    .segmented-btn.active-c { background: #7f1d1d; color: #fca5a5; font-weight: 900; }
+
+    .rubric-obs-input {
+      width: 100%;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 6px 8px;
+      color: white;
+      font-size: 11px;
+      outline: none;
+    }
+
+    .student-pill {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      background: #1e293b;
+      border: 1.5px solid #334155;
+      border-radius: 8px;
+      margin-bottom: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .student-pill:hover {
+      border-color: #38bdf8;
+      transform: translateX(2px);
+    }
+
+    .student-pill.selected {
+      background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+      border-color: #38bdf8;
+      box-shadow: 0 0 10px rgba(56,189,248,0.25);
+    }
+
+    .badge-status {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .badge-completado { background: #064e3b; color: #34d399; border: 1px solid #10b981; }
+    .badge-pendiente { background: #78350f; color: #fbbf24; border: 1px solid #f59e0b; }
+
+    /* VISTA DE IMPRESIÓN OFICIAL */
+    @media print {
+      body { background: white !important; color: black !important; }
+      header, .view-nav, .top-tools, .btn, .no-print { display: none !important; }
+      .card { box-shadow: none !important; border: 1px solid #ccc !important; background: white !important; color: black !important; }
+      .custom-table th, .custom-table td { color: black !important; background: white !important; border-color: #333 !important; }
+      .print-only { display: block !important; }
+    }
+
+    .print-only { display: none; }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(4px);
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      z-index: 9999;
+    }
+
+    .modal-content {
+      background: #0f172a;
+      border: 2px solid #38bdf8;
+      border-radius: 14px;
+      padding: 20px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 0 30px rgba(56, 189, 248, 0.3);
+      color: #f8fafc;
+    }
+
+    @media (max-width: 768px) {
+      .view-nav { grid-template-columns: repeat(2, 1fr); }
+      .rubric-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER OFICIAL MEP -->
+  <header>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <div style="width: 32px; height: 32px; border-radius: 6px; background: white; display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);">
+        👨‍🏫
+      </div>
+      <div>
+        <div class="mep-badge">
+          <span>Ministerio de Educación Pública • PNFT 2026</span>
+        </div>
+        <h1 style="font-size: 0.95rem; font-weight: 900; letter-spacing: -0.2px; margin-top: 1px;">
+          Evaluador Diagnóstico Docente: 9° Año (Módulo 1)
+        </h1>
+      </div>
+    </div>
+
+    <div class="top-tools">
+      <a href="/webapps/diagnostico_9no_modulo01_aula_inteligente.html" target="_blank" class="btn btn-estudiante" style="font-size: 11px; padding: 4px 10px; min-height: 28px;" title="Abrir WebApp del Estudiante">
+        💡 Ver App Estudiante
+      </a>
+      <button class="btn btn-accent" style="font-size: 11px; padding: 4px 10px; min-height: 28px;" onclick="exportarExcelConsolidado()">
+        📊 Exportar Excel
+      </button>
+      <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; min-height: 28px;" onclick="imprimirReporteOficial()">
+        🖨️ Imprimir Acta MEP
+      </button>
+    </div>
+  </header>
+
+  <!-- NAVEGADOR DE 4 VISTAS DOCENTES -->
+  <nav class="view-nav no-print">
+    <div class="view-tab activa" id="tabV1" onclick="cambiarVista(1)">
+      <span>1. ESTUDIANTES</span>
+      <span>Carga de Lista & Sección</span>
+    </div>
+    <div class="view-tab" id="tabV2" onclick="cambiarVista(2)">
+      <span>2. EVALUACIÓN</span>
+      <span>Rúbrica Individual (3 Áreas)</span>
+    </div>
+    <div class="view-tab" id="tabV3" onclick="cambiarVista(3)">
+      <span>3. CONSOLIDADO</span>
+      <span>Matriz Grupal & Módulo 1</span>
+    </div>
+    <div class="view-tab" id="tabV4" onclick="cambiarVista(4)">
+      <span>4. DECISIONES</span>
+      <span>Criterios Pedagógicos MEP</span>
+    </div>
+  </nav>
+
+  <main class="main-container">
+
+    <!-- ==================================================================== -->
+    <!-- VISTA 1: CARGA PREVIA DE ESTUDIANTES (ARCHIVO ADJUNTO O LISTADO)     -->
+    <!-- ==================================================================== -->
+    <div id="vista1" class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
+        <div>
+          <span class="mep-badge" style="background: #1e3a8a; border-color: #38bdf8; color: #93c5fd;">
+            Paso 1 • Gestión de Nómina
+          </span>
+          <h2 style="font-size: 1.2rem; color: #f8fafc; margin-top: 2px;">
+            Cargar Lista de Estudiantes y Secciones
+          </h2>
+        </div>
+        <div style="display: flex; gap: 6px;">
+          <button class="btn btn-accent" onclick="cargarSeccionDemo('9-1')">
+            ⚡ Cargar Demo 9-1 (10 Estudiantes)
+          </button>
+          <button class="btn btn-secondary" onclick="cargarSeccionDemo('9-2')">
+            ⚡ Demo 9-2
+          </button>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
+        
+        <!-- CARGA DE ARCHIVO ADJUNTO -->
+        <div style="background: #1e293b; border: 1.5px dashed #38bdf8; border-radius: 12px; padding: 14px; text-align: center;">
+          <div style="font-size: 28px; margin-bottom: 4px;">📂</div>
+          <strong style="font-size: 12.5px; color: #38bdf8; display: block; margin-bottom: 4px;">
+            Subir Archivo Adjunto de Estudiantes
+          </strong>
+          <p style="font-size: 11px; color: #94a3b8; margin-bottom: 10px;">
+            Compatible con listas en formato <strong>.CSV, .TXT o Excel (.xlsx)</strong> (Columnas: Nombre, Apellidos, Sección).
+          </p>
+
+          <label class="btn btn-accent" style="cursor: pointer; display: inline-flex;">
+            <span>Examinar Archivo...</span>
+            <input type="file" id="fileEstudiantes" accept=".csv,.txt,.json" class="no-print" style="display: none;" onchange="procesarArchivoEstudiantes(event)">
+          </label>
+        </div>
+
+        <!-- PEGAR TEXTO DIRECTO -->
+        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 14px;">
+          <strong style="font-size: 12.5px; color: #f8fafc; display: block; margin-bottom: 4px;">
+            O Pegar Listado Rápido (Línea por Línea):
+          </strong>
+          <textarea id="txtEstudiantesPegar" placeholder="Ejemplo:&#10;Valeria Montero Jiménez, Sección 9-1&#10;Kevin Morales Vargas, Sección 9-1&#10;Sofía Castro Navarro, Sección 9-1" rows="3" style="width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 6px 8px; color: white; font-size: 11px; outline: none; margin-bottom: 6px;"></textarea>
+          <button class="btn btn-secondary" style="width: 100%; font-size: 11px;" onclick="importarTextoPegado()">
+            ➕ Procesar e Incorporar a la Nómina
+          </button>
+        </div>
+      </div>
+
+      <!-- LISTA DE ESTUDIANTES CARGADOS -->
+      <div style="background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <strong style="font-size: 12.5px; color: #38bdf8;">
+            📋 Nómina Actual de Estudiantes (<span id="totalEstudiantesContador">0</span> registrados)
+          </strong>
+          <div style="display: flex; gap: 6px;">
+            <select id="filtroSeccion" style="background: #1e293b; border: 1px solid #334155; color: white; border-radius: 6px; padding: 4px 8px; font-size: 11px;" onchange="renderizarListaEstudiantes()">
+              <option value="TODAS">Todas las Secciones</option>
+              <option value="Sección 9-1">Sección 9-1</option>
+              <option value="Sección 9-2">Sección 9-2</option>
+              <option value="Sección 9-3">Sección 9-3</option>
+            </select>
+            <button class="btn btn-danger" style="font-size: 10.5px; padding: 3px 6px; min-height: 24px;" onclick="limpiarNomina()">
+              🗑️ Vaciar Nómina
+            </button>
+          </div>
+        </div>
+
+        <div id="contenedorListaEstudiantes" style="max-height: 280px; overflow-y: auto; padding-right: 4px;">
+          <!-- Se inyecta dinámicamente -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================================================================== -->
+    <!-- VISTA 2: EVALUACIÓN INDIVIDUAL EN LAS 3 ÁREAS OFICIALES MEP           -->
+    <!-- ==================================================================== -->
+    <div id="vista2" class="card" style="display: none;">
+      
+      <!-- ENCABEZADO DEL ESTUDIANTE SELECCIONADO -->
+      <div style="display: flex; justify-content: space-between; align-items: center; background: #1e293b; border: 1.5px solid #38bdf8; border-radius: 12px; padding: 12px 16px; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+        <div>
+          <span style="font-size: 10px; color: #38bdf8; font-weight: 800; text-transform: uppercase;">Estudiante Seleccionado para Evaluación:</span>
+          <h2 style="font-size: 1.25rem; color: white; font-weight: 900;" id="labelNombreEstudianteActivo">
+            Valeria Montero Jiménez
+          </h2>
+          <span style="font-size: 11px; color: #94a3b8;" id="labelSeccionEstudianteActivo">
+            Sección: 9-1 • III Ciclo • Módulo 1 (2026)
+          </span>
+        </div>
+
+        <div style="display: flex; gap: 6px; align-items: center;">
+          <button class="btn btn-outline" onclick="mostrarModalEscanerQR()" title="Escanear comprobante QR del estudiante">
+            📷 Escanear QR Alumno
+          </button>
+          <button class="btn btn-accent" onclick="guardarEvaluacionEstudianteActual()">
+            💾 Guardar Evaluación
+          </button>
+        </div>
+      </div>
+
+      <!-- 1. ÁREA COGNOSCITIVA (LISTA DE COTEJO - 10 EVIDENCIAS DOCUMENTO BASE) -->
+      <div style="margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 4px;">
+          <strong style="font-size: 13px; color: #60a5fa;">
+            🧠 1. Lista de Cotejo – Área Cognoscitiva (10 Evidencias MEP)
+          </strong>
+          <div style="display: flex; gap: 4px;">
+            <button class="btn btn-outline" style="font-size: 10px; padding: 2px 6px; min-height: 22px;" onclick="marcarTodosCognitivo('L')">
+              ✅ Todos Logrado
+            </button>
+            <button class="btn btn-outline" style="font-size: 10px; padding: 2px 6px; min-height: 22px;" onclick="marcarTodosCognitivo('ED')">
+              🟡 En Desarrollo
+            </button>
+          </div>
+        </div>
+
+        <div class="rubric-row rubric-header">
+          <div>Evidencia Observable (Saber)</div>
+          <div style="text-align: center;">Nivel de Logro</div>
+          <div>Observaciones Pedagógicas</div>
+        </div>
+
+        <div id="contenedorRubricaCognitiva">
+          <!-- 10 Evidencias inyectadas por JS -->
+        </div>
+      </div>
+
+      <!-- 2. ÁREA PSICOMOTORA (LISTA DE OBSERVACIÓN - 6 CONDUCTAS RETO PRÁCTICO) -->
+      <div style="margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 4px;">
+          <strong style="font-size: 13px; color: #34d399;">
+            🖐️ 2. Lista de Observación – Área Psicomotora (Reto «Conecta el Prototipo»)
+          </strong>
+          <div style="display: flex; gap: 4px;">
+            <button class="btn btn-outline" style="font-size: 10px; padding: 2px 6px; min-height: 22px;" onclick="marcarTodosPsicomotor('A')">
+              ✅ Todos Nivel A
+            </button>
+          </div>
+        </div>
+
+        <div class="rubric-row rubric-header" style="color: #34d399;">
+          <div>Conducta Observable (Hacer)</div>
+          <div style="text-align: center;">Escala (A / B / C)</div>
+          <div>Evidencia / Observación</div>
+        </div>
+
+        <div id="contenedorRubricaPsicomotora">
+          <!-- 6 Conductas inyectadas por JS -->
+        </div>
+      </div>
+
+      <!-- 3. ÁREA SOCIOAFECTIVA (LISTA DE OBSERVACIÓN - 7 CONDUCTAS CONVIVIR) -->
+      <div style="margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 4px;">
+          <strong style="font-size: 13px; color: #fbbf24;">
+            ❤️ 3. Lista de Observación – Área Socioafectiva (7 Conductas Actitudinales)
+          </strong>
+          <div style="display: flex; gap: 4px;">
+            <button class="btn btn-outline" style="font-size: 10px; padding: 2px 6px; min-height: 22px;" onclick="marcarTodosSocio('A')">
+              ✅ Todos Nivel A
+            </button>
+          </div>
+        </div>
+
+        <div class="rubric-row rubric-header" style="color: #fbbf24;">
+          <div>Conducta Observable (Ser y Convivir)</div>
+          <div style="text-align: center;">Escala (A / B / C)</div>
+          <div>Evidencia / Observación</div>
+        </div>
+
+        <div id="contenedorRubricaSocioafectiva">
+          <!-- 7 Conductas inyectadas por JS -->
+        </div>
+      </div>
+
+      <!-- SÍNTESIS INDIVIDUAL Y ACCIÓN PEDAGÓGICA (PÁG 8-9 DEL DOCUMENTO BASE) -->
+      <div style="background: #1e293b; border: 1.5px solid #334155; border-radius: 10px; padding: 14px;">
+        <strong style="font-size: 12.5px; color: #38bdf8; display: block; margin-bottom: 10px;">
+          🎯 Registro Individual: Necesidad Prioritaria & Acción Pedagógica Sugerida
+        </strong>
+
+        <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 12px;">
+          <div>
+            <label style="display: block; font-size: 11px; font-weight: 700; color: #cbd5e1; margin-bottom: 4px;">
+              Necesidad Prioritaria Detectada:
+            </label>
+            <select id="selectNecesidadPrioritaria" style="width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 7px 10px; color: white; font-size: 12px;">
+              <option value="Dominio Alto / Consolidado">Dominio Alto / Consolidado (Avanzar complejidad)</option>
+              <option value="Algoritmo y Secuenciación">Algoritmo y Secuenciación (Lógica previa)</option>
+              <option value="Sensor, Actuador o Microcontrolador">Sensor, Actuador o Microcontrolador (Exploración guiada)</option>
+              <option value="Proceso de Depuración">Proceso de Depuración (Prueba-error-corrección)</option>
+              <option value="Orientación Espacial y Conexiones">Orientación Espacial y Conexiones (Manipulación progresiva)</option>
+              <option value="Socioafectiva y Resiliencia">Socioafectiva y Resiliencia (Acompañamiento colaborativo)</option>
+            </select>
+          </div>
+
+          <div>
+            <label style="display: block; font-size: 11px; font-weight: 700; color: #cbd5e1; margin-bottom: 4px;">
+              Acción Pedagógica Sugerida (Para Estrategias de Mediación):
+            </label>
+            <input type="text" id="inputAccionPedagogica" value="Incorporar retos guiados de simulación y descomposición algorítmica." style="width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 7px 10px; color: white; font-size: 12px;">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ==================================================================== -->
+    <!-- VISTA 3: CONSOLIDADO GRUPAL & MATRIZ DE CORRESPONDENCIA MÓDULO 1     -->
+    <!-- ==================================================================== -->
+    <div id="vista3" class="card" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
+        <div>
+          <span class="mep-badge" style="background: #1e3a8a; border-color: #38bdf8; color: #93c5fd;">
+            Página 9 Oficial MEP
+          </span>
+          <h2 style="font-size: 1.2rem; color: #f8fafc; margin-top: 2px;">
+            Consolidado Grupal y Matriz de Correspondencia con el Módulo 1
+          </h2>
+        </div>
+
+        <div style="display: flex; gap: 6px;">
+          <button class="btn btn-accent" onclick="exportarExcelConsolidado()">
+            📊 Descargar Matriz Completa
+          </button>
+        </div>
+      </div>
+
+      <!-- MATRIZ DE RESULTADOS DEL GRUPO (SECCIÓN 9 DEL DOCUMENTO BASE) -->
+      <div style="background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 14px; margin-bottom: 16px;">
+        <strong style="font-size: 13px; color: #38bdf8; display: block; margin-bottom: 8px;">
+          9. Registro de Resultados del Grupo
+        </strong>
+
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Área Evaluada</th>
+              <th>Fortaleza Predominante</th>
+              <th>Necesidad Predominante</th>
+              <th>% Estimado</th>
+              <th>Decisión Pedagógica MEP</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight: 800; color: #60a5fa;">Cognoscitiva</td>
+              <td id="grpFortCognitiva">Comprensión del microcontrolador y lógica E-P-S</td>
+              <td id="grpNecCognitiva">Depuración de circuitos y ciclo de vida del dato</td>
+              <td id="grpPorcCognitiva" style="color: #34d399; font-weight: 800;">85%</td>
+              <td>Actividades de análisis de datos y resolución de fallas en simulador.</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 800; color: #34d399;">Psicomotora</td>
+              <td id="grpFortPsicomotora">Trazo y colocación adecuada de cables y tarjetas</td>
+              <td id="grpNecPsicomotora">Correspondencia espacial de pines de alimentación</td>
+              <td id="grpPorcPsicomotora" style="color: #34d399; font-weight: 800;">90%</td>
+              <td>Avanzar a retos de simulación de circuitos más complejos.</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 800; color: #fbbf24;">Socioafectiva</td>
+              <td id="grpFortSocio">Persistencia y gusto por la precisión</td>
+              <td id="grpNecSocio">Manejo de la frustración en el primer intento</td>
+              <td id="grpPorcSocio" style="color: #34d399; font-weight: 800;">88%</td>
+              <td>Trabajo colaborativo en parejas con acompañamiento gradual.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- TABLA DETALLADA DE ESTUDIANTES EVALUADOS -->
+      <div style="background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 14px;">
+        <strong style="font-size: 13px; color: #f8fafc; display: block; margin-bottom: 8px;">
+          7. Registro Individual Consolidado de Estudiantes (Página 8 MEP)
+        </strong>
+
+        <div style="overflow-x: auto;">
+          <table class="custom-table" id="tablaConsolidadoIndividual">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Estudiante</th>
+                <th>Sección</th>
+                <th>Cognoscitiva</th>
+                <th>Psicomotora</th>
+                <th>Socioafectiva</th>
+                <th>Necesidad Prioritaria</th>
+                <th>Acción Pedagógica Sugerida</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyConsolidadoEstudiantes">
+              <!-- Filas dinámicas -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================================================================== -->
+    <!-- VISTA 4: CRITERIOS PARA LA TOMA DE DECISIONES PEDAGÓGICAS (MEP)     -->
+    <!-- ==================================================================== -->
+    <div id="vista4" class="card" style="display: none;">
+      <span class="mep-badge" style="background: #1e3a8a; border-color: #38bdf8; color: #93c5fd; margin-bottom: 6px;">
+        Página 10 Oficial MEP
+      </span>
+      <h2 style="font-size: 1.25rem; color: #38bdf8; margin-bottom: 12px; font-weight: 900;">
+        10. Criterios para la Toma de Decisiones Pedagógicas y Planeamiento
+      </h2>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 12px;">
+        
+        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px;">
+          <strong style="color: #f59e0b; display: block; margin-bottom: 4px;">
+            ⚠️ Si la mayoría presenta dificultad en algoritmo o secuenciación:
+          </strong>
+          <p style="color: #cbd5e1; line-height: 1.45;">
+            Iniciar con situaciones concretas de descomposición, secuencias y representación de algoritmos antes de aumentar la complejidad de programación.
+          </p>
+        </div>
+
+        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px;">
+          <strong style="color: #38bdf8; display: block; margin-bottom: 4px;">
+            🔌 Si la dificultad se concentra en sensor, actuador o microcontrolador:
+          </strong>
+          <p style="color: #cbd5e1; line-height: 1.45;">
+            Planificar una exploración guiada de componentes, entradas, procesamiento y salidas mediante simulación o prototipado guiado.
+          </p>
+        </div>
+
+        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px;">
+          <strong style="color: #ef4444; display: block; margin-bottom: 4px;">
+            🐛 Si hay dificultad para depurar:
+          </strong>
+          <p style="color: #cbd5e1; line-height: 1.45;">
+            Incorporar retos breves de prueba–error–corrección y verbalización del proceso de depuración técnica.
+          </p>
+        </div>
+
+        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px;">
+          <strong style="color: #a78bfa; display: block; margin-bottom: 4px;">
+            ❤️ Si la dificultad principal es socioafectiva:
+          </strong>
+          <p style="color: #cbd5e1; line-height: 1.45;">
+            Diseñar actividades de iteración, colaboración y resolución de problemas con acompañamiento gradual y refuerzo positivo.
+          </p>
+        </div>
+
+        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px;">
+          <strong style="color: #fca5a5; display: block; margin-bottom: 4px;">
+            🖐️ Si hay dificultades psicomotoras en orientación espacial o conexiones:
+          </strong>
+          <p style="color: #cbd5e1; line-height: 1.45;">
+            Proporcionar tareas progresivas de organización espacial, seguimiento de instrucciones y ejecución de secuencias antes de avanzar a prototipos más complejos.
+          </p>
+        </div>
+
+        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px;">
+          <strong style="color: #34d399; display: block; margin-bottom: 4px;">
+            🚀 Si el grupo muestra dominio inicial alto:
+          </strong>
+          <p style="color: #cbd5e1; line-height: 1.45;">
+            Aumentar gradualmente la complejidad, incorporando datos, automatización y prototipos con mayor autonomía.
+          </p>
+        </div>
+
+      </div>
+
+      <div style="margin-top: 16px; background: rgba(56, 189, 248, 0.1); border: 1.5px solid #38bdf8; border-radius: 8px; padding: 12px; font-size: 12px; color: #93c5fd;">
+        <strong>11. Recomendaciones Oficiales para la Mediación Docente:</strong>
+        <ul style="margin-top: 6px; margin-left: 18px; line-height: 1.5;">
+          <li>Aplicar el diagnóstico antes de desarrollar formalmente los nuevos aprendizajes del Módulo 1.</li>
+          <li>No convertir los resultados en una calificación sumativa punitiva.</li>
+          <li>Utilizar los hallazgos para ajustar la mediación, agrupamientos, apoyos, ritmo y secuencia de las primeras actividades de aula.</li>
+          <li>Mantener los indicadores de logro de la Guía docente con su redacción textual cuando se incorporen al planeamiento.</li>
+        </ul>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL ESCÁNER QR DE ALUMNOS -->
+  <div id="modalEscanerQR" class="modal">
+    <div class="modal-content" style="max-width: 480px; text-align: center;">
+      <h3 style="color: #38bdf8; margin-bottom: 6px; font-size: 1.2rem;">📷 Sincronización QR del Estudiante</h3>
+      <p style="font-size: 11.5px; color: #cbd5e1; margin-bottom: 12px;">
+        Pega el código o token de respaldo generado en la pantalla del estudiante:
+      </p>
+
+      <textarea id="inputTokenQR" placeholder="Pega aquí el código (Ej: MEP-9NO-M01|Valeria Montero|9-1|COG:10/10|PSI:A|SOC:Muy cómodo/a)" rows="3" style="width: 100%; background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 8px; color: white; font-size: 11.5px; outline: none; margin-bottom: 10px;"></textarea>
+
+      <div style="display: flex; gap: 8px; justify-content: center;">
+        <button class="btn btn-accent" onclick="procesarTokenQRManual()">
+          ⚡ Aplicar e Importar al Estudiante
+        </button>
+        <button class="btn btn-outline" onclick="cerrarModalEscanerQR()">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // LISTA DE EVIDENCIAS OFICIALES MEP (DOCUMENTO BASE PÁGINA 7 Y 8)
+    var EVIDENCIAS_COGNITIVAS = [
+      "Reconoce la función general de un microcontrolador.",
+      "Identifica sensor y actuador y diferencia sus funciones.",
+      "Comprende la relación entrada–proceso–salida.",
+      "Reconoce la estructura condicional en una situación automatizada.",
+      "Organiza una secuencia básica de pasos para resolver el problema.",
+      "Comprende el algoritmo como una secuencia ordenada.",
+      "Reconoce el dato producido por un sensor.",
+      "Propone acciones básicas para localizar un error.",
+      "Relaciona el almacenamiento de datos con su conservación y uso.",
+      "Transfiere conocimientos previos para proponer una solución."
+    ];
+
+    var CONDUCTAS_PSICOMOTORAS = [
+      "Organiza espacialmente las tarjetas y los puntos de conexión.",
+      "Manipula tarjetas y líneas con precisión.",
+      "Traza o coloca conexiones siguiendo una secuencia de trabajo.",
+      "Mantiene correspondencia espacial entre los componentes representados.",
+      "Corrige una conexión sin perder el objetivo de la tarea.",
+      "Realiza la representación con autonomía progresiva."
+    ];
+
+    var CONDUCTAS_SOCIOAFECTIVAS = [
+      "Demuestra gusto por la precisión y cuida los detalles.",
+      "Aprende del error y utiliza el error como oportunidad de aprendizaje.",
+      "Muestra flexibilidad ante problemas o cambios en la situación.",
+      "Manifiesta tolerancia a la frustración, paciencia y persistencia.",
+      "Comunica sus ideas de forma comprensible.",
+      "Colabora y mantiene un trato constructivo y respetuoso durante el trabajo en pareja.",
+      "Maneja los materiales de forma ética y segura."
+    ];
+
+    var estadoDocente = {
+      vistaActual: 1,
+      estudiantes: [],
+      estudianteActivoIdx: 0,
+      seccionFiltro: "TODAS"
+    };
+
+    // Inicializar aplicativo
+    window.addEventListener("DOMContentLoaded", function() {
+      cargarNominaDesdeStorage();
+      if (estadoDocente.estudiantes.length === 0) {
+        cargarSeccionDemo('9-1');
+      }
+      renderizarTodo();
+    });
+
+    function cambiarVista(num) {
+      estadoDocente.vistaActual = num;
+      for (var i = 1; i <= 4; i++) {
+        var v = document.getElementById("vista" + i);
+        var t = document.getElementById("tabV" + i);
+        if (v) v.style.display = (i === num ? "block" : "none");
+        if (t) {
+          if (i === num) t.className = "view-tab activa";
+          else t.className = "view-tab";
+        }
+      }
+      if (num === 3) renderizarConsolidadoGrupal();
+    }
+
+    function cargarSeccionDemo(sec) {
+      var demos = {
+        "9-1": [
+          { id: "EST-01", nombre: "Valeria Montero Jiménez", seccion: "Sección 9-1", evaluado: true, cog: Array(10).fill("L"), psi: Array(6).fill("A"), soc: Array(7).fill("A"), necesidad: "Dominio Alto / Consolidado", accion: "Aumentar complejidad con proyectos de robótica avanzada." },
+          { id: "EST-02", nombre: "Kevin Morales Vargas", seccion: "Sección 9-1", evaluado: true, cog: ["L","L","L","L","ED","ED","L","ED","L","L"], psi: ["A","A","B","A","B","A"], soc: ["A","A","A","B","A","A","A"], necesidad: "Algoritmo y Secuenciación", accion: "Ejercicios de diagramas de flujo y descomposición lógica." },
+          { id: "EST-03", nombre: "Sofía Castro Navarro", seccion: "Sección 9-1", evaluado: true, cog: ["L","L","L","L","L","L","L","L","L","L"], psi: ["A","A","A","A","A","A"], soc: ["A","A","A","A","A","A","A"], necesidad: "Dominio Alto / Consolidado", accion: "Liderar proyecto integrador en domótica escolar." },
+          { id: "EST-04", nombre: "Matías Rojas Alvarado", seccion: "Sección 9-1", evaluado: false, cog: Array(10).fill("ED"), psi: Array(6).fill("B"), soc: Array(7).fill("B"), necesidad: "Sensor, Actuador o Microcontrolador", accion: "Exploración guiada de hardware en simulador." },
+          { id: "EST-05", nombre: "Jimena Esquivel Cordero", seccion: "Sección 9-1", evaluado: true, cog: Array(10).fill("L"), psi: Array(6).fill("A"), soc: Array(7).fill("A"), necesidad: "Dominio Alto / Consolidado", accion: "Avanzar a retos de automatización autónoma." }
+        ],
+        "9-2": [
+          { id: "EST-06", nombre: "David Fernández Mora", seccion: "Sección 9-2", evaluado: true, cog: Array(10).fill("L"), psi: Array(6).fill("A"), soc: Array(7).fill("A"), necesidad: "Dominio Alto / Consolidado", accion: "Reforzar programación de actuadores servos." },
+          { id: "EST-07", nombre: "Camila Solano Ugalde", seccion: "Sección 9-2", evaluado: false, cog: Array(10).fill("ED"), psi: Array(6).fill("B"), soc: Array(7).fill("B"), necesidad: "Proceso de Depuración", accion: "Retos breves de prueba y depuración guiada." }
+        ]
+      };
+
+      var nuevos = demos[sec] || [];
+      estadoDocente.estudiantes = nuevos;
+      guardarNominaEnStorage();
+      renderizarListaEstudiantes();
+      seleccionarEstudiante(0);
+      alert("Nómina cargada con éxito: " + nuevos.length + " estudiantes de " + sec);
+    }
+
+    function procesarArchivoEstudiantes(event) {
+      var file = event.target.files[0];
+      if (!file) return;
+
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var texto = e.target.result;
+        var lineas = texto.split(/\r?\n/);
+        var agregados = 0;
+
+        lineas.forEach(function(linea, idx) {
+          var limpio = linea.trim();
+          if (!limpio) return;
+          var partes = limpio.split(/[,;\t]/);
+          var nom = partes[0] ? partes[0].trim() : "Estudiante " + (idx+1);
+          var sec = partes[1] ? partes[1].trim() : "Sección 9-1";
+
+          estadoDocente.estudiantes.push({
+            id: "EST-" + (estadoDocente.estudiantes.length + 1),
+            nombre: nom,
+            seccion: sec,
+            evaluado: false,
+            cog: Array(10).fill("ED"),
+            psi: Array(6).fill("B"),
+            soc: Array(7).fill("B"),
+            necesidad: "Sensor, Actuador o Microcontrolador",
+            accion: "Planificar exploración guiada de entradas y salidas."
+          });
+          agregados++;
+        });
+
+        guardarNominaEnStorage();
+        renderizarListaEstudiantes();
+        alert("¡Archivo importado con éxito! Se añadieron " + agregados + " estudiantes a la nómina.");
+      };
+      reader.readAsText(file);
+    }
+
+    function importarTextoPegado() {
+      var txt = document.getElementById("txtEstudiantesPegar").value.trim();
+      if (!txt) return;
+
+      var lineas = txt.split(/\r?\n/);
+      var agregados = 0;
+
+      lineas.forEach(function(l) {
+        var partes = l.split(/[,;\t]/);
+        var nom = partes[0] ? partes[0].trim() : "";
+        var sec = partes[1] ? partes[1].trim() : "Sección 9-1";
+        if (nom) {
+          estadoDocente.estudiantes.push({
+            id: "EST-" + (estadoDocente.estudiantes.length + 1),
+            nombre: nom,
+            seccion: sec,
+            evaluado: false,
+            cog: Array(10).fill("ED"),
+            psi: Array(6).fill("B"),
+            soc: Array(7).fill("B"),
+            necesidad: "Algoritmo y Secuenciación",
+            accion: "Iniciar con secuencias concretas y descomposición de algoritmos."
+          });
+          agregados++;
+        }
+      });
+
+      document.getElementById("txtEstudiantesPegar").value = "";
+      guardarNominaEnStorage();
+      renderizarListaEstudiantes();
+      alert("Se incorporaron " + agregados + " estudiantes.");
+    }
+
+    function limpiarNomina() {
+      if (confirm("¿Deseas vaciar la lista de estudiantes actual?")) {
+        estadoDocente.estudiantes = [];
+        guardarNominaEnStorage();
+        renderizarListaEstudiantes();
+      }
+    }
+
+    function renderizarListaEstudiantes() {
+      var cont = document.getElementById("contenedorListaEstudiantes");
+      var filtro = document.getElementById("filtroSeccion").value;
+      cont.innerHTML = "";
+
+      var filtrados = estadoDocente.estudiantes.filter(function(e) {
+        return filtro === "TODAS" || e.seccion === filtro;
+      });
+
+      document.getElementById("totalEstudiantesContador").innerText = filtrados.length;
+
+      filtrados.forEach(function(est, idx) {
+        var realIdx = estadoDocente.estudiantes.indexOf(est);
+        var div = document.createElement("div");
+        div.className = "student-pill" + (realIdx === estadoDocente.estudianteActivoIdx ? " selected" : "");
+        div.onclick = function() { seleccionarEstudiante(realIdx); };
+
+        var badgeClass = est.evaluado ? "badge-completado" : "badge-pendiente";
+        var badgeText = est.evaluado ? "✅ Evaluado" : "🟡 Pendiente";
+
+        div.innerHTML = '<div><strong style="color: white; font-size: 12px;">' + est.nombre + '</strong><span style="font-size: 10.5px; color: #94a3b8; display: block;">' + est.seccion + '</span></div><div style="display:flex; align-items:center; gap:8px;"><span class="badge-status ' + badgeClass + '">' + badgeText + '</span><button class="btn btn-outline" style="font-size:10px; padding:2px 6px; min-height:24px;" onclick="event.stopPropagation(); seleccionarEstudiante(' + realIdx + '); cambiarVista(2);">Evaluar ➔</button></div>';
+        cont.appendChild(div);
+      });
+    }
+
+    function seleccionarEstudiante(idx) {
+      if (!estadoDocente.estudiantes[idx]) return;
+      estadoDocente.estudianteActivoIdx = idx;
+      var est = estadoDocente.estudiantes[idx];
+
+      document.getElementById("labelNombreEstudianteActivo").innerText = est.nombre;
+      document.getElementById("labelSeccionEstudianteActivo").innerText = "Sección: " + est.seccion + " • III Ciclo • Módulo 1 (2026)";
+
+      document.getElementById("selectNecesidadPrioritaria").value = est.necesidad || "Dominio Alto / Consolidado";
+      document.getElementById("inputAccionPedagogica").value = est.accion || "Incorporar retos guiados de simulación.";
+
+      renderizarFormularioEvaluacion(est);
+      renderizarListaEstudiantes();
+    }
+
+    function renderizarFormularioEvaluacion(est) {
+      // 1. Cognitiva
+      var contCog = document.getElementById("contenedorRubricaCognitiva");
+      contCog.innerHTML = "";
+      EVIDENCIAS_COGNITIVAS.forEach(function(ev, i) {
+        var val = est.cog[i] || "ED";
+        var row = document.createElement("div");
+        row.className = "rubric-row";
+        row.innerHTML = '<div style="font-size:11.5px; color:#cbd5e1;">' + (i+1) + '. ' + ev + '</div>' +
+          '<div class="segmented-control">' +
+            '<button type="button" class="segmented-btn ' + (val === "L" ? "active-logrado" : "") + '" onclick="setValCog(' + i + ', \'L\')">Logrado</button>' +
+            '<button type="button" class="segmented-btn ' + (val === "ED" ? "active-desarrollo" : "") + '" onclick="setValCog(' + i + ', \'ED\')">En Des.</button>' +
+            '<button type="button" class="segmented-btn ' + (val === "RA" ? "active-apoyo" : "") + '" onclick="setValCog(' + i + ', \'RA\')">Req. Apoyo</button>' +
+          '</div>' +
+          '<div><input type="text" class="rubric-obs-input" placeholder="Observación..." value="" id="obsCog_' + i + '"></div>';
+        contCog.appendChild(row);
+      });
+
+      // 2. Psicomotora
+      var contPsi = document.getElementById("contenedorRubricaPsicomotora");
+      contPsi.innerHTML = "";
+      CONDUCTAS_PSICOMOTORAS.forEach(function(cd, j) {
+        var valP = est.psi[j] || "A";
+        var rowP = document.createElement("div");
+        rowP.className = "rubric-row";
+        rowP.innerHTML = '<div style="font-size:11.5px; color:#cbd5e1;">' + (j+1) + '. ' + cd + '</div>' +
+          '<div class="segmented-control">' +
+            '<button type="button" class="segmented-btn ' + (valP === "A" ? "active-a" : "") + '" onclick="setValPsi(' + j + ', \'A\')">A (Autónomo)</button>' +
+            '<button type="button" class="segmented-btn ' + (valP === "B" ? "active-b" : "") + '" onclick="setValPsi(' + j + ', \'B\')">B (Apoyo)</button>' +
+            '<button type="button" class="segmented-btn ' + (valP === "C" ? "active-c" : "") + '" onclick="setValPsi(' + j + ', \'C\')">C (Acomp.)</button>' +
+          '</div>' +
+          '<div><input type="text" class="rubric-obs-input" placeholder="Observación de conducta..." value="" id="obsPsi_' + j + '"></div>';
+        contPsi.appendChild(rowP);
+      });
+
+      // 3. Socioafectiva
+      var contSoc = document.getElementById("contenedorRubricaSocioafectiva");
+      contSoc.innerHTML = "";
+      CONDUCTAS_SOCIOAFECTIVAS.forEach(function(sc, k) {
+        var valS = est.soc[k] || "A";
+        var rowS = document.createElement("div");
+        rowS.className = "rubric-row";
+        rowS.innerHTML = '<div style="font-size:11.5px; color:#cbd5e1;">' + (k+1) + '. ' + sc + '</div>' +
+          '<div class="segmented-control">' +
+            '<button type="button" class="segmented-btn ' + (valS === "A" ? "active-a" : "") + '" onclick="setValSoc(' + k + ', \'A\')">A (Consistente)</button>' +
+            '<button type="button" class="segmented-btn ' + (valS === "B" ? "active-b" : "") + '" onclick="setValSoc(' + k + ', \'B\')">B (Intermitente)</button>' +
+            '<button type="button" class="segmented-btn ' + (valS === "C" ? "active-c" : "") + '" onclick="setValSoc(' + k + ', \'C\')">C (Acomp.)</button>' +
+          '</div>' +
+          '<div><input type="text" class="rubric-obs-input" placeholder="Observación actitudinal..." value="" id="obsSoc_' + k + '"></div>';
+        contSoc.appendChild(rowS);
+      });
+    }
+
+    function setValCog(idx, val) {
+      var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
+      if (est) {
+        est.cog[idx] = val;
+        renderizarFormularioEvaluacion(est);
+      }
+    }
+
+    function setValPsi(idx, val) {
+      var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
+      if (est) {
+        est.psi[idx] = val;
+        renderizarFormularioEvaluacion(est);
+      }
+    }
+
+    function setValSoc(idx, val) {
+      var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
+      if (est) {
+        est.soc[idx] = val;
+        renderizarFormularioEvaluacion(est);
+      }
+    }
+
+    function marcarTodosCognitivo(val) {
+      var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
+      if (est) {
+        est.cog = Array(10).fill(val);
+        renderizarFormularioEvaluacion(est);
+      }
+    }
+
+    function marcarTodosPsicomotor(val) {
+      var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
+      if (est) {
+        est.psi = Array(6).fill(val);
+        renderizarFormularioEvaluacion(est);
+      }
+    }
+
+    function marcarTodosSocio(val) {
+      var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
+      if (est) {
+        est.soc = Array(7).fill(val);
+        renderizarFormularioEvaluacion(est);
+      }
+    }
+
+    function guardarEvaluacionEstudianteActual() {
+      var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
+      if (!est) return;
+
+      est.evaluado = true;
+      est.necesidad = document.getElementById("selectNecesidadPrioritaria").value;
+      est.accion = document.getElementById("inputAccionPedagogica").value;
+
+      guardarNominaEnStorage();
+      renderizarListaEstudiantes();
+      alert("✅ Evaluación de " + est.nombre + " guardada con éxito.");
+    }
+
+    function renderizarConsolidadoGrupal() {
+      var tbody = document.getElementById("tbodyConsolidadoEstudiantes");
+      tbody.innerHTML = "";
+
+      var totalEst = estadoDocente.estudiantes.length;
+      var sumCog = 0, sumPsi = 0, sumSoc = 0;
+
+      estadoDocente.estudiantes.forEach(function(est, idx) {
+        var numLogCog = est.cog.filter(function(x){ return x === "L"; }).length;
+        var porcCog = Math.round((numLogCog / 10) * 100);
+        var nivelPsi = est.psi.filter(function(x){ return x === "A"; }).length >= 4 ? "Nivel A (Autónomo)" : "Nivel B";
+        var nivelSoc = est.soc.filter(function(x){ return x === "A"; }).length >= 5 ? "Nivel A (Consistente)" : "Nivel B";
+
+        sumCog += porcCog;
+        if (nivelPsi.includes("A")) sumPsi += 100; else sumPsi += 75;
+        if (nivelSoc.includes("A")) sumSoc += 100; else sumSoc += 80;
+
+        var tr = document.createElement("tr");
+        tr.innerHTML = '<td>' + (idx+1) + '</td>' +
+          '<td style="font-weight:700; color:white;">' + est.nombre + '</td>' +
+          '<td>' + est.seccion + '</td>' +
+          '<td style="color:#38bdf8; font-weight:800;">' + porcCog + '% (' + numLogCog + '/10)</td>' +
+          '<td style="color:#34d399; font-weight:800;">' + nivelPsi + '</td>' +
+          '<td style="color:#fbbf24; font-weight:800;">' + nivelSoc + '</td>' +
+          '<td>' + (est.necesidad || "Consolidado") + '</td>' +
+          '<td style="font-size:11px;">' + (est.accion || "Retos guiados.") + '</td>';
+        tbody.appendChild(tr);
+      });
+
+      if (totalEst > 0) {
+        document.getElementById("grpPorcCognitiva").innerText = Math.round(sumCog / totalEst) + "%";
+        document.getElementById("grpPorcPsicomotora").innerText = Math.round(sumPsi / totalEst) + "%";
+        document.getElementById("grpPorcSocio").innerText = Math.round(sumSoc / totalEst) + "%";
+      }
+    }
+
+    function exportarExcelConsolidado() {
+      var csv = ["ID,Nombre,Sección,Cognoscitiva,Psicomotora,Socioafectiva,Necesidad_Prioritaria,Accion_Pedagogica"];
+      estadoDocente.estudiantes.forEach(function(e) {
+        var numLogCog = e.cog.filter(function(x){ return x === "L"; }).length;
+        var nivelPsi = e.psi.filter(function(x){ return x === "A"; }).length >= 4 ? "Nivel A" : "Nivel B";
+        var nivelSoc = e.soc.filter(function(x){ return x === "A"; }).length >= 5 ? "Nivel A" : "Nivel B";
+        csv.push([
+          e.id,
+          '"' + e.nombre + '"',
+          e.seccion,
+          numLogCog + "/10",
+          nivelPsi,
+          nivelSoc,
+          '"' + (e.necesidad || "") + '"',
+          '"' + (e.accion || "") + '"'
+        ].join(","));
+      });
+
+      var blob = new Blob(["\uFEFF" + csv.join("\n")], { type: "text/csv;charset=utf-8;" });
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "Consolidado_Diagnostico_MEP_9no_Modulo1.csv";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    function imprimirReporteOficial() {
+      cambiarVista(3);
+      setTimeout(function() { window.print(); }, 200);
+    }
+
+    function guardarNominaEnStorage() {
+      try {
+        localStorage.setItem("nomina_docente_9no_mep", JSON.stringify(estadoDocente.estudiantes));
+      } catch(e) {}
+    }
+
+    function cargarNominaDesdeStorage() {
+      try {
+        var guardado = localStorage.getItem("nomina_docente_9no_mep");
+        if (guardado) {
+          estadoDocente.estudiantes = JSON.parse(guardado);
+        }
+      } catch(e) {}
+    }
+
+    function renderTodo() {
+      renderizarListaEstudiantes();
+      if (estadoDocente.estudiantes.length > 0) {
+        seleccionarEstudiante(0);
+      }
+    }
+
+    function mostrarModalEscanerQR() {
+      document.getElementById("modalEscanerQR").style.display = "flex";
+    }
+
+    function cerrarModalEscanerQR() {
+      document.getElementById("modalEscanerQR").style.display = "none";
+    }
+
+    function procesarTokenQRManual() {
+      var raw = document.getElementById("inputTokenQR").value.trim();
+      if (!raw) return;
+
+      // Formato: MEP-9NO-M01|Nombre|Sección|COG:10/10|PSI:A|SOC:Muy cómodo/a
+      var partes = raw.split("|");
+      if (partes.length >= 4) {
+        var nom = partes[1];
+        var sec = partes[2];
+        var matchEst = estadoDocente.estudiantes.find(function(x){ return x.nombre.toLowerCase().includes(nom.toLowerCase()) || nom.toLowerCase().includes(x.nombre.toLowerCase()); });
+
+        if (matchEst) {
+          matchEst.evaluado = true;
+          matchEst.cog = Array(10).fill("L");
+          matchEst.psi = Array(6).fill("A");
+          matchEst.soc = Array(7).fill("A");
+          matchEst.necesidad = "Dominio Alto / Consolidado";
+          matchEst.accion = "Sincronizado vía QR: estudiante completó 100% de la WebApp.";
+          guardarNominaEnStorage();
+          renderizarListaEstudiantes();
+          seleccionarEstudiante(estadoDocente.estudiantes.indexOf(matchEst));
+          cerrarModalEscanerQR();
+          alert("✅ ¡Estudiante sincronizado con éxito desde el comprobante QR de la WebApp!");
+        } else {
+          // Crear nuevo estudiante
+          var nuevoEst = {
+            id: "EST-" + (estadoDocente.estudiantes.length + 1),
+            nombre: nom,
+            seccion: sec,
+            evaluado: true,
+            cog: Array(10).fill("L"),
+            psi: Array(6).fill("A"),
+            soc: Array(7).fill("A"),
+            necesidad: "Dominio Alto / Consolidado",
+            accion: "Sincronizado vía QR."
+          };
+          estadoDocente.estudiantes.push(nuevoEst);
+          guardarNominaEnStorage();
+          renderizarListaEstudiantes();
+          seleccionarEstudiante(estadoDocente.estudiantes.length - 1);
+          cerrarModalEscanerQR();
+          alert("✅ Estudiante " + nom + " creado y sincronizado con éxito.");
+        }
+      } else {
+        alert("Formato de token no reconocido. Asegúrate de copiar el código completo del comprobante.");
+      }
+    }
+  </script>
+</body>
+</html>
