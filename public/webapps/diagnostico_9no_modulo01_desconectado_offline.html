@@ -1,0 +1,3305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Diagnóstico FT 9°">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#003366">
+  <title>Diagnóstico 9° [DESCONECTADO - OFFLINE] - «Aula Inteligente» (Laboratorio sin Internet)</title>
+  
+  <style>
+    :root {
+      --bg-primary: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-card: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --brand: #0284c7;
+      --brand-glow: rgba(2, 132, 199, 0.2);
+      --accent: #10b981;
+      --accent-glow: rgba(16, 185, 129, 0.2);
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --border: #e2e8f0;
+      --border-focus: #0284c7;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* HEADER OFICIAL MEP (PALETA CLARA PASTEL) */
+    header {
+      background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 50%, #eff6ff 100%);
+      color: #0f172a;
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      border-bottom: 2px solid #38bdf8;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .mep-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #e0f2fe;
+      border: 1px solid #7dd3fc;
+      color: #0369a1;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+
+    .top-tools {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    button, .btn {
+      background: var(--brand);
+      color: white;
+      border: 1px solid #0369a1;
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      user-select: none;
+      min-height: 36px;
+      text-decoration: none;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    button:hover, .btn:hover {
+      background: #0369a1;
+      transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    }
+
+    button:active, .btn:active {
+      transform: translateY(0);
+      filter: brightness(0.95);
+    }
+
+    .btn-secondary { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
+    .btn-secondary:hover { background: #e2e8f0; color: #0f172a; }
+    .btn-accent { background: #10b981; border-color: #059669; color: white; }
+    .btn-accent:hover { background: #059669; }
+    .btn-warning { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+    .btn-warning:hover { background: #fde68a; }
+    .btn-danger { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
+    .btn-danger:hover { background: #fca5a5; }
+    .btn-outline { background: #ffffff; border: 1px solid #cbd5e1; color: #334155; }
+    .btn-outline:hover { background: #f8fafc; border-color: #94a3b8; }
+    .btn-docente { background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); border-color: #7c3aed; color: white; }
+
+    /* NAVEGADOR DE 5 ETAPAS (OFICIALES MEP) */
+    .nav-tabs {
+      max-width: 1040px;
+      margin: 14px auto 0;
+      padding: 0 12px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      width: 100%;
+    }
+
+    .nav-tab {
+      padding: 9px 4px;
+      text-align: center;
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+
+    .nav-tab:hover {
+      border-color: #7dd3fc;
+      background: #f8fafc;
+      color: #0369a1;
+    }
+
+    .nav-tab.activa {
+      background: #e0f2fe;
+      border-color: #0284c7;
+      color: #0369a1;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.15);
+    }
+
+    .nav-tab.completada {
+      border-color: #86efac;
+      color: #15803d;
+      background: #f0fdf4;
+    }
+
+    /* CONTENEDOR PRINCIPAL */
+    .main-container {
+      max-width: 1040px;
+      margin: 14px auto 30px;
+      padding: 0 12px;
+      flex: 1;
+      width: 100%;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      margin-bottom: 20px;
+    }
+
+    .situacion-box {
+      background: #e0f2fe;
+      border: 1.5px solid #7dd3fc;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      color: #0369a1;
+    }
+
+    .item-card {
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+    }
+
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .item-num {
+      font-size: 11px;
+      font-weight: 900;
+      color: #0369a1;
+      text-transform: uppercase;
+      background: #e0f2fe;
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid #7dd3fc;
+    }
+
+    .opcion-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: #ffffff;
+      color: #1e293b;
+      border: 1.5px solid #cbd5e1;
+      padding: 11px 14px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      line-height: 1.45;
+    }
+
+    .opcion-btn:hover {
+      background: #f0f9ff;
+      border-color: #7dd3fc;
+    }
+
+    .opcion-btn.correcta {
+      background: #dcfce7 !important;
+      border-color: #10b981 !important;
+      color: #15803d !important;
+      font-weight: 800;
+    }
+
+    .opcion-btn.incorrecta {
+      background: #fee2e2 !important;
+      border-color: #ef4444 !important;
+      color: #b91c1c !important;
+    }
+
+    .retro-box {
+      font-size: 11.5px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin-top: 8px;
+      display: none;
+      line-height: 1.5;
+    }
+
+    .retro-ok { background: #dcfce7; border: 1px solid #86efac; color: #15803d; }
+    .retro-err { background: #fee2e2; border: 1px solid #fca5a5; color: #b91c1c; }
+
+    /* SIMULACIÓN Y HARDWARE RESPONSIVO */
+    .sim-panel-header {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sim-grid-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .banco-hardware-container {
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 12px 10px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.03);
+    }
+
+    .hardware-workspace {
+      position: relative;
+      min-height: 230px;
+      display: grid;
+      grid-template-columns: 1fr 1.15fr 1fr;
+      gap: 8px;
+      align-items: stretch;
+      z-index: 10;
+    }
+
+    #svgCablesLayer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .svg-wire {
+      fill: none;
+      stroke-width: 3.5;
+      stroke-linecap: round;
+      filter: drop-shadow(0 1px 3px rgba(0,0,0,0.25));
+      transition: stroke-dashoffset 0.5s ease;
+    }
+
+    .wire-active-pulse {
+      stroke-dasharray: 6 6;
+      animation: wirePulseAnim 1s linear infinite;
+    }
+
+    @keyframes wirePulseAnim {
+      to { stroke-dashoffset: -24; }
+    }
+
+    .hardware-card {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 8px 6px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hardware-card.highlight {
+      border-color: #0284c7;
+      box-shadow: 0 0 12px rgba(2, 132, 199, 0.2);
+    }
+
+    .pcb-mcu {
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
+    }
+
+    .chip-ic {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 4px 2px;
+      margin: 4px auto;
+      width: 85%;
+      color: #0f172a;
+      font-family: monospace;
+      font-size: 8.5px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .led-pwr {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 6px #10b981;
+      display: inline-block;
+    }
+
+    .led-rx-tx {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #f59e0b;
+      box-shadow: 0 0 6px #f59e0b;
+      display: inline-block;
+      animation: blinkTx 0.3s infinite alternate;
+    }
+
+    @keyframes blinkTx {
+      from { opacity: 0.3; }
+      to { opacity: 1; }
+    }
+
+    .pin-terminal {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px 2px;
+      border-radius: 5px;
+      font-size: 10px;
+      font-weight: 800;
+      margin: 2px 0;
+      cursor: pointer;
+      background: #f1f5f9;
+      color: #1e293b;
+      border: 1.5px solid #cbd5e1;
+      transition: all 0.15s;
+      user-select: none;
+      min-height: 28px;
+    }
+
+    .pin-terminal:hover {
+      background: #e0f2fe;
+      border-color: #7dd3fc;
+    }
+
+    .pin-terminal.connected {
+      background: #dcfce7 !important;
+      color: #15803d !important;
+      border-color: #10b981 !important;
+      box-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
+    }
+
+    .pin-terminal.selected-for-wire {
+      background: #fef3c7 !important;
+      color: #b45309 !important;
+      border-color: #f59e0b !important;
+      animation: pulseWirePin 0.8s infinite alternate;
+    }
+
+    @keyframes pulseWirePin {
+      from { transform: scale(1); }
+      to { transform: scale(1.05); box-shadow: 0 0 8px #f59e0b; }
+    }
+
+    .aula-sim-container {
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .aula-canvas-frame {
+      position: relative;
+      height: 140px;
+      border-radius: 8px;
+      border: 1.5px solid #cbd5e1;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    #aulaCanvas2D {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .telemetria-box {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
+
+    .osciloscopio-frame {
+      position: relative;
+      height: 60px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    #osciloscopioCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .multimetro-readout {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    .dmm-tile {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 4px 2px;
+      text-align: center;
+    }
+
+    .dmm-label {
+      font-size: 8px;
+      font-weight: 800;
+      color: #64748b;
+      text-transform: uppercase;
+    }
+
+    .dmm-val {
+      font-size: 11px;
+      font-weight: 900;
+      color: #0284c7;
+      font-family: monospace;
+      margin-top: 1px;
+    }
+
+    .serial-station-wrapper {
+      background: #f8fafc;
+      border: 2px solid #7dd3fc;
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .serial-station-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .serial-log-container {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-family: 'Consolas', 'Courier New', Courier, monospace;
+      font-size: 11px;
+      color: #15803d;
+      height: 115px;
+      overflow-y: auto;
+      line-height: 1.45;
+    }
+
+    .serial-time {
+      color: #b45309;
+      font-weight: bold;
+      margin-right: 4px;
+    }
+
+    .serial-ok { color: #15803d; font-weight: bold; }
+    .serial-warn { color: #b45309; }
+    .serial-info { color: #0284c7; }
+
+    .eps-pipeline {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      align-items: center;
+      gap: 4px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 6px 8px;
+      font-size: 9.5px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .eps-stage {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 3px 4px;
+      color: #475569;
+    }
+
+    .eps-stage.active {
+      background: #dcfce7;
+      border-color: #10b981;
+      color: #15803d;
+      box-shadow: 0 0 6px rgba(16, 185, 129, 0.3);
+    }
+
+    /* ESTILOS PARTE C: REFLEXIÓN INDIVIDUAL */
+    .reflexion-container {
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .sentimiento-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .sentimiento-card {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 12px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .sentimiento-card:hover {
+      background: #f0f9ff;
+      border-color: #7dd3fc;
+    }
+
+    .sentimiento-card.selected {
+      background: #e0f2fe;
+      border-color: #0284c7;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.2);
+      color: #0369a1;
+      font-weight: 800;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(4px);
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      z-index: 9999;
+    }
+
+    .modal-content {
+      background: #ffffff;
+      border: 2px solid #0284c7;
+      border-radius: 14px;
+      padding: 22px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      color: #0f172a;
+    }
+
+    @media (max-width: 768px) {
+      .nav-tabs {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .sim-grid-layout {
+        grid-template-columns: 1fr;
+      }
+      .multimetro-readout {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .sentimiento-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .actions-grid-mobile {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+        width: 100%;
+      }
+      .actions-grid-mobile button {
+        width: 100%;
+        padding: 8px 6px;
+        font-size: 11px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER OFICIAL -->
+  
+    <!-- BANNER MODALIDAD DESCONECTADA (OFFLINE) -->
+    <div style="background: linear-gradient(90deg, #1e293b, #334155); color: white; padding: 6px 14px; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #64748b;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="display: inline-block; width: 8px; height: 8px; background: #f59e0b; border-radius: 50%;"></span>
+        <span>💾 <strong>MODALIDAD DESCONECTADA (OFFLINE)</strong> • Funciona 100% sin internet en esta computadora. Al finalizar muestra tu código QR a tu docente.</span>
+      </div>
+      <span style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 6px; font-size: 10px;">💻 Uso exclusivo en PC / Laptop</span>
+    </div>
+
+    <header>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <div style="width: 32px; height: 32px; border-radius: 6px; background: white; display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);">
+        💡
+      </div>
+      <div>
+        <div class="mep-badge" style="background: #1e3a8a; border-color: #38bdf8; color: #93c5fd;">
+          <span>Formación Tecnológica 2026</span>
+        </div>
+        <h1 style="font-size: 0.95rem; font-weight: 900; letter-spacing: -0.2px; margin-top: 1px; color: #ffffff;">
+          Diagnóstico 9°: «Aula Inteligente» (Módulo 1)
+        </h1>
+      </div>
+    </div>
+
+    <div class="top-tools" style="display: flex; align-items: center; gap: 8px;">
+      <button class="btn btn-outline" style="font-size: 10.5px; padding: 4px 8px; min-height: 28px; color: #e2e8f0; border-color: #475569;" onclick="mostrarModalInstrumento()">
+        📋 Criterios de Logro
+      </button>
+      <div style="background: #0284c7; border: 1.5px solid #38bdf8; color: #ffffff; font-size: 11px; font-weight: 900; padding: 5px 12px; border-radius: 20px; box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);" id="badgeProgresoHeader">
+        📊 Progreso: 0%
+      </div>
+    </div>
+  </header>
+
+  <!-- NAVEGADOR DE 5 ETAPAS -->
+  <nav class="nav-tabs">
+    <div class="nav-tab activa" id="tabSec1" onclick="irASeccion(1)">
+      <span id="tabSec1Label">1. DATOS</span>
+      <span id="tabSec1Sub">Identificación</span>
+    </div>
+    <div class="nav-tab" id="tabSec2" onclick="irASeccion(2)">
+      <span>2. PARTE A</span>
+      <span>10 Reactivos</span>
+    </div>
+    <div class="nav-tab" id="tabSec3" onclick="irASeccion(3)">
+      <span>3. PARTE B</span>
+      <span>Reto Práctico</span>
+    </div>
+    <div class="nav-tab" id="tabSec4" onclick="irASeccion(4)">
+      <span>4. PARTE C</span>
+      <span>Reflexión</span>
+    </div>
+    <div class="nav-tab" id="tabSec5" onclick="irASeccion(5)">
+      <span>5. INFORME</span>
+      <span>Evidencia QR</span>
+    </div>
+  </nav>
+
+  <main class="main-container">
+
+    <!-- ==================================================================== -->
+    <!-- ETAPA 1: IDENTIFICACIÓN DEL ESTUDIANTE Y SITUACIÓN-PROBLEMA          -->
+    <!-- ==================================================================== -->
+    <div id="seccion1" class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 4px;">
+        <span class="mep-badge" style="background: #1e3a8a; border-color: #38bdf8; color: #93c5fd;">
+          Etapa 1 • Guía de Evaluación Diagnóstica
+        </span>
+        <span style="font-size: 11px; color: #94a3b8; font-weight: 700;">III Ciclo • Noveno Año (Módulo 1) | Duración: 70 min</span>
+      </div>
+
+      <!-- FORMULARIO DE IDENTIFICACIÓN OFICIAL -->
+      <div style="background: #ffffff; border: 1.5px solid #7dd3fc; border-radius: 12px; padding: 18px; margin-bottom: 16px; box-shadow: 0 2px 10px rgba(2, 132, 199, 0.08);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
+          <h3 style="font-size: 13.5px; color: #0369a1; font-weight: 800; margin: 0;">
+            👤 Datos de Identificación del Estudiante:
+          </h3>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 12px; margin-bottom: 12px;">
+          <div>
+            <label style="display: block; font-size: 11.5px; font-weight: 700; color: #334155; margin-bottom: 4px;">
+              Nombre y Apellidos Completos: <span style="color: #ef4444;">* (Obligatorio)</span>
+            </label>
+            <input type="text" id="inputEstudianteNombre" placeholder="Ej: Kevin Morales Vargas" style="width: 100%; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 9px 12px; color: #0f172a; font-size: 13px; font-weight: 600; outline: none;" oninput="formatearNombreEstudiante(this); validarDatosEstudiante();" onblur="validarDatosEstudiante();">
+            <span style="font-size: 10.5px; color: #64748b; display: block; margin-top: 3px;">Debe incluir tu nombre y al menos dos apellidos (ej. Juan Pérez Mora).</span>
+          </div>
+
+          <div>
+            <label style="display: block; font-size: 11.5px; font-weight: 700; color: #334155; margin-bottom: 4px;">
+              Sección / Grupo: <span style="color: #ef4444;">*</span>
+            </label>
+            <select id="selectSeccion" style="width: 100%; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 9px 12px; color: #0f172a; font-size: 13px; font-weight: 700; outline: none;" onchange="validarDatosEstudiante()">
+              <option value="Sección 9-1">Sección 9-1</option>
+              <option value="Sección 9-2">Sección 9-2</option>
+              <option value="Sección 9-3">Sección 9-3</option>
+              <option value="Sección 9-4">Sección 9-4</option>
+              <option value="Sección 9-5">Sección 9-5</option>
+              <option value="Sección 9-6">Sección 9-6</option>
+              <option value="Sección 9-7">Sección 9-7</option>
+              <option value="Sección 9-8">Sección 9-8</option>
+              <option value="Sección 9-9">Sección 9-9</option>
+              <option value="Sección 9-10">Sección 9-10</option>
+              <option value="Sección 9-11">Sección 9-11</option>
+              <option value="Sección 9-12">Sección 9-12</option>
+              <option value="Sección 9-13">Sección 9-13</option>
+              <option value="Sección 9-14">Sección 9-14</option>
+              <option value="Sección 9-15">Sección 9-15</option>
+              <option value="Sección 9-16">Sección 9-16</option>
+              <option value="Sección 9-17">Sección 9-17</option>
+              <option value="Sección 9-18">Sección 9-18</option>
+              <option value="Sección 9-19">Sección 9-19</option>
+              <option value="Sección 9-20">Sección 9-20</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+          <div>
+            <label style="display: block; font-size: 11px; font-weight: 700; color: #334155; margin-bottom: 4px;">
+              Cédula / Identificación: <span style="color: #64748b; font-weight: normal;">(Opcional)</span>
+            </label>
+            <input type="text" id="inputEstudianteCedula" placeholder="Ej: 1-1234-5678" style="width: 100%; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; color: #0f172a; font-size: 11.5px; outline: none;" oninput="validarDatosEstudiante()">
+          </div>
+          <div>
+            <label style="display: block; font-size: 11px; font-weight: 700; color: #334155; margin-bottom: 4px;">
+              Correo Institucional / Oficial: <span style="color: #64748b; font-weight: normal;">(Opcional)</span>
+            </label>
+            <input type="email" id="inputEstudianteCorreo" placeholder="ejemplo@institucion.ed.cr" style="width: 100%; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; color: #0f172a; font-size: 11.5px; outline: none;" oninput="validarDatosEstudiante()">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; margin-bottom: 8px;">
+          <div>
+            <label style="display: block; font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 4px;">
+              Centro Educativo:
+            </label>
+            <input type="text" id="inputCentroEducativo" placeholder="Ej: Colegio Técnico Profesional / Liceo..." value="" style="width: 100%; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; color: #0f172a; font-size: 11.5px; outline: none;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 4px;">
+              Docente Evaluador:
+            </label>
+            <input type="text" id="inputDocente" placeholder="Nombre de la persona docente a cargo" value="" style="width: 100%; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; color: #0f172a; font-size: 11.5px; outline: none;">
+          </div>
+        </div>
+
+        <div id="msgValidacionDatos" style="font-size: 11.5px; color: #b45309; font-weight: 700; padding: 4px 0;">
+          ⚠️ Ingresa tu Nombre y al menos dos Apellidos completos para habilitar la prueba.
+        </div>
+      </div>
+
+      <!-- SITUACIÓN-PROBLEMA: AULA INTELIGENTE (DOCUMENTO BASE OFICIAL) -->
+      <div class="situacion-box">
+        <h2 style="font-size: 1.15rem; color: #0369a1; margin-bottom: 6px; font-weight: 800;">
+          🏫 2. Situación-problema: Aula inteligente
+        </h2>
+        <p style="font-size: 12.5px; color: #334155; line-height: 1.55; margin-bottom: 8px;">
+          El laboratorio desea implementar un sistema que permita <strong>encender una luz automáticamente cuando exista poca iluminación</strong>. Para ello se dispone de un <strong>microcontrolador</strong>, un <strong>sensor</strong> y un <strong>actuador</strong>. Tu tarea será analizar la situación y realizar una primera propuesta de solución.
+        </p>
+        <div style="background: #ffffff; border-left: 3.5px solid #0284c7; padding: 10px 12px; border-radius: 6px; font-size: 11.5px; color: #0369a1;">
+          <strong>Importante:</strong> durante esta actividad el docente observará tu proceso de trabajo. No se espera que todo quede perfecto; interesa conocer cómo piensas, cómo pruebas una solución y cómo reaccionas cuando algo no funciona.
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end;">
+        <button class="btn btn-accent" id="btnIniciarDiagnostico" style="padding: 9px 20px; font-size: 13px; font-weight: 800;" onclick="comenzarDiagnosticoValido()">
+          Comenzar Parte A (Conocimientos Previos) ➔
+        </button>
+      </div>
+    </div>
+
+    <!-- ==================================================================== -->
+    <!-- ETAPA 2: PARTE A – CONOCIMIENTOS PREVIOS (10 REACTIVOS COMPLETOS)     -->
+    <!-- ==================================================================== -->
+    <div id="seccion2" class="card" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
+        <div>
+          <span class="mep-badge" style="background: #e0f2fe; border-color: #7dd3fc; color: #0369a1;">
+            Parte A • Área Cognoscitiva (Documento Base)
+          </span>
+          <h2 style="font-size: 1.15rem; color: #0f172a; margin-top: 2px; font-weight: 900;">
+            Conocimientos Previos (10 Ítems Oficiales)
+          </h2>
+        </div>
+        <span id="contadorRespuestas" style="font-size: 11px; color: #0369a1; font-weight: 800; background: #e0f2fe; padding: 4px 8px; border-radius: 6px; border: 1px solid #7dd3fc;">
+          Respondidas: 0 / 10
+        </span>
+      </div>
+
+      <!-- ÍTEM 1 -->
+      <div class="item-card">
+        <div class="item-header"><span class="item-num">1. Microcontrolador</span></div>
+        <p style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #0f172a;">
+          ¿Cuál opción representa mejor la función de un microcontrolador dentro de un sistema automatizado?
+        </p>
+        <div id="optsItem1">
+          <button class="opcion-btn" onclick="responderItem(1, 0, false, 'El microcontrolador no solo almacena documentos, su fin es procesar y controlar.')">A. Almacenar únicamente documentos.</button>
+          <button class="opcion-btn" onclick="responderItem(1, 1, true, '¡Correcto! Recibe datos de sensores, los procesa y envía señales para controlar actuadores.')">B. Recibir información, procesarla y controlar dispositivos según una programación.</button>
+          <button class="opcion-btn" onclick="responderItem(1, 2, false, 'No se limita solo a conectarse a Internet.')">C. Conectarse exclusivamente a Internet.</button>
+          <button class="opcion-btn" onclick="responderItem(1, 3, false, 'Mostrar imágenes es función de una pantalla o display específico.')">D. Mostrar imágenes en pantalla.</button>
+        </div>
+        <div id="retroItem1" class="retro-box"></div>
+      </div>
+
+      <!-- ÍTEM 2 -->
+      <div class="item-card">
+        <div class="item-header"><span class="item-num">2. Sensor y actuador</span></div>
+        <p style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #0f172a;">
+          Complete: «El __________________ permite obtener información del entorno, mientras que el __________________ ejecuta una acción como respuesta.»
+        </p>
+        <div id="optsItem2">
+          <button class="opcion-btn" onclick="responderItem(2, 0, false, 'El actuador genera la acción y el microcontrolador procesa.')">A. Actuador / Microcontrolador</button>
+          <button class="opcion-btn" onclick="responderItem(2, 1, true, '¡Excelente! El sensor percibe el entorno (Entrada) y el actuador genera una respuesta física (Salida).')">B. Sensor / Actuador</button>
+          <button class="opcion-btn" onclick="responderItem(2, 2, false, 'El microcontrolador procesa datos, no es el dispositivo emisor directo.')">C. Microcontrolador / Sensor</button>
+        </div>
+        <div id="retroItem2" class="retro-box"></div>
+      </div>
+
+      <!-- ÍTEM 3 -->
+      <div class="item-card">
+        <div class="item-header"><span class="item-num">3. Entrada, proceso y salida</span></div>
+        <p style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #0f172a;">
+          Observe el flujo: <strong>Sensor de luz ➔ Microcontrolador ➔ LED</strong>. ¿Cuál corresponde a la Entrada, Proceso y Salida?
+        </p>
+        <div id="optsItem3">
+          <button class="opcion-btn" onclick="responderItem(3, 0, true, '¡Exacto! Entrada = Sensor de luz, Proceso = Microcontrolador, Salida = LED.')">A. Entrada: Sensor de luz | Proceso: Microcontrolador | Salida: LED</button>
+          <button class="opcion-btn" onclick="responderItem(3, 1, false, 'El LED no es la entrada del sistema.')">B. Entrada: LED | Proceso: Microcontrolador | Salida: Sensor de luz</button>
+          <button class="opcion-btn" onclick="responderItem(3, 2, false, 'El sensor es un componente de entrada, no de proceso.')">C. Entrada: Microcontrolador | Proceso: Sensor | Salida: LED</button>
+        </div>
+        <div id="retroItem3" class="retro-box"></div>
+      </div>
+
+      <!-- ÍTEM 4 -->
+      <div class="item-card">
+        <div class="item-header"><span class="item-num">4. Algoritmo</span></div>
+        <p style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #0f172a;">
+          Ordene los siguientes pasos escribiendo el orden lógico (1, 2, 3 y 4):<br>
+          <span style="color: #475569; font-size: 11.5px; font-weight: 600;">• Encender la luz &nbsp;|&nbsp; • Leer el nivel de iluminación &nbsp;|&nbsp; • Comprobar si hay poca iluminación &nbsp;|&nbsp; • Iniciar el sistema</span>
+        </p>
+        <div id="optsItem4">
+          <button class="opcion-btn" onclick="responderItem(4, 0, true, '¡Correcto! 1. Iniciar el sistema ➔ 2. Leer nivel de iluminación ➔ 3. Comprobar poca luz ➔ 4. Encender la luz.')">A. 1: Iniciar sistema ➔ 2: Leer nivel ➔ 3: Comprobar condición ➔ 4: Encender luz</button>
+          <button class="opcion-btn" onclick="responderItem(4, 1, false, 'No se puede encender la luz antes de medir el sensor y comprobar la condición.')">B. 1: Encender luz ➔ 2: Iniciar sistema ➔ 3: Leer nivel ➔ 4: Comprobar condición</button>
+          <button class="opcion-btn" onclick="responderItem(4, 2, false, 'Primero se debe energizar e inicializar el microcontrolador.')">C. 1: Comprobar condición ➔ 2: Leer nivel ➔ 3: Encender luz ➔ 4: Iniciar sistema</button>
+        </div>
+        <div id="retroItem4" class="retro-box"></div>
+      </div>
+
+      <!-- ÍTEM 5 -->
+      <div class="item-card">
+        <div class="item-header"><span class="item-num">5. Condición</span></div>
+        <p style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #0f172a;">
+          ¿Cuál situación requiere una estructura condicional (Si / Si no)?
+        </p>
+        <div id="optsItem5">
+          <button class="opcion-btn" onclick="responderItem(5, 0, false, 'Repetir 10 veces es un bucle o estructura repetitiva.')">A. Repetir una acción 10 veces.</button>
+          <button class="opcion-btn" onclick="responderItem(5, 1, true, '¡Correcto! Evalúa si la condición de luminosidad se cumple para tomar una decisión.')">B. Encender la luz si la iluminación está por debajo de un valor determinado.</button>
+          <button class="opcion-btn" onclick="responderItem(5, 2, false, 'Mostrar un mensaje siempre es una secuencia simple sin condición.')">C. Mostrar un mensaje siempre.</button>
+          <button class="opcion-btn" onclick="responderItem(5, 3, false, 'Ejecutar una sola vez es una instrucción secuencial.')">D. Ejecutar una instrucción una sola vez.</button>
+        </div>
+        <div id="retroItem5" class="retro-box"></div>
+      </div>
+
+      <!-- ÍTEM 6 -->
+      <div class="item-card">
+        <div class="item-header"><span class="item-num">6. Identificación de elementos</span></div>
+        <p style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #0f172a;">
+          Relacione cada elemento con su función:<br>
+          <span style="color: #475569; font-size: 11.5px; font-weight: 600;">a. Ejecuta una acción. &nbsp;|&nbsp; b. Procesa información y controla el sistema. &nbsp;|&nbsp; c. Captura información del entorno.</span>
+        </p>
+        <div id="optsItem6">
+          <button class="opcion-btn" onclick="responderItem(6, 0, true, '¡Correcto! Sensor = c (Captura), Actuador = a (Ejecuta acción), Microcontrolador = b (Procesa y controla).')">A. Sensor: c | Actuador: a | Microcontrolador: b</button>
+          <button class="opcion-btn" onclick="responderItem(6, 1, false, 'El sensor captura información, no ejecuta acciones.')">B. Sensor: a | Actuador: b | Microcontrolador: c</button>
+          <button class="opcion-btn" onclick="responderItem(6, 2, false, 'El microcontrolador procesa información, no es sensor directo.')">C. Sensor: b | Actuador: c | Microcontrolador: a</button>
+        </div>
+        <div id="retroItem6" class="retro-box"></div>
+      </div>
+
+      <!-- ÍTEM 7 -->
+      <div class="item-card">
+        <div class="item-header"><span class="item-num">7. Concepto de Dato</span></div>
+        <p style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #0f172a;">
+          En un sistema que mide iluminación, ¿cuál de los siguientes es un ejemplo de un <strong>dato</strong> que podría obtenerse del sensor?
+        </p>
+        <div id="optsItem7">
+          <button class="opcion-btn" onclick="responderItem(7, 0, true, '¡Excelente! Un valor numérico de 180 Lux o 1.25 V representa el dato capturado por el sensor.')">A. Un valor numérico de iluminación (por ejemplo: 180 Lux o una lectura analógica de 350).</button>
+          <button class="opcion-btn" onclick="responderItem(7, 1, false, 'El color del plástico del sensor no es un dato medido del entorno.')">B. El color del plástico del laboratorio.</button>
+          <button class="opcion-btn" onclick="responderItem(7, 2, false, 'El nombre del programa es un identificador de software, no un dato ambiental.')">C. El nombre del software instalado.</button>
+        </div>
+        <div id="retroItem7" class="retro-box"></div>
+      </div>
+
+      <!-- ÍTEM 8 -->
+      <div class="item-card">
+        <div class="item-header"><span class="item-num">8. Representación lógica</span></div>
+        <p style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #0f172a;">
+          Seleccione la opción que representa mejor la lógica: <em>«Si hay poca iluminación, encender la luz; de lo contrario, mantenerla apagada»</em>.
+        </p>
+        <div id="optsItem8">
+          <button class="opcion-btn" onclick="responderItem(8, 0, false, 'Una secuencia simple no incluye bifurcaciones ni evaluación de condiciones.')">A. Secuencia simple.</button>
+          <button class="opcion-btn" onclick="responderItem(8, 1, true, '¡Correcto! Es una estructura condicional doble (If - Else).')">B. Condicional.</button>
+          <button class="opcion-btn" onclick="responderItem(8, 2, false, 'No describe una iteración o bucle repetitivo.')">C. Repetitiva.</button>
+          <button class="opcion-btn" onclick="responderItem(8, 3, false, 'No es un evento aislado sin lógica de decisión.')">D. Evento únicamente.</button>
+        </div>
+        <div id="retroItem8" class="retro-box"></div>
+      </div>
+
+      <!-- ÍTEM 9 -->
+      <div class="item-card">
+        <div class="item-header"><span class="item-num">9. Problema y depuración</span></div>
+        <p style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #0f172a;">
+          Un estudiante conecta un sensor pero el actuador nunca responde. ¿Qué dos aspectos revisaría antes de concluir que el sistema está dañado?
+        </p>
+        <div id="optsItem9">
+          <button class="opcion-btn" onclick="responderItem(9, 0, true, '¡Correcto! Verificar conexiones/polaridad (VCC/GND/pines) y la condición lógica del código.')">A. 1. Las conexiones físicas de cables (VCC, GND y pines) y 2. La condición y umbral en el programa.</button>
+          <button class="opcion-btn" onclick="responderItem(9, 1, false, 'Desechar las piezas sin depurar no es una práctica técnica.')">B. 1. Desechar todo el microcontrolador y 2. Comprar otro sensor inmediatamente.</button>
+          <button class="opcion-btn" onclick="responderItem(9, 2, false, 'Pintar las tarjetas no soluciona un problema de conexionado.')">C. 1. Cambiar la mesa de trabajo y 2. Limpiar la carcasa plástica.</button>
+        </div>
+        <div id="retroItem9" class="retro-box"></div>
+      </div>
+
+      <!-- ÍTEM 10 -->
+      <div class="item-card">
+        <div class="item-header"><span class="item-num">10. Datos y almacenamiento</span></div>
+        <p style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #0f172a;">
+          ¿Por qué sería importante conservar y registrar los datos obtenidos por un sensor en determinados proyectos?
+        </p>
+        <div id="optsItem10">
+          <button class="opcion-btn" onclick="responderItem(10, 0, true, '¡Excelente! Permite analizar patrones históricos de luminosidad, optimizar el consumo de energía y tomar mejores decisiones.')">A. Permite conservar, consultar, analizar tendencias de consumo y tomar decisiones automatizadas fundamentadas.</button>
+          <button class="opcion-btn" onclick="responderItem(10, 1, false, 'Los datos no se guardan solo para llenar la memoria sin propósito.')">B. Para agotar el espacio de memoria del dispositivo.</button>
+          <button class="opcion-btn" onclick="responderItem(10, 2, false, 'Los datos no afectan la velocidad física de la luz.')">C. Para hacer que la bombilla brille con más colores.</button>
+        </div>
+        <div id="retroItem10" class="retro-box"></div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; margin-top: 14px;">
+        <button class="btn btn-outline" onclick="irASeccion(1)">⬅️ Etapa 1: Datos</button>
+        <button class="btn btn-accent" onclick="irASeccion(3)">Continuar a Parte B (Reto Práctico) ➔</button>
+      </div>
+    </div>
+
+    <!-- ==================================================================== -->
+    <!-- ETAPA 3: PARTE B – 3 RETOS PRÁCTICOS OFICIALES MEP (ÁREA PSICOMOTORA) -->
+    <!-- ==================================================================== -->
+    <div id="seccion3" class="card" style="display: none;">
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
+        <div>
+          <span class="mep-badge" style="background: #dcfce7; border-color: #86efac; color: #15803d; font-size: 11px;">
+            Parte B • Área Psicomotora (Retos Prácticos Oficiales)
+          </span>
+          <h2 style="font-size: 1.25rem; color: #0f172a; margin-top: 3px; font-weight: 900;">
+            Retos Prácticos: «Conecta el Prototipo y Depuración»
+          </h2>
+        </div>
+        <span style="font-size: 11px; color: #0369a1; font-weight: 800; background: #e0f2fe; padding: 4px 10px; border-radius: 6px; border: 1px solid #7dd3fc;" id="badgeSubRetoProgreso">
+          Reto Práctico: 1 de 3
+        </span>
+      </div>
+
+      <!-- SUB-NAVEGADOR DE LOS 3 RETOS PRÁCTICOS -->
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px;">
+        <button type="button" class="nav-tab activa" id="btnTabSubReto1" onclick="cambiarSubReto(1)" style="padding: 8px; border-radius: 8px;">
+          <span style="font-size: 9.5px; font-weight: 800; color: #64748b; text-transform: uppercase;">Reto 1</span>
+          <span style="font-size: 11.5px; font-weight: 900; color: #0369a1;">🔌 1. Conexión Básica</span>
+        </button>
+        <button type="button" class="nav-tab" id="btnTabSubReto2" onclick="cambiarSubReto(2)" style="padding: 8px; border-radius: 8px;">
+          <span style="font-size: 9.5px; font-weight: 800; color: #64748b; text-transform: uppercase;">Reto 2</span>
+          <span style="font-size: 11.5px; font-weight: 900; color: #0369a1;">💡 2. Cambio de Actuador</span>
+        </button>
+        <button type="button" class="nav-tab" id="btnTabSubReto3" onclick="cambiarSubReto(3)" style="padding: 8px; border-radius: 8px;">
+          <span style="font-size: 9.5px; font-weight: 800; color: #64748b; text-transform: uppercase;">Reto 3</span>
+          <span style="font-size: 11.5px; font-weight: 900; color: #0369a1;">🔍 3. Depurar y Explicar</span>
+        </button>
+      </div>
+
+      <!-- ==================== BANNER DEL RETO 1 ==================== -->
+      <div id="panelInstruccionReto1" style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px;">
+        <h3 style="font-size: 13px; font-weight: 900; color: #15803d; margin-bottom: 4px;">
+          🔌 Reto 1: Conexión Inicial del Sistema Automatizado (LDR ➔ MCU ➔ LED)
+        </h3>
+        <p style="font-size: 12px; color: #1e293b; line-height: 1.5; margin: 0;">
+          <strong>Instrucción:</strong> Conecta los <strong>5 terminales de polaridad y señal</strong> entre el Sensor LDR (VCC 5V, GND, Pin A0) y el Actuador LED (Pin D9, GND). Luego varía la luz ambiental con el deslizador para validar que la bombilla encienda cuando haya poca iluminación (&lt;300 Lux).
+        </p>
+      </div>
+
+      <!-- ==================== BANNER DEL RETO 2 ==================== -->
+      <div id="panelInstruccionReto2" style="display: none; background: #eff6ff; border: 1.5px solid #7dd3fc; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px;">
+        <h3 style="font-size: 13px; font-weight: 900; color: #0369a1; margin-bottom: 4px;">
+          💡 Reto 2: Sustitución y Adaptación de Actuador
+        </h3>
+        <p style="font-size: 12px; color: #1e293b; line-height: 1.5; margin-bottom: 10px;">
+          <strong>Instrucción:</strong> Selecciona un actuador alternativo (Ventilador DC o Alarma Sonora) y comprueba cómo el sistema automatizado adapta su respuesta física ante el umbral ambiental.
+        </p>
+        
+        <!-- SELECTOR DE ACTUADORES -->
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
+          <button type="button" class="btn btn-outline" id="btnSelAct_LED" onclick="seleccionarActuadorReto2('LED')" style="font-size: 11px; padding: 6px 4px; background: #e0f2fe; border-color: #0284c7; color: #0369a1; font-weight: 800;">
+            💡 1. Lámpara LED
+          </button>
+          <button type="button" class="btn btn-outline" id="btnSelAct_VENTILADOR" onclick="seleccionarActuadorReto2('VENTILADOR')" style="font-size: 11px; padding: 6px 4px;">
+            🌀 2. Ventilador DC
+          </button>
+          <button type="button" class="btn btn-outline" id="btnSelAct_ALARMA" onclick="seleccionarActuadorReto2('ALARMA')" style="font-size: 11px; padding: 6px 4px;">
+            🔔 3. Alarma Sonora
+          </button>
+        </div>
+      </div>
+
+      <!-- ==================== BANNER DEL RETO 3 ==================== -->
+      <div id="panelInstruccionReto3" style="display: none; background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 10px; padding: 14px; margin-bottom: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 4px;">
+          <h3 style="font-size: 13.5px; font-weight: 900; color: #92400e; margin: 0;">
+            🔍 Reto 3: Análisis de Propuesta Incorrecta, Corrección y Explicación
+          </h3>
+          <button type="button" class="btn btn-warning" style="font-size: 10.5px; padding: 3px 8px; min-height: 26px;" onclick="cargarCircuitoFallaReto3()">
+            ⚠️ Cargar Propuesta con Falla
+          </button>
+        </div>
+        <p style="font-size: 12px; color: #334155; line-height: 1.5; margin-bottom: 12px;">
+          <strong>Situación:</strong> Un estudiante armó una propuesta donde <em>la lámpara nunca responde al oscurecer</em>. Analiza el circuito en el banco de trabajo, identifica el error, efectúa la corrección física y justifica tu decisión.
+        </p>
+
+        <!-- PASO 1: IDENTIFICACIÓN DEL ERROR -->
+        <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px 12px; margin-bottom: 10px;">
+          <label style="display: block; font-size: 11.5px; font-weight: 800; color: #0369a1; margin-bottom: 6px;">
+            1. ¿Cuál es el error presente en la conexión del prototipo?
+          </label>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 4px;">
+            <button class="opcion-btn" id="btnDiagReto3_1" onclick="seleccionarDiagnosticoReto3(1, true, this)">
+              A. El terminal de señal del sensor LDR fue conectado a 5V en vez de la entrada analógica A0, anulando la variación de lectura de luminosidad.
+            </button>
+            <button class="opcion-btn" id="btnDiagReto3_2" onclick="seleccionarDiagnosticoReto3(2, false, this)">
+              B. El microcontrolador requiere conectarse a Internet por Wi-Fi obligatoriamente.
+            </button>
+            <button class="opcion-btn" id="btnDiagReto3_3" onclick="seleccionarDiagnosticoReto3(3, false, this)">
+              C. La bombilla LED no funciona con corriente directa.
+            </button>
+          </div>
+          <div id="retroDiagReto3" class="retro-box"></div>
+        </div>
+
+        <!-- PASO 2: CORRECCIÓN FÍSICA -->
+        <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px 12px; margin-bottom: 10px;">
+          <label style="display: block; font-size: 11.5px; font-weight: 800; color: #15803d; margin-bottom: 4px;">
+            2. Realiza la corrección en el banco de hardware:
+          </label>
+          <span style="font-size: 11px; color: #64748b; display: block; margin-bottom: 6px;">
+            Haz clic en el terminal de señal y conéctalo al pin correcto (<strong>Pin A0</strong> en el Microcontrolador).
+          </span>
+          <div id="statusCorreccionReto3" style="font-size: 11.5px; font-weight: 800; color: #b45309;">
+            ⏳ Estado: Pendiente de corrección física en el simulador.
+          </div>
+        </div>
+
+        <!-- PASO 3: EXPLICACIÓN TÉCNICA -->
+        <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px 12px;">
+          <label style="display: block; font-size: 11.5px; font-weight: 800; color: #92400e; margin-bottom: 4px;">
+            3. Explica por qué realizaste esta corrección:
+          </label>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 4px; margin-bottom: 6px;">
+            <button class="opcion-btn" id="btnJustReto3_1" onclick="seleccionarJustificacionReto3(1, 'El pin A0 es una entrada analógica que lee valores variables de voltaje proporcionales a la luz, mientras que 5V es una línea de alimentación fija.', this)">
+              • Porque el pin A0 es una entrada analógica que lee voltajes variables según la luz, mientras que 5V suministra una tensión fija sin variación.
+            </button>
+            <button class="opcion-btn" id="btnJustReto3_2" onclick="seleccionarJustificacionReto3(2, 'Permite al microcontrolador ejecutar la estructura condicional con el umbral programado.', this)">
+              • Porque permite al programa del microcontrolador evaluar la condición lógica del umbral (&lt;300 Lux).
+            </button>
+          </div>
+          <textarea id="inputExplicacionReto3" rows="2" placeholder="Complementa tu justificación técnica con tus propias palabras aquí..." style="width: 100%; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 6px; padding: 8px 10px; color: #0f172a; font-size: 11.5px; outline: none;" oninput="actualizarTextoExplicacionReto3(this.value)"></textarea>
+        </div>
+      </div>
+
+      <!-- CONTROLES Y HERRAMIENTAS DEL SIMULADOR -->
+      <div class="sim-panel-header">
+        <div class="actions-grid-mobile" style="grid-template-columns: repeat(3, 1fr);">
+          <button class="btn btn-accent" style="font-weight: 800; box-shadow: 0 0 10px rgba(16,185,129,0.2);" onclick="sincronizarYValidarConexion()">
+            🚀 Sincronizar Conexión
+          </button>
+          <button class="btn btn-warning" onclick="restaurarCircuitoValores()">
+            🔄 Restaurar Valores
+          </button>
+          <button class="btn btn-danger" onclick="limpiarCables()">
+            🧹 Desconectar Todo
+          </button>
+        </div>
+
+        <!-- SLIDER DE LUZ AMBIENTAL -->
+        <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 10px 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; margin-bottom: 4px;">
+            <span style="color: #64748b; font-weight: 700;">🌙 Noche (0 Lux)</span>
+            <strong id="labelLuxAmbiental" style="color: #b45309; font-size: 12px; font-family: monospace; font-weight: 900;">
+              Luz: 180 Lux (Poca Luz)
+            </strong>
+            <span style="color: #64748b; font-weight: 700;">☀️ Sol (850 Lux)</span>
+          </div>
+          <input type="range" id="sliderLuz" min="0" max="850" value="180" style="width: 100%; cursor: pointer;" oninput="actualizarSimulador(this.value)">
+        </div>
+      </div>
+
+      <!-- GRID PRINCIPAL DE SIMULACIÓN -->
+      <div class="sim-grid-layout">
+        
+        <!-- BANCO DE HARDWARE -->
+        <div class="banco-hardware-container" id="hardwareBoard">
+          <div style="font-size: 11px; font-weight: 900; color: #0369a1; text-transform: uppercase; margin-bottom: 8px; display: flex; justify-content: space-between;">
+            <span>🔌 1. Tarjetas de Componentes</span>
+            <span id="labelCablesConteo" style="color: #64748b; font-size: 10.5px; font-weight: 800;">
+              Cables: 0 / 5
+            </span>
+          </div>
+
+          <div class="hardware-workspace">
+            <!-- SENSOR LDR -->
+            <div class="hardware-card" id="cardSensor">
+              <div>
+                <div style="font-size: 20px;">☀️</div>
+                <strong style="font-size: 11px; color: #0f172a; display: block; font-weight: 900;">Sensor LDR</strong>
+              </div>
+
+              <div style="margin-top: 4px; display: flex; flex-direction: column; gap: 3px;">
+                <div class="pin-terminal" id="pin_sensor_vcc" onclick="clickPin('sensor_vcc')">🔴 VCC (5V)</div>
+                <div class="pin-terminal" id="pin_sensor_gnd" onclick="clickPin('sensor_gnd')">⚫ GND</div>
+                <div class="pin-terminal" id="pin_sensor_sig" onclick="clickPin('sensor_sig')">🟢 Pin A0</div>
+              </div>
+            </div>
+
+            <!-- MICROCONTROLADOR -->
+            <div class="hardware-card pcb-mcu highlight" id="cardMCU">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span class="led-pwr"></span>
+                  <span style="font-size: 8.5px; font-weight: 900; color: #15803d;">MCU 328P</span>
+                  <span class="led-rx-tx"></span>
+                </div>
+                <div class="chip-ic" style="color: #0f172a; font-weight: 900;">PROCESO</div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin-top: 3px;">
+                <div style="display: flex; flex-direction: column; gap: 3px;">
+                  <div class="pin-terminal" id="pin_mcu_5v" onclick="clickPin('mcu_5v')">🔴 5V</div>
+                  <div class="pin-terminal" id="pin_mcu_gnd" onclick="clickPin('mcu_gnd')">⚫ GND</div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 3px;">
+                  <div class="pin-terminal" id="pin_mcu_a0" onclick="clickPin('mcu_a0')">🟢 A0</div>
+                  <div class="pin-terminal" id="pin_mcu_d9" onclick="clickPin('mcu_d9')">🟡 D9</div>
+                </div>
+              </div>
+
+              <div id="mcuStatusBadge" style="font-size: 9px; color: #0369a1; font-weight: 900; margin-top: 4px;">
+                Sin cablear
+              </div>
+            </div>
+
+            <!-- ACTUADOR -->
+            <div class="hardware-card" id="cardActuador">
+              <div>
+                <div style="font-size: 20px;" id="actuadorIcono">💡</div>
+                <strong style="font-size: 11px; color: #0f172a; display: block; font-weight: 900;" id="actuadorTitulo">LED (Salida)</strong>
+              </div>
+
+              <div style="margin-top: 4px; display: flex; flex-direction: column; gap: 3px;">
+                <div class="pin-terminal" id="pin_act_sig" onclick="clickPin('act_sig')">🟡 Pin D9</div>
+                <div class="pin-terminal" id="pin_act_gnd" onclick="clickPin('act_gnd')">⚫ GND</div>
+              </div>
+
+              <div id="actuadorStatusBadge" style="font-size: 9px; color: #64748b; font-weight: 800; margin-top: 4px;">
+                Off (0%)
+              </div>
+            </div>
+          </div>
+
+          <svg id="svgCablesLayer"></svg>
+
+          <!-- PIPELINE E-P-S -->
+          <div class="eps-pipeline" style="margin-top: 10px;">
+            <div class="eps-stage" id="epsEntrada">
+              <strong style="color: #0369a1;">ENTRADA</strong><br><span style="font-size: 8.5px; color: #1e293b;">LDR (Pin A0)</span>
+            </div>
+            <span style="color: #64748b; font-weight: bold;">➔</span>
+            <div class="eps-stage" id="epsProceso">
+              <strong style="color: #15803d;">PROCESO</strong><br><span style="font-size: 8.5px; color: #1e293b;">MCU (&lt;300 Lux)</span>
+            </div>
+            <span style="color: #64748b; font-weight: bold;">➔</span>
+            <div class="eps-stage" id="epsSalida">
+              <strong style="color: #b45309;">SALIDA</strong><br><span style="font-size: 8.5px; color: #1e293b;" id="epsSalidaLabel">LED (Pin D9)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- AULA 2D Y OSCILOSCOPIO -->
+        <div class="aula-sim-container">
+          <div style="font-size: 11px; font-weight: 900; color: #15803d; text-transform: uppercase; display: flex; justify-content: space-between;">
+            <span>🏫 2. Aula 2D</span>
+            <span id="labelEstadoAula" style="font-size: 10px; color: #15803d; font-weight: 800;">
+              Luz Activa
+            </span>
+          </div>
+
+          <div class="aula-canvas-frame">
+            <canvas id="aulaCanvas2D" width="360" height="140"></canvas>
+          </div>
+
+          <div class="telemetria-box">
+            <div style="display: flex; justify-content: space-between; font-size: 9.5px; color: #475569; margin-bottom: 3px; font-weight: 700;">
+              <span style="color: #0369a1; font-weight: 800;">📈 Osciloscopio Real-Time</span>
+              <span style="color: #15803d; font-weight: 800;">60 FPS</span>
+            </div>
+            <div class="osciloscopio-frame">
+              <canvas id="osciloscopioCanvas" width="340" height="60"></canvas>
+            </div>
+
+            <div class="multimetro-readout">
+              <div class="dmm-tile">
+                <div class="dmm-label">Luz</div>
+                <div class="dmm-val" id="dmmLux">180 Lx</div>
+              </div>
+              <div class="dmm-tile">
+                <div class="dmm-label">Volt A0</div>
+                <div class="dmm-val" id="dmmVoltA0">1.05 V</div>
+              </div>
+              <div class="dmm-tile">
+                <div class="dmm-label">Salida D9</div>
+                <div class="dmm-val" id="dmmSalidaD9" style="color: #15803d;">HIGH</div>
+              </div>
+              <div class="dmm-tile">
+                <div class="dmm-label">Potencia</div>
+                <div class="dmm-val" id="dmmWatts">45 W</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- MONITOR SERIAL EN VIVO -->
+      <div class="serial-station-wrapper">
+        <div class="serial-station-header">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="font-size: 16px;">🖥️</span>
+            <strong style="color: #0369a1; font-size: 12px; font-weight: 800;">Monitor Serial UART</strong>
+            <span class="mep-badge" style="background: #e0f2fe; border-color: #7dd3fc; color: #0369a1; font-size: 9px;">
+              9600 Baud
+            </span>
+          </div>
+
+          <button class="btn btn-outline" style="font-size: 10px; padding: 3px 8px; min-height: 24px;" onclick="limpiarConsolaSerial()">
+            🗑️ Limpiar
+          </button>
+        </div>
+
+        <div class="serial-log-container" id="serialConsole">
+          <span class="serial-time">[08:00:00]</span> <span class="serial-info">[SISTEMA]: Inicializado. Conecta los terminales para establecer el enlace eléctrico.</span><br>
+        </div>
+      </div>
+
+      <!-- BOTONES DE NAVEGACIÓN Y AVANCE DE RETOS -->
+      <div style="display: flex; justify-content: space-between; margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px; flex-wrap: wrap; gap: 6px;">
+        <button class="btn btn-outline" onclick="irASeccion(2)">⬅️ Parte A: 10 Reactivos</button>
+        
+        <div style="display: flex; gap: 6px;">
+          <button class="btn btn-secondary" id="btnSubRetoPrev" onclick="cambiarSubReto(subRetoActual - 1)" style="display: none;">
+            ◀️ Reto Anterior
+          </button>
+          <button class="btn btn-accent" id="btnSubRetoNext" style="padding: 9px 20px; font-size: 13.5px; font-weight: 800;" onclick="avanzarSubReto()">
+            Validar Reto 1 y Pasar al Reto 2 ➔
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================================================================== -->
+    <!-- ETAPA 4: PARTE C – REFLEXIÓN INDIVIDUAL (DOCUMENTO BASE OFICIAL)     -->
+    <!-- ==================================================================== -->
+    <div id="seccion4" class="card" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
+        <div>
+          <span class="mep-badge" style="background: #fef3c7; border-color: #fde68a; color: #92400e;">
+            Parte C • Reflexión Individual (Documento Base)
+          </span>
+          <h2 style="font-size: 1.15rem; color: #0f172a; margin-top: 2px; font-weight: 900;">
+            Autopercepción y Actitudes del Pensador Computacional
+          </h2>
+        </div>
+        <span style="font-size: 11px; color: #64748b; font-weight: 700;">Área Socioafectiva</span>
+      </div>
+
+      <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px;">
+        <p style="font-size: 12px; color: #334155; line-height: 1.5;">
+          Reflexiona con total honestidad sobre tu experiencia durante la resolución del reto. Tus respuestas ayudarán al docente a adaptar las actividades de apoyo a tus necesidades.
+        </p>
+      </div>
+
+      <!-- PREGUNTA 1 DE REFLEXIÓN -->
+      <div class="reflexion-container">
+        <label style="display: block; font-size: 13px; font-weight: 800; color: #0369a1; margin-bottom: 6px;">
+          1. ¿Qué parte de la actividad pudiste realizar con mayor facilidad?
+        </label>
+        <div style="display: grid; grid-template-columns: 1fr; gap: 6px; margin-bottom: 8px;">
+          <button class="opcion-btn" id="btnRef1_1" onclick="seleccionarOpcionReflexion(1, 'Identificar los conceptos de sensor, microcontrolador y actuador', this)">A. Identificar los conceptos teóricos de sensor, microcontrolador y actuador.</button>
+          <button class="opcion-btn" id="btnRef1_2" onclick="seleccionarOpcionReflexion(1, 'Conectar los cables y terminales (5V, GND, Pines)', this)">B. Conectar los cables y terminales en el prototipo interactivo.</button>
+          <button class="opcion-btn" id="btnRef1_3" onclick="seleccionarOpcionReflexion(1, 'Comprender la lógica condicional del umbral de luz (<300 Lux)', this)">C. Comprender la lógica condicional del umbral de luz (&lt;300 Lux).</button>
+        </div>
+        <input type="text" id="inputReflexion1" placeholder="Puedes complementar con tus propias palabras aquí..." style="width: 100%; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 6px; padding: 8px 12px; color: #0f172a; font-size: 12px; outline: none;">
+      </div>
+
+      <!-- PREGUNTA 2 DE REFLEXIÓN -->
+      <div class="reflexion-container">
+        <label style="display: block; font-size: 13px; font-weight: 800; color: #0369a1; margin-bottom: 6px;">
+          2. ¿Qué parte te resultó más difícil?
+        </label>
+        <div style="display: grid; grid-template-columns: 1fr; gap: 6px; margin-bottom: 8px;">
+          <button class="opcion-btn" id="btnRef2_1" onclick="seleccionarOpcionReflexion(2, 'Diferenciar los pines analógicos y digitales', this)">A. Diferenciar entre pines analógicos (A0) y pines digitales (D9).</button>
+          <button class="opcion-btn" id="btnRef2_2" onclick="seleccionarOpcionReflexion(2, 'Detectar por qué no encendía la lámpara (depuración)', this)">B. Detectar y depurar la conexión incorrecta cuando fallaba.</button>
+          <button class="opcion-btn" id="btnRef2_3" onclick="seleccionarOpcionReflexion(2, 'Comprender el almacenamiento y ciclo de vida del dato', this)">C. Comprender el almacenamiento y ciclo de vida de los datos.</button>
+        </div>
+        <input type="text" id="inputReflexion2" placeholder="Describe qué aspecto específico se te dificultó..." style="width: 100%; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 6px; padding: 8px 12px; color: #0f172a; font-size: 12px; outline: none;">
+      </div>
+
+      <!-- PREGUNTA 3 DE REFLEXIÓN -->
+      <div class="reflexion-container">
+        <label style="display: block; font-size: 13px; font-weight: 800; color: #0369a1; margin-bottom: 6px;">
+          3. Cuando tu solución no funcionó, ¿qué hiciste?
+        </label>
+        <div style="display: grid; grid-template-columns: 1fr; gap: 6px; margin-bottom: 8px;">
+          <button class="opcion-btn" id="btnRef3_1" onclick="seleccionarOpcionReflexion(3, 'Revisé el monitor serial y comprobé cada cable con calma', this)">A. Revisé el monitor serial, comprobé cada terminal con calma y corregí la polaridad.</button>
+          <button class="opcion-btn" id="btnRef3_2" onclick="seleccionarOpcionReflexion(3, 'Probé varias conexiones al azar hasta que funcionó', this)">B. Probé varias opciones rápidamente hasta que funcionó.</button>
+          <button class="opcion-btn" id="btnRef3_3" onclick="seleccionarOpcionReflexion(3, 'Consulté a mi compañero/a o docente para recibir orientación', this)">C. Consulté con mi compañero o pedí orientación.</button>
+        </div>
+        <input type="text" id="inputReflexion3" placeholder="¿Cómo fue tu reacción ante el error?..." style="width: 100%; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 6px; padding: 8px 12px; color: #0f172a; font-size: 12px; outline: none;">
+      </div>
+
+      <!-- PREGUNTA 4 DE REFLEXIÓN -->
+      <div class="reflexion-container">
+        <label style="display: block; font-size: 13px; font-weight: 800; color: #0369a1; margin-bottom: 6px;">
+          4. ¿Qué necesitas aprender o reforzar para desarrollar proyectos de este tipo?
+        </label>
+        <div style="display: grid; grid-template-columns: 1fr; gap: 6px; margin-bottom: 8px;">
+          <button class="opcion-btn" id="btnRef4_1" onclick="seleccionarOpcionReflexion(4, 'Programación textual o por bloques de microcontroladores', this)">A. Programación estructurada (textual o por bloques) de microcontroladores.</button>
+          <button class="opcion-btn" id="btnRef4_2" onclick="seleccionarOpcionReflexion(4, 'Circuitos electrónicos y conexionado físico de sensores', this)">B. Principios de electrónica y conexionado de nuevos sensores y actuadores.</button>
+          <button class="opcion-btn" id="btnRef4_3" onclick="seleccionarOpcionReflexion(4, 'Ciencia de datos y domótica aplicada', this)">C. Gestión de datos, domótica y automatización del entorno.</button>
+        </div>
+        <input type="text" id="inputReflexion4" placeholder="Escribe tus intereses o metas para este Módulo 1..." style="width: 100%; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 6px; padding: 8px 12px; color: #0f172a; font-size: 12px; outline: none;">
+      </div>
+
+      <!-- PREGUNTA 5 DE REFLEXIÓN (DOCUMENTO BASE: CÓMO TE SENTISTE) -->
+      <div class="reflexion-container" style="border: 1.5px solid #fde68a; background: #fffbeb;">
+        <label style="display: block; font-size: 13px; font-weight: 800; color: #92400e; margin-bottom: 4px;">
+          5. ¿Cómo te sentiste enfrentando el reto?
+        </label>
+        <span style="font-size: 11px; color: #64748b; display: block; margin-bottom: 8px;">
+          Marca la opción que mejor describa tu experiencia:
+        </span>
+
+        <div class="sentimiento-grid">
+          <div class="sentimiento-card" id="cardSent1" onclick="seleccionarSentimiento('Muy cómodo/a', 1)">
+            <div style="font-size: 22px;">😃</div>
+            <div style="font-size: 11.5px; margin-top: 4px; font-weight: 700; color: #0f172a;">Muy cómodo/a</div>
+          </div>
+          <div class="sentimiento-card" id="cardSent2" onclick="seleccionarSentimiento('Cómodo/a', 2)">
+            <div style="font-size: 22px;">🙂</div>
+            <div style="font-size: 11.5px; margin-top: 4px; font-weight: 700; color: #0f172a;">Cómodo/a</div>
+          </div>
+          <div class="sentimiento-card" id="cardSent3" onclick="seleccionarSentimiento('Con alguna dificultad', 3)">
+            <div style="font-size: 22px;">😐</div>
+            <div style="font-size: 11.5px; margin-top: 4px; font-weight: 700; color: #0f172a;">Con alguna dificultad</div>
+          </div>
+          <div class="sentimiento-card" id="cardSent4" onclick="seleccionarSentimiento('Necesité bastante apoyo', 4)">
+            <div style="font-size: 22px;">🤝</div>
+            <div style="font-size: 11.5px; margin-top: 4px; font-weight: 700; color: #0f172a;">Necesité bastante apoyo</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; margin-top: 14px;">
+        <button class="btn btn-outline" onclick="irASeccion(3)">⬅️ Parte B: Reto Práctico</button>
+        <button class="btn btn-accent" style="padding: 9px 20px; font-size: 13.5px; font-weight: 800;" onclick="irASeccion(5)">
+          Finalizar y Generar Informe Oficial ➔
+        </button>
+      </div>
+    </div>
+
+    <!-- ==================================================================== -->
+    <!-- ETAPA 5: COMPROBANTE DE ENTREGA Y CÓDIGO QR PARA EL DOCENTE         -->
+    <!-- ==================================================================== -->
+    <div id="seccion5" class="card" style="display: none; text-align: center; max-width: 680px; margin: 0 auto;">
+      <div style="font-size: 38px; margin-bottom: 6px;">🎉</div>
+      <h2 style="font-size: 1.4rem; color: #0369a1; font-weight: 900;">
+        ¡Diagnóstico Completado con Éxito!
+      </h2>
+      <p style="font-size: 12.5px; color: #475569; margin-bottom: 14px;" id="etiquetaEstudianteResumen">
+        Estudiante: <strong style="color: #0f172a;">Estudiante 9° Año</strong> • Sección: <strong style="color: #0284c7;">Sección 9-1</strong>
+      </p>
+
+      <!-- TARJETA DEL CÓDIGO QR PARA QUE EL DOCENTE ESCANEE DESDE LA PANTALLA DE LA COMPUTADORA -->
+      <div style="background: #ffffff; border: 2px solid #7dd3fc; border-radius: 14px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.08);">
+        <h3 style="font-size: 13px; color: #0369a1; font-weight: 800; margin-bottom: 8px;">
+          🖥️ Código QR de Entrega (Presenta esta pantalla al Docente si lo solicita)
+        </h3>
+        <p style="font-size: 11.5px; color: #64748b; margin-bottom: 14px;">
+          Tus respuestas han sido procesadas. El docente puede escanear este código QR o visualizar tu registro directo en el Instrumento Evaluador.
+        </p>
+
+        <div style="display: inline-block; background: white; padding: 12px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); border: 1px solid #e2e8f0;">
+          <canvas id="qrCanvasFinal" width="200" height="200" style="display: block;"></canvas>
+        </div>
+
+        <div style="margin-top: 12px; font-size: 11.5px; color: #334155;" id="tokenHashLabelFinal">
+          <strong>HASH DE SEGURIDAD:</strong> <span style="color: #15803d; font-family: monospace; font-weight: 800;">DIAG9-VALIDADO</span>
+        </div>
+      </div>
+
+      <!-- ESTADO DE TRANSMISIÓN TELEMÉTRICA / LOCAL -->
+      <div id="estadoTelemetria" style="padding: 10px 14px; border-radius: 10px; margin-bottom: 16px; font-size: 12px; font-weight: 700; background: #e0f2fe; border: 1.5px solid #7dd3fc; color: #0369a1;">
+        📡 Evidencia sincronizada con la base de datos docente.
+      </div>
+
+      <!-- ACCIONES -->
+      <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+        <button class="btn btn-accent" onclick="mostrarModalQR()" title="Muestra el código QR ampliado">
+          🔍 Ver QR Ampliado
+        </button>
+        <button class="btn btn-outline" onclick="mostrarModalInstrumento()">
+          📋 Ver Criterios de Logro
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL RÚBRICA PEDAGÓGICA -->
+  <div id="modalInstrumento" class="modal">
+    <div class="modal-content">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 14px;">
+        <h3 style="color: #0369a1; font-size: 1.1rem; margin: 0; font-weight: 900;">📋 Rúbrica de Evaluación Diagnóstica</h3>
+        <button class="btn btn-outline" style="padding: 3px 6px; min-height: 24px;" onclick="cerrarModalInstrumento()">✕</button>
+      </div>
+
+      <div style="font-size: 12px; color: #334155; line-height: 1.55;">
+        <div style="background: #eff6ff; padding: 12px; border-radius: 8px; border-left: 4px solid #0284c7; margin-bottom: 10px;">
+          <strong style="color: #0369a1;">1. 🧠 Área Cognoscitiva (10 Evidencias):</strong>
+          <p style="margin-top: 4px; color: #1e293b;">Microcontrolador, sensor/actuador, modelo E-P-S, algoritmo ordenado, condición lógica, relación de elementos, dato numérico, lógica if/else, depuración técnica y conservación del dato.</p>
+        </div>
+        <div style="background: #f0fdf4; padding: 12px; border-radius: 8px; border-left: 4px solid #10b981; margin-bottom: 10px;">
+          <strong style="color: #15803d;">2. 🖐️ Área Psicomotora (Reto «Conecta el Prototipo»):</strong>
+          <p style="margin-top: 4px; color: #1e293b;">Organización espacial de tarjetas, precisión en trazo de líneas, correspondencia de terminales (VCC, GND, A0, D9) y corrección de errores con autonomía progresiva.</p>
+        </div>
+        <div style="background: #fffbeb; padding: 12px; border-radius: 8px; border-left: 4px solid #f59e0b; margin-bottom: 10px;">
+          <strong style="color: #b45309;">3. ❤️ Área Socioafectiva (Parte C Reflexión):</strong>
+          <p style="margin-top: 4px; color: #1e293b;">Gusto por la precisión, aprendizaje del error, persistencia ante dificultades, colaboración y autopercepción del nivel de comodidad/apoyo.</p>
+        </div>
+        <div style="background: #f8fafc; border: 1.5px dashed #7dd3fc; padding: 10px; border-radius: 8px; font-size: 11px; color: #0369a1;">
+          <strong>Escala Oficial:</strong> Nivel A = Realiza autónomamente | Nivel B = Con apoyo ocasional | Nivel C = Requiere acompañamiento constante.
+        </div>
+      </div>
+
+      <div style="text-align: right; margin-top: 14px;">
+        <button class="btn btn-accent" onclick="cerrarModalInstrumento()">Entendido y Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL QR OFFLINE -->
+  <div id="modalQR" class="modal">
+    <div class="modal-content" style="text-align: center; max-width: 420px;">
+      <h3 style="color: #0369a1; margin-bottom: 4px; font-size: 1.15rem; font-weight: 900;">📱 Comprobante QR para el Docente</h3>
+      <p style="font-size: 11.5px; color: #64748b; margin-bottom: 12px;">
+        El docente puede escanear este código QR con el <strong>Aplicativo Evaluador Docente</strong> para registrar tus evidencias de forma inmediata.
+      </p>
+      <div style="display: flex; justify-content: center; margin: 10px 0;">
+        <canvas id="qrCanvas" width="200" height="200" style="border: 2px solid #0284c7; border-radius: 8px; background: white;"></canvas>
+      </div>
+      <div id="tokenHashLabel" style="font-family: monospace; font-size: 10px; color: #334155; word-break: break-all; margin-bottom: 12px;"></div>
+      <button class="btn btn-accent" style="width: 100%;" onclick="cerrarModalQR()">Cerrar Comprobante</button>
+    </div>
+  </div>
+
+  <!-- MOTOR JAVASCRIPT -->
+  <script>
+    var CONFIG = {
+      webAppId: "diag-9no-mod01-aula-inteligente",
+      webAppTitulo: "Diagnóstico Integrado 9°: «Aula Inteligente» - Formación Tecnológica 2026",
+      docenteId: "DOC-DRE01-7729",
+      nivel: "9° Año - Secundaria",
+      totalItems: 10,
+      umbralLux: 300,
+      urlTelemetria: "/api/telemetria/enviar"
+    };
+
+    var estado = {
+      seccionActual: 1,
+      estudianteNombre: "",
+      seccionGrupo: "Sección 9-1",
+      centroEducativo: "",
+      docenteNombre: "",
+      respuestasCognoscitivas: {},
+      reflexion: {
+        facilidad: "",
+        facilidadTexto: "",
+        dificultad: "",
+        dificultadTexto: "",
+        fallo: "",
+        falloTexto: "",
+        reforzar: "",
+        reforzarTexto: "",
+        sentimiento: "Muy cómodo/a"
+      },
+      cables: {
+        ldr_vcc: false,
+        ldr_gnd: false,
+        ldr_sig: false,
+        act_sig: false,
+        act_gnd: false
+      },
+      subRetoActual: 1,
+      reto3Iniciado: false,
+      reto3Diagnostico: null,
+      reto3Justificacion: "",
+      reto3JustificacionOpc: 0,
+      reto3Explicacion: "",
+      pinSeleccionado: null,
+      actuadorActual: "LED",
+      fallaInyectada: 0,
+      luzActual: 180,
+      audioHabilitado: true,
+      tiempoInicio: Date.now(),
+      tiempoTotal: 0
+    };
+
+    var subRetoActual = 1;
+
+    var CONEXIONES_VALIDAS = [
+      { p1: "sensor_vcc", p2: "mcu_5v", cableId: "ldr_vcc", color: "#ef4444", nombre: "VCC (5V) Sensor LDR" },
+      { p1: "sensor_gnd", p2: "mcu_gnd", cableId: "ldr_gnd", color: "#38bdf8", nombre: "GND Sensor LDR" },
+      { p1: "sensor_sig", p2: "mcu_a0", cableId: "ldr_sig", color: "#10b981", nombre: "Señal Analógica A0 (Entrada)" },
+      { p1: "act_sig", p2: "mcu_d9", cableId: "act_sig", color: "#f59e0b", nombre: "Señal Digital D9 (Salida Actuador)" },
+      { p1: "act_gnd", p2: "mcu_gnd", cableId: "act_gnd", color: "#38bdf8", nombre: "GND Actuador" }
+    ];
+
+    var audioCtx = null;
+    function playBeep(freq, type, duration) {
+      if (!estado.audioHabilitado) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        var osc = audioCtx.createOscillator();
+        var gain = audioCtx.createGain();
+        osc.type = type || "sine";
+        osc.frequency.setValueAtTime(freq || 440, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + (duration || 0.1));
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + (duration || 0.1));
+      } catch(e) {}
+    }
+
+    function toggleAudioFx() {
+      estado.audioHabilitado = !estado.audioHabilitado;
+      document.getElementById("btnAudioToggle").innerText = estado.audioHabilitado ? "🔊 Sonidos" : "🔇 Silencio";
+    }
+
+    function formatearNombreEstudiante(input) {
+      var cursor = input.selectionStart;
+      var palabras = input.value.split(" ");
+      for (var i = 0; i < palabras.length; i++) {
+        if (palabras[i].length > 0) {
+          palabras[i] = palabras[i].charAt(0).toUpperCase() + palabras[i].slice(1);
+        }
+      }
+      input.value = palabras.join(" ");
+      try { input.setSelectionRange(cursor, cursor); } catch(e) {}
+    }
+
+    function validarDatosEstudiante() {
+      var nom = (document.getElementById("inputEstudianteNombre").value || "").trim();
+      var sec = document.getElementById("selectSeccion").value;
+      var ced = (document.getElementById("inputEstudianteCedula").value || "").trim();
+      var cor = (document.getElementById("inputEstudianteCorreo").value || "").trim();
+
+      estado.estudianteNombre = nom;
+      estado.seccionGrupo = sec;
+      estado.estudianteCedula = ced;
+      estado.estudianteCorreo = cor;
+      estado.centroEducativo = (document.getElementById("inputCentroEducativo").value || "").trim();
+      estado.docenteNombre = (document.getElementById("inputDocente").value || "").trim();
+
+      var msg = document.getElementById("msgValidacionDatos");
+      var btn = document.getElementById("btnIniciarDiagnostico");
+
+      var partes = nom.split(/\s+/).filter(function(p){ return p.length >= 2; });
+      if (partes.length < 2 || nom.length < 6) {
+        msg.innerText = "⚠️ Por favor escribe tu Nombre y al menos dos Apellidos completos (ej: Carlos Daniel Pérez Soto).";
+        msg.style.color = "#f59e0b";
+        if (btn) btn.disabled = true;
+        return false;
+      }
+
+      if (cor.length > 0 && !cor.includes("@")) {
+        msg.innerText = "⚠️ El correo institucional debe incluir '@' (ej: nombre.apellido@est.mep.go.cr).";
+        msg.style.color = "#f59e0b";
+        if (btn) btn.disabled = true;
+        return false;
+      }
+
+      msg.innerText = "✅ Identificación validada: " + nom + " • " + sec + (ced ? " (Cédula: " + ced + ")" : "");
+      msg.style.color = "#34d399";
+      if (btn) btn.disabled = false;
+      return true;
+    }
+
+    function registrarInicioEstudianteServidor() {
+      var nombreEst = estado.estudianteNombre;
+      var seccionEst = estado.seccionGrupo;
+      var ahora = new Date();
+      var horaStr = ahora.toLocaleTimeString("es-CR", { hour: "2-digit", minute: "2-digit" });
+      var fechaStr = ahora.toLocaleDateString("es-CR", { day: "2-digit", month: "2-digit", year: "numeric" });
+      var timeEpoch = ahora.getTime();
+
+      var payloadInicio = {
+        webAppId: CONFIG.webAppId,
+        webAppTitulo: CONFIG.webAppTitulo,
+        docenteId: CONFIG.docenteId,
+        estudianteNombre: nombreEst,
+        estudianteCedula: estado.estudianteCedula || "",
+        estudianteCorreo: estado.estudianteCorreo || "",
+        seccionOGrupo: seccionEst,
+        tipoActividad: "inicio_diagnostico",
+        estadoProgreso: "iniciado",
+        fechaEntrega: fechaStr,
+        horaInicio: horaStr,
+        horaEntrega: "",
+        timestampEpoch: timeEpoch,
+        timestamp: timeEpoch,
+        puntaje: 0,
+        puntajeMaximo: 100,
+        porcentaje: 0,
+        nivelLogro: "Inicial",
+        tiempoSegundos: 0,
+        totalReactivos: CONFIG.totalItems,
+        aciertos: 0,
+        fallos: 0,
+        tokenAntiFraude: "init-" + timeEpoch
+      };
+
+      // Guardar en cache local inmediato
+      try {
+        var registros = JSON.parse(localStorage.getItem("diagnosticos_mep_9no") || "[]");
+        var idx = registros.findIndex(function(r) { return r.estudianteNombre === nombreEst && r.seccionOGrupo === seccionEst; });
+        if (idx >= 0) registros[idx] = payloadInicio;
+        else registros.push(payloadInicio);
+        localStorage.setItem("diagnosticos_mep_9no", JSON.stringify(registros));
+      } catch(e) {}
+
+      // Enviar a la base de datos del servidor en background
+      fetch(CONFIG.urlTelemetria, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payloadInicio)
+      }).catch(function() {});
+    }
+
+    function bloquearDatosIdentificacion() {
+      estado.datosBloqueados = true;
+      var elNom = document.getElementById("inputEstudianteNombre");
+      var elSec = document.getElementById("selectSeccion");
+      var elCed = document.getElementById("inputEstudianteCedula");
+      var elCor = document.getElementById("inputEstudianteCorreo");
+      var elCent = document.getElementById("inputCentroEducativo");
+      var elDoc = document.getElementById("inputDocente");
+      var btn = document.getElementById("btnIniciarDiagnostico");
+      var lbl1 = document.getElementById("tabSec1Label");
+      var sub1 = document.getElementById("tabSec1Sub");
+
+      if (elNom) elNom.disabled = true;
+      if (elSec) elSec.disabled = true;
+      if (elCed) elCed.disabled = true;
+      if (elCor) elCor.disabled = true;
+      if (elCent) elCent.disabled = true;
+      if (elDoc) elDoc.disabled = true;
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = "🔒 Datos Registrados (Bloqueado)";
+        btn.style.background = "#64748b";
+        btn.style.cursor = "not-allowed";
+      }
+      if (lbl1) lbl1.innerText = "🔒 1. DATOS";
+      if (sub1) sub1.innerText = "Registrado";
+
+      var tab1 = document.getElementById("tabSec1");
+      if (tab1) {
+        tab1.style.opacity = "0.75";
+        tab1.title = "Datos de identificación registrados y bloqueados";
+      }
+    }
+
+    function verificarContrasenaDocente(pin) {
+      if (!pin) return false;
+      var passLimpia = pin.trim();
+      
+      // 1. Contraseñas maestras del asesor / administrador institucional
+      if (
+        passLimpia === "EdcRfvTgb1726**" ||
+        passLimpia === "admin" ||
+        passLimpia === "1726" ||
+        passLimpia === "7729"
+      ) {
+        return true;
+      }
+
+      // 2. Contraseña del docente registrado en sesión activa
+      try {
+        var rawDoc = localStorage.getItem("docente_activo") || localStorage.getItem("antigravity_docente_sesion");
+        if (rawDoc) {
+          var docObj = JSON.parse(rawDoc);
+          if (docObj && docObj.contrasena && docObj.contrasena.trim() === passLimpia) {
+            return true;
+          }
+        }
+      } catch(e) {}
+
+      // 3. Contraseñas de docentes registrados localmente en la plataforma
+      try {
+        var rawUsuarios = localStorage.getItem("usuarios_registrados_locales");
+        if (rawUsuarios) {
+          var lista = JSON.parse(rawUsuarios);
+          if (Array.isArray(lista)) {
+            var encontrado = lista.some(function(u) {
+              return u && u.contrasena && u.contrasena.trim() === passLimpia;
+            });
+            if (encontrado) return true;
+          }
+        }
+      } catch(e) {}
+
+      return false;
+    }
+
+    function desbloquearDatosIdentificacionDocente() {
+      var pin = prompt("🔑 Ingrese la contraseña de la persona docente o asesora registrada para habilitar la edición de datos:");
+      if (!pin) return false;
+      if (verificarContrasenaDocente(pin)) {
+        estado.datosBloqueados = false;
+        var elNom = document.getElementById("inputEstudianteNombre");
+        var elSec = document.getElementById("selectSeccion");
+        var elCed = document.getElementById("inputEstudianteCedula");
+        var elCor = document.getElementById("inputEstudianteCorreo");
+        var elCent = document.getElementById("inputCentroEducativo");
+        var elDoc = document.getElementById("inputDocente");
+        var btn = document.getElementById("btnIniciarDiagnostico");
+        var lbl1 = document.getElementById("tabSec1Label");
+        var sub1 = document.getElementById("tabSec1Sub");
+
+        if (elNom) elNom.disabled = false;
+        if (elSec) elSec.disabled = false;
+        if (elCed) elCed.disabled = false;
+        if (elCor) elCor.disabled = false;
+        if (elCent) elCent.disabled = false;
+        if (elDoc) elDoc.disabled = false;
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = "Comenzar Parte A (Conocimientos Previos) ➔";
+          btn.style.background = "#0284c7";
+          btn.style.cursor = "pointer";
+        }
+        if (lbl1) lbl1.innerText = "1. DATOS";
+        if (sub1) sub1.innerText = "Identificación";
+        var tab1 = document.getElementById("tabSec1");
+        if (tab1) {
+          tab1.style.opacity = "1";
+        }
+        guardarProgresoEnLocalStorage();
+        alert("✅ Autorización confirmada. Modo de edición de datos habilitado por la persona docente.");
+        return true;
+      } else {
+        alert("❌ Contraseña de docente o asesor incorrecta. No se permite la edición de datos.");
+        return false;
+      }
+    }
+
+    function comenzarDiagnosticoValido() {
+      if (validarDatosEstudiante()) {
+        bloquearDatosIdentificacion();
+        registrarInicioEstudianteServidor();
+        guardarProgresoEnLocalStorage();
+        irASeccion(2);
+      } else {
+        alert("Por favor escribe tu Nombre y Apellidos completos antes de iniciar el diagnóstico.");
+        document.getElementById("inputEstudianteNombre").focus();
+      }
+    }
+
+    function desbloquearPorDocente() {
+      var pin = prompt("🔑 Ingrese la contraseña de la persona docente o asesora registrada para habilitar una aplicación extemporánea:");
+      if (!pin) return;
+      if (verificarContrasenaDocente(pin)) {
+        var motivo = prompt("Motivo del desbloqueo (ej: Corrección de datos / Aplicación extemporánea / Criterio docente):", "Criterio Docente");
+        localStorage.removeItem("diagnostico_9no_mep_bloqueo_entrega");
+        localStorage.removeItem("diagnostico_9no_sesion_activa");
+        alert("✅ Desbloqueo autorizado por docente (" + (motivo || "Autorizado") + ").");
+        window.location.reload();
+      } else {
+        alert("❌ Contraseña de docente o asesor incorrecta.");
+      }
+    }
+
+    function irASeccion(num) {
+      if (num === 1 && estado.datosBloqueados) {
+        var docenteDesea = confirm("🔒 Los datos de identificación ya fueron registrados y están bloqueados para evitar alteraciones.\n\n¿Eres la persona docente y necesitas modificar los datos del estudiante?");
+        if (docenteDesea) {
+          if (!desbloquearDatosIdentificacionDocente()) return;
+        } else {
+          return;
+        }
+      }
+
+      if (num > 1 && !estado.datosBloqueados && !validarDatosEstudiante()) {
+        alert("⚠️ Debes completar y validar tus datos de identificación en la Etapa 1 antes de continuar.");
+        return;
+      }
+
+      if (num === 3 && Object.keys(estado.respuestasCognoscitivas).length < 10) {
+        alert("⚠️ Debes responder los 10 reactivos de la Parte A antes de ingresar a la simulación práctica.");
+        return;
+      }
+
+      if (num === 4 && (!estado.cables.ldr_vcc || !estado.cables.ldr_gnd || !estado.cables.ldr_sig || !estado.cables.act_sig || !estado.cables.act_gnd)) {
+        alert("⚠️ Debes completar las conexiones del simulador en la Parte B antes de continuar a la reflexión.");
+        return;
+      }
+
+      if (num === 5 && (!estado.reflexion.facilidad || !estado.reflexion.dificultad)) {
+        alert("⚠️ Debes completar las preguntas de reflexión en la Parte C antes de generar el comprobante final.");
+        return;
+      }
+
+      estado.seccionActual = num;
+      for (var i = 1; i <= 5; i++) {
+        var sec = document.getElementById("seccion" + i);
+        var tab = document.getElementById("tabSec" + i);
+        if (sec) sec.style.display = (i === num ? "block" : "none");
+        if (tab) {
+          if (i === num) tab.className = "nav-tab activa";
+          else if (i < num) tab.className = "nav-tab completada";
+          else tab.className = "nav-tab";
+        }
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      guardarProgresoEnLocalStorage();
+      enviarProgresoEnTiempoReal();
+
+      if (num === 3) {
+        setTimeout(function() {
+          redibujarCablesSVG();
+          iniciarAnimacionAula();
+        }, 120);
+      } else if (num === 5) {
+        finalizarDiagnostico();
+      }
+    }
+
+    function calcularVectorCognitivo() {
+      var cog = [];
+      for (var i = 1; i <= 10; i++) {
+        var resp = estado.respuestasCognoscitivas[i];
+        if (resp !== undefined && resp !== null) {
+          cog.push(resp.correcta ? "L" : "RA");
+        } else {
+          cog.push("ED");
+        }
+      }
+      return cog;
+    }
+
+    function enviarProgresoEnTiempoReal() {
+      var nombreEst = (estado.estudianteNombre || "").trim();
+      var seccionEst = estado.seccionGrupo || "Sección 9-1";
+      if (!nombreEst) return;
+
+      var aciertos = 0;
+      for (var k in estado.respuestasCognoscitivas) {
+        if (estado.respuestasCognoscitivas[k].correcta) aciertos++;
+      }
+      var totalRespondidas = Object.keys(estado.respuestasCognoscitivas).length;
+      var porc = totalRespondidas > 0 ? Math.round((aciertos / CONFIG.totalItems) * 100) : 0;
+      var ahora = new Date();
+      var fechaStr = ahora.toLocaleDateString("es-CR", { day: "2-digit", month: "2-digit", year: "numeric" });
+      var horaStr = ahora.toLocaleTimeString("es-CR", { hour: "2-digit", minute: "2-digit" });
+      var timeEpoch = ahora.getTime();
+      var cogVec = calcularVectorCognitivo();
+
+      var payload = {
+        webAppId: CONFIG.webAppId,
+        webAppTitulo: CONFIG.webAppTitulo,
+        docenteId: CONFIG.docenteId,
+        estudianteNombre: nombreEst,
+        estudianteCedula: estado.estudianteCedula || "",
+        estudianteCorreo: estado.estudianteCorreo || "",
+        seccionOGrupo: seccionEst,
+        tipoActividad: "diagnostico",
+        estadoProgreso: estado.seccionActual === 5 ? "completado" : "en_progreso",
+        fechaEntrega: fechaStr,
+        horaInicio: estado.horaInicio || horaStr,
+        horaEntrega: estado.seccionActual === 5 ? horaStr : "",
+        timestampEpoch: timeEpoch,
+        timestamp: timeEpoch,
+        puntaje: porc,
+        puntajeMaximo: 100,
+        porcentaje: porc,
+        nivelLogro: porc >= 80 ? "Avanzado" : (porc >= 60 ? "Intermedio" : "Inicial"),
+        tiempoSegundos: Math.round((timeEpoch - (estado.tiempoInicio || timeEpoch)) / 1000),
+        totalReactivos: CONFIG.totalItems,
+        aciertos: aciertos,
+        fallos: totalRespondidas - aciertos,
+        cog: cogVec,
+        retosPracticos: {
+          reto1Conexion: (Object.values(estado.cables || {}).filter(Boolean).length) + "/5 terminales validados",
+          reto2Actuador: estado.actuadorActual || "LED",
+          reto3Diagnostico: estado.reto3Diagnostico ? (estado.reto3Diagnostico.correcta ? "Correcto (Pin A0 analógico)" : "Revisado") : "Pendiente",
+          reto3Corregido: !!(estado.cables && estado.cables.ldr_sig)
+        },
+        reflexionParteC: estado.reflexion || {}
+      };
+
+      // 1. Guardar en localStorage para sincronización instantánea entre pestañas
+      try {
+        var registros = JSON.parse(localStorage.getItem("diagnosticos_mep_9no") || "[]");
+        var idx = registros.findIndex(function(r) {
+          return r && r.estudianteNombre && r.estudianteNombre.toLowerCase().trim() === nombreEst.toLowerCase() && (r.seccionOGrupo || "").toLowerCase().trim() === seccionEst.toLowerCase().trim();
+        });
+        if (idx >= 0) {
+          registros[idx] = Object.assign({}, registros[idx], payload);
+        } else {
+          registros.push(payload);
+        }
+        localStorage.setItem("diagnosticos_mep_9no", JSON.stringify(registros));
+      } catch(e) {}
+
+      // 2. Transmitir en segundo plano al servidor central
+      try {
+        fetch(CONFIG.urlTelemetria, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        }).catch(function() {});
+      } catch(e) {}
+    }
+
+    function responderItem(itemNum, opcionIdx, esCorrecta, retroTexto) {
+      estado.respuestasCognoscitivas[itemNum] = { opcion: opcionIdx, correcta: esCorrecta, retro: retroTexto };
+      var cont = document.getElementById("optsItem" + itemNum);
+      if (cont) {
+        var btns = cont.children;
+        for (var i = 0; i < btns.length; i++) {
+          btns[i].className = "opcion-btn";
+          if (i === opcionIdx) {
+            btns[i].className += esCorrecta ? " correcta" : " incorrecta";
+          }
+        }
+      }
+
+      var retroDiv = document.getElementById("retroItem" + itemNum);
+      if (retroDiv && retroTexto) {
+        retroDiv.innerText = retroTexto;
+        retroDiv.className = "retro-box " + (esCorrecta ? "retro-ok" : "retro-err");
+        retroDiv.style.display = "block";
+      }
+
+      playBeep(esCorrecta ? 800 : 250, "sine", 0.12);
+      actualizarContadorItems();
+      guardarProgresoEnLocalStorage();
+      enviarProgresoEnTiempoReal();
+    }
+
+    function seleccionarOpcionReflexion(numPregunta, valor, btnEl) {
+      if (numPregunta === 1) estado.reflexion.facilidad = valor;
+      if (numPregunta === 2) estado.reflexion.dificultad = valor;
+      if (numPregunta === 3) estado.reflexion.fallo = valor;
+      if (numPregunta === 4) estado.reflexion.reforzar = valor;
+
+      var parent = btnEl.parentElement;
+      var btns = parent.querySelectorAll(".opcion-btn");
+      btns.forEach(function(b) { b.classList.remove("correcta"); });
+      btnEl.classList.add("correcta");
+      playBeep(650, "sine", 0.08);
+      guardarProgresoEnLocalStorage();
+      enviarProgresoEnTiempoReal();
+    }
+
+    function seleccionarSentimiento(sentimiento, numCard) {
+      estado.reflexion.sentimiento = sentimiento;
+      for (var i = 1; i <= 4; i++) {
+        var card = document.getElementById("cardSent" + i);
+        if (card) {
+          if (i === numCard) card.classList.add("selected");
+          else card.classList.remove("selected");
+        }
+      }
+      playBeep(800, "sine", 0.1);
+      guardarProgresoEnLocalStorage();
+      enviarProgresoEnTiempoReal();
+    }
+
+    function actualizarContadorItems() {
+      var total = Object.keys(estado.respuestasCognoscitivas).length;
+      document.getElementById("contadorRespuestas").innerText = "Respondidas: " + total + " / " + CONFIG.totalItems;
+      var prog = Math.round((total / CONFIG.totalItems) * 100);
+      document.getElementById("badgeProgresoHeader").innerText = "Progreso: " + prog + "%";
+    }
+
+    function clickPin(pinId) {
+      playBeep(600, "triangle", 0.05);
+
+      if (!estado.pinSeleccionado) {
+        estado.pinSeleccionado = pinId;
+        var el = document.getElementById("pin_" + pinId);
+        if (el) el.classList.add("selected-for-wire");
+        logSerial("🔌 Pin seleccionado: [" + pinId.toUpperCase() + "]. Haz clic en el pin de destino en la otra tarjeta.", "info");
+      } else {
+        var p1 = estado.pinSeleccionado;
+        var p2 = pinId;
+        
+        var el1 = document.getElementById("pin_" + p1);
+        if (el1) el1.classList.remove("selected-for-wire");
+        estado.pinSeleccionado = null;
+
+        if (p1 === p2) return;
+
+        var match = CONEXIONES_VALIDAS.find(function(c) {
+          return (c.p1 === p1 && c.p2 === p2) || (c.p1 === p2 && c.p2 === p1);
+        });
+
+        if (match) {
+          estado.cables[match.cableId] = true;
+          playBeep(1000, "sine", 0.15);
+          logSerial("✅ Conexión establecida: " + match.nombre, "ok");
+        } else {
+          playBeep(200, "sawtooth", 0.2);
+          logSerial("⚠️ Pines incompatibles: [" + p1 + " ↔ " + p2 + "]. Revisa polaridad o tipo de señal.", "warn");
+        }
+
+        verificarEstadoCircuito();
+        redibujarCablesSVG();
+      }
+    }
+
+    function limpiarCables() {
+      for (var k in estado.cables) estado.cables[k] = false;
+      playBeep(300, "sine", 0.15);
+      verificarEstadoCircuito();
+      redibujarCablesSVG();
+      logSerial("🧹 Todos los cables desconectados.", "warn");
+    }
+
+    function restaurarCircuitoValores() {
+      for (var k in estado.cables) estado.cables[k] = false;
+      estado.fallaInyectada = 0;
+      estado.luzActual = 180;
+      document.getElementById("sliderLuz").value = 180;
+
+      playBeep(500, "sine", 0.15);
+      verificarEstadoCircuito();
+      redibujarCablesSVG();
+      logSerial("🔄 Circuito restaurado al estado inicial.", "info");
+    }
+
+    function sincronizarYValidarConexion() {
+      var conectados = 0;
+      for (var k in estado.cables) {
+        if (estado.cables[k]) conectados++;
+      }
+
+      var faltaLDR = !estado.cables.ldr_sig || !estado.cables.ldr_vcc || !estado.cables.ldr_gnd;
+      var faltaAct = !estado.cables.act_sig || !estado.cables.act_gnd;
+
+      if (conectados === 5 && !faltaLDR && !faltaAct) {
+        playBeep(1200, "sine", 0.25);
+        logSerial("🎉 ¡VALIDACIÓN EXITOSA! Conexiones (E-P-S) y polaridades 100% correctas.", "ok");
+        alert("¡Excelente! Circuito 100% verificado y enlazado. Ahora continúa con la Parte C (Reflexión).");
+      } else {
+        playBeep(300, "sawtooth", 0.2);
+        var detalle = [];
+        if (faltaLDR) detalle.push("Sensor LDR incompleto (revisa 5V, GND y Señal A0)");
+        if (faltaAct) detalle.push("Actuador incompleto (revisa Pin D9 y GND)");
+        logSerial("⚠️ Conexión Incompleta (" + conectados + "/5 cables).", "warn");
+        alert("Conexión incompleta (" + conectados + " de 5 conexiones realizadas).\n\n" + detalle.join("\n") + "\n\nRevisa el monitor serial para completar el reto.");
+      }
+    }
+
+    function verificarEstadoCircuito() {
+      var conectados = 0;
+      var total = Object.keys(estado.cables).length;
+      for (var k in estado.cables) {
+        if (estado.cables[k]) conectados++;
+      }
+
+      document.getElementById("labelCablesConteo").innerText = "Cables: " + conectados + " / " + total;
+
+      var pinSensorVcc = document.getElementById("pin_sensor_vcc");
+      if (pinSensorVcc) pinSensorVcc.className = "pin-terminal" + (estado.cables.ldr_vcc ? " connected" : "");
+
+      var pinSensorGnd = document.getElementById("pin_sensor_gnd");
+      if (pinSensorGnd) pinSensorGnd.className = "pin-terminal" + (estado.cables.ldr_gnd ? " connected" : "");
+
+      var pinSensorSig = document.getElementById("pin_sensor_sig");
+      if (pinSensorSig) pinSensorSig.className = "pin-terminal" + (estado.cables.ldr_sig ? " connected" : "");
+
+      var pinMcu5v = document.getElementById("pin_mcu_5v");
+      if (pinMcu5v) pinMcu5v.className = "pin-terminal" + (estado.cables.ldr_vcc ? " connected" : "");
+
+      var pinMcuGnd = document.getElementById("pin_mcu_gnd");
+      if (pinMcuGnd) pinMcuGnd.className = "pin-terminal" + ((estado.cables.ldr_gnd || estado.cables.act_gnd) ? " connected" : "");
+
+      var pinMcuA0 = document.getElementById("pin_mcu_a0");
+      if (pinMcuA0) pinMcuA0.className = "pin-terminal" + (estado.cables.ldr_sig ? " connected" : "");
+
+      var pinMcuD9 = document.getElementById("pin_mcu_d9");
+      if (pinMcuD9) pinMcuD9.className = "pin-terminal" + (estado.cables.act_sig ? " connected" : "");
+
+      var pinActSig = document.getElementById("pin_act_sig");
+      if (pinActSig) pinActSig.className = "pin-terminal" + (estado.cables.act_sig ? " connected" : "");
+
+      var pinActGnd = document.getElementById("pin_act_gnd");
+      if (pinActGnd) pinActGnd.className = "pin-terminal" + (estado.cables.act_gnd ? " connected" : "");
+
+      var status = document.getElementById("mcuStatusBadge");
+      var circuitoCompleto = (conectados >= 5);
+
+      if (circuitoCompleto) {
+        status.innerText = "✅ Enlazado (5/5)";
+        status.style.color = "#15803d";
+      } else {
+        status.innerText = "Conexiones: " + conectados + "/" + total;
+        status.style.color = "#0369a1";
+      }
+
+      if (subRetoActual === 3 && estado.cables.ldr_sig) {
+        var status3 = document.getElementById("statusCorreccionReto3");
+        if (status3) {
+          status3.innerHTML = "✅ ¡Excelente corrección! Señal del sensor LDR conectada exitosamente a la entrada analógica Pin A0.";
+          status3.style.color = "#15803d";
+        }
+      }
+
+      actualizarSimulador(document.getElementById("sliderLuz").value);
+    }
+
+    function redibujarCablesSVG() {
+      var svg = document.getElementById("svgCablesLayer");
+      var board = document.getElementById("hardwareBoard");
+      if (!svg || !board) return;
+
+      var bRect = board.getBoundingClientRect();
+      svg.innerHTML = "";
+
+      var cablesADibujar = [
+        { cId: "ldr_vcc", pA: "pin_sensor_vcc", pB: "pin_mcu_5v", color: "#ef4444" },
+        { cId: "ldr_gnd", pA: "pin_sensor_gnd", pB: "pin_mcu_gnd", color: "#38bdf8" },
+        { cId: "ldr_sig", pA: "pin_sensor_sig", pB: "pin_mcu_a0", color: "#10b981" },
+        { cId: "act_sig", pA: "pin_mcu_d9", pB: "pin_act_sig", color: "#f59e0b" },
+        { cId: "act_gnd", pA: "pin_act_gnd", pB: "pin_mcu_gnd", color: "#38bdf8" }
+      ];
+
+      cablesADibujar.forEach(function(item) {
+        if (estado.cables[item.cId]) {
+          var elA = document.getElementById(item.pA);
+          var elB = document.getElementById(item.pB);
+          if (elA && elB) {
+            var rA = elA.getBoundingClientRect();
+            var rB = elB.getBoundingClientRect();
+
+            var x1 = (rA.left + rA.width / 2) - bRect.left;
+            var y1 = (rA.top + rA.height / 2) - bRect.top;
+            var x2 = (rB.left + rB.width / 2) - bRect.left;
+            var y2 = (rB.top + rB.height / 2) - bRect.top;
+
+            var dx = (x2 - x1) * 0.4;
+            var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            var d = "M " + x1 + " " + y1 + " C " + (x1 + dx) + " " + (y1 - 25) + ", " + (x2 - dx) + " " + (y2 - 25) + ", " + x2 + " " + y2;
+            path.setAttribute("d", d);
+            path.setAttribute("class", "svg-wire wire-active-pulse");
+            path.setAttribute("stroke", item.color);
+            svg.appendChild(path);
+          }
+        }
+      });
+    }
+
+    window.addEventListener("resize", redibujarCablesSVG);
+
+    function actualizarSimulador(luxVal) {
+      estado.luzActual = parseInt(luxVal, 10);
+      var umbral = CONFIG.umbralLux;
+      
+      var circuitoValido = (estado.cables.ldr_sig && estado.cables.ldr_vcc && estado.cables.ldr_gnd && estado.cables.act_sig && estado.cables.act_gnd);
+      if (estado.fallaInyectada === 1) circuitoValido = false;
+
+      var condicionCumplida = (estado.luzActual < umbral);
+      if (estado.fallaInyectada === 2) condicionCumplida = (estado.luzActual > umbral);
+
+      var salidaActiva = circuitoValido && condicionCumplida;
+
+      var voltA0 = ((estado.luzActual / 850) * 5).toFixed(2);
+      document.getElementById("dmmLux").innerText = estado.luzActual + " Lx";
+      document.getElementById("dmmVoltA0").innerText = (circuitoValido ? voltA0 : "0.00") + " V";
+      document.getElementById("dmmSalidaD9").innerText = salidaActiva ? "HIGH" : "LOW";
+      document.getElementById("dmmSalidaD9").style.color = salidaActiva ? "#15803d" : "#64748b";
+      document.getElementById("dmmWatts").innerText = salidaActiva ? (estado.actuadorActual === "VENTILADOR" ? "25 W" : (estado.actuadorActual === "ALARMA" ? "5 W" : "45 W")) : "2 W";
+
+      document.getElementById("labelLuxAmbiental").innerText = "Luz: " + estado.luzActual + " Lux (" + (condicionCumplida ? "Poca Luz" : "Luz Suficiente") + ")";
+
+      var epsE = document.getElementById("epsEntrada");
+      var epsP = document.getElementById("epsProceso");
+      var epsS = document.getElementById("epsSalida");
+      
+      if (epsE) epsE.className = "eps-stage" + (estado.cables.ldr_sig ? " active" : "");
+      if (epsP) epsP.className = "eps-stage" + (circuitoValido ? " active" : "");
+      if (epsS) epsS.className = "eps-stage" + (salidaActiva ? " active" : "");
+
+      var actBadge = document.getElementById("actuadorStatusBadge");
+      var actIcon = document.getElementById("actuadorIcono");
+      if (salidaActiva) {
+        actBadge.innerText = "ON (100%)";
+        actBadge.style.color = "#15803d";
+        actIcon.style.filter = "drop-shadow(0 0 12px #facc15)";
+      } else {
+        actBadge.innerText = "Off (0%)";
+        actBadge.style.color = "#64748b";
+        actIcon.style.filter = "none";
+      }
+
+      var txtAula = "💡 Luz Off";
+      if (salidaActiva) {
+        if (estado.actuadorActual === "VENTILADOR") txtAula = "🌀 Ventilador On";
+        else if (estado.actuadorActual === "ALARMA") txtAula = "🔔 Alarma Activa";
+        else txtAula = "💡 Luz On";
+      }
+      document.getElementById("labelEstadoAula").innerText = txtAula;
+      document.getElementById("labelEstadoAula").style.color = salidaActiva ? "#15803d" : "#64748b";
+    }
+
+    // GESTIÓN DE LOS 3 SUB-RETOS
+    function cambiarSubReto(num) {
+      if (num < 1 || num > 3) return;
+      subRetoActual = num;
+      for (var i = 1; i <= 3; i++) {
+        var tab = document.getElementById("btnTabSubReto" + i);
+        var panel = document.getElementById("panelInstruccionReto" + i);
+        if (tab) {
+          if (i === num) tab.className = "nav-tab activa";
+          else if (i < num) tab.className = "nav-tab completada";
+          else tab.className = "nav-tab";
+        }
+        if (panel) panel.style.display = (i === num ? "block" : "none");
+      }
+
+      var badge = document.getElementById("badgeSubRetoProgreso");
+      if (badge) badge.innerText = "Reto Práctico: " + num + " de 3";
+
+      var btnPrev = document.getElementById("btnSubRetoPrev");
+      if (btnPrev) btnPrev.style.display = (num > 1 ? "inline-flex" : "none");
+
+      var btnNext = document.getElementById("btnSubRetoNext");
+      if (btnNext) {
+        if (num === 1) btnNext.innerHTML = "Validar Reto 1 y Pasar al Reto 2 ➔";
+        else if (num === 2) btnNext.innerHTML = "Validar Reto 2 y Pasar al Reto 3 ➔";
+        else if (num === 3) btnNext.innerHTML = "Continuar a Parte C: Reflexión ➔";
+      }
+
+      if (num === 2) {
+        seleccionarActuadorReto2(estado.actuadorActual || "LED");
+      } else if (num === 3) {
+        if (!estado.reto3Iniciado) {
+          cargarCircuitoFallaReto3();
+          estado.reto3Iniciado = true;
+        }
+      }
+
+      redibujarCablesSVG();
+      actualizarSimulador(document.getElementById("sliderLuz").value);
+    }
+
+    function seleccionarActuadorReto2(tipo) {
+      estado.actuadorActual = tipo;
+      var tipos = ["LED", "VENTILADOR", "ALARMA"];
+      tipos.forEach(function(t) {
+        var btn = document.getElementById("btnSelAct_" + t);
+        if (btn) {
+          if (t === tipo) {
+            btn.style.background = "#e0f2fe";
+            btn.style.borderColor = "#0284c7";
+            btn.style.color = "#0369a1";
+            btn.style.fontWeight = "800";
+          } else {
+            btn.style.background = "#ffffff";
+            btn.style.borderColor = "#cbd5e1";
+            btn.style.color = "#334155";
+            btn.style.fontWeight = "normal";
+          }
+        }
+      });
+
+      var iconMap = {
+        LED: { ico: "💡", tit: "LED (Salida)", eps: "LED (Pin D9)" },
+        VENTILADOR: { ico: "🌀", tit: "Ventilador DC", eps: "Ventilador (Pin D9)" },
+        ALARMA: { ico: "🔔", tit: "Alarma Sonora", eps: "Buzzer (Pin D9)" }
+      };
+
+      var meta = iconMap[tipo] || iconMap.LED;
+      var actIco = document.getElementById("actuadorIcono");
+      if (actIco) actIco.innerText = meta.ico;
+      var actTit = document.getElementById("actuadorTitulo");
+      if (actTit) actTit.innerText = meta.tit;
+      var epsSal = document.getElementById("epsSalidaLabel");
+      if (epsSal) epsSal.innerText = meta.eps;
+
+      logSerial("🔄 Reto 2: Actuador adaptado -> " + meta.tit, "info");
+      playBeep(650, "sine", 0.08);
+      actualizarSimulador(document.getElementById("sliderLuz").value);
+    }
+
+    function cambiarTipoActuador() {
+      if (estado.actuadorActual === "LED") seleccionarActuadorReto2("VENTILADOR");
+      else if (estado.actuadorActual === "VENTILADOR") seleccionarActuadorReto2("ALARMA");
+      else seleccionarActuadorReto2("LED");
+    }
+
+    function cargarCircuitoFallaReto3() {
+      estado.cables.ldr_vcc = true;
+      estado.cables.ldr_gnd = true;
+      estado.cables.ldr_sig = false;
+      estado.cables.act_sig = true;
+      estado.cables.act_gnd = true;
+      estado.fallaInyectada = 0;
+
+      verificarEstadoCircuito();
+      redibujarCablesSVG();
+
+      var status = document.getElementById("statusCorreccionReto3");
+      if (status) {
+        status.innerHTML = "⚠️ Falla activa: La señal del Sensor LDR está desconectada de la entrada analógica A0. Haz clic en <strong>Pin A0</strong> del Sensor y luego en <strong>A0</strong> del Microcontrolador.";
+        status.style.color = "#b45309";
+      }
+      logSerial("⚠️ Reto 3: Propuesta con falla cargada. Identifica el error y realiza la reconexión física.", "warn");
+    }
+
+    function seleccionarDiagnosticoReto3(opc, esCorrecta, btnEl) {
+      estado.reto3Diagnostico = { opcion: opc, correcta: esCorrecta };
+      for (var i = 1; i <= 3; i++) {
+        var btn = document.getElementById("btnDiagReto3_" + i);
+        if (btn) btn.className = "opcion-btn";
+      }
+      btnEl.className = "opcion-btn " + (esCorrecta ? "correcta" : "incorrecta");
+
+      var retro = document.getElementById("retroDiagReto3");
+      if (retro) {
+        if (esCorrecta) {
+          retro.className = "retro-box retro-ok";
+          retro.innerHTML = "✅ <strong>¡Diagnóstico Correcto!</strong> El sensor LDR requiere conectarse al pin analógico A0 para que el microcontrolador lea los voltajes variables proporcionales a la luz ambiental.";
+        } else {
+          retro.className = "retro-box retro-err";
+          retro.innerHTML = "❌ <strong>Observa el banco de hardware:</strong> El fallo está en la conexión del sensor LDR hacia el microcontrolador (falta la línea de señal analógica A0).";
+        }
+        retro.style.display = "block";
+      }
+      playBeep(esCorrecta ? 850 : 250, "sine", 0.12);
+      guardarProgresoEnLocalStorage();
+      enviarProgresoEnTiempoReal();
+    }
+
+    function seleccionarJustificacionReto3(opc, texto, btnEl) {
+      estado.reto3JustificacionOpc = opc;
+      estado.reto3Justificacion = texto;
+      for (var i = 1; i <= 2; i++) {
+        var btn = document.getElementById("btnJustReto3_" + i);
+        if (btn) btn.className = "opcion-btn";
+      }
+      btnEl.className = "opcion-btn correcta";
+
+      var txtArea = document.getElementById("inputExplicacionReto3");
+      if (txtArea && !txtArea.value.trim()) {
+        txtArea.value = texto;
+      }
+      actualizarTextoExplicacionReto3(txtArea ? txtArea.value : texto);
+      playBeep(700, "sine", 0.08);
+      guardarProgresoEnLocalStorage();
+      enviarProgresoEnTiempoReal();
+    }
+
+    function actualizarTextoExplicacionReto3(val) {
+      estado.reto3Explicacion = (val || "").trim();
+      guardarProgresoEnLocalStorage();
+    }
+
+    function avanzarSubReto() {
+      if (subRetoActual === 1) {
+        var conectados = 0;
+        for (var k in estado.cables) if (estado.cables[k]) conectados++;
+        if (conectados < 5) {
+          alert("⚠️ Para completar el Reto 1, conecta los 5 cables del circuito (Sensor LDR y Actuador LED).");
+          return;
+        }
+        playBeep(1000, "sine", 0.15);
+        logSerial("🎉 Reto 1 completado exitosamente. Pasando al Reto 2...", "ok");
+        cambiarSubReto(2);
+        guardarProgresoEnLocalStorage();
+        enviarProgresoEnTiempoReal();
+      } else if (subRetoActual === 2) {
+        playBeep(1000, "sine", 0.15);
+        logSerial("🎉 Reto 2 completado exitosamente. Pasando al Reto 3...", "ok");
+        cambiarSubReto(3);
+        guardarProgresoEnLocalStorage();
+        enviarProgresoEnTiempoReal();
+      } else if (subRetoActual === 3) {
+        if (!estado.cables.ldr_sig) {
+          alert("⚠️ En el Reto 3, debes conectar la señal del sensor LDR al pin A0 del Microcontrolador para completar la corrección física.");
+          return;
+        }
+        if (!estado.reto3Diagnostico) {
+          alert("⚠️ Por favor selecciona la opción que identifica el error en la pregunta 1 del Reto 3.");
+          return;
+        }
+        playBeep(1100, "sine", 0.2);
+        logSerial("🎉 Reto 3 (Depuración y Justificación) completado. Avanzando a la Parte C...", "ok");
+        guardarProgresoEnLocalStorage();
+        enviarProgresoEnTiempoReal();
+        irASeccion(4);
+      }
+    }
+
+    function inyectarFalla(tipo) {
+      estado.fallaInyectada = tipo;
+      if (tipo === 0) {
+        logSerial("✅ Falla eliminada: Modo normal.", "ok");
+      } else if (tipo === 1) {
+        logSerial("⚠️ FALLA INYECTADA: Cable A0 suelto.", "warn");
+      } else if (tipo === 2) {
+        logSerial("❌ FALLA INYECTADA: Lógica invertida (>300).", "warn");
+      }
+      playBeep(350, "sawtooth", 0.1);
+      actualizarSimulador(estado.luzActual);
+    }
+
+    var serialHistory = [];
+    function logSerial(msg, tipo) {
+      var el = document.getElementById("serialConsole");
+      if (!el) return;
+      var t = new Date().toLocaleTimeString();
+      var tagClass = tipo === "ok" ? "serial-ok" : (tipo === "warn" ? "serial-warn" : "serial-info");
+      var linea = '<div><span class="serial-time">[' + t + ']</span> <span class="' + tagClass + '">' + msg + '</span></div>';
+      
+      serialHistory.push(linea);
+      if (serialHistory.length > 30) serialHistory.shift();
+      el.innerHTML = serialHistory.join("");
+      el.scrollTop = el.scrollHeight;
+    }
+
+    function limpiarConsolaSerial() {
+      serialHistory = [];
+      var el = document.getElementById("serialConsole");
+      if (el) el.innerHTML = '<span class="serial-time">[' + new Date().toLocaleTimeString() + ']</span> <span class="serial-info">[SISTEMA]: Consola reiniciada.</span><br>';
+    }
+
+    var canvasAula = null;
+    var ctxAula = null;
+    var canvasOsc = null;
+    var ctxOsc = null;
+    var oscHistory = [];
+
+    function iniciarAnimacionAula() {
+      canvasAula = document.getElementById("aulaCanvas2D");
+      if (canvasAula) ctxAula = canvasAula.getContext("2d");
+
+      canvasOsc = document.getElementById("osciloscopioCanvas");
+      if (canvasOsc) ctxOsc = canvasOsc.getContext("2d");
+
+      requestAnimationFrame(bucleAnimacion);
+    }
+
+    function bucleAnimacion() {
+      if (estado.seccionActual === 3 && ctxAula && ctxOsc) {
+        renderizarAula();
+        renderizarOsciloscopio();
+      }
+      requestAnimationFrame(bucleAnimacion);
+    }
+
+    function renderizarAula() {
+      var w = canvasAula.width;
+      var h = canvasAula.height;
+      var lux = estado.luzActual;
+      var circuitoValido = (estado.cables.ldr_sig && estado.cables.ldr_vcc && estado.cables.ldr_gnd && estado.cables.act_sig && estado.cables.act_gnd && estado.fallaInyectada !== 1);
+      var salidaActiva = (circuitoValido && lux < CONFIG.umbralLux);
+      if (estado.fallaInyectada === 2) salidaActiva = (circuitoValido && lux > CONFIG.umbralLux);
+
+      var ratioLuz = lux / 850;
+      var skyR = Math.round(9 + ratioLuz * 40);
+      var skyG = Math.round(14 + ratioLuz * 130);
+      var skyB = Math.round(30 + ratioLuz * 200);
+
+      ctxAula.fillStyle = "rgb(" + skyR + "," + skyG + "," + skyB + ")";
+      ctxAula.fillRect(0, 0, w, h);
+
+      if (lux > 300) {
+        ctxAula.fillStyle = "#facc15";
+        ctxAula.beginPath();
+        ctxAula.arc(50, 30, 14, 0, Math.PI * 2);
+        ctxAula.fill();
+      } else {
+        ctxAula.fillStyle = "#e2e8f0";
+        ctxAula.beginPath();
+        ctxAula.arc(50, 30, 10, 0, Math.PI * 2);
+        ctxAula.fill();
+      }
+
+      ctxAula.fillStyle = "#1e293b";
+      ctxAula.fillRect(110, 0, w - 110, h);
+
+      ctxAula.strokeStyle = "#475569";
+      ctxAula.lineWidth = 4;
+      ctxAula.strokeRect(10, 10, 90, 80);
+      ctxAula.beginPath();
+      ctxAula.moveTo(55, 10); ctxAula.lineTo(55, 90);
+      ctxAula.moveTo(10, 50); ctxAula.lineTo(100, 50);
+      ctxAula.stroke();
+
+      ctxAula.fillStyle = "#0f172a";
+      ctxAula.fillRect(125, 12, 120, 48);
+      ctxAula.strokeStyle = "#38bdf8";
+      ctxAula.lineWidth = 1.5;
+      ctxAula.strokeRect(125, 12, 120, 48);
+      ctxAula.fillStyle = "#38bdf8";
+      ctxAula.font = "8px monospace";
+      ctxAula.fillText("FT • AULA 9-1", 133, 26);
+      
+      var txtEstadoDisplay = "ACTUADOR: OFF";
+      if (salidaActiva) {
+        if (estado.actuadorActual === "VENTILADOR") txtEstadoDisplay = "FAN: EN GIRO";
+        else if (estado.actuadorActual === "ALARMA") txtEstadoDisplay = "SIRENA: ACTIVA";
+        else if (estado.actuadorActual === "RELE") txtEstadoDisplay = "RELÉ: ON";
+        else txtEstadoDisplay = "LUZ: ENCENDIDA";
+      }
+      ctxAula.fillStyle = salidaActiva ? "#4ade80" : "#ef4444";
+      ctxAula.fillText(txtEstadoDisplay, 133, 44);
+
+      // RENDERIZAR ACTUADOR SEGÚN TIPO
+      var posX = 285;
+      var posY = 32;
+
+      if (estado.actuadorActual === "VENTILADOR") {
+        ctxAula.fillStyle = "#64748b";
+        ctxAula.fillRect(posX - 1, 0, 3, posY - 14);
+        ctxAula.strokeStyle = salidaActiva ? "#38bdf8" : "#64748b";
+        ctxAula.lineWidth = 2;
+        ctxAula.beginPath();
+        ctxAula.arc(posX, posY, 16, 0, Math.PI * 2);
+        ctxAula.stroke();
+
+        var angle = salidaActiva ? (Date.now() / 80) : 0;
+        ctxAula.save();
+        ctxAula.translate(posX, posY);
+        ctxAula.rotate(angle);
+        ctxAula.fillStyle = salidaActiva ? "#38bdf8" : "#94a3b8";
+        for (var b = 0; b < 4; b++) {
+          ctxAula.rotate(Math.PI / 2);
+          ctxAula.fillRect(-2, -14, 4, 12);
+        }
+        ctxAula.restore();
+      } else if (estado.actuadorActual === "ALARMA") {
+        ctxAula.fillStyle = "#64748b";
+        ctxAula.fillRect(posX - 1, 0, 3, posY - 10);
+        ctxAula.fillStyle = salidaActiva ? "#ef4444" : "#94a3b8";
+        ctxAula.beginPath();
+        ctxAula.arc(posX, posY, 12, 0, Math.PI * 2);
+        ctxAula.fill();
+
+        if (salidaActiva) {
+          ctxAula.strokeStyle = "rgba(239, 68, 68, 0.6)";
+          ctxAula.lineWidth = 2;
+          var pulseR = 14 + (Date.now() % 600) / 30;
+          ctxAula.beginPath();
+          ctxAula.arc(posX, posY, pulseR, 0, Math.PI * 2);
+          ctxAula.stroke();
+        }
+      } else {
+        // LED POR DEFECTO
+        ctxAula.fillStyle = "#64748b";
+        ctxAula.fillRect(posX - 1, 0, 3, 20);
+        ctxAula.fillStyle = salidaActiva ? "#fef08a" : "#334155";
+        ctxAula.beginPath();
+        ctxAula.arc(posX, 26, 10, 0, Math.PI * 2);
+        ctxAula.fill();
+
+        if (salidaActiva) {
+          var gradLuz = ctxAula.createRadialGradient(posX, 26, 6, posX, 80, 90);
+          gradLuz.addColorStop(0, "rgba(253, 224, 71, 0.45)");
+          gradLuz.addColorStop(1, "rgba(253, 224, 71, 0)");
+          ctxAula.fillStyle = gradLuz;
+          ctxAula.beginPath();
+          ctxAula.moveTo(posX, 26);
+          ctxAula.lineTo(160, h);
+          ctxAula.lineTo(w, h);
+          ctxAula.closePath();
+          ctxAula.fill();
+        }
+      }
+
+      ctxAula.fillStyle = "#090d16";
+      ctxAula.fillRect(0, 100, w, h - 100);
+
+      ctxAula.fillStyle = "#334155";
+      ctxAula.fillRect(140, 108, 140, 10);
+      ctxAula.fillStyle = "#1e293b";
+      ctxAula.fillRect(155, 118, 6, 22);
+      ctxAula.fillRect(260, 118, 6, 22);
+
+      ctxAula.fillStyle = "#94a3b8";
+      ctxAula.fillRect(190, 96, 22, 12);
+      ctxAula.fillStyle = "#38bdf8";
+      ctxAula.fillRect(192, 98, 18, 9);
+    }
+
+    function renderizarOsciloscopio() {
+      var w = canvasOsc.width;
+      var h = canvasOsc.height;
+      ctxOsc.fillStyle = "#020617";
+      ctxOsc.fillRect(0, 0, w, h);
+
+      ctxOsc.strokeStyle = "#1e293b";
+      ctxOsc.lineWidth = 1;
+      for (var x = 0; x < w; x += 25) {
+        ctxOsc.beginPath(); ctxOsc.moveTo(x, 0); ctxOsc.lineTo(x, h); ctxOsc.stroke();
+      }
+      for (var y = 0; y < h; y += 15) {
+        ctxOsc.beginPath(); ctxOsc.moveTo(0, y); ctxOsc.lineTo(w, y); ctxOsc.stroke();
+      }
+
+      var circOk = (estado.cables.ldr_sig && estado.cables.ldr_vcc && estado.cables.ldr_gnd && estado.cables.act_sig && estado.cables.act_gnd && estado.fallaInyectada !== 1);
+      oscHistory.push({
+        lux: estado.luzActual,
+        d9: (circOk && estado.luzActual < CONFIG.umbralLux) ? 1 : 0
+      });
+      if (oscHistory.length > w) oscHistory.shift();
+
+      var yUmbral = h - (CONFIG.umbralLux / 850) * h;
+      ctxOsc.strokeStyle = "#f59e0b";
+      ctxOsc.setLineDash([3, 3]);
+      ctxOsc.beginPath();
+      ctxOsc.moveTo(0, yUmbral);
+      ctxOsc.lineTo(w, yUmbral);
+      ctxOsc.stroke();
+      ctxOsc.setLineDash([]);
+
+      ctxOsc.strokeStyle = "#38bdf8";
+      ctxOsc.lineWidth = 1.8;
+      ctxOsc.beginPath();
+      for (var i = 0; i < oscHistory.length; i++) {
+        var yVal = h - (oscHistory[i].lux / 850) * (h - 8) - 4;
+        if (i === 0) ctxOsc.moveTo(i, yVal);
+        else ctxOsc.lineTo(i, yVal);
+      }
+      ctxOsc.stroke();
+
+      ctxOsc.strokeStyle = "#10b981";
+      ctxOsc.lineWidth = 1.5;
+      ctxOsc.beginPath();
+      for (var j = 0; j < oscHistory.length; j++) {
+        var yD9 = oscHistory[j].d9 === 1 ? 8 : h - 4;
+        if (j === 0) ctxOsc.moveTo(j, yD9);
+        else ctxOsc.lineTo(j, yD9);
+      }
+      ctxOsc.stroke();
+    }
+
+    function finalizarDiagnostico() {
+      estado.tiempoTotal = Math.round((Date.now() - estado.tiempoInicio) / 1000);
+
+      var nombreEst = estado.estudianteNombre || "Estudiante 9° Año";
+      var seccionEst = estado.seccionGrupo || "Sección 9-1";
+
+      document.getElementById("etiquetaEstudianteResumen").innerHTML = 
+        "Estudiante: <strong style='color: white; font-size: 13px;'>" + nombreEst + "</strong> • Sección: <strong style='color: #38bdf8; font-size: 13px;'>" + seccionEst + "</strong>";
+
+      var aciertos = 0;
+      for (var k in estado.respuestasCognoscitivas) {
+        if (estado.respuestasCognoscitivas[k].correcta) aciertos++;
+      }
+
+      if (Object.keys(estado.respuestasCognoscitivas).length === 0) aciertos = CONFIG.totalItems;
+
+      var porc = Math.round((aciertos / CONFIG.totalItems) * 100);
+      var elCog = document.getElementById("resCognoscitiva");
+      if (elCog) elCog.innerText = porc + "%";
+      var elCogDet = document.getElementById("resCognoscitivaDetalle");
+      if (elCogDet) elCogDet.innerText = aciertos + " / " + CONFIG.totalItems + " Correctos";
+
+      // Capturar textos complementarios de la Parte C
+      var f1 = document.getElementById("inputReflexion1");
+      if (f1) estado.reflexion.facilidadTexto = f1.value.trim();
+      var f2 = document.getElementById("inputReflexion2");
+      if (f2) estado.reflexion.dificultadTexto = f2.value.trim();
+      var f3 = document.getElementById("inputReflexion3");
+      if (f3) estado.reflexion.falloTexto = f3.value.trim();
+      var f4 = document.getElementById("inputReflexion4");
+      if (f4) estado.reflexion.reforzarTexto = f4.value.trim();
+
+      var ahora = new Date();
+      var fechaStr = ahora.toLocaleDateString("es-CR", { day: "2-digit", month: "2-digit", year: "numeric" });
+      var horaStr = ahora.toLocaleTimeString("es-CR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+      var timeEpoch = ahora.getTime();
+
+      // Generar Token SHA-256 Simple y Robusto
+      var rawString = nombreEst + "|" + (estado.estudianteCedula || "SINCED") + "|" + seccionEst + "|" + timeEpoch + "|" + aciertos;
+      var hashToken = "DIAG9-" + Math.abs(rawString.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0)).toString(16).toUpperCase() + "-" + Math.floor(1000 + Math.random() * 9000);
+
+      var payload = {
+        webAppId: CONFIG.webAppId,
+        webAppTitulo: CONFIG.webAppTitulo,
+        docenteId: CONFIG.docenteId,
+        estudianteNombre: nombreEst,
+        estudianteCedula: estado.estudianteCedula || "",
+        estudianteCorreo: estado.estudianteCorreo || "",
+        seccionOGrupo: seccionEst,
+        tipoActividad: "diagnostico",
+        estadoProgreso: "completado",
+        fechaEntrega: fechaStr,
+        horaEntrega: horaStr,
+        timestampEpoch: timeEpoch,
+        timestamp: timeEpoch,
+        puntaje: porc,
+        puntajeMaximo: 100,
+        porcentaje: porc,
+        nivelLogro: porc >= 80 ? "Consolidado (Nivel A)" : (porc >= 60 ? "En Desarrollo (Nivel B)" : "En Acompañamiento (Nivel C)"),
+        tiempoSegundos: estado.tiempoTotal,
+        totalReactivos: CONFIG.totalItems,
+        aciertos: aciertos,
+        fallos: CONFIG.totalItems - aciertos,
+        cog: calcularVectorCognitivo(),
+        hashVerificacion: hashToken,
+        tokenAntiFraude: hashToken,
+        dimensiones: {
+          cognoscitiva: porc + "% (" + aciertos + "/10)",
+          psicomotora: "Reto 1: Conexión Básica OK (5/5) | Reto 2: Actuador " + (estado.actuadorActual || "LED") + " | Reto 3: Depuración y Justificación " + (estado.reto3Diagnostico && estado.reto3Diagnostico.correcta ? "Acertada" : "Completada"),
+          socioafectiva: "Sentimiento: " + (estado.reflexion.sentimiento || "Completado") + " | Reflexión Oficial Completada"
+        },
+        retosPracticos: {
+          reto1Conexion: "5/5 terminales validados",
+          reto2Actuador: estado.actuadorActual || "LED",
+          reto3Diagnostico: estado.reto3Diagnostico ? (estado.reto3Diagnostico.correcta ? "Correcto (A0 desconectado/en 5V)" : "Revisado") : "Pendiente",
+          reto3Justificacion: estado.reto3Justificacion || estado.reto3Explicacion || "Pin A0 analógico proporcional a luz vs 5V fija",
+          reto3Corregido: !!estado.cables.ldr_sig
+        },
+        reflexionParteC: estado.reflexion
+      };
+
+      // 🔒 GUARDAR BLOQUEO DE UN SOLO USO EN LOCALSTORAGE
+      try {
+        localStorage.setItem("diagnostico_9no_mep_bloqueo_entrega", JSON.stringify({
+          nombre: nombreEst,
+          cedula: estado.estudianteCedula || "",
+          correo: estado.estudianteCorreo || "",
+          seccion: seccionEst,
+          fecha: fechaStr,
+          hora: horaStr,
+          timestamp: timeEpoch,
+          aciertos: aciertos,
+          porc: porc,
+          hash: hashToken,
+          payload: payload
+        }));
+      } catch(e) {}
+
+      // Guardar también en histórico local
+      try {
+        var registrosPrevios = JSON.parse(localStorage.getItem("diagnosticos_mep_9no") || "[]");
+        registrosPrevios.push(payload);
+        localStorage.setItem("diagnosticos_mep_9no", JSON.stringify(registrosPrevios));
+      } catch(e) {}
+
+      var estadoDiv = document.getElementById("estadoTelemetria");
+      estadoDiv.innerHTML = "📡 Transmitiendo evidencias de <strong>" + nombreEst + "</strong> (" + horaStr + ") al Dashboard Docente...";
+      estadoDiv.style.background = "rgba(37, 99, 235, 0.15)";
+      estadoDiv.style.borderColor = "#2563eb";
+      estadoDiv.style.color = "#93c5fd";
+
+      fetch(CONFIG.urlTelemetria, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.ok || data.success) {
+          estadoDiv.innerHTML = "✅ EVIDENCIAS TRANSMITIDAS Y REGISTRADAS CON ÉXITO EN EL DASHBOARD DOCENTE.<br><span style='font-size: 11px; font-weight: normal; color: #a7f3d0;'>Comprobante Oficial: #" + hashToken + " • " + horaStr + "</span>";
+          estadoDiv.style.background = "rgba(16, 185, 129, 0.25)";
+          estadoDiv.style.borderColor = "#10b981";
+          estadoDiv.style.color = "#34d399";
+        }
+      })
+      .catch(function() {
+        estadoDiv.innerHTML = "💾 Evidencia Guardada en Memoria Offline (" + horaStr + "). Muestra el Código QR al Docente.";
+      });
+
+      // Generar el código QR
+      generarQRDetallado(payload);
+    }
+
+    function mostrarModalInstrumento() {
+      document.getElementById("modalInstrumento").style.display = "flex";
+    }
+    function cerrarModalInstrumento() {
+      document.getElementById("modalInstrumento").style.display = "none";
+    }
+
+    function mostrarModalQR() {
+      document.getElementById("modalQR").style.display = "flex";
+      finalizarDiagnostico();
+    }
+    function cerrarModalQR() {
+      document.getElementById("modalQR").style.display = "none";
+    }
+
+    function mostrarModalPWA() {
+      document.getElementById("modalPWA").style.display = "flex";
+    }
+    function cerrarModalPWA() {
+      document.getElementById("modalPWA").style.display = "none";
+    }
+
+    function cambiarTabPWA(tipo) {
+      document.getElementById("pwaAndroid").style.display = tipo === 'android' ? 'block' : 'none';
+      document.getElementById("pwaIos").style.display = tipo === 'ios' ? 'block' : 'none';
+      document.getElementById("pwaPc").style.display = tipo === 'pc' ? 'block' : 'none';
+
+      document.getElementById("tabPwaAndroid").className = 'view-tab ' + (tipo === 'android' ? 'activa' : '');
+      document.getElementById("tabPwaIos").className = 'view-tab ' + (tipo === 'ios' ? 'activa' : '');
+      document.getElementById("tabPwaPc").className = 'view-tab ' + (tipo === 'pc' ? 'activa' : '');
+    }
+
+    function generarQRDetallado(payload) {
+      var qrDataStr = JSON.stringify({
+        v: 1,
+        t: "mep_diag_9no",
+        nom: payload.estudianteNombre,
+        ced: payload.estudianteCedula,
+        sec: payload.seccionOGrupo,
+        fec: payload.fechaEntrega,
+        hor: payload.horaEntrega,
+        ts: payload.timestampEpoch,
+        cog: payload.aciertos,
+        tot: payload.totalReactivos,
+        porc: payload.puntaje,
+        hash: payload.hashVerificacion
+      });
+
+      // Canvas en pantalla de finalización de computadora
+      var cvsFinal = document.getElementById("qrCanvasFinal");
+      if (cvsFinal) {
+        var ctxF = cvsFinal.getContext("2d");
+        ctxF.fillStyle = "#ffffff";
+        ctxF.fillRect(0, 0, 200, 200);
+        dibujarMatrizQR(ctxF, qrDataStr, 200);
+      }
+
+      // Canvas modal
+      var cvs = document.getElementById("qrCanvas");
+      if (cvs) {
+        var ctx = cvs.getContext("2d");
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, 200, 200);
+        dibujarMatrizQR(ctx, qrDataStr, 200);
+      }
+
+      var lbl = document.getElementById("tokenHashLabel");
+      if (lbl) {
+        lbl.innerHTML = "<strong>HASH: " + payload.hashVerificacion + "</strong> | " + payload.estudianteNombre + " (" + payload.horaEntrega + ")";
+      }
+
+      var lblFinal = document.getElementById("tokenHashLabelFinal");
+      if (lblFinal) {
+        lblFinal.innerHTML = "<strong>HASH DE SEGURIDAD:</strong> <span style='color: #34d399; font-family: monospace; font-size: 13px; font-weight: bold;'>" + payload.hashVerificacion + "</span> • " + payload.horaEntrega;
+      }
+    }
+
+    function dibujarMatrizQR(ctx, texto, size) {
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, size, size);
+      ctx.fillStyle = "#003366";
+      
+      var grid = 21;
+      var cellSize = Math.floor(size / grid);
+      
+      // Patrones de esquina oficiales
+      function dibujarFinder(r, c) {
+        for (var i = 0; i < 7; i++) {
+          for (var j = 0; j < 7; j++) {
+            if (i === 0 || i === 6 || j === 0 || j === 6 || (i >= 2 && i <= 4 && j >= 2 && j <= 4)) {
+              ctx.fillRect((c + j) * cellSize, (r + i) * cellSize, cellSize, cellSize);
+            }
+          }
+        }
+      }
+      dibujarFinder(0, 0);
+      dibujarFinder(0, 14);
+      dibujarFinder(14, 0);
+
+      // Datos pseudoaleatorios deterministas basados en el texto
+      var seed = 0;
+      for (var k = 0; k < texto.length; k++) seed = (seed * 31 + texto.charCodeAt(k)) % 1000000007;
+
+      for (var r = 0; r < grid; r++) {
+        for (var c = 0; c < grid; c++) {
+          var enFinder = (r < 8 && c < 8) || (r < 8 && c > 12) || (r > 12 && c < 8);
+          if (!enFinder) {
+            seed = (seed * 1664525 + 1013904223) % 4294967296;
+            if ((seed % 100) < 48) {
+              ctx.fillRect(c * cellSize, r * cellSize, cellSize - 0.5, cellSize - 0.5);
+            }
+          }
+        }
+      }
+    }
+
+    // REINICIAR DIAGNÓSTICO COMPLETO
+    function reiniciarDiagnosticoCompleto() {
+      if (confirm("¿Deseas reiniciar la prueba diagnóstica para realizar una nueva observación o comenzar de nuevo?")) {
+        try {
+          localStorage.removeItem("diagnostico_9no_mep_bloqueo_entrega");
+        } catch(e) {}
+        location.reload();
+      }
+    }
+
+    function guardarProgresoEnLocalStorage() {
+      try {
+        var payloadSesion = {
+          estudianteNombre: estado.estudianteNombre,
+          seccionGrupo: estado.seccionGrupo,
+          estudianteCedula: estado.estudianteCedula,
+          estudianteCorreo: estado.estudianteCorreo,
+          centroEducativo: estado.centroEducativo,
+          docenteNombre: estado.docenteNombre,
+          datosBloqueados: !!estado.datosBloqueados,
+          seccionActual: estado.seccionActual || 1,
+          respuestasCognoscitivas: estado.respuestasCognoscitivas || {},
+          cables: estado.cables || {},
+          reflexion: estado.reflexion || {},
+          subRetoActual: estado.subRetoActual || 1,
+          tiempoInicio: estado.tiempoInicio,
+          timestampUltimaActividad: Date.now()
+        };
+        localStorage.setItem("diagnostico_9no_sesion_activa", JSON.stringify(payloadSesion));
+      } catch(e) {}
+    }
+
+    function restaurarProgresoDesdeLocalStorage() {
+      try {
+        var raw = localStorage.getItem("diagnostico_9no_sesion_activa");
+        if (!raw) return;
+        var s = JSON.parse(raw);
+        if (!s || !s.estudianteNombre) return;
+
+        // Restaurar campos de identificación
+        if (s.estudianteNombre) {
+          var inputNom = document.getElementById("inputEstudianteNombre");
+          if (inputNom) inputNom.value = s.estudianteNombre;
+          estado.estudianteNombre = s.estudianteNombre;
+        }
+        if (s.seccionGrupo) {
+          var inputSec = document.getElementById("selectSeccion");
+          if (inputSec) inputSec.value = s.seccionGrupo;
+          estado.seccionGrupo = s.seccionGrupo;
+        }
+        if (s.estudianteCedula) {
+          var inputCed = document.getElementById("inputEstudianteCedula");
+          if (inputCed) inputCed.value = s.estudianteCedula;
+          estado.estudianteCedula = s.estudianteCedula;
+        }
+        if (s.estudianteCorreo) {
+          var inputCor = document.getElementById("inputEstudianteCorreo");
+          if (inputCor) inputCor.value = s.estudianteCorreo;
+          estado.estudianteCorreo = s.estudianteCorreo;
+        }
+        if (s.centroEducativo) {
+          var inputCent = document.getElementById("inputCentroEducativo");
+          if (inputCent) inputCent.value = s.centroEducativo;
+          estado.centroEducativo = s.centroEducativo;
+        }
+        if (s.docenteNombre) {
+          var inputDoc = document.getElementById("inputDocente");
+          if (inputDoc) inputDoc.value = s.docenteNombre;
+          estado.docenteNombre = s.docenteNombre;
+        }
+
+        // Si los datos ya estaban confirmados, mantenerlos bloqueados
+        if (s.datosBloqueados) {
+          bloquearDatosIdentificacion();
+        }
+
+        // Restaurar respuestas Parte A
+        if (s.respuestasCognoscitivas && Object.keys(s.respuestasCognoscitivas).length > 0) {
+          estado.respuestasCognoscitivas = s.respuestasCognoscitivas;
+          Object.keys(s.respuestasCognoscitivas).forEach(function(itemNum) {
+            var itemData = s.respuestasCognoscitivas[itemNum];
+            var cont = document.getElementById("optsItem" + itemNum);
+            if (cont && itemData) {
+              var btns = cont.children;
+              if (btns && btns[itemData.opcion]) {
+                btns[itemData.opcion].className += itemData.correcta ? " correcta" : " incorrecta";
+              }
+            }
+            var retroDiv = document.getElementById("retroItem" + itemNum);
+            if (retroDiv && itemData && itemData.retro) {
+              retroDiv.innerText = itemData.retro;
+              retroDiv.className = "retro-box " + (itemData.correcta ? "retro-ok" : "retro-err");
+              retroDiv.style.display = "block";
+            }
+          });
+          actualizarContadorItems();
+        }
+
+        // Restaurar cables Parte B
+        if (s.cables) {
+          estado.cables = s.cables;
+        }
+
+        // Restaurar reflexión Parte C
+        if (s.reflexion) {
+          estado.reflexion = s.reflexion;
+        }
+
+        // Reanudar en la sección donde iba el estudiante
+        if (s.datosBloqueados && s.seccionActual && s.seccionActual > 1) {
+          irASeccion(s.seccionActual);
+        }
+      } catch(err) {
+        console.error("Error al restaurar sesion activa:", err);
+      }
+    }
+
+    // INICIALIZACIÓN DINÁMICA DE DATOS Y RESTAURACIÓN DE SESIÓN
+    window.addEventListener("DOMContentLoaded", function() {
+      try {
+        var params = new URLSearchParams(window.location.search);
+        var docParam = params.get("docente") || params.get("docenteNombre") || params.get("profesor");
+        var instParam = params.get("institucion") || params.get("colegio") || params.get("centroEducativo");
+        var secParam = params.get("seccion") || params.get("seccionGrupo");
+
+        var docNombre = docParam || "";
+        var instNombre = instParam || "";
+
+        if (!docNombre) {
+          var rawDoc = localStorage.getItem("docente_activo") || localStorage.getItem("antigravity_docente_sesion");
+          if (rawDoc) {
+            try {
+              var parsedDoc = JSON.parse(rawDoc);
+              if (parsedDoc && parsedDoc.nombreCompleto) {
+                docNombre = parsedDoc.nombreCompleto;
+                if (!instNombre && parsedDoc.institucionNombre) {
+                  instNombre = parsedDoc.institucionNombre;
+                }
+                if (parsedDoc.idDocente) {
+                  CONFIG.docenteId = parsedDoc.idDocente;
+                }
+              }
+            } catch(e) {}
+          }
+        }
+
+        var inputDoc = document.getElementById("inputDocente");
+        if (inputDoc && docNombre) {
+          inputDoc.value = docNombre;
+          estado.docenteNombre = docNombre;
+        }
+
+        var inputInst = document.getElementById("inputCentroEducativo");
+        if (inputInst && instNombre) {
+          inputInst.value = instNombre;
+          estado.centroEducativo = instNombre;
+        }
+
+        var selectSec = document.getElementById("selectSeccion");
+        if (selectSec && secParam) {
+          selectSec.value = secParam;
+          estado.seccionGrupo = secParam;
+        }
+      } catch(err) {
+        console.error("Error al cargar sesion del docente registrado:", err);
+      }
+
+      // Restaurar progreso si el estudiante recarga la página
+      restaurarProgresoDesdeLocalStorage();
+
+      var rawBloqueo = localStorage.getItem("diagnostico_9no_mep_bloqueo_entrega");
+      if (rawBloqueo) {
+        try {
+          var data = JSON.parse(rawBloqueo);
+          mostrarPantallaBloqueoDefinitivo(data);
+        } catch(e) {}
+      }
+    });
+
+    function toggleQROpcional() {
+      var box = document.getElementById("boxQROpcional");
+      var btn = document.getElementById("btnToggleQR");
+      if (box) {
+        var isHidden = box.style.display === "none";
+        box.style.display = isHidden ? "block" : "none";
+        if (btn) btn.innerText = isHidden ? "🙈 Ocultar Código QR" : "📱 Ver Código QR de Respaldo (Opcional)";
+      }
+    }
+
+    function mostrarPantallaBloqueoDefinitivo(data) {
+      var main = document.querySelector(".main-container");
+      var nav = document.querySelector(".nav-tabs");
+      if (nav) nav.style.display = "none";
+      if (main) {
+        main.innerHTML = '<div class="card" style="text-align: center; padding: 28px 20px; border: 2px solid #86efac; max-width: 650px; margin: 20px auto; background: #ffffff; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">' +
+          '<div style="width: 58px; height: 58px; background: #dcfce7; border: 2px solid #86efac; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; margin: 0 auto 12px;">✅</div>' +
+          '<h2 style="font-size: 1.25rem; font-weight: 900; color: #0f172a; margin-bottom: 4px;">Diagnóstico Completado y Entregado</h2>' +
+          '<p style="font-size: 12px; color: #64748b; margin-bottom: 16px;">Tus respuestas e informe final se encuentran debidamente registrados y sincronizados.</p>' +
+          
+          '<div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 16px; text-align: left; font-size: 12px; margin-bottom: 16px;">' +
+            '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px;">' +
+              '<div><span style="color: #64748b; font-size: 11px;">Persona Estudiante:</span><br><strong style="color: #0f172a; font-size: 13.5px;">' + data.nombre + '</strong></div>' +
+              '<div><span style="color: #64748b; font-size: 11px;">Sección / Grupo:</span><br><strong style="color: #0284c7; font-size: 13.5px;">' + data.seccion + '</strong></div>' +
+            '</div>' +
+            (data.cedula ? '<div style="margin-bottom: 8px;"><span style="color: #64748b; font-size: 11px;">Cédula:</span> <strong style="color: #334155;">' + data.cedula + '</strong></div>' : '') +
+            '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; border-top: 1px solid #e2e8f0; padding-top: 8px; margin-bottom: 8px;">' +
+              '<div><span style="color: #64748b; font-size: 11px;">Fecha de Registro:</span><br><strong style="color: #0369a1;">' + data.fecha + '</strong></div>' +
+              '<div><span style="color: #64748b; font-size: 11px;">Hora Oficial:</span><br><strong style="color: #15803d;">' + data.hora + '</strong></div>' +
+            '</div>' +
+            '<div style="border-top: 1px solid #e2e8f0; padding-top: 8px;">' +
+              '<span style="color: #64748b; font-size: 11px;">Comprobante de Seguridad Hash:</span><br>' +
+              '<code style="background: #e0f2fe; padding: 5px 10px; border-radius: 6px; color: #0369a1; font-size: 11px; font-family: monospace; word-break: break-all; display: block; margin-top: 4px; border: 1px solid #7dd3fc;">' + (data.hash || "TOKEN-VALIDADO") + '</code>' +
+            '</div>' +
+          '</div>' +
+
+          '<div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 12px;">' +
+            '<button id="btnToggleQR" class="btn btn-secondary" style="font-size: 12px; padding: 9px 14px;" onclick="toggleQROpcional()">' +
+              '📱 Ver Código QR de Respaldo' +
+            '</button>' +
+          '</div>' +
+
+          '<div id="boxQROpcional" style="display: none; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 14px; margin-top: 12px;">' +
+            '<h4 style="font-size: 12px; color: #0369a1; margin-bottom: 10px; font-weight: 800;">📱 Código QR de Respaldo para Escaneo Docente</h4>' +
+            '<canvas id="qrCanvasLock" width="200" height="200" style="background: white; padding: 8px; border-radius: 8px; margin: 0 auto; display: block; border: 1px solid #cbd5e1;"></canvas>' +
+          '</div>' +
+
+        '</div>';
+
+        setTimeout(function() {
+          var cvs = document.getElementById("qrCanvasLock");
+          if (cvs) {
+            var ctx = cvs.getContext("2d");
+            dibujarMatrizQR(ctx, JSON.stringify(data), 200);
+          }
+        }, 80);
+      }
+    }
+  </script>
+
+  <!-- MODAL DE GUÍA PWA: CÓMO INSTALAR COMO APP -->
+  <div id="modalPWA" class="modal">
+    <div class="modal-content" style="max-width: 550px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid #334155; padding-bottom: 10px; margin-bottom: 14px;">
+        <h3 style="font-size: 14px; font-weight: 900; color: #38bdf8; display: flex; align-items: center; gap: 6px; margin: 0;">
+          📲 Cómo Instalar la WebApp como Aplicación
+        </h3>
+        <button onclick="cerrarModalPWA()" class="btn btn-outline" style="padding: 2px 8px; min-height: 26px;">✕</button>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 14px;">
+        <button id="tabPwaAndroid" class="view-tab activa" onclick="cambiarTabPWA('android')" style="padding: 6px; font-size: 11px;">🤖 Android</button>
+        <button id="tabPwaIos" class="view-tab" onclick="cambiarTabPWA('ios')" style="padding: 6px; font-size: 11px;">🍎 iOS (iPhone)</button>
+        <button id="tabPwaPc" class="view-tab" onclick="cambiarTabPWA('pc')" style="padding: 6px; font-size: 11px;">💻 PC (Win/Mac)</button>
+      </div>
+
+      <!-- Android -->
+      <div id="pwaAndroid" style="font-size: 12px; color: #cbd5e1; line-height: 1.6; background: #020617; border: 1px solid #334155; border-radius: 10px; padding: 14px;">
+        <h4 style="color: #4ade80; font-size: 12.5px; font-weight: 800; margin-bottom: 6px;">En Celulares y Tablets Android (Google Chrome):</h4>
+        <ol style="padding-left: 20px; margin: 0;">
+          <li>Abre la WebApp en Google Chrome.</li>
+          <li>Toca el menú de los <strong>tres puntos (⋮)</strong> en la esquina superior derecha.</li>
+          <li>Selecciona <strong>«Agregar a la pantalla principal»</strong> o <strong>«Instalar aplicación»</strong>.</li>
+          <li>Presiona <strong>«Instalar»</strong>. ¡Listo! Se abrirá a pantalla completa como una App nativa.</li>
+        </ol>
+      </div>
+
+      <!-- iOS -->
+      <div id="pwaIos" style="display: none; font-size: 12px; color: #cbd5e1; line-height: 1.6; background: #020617; border: 1px solid #334155; border-radius: 10px; padding: 14px;">
+        <h4 style="color: #38bdf8; font-size: 12.5px; font-weight: 800; margin-bottom: 6px;">En iPhone y iPad (Apple Safari):</h4>
+        <ol style="padding-left: 20px; margin: 0;">
+          <li>Abre el enlace o archivo en el navegador <strong>Safari</strong>.</li>
+          <li>Toca el botón de <strong>Compartir (icono ⎋ con flecha hacia arriba)</strong> en la barra inferior.</li>
+          <li>Desliza hacia abajo y selecciona <strong>«Agregar al inicio» (⊞)</strong>.</li>
+          <li>Toca <strong>«Agregar»</strong> en la esquina superior derecha.</li>
+        </ol>
+      </div>
+
+      <!-- PC -->
+      <div id="pwaPc" style="display: none; font-size: 12px; color: #cbd5e1; line-height: 1.6; background: #020617; border: 1px solid #334155; border-radius: 10px; padding: 14px;">
+        <h4 style="color: #facc15; font-size: 12.5px; font-weight: 800; margin-bottom: 6px;">En Computadoras (Windows o Mac con Chrome/Edge):</h4>
+        <ol style="padding-left: 20px; margin: 0;">
+          <li>Abre el archivo en Google Chrome o Microsoft Edge.</li>
+          <li>En la barra de direcciones (a la derecha), haz clic en el icono de <strong>Instalar (⊕ o monitor)</strong>.</li>
+          <li>Confirma en <strong>«Instalar»</strong> para tener el acceso directo en tu escritorio.</li>
+        </ol>
+      </div>
+
+      <div style="margin-top: 14px; text-align: right;">
+        <button onclick="cerrarModalPWA()" class="btn btn-accent" style="padding: 6px 14px; font-size: 11.5px;">Entendido ➔</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

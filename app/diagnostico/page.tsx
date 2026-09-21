@@ -10,6 +10,7 @@ import {
 } from "@/lib/generadorWebAppEngine";
 import WebAppPreviewFrame from "@/components/WebAppPreviewFrame";
 import QRModalProyeccion from "@/components/QRModalProyeccion";
+import SelectorVersionesDiagnostico from "@/components/SelectorVersionesDiagnostico";
 import AuthGuard from "@/components/AuthGuard";
 import { QRCodeSVG } from "qrcode.react";
 import {
@@ -288,103 +289,66 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
         </div>
       </div>
 
-      {/* TARJETAS DESTACADAS: APLICATIVOS OFICIALES (ESTUDIANTE Y DOCENTE) */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        
-        {/* WebApp del Estudiante */}
-        <div className="bg-gradient-to-br from-blue-950 via-slate-900 to-blue-900 border-2 border-blue-500/80 rounded-2xl p-6 text-white shadow-xl flex flex-col justify-between relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl group-hover:scale-125 transition-transform" />
-          <div className="space-y-3 relative z-10">
-            <div className="flex items-center justify-between">
-              <span className="px-2.5 py-0.5 rounded-full bg-blue-500/20 text-sky-300 border border-blue-400/30 text-[10px] font-extrabold uppercase tracking-wider">
-                WebApp para el Estudiante
+      {/* SELECTOR OFICIAL DE VERSIONES SEPARADAS PARA EL ESTUDIANTE (EN LÍNEA VS OFFLINE) */}
+      <section className="space-y-4">
+        <SelectorVersionesDiagnostico
+          docenteNombre={docente?.nombreCompleto}
+          institucionNombre={docente?.institucionNombre}
+        />
+      </section>
+
+      {/* APLICATIVO PARA EL DOCENTE EVALUADOR */}
+      <section>
+        <div className="bg-gradient-to-br from-purple-950 via-slate-900 to-indigo-950 border-2 border-purple-500/80 rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl group-hover:scale-125 transition-transform" />
+          
+          <div className="space-y-3 relative z-10 max-w-2xl">
+            <div className="flex items-center gap-2">
+              <span className="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-400/30 text-[10px] font-black uppercase tracking-wider">
+                Instrumento para el Docente
               </span>
-              <span className="text-xs font-bold text-sky-200">70 min sugeridos</span>
+              <span className="text-xs font-bold text-purple-200">Guía Oficial de Evaluación</span>
             </div>
-            <h3 className="text-lg font-black text-white flex items-center gap-2">
-              <Lightbulb size={22} className="text-amber-400" weight="fill" />
-              <span>Diagnóstico 9°: «Aula Inteligente»</span>
+            
+            <h3 className="text-xl font-black text-white flex items-center gap-2">
+              <UserCheck size={24} className="text-emerald-400" weight="fill" />
+              <span>Evaluador Docente & Sistematización de Desempeños</span>
             </h3>
+            
             <p className="text-xs text-slate-300 leading-relaxed">
-              Incluye los <strong>10 reactivos de la Parte A</strong>, el laboratorio interactivo 2D del <strong>Reto «Conecta el Prototipo»</strong> con verificación de terminales (5V, GND, A0, D9) y la <strong>Reflexión Individual de la Parte C</strong> con comprobante QR offline.
+              Permite registrar en vivo la matriz de <strong>Sistematización de Desempeños y Logros (Pág. 15)</strong>, escanear con la cámara del celular o laptop los <strong>códigos QR de los estudiantes</strong>, evaluar las 3 áreas (Cognoscitiva, Psicomotora y Socioafectiva) y exportar actas a Excel.
             </p>
           </div>
 
-          <div className="pt-6 flex flex-wrap items-center gap-2 relative z-10">
-            <a
-              href="/webapps/diagnostico_9no_modulo01_aula_inteligente.html"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-black text-xs rounded-xl shadow-md hover:shadow-lg transition-all"
-            >
-              <span>Abrir App Estudiante</span>
-              <ArrowSquareOut size={16} weight="bold" />
-            </a>
-            <button
-              onClick={() => setModalQREstudiante(true)}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs rounded-xl shadow-sm transition-all"
-            >
-              <QrCode size={16} weight="bold" />
-              <span>📱 Proyectar QR</span>
-            </button>
-            <a
-              href="/webapps/diagnostico_9no_modulo01_aula_inteligente.html"
-              download="diagnostico_9no_modulo01_aula_inteligente.html"
-              className="inline-flex items-center gap-1.5 px-3 py-2 bg-slate-800/80 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl border border-slate-700 transition-colors"
-            >
-              <DownloadSimple size={15} weight="bold" />
-              <span>Descargar .HTML</span>
-            </a>
-          </div>
-        </div>
-
-        {/* WebApp del Docente Evaluador */}
-        <div className="bg-gradient-to-br from-purple-950 via-slate-900 to-indigo-950 border-2 border-purple-500/80 rounded-2xl p-6 text-white shadow-xl flex flex-col justify-between relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl group-hover:scale-125 transition-transform" />
-          <div className="space-y-3 relative z-10">
-            <div className="flex items-center justify-between">
-              <span className="px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-400/30 text-[10px] font-extrabold uppercase tracking-wider">
-                Aplicativo para el Docente
-              </span>
-              <span className="text-xs font-bold text-purple-200">Guía Oficial MEP</span>
-            </div>
-            <h3 className="text-lg font-black text-white flex items-center gap-2">
-              <UserCheck size={22} className="text-emerald-400" weight="fill" />
-              <span>Evaluador Docente & Sistematización Pág. 15</span>
-            </h3>
-            <p className="text-xs text-slate-300 leading-relaxed">
-              Permite <strong>cargar nóminas mediante archivo adjunto (.xlsx, .csv o texto)</strong>, registrar en vivo la matriz de <strong>Sistematización de Desempeños y Logros (Pág. 15 MEP)</strong>, calificar observación docente, gestionar aplicaciones extemporáneas y exportar a Excel.
-            </p>
-          </div>
-
-          <div className="pt-6 flex flex-wrap items-center gap-2 relative z-10">
+          <div className="flex flex-wrap items-center gap-2.5 relative z-10 shrink-0">
             <a
               href="/webapps/diagnostico_9no_modulo01_docente_evaluador.html"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black text-xs rounded-xl shadow-md hover:shadow-lg transition-all"
+              className="inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black text-xs rounded-xl shadow-md hover:shadow-lg transition-all"
             >
               <span>Abrir App Docente</span>
               <ArrowSquareOut size={16} weight="bold" />
             </a>
+            
             <button
               onClick={() => setModalQRDocente(true)}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs rounded-xl shadow-sm transition-all"
+              className="inline-flex items-center gap-1.5 px-4 py-3 bg-purple-600/80 hover:bg-purple-600 text-white font-bold text-xs rounded-xl shadow-sm transition-all"
             >
               <QrCode size={16} weight="bold" />
               <span>📱 QR Celular Docente</span>
             </button>
+            
             <a
               href="/webapps/diagnostico_9no_modulo01_docente_evaluador.html"
               download="diagnostico_9no_modulo01_docente_evaluador.html"
-              className="inline-flex items-center gap-1.5 px-3 py-2 bg-slate-800/80 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl border border-slate-700 transition-colors"
+              className="inline-flex items-center gap-1.5 px-3.5 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl border border-slate-700 transition-colors"
             >
               <DownloadSimple size={15} weight="bold" />
               <span>Descargar .HTML</span>
             </a>
           </div>
         </div>
-
       </section>
 
       {/* GENERADOR Y ANALIZADOR DE DOCUMENTOS PERSONALIZADOS */}
