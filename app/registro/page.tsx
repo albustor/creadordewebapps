@@ -32,23 +32,23 @@ export default function RegistroDocentePage() {
   const [pestanaActiva, setPestanaActiva] = useState<"perfil" | "seguridad">("perfil");
 
   // Formulario Perfil
-  const [nombre, setNombre] = useState(docente?.nombreCompleto || DOCENTE_DEFAULT.nombreCompleto);
-  const [correo, setCorreo] = useState(docente?.correoInstitucional || DOCENTE_DEFAULT.correoInstitucional);
-  const [cedula, setCedula] = useState(docente?.cedula || DOCENTE_DEFAULT.cedula);
-  const [telefono, setTelefono] = useState(docente?.telefono || DOCENTE_DEFAULT.telefono);
+  const [nombre, setNombre] = useState(docente?.nombreCompleto || "");
+  const [correo, setCorreo] = useState(docente?.correoInstitucional || "");
+  const [cedula, setCedula] = useState(docente?.cedula || "");
+  const [telefono, setTelefono] = useState(docente?.telefono || "");
   
-  // DRE y Ubicación (Asesoría de Formación Tecnológica es la primera opción)
-  const [dreCodigo, setDreCodigo] = useState(docente?.dreCodigo || "DRE-NACIONAL");
-  const [circuito, setCircuito] = useState(docente?.circuito || "Nivel Nacional / Ámbito General");
+  // DRE y Ubicación
+  const [dreCodigo, setDreCodigo] = useState(docente?.dreCodigo || "DRE01");
+  const [circuito, setCircuito] = useState(docente?.circuito || "Circuito 01");
   const [codigoPresupuestario, setCodigoPresupuestario] = useState(
-    docente?.codigoPresupuestario || "FT-NACIONAL-2026"
+    docente?.codigoPresupuestario || ""
   );
   const [institucion, setInstitucion] = useState(
-    docente?.institucionNombre || "Asesoría Nacional de Formación Tecnológica (Dimensión 1 y 2)"
+    docente?.institucionNombre || ""
   );
   
   const [rol, setRol] = useState(
-    docente?.rol || "Asesor de Formación Tecnológica & Administrador General (Dimensión 1 y 2)"
+    docente?.rol || "Docente de Formación Tecnológica"
   );
   
   // Asignatura ÚNICA y EXCLUSIVA para este desarrollo
@@ -62,8 +62,8 @@ export default function RegistroDocentePage() {
   const [copiadoEnlace, setCopiadoEnlace] = useState(false);
 
   // Formulario de Inicio de Sesión / Seguridad
-  const [loginCorreo, setLoginCorreo] = useState(docente?.correoInstitucional || "alberto.bustos.ortega@mep.go.cr");
-  const [loginPassword, setLoginPassword] = useState("EdcRfvTgb1726**");
+  const [loginCorreo, setLoginCorreo] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
   const [loginMensaje, setLoginMensaje] = useState<{ tipo: "exito" | "error"; texto: string } | null>(null);
 
   // Sincronizar estados solo en carga inicial o cambio de cuenta (no mientras se escribe)
@@ -645,25 +645,33 @@ export default function RegistroDocentePage() {
 
           {/* Tarjeta de Cuenta Actual */}
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-5 space-y-3">
-            <div className="text-xs font-bold text-blue-900 uppercase">Cuenta Conectada</div>
+            <div className="text-xs font-bold text-blue-900 uppercase">
+              {docente ? "Cuenta Conectada" : "Estado de la Sesión"}
+            </div>
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <div className="text-base font-black text-slate-900">Prof. Alberto Bustos Ortega</div>
+                <div className="text-base font-black text-slate-900">
+                  {docente?.nombreCompleto || "Sin sesión activa"}
+                </div>
                 <div className="text-xs font-mono text-blue-700 font-semibold">
-                  {docente?.correoInstitucional || "alberto.bustos.ortega@mep.go.cr"}
+                  {docente?.correoInstitucional || "Ingresa con tu correo institucional MEP (@mep.go.cr) para identificarte"}
                 </div>
-                <div className="text-[11px] text-slate-500 mt-0.5">
-                  {esAsesoriaNacional
-                    ? "Asesoría de Formación Tecnológica (Dimensión 1)"
-                    : `${dreSeleccionada.nombre} • ${circuito} • ${institucion}`}
-                </div>
+                {docente && (
+                  <div className="text-[11px] text-slate-500 mt-0.5">
+                    {esAsesoriaNacional
+                      ? "Asesoría Nacional de Formación Tecnológica (Dimensión 1 y 2)"
+                      : `${dreSeleccionada.nombre} • ${circuito} • ${institucion}`}
+                  </div>
+                )}
               </div>
 
-              <div className="flex items-center gap-2">
-                <span className="px-2.5 py-1 bg-blue-700 text-white text-xs font-mono font-bold rounded-lg">
-                  {idActual}
-                </span>
-              </div>
+              {docente && (
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-1 bg-blue-700 text-white text-xs font-mono font-bold rounded-lg">
+                    {idActual}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
 

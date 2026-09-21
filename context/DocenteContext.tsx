@@ -191,18 +191,20 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
     if (savedDocente) {
       try {
         const parsed = JSON.parse(savedDocente);
-        if (parsed.correoInstitucional && parsed.correoInstitucional.includes("@educacion.cr")) {
-          parsed.correoInstitucional = parsed.correoInstitucional.replace("@educacion.cr", "@mep.go.cr");
-          SafeStorage.setItem("docente_activo", JSON.stringify(parsed));
+        if (parsed && parsed.correoInstitucional) {
+          if (parsed.correoInstitucional.includes("@educacion.cr")) {
+            parsed.correoInstitucional = parsed.correoInstitucional.replace("@educacion.cr", "@mep.go.cr");
+            SafeStorage.setItem("docente_activo", JSON.stringify(parsed));
+          }
+          setDocente(parsed);
+        } else {
+          setDocente(null);
         }
-        setDocente(parsed);
       } catch {
-        setDocente(DOCENTE_MEP_OFICIAL);
+        setDocente(null);
       }
     } else {
-      // Docente oficial autenticado
-      setDocente(DOCENTE_MEP_OFICIAL);
-      SafeStorage.setItem("docente_activo", JSON.stringify(DOCENTE_MEP_OFICIAL));
+      setDocente(null);
     }
 
     if (savedWebapps) {

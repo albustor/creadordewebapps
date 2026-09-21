@@ -30,8 +30,8 @@ export default function HomePage() {
   const { docente, webApps, telemetria, iniciarSesion, cerrarSesion } = useDocente();
 
   const [mostrarLoginModal, setMostrarLoginModal] = useState(false);
-  const [loginCorreo, setLoginCorreo] = useState(docente?.correoInstitucional || "alberto.bustos.ortega@mep.go.cr");
-  const [loginPassword, setLoginPassword] = useState("EdcRfvTgb1726**");
+  const [loginCorreo, setLoginCorreo] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
   const [loginMensaje, setLoginMensaje] = useState<{ tipo: "exito" | "error"; texto: string } | null>(null);
 
   const handleLogin = (e: React.FormEvent) => {
