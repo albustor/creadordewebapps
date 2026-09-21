@@ -710,7 +710,10 @@
       <button class="btn btn-outline" style="font-size: 10.5px; padding: 4px 8px; min-height: 28px;" onclick="mostrarModalInstrumento()">
         📋 Rúbrica MEP
       </button>
-      <span class="mep-badge" style="background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #34d399; font-size: 9.5px;" id="badgeProgresoHeader">
+      <button class="btn btn-secondary" style="font-size: 10.5px; padding: 4px 8px; min-height: 28px;" onclick="reiniciarDiagnosticoCompleto()" title="Reiniciar diagnóstico para empezar de nuevo">
+        🔄 Reiniciar
+      </button>
+      <span class="mep-badge" style="background: #dcfce7; border-color: #86efac; color: #15803d; font-size: 10px;" id="badgeProgresoHeader">
         Progreso: 0%
       </span>
     </div>
@@ -2353,6 +2356,16 @@
       }
     }
 
+    // REINICIAR DIAGNÓSTICO COMPLETO
+    function reiniciarDiagnosticoCompleto() {
+      if (confirm("¿Deseas reiniciar la prueba diagnóstica para realizar una nueva observación o comenzar de nuevo?")) {
+        try {
+          localStorage.removeItem("diagnostico_9no_mep_bloqueo_entrega");
+        } catch(e) {}
+        location.reload();
+      }
+    }
+
     // VERIFICACIÓN DE BLOQUEO DE UN SOLO USO AL INICIAR
     window.addEventListener("DOMContentLoaded", function() {
       var rawBloqueo = localStorage.getItem("diagnostico_9no_mep_bloqueo_entrega");
@@ -2364,35 +2377,57 @@
       }
     });
 
+    function toggleQROpcional() {
+      var box = document.getElementById("boxQROpcional");
+      var btn = document.getElementById("btnToggleQR");
+      if (box) {
+        var isHidden = box.style.display === "none";
+        box.style.display = isHidden ? "block" : "none";
+        if (btn) btn.innerText = isHidden ? "🙈 Ocultar Código QR" : "📱 Ver Código QR de Respaldo (Opcional)";
+      }
+    }
+
     function mostrarPantallaBloqueoDefinitivo(data) {
       var main = document.querySelector(".main-container");
       var nav = document.querySelector(".nav-tabs");
       if (nav) nav.style.display = "none";
       if (main) {
-        main.innerHTML = '<div class="card" style="text-align: center; padding: 28px 18px; border: 2px solid #10b981; max-width: 650px; margin: 20px auto; background: #0f172a; box-shadow: 0 0 30px rgba(16, 185, 129, 0.25);">' +
-          '<div style="width: 60px; height: 60px; background: rgba(16, 185, 129, 0.2); border: 2px solid #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 14px;">🔒</div>' +
-          '<h2 style="font-size: 1.25rem; font-weight: 900; color: #f8fafc; margin-bottom: 4px;">Diagnóstico Completado y Entregado</h2>' +
-          '<p style="font-size: 12px; color: #94a3b8; margin-bottom: 18px;">Este archivo ya registró su entrega oficial. No se permiten reintentos para garantizar la transparencia de la prueba.</p>' +
-          '<div style="background: #1e293b; border: 1.5px solid #334155; border-radius: 12px; padding: 14px; text-align: left; font-size: 12px; margin-bottom: 18px;">' +
-            '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">' +
-              '<div><span style="color: #94a3b8;">Estudiante:</span><br><strong style="color: #f8fafc; font-size: 13px;">' + data.nombre + '</strong></div>' +
-              '<div><span style="color: #94a3b8;">Sección:</span><br><strong style="color: #38bdf8; font-size: 13px;">' + data.seccion + '</strong></div>' +
+        main.innerHTML = '<div class="card" style="text-align: center; padding: 28px 20px; border: 2px solid #86efac; max-width: 650px; margin: 20px auto; background: #ffffff; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">' +
+          '<div style="width: 58px; height: 58px; background: #dcfce7; border: 2px solid #86efac; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; margin: 0 auto 12px;">✅</div>' +
+          '<h2 style="font-size: 1.25rem; font-weight: 900; color: #0f172a; margin-bottom: 4px;">Diagnóstico Completado y Entregado</h2>' +
+          '<p style="font-size: 12px; color: #64748b; margin-bottom: 16px;">Este archivo registró su entrega oficial con respaldo formativo del Ministerio de Educación Pública.</p>' +
+          
+          '<div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 16px; text-align: left; font-size: 12px; margin-bottom: 16px;">' +
+            '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px;">' +
+              '<div><span style="color: #64748b; font-size: 11px;">Persona Estudiante:</span><br><strong style="color: #0f172a; font-size: 13.5px;">' + data.nombre + '</strong></div>' +
+              '<div><span style="color: #64748b; font-size: 11px;">Sección / Grupo:</span><br><strong style="color: #0284c7; font-size: 13.5px;">' + data.seccion + '</strong></div>' +
             '</div>' +
-            (data.cedula ? '<div style="margin-bottom: 6px;"><span style="color: #94a3b8;">Cédula:</span> <strong style="color: #e2e8f0;">' + data.cedula + '</strong></div>' : '') +
-            '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; border-top: 1px solid #334155; padding-top: 8px; margin-bottom: 6px;">' +
-              '<div><span style="color: #94a3b8;">Fecha de Entrega:</span><br><strong style="color: #facc15;">' + data.fecha + '</strong></div>' +
-              '<div><span style="color: #94a3b8;">Hora y Minutos:</span><br><strong style="color: #facc15;">' + data.hora + '</strong></div>' +
+            (data.cedula ? '<div style="margin-bottom: 8px;"><span style="color: #64748b; font-size: 11px;">Cédula:</span> <strong style="color: #334155;">' + data.cedula + '</strong></div>' : '') +
+            '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; border-top: 1px solid #e2e8f0; padding-top: 8px; margin-bottom: 8px;">' +
+              '<div><span style="color: #64748b; font-size: 11px;">Fecha de Registro:</span><br><strong style="color: #0369a1;">' + data.fecha + '</strong></div>' +
+              '<div><span style="color: #64748b; font-size: 11px;">Hora Oficial:</span><br><strong style="color: #15803d;">' + data.hora + '</strong></div>' +
             '</div>' +
-            '<div style="border-top: 1px solid #334155; padding-top: 8px;">' +
-              '<span style="color: #94a3b8;">Comprobante de Seguridad Hash:</span><br>' +
-              '<code style="background: #020617; padding: 4px 8px; border-radius: 4px; color: #34d399; font-size: 11px; font-family: monospace; word-break: break-all; display: block; margin-top: 3px;">' + (data.hash || "MEP9-VALIDADO") + '</code>' +
+            '<div style="border-top: 1px solid #e2e8f0; padding-top: 8px;">' +
+              '<span style="color: #64748b; font-size: 11px;">Comprobante de Seguridad Hash:</span><br>' +
+              '<code style="background: #e0f2fe; padding: 5px 10px; border-radius: 6px; color: #0369a1; font-size: 11px; font-family: monospace; word-break: break-all; display: block; margin-top: 4px; border: 1px solid #7dd3fc;">' + (data.hash || "MEP9-VALIDADO") + '</code>' +
             '</div>' +
           '</div>' +
-          '<div style="background: #020617; border: 1.5px solid #0284c7; border-radius: 12px; padding: 14px; margin-bottom: 12px;">' +
-            '<h4 style="font-size: 12px; color: #38bdf8; margin-bottom: 10px; font-weight: 800;">📱 Código QR para Verificación del Docente</h4>' +
-            '<canvas id="qrCanvasLock" width="200" height="200" style="background: white; padding: 8px; border-radius: 8px; margin: 0 auto; display: block;"></canvas>' +
-            '<p style="font-size: 10.5px; color: #94a3b8; margin-top: 8px;">Presenta esta pantalla al profesor para escanear tus evidencias.</p>' +
+
+          '<div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 12px;">' +
+            '<button class="btn btn-accent" style="font-size: 12px; padding: 9px 18px;" onclick="reiniciarDiagnosticoCompleto()">' +
+              '🔄 Iniciar Nuevo Intento / Reiniciar Vista' +
+            '</button>' +
+            '<button id="btnToggleQR" class="btn btn-secondary" style="font-size: 12px; padding: 9px 14px;" onclick="toggleQROpcional()">' +
+              '📱 Ver Código QR de Respaldo (Opcional)' +
+            '</button>' +
           '</div>' +
+
+          '<div id="boxQROpcional" style="display: none; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 14px; margin-top: 12px;">' +
+            '<h4 style="font-size: 12px; color: #0369a1; margin-bottom: 10px; font-weight: 800;">📱 Código QR de Respaldo para Escaneo Docente</h4>' +
+            '<canvas id="qrCanvasLock" width="200" height="200" style="background: white; padding: 8px; border-radius: 8px; margin: 0 auto; display: block; border: 1px solid #cbd5e1;"></canvas>' +
+            '<p style="font-size: 11px; color: #64748b; margin-top: 8px;">Opcional: Si el docente cuenta con el evaluador en su teléfono, puede capturar este código.</p>' +
+          '</div>' +
+
         '</div>';
 
         setTimeout(function() {
