@@ -20,9 +20,15 @@ export async function POST(req: NextRequest) {
     // 1. Construir prompt pedagógico estructurado para la IA
     const promptPedagogico = generarPromptParaIAExterna(opts);
     const systemInstruction = `Eres un desarrollador web experto y diseñador instruccional de vanguardia.
-Tu tarea es analizar minuciosamente el indicador de logro curricular de secundaria y generar un archivo HTML ÚNICO (.html) completo, autónomo, responsivo y sin dependencias CDN externas.
-El código debe incluir CSS embebido en <style> y JavaScript embebido en <script>, estructurado en 4 fases: 1. Aprender (saber conceptual), 2. Comprender (con reactivos interactivos situados en el indicador), 3. Simulación práctica en Canvas 60 FPS o interactivo acorde a la mecánica, y 4. Valoración con envío de telemetría a Google Apps Script y REST.
-Devuelve EXCLUSIVAMENTE el código HTML dentro de un bloque \`\`\`html ... \`\`\`.`;
+Tu tarea es analizar minuciosamente el indicador de logro curricular de secundaria [${opts.indicadorCodigo}] ${opts.indicadorNombre} y generar un archivo HTML ÚNICO (.html) completo, autónomo, responsivo y sin dependencias CDN externas.
+
+REGLAS PEDAGÓGICAS Y TÉCNICAS OBLIGATORIAS:
+1. Fase 1 (Aprender): Explicación clara y profunda de ${opts.saberConceptual}, apoyos visuales y tarjetas para saber procedimental (${opts.saberProcedimental || 'Aplica y analiza'}) y saber actitudinal (${opts.saberActitudinal || 'Gusto por la precisión'}).
+2. Fase 2 (Comprender): Debe contener exactamente al menos 4 casos y reactivos situados en la vida real/hogar/comunidad del estudiante, evaluando progresivamente lo deseable en el indicador. Incluye retroalimentación pedagógica y sonido procedural Web Audio API.
+3. Fase 3 (Simulación interactiva): Diseña un simulador interactivo ORIGINAL y 100% funcional en Canvas 60 FPS o DOM interactivo, propuesto directamente desde el análisis de la intención de logro de este indicador (sin recetas prefabricadas ni plantillas fijas), donde el estudiante manipule los parámetros y resuelva el reto.
+4. Fase 4 (Valoración): Rúbrica formativa según niveles de logro y envío de telemetría a Google Apps Script (${opts.urlGoogleScript || 'CONFIG.urlGoogleScript'}) y REST con modo no-cors.
+
+Devuelve EXCLUSIVAMENTE el código HTML dentro de un solo bloque \`\`\`html ... \`\`\`.`;
 
     // 2. Ejecutar la cascada de resiliencia multi-proveedor
     const aiResult = await ejecutarCascadaIA(promptPedagogico, systemInstruction);

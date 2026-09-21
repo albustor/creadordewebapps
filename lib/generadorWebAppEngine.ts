@@ -90,9 +90,9 @@ export interface OpcionesGeneracionWebApp {
  * Genera el Prompt estructurado para copiar y llevar a IAs externas (Gemini Canvas, Claude, ChatGPT, DeepSeek, Qwen)
  */
 export function generarPromptParaIAExterna(opts: OpcionesGeneracionWebApp): string {
-  const preguntasTxt = opts.preguntasComprender && opts.preguntasComprender.length > 0
-    ? opts.preguntasComprender.map((p, idx) => `   Pregunta ${idx + 1}: ${p.pregunta}\n   Opciones: ${p.opciones.join(" | ")}\n   Explicación: ${p.explicacion}`).join("\n\n")
-    : `   Diseña 3 preguntas conceptuales y reflexivas situadas que validen la comprensión esencial de [${opts.indicadorCodigo}] ${opts.indicadorNombre} enfocado en ${opts.saberConceptual}.`;
+  const preguntasTxt = opts.preguntasComprender && opts.preguntasComprender.length >= 4
+    ? opts.preguntasComprender.map((p, idx) => `   Caso ${idx + 1}: ${p.pregunta}\n   Opciones: ${p.opciones.join(" | ")}\n   Explicación: ${p.explicacion}`).join("\n\n")
+    : `   Diseña exactamente 4 casos reflexivos situados en la vida cotidiana que validen de forma progresiva los criterios de logro de [${opts.indicadorCodigo}] ${opts.indicadorNombre} enfocado en ${opts.saberConceptual}.`;
 
   const valoresTxt = opts.valoresTransversalesMEP && opts.valoresTransversalesMEP.length > 0
     ? opts.valoresTransversalesMEP.join(", ")
@@ -121,6 +121,10 @@ Crea un archivo HTML ÚNICO (.html) completamente autónomo (Single-File: HTML +
 • Saber conceptual (saber): ${opts.saberConceptual} - ${opts.saberTitulo}
 • Saber procedimental (saber hacer): ${opts.saberProcedimental || "Aplica, diseña y resuelve problemas"}
 • Saber actitudinal (saber ser): ${opts.saberActitudinal || "Gusto por la precisión y perseverancia ante el error"}
+• Rúbrica oficial esperada:
+  - Nivel inicial: ${opts.rubricaCotidiano?.inicial || "En acompañamiento"}
+  - Nivel intermedio: ${opts.rubricaCotidiano?.intermedio || "En desarrollo"}
+  - Nivel avanzado: ${opts.rubricaCotidiano?.avanzado || "Consolidado"}
 
 ============================================================
 🎮 DINÁMICA DE GAMIFICACIÓN Y VÍNCULO EMOCIONAL
@@ -134,36 +138,35 @@ Crea un archivo HTML ÚNICO (.html) completamente autónomo (Single-File: HTML +
 • Contexto del hogar y vida cotidiana: ${opts.elementosContextoEstudiantil || "Vínculo con situaciones de la vida real, comunidad escolar y entorno familiar."}
 • Ejes transversales y valores formativos: ${valoresTxt}
 • Infraestructura y recursos tecnológicos del aula: ${opts.recursoTecnologicoAula || "Dispositivos móviles / Laboratorio de informática con o sin internet"}
+• Webhook Google Apps Script para telemetría: ${opts.urlGoogleScript || "Configurado dinámicamente"}
 ${neeInfo}
 
 ============================================================
-🎯 ESTRUCTURA PEDAGÓGICA (4 FASES INTEGRADAS)
+🎯 ESTRUCTURA PEDAGÓGICA MANDATORIA (4 FASES INTEGRADAS)
 ============================================================
 1. IDENTIFICACIÓN INICIAL (FASE 0):
-   - Formulario de entrada donde el estudiante escribe su nombre completo y selecciona su sección (${opts.seccionesDisponibles ? opts.seccionesDisponibles.join(", ") : "7-1, 7-2, 8-1, 9-1"}).
+   - Formulario de entrada: nombre completo del estudiante y selección de sección (${opts.seccionesDisponibles ? opts.seccionesDisponibles.join(", ") : "7-1, 7-2, 8-1, 9-1"}).
 
-2. FASE 1 (APRENDER - Saber):
+2. FASE 1 (APRENDER - Saber conceptual):
    - Explicación clara, amigable y visual de los conceptos fundamentales que sustentan este indicador: ${opts.saberConceptual}.
    - Apoyo visual interactivo (diagramas SVG, tarjetas conceptuales o glosario ilustrado).
+   - Inclusión explícita de saber procedimental y saber actitudinal.
 
-3. FASE 2 (COMPRENDER - Saber hacer inicial):
-   - Validación inmediata del aprendizaje mediante reactivos interactivos situados en el contexto estudiantil.
+3. FASE 2 (COMPRENDER - 4 Casos situacionales basados en el indicador):
+   - OBLIGATORIO: Diseña exactamente al menos 4 casos/reactivos situados en la vida real, el hogar o la comunidad escolar.
+   - Cada caso debe evaluar de forma progresiva lo deseable en el indicador [${opts.indicadorCodigo}] ${opts.indicadorNombre} (desde el criterio inicial hasta el avanzado).
+   - Opciones múltiples (A, B, C) con retroalimentación formativa profunda para aciertos y desaciertos, y sonido procedural Web Audio API.
 ${preguntasTxt}
 
-4. FASE 3 (SIMULACIÓN INTERACTIVA & GAMIFICACIÓN - Aplicación práctica):
-   - Motor interactivo totalmente adaptado al arquetipo "${opts.mecanica}" y a la naturaleza técnica de este indicador:
-     * Si es estilo Sandbox/Minecraft: recolección de piezas/bloques y crafteo de la solución lógica/circuito.
-     * Si es estilo Obby/Roblox: progreso por salas o checkpoints con puertas lógicas que se abren al acertar.
-     * Si es estilo Among Us/Anomalías: detector de fallos/bugs ocultos en la red, base de datos o algoritmo.
-     * Si es estilo Cyber-RPG: turnos de acción donde el conocimiento técnico desbloquea poderes y defensas.
-     * Si es simulador de laboratorio: sliders, multímetro/osciloscopio y mediciones en tiempo real.
-     * Si es quiz arcade: multiplicador de racha, efectos de confeti y retroalimentación inmediata.
+4. FASE 3 (SIMULACIÓN INTERACTIVA & GAMIFICACIÓN - Propuesta original sin recetas prefabricadas):
+   - OBLIGATORIO: A partir del análisis profundo de la intención de logro del indicador [${opts.indicadorCodigo}] y la mecánica "${opts.mecanica}", diseña un simulador interactivo ORIGINAL y 100% FUNCIONAL en JavaScript/Canvas a 60 FPS o DOM interactivo.
+   - No uses recetas genéricas: modela con exactitud las variables, parámetros, estados y retroalimentación que el estudiante debe manipular para experimentar empíricamente el saber tecnológico y resolver el desafío.
    - Retroalimentación sonora procedural inmediata (Web Audio API nativa sin archivos externos).
 
-5. FASE 4 (VALORACIÓN FORMATIVA - Evaluación y telemetría):
+5. FASE 4 (VALORACIÓN FORMATIVA & TELEMETRÍA):
    - Rúbrica formativa según el nivel de logro alcanzado (Inicial: ${opts.rubricaCotidiano?.inicial || "En acompañamiento"}, Intermedio: ${opts.rubricaCotidiano?.intermedio || "En desarrollo"}, Avanzado: ${opts.rubricaCotidiano?.avanzado || "Consolidado"}).
    - Generación de comprobante con código único y token de integridad SHA-256.
-   - Envío de telemetría automática mediante Webhook a Google Sheets (mode: 'no-cors') y botón de Código QR offline de respaldo.
+   - Envío de telemetría automática mediante Webhook a Google Apps Script / Google Sheets (mode: 'no-cors') y botón de Código QR offline de respaldo.
 
 ============================================================
 🛡️ REQUISITOS TÉCNICOS BLINDADOS
@@ -176,10 +179,10 @@ ${preguntasTxt}
 }
 
 /**
- * Genera preguntas conceptuales dinámicas y adaptadas al saber e indicador seleccionado
+ * Genera al menos 4 preguntas/casos conceptuales dinámicos y adaptados al saber e indicador seleccionado
  */
 function obtenerPreguntasContextuales(opts: OpcionesGeneracionWebApp): PreguntaComprender[] {
-  if (opts.preguntasComprender && opts.preguntasComprender.length >= 2) {
+  if (opts.preguntasComprender && opts.preguntasComprender.length >= 4) {
     return opts.preguntasComprender;
   }
 
@@ -189,34 +192,44 @@ function obtenerPreguntasContextuales(opts: OpcionesGeneracionWebApp): PreguntaC
   if (sc.includes("algoritmo") || sc.includes("secuencia") || sc.includes("pasos") || ind.includes("algoritmo")) {
     return [
       {
-        pregunta: `¿Cuál es la característica principal de un algoritmo en ${opts.saberConceptual}?`,
+        pregunta: `Caso 1: En un desafío de programación escolar, se requiere que un robot limpie un sector del laboratorio siguiendo una ruta exacta. ¿Cuál es el propósito fundamental del algoritmo en esta situación?`,
         opciones: [
-          "Es una secuencia ordenada, finita y precisa de instrucciones para resolver un problema.",
-          "Es un conjunto de datos desordenados que se procesan al azar sin un objetivo claro.",
-          "Es un dispositivo físico que se conecta únicamente a una toma de corriente.",
+          "Definir una secuencia ordenada, finita y precisa de pasos para que el robot cumpla la meta sin extraviarse.",
+          "Ejecutar movimientos aleatorios esperando que por suerte limpie todo el piso.",
+          "Apagar el sistema para evitar que el robot consuma energía eléctrica.",
         ],
         correcta: 0,
-        explicacion: "Un algoritmo requiere orden lógico, pasos precisos y un inicio y fin definidos para garantizar el resultado esperado.",
+        explicacion: "Un algoritmo garantiza que cada instrucción se ejecute en el momento exacto para alcanzar el resultado esperado.",
       },
       {
-        pregunta: `Al aplicar la práctica "${opts.saberProcedimental || 'Modulariza y depura'}", ¿qué acción es fundamental?`,
+        pregunta: `Caso 2: Al probar la secuencia de pasos, notas que el robot gira a la izquierda en vez de avanzar, chocando con un obstáculo. Aplicando "${opts.saberProcedimental || 'Modulariza y depura'}", ¿qué acción debes realizar?`,
         opciones: [
-          "Ignorar los errores y reiniciar todo el proyecto desde cero sin revisar.",
-          "Probar el algoritmo paso a paso, identificar fallos lógicos y corregirlos sistemáticamente.",
-          "Copiar instrucciones sin comprender el propósito de cada bloque.",
+          "Borrar todo el proyecto y abandonar la actividad.",
+          "Rastrear la secuencia paso a paso, aislar la instrucción errónea de giro y corregirla por 'avanzar'.",
+          "Repetir la ejecución sin cambiar nada esperando un resultado diferente.",
         ],
         correcta: 1,
-        explicacion: "La depuración y modularización permiten identificar con exactitud en qué punto de la secuencia ocurre un comportamiento no deseado.",
+        explicacion: "La depuración sistemática permite localizar y enmendar el error lógico específico en la secuencia.",
       },
       {
-        pregunta: `En una situación cotidiana vinculada con ${opts.saberConceptual}, ¿por qué es importante el orden de las instrucciones?`,
+        pregunta: `Caso 3: Si intercambias el orden de dos instrucciones intermedias en un algoritmo secuencial, ¿qué impacto tiene en el resultado?`,
         opciones: [
-          "Porque cambiar el orden altera el resultado final o puede impedir que el proceso funcione.",
-          "Porque el orden no tiene ninguna influencia en los sistemas digitales ni en la lógica.",
-          "Porque las computadoras ejecutan siempre las instrucciones de atrás hacia adelante.",
+          "Altera el flujo de ejecución y puede provocar que el objetivo no se cumpla o cause un fallo lógico.",
+          "No tiene ningún impacto porque las computadoras ordenan automáticamente las intenciones del usuario.",
+          "Hace que el procesador duplique su velocidad instantáneamente.",
         ],
         correcta: 0,
-        explicacion: "El orden secuencial determina la lógica de ejecución; una instrucción ejecutada fuera de tiempo produce resultados incorrectos.",
+        explicacion: "El orden secuencial es la base de la algoritmia; cambiar el orden transforma directamente el comportamiento.",
+      },
+      {
+        pregunta: `Caso 4: Frente al criterio avanzado del indicador [${opts.indicadorCodigo}], ¿cómo se demuestra la actitud "${opts.saberActitudinal || 'Gusto por la precisión'}"?`,
+        opciones: [
+          "Verificando meticulosamente cada condición límite y optimizando la solución para que sea clara y eficiente.",
+          "Entregando la primera solución sin probar si funciona en todos los casos.",
+          "Ocultando los fallos para que nadie note los errores de programación.",
+        ],
+        correcta: 0,
+        explicacion: "El rigor y la minuciosidad en los detalles aseguran soluciones tecnológicas confiables y de alta calidad.",
       },
     ];
   }
@@ -224,34 +237,44 @@ function obtenerPreguntasContextuales(opts: OpcionesGeneracionWebApp): PreguntaC
   if (sc.includes("variable") || sc.includes("dato") || sc.includes("tipo") || ind.includes("variable")) {
     return [
       {
-        pregunta: `¿Qué función cumple una variable en el contexto de ${opts.saberConceptual}?`,
+        pregunta: `Caso 1: En una aplicación escolar para registrar la asistencia diaria, ¿por qué es indispensable utilizar una variable para el conteo de presentes?`,
         opciones: [
-          "Almacena y permite modificar un valor o dato durante la ejecución de un programa.",
-          "Bloquea permanentemente la memoria para que ningún dato pueda actualizarse.",
-          "Es un cable físico que conecta la pantalla con el teclado.",
+          "Porque el número de presentes cambia con cada estudiante que ingresa y la variable permite almacenar y actualizar dicho valor.",
+          "Porque las variables impiden que los datos se modifiquen durante el día escolar.",
+          "Porque las variables son archivos de música que ambientan la clase.",
         ],
         correcta: 0,
-        explicacion: "Las variables son espacios con nombre asignado donde se guardan datos que pueden transformarse durante el flujo.",
+        explicacion: "Una variable es un contenedor en memoria cuyo valor puede transformarse a lo largo de la ejecución.",
       },
       {
-        pregunta: `Si necesitas guardar el puntaje de un estudiante en un videojuego educativo, ¿qué tipo de dato es el más adecuado?`,
+        pregunta: `Caso 2: Si el sistema necesita almacenar el nombre completo de cada estudiante y su promedio con decimales, ¿qué tipos de datos corresponden respectivamente?`,
         opciones: [
-          "Texto o cadena de caracteres aleatoria sin valor cuantitativo.",
-          "Numérico (entero o decimal) para poder sumar, restar y comparar valores.",
-          "Booleano que solo guarde si el juego está apagado.",
-        ],
-        correcta: 1,
-        explicacion: "Los puntajes requieren operaciones aritméticas y comparaciones, por lo que el tipo numérico es el idóneo.",
-      },
-      {
-        pregunta: `¿Qué sucede cuando se actualiza el valor de una variable existente?`,
-        opciones: [
-          "El valor anterior es reemplazado por el nuevo valor en la posición de memoria.",
-          "El sistema se bloquea y requiere reiniciar el computador.",
-          "Se crean automáticamente diez archivos de texto en el disco duro.",
+          "Texto (String) para el nombre y Numérico decimal (Float) para el promedio.",
+          "Booleano para el nombre y Archivo comprimido para el promedio.",
+          "Numérico entero para ambos datos sin distinción.",
         ],
         correcta: 0,
-        explicacion: "La asignación actualiza el contenido de la variable manteniendo su identificador.",
+        explicacion: "Elegir el tipo de dato adecuado garantiza que las operaciones (como calcular promedios) se realicen correctamente.",
+      },
+      {
+        pregunta: `Caso 3: Durante la ejecución de un juego educativo, un estudiante responde un reto y el programa ejecuta: 'puntaje = puntaje + 10'. ¿Qué ocurre en la memoria?`,
+        opciones: [
+          "Se recupera el valor anterior de la variable, se le suman 10 unidades y el nuevo total sobrescribe el valor previo.",
+          "Se borra permanentemente la variable del sistema.",
+          "Se crea una nueva pantalla en el teléfono del usuario.",
+        ],
+        correcta: 0,
+        explicacion: "La reasignación actualiza el estado interno de la variable preservando el identificador del dato.",
+      },
+      {
+        pregunta: `Caso 4: Al analizar los criterios de logro de [${opts.indicadorCodigo}], ¿cuál es un error procedimental frecuente al manipular variables?`,
+        opciones: [
+          "Intentar realizar operaciones matemáticas con variables declaradas como texto no numérico.",
+          "Asignar nombres descriptivos y claros a cada variable.",
+          "Inicializar las variables con valores conocidos antes de usarlas.",
+        ],
+        correcta: 0,
+        explicacion: "La incompatibilidad de tipos es un fallo común que se previene verificando el tipo de dato manipulado.",
       },
     ];
   }
@@ -259,34 +282,44 @@ function obtenerPreguntasContextuales(opts: OpcionesGeneracionWebApp): PreguntaC
   if (sc.includes("condicional") || sc.includes("decision") || sc.includes("si") || ind.includes("condicional")) {
     return [
       {
-        pregunta: `¿Cómo opera una estructura condicional (Si / Si No) en ${opts.saberConceptual}?`,
+        pregunta: `Caso 1: En un sistema de riego automatizado para la huerta escolar, si la humedad del suelo es menor al 30%, se debe activar la bomba de agua. ¿Qué estructura lógica permite implementar esta decisión?`,
         opciones: [
-          "Evalúa una condición lógica: si es verdadera ejecuta una acción, si es falsa ejecuta otra.",
-          "Ejecuta todas las acciones al mismo tiempo sin importar si la condición se cumple.",
-          "Detiene permanentemente el procesador sin dar respuesta.",
+          "Una estructura condicional 'Si (humedad < 30) Entonces ActivarBomba()'.",
+          "Una lista de reproducción de audio sin condiciones.",
+          "Un cable de red desconectado de la corriente.",
         ],
         correcta: 0,
-        explicacion: "Las estructuras condicionales permiten que el sistema tome decisiones basadas en comparaciones lógicas.",
+        explicacion: "Las estructuras condicionales permiten ejecutar bifurcaciones lógicas según el resultado de una comparación booleana.",
       },
       {
-        pregunta: `Si un sensor de temperatura detecta más de 30°C y activa un ventilador, ¿cuál es la condición evaluada?`,
+        pregunta: `Caso 2: Si la condición 'humedad < 30' resulta ser FALSA porque el suelo está húmedo, ¿qué acción debe realizar el bloque 'Si No'?`,
         opciones: [
-          "El color del ventilador instalado.",
-          "La comparación lógica: ¿Temperatura > 30°C?",
-          "El tiempo transcurrido desde que se encendió la computadora.",
-        ],
-        correcta: 1,
-        explicacion: "La condición es una expresión booleana que compara la lectura del sensor contra el umbral establecido.",
-      },
-      {
-        pregunta: `¿Qué valor lógico devuelve una condición evaluada en un sistema digital?`,
-        opciones: [
-          "Verdadero (True) o Falso (False).",
-          "Una lista de números aleatorios sin sentido.",
-          "Un archivo de video en alta definición.",
+          "Mantener la bomba apagada para ahorrar agua y proteger el cultivo.",
+          "Inundar la huerta con agua hirviendo.",
+          "Apagar la pantalla de todas las computadoras del colegio.",
         ],
         correcta: 0,
-        explicacion: "Las condiciones booleanas se evalúan estrictamente como Verdadero o Falso.",
+        explicacion: "La rama 'Si No' gestiona la alternativa segura cuando la condición principal no se cumple.",
+      },
+      {
+        pregunta: `Caso 3: ¿Qué resultado genera la evaluación de una condición lógica en cualquier sistema computacional?`,
+        opciones: [
+          "Únicamente un valor booleano: Verdadero (True) o Falso (False).",
+          "Un número entero aleatorio entre 1 y 1000.",
+          "Una imagen fotográfica del sensor.",
+        ],
+        correcta: 0,
+        explicacion: "Las expresiones de comparación lógica se reducen estrictamente a Verdadero o Falso.",
+      },
+      {
+        pregunta: `Caso 4: Al depurar un programa con múltiples condicionales anidados, ¿qué buena práctica asegura la comprensión del código?`,
+        opciones: [
+          "Modularizar las condiciones, usar sangría (indentación) adecuada y probar cada caso posible.",
+          "Escribir todas las condiciones en una sola línea sin espacios ni comentarios.",
+          "Eliminar todas las comprobaciones de seguridad para que el programa sea más corto.",
+        ],
+        correcta: 0,
+        explicacion: "La claridad estructural y la prueba exhaustiva de cada rama evitan comportamientos inesperados.",
       },
     ];
   }
@@ -294,139 +327,89 @@ function obtenerPreguntasContextuales(opts: OpcionesGeneracionWebApp): PreguntaC
   if (sc.includes("seguridad") || sc.includes("ciber") || sc.includes("privacidad") || sc.includes("ética") || ind.includes("seguridad")) {
     return [
       {
-        pregunta: `¿Cuál es una práctica responsable y segura relacionada con ${opts.saberConceptual}?`,
+        pregunta: `Caso 1: Recibes un mensaje en redes sociales que dice: '¡Urgente! Tu cuenta escolar será suspendida en 5 minutos a menos que ingreses a este enlace y confirmes tu contraseña'. ¿Cómo debes actuar?`,
         opciones: [
-          "Utilizar contraseñas robustas, únicas y nunca compartir credenciales con personas desconocidas.",
-          "Hacer clic en cualquier enlace sospechoso que prometa premios inmediatos.",
-          "Descargar programas de fuentes desconocidas e ignorar las advertencias del navegador.",
+          "Identificar que se trata de un intento de Phishing (ingeniería social), no hacer clic en el enlace y reportarlo al docente.",
+          "Ingresar inmediatamente tu contraseña y la de tus familiares para no perder la cuenta.",
+          "Reenviar el mensaje a todos tus compañeros de clase.",
         ],
         correcta: 0,
-        explicacion: "La protección de credenciales y la cautela ante enlaces sospechosos previenen accesos no autorizados y filtraciones.",
+        explicacion: "El phishing utiliza la urgencia y el miedo para engañar; nunca se deben entregar credenciales a enlaces no verificados.",
       },
       {
-        pregunta: `Al detectar un mensaje sospechoso que solicita contraseñas o datos personales urgentes, ¿qué técnica se está intentando?`,
+        pregunta: `Caso 2: Para proteger tus evidencias académicas y datos personales, ¿cuál de las siguientes es una contraseña robusta y segura?`,
         opciones: [
-          "Ingeniería social o suplantación de identidad (Phishing).",
-          "Actualización automática y segura del sistema operativo.",
-          "Optimización de la velocidad de la memoria RAM.",
+          "Una combinación de más de 12 caracteres con letras mayúsculas, minúsculas, números y símbolos (ej: 'T3cn0!2026#F0rm').",
+          "Tu fecha de nacimiento o tu nombre seguido de '123'.",
+          "La palabra 'password' repetida dos veces.",
         ],
         correcta: 0,
-        explicacion: "El phishing busca engañar a las personas haciéndose pasar por entidades de confianza para obtener datos confidenciales.",
+        explicacion: "La longitud y la variedad de caracteres previenen ataques de fuerza bruta y adivinación automatizada.",
       },
       {
-        pregunta: `¿Cómo contribuye el respeto y la ética digital al entorno escolar y comunitario?`,
+        pregunta: `Caso 3: Un compañero encuentra la sesión abierta de otro estudiante en el laboratorio y publica un mensaje ofensivo en su nombre. ¿Qué valor transversal y principio ético se ha vulnerado?`,
         opciones: [
-          "Crea espacios digitales seguros, previene el ciberacoso y fomenta la convivencia armónica.",
-          "Hace que los dispositivos funcionen más rápido sin necesidad de internet.",
-          "Permite copiar tareas de otros compañeros sin su consentimiento.",
+          "El respeto a la privacidad, la honestidad académica y la sana convivencia digital.",
+          "La velocidad de transmisión de datos en la tarjeta de red.",
+          "La capacidad de almacenamiento del disco duro.",
         ],
         correcta: 0,
-        explicacion: "La ética digital y la empatía garantizan una convivencia pacífica, solidaria y constructiva en entornos virtuales.",
+        explicacion: "La suplantación de identidad y el acoso digital dañan la confianza comunitaria y violan las normas de convivencia.",
+      },
+      {
+        pregunta: `Caso 4: Al analizar la huella digital en internet según el indicador [${opts.indicadorCodigo}], ¿qué reflexión es fundamental?`,
+        opciones: [
+          "Toda publicación o interacción en línea deja un rastro persistente que impacta nuestra identidad digital presente y futura.",
+          "Nada de lo que se publica en internet queda registrado después de 24 horas.",
+          "La huella digital solo aplica para personas que tienen computadoras muy caras.",
+        ],
+        correcta: 0,
+        explicacion: "Gestionar conscientemente nuestra presencia digital protege nuestra reputación y seguridad a largo plazo.",
       },
     ];
   }
 
-  if (sc.includes("hardware") || sc.includes("computadora") || sc.includes("periférico") || sc.includes("componente") || ind.includes("hardware")) {
-    return [
-      {
-        pregunta: `¿Qué diferencia al hardware del software en el estudio de ${opts.saberConceptual}?`,
-        opciones: [
-          "El hardware es la parte física y tangible del equipo; el software son los programas e instrucciones lógicas.",
-          "El hardware son los programas de internet y el software son los cables y tornillos.",
-          "No existe ninguna diferencia, ambos términos significan exactamente lo mismo.",
-        ],
-        correcta: 0,
-        explicacion: "El hardware comprende los componentes físicos (CPU, memoria, periféricos), mientras que el software es el conjunto lógico de instrucciones.",
-      },
-      {
-        pregunta: `¿Cuál de los siguientes es un periférico de entrada fundamental para interactuar con la computadora?`,
-        opciones: [
-          "El teclado o el ratón (mouse).",
-          "La impresora láser de papel.",
-          "Los altavoces o parlantes de sonido.",
-        ],
-        correcta: 0,
-        explicacion: "Los periféricos de entrada capturan datos del usuario y los envían a la unidad central para su procesamiento.",
-      },
-      {
-        pregunta: `¿Qué cuidado preventivo es indispensable para prolongar la vida útil del hardware?`,
-        opciones: [
-          "Mantener el equipo en un lugar ventilado, libre de polvo y realizar apagados seguros.",
-          "Consumir bebidas y alimentos directamente sobre el teclado y la torre.",
-          "Desconectar el cable de corriente bruscamente mientras el sistema está guardando archivos.",
-        ],
-        correcta: 0,
-        explicacion: "La ventilación adecuada y el apagado correcto evitan daños térmicos y fallos en el almacenamiento del sistema.",
-      },
-    ];
-  }
-
-  if (sc.includes("red") || sc.includes("internet") || sc.includes("comunicación") || sc.includes("ip") || ind.includes("red")) {
-    return [
-      {
-        pregunta: `¿Cuál es el rol de una red informática en el contexto de ${opts.saberConceptual}?`,
-        opciones: [
-          "Interconectar dispositivos para compartir recursos, transferir datos y comunicarse eficientemente.",
-          "Impedir que las computadoras se comuniquen entre sí para aislar los datos.",
-          "Convertir documentos impresos en papel en energía solar.",
-        ],
-        correcta: 0,
-        explicacion: "Las redes posibilitan la transmisión ágil de paquetes de datos y el acceso compartido a servicios y recursos digitales.",
-      },
-      {
-        pregunta: `¿Qué elemento identifica de manera única a un dispositivo dentro de una red digital?`,
-        opciones: [
-          "La dirección IP o dirección lógica de red.",
-          "El color de la carcasa externa del computador.",
-          "El fondo de pantalla seleccionado por el usuario.",
-        ],
-        correcta: 0,
-        explicacion: "La dirección IP actúa como un identificador único que permite enrutar y entregar paquetes de información al destino exacto.",
-      },
-      {
-        pregunta: `¿Por qué viaja la información fragmentada en 'paquetes de datos' a través de internet?`,
-        opciones: [
-          "Para optimizar el ancho de banda, permitir rutas alternativas y reconstruir la información con integridad en el destino.",
-          "Porque los cables solo permiten enviar una letra por hora.",
-          "Para borrar los archivos automáticamente si hay congestión.",
-        ],
-        correcta: 0,
-        explicacion: "La conmutación de paquetes permite aprovechar la red de manera dinámica y resistente a fallos puntuales de ruta.",
-      },
-    ];
-  }
-
-  // Fallback adaptado con el nombre exacto del saber
+  // Fallback adaptado con 4 casos completos basados en el indicador
   return [
     {
-      pregunta: `¿Cuál es el propósito esencial al aplicar el saber conceptual "${opts.saberConceptual}" en el indicador [${opts.indicadorCodigo}]?`,
+      pregunta: `Caso 1: En una actividad vinculada con "${opts.saberConceptual}", ¿cuál es el objetivo central al abordar el indicador [${opts.indicadorCodigo}]?`,
       opciones: [
-        `Comprender los principios de ${opts.saberConceptual} para aplicarlos con orden, precisión y sentido crítico en retos tecnológicos.`,
-        "Realizar acciones aleatorias sin reflexionar sobre el procedimiento ni el resultado.",
-        "Memorizar definiciones sin entender su utilidad práctica en la vida cotidiana.",
+        `Comprender los principios de ${opts.saberConceptual} para resolver situaciones cotidianas con orden y sentido crítico.`,
+        "Memorizar conceptos sin entender cómo se aplican en la práctica.",
+        "Realizar acciones desordenadas sin medir las consecuencias.",
       ],
       correcta: 0,
-      explicacion: `La asimilación de ${opts.saberConceptual} permite resolver situaciones problema aplicando ${opts.saberProcedimental || 'métodos estructurados'}.`,
+      explicacion: `La comprensión del saber conceptual ${opts.saberConceptual} es la base para desarrollar soluciones tecnológicas eficientes.`,
     },
     {
-      pregunta: `Al desarrollar el indicador "${opts.indicadorNombre}", ¿qué actitud formativa fortalece el aprendizaje?`,
+      pregunta: `Caso 2: Al aplicar el saber procedimental "${opts.saberProcedimental || 'Aplica y formula'}", ¿qué paso demuestra avance hacia el nivel intermedio?`,
       opciones: [
-        `Demostrar ${opts.saberActitudinal || 'gusto por la precisión y aprender del error'}, perseverando hasta alcanzar la solución óptima.`,
-        "Abandonar el reto al primer fallo sin analizar la causa del error.",
-        "Competir destructivamente ignorando las normas de convivencia del aula.",
+        "Ejecutar el procedimiento siguiendo pautas guiadas, corrigiendo errores con apoyo reflexivo.",
+        "Abandonar la tarea apenas surge el primer obstáculo.",
+        "Copiar el resultado de otro compañero sin analizar el proceso.",
       ],
       correcta: 0,
-      explicacion: "El análisis reflexivo de los errores y la constancia transforman los desaciertos en oportunidades de consolidación pedagógica.",
+      explicacion: "El nivel intermedio consolida la aplicación estructurada de métodos y la autorregulación ante los retos.",
     },
     {
-      pregunta: `¿Cómo se vincula el saber conceptual "${opts.saberConceptual}" con el entorno cotidiano y comunitario?`,
+      pregunta: `Caso 3: Para alcanzar el nivel avanzado (Consolidado) en [${opts.indicadorCodigo}] ${opts.indicadorNombre}, ¿qué evidencia es necesaria?`,
       opciones: [
-        "Permite tomar decisiones informadas, seguras y eficientes frente a las herramientas tecnológicas del entorno.",
-        "No tiene ninguna relación con las actividades humanas ni con la sociedad.",
-        "Solo es útil dentro de laboratorios cerrados y sin conexión con el mundo real.",
+        `Demostrar autonomía, precisión técnica y capacidad de transferir ${opts.saberConceptual} a nuevos contextos.`,
+        "Requerir supervisión permanente para realizar cada paso elemental.",
+        "Identificar nociones básicas sin lograr aplicarlas en el simulador.",
       ],
       correcta: 0,
-      explicacion: "El conocimiento tecnológico adquiere valor formativo cuando transforma positivamente la interacción del estudiante con su entorno.",
+      explicacion: "El logro consolidado se caracteriza por la autonomía, la precisión y la transferencia reflexiva del conocimiento.",
+    },
+    {
+      pregunta: `Caso 4: ¿De qué manera la actitud formativa "${opts.saberActitudinal || 'Gusto por la precisión'}" fortalece el aprendizaje en esta actividad?`,
+      opciones: [
+        "Impulsa a ser meticuloso con los detalles y a convertir los desaciertos en oportunidades de mejora continua.",
+        "Hace que el estudiante compita deslealmente con sus compañeros.",
+        "Fomenta la prisa descuidando la calidad del trabajo.",
+      ],
+      correcta: 0,
+      explicacion: "Aprender del error y buscar la exactitud consolidan competencias tecnológicas sólidas para la vida.",
     },
   ];
 }
