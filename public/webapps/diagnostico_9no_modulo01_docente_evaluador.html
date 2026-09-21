@@ -588,43 +588,58 @@
     </div>
 
     <!-- ==================================================================== -->
-    <!-- VISTA 2: OBSERVACIÓN DOCENTE (PSICOMOTORA & SOCIOAFECTIVA POR ALUMNO)-->
+    <!-- VISTA 2: OBSERVACIÓN DOCENTE (MATRIZ HORIZONTAL POR ÁREAS)           -->
     <!-- ==================================================================== -->
     <div id="vista2" class="card" style="display: none;">
       
       <!-- TOOLBAR SUPERIOR DE OBSERVACIÓN DOCENTE -->
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
         <div>
           <span class="mep-badge" style="background: #1e3a8a; border-color: #38bdf8; color: #93c5fd;">
             Instrumento de Observación Docente • Evaluación 100% Formativa
           </span>
           <h2 style="font-size: 1.25rem; color: #f8fafc; font-weight: 900; margin-top: 2px;">
-            2. Lista de Estudiantes & Observación Psicomotora y Socioafectiva
+            2. Matriz de Observación en Vivo por Áreas (Formato Hoja de Cálculo)
           </h2>
           <p style="font-size: 11.5px; color: #94a3b8; margin-top: 2px;">
-            Lista completa de la sección. El nombre se ubica a la izquierda; use la flecha hacia abajo (acordeón) para desplegar y registrar horizontalmente las áreas psicomotora y socioafectiva de cada estudiante.
+            Los estudiantes se listan verticalmente a la izquierda. Seleccione el área arriba para desplegar las columnas de conductas y marcar los niveles formativos en un clic.
           </p>
         </div>
 
         <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
-          <button class="btn btn-outline" style="font-size: 11px; padding: 4px 10px;" onclick="expandirTodosEstudiantes(true)">
-            🔽 Expandir Todos
-          </button>
-          <button class="btn btn-outline" style="font-size: 11px; padding: 4px 10px;" onclick="expandirTodosEstudiantes(false)">
-            🔼 Colapsar Todos
-          </button>
-          <button class="btn btn-accent" style="font-size: 11px; padding: 4px 10px;" onclick="mostrarModalEscanerQR()">
+          <button class="btn btn-accent" style="font-size: 11px; padding: 5px 12px;" onclick="mostrarModalEscanerQR()">
             📷 Escanear QR Alumno
+          </button>
+          <button class="btn btn-secondary" style="font-size: 11px; padding: 5px 12px;" onclick="guardarTodoElGrupo()">
+            💾 Guardar Toda la Sección
           </button>
         </div>
       </div>
 
+      <!-- PESTAÑAS DE ÁREA SUPERIORES (ENCABEZADOS DE COLUMNA A1, B1, C1) -->
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px;">
+        <button type="button" id="tabAreaPsi" class="view-tab activa" onclick="cambiarAreaObservacion('psi')" style="padding: 10px 8px; font-size: 12px; border-color: #34d399; color: #34d399;">
+          <span style="font-size: 13px; font-weight: 900;">🖐️ 1. ÁREA PSICOMOTORA</span>
+          <span style="font-size: 10px; color: #94a3b8; font-weight: normal;">6 Conductas Reto «Conecta el Prototipo»</span>
+        </button>
+
+        <button type="button" id="tabAreaSoc" class="view-tab" onclick="cambiarAreaObservacion('soc')" style="padding: 10px 8px; font-size: 12px; border-color: #fbbf24; color: #fbbf24;">
+          <span style="font-size: 13px; font-weight: 900;">❤️ 2. ÁREA SOCIOAFECTIVA</span>
+          <span style="font-size: 10px; color: #94a3b8; font-weight: normal;">7 Conductas Actitudinales (Ser y Convivir)</span>
+        </button>
+
+        <button type="button" id="tabAreaCog" class="view-tab" onclick="cambiarAreaObservacion('cog')" style="padding: 10px 8px; font-size: 12px; border-color: #38bdf8; color: #38bdf8;">
+          <span style="font-size: 13px; font-weight: 900;">🧠 3. ÁREA COGNITIVA</span>
+          <span style="font-size: 10px; color: #94a3b8; font-weight: normal;">10 Indicadores de Logro (Sincronizado WebApp)</span>
+        </button>
+      </div>
+
       <!-- BARRA DE FILTRO Y BÚSQUEDA RÁPIDA -->
-      <div style="background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 10px 14px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+      <div style="background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 8px 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
         <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 260px;">
           <span style="font-size: 13px;">🔍</span>
-          <input type="text" id="inputBuscarEstudianteObs" placeholder="Buscar estudiante por nombre o apellido..." style="width: 100%; max-width: 320px; background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 6px 10px; color: white; font-size: 11.5px; outline: none;" oninput="renderizarObservacionDocente()">
-          <select id="filtroSeccionObs" style="background: #0f172a; border: 1px solid #334155; color: white; border-radius: 6px; padding: 6px 10px; font-size: 11.5px;" onchange="renderizarObservacionDocente()">
+          <input type="text" id="inputBuscarEstudianteObs" placeholder="Buscar estudiante por nombre o apellido..." style="width: 100%; max-width: 300px; background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 5px 8px; color: white; font-size: 11.5px; outline: none;" oninput="renderizarMatrizObservacion()">
+          <select id="filtroSeccionObs" style="background: #0f172a; border: 1px solid #334155; color: white; border-radius: 6px; padding: 5px 8px; font-size: 11.5px;" onchange="renderizarMatrizObservacion()">
             <option value="TODAS">Todas las Secciones</option>
             <option value="Sección 9-1">Sección 9-1</option>
             <option value="Sección 9-2">Sección 9-2</option>
@@ -632,18 +647,26 @@
           </select>
         </div>
 
-        <div style="display: flex; gap: 12px; font-size: 11.5px; color: #cbd5e1; align-items: center;">
-          <span>Total: <strong style="color: #38bdf8;" id="cntTotalObs">0</strong></span>
-          <span>•</span>
-          <span>Evaluados: <strong style="color: #34d399;" id="cntEvaluadosObs">0</strong></span>
-          <span>•</span>
-          <span>Pendientes: <strong style="color: #fbbf24;" id="cntPendientesObs">0</strong></span>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <button type="button" class="btn btn-outline" style="font-size: 10.5px; padding: 3px 8px; min-height: 26px;" id="btnMarcarTodoNivelA" onclick="marcarTodoGrupoNivelA()">
+            ⚡ Marcar Toda la Sección Nivel A
+          </button>
+          <div style="font-size: 11px; color: #cbd5e1; margin-left: 6px;">
+            Total: <strong style="color: #38bdf8;" id="cntTotalObs">0</strong> • Evaluados: <strong style="color: #34d399;" id="cntEvaluadosObs">0</strong>
+          </div>
         </div>
       </div>
 
-      <!-- CONTENEDOR DE TARJETAS DESPLEGABLES (ACORDEÓN) POR ESTUDIANTE -->
-      <div id="contenedorEstudiantesObservacion">
-        <!-- Inyectado dinámicamente por renderizarObservacionDocente() -->
+      <!-- CONTENEDOR DE TABLA/MATRIZ EN VIVO TIPO EXCEL -->
+      <div style="background: #0f172a; border: 1.5px solid #38bdf8; border-radius: 12px; padding: 12px; overflow-x: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+        <table class="custom-table" id="tablaMatrizObservacion" style="min-width: 900px; width: 100%;">
+          <thead id="theadMatrizObservacion">
+            <!-- Encabezados inyectados por JS según el área seleccionada -->
+          </thead>
+          <tbody id="tbodyMatrizObservacion">
+            <!-- Filas inyectadas por JS con los estudiantes y las celdas interactivas -->
+          </tbody>
+        </table>
       </div>
 
     </div>
@@ -869,10 +892,10 @@
 
     var estadoDocente = {
       vistaActual: 1,
+      areaActiva: 'psi', // 'psi' (Psicomotora), 'soc' (Socioafectiva), 'cog' (Cognitiva)
       estudiantes: [],
       estudianteActivoIdx: 0,
-      seccionFiltro: "TODAS",
-      tarjetasExpandidas: {}
+      seccionFiltro: "TODAS"
     };
 
     // Inicializar aplicativo
@@ -886,7 +909,7 @@
 
     function renderizarTodo() {
       renderizarListaEstudiantes();
-      renderizarObservacionDocente();
+      renderizarMatrizObservacion();
       renderizarConsolidadoGrupal();
     }
 
@@ -901,8 +924,33 @@
           else t.className = "view-tab";
         }
       }
-      if (num === 2) renderizarObservacionDocente();
+      if (num === 2) renderizarMatrizObservacion();
       if (num === 3) renderizarConsolidadoGrupal();
+    }
+
+    function cambiarAreaObservacion(area) {
+      estadoDocente.areaActiva = area;
+      var tabs = {
+        psi: document.getElementById("tabAreaPsi"),
+        soc: document.getElementById("tabAreaSoc"),
+        cog: document.getElementById("tabAreaCog")
+      };
+
+      for (var k in tabs) {
+        if (tabs[k]) {
+          if (k === area) tabs[k].className = "view-tab activa";
+          else tabs[k].className = "view-tab";
+        }
+      }
+
+      var btnA = document.getElementById("btnMarcarTodoNivelA");
+      if (btnA) {
+        if (area === 'psi') btnA.innerText = "⚡ Marcar Toda la Sección Psicomotora en Nivel A";
+        else if (area === 'soc') btnA.innerText = "⚡ Marcar Toda la Sección Socioafectiva en Nivel A";
+        else btnA.innerText = "⚡ Marcar Todo el Grupo Cognitivo en Logrado (L)";
+      }
+
+      renderizarMatrizObservacion();
     }
 
     function cargarSeccionDemo(sec) {
@@ -922,10 +970,6 @@
 
       var nuevos = demos[sec] || [];
       estadoDocente.estudiantes = nuevos;
-      estadoDocente.tarjetasExpandidas = {};
-      if (nuevos.length > 0) {
-        estadoDocente.tarjetasExpandidas[0] = true;
-      }
       guardarNominaEnStorage();
       renderizarTodo();
       alert("Nómina cargada con éxito: " + nuevos.length + " estudiantes de " + sec);
@@ -1013,7 +1057,6 @@
     function limpiarNomina() {
       if (confirm("¿Deseas vaciar la lista de estudiantes actual?")) {
         estadoDocente.estudiantes = [];
-        estadoDocente.tarjetasExpandidas = {};
         guardarNominaEnStorage();
         renderizarTodo();
       }
@@ -1043,29 +1086,31 @@
         var badgeClass = est.evaluado ? "badge-completado" : "badge-pendiente";
         var badgeText = est.evaluado ? "✅ Evaluado" : "🟡 Pendiente";
 
-        div.innerHTML = '<div><strong style="color: white; font-size: 12px;">' + est.nombre + '</strong><span style="font-size: 10.5px; color: #94a3b8; display: block;">' + est.seccion + (est.horaEntrega ? ' • ' + est.horaEntrega : '') + '</span></div><div style="display:flex; align-items:center; gap:8px;"><span class="badge-status ' + badgeClass + '">' + badgeText + '</span><button class="btn btn-outline" style="font-size:10px; padding:2px 6px; min-height:24px;" onclick="event.stopPropagation(); irAObservacionEstudiante(' + realIdx + ');">Observar ➔</button></div>';
+        div.innerHTML = '<div><strong style="color: white; font-size: 12px;">' + est.nombre + '</strong><span style="font-size: 10.5px; color: #94a3b8; display: block;">' + est.seccion + (est.horaEntrega ? ' • ' + est.horaEntrega : '') + '</span></div><div style="display:flex; align-items:center; gap:8px;"><span class="badge-status ' + badgeClass + '">' + badgeText + '</span><button class="btn btn-outline" style="font-size:10px; padding:2px 6px; min-height:24px;" onclick="event.stopPropagation(); irAObservacionEstudiante(' + realIdx + ');">Matriz ➔</button></div>';
         cont.appendChild(div);
       });
     }
 
     function irAObservacionEstudiante(realIdx) {
       estadoDocente.estudianteActivoIdx = realIdx;
-      estadoDocente.tarjetasExpandidas[realIdx] = true;
       cambiarVista(2);
       setTimeout(function() {
-        var el = document.getElementById("cardEstudiante_" + realIdx);
+        var el = document.getElementById("filaEstudianteMatriz_" + realIdx);
         if (el) {
-          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          el.style.backgroundColor = "rgba(56, 189, 248, 0.15)";
+          setTimeout(function(){ el.style.backgroundColor = ""; }, 1500);
         }
       }, 100);
     }
 
     /* ========================================================================
-       RENDERIZADO DE OBSERVACIÓN DOCENTE CON ACORDEÓN POR ESTUDIANTE (VISTA 2)
+       RENDERIZADO DE LA MATRIZ DE OBSERVACIÓN EN VIVO (HOJA DE CÁLCULO)
        ======================================================================== */
-    function renderizarObservacionDocente() {
-      var cont = document.getElementById("contenedorEstudiantesObservacion");
-      if (!cont) return;
+    function renderizarMatrizObservacion() {
+      var thead = document.getElementById("theadMatrizObservacion");
+      var tbody = document.getElementById("tbodyMatrizObservacion");
+      if (!thead || !tbody) return;
 
       var query = document.getElementById("inputBuscarEstudianteObs") ? document.getElementById("inputBuscarEstudianteObs").value.toLowerCase().trim() : "";
       var filtroSec = document.getElementById("filtroSeccionObs") ? document.getElementById("filtroSeccionObs").value : "TODAS";
@@ -1078,307 +1123,249 @@
 
       var total = filtrados.length;
       var evaluados = filtrados.filter(function(e) { return e.evaluado; }).length;
-      var pendientes = total - evaluados;
 
       if (document.getElementById("cntTotalObs")) document.getElementById("cntTotalObs").innerText = total;
       if (document.getElementById("cntEvaluadosObs")) document.getElementById("cntEvaluadosObs").innerText = evaluados;
-      if (document.getElementById("cntPendientesObs")) document.getElementById("cntPendientesObs").innerText = pendientes;
 
-      cont.innerHTML = "";
+      var area = estadoDocente.areaActiva || 'psi';
+
+      // 1. GENERAR ENCABEZADOS DE COLUMNAS (A1, B1, C1...)
+      if (area === 'psi') {
+        var thConductas = "";
+        var nombresPsiCortos = ["P1. Espacio", "P2. Precisión", "P3. Secuencia", "P4. Pines", "P5. Corrección", "P6. Autonomía"];
+        CONDUCTAS_PSICOMOTORAS.forEach(function(cd, j) {
+          thConductas += '<th style="text-align:center; min-width: 105px; font-size: 11px; cursor: pointer;" title="' + cd + ' (Clic para ver conducta completa)">' +
+            '<span style="color:#34d399; font-weight:800; display:block;">' + nombresPsiCortos[j] + '</span>' +
+            '<span style="font-size:9.5px; color:#94a3b8; font-weight:normal;">Escala A/B/C</span>' +
+          '</th>';
+        });
+
+        thead.innerHTML = '<tr style="background:#1e293b;">' +
+          '<th style="width: 220px; position: sticky; left: 0; background: #1e293b; z-index: 10;">Persona Estudiante (Nómina)</th>' +
+          thConductas +
+          '<th style="text-align:center; min-width: 120px;">Nivel Psicomotor</th>' +
+          '<th style="min-width: 200px;">Observación Pedagógica del Docente</th>' +
+          '<th style="text-align:center; width: 80px;">Guardar</th>' +
+        '</tr>';
+      } else if (area === 'soc') {
+        var thSoc = "";
+        var nombresSocCortos = ["S1. Precisión", "S2. Error/Aprender", "S3. Flexibilidad", "S4. Resiliencia", "S5. Comunicación", "S6. Colaboración", "S7. Ética/Uso"];
+        CONDUCTAS_SOCIOAFECTIVAS.forEach(function(sc, k) {
+          thSoc += '<th style="text-align:center; min-width: 105px; font-size: 11px; cursor: pointer;" title="' + sc + ' (Clic para ver conducta completa)">' +
+            '<span style="color:#fbbf24; font-weight:800; display:block;">' + nombresSocCortos[k] + '</span>' +
+            '<span style="font-size:9.5px; color:#94a3b8; font-weight:normal;">Escala A/B/C</span>' +
+          '</th>';
+        });
+
+        thead.innerHTML = '<tr style="background:#1e293b;">' +
+          '<th style="width: 220px; position: sticky; left: 0; background: #1e293b; z-index: 10;">Persona Estudiante (Nómina)</th>' +
+          thSoc +
+          '<th style="text-align:center; min-width: 120px;">Nivel Socioafectivo</th>' +
+          '<th style="min-width: 200px;">Observación Pedagógica del Docente</th>' +
+          '<th style="text-align:center; width: 80px;">Guardar</th>' +
+        '</tr>';
+      } else if (area === 'cog') {
+        var thCog = "";
+        var nombresCogCortos = ["Ap1. Control", "Ap2. Sensor", "Ap3. E-P-S", "Ap4. Fuente", "Ap5. Conv. E", "Ap6. Conduc.", "Ap7. Circuito", "Ap8. Ohm", "Ap9. Sim 2D", "Ap10. Reflex."];
+        for (var i = 0; i < 10; i++) {
+          thCog += '<th style="text-align:center; min-width: 75px; font-size: 11px;">' +
+            '<span style="color:#38bdf8; font-weight:800; display:block;">' + nombresCogCortos[i] + '</span>' +
+            '<span style="font-size:9.5px; color:#94a3b8; font-weight:normal;">L / ED / RA</span>' +
+          '</th>';
+        }
+
+        thead.innerHTML = '<tr style="background:#1e293b;">' +
+          '<th style="width: 220px; position: sticky; left: 0; background: #1e293b; z-index: 10;">Persona Estudiante (Nómina)</th>' +
+          thCog +
+          '<th style="text-align:center; min-width: 110px;">Total Logrados</th>' +
+          '<th style="text-align:center; min-width: 140px;">Sincronización WebApp</th>' +
+        '</tr>';
+      }
+
+      // 2. GENERAR FILAS POR CADA ESTUDIANTE EN FORMATO HOJA DE CÁLCULO
+      tbody.innerHTML = "";
 
       if (filtrados.length === 0) {
-        cont.innerHTML = '<div style="text-align: center; padding: 40px 20px; background: #1e293b; border-radius: 12px; color: #94a3b8;"><span style="font-size: 32px; display: block; margin-bottom: 8px;">🔍</span>No se encontraron estudiantes para los filtros seleccionados.<br><button class="btn btn-accent" style="margin-top: 12px;" onclick="document.getElementById(\'inputBuscarEstudianteObs\').value=\'\'; renderizarObservacionDocente();">Limpiar Filtros</button></div>';
+        tbody.innerHTML = '<tr><td colspan="12" style="text-align: center; padding: 30px; color: #94a3b8;">No se encontraron estudiantes para la sección seleccionada.</td></tr>';
         return;
       }
 
-      filtrados.forEach(function(est) {
+      filtrados.forEach(function(est, fIdx) {
         var realIdx = estadoDocente.estudiantes.indexOf(est);
-        var isExpanded = !!estadoDocente.tarjetasExpandidas[realIdx];
-
-        // Asegurar arrays de datos
         if (!est.psi) est.psi = Array(6).fill("A");
         if (!est.soc) est.soc = Array(7).fill("A");
-        if (!est.obsPsi) est.obsPsi = Array(6).fill("");
-        if (!est.obsSoc) est.obsSoc = Array(7).fill("");
         if (!est.cog) est.cog = Array(10).fill("L");
+        if (!est.obsPsi) est.obsPsi = Array(6).fill("");
+        if (!est.obsSoc) est.obsSoc = Array(7).fill("");
 
-        var numLogCog = est.cog.filter(function(x){ return x === "L"; }).length;
-        var porcCog = Math.round((numLogCog / 10) * 100);
+        var tr = document.createElement("tr");
+        tr.id = "filaEstudianteMatriz_" + realIdx;
 
-        var numPsiA = est.psi.filter(function(x){ return x === "A"; }).length;
-        var numSocA = est.soc.filter(function(x){ return x === "A"; }).length;
+        // Columna Izquierda Fija: Nombre del Estudiante
+        var tdEstudiante = '<td style="position: sticky; left: 0; background: #0f172a; z-index: 5; font-weight: 700; color: white;">' +
+          '<div style="font-size: 12px;">' + (realIdx + 1) + '. ' + est.nombre + '</div>' +
+          '<div style="font-size: 10px; color: #94a3b8; font-weight: normal; margin-top: 1px;">' +
+            '<span style="color: #38bdf8;">' + est.seccion + '</span>' +
+            (est.horaEntrega ? ' • <span style="color:#34d399;">🕒 ' + est.horaEntrega + '</span>' : ' • <span style="color:#fbbf24;">⏳ Pendiente</span>') +
+          '</div>' +
+        '</td>';
 
-        var card = document.createElement("div");
-        card.id = "cardEstudiante_" + realIdx;
-        card.className = "student-accordion-card" + (isExpanded ? " expanded" : "");
-
-        // ENCABEZADO HORIZONTAL DE LA TARJETA
-        var headerHtml = '<div class="student-accordion-header" onclick="toggleAcordeonEstudiante(' + realIdx + ')">' +
-          '<div class="student-info-left">' +
-            '<div class="student-avatar">🧑‍🎓</div>' +
-            '<div>' +
-              '<h3 class="student-name-title">' + (realIdx + 1) + '. ' + est.nombre + '</h3>' +
-              '<div class="student-meta-sub">' +
-                '<span style="color: #38bdf8; font-weight: 700;">' + est.seccion + '</span> • ' +
-                (est.horaEntrega ? '<span style="color: #34d399;">🕒 ' + (est.fechaEntrega || 'Hoy') + ' ' + est.horaEntrega + '</span>' : '<span style="color: #fbbf24;">⏳ Pendiente WebApp</span>') +
-                (est.esExtemporaneo ? ' • <span class="badge-status" style="background:#451a03; color:#fdba74; border:1px solid #f97316;">Extemporánea</span>' : '') +
+        if (area === 'psi') {
+          var celdasPsi = "";
+          CONDUCTAS_PSICOMOTORAS.forEach(function(cd, j) {
+            var valP = est.psi[j] || "A";
+            celdasPsi += '<td style="text-align:center; padding: 4px;">' +
+              '<div class="segmented-control" style="max-width: 100px; margin: 0 auto;">' +
+                '<button type="button" class="segmented-btn ' + (valP === 'A' ? 'active-a' : '') + '" onclick="setValPsiMatriz(' + realIdx + ', ' + j + ', \'A\')">A</button>' +
+                '<button type="button" class="segmented-btn ' + (valP === 'B' ? 'active-b' : '') + '" onclick="setValPsiMatriz(' + realIdx + ', ' + j + ', \'B\')">B</button>' +
+                '<button type="button" class="segmented-btn ' + (valP === 'C' ? 'active-c' : '') + '" onclick="setValPsiMatriz(' + realIdx + ', ' + j + ', \'C\')">C</button>' +
               '</div>' +
-            '</div>' +
-          '</div>' +
+            '</td>';
+          });
 
-          '<div class="student-badges-mid">' +
-            '<span class="badge-status" style="background: rgba(37, 99, 235, 0.2); color: #60a5fa; border: 1px solid #2563eb;" title="Área Cognoscitiva auto-sincronizada">' +
-              '🧠 ' + numLogCog + '/10 Cog (' + porcCog + '%)' +
-            '</span>' +
-            '<span class="badge-status" style="background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981;" title="Área Psicomotora: Conductas Autónomas">' +
-              '🖐️ ' + numPsiA + '/6 Psi (A)' +
-            '</span>' +
-            '<span class="badge-status" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b;" title="Área Socioafectiva: Conductas Consistentes">' +
-              '❤️ ' + numSocA + '/7 Soc (A)' +
-            '</span>' +
-            '<span class="badge-status ' + (est.evaluado ? "badge-completado" : "badge-pendiente") + '">' +
-              (est.evaluado ? "✅ Evaluado" : "🟡 Pendiente") +
-            '</span>' +
-          '</div>' +
+          var numA = est.psi.filter(function(x){ return x === 'A'; }).length;
+          var badgePsi = numA >= 5 ? '<span class="badge-status badge-completado">🟢 Autónomo (' + numA + '/6 A)</span>' : (numA >= 3 ? '<span class="badge-status badge-pendiente">🟡 Con Apoyo (' + numA + '/6 A)</span>' : '<span class="badge-status" style="background:#7f1d1d; color:#fca5a5; border:1px solid #ef4444;">🔴 Acompañamiento</span>');
 
-          '<div class="student-actions-right" onclick="event.stopPropagation()">' +
-            '<button class="btn btn-outline" style="font-size: 10.5px; padding: 4px 8px; min-height: 28px;" onclick="mostrarModalEscanerQR()" title="Escanear comprobante QR">' +
-              '📷 QR' +
-            '</button>' +
-            '<button class="btn btn-accent" style="font-size: 10.5px; padding: 4px 10px; min-height: 28px;" onclick="guardarObservacionEstudiante(' + realIdx + ')" title="Guardar cambios de este estudiante">' +
-              '💾 Guardar' +
-            '</button>' +
-            '<button class="accordion-toggle-btn" onclick="toggleAcordeonEstudiante(' + realIdx + ')">' +
-              '<span>' + (isExpanded ? 'Ocultar' : 'Desplegar') + '</span>' +
-              '<span class="chevron-icon">▼</span>' +
-            '</button>' +
-          '</div>' +
-        '</div>';
+          var obsVal = est.obsPsiGeneral || (est.obsPsi ? est.obsPsi[0] : "") || "";
 
-        // CUERPO DESPLEGABLE CON LAS 2 RÚBRICAS HORIZONTALES Y SÍNTESIS
-        var bodyHtml = '<div class="student-accordion-body">' +
+          tr.innerHTML = tdEstudiante + celdasPsi +
+            '<td style="text-align:center;">' + badgePsi + '</td>' +
+            '<td><input type="text" class="rubric-obs-input" placeholder="Observación psicomotora..." value="' + obsVal.replace(/"/g, '&quot;') + '" onchange="actualizarObsPsiGeneral(' + realIdx + ', this.value)"></td>' +
+            '<td style="text-align:center;"><button class="btn btn-accent" style="font-size:10px; padding:3px 6px; min-height:24px;" onclick="guardarFilaEstudiante(' + realIdx + ')">💾</button></td>';
 
-          // 1. Banner Cognitivo WebApp
-          '<div style="background: rgba(37, 99, 235, 0.12); border: 1px solid #2563eb; border-radius: 8px; padding: 8px 12px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;">' +
-            '<div style="display: flex; align-items: center; gap: 8px;">' +
-              '<span style="font-size: 18px;">🧠</span>' +
-              '<span style="font-size: 11.5px; color: #93c5fd;"><strong>Área Cognoscitiva (10 Indicadores de Logro):</strong> ' +
-              (est.evaluado || est.horaEntrega ? '✅ Sincronizado desde la WebApp del estudiante (' + (est.horaEntrega || '08:00') + ').' : '⏳ Pendiente de resolución por parte del estudiante en la WebApp «Aula Inteligente».') + '</span>' +
-            '</div>' +
-            '<span class="badge-status ' + (porcCog >= 80 ? 'badge-completado' : 'badge-pendiente') + '">' + numLogCog + ' / 10 Logrados (' + porcCog + '%)</span>' +
-          '</div>' +
-
-          // 2. Área Psicomotora (Reto Práctico - 6 Conductas)
-          '<div style="background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 12px; margin-bottom: 14px;">' +
-            '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 4px;">' +
-              '<strong style="font-size: 12.5px; color: #34d399;">🖐️ 1. Lista de Observación – Área Psicomotora (Reto «Conecta el Prototipo» - 6 Conductas)</strong>' +
-              '<div style="display: flex; gap: 4px;">' +
-                '<button type="button" class="btn btn-outline" style="font-size: 10px; padding: 2px 6px; min-height: 22px; border-color: #34d399; color: #34d399;" onclick="marcarTodosPsiEstudiante(' + realIdx + ', \'A\')">✅ Todos A (Autónomo)</button>' +
-                '<button type="button" class="btn btn-outline" style="font-size: 10px; padding: 2px 6px; min-height: 22px; border-color: #fbbf24; color: #fbbf24;" onclick="marcarTodosPsiEstudiante(' + realIdx + ', \'B\')">🟡 Nivel B (Apoyo)</button>' +
+        } else if (area === 'soc') {
+          var celdasSoc = "";
+          CONDUCTAS_SOCIOAFECTIVAS.forEach(function(sc, k) {
+            var valS = est.soc[k] || "A";
+            celdasSoc += '<td style="text-align:center; padding: 4px;">' +
+              '<div class="segmented-control" style="max-width: 100px; margin: 0 auto;">' +
+                '<button type="button" class="segmented-btn ' + (valS === 'A' ? 'active-a' : '') + '" onclick="setValSocMatriz(' + realIdx + ', ' + k + ', \'A\')">A</button>' +
+                '<button type="button" class="segmented-btn ' + (valS === 'B' ? 'active-b' : '') + '" onclick="setValSocMatriz(' + realIdx + ', ' + k + ', \'B\')">B</button>' +
+                '<button type="button" class="segmented-btn ' + (valS === 'C' ? 'active-c' : '') + '" onclick="setValSocMatriz(' + realIdx + ', ' + k + ', \'C\')">C</button>' +
               '</div>' +
-            '</div>' +
+            '</td>';
+          });
 
-            '<div class="rubric-row rubric-header" style="color: #34d399; background: #1e293b;">' +
-              '<div>Conducta Observable (Hacer y Manipulación)</div>' +
-              '<div style="text-align: center;">Escala (A / B / C)</div>' +
-              '<div>Observación Pedagógica del Docente</div>' +
-            '</div>';
+          var numSA = est.soc.filter(function(x){ return x === 'A'; }).length;
+          var badgeSoc = numSA >= 6 ? '<span class="badge-status badge-completado">🟢 Consistente (' + numSA + '/7 A)</span>' : (numSA >= 4 ? '<span class="badge-status badge-pendiente">🟡 Intermitente (' + numSA + '/7 A)</span>' : '<span class="badge-status" style="background:#7f1d1d; color:#fca5a5; border:1px solid #ef4444;">🔴 Acompañamiento</span>');
 
-        CONDUCTAS_PSICOMOTORAS.forEach(function(cd, j) {
-          var valP = est.psi[j] || "A";
-          var obsP = (est.obsPsi && est.obsPsi[j]) ? est.obsPsi[j] : "";
-          bodyHtml += '<div class="rubric-row">' +
-            '<div style="font-size: 11px; color: #cbd5e1;"><strong style="color: #34d399;">' + (j+1) + '.</strong> ' + cd + '</div>' +
-            '<div class="segmented-control">' +
-              '<button type="button" class="segmented-btn ' + (valP === "A" ? "active-a" : "") + '" onclick="setValPsiEstudiante(' + realIdx + ', ' + j + ', \'A\')">A (Autónomo)</button>' +
-              '<button type="button" class="segmented-btn ' + (valP === "B" ? "active-b" : "") + '" onclick="setValPsiEstudiante(' + realIdx + ', ' + j + ', \'B\')">B (Apoyo)</button>' +
-              '<button type="button" class="segmented-btn ' + (valP === "C" ? "active-c" : "") + '" onclick="setValPsiEstudiante(' + realIdx + ', ' + j + ', \'C\')">C (Acomp.)</button>' +
-            '</div>' +
-            '<div><input type="text" class="rubric-obs-input" placeholder="Observación psicomotora..." value="' + obsP.replace(/"/g, '&quot;') + '" onchange="setObsPsiEstudiante(' + realIdx + ', ' + j + ', this.value)"></div>' +
-          '</div>';
-        });
+          var obsSocVal = est.obsSocGeneral || (est.obsSoc ? est.obsSoc[0] : "") || "";
 
-        bodyHtml += '</div>';
+          tr.innerHTML = tdEstudiante + celdasSoc +
+            '<td style="text-align:center;">' + badgeSoc + '</td>' +
+            '<td><input type="text" class="rubric-obs-input" placeholder="Observación actitudinal..." value="' + obsSocVal.replace(/"/g, '&quot;') + '" onchange="actualizarObsSocGeneral(' + realIdx + ', this.value)"></td>' +
+            '<td style="text-align:center;"><button class="btn btn-accent" style="font-size:10px; padding:3px 6px; min-height:24px;" onclick="guardarFilaEstudiante(' + realIdx + ')">💾</button></td>';
 
-        // 3. Área Socioafectiva (7 Conductas Actitudinales)
-        bodyHtml += '<div style="background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 12px; margin-bottom: 14px;">' +
-          '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 4px;">' +
-            '<strong style="font-size: 12.5px; color: #fbbf24;">❤️ 2. Lista de Observación – Área Socioafectiva (7 Conductas Actitudinales)</strong>' +
-            '<div style="display: flex; gap: 4px;">' +
-              '<button type="button" class="btn btn-outline" style="font-size: 10px; padding: 2px 6px; min-height: 22px; border-color: #fbbf24; color: #fbbf24;" onclick="marcarTodosSocEstudiante(' + realIdx + ', \'A\')">✅ Todos A (Consistente)</button>' +
-              '<button type="button" class="btn btn-outline" style="font-size: 10px; padding: 2px 6px; min-height: 22px; border-color: #f97316; color: #f97316;" onclick="marcarTodosSocEstudiante(' + realIdx + ', \'B\')">🟡 Nivel B (Intermitente)</button>' +
-            '</div>' +
-          '</div>' +
+        } else if (area === 'cog') {
+          var celdasCog = "";
+          for (var i = 0; i < 10; i++) {
+            var valC = (est.cog && est.cog[i]) ? est.cog[i] : "ED";
+            var bgStyle = valC === "L" ? "background:#064e3b; color:#34d399; border:1px solid #10b981;" : (valC === "RA" ? "background:#7f1d1d; color:#fca5a5; border:1px solid #ef4444;" : "background:#78350f; color:#fbbf24; border:1px solid #f59e0b;");
+            celdasCog += '<td style="text-align:center; padding: 4px;">' +
+              '<button type="button" class="badge-status" style="' + bgStyle + ' cursor: pointer; font-size: 11px; padding: 3px 6px; border-radius: 4px;" onclick="toggleValCogMatriz(' + realIdx + ', ' + i + ')">' + valC + '</button>' +
+            '</td>';
+          }
 
-          '<div class="rubric-row rubric-header" style="color: #fbbf24; background: #1e293b;">' +
-            '<div>Conducta Observable (Ser y Convivir)</div>' +
-            '<div style="text-align: center;">Escala (A / B / C)</div>' +
-            '<div>Observación Pedagógica del Docente</div>' +
-          '</div>';
+          var numL = est.cog.filter(function(x){ return x === "L"; }).length;
+          var porc = Math.round((numL / 10) * 100);
 
-        CONDUCTAS_SOCIOAFECTIVAS.forEach(function(sc, k) {
-          var valS = est.soc[k] || "A";
-          var obsS = (est.obsSoc && est.obsSoc[k]) ? est.obsSoc[k] : "";
-          bodyHtml += '<div class="rubric-row">' +
-            '<div style="font-size: 11px; color: #cbd5e1;"><strong style="color: #fbbf24;">' + (k+1) + '.</strong> ' + sc + '</div>' +
-            '<div class="segmented-control">' +
-              '<button type="button" class="segmented-btn ' + (valS === "A" ? "active-a" : "") + '" onclick="setValSocEstudiante(' + realIdx + ', ' + k + ', \'A\')">A (Consistente)</button>' +
-              '<button type="button" class="segmented-btn ' + (valS === "B" ? "active-b" : "") + '" onclick="setValSocEstudiante(' + realIdx + ', ' + k + ', \'B\')">B (Intermitente)</button>' +
-              '<button type="button" class="segmented-btn ' + (valS === "C" ? "active-c" : "") + '" onclick="setValSocEstudiante(' + realIdx + ', ' + k + ', \'C\')">C (Acomp.)</button>' +
-            '</div>' +
-            '<div><input type="text" class="rubric-obs-input" placeholder="Observación actitudinal..." value="' + obsS.replace(/"/g, '&quot;') + '" onchange="setObsSocEstudiante(' + realIdx + ', ' + k + ', this.value)"></div>' +
-          '</div>';
-        });
-
-        bodyHtml += '</div>';
-
-        // 4. Síntesis Cualitativa Individual y Matriz Pág. 15
-        bodyHtml += '<div style="background: #1e293b; border: 1.5px solid #38bdf8; border-radius: 10px; padding: 12px;">' +
-          '<strong style="font-size: 12.5px; color: #38bdf8; display: block; margin-bottom: 8px;">🎯 3. Registro Cualitativo Individual & Matriz Pág. 15 MEP</strong>' +
-          '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px;">' +
-            '<div>' +
-              '<label style="font-size: 10.5px; color: #94a3b8; display: block; margin-bottom: 2px;">Necesidad Prioritaria Detectada:</label>' +
-              '<select style="width: 100%; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 6px; padding: 6px 8px; font-size: 11px;" onchange="actualizarCampoEstudiante(' + realIdx + ', \'necesidad\', this.value)">' +
-                '<option value="Dominio Alto / Consolidado"' + (est.necesidad === "Dominio Alto / Consolidado" ? " selected" : "") + '>Dominio Alto / Consolidado (Avanzar complejidad)</option>' +
-                '<option value="Algoritmo y Secuenciación"' + (est.necesidad === "Algoritmo y Secuenciación" ? " selected" : "") + '>Algoritmo y Secuenciación (Lógica previa)</option>' +
-                '<option value="Sensor, Actuador o Microcontrolador"' + (est.necesidad === "Sensor, Actuador o Microcontrolador" ? " selected" : "") + '>Sensor, Actuador o Microcontrolador (Exploración guiada)</option>' +
-                '<option value="Proceso de Depuración"' + (est.necesidad === "Proceso de Depuración" ? " selected" : "") + '>Proceso de Depuración (Prueba-error-corrección)</option>' +
-                '<option value="Orientación Espacial y Conexiones"' + (est.necesidad === "Orientación Espacial y Conexiones" ? " selected" : "") + '>Orientación Espacial y Conexiones (Manipulación progresiva)</option>' +
-                '<option value="Socioafectiva y Resiliencia"' + (est.necesidad === "Socioafectiva y Resiliencia" ? " selected" : "") + '>Socioafectiva y Resiliencia (Acompañamiento colaborativo)</option>' +
-              '</select>' +
-            '</div>' +
-            '<div>' +
-              '<label style="font-size: 10.5px; color: #94a3b8; display: block; margin-bottom: 2px;">Condición de Aplicación:</label>' +
-              '<select style="width: 100%; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 6px; padding: 6px 8px; font-size: 11px;" onchange="actualizarCondicionEstudiante(' + realIdx + ', this.value)">' +
-                '<option value="Ordinaria"' + (!est.esExtemporaneo ? " selected" : "") + '>Aplicación Ordinaria (Fecha Oficial)</option>' +
-                '<option value="Extemporanea"' + (est.esExtemporaneo ? " selected" : "") + '>Aplicación Extemporánea (Justificación Docente)</option>' +
-              '</select>' +
-            '</div>' +
-          '</div>' +
-
-          '<div>' +
-            '<label style="font-size: 10.5px; color: #94a3b8; display: block; margin-bottom: 2px;">Descripción del desempeño individual (Pág. 15 MEP):</label>' +
-            '<textarea class="rubric-obs-input" rows="2" style="font-size: 11px; resize: vertical;" placeholder="Describa logros alcanzados y consideraciones formativas para el desarrollo..." onchange="actualizarCampoEstudiante(' + realIdx + ', \'descripcionDesempeno\', this.value)">' + (est.descripcionDesempeno || "") + '</textarea>' +
-          '</div>' +
-
-          '<div style="text-align: right; margin-top: 8px;">' +
-            '<button class="btn btn-accent" style="font-size: 11px; padding: 6px 14px;" onclick="guardarObservacionEstudiante(' + realIdx + ')">' +
-              '💾 Guardar Observación de ' + est.nombre.split(" ")[0] +
-            '</button>' +
-          '</div>' +
-        '</div>';
-
-        bodyHtml += '</div>';
-
-        card.innerHTML = headerHtml + bodyHtml;
-        cont.appendChild(card);
-      });
-    }
-
-    /* CONTROL DE ACORDEÓN POR ESTUDIANTE */
-    function toggleAcordeonEstudiante(idx) {
-      estadoDocente.tarjetasExpandidas[idx] = !estadoDocente.tarjetasExpandidas[idx];
-      var card = document.getElementById("cardEstudiante_" + idx);
-      if (card) {
-        if (estadoDocente.tarjetasExpandidas[idx]) {
-          card.classList.add("expanded");
-        } else {
-          card.classList.remove("expanded");
+          tr.innerHTML = tdEstudiante + celdasCog +
+            '<td style="text-align:center;"><span class="badge-status ' + (porc >= 80 ? 'badge-completado' : 'badge-pendiente') + '">' + numL + '/10 (' + porc + '%)</span></td>' +
+            '<td style="text-align:center; font-size:11px; color:#cbd5e1;">' + (est.evaluado || est.horaEntrega ? '✅ QR ' + (est.horaEntrega || '08:00') : '⏳ Pendiente WebApp') + '</td>';
         }
-      }
-    }
 
-    function expandirTodosEstudiantes(expandir) {
-      estadoDocente.estudiantes.forEach(function(e, idx) {
-        estadoDocente.tarjetasExpandidas[idx] = expandir;
+        tbody.appendChild(tr);
       });
-      renderizarObservacionDocente();
     }
 
-    /* SETTERS DE ESTADO FORMATIVO */
-    function setValPsiEstudiante(idx, condIdx, val) {
-      var est = estadoDocente.estudiantes[idx];
+    /* ACCIONES DE INTERACCIÓN DIRECTA EN LA HOJA DE CÁLCULO */
+    function setValPsiMatriz(estIdx, conductaIdx, val) {
+      var est = estadoDocente.estudiantes[estIdx];
       if (est) {
         if (!est.psi) est.psi = Array(6).fill("A");
-        est.psi[condIdx] = val;
+        est.psi[conductaIdx] = val;
         guardarNominaEnStorage();
-        renderizarObservacionDocente();
+        renderizarMatrizObservacion();
       }
     }
 
-    function setObsPsiEstudiante(idx, condIdx, val) {
-      var est = estadoDocente.estudiantes[idx];
-      if (est) {
-        if (!est.obsPsi) est.obsPsi = Array(6).fill("");
-        est.obsPsi[condIdx] = val;
-        guardarNominaEnStorage();
-      }
-    }
-
-    function setValSocEstudiante(idx, condIdx, val) {
-      var est = estadoDocente.estudiantes[idx];
+    function setValSocMatriz(estIdx, conductaIdx, val) {
+      var est = estadoDocente.estudiantes[estIdx];
       if (est) {
         if (!est.soc) est.soc = Array(7).fill("A");
-        est.soc[condIdx] = val;
+        est.soc[conductaIdx] = val;
         guardarNominaEnStorage();
-        renderizarObservacionDocente();
+        renderizarMatrizObservacion();
       }
     }
 
-    function setObsSocEstudiante(idx, condIdx, val) {
-      var est = estadoDocente.estudiantes[idx];
+    function toggleValCogMatriz(estIdx, apIdx) {
+      var est = estadoDocente.estudiantes[estIdx];
       if (est) {
+        if (!est.cog) est.cog = Array(10).fill("L");
+        var curr = est.cog[apIdx] || "ED";
+        var next = curr === "L" ? "ED" : (curr === "ED" ? "RA" : "L");
+        est.cog[apIdx] = next;
+        guardarNominaEnStorage();
+        renderizarMatrizObservacion();
+        renderizarConsolidadoGrupal();
+      }
+    }
+
+    function actualizarObsPsiGeneral(estIdx, val) {
+      var est = estadoDocente.estudiantes[estIdx];
+      if (est) {
+        est.obsPsiGeneral = val;
+        if (!est.obsPsi) est.obsPsi = Array(6).fill("");
+        est.obsPsi[0] = val;
+        guardarNominaEnStorage();
+      }
+    }
+
+    function actualizarObsSocGeneral(estIdx, val) {
+      var est = estadoDocente.estudiantes[estIdx];
+      if (est) {
+        est.obsSocGeneral = val;
         if (!est.obsSoc) est.obsSoc = Array(7).fill("");
-        est.obsSoc[condIdx] = val;
+        est.obsSoc[0] = val;
         guardarNominaEnStorage();
       }
     }
 
-    function marcarTodosPsiEstudiante(idx, val) {
-      var est = estadoDocente.estudiantes[idx];
+    function marcarTodoGrupoNivelA() {
+      var area = estadoDocente.areaActiva || 'psi';
+      estadoDocente.estudiantes.forEach(function(est) {
+        if (area === 'psi') est.psi = Array(6).fill("A");
+        else if (area === 'soc') est.soc = Array(7).fill("A");
+        else if (area === 'cog') est.cog = Array(10).fill("L");
+      });
+      guardarNominaEnStorage();
+      renderizarMatrizObservacion();
+      renderizarConsolidadoGrupal();
+      alert("✅ Se asignó Nivel A a toda la sección en el área activa.");
+    }
+
+    function guardarFilaEstudiante(estIdx) {
+      var est = estadoDocente.estudiantes[estIdx];
       if (est) {
-        est.psi = Array(6).fill(val);
+        est.evaluado = true;
         guardarNominaEnStorage();
-        renderizarObservacionDocente();
+        renderizarListaEstudiantes();
+        renderizarMatrizObservacion();
+        renderizarConsolidadoGrupal();
+        alert("✅ Observación de «" + est.nombre + "» guardada con éxito.");
       }
     }
 
-    function marcarTodosSocEstudiante(idx, val) {
-      var est = estadoDocente.estudiantes[idx];
-      if (est) {
-        est.soc = Array(7).fill(val);
-        guardarNominaEnStorage();
-        renderizarObservacionDocente();
-      }
-    }
-
-    function actualizarCampoEstudiante(idx, field, val) {
-      var est = estadoDocente.estudiantes[idx];
-      if (est) {
-        est[field] = val;
-        if (field === 'descripcionDesempeno') est.accion = val;
-        guardarNominaEnStorage();
-      }
-    }
-
-    function actualizarCondicionEstudiante(idx, val) {
-      var est = estadoDocente.estudiantes[idx];
-      if (est) {
-        est.esExtemporaneo = (val === "Extemporanea");
-        guardarNominaEnStorage();
-      }
-    }
-
-    function guardarObservacionEstudiante(idx) {
-      var est = estadoDocente.estudiantes[idx];
-      if (!est) return;
-
-      est.evaluado = true;
+    function guardarTodoElGrupo() {
+      estadoDocente.estudiantes.forEach(function(est) {
+        est.evaluado = true;
+      });
       guardarNominaEnStorage();
       renderizarListaEstudiantes();
-      renderizarObservacionDocente();
+      renderizarMatrizObservacion();
       renderizarConsolidadoGrupal();
-      alert("✅ Observación formativa de «" + est.nombre + "» guardada con éxito en la nómina.");
+      alert("✅ Toda la nómina de estudiantes ha sido guardada y sincronizada.");
     }
 
     /* MATRIZ DE SISTEMATIZACIÓN OFICIAL MEP PÁG. 15 */
