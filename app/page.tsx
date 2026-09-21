@@ -273,11 +273,11 @@ export default function HomePage() {
             </Link>
 
             <Link
-              href="/publicar"
-              className="flex items-center gap-2 px-6 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm rounded-xl shadow-lg hover:shadow-emerald-500/25 transition-all transform hover:-translate-y-0.5"
+              href="/comunidad"
+              className="flex items-center gap-2 px-6 py-3.5 bg-sky-600 hover:bg-sky-500 text-white font-extrabold text-sm rounded-xl shadow-lg hover:shadow-sky-500/25 transition-all transform hover:-translate-y-0.5"
             >
-              <ChalkboardTeacher size={20} weight="bold" />
-              <span>Proyección en Aula</span>
+              <UsersThree size={20} weight="bold" />
+              <span>Zona Común (Galería)</span>
             </Link>
 
             <Link
@@ -286,6 +286,14 @@ export default function HomePage() {
             >
               <Sparkle size={20} weight="bold" className="text-amber-400" />
               <span>Diagnóstico IA</span>
+            </Link>
+
+            <Link
+              href="/publicar"
+              className="flex items-center gap-2 px-6 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm rounded-xl shadow-lg hover:shadow-emerald-500/25 transition-all transform hover:-translate-y-0.5"
+            >
+              <ChalkboardTeacher size={20} weight="bold" />
+              <span>Proyección en Aula</span>
             </Link>
 
             <Link
@@ -366,7 +374,7 @@ export default function HomePage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Módulo 1: Creador de WebApps */}
           <div className="bg-white rounded-2xl border border-blue-200 p-6 shadow-mepCard flex flex-col justify-between hover:border-blue-400 transition-all group">
             <div className="space-y-3">
@@ -389,23 +397,23 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Módulo 2: Proyección de Aula */}
-          <div className="bg-white rounded-2xl border border-emerald-200 p-6 shadow-mepCard flex flex-col justify-between hover:border-emerald-400 transition-all group">
+          {/* Módulo 2: Zona Común / Galería */}
+          <div className="bg-white rounded-2xl border border-sky-200 p-6 shadow-mepCard flex flex-col justify-between hover:border-sky-400 transition-all group">
             <div className="space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center group-hover:scale-105 transition-transform">
-                <ChalkboardTeacher size={28} weight="duotone" />
+              <div className="w-12 h-12 rounded-xl bg-sky-100 text-sky-800 flex items-center justify-center group-hover:scale-105 transition-transform">
+                <UsersThree size={28} weight="duotone" />
               </div>
-              <h3 className="text-base font-bold text-slate-900">Proyección en Aula</h3>
+              <h3 className="text-base font-bold text-slate-900">Zona Común & Remix</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Proyecta WebApps en pantalla gigante con código QR de alta resolución, comparte enlaces por WhatsApp y descarga archivos.
+                Visualiza, prueba y clona producciones de otros docentes para adaptar explicaciones, retos y rúbricas a tu aula.
               </p>
             </div>
             <div className="pt-6">
               <Link
-                href="/publicar"
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 group-hover:text-emerald-900"
+                href="/comunidad"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-sky-700 group-hover:text-sky-900"
               >
-                <span>Abrir Proyección</span>
+                <span>Explorar Zona Común</span>
                 <ArrowRight size={14} weight="bold" />
               </Link>
             </div>
@@ -433,7 +441,29 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Módulo 4: Dashboard Analítico */}
+          {/* Módulo 4: Proyección de Aula */}
+          <div className="bg-white rounded-2xl border border-emerald-200 p-6 shadow-mepCard flex flex-col justify-between hover:border-emerald-400 transition-all group">
+            <div className="space-y-3">
+              <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center group-hover:scale-105 transition-transform">
+                <ChalkboardTeacher size={28} weight="duotone" />
+              </div>
+              <h3 className="text-base font-bold text-slate-900">Proyección en Aula</h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Proyecta WebApps en pantalla gigante con código QR de alta resolución, comparte enlaces por WhatsApp y descarga archivos.
+              </p>
+            </div>
+            <div className="pt-6">
+              <Link
+                href="/publicar"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 group-hover:text-emerald-900"
+              >
+                <span>Abrir Proyección</span>
+                <ArrowRight size={14} weight="bold" />
+              </Link>
+            </div>
+          </div>
+
+          {/* Módulo 5: Dashboard Analítico */}
           <div className="bg-white rounded-2xl border border-indigo-200 p-6 shadow-mepCard flex flex-col justify-between hover:border-indigo-400 transition-all group">
             <div className="space-y-3">
               <div className="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-800 flex items-center justify-center group-hover:scale-105 transition-transform">

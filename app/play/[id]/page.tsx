@@ -30,7 +30,38 @@ export default function PlayWebAppPage() {
   const [modalQR, setModalQR] = useState(false);
 
   useEffect(() => {
-    // 1. Buscar en catálogo personal guardado
+    // 1. Verificar si es una WebApp especializada de diagnóstico
+    if (id === "com-9-diag-aula-inteligente" || id === "diag-9no-mod01-aula-inteligente") {
+      fetch("/webapps/diagnostico_9no_modulo01_aula_inteligente.html")
+        .then((r) => (r.ok ? r.text() : ""))
+        .then((html) => {
+          if (html) {
+            setCodigoHTML(html);
+            setTitulo("Diagnóstico Integrado 9°: «Aula Inteligente»");
+            setAsignatura("Computación Física y Robótica");
+            setNivel("9° Año - Secundaria");
+          }
+        })
+        .catch(() => {});
+      return;
+    }
+
+    if (id === "com-9-diag-docente-evaluador") {
+      fetch("/webapps/diagnostico_9no_modulo01_docente_evaluador.html")
+        .then((r) => (r.ok ? r.text() : ""))
+        .then((html) => {
+          if (html) {
+            setCodigoHTML(html);
+            setTitulo("Evaluador Diagnóstico Docente 9° (Nómina y Rúbrica MEP)");
+            setAsignatura("Computación Física y Robótica");
+            setNivel("9° Año - Secundaria");
+          }
+        })
+        .catch(() => {});
+      return;
+    }
+
+    // 2. Buscar en catálogo personal guardado
     const encontrada = webApps.find((w) => w.id === id);
     if (encontrada) {
       setCodigoHTML(encontrada.codigoHTML);
@@ -40,7 +71,7 @@ export default function PlayWebAppPage() {
       return;
     }
 
-    // 2. Buscar en catálogo del espacio común / comunidad
+    // 3. Buscar en catálogo del espacio común / comunidad
     const encontradaCom = webAppsComunidad.find((w) => w.id === id);
     if (encontradaCom) {
       const conHTML = obtenerProduccionConHTML(encontradaCom);

@@ -43,6 +43,16 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/comunidad" className="hover:text-blue-400 transition-colors font-semibold text-sky-400">
+                  Zona Común de WebApps (Galería)
+                </Link>
+              </li>
+              <li>
+                <Link href="/diagnostico" className="hover:text-blue-400 transition-colors">
+                  Diagnóstico IA & Documentos
+                </Link>
+              </li>
+              <li>
                 <Link href="/manuales" className="hover:text-blue-400 transition-colors">
                   Guías de Instalación Móvil / PC
                 </Link>

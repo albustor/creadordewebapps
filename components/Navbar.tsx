@@ -16,6 +16,7 @@ import {
   SignOut,
   SignIn,
   Lightning,
+  UsersThree,
 } from "@phosphor-icons/react";
 
 export default function Navbar() {
@@ -24,7 +25,7 @@ export default function Navbar() {
   const [menuAbierto, setMenuAbierto] = useState(false);
 
   // Navegación principal consolidada:
-  // 1. Inicio | 2. Creación WebApps | 3. Diagnóstico IA | 4. Dashboard
+  // 1. Inicio | 2. Creación WebApps | 3. Zona Común | 4. Diagnóstico IA | 5. Dashboard
   const enlaces = [
     {
       href: "/",
@@ -37,6 +38,12 @@ export default function Navbar() {
       label: "Creación WebApps",
       icon: <CodeBlock size={18} weight="duotone" />,
       titulo: "Recurso para Creación de WebApps Educativas",
+    },
+    {
+      href: "/comunidad",
+      label: "Zona Común",
+      icon: <UsersThree size={18} weight="duotone" />,
+      titulo: "Espacio Común y Galería de WebApps Creadas",
     },
     {
       href: "/diagnostico",
