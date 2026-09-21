@@ -12,14 +12,11 @@ import {
   ArrowSquareOut,
   QrCode,
   Sparkle,
-  Info,
-  ShareNetwork,
-  Cpu,
-  ShieldCheck,
-  Lightning,
   Question,
   CaretDown,
   CaretUp,
+  ShieldCheck,
+  Lightning,
 } from "@phosphor-icons/react";
 import { QRCodeSVG } from "qrcode.react";
 
@@ -36,10 +33,10 @@ export default function SelectorVersionesDiagnostico({
   const [modalQROnline, setModalQROnline] = useState(false);
   const [guiaAbierta, setGuiaAbierta] = useState(false);
 
-  // URL de la versión en línea
-  const urlOnline = typeof window !== "undefined"
-    ? `${window.location.origin}/webapps/diagnostico_9no_modulo01_en_linea.html`
-    : "/webapps/diagnostico_9no_modulo01_en_linea.html";
+  const urlOnline =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/webapps/diagnostico_9no_modulo01_en_linea.html`
+      : "/webapps/diagnostico_9no_modulo01_en_linea.html";
 
   const copiarEnlaceOnline = () => {
     navigator.clipboard.writeText(urlOnline);
@@ -49,22 +46,22 @@ export default function SelectorVersionesDiagnostico({
 
   return (
     <div className="space-y-6">
-      {/* AVISO OBLIGATORIO: EXCLUSIVO PARA COMPUTADORAS */}
-      <div className="p-4 bg-linear-to-r from-blue-950 via-slate-900 to-indigo-950 border-2 border-sky-400/80 rounded-2xl text-white shadow-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-xl bg-sky-500/20 border border-sky-400/30 flex items-center justify-center shrink-0">
-            <Laptop size={26} className="text-sky-300" weight="duotone" />
+      {/* 1. AVISO OBLIGATORIO: EXCLUSIVO PARA COMPUTADORAS */}
+      <div className="p-5 bg-slate-900 border-2 border-sky-500 rounded-3xl text-white shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-2xl bg-sky-500/20 border border-sky-400/40 flex items-center justify-center shrink-0">
+            <Laptop size={28} className="text-sky-300" weight="duotone" />
           </div>
           <div>
             <div className="flex items-center gap-2">
               <span className="text-xs font-black uppercase tracking-wider text-sky-300">
                 Requisito Oficial de Aplicación
               </span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-sky-400/20 text-sky-200 border border-sky-400/30">
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-sky-400/20 text-sky-200 border border-sky-400/30">
                 100% Computadoras
               </span>
             </div>
-            <p className="text-xs text-slate-200 font-medium mt-0.5">
+            <p className="text-xs text-slate-200 font-medium mt-1 leading-relaxed">
               Este instrumento de diagnóstico fue diseñado <strong>única y exclusivamente para computadoras</strong> (Laboratorios de Cómputo, Laptops y PCs de escritorio). Es compatible con <strong>cualquier navegador web moderno</strong> (Google Chrome, Microsoft Edge, Mozilla Firefox, Brave, Safari, Opera).
             </p>
           </div>
@@ -72,7 +69,7 @@ export default function SelectorVersionesDiagnostico({
 
         <button
           onClick={() => setGuiaAbierta(!guiaAbierta)}
-          className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-sky-600/30 hover:bg-sky-600/50 text-sky-200 border border-sky-400/40 text-xs font-bold shrink-0 transition-all"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold shrink-0 transition-all shadow-md"
         >
           <Question size={16} weight="bold" />
           <span>{guiaAbierta ? "Ocultar Guía" : "¿Cómo y Cuándo Usar?"}</span>
@@ -80,88 +77,86 @@ export default function SelectorVersionesDiagnostico({
         </button>
       </div>
 
-      {/* GUÍA PEDAGÓGICA DESPLEGABLE: CÓMO Y CUÁNDO USAR CADA VERSIÓN */}
+      {/* 2. GUÍA PEDAGÓGICA DESPLEGABLE */}
       {guiaAbierta && (
-        <div className="p-5 bg-slate-50 border border-slate-200 rounded-2xl space-y-4 animate-fadeIn">
+        <div className="p-6 bg-slate-50 border border-slate-200 rounded-3xl space-y-4 animate-fadeIn shadow-sm">
           <h4 className="text-sm font-black text-slate-900 flex items-center gap-2">
             <Sparkle size={18} className="text-amber-600" weight="fill" />
             <span>Criterios de Elección y Protocolo para el Docente</span>
           </h4>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-            <div className="p-4 bg-emerald-50/70 border border-emerald-200 rounded-xl space-y-2">
-              <div className="font-extrabold text-emerald-900 flex items-center gap-1.5 text-sm">
+            <div className="p-4 bg-emerald-50 border border-emerald-300 rounded-2xl space-y-2">
+              <div className="font-extrabold text-emerald-950 flex items-center gap-1.5 text-sm">
                 <GlobeHemisphereWest size={18} weight="bold" className="text-emerald-700" />
                 <span>¿Cuándo elegir la Versión En Línea?</span>
               </div>
-              <ul className="list-disc list-inside text-slate-700 space-y-1 font-medium text-[11.5px] leading-relaxed">
+              <ul className="list-disc list-inside text-slate-800 space-y-1 font-medium text-[11.5px] leading-relaxed">
                 <li>El laboratorio cuenta con <strong>internet fluido y estable</strong>.</li>
                 <li>Deseas ver el avance de los estudiantes en tiempo real en tu <strong>Dashboard Docente</strong> conforme van respondiendo.</li>
-                <li><strong>Cómo pasar el enlace:</strong> Solo comparte el link web o proyecta el código QR inicial en la pizarra o pantalla del aula.</li>
+                <li><strong>Cómo pasar el enlace:</strong> Comparte el link web o proyecta el código QR inicial en la pizarra.</li>
               </ul>
             </div>
 
-            <div className="p-4 bg-slate-100 border border-slate-300 rounded-xl space-y-2">
-              <div className="font-extrabold text-slate-900 flex items-center gap-1.5 text-sm">
-                <HardDrive size={18} weight="bold" className="text-slate-700" />
+            <div className="p-4 bg-amber-50 border border-amber-300 rounded-2xl space-y-2">
+              <div className="font-extrabold text-amber-950 flex items-center gap-1.5 text-sm">
+                <HardDrive size={18} weight="bold" className="text-amber-700" />
                 <span>¿Cuándo elegir la Versión Desconectada (Offline)?</span>
               </div>
-              <ul className="list-disc list-inside text-slate-700 space-y-1 font-medium text-[11.5px] leading-relaxed">
+              <ul className="list-disc list-inside text-slate-800 space-y-1 font-medium text-[11.5px] leading-relaxed">
                 <li>El laboratorio <strong>no tiene internet</strong> o la red es intermitente/bloqueada.</li>
                 <li><strong>Cómo pasar el archivo:</strong> Descargas el archivo único <code>.html</code> en una llave USB y lo copias en las computadoras del laboratorio (o en una carpeta de red local).</li>
-                <li>El estudiante hace doble clic en el archivo y lo completa en cualquier navegador. Al terminar, te muestra el <strong>Código QR final</strong> y lo escaneas en segundos con tu teléfono/laptop, o descargas el comprobante <code>.json</code>.</li>
+                <li>El estudiante hace doble clic en el archivo y lo completa en cualquier navegador. Al terminar, te muestra el <strong>Código QR final</strong> y lo escaneas con tu teléfono/laptop, o descargas el comprobante <code>.json</code>.</li>
               </ul>
             </div>
           </div>
         </div>
       )}
 
-      {/* LAS DOS VERSIONES SEPARADAS EN TARJETAS PRINCIPALES */}
+      {/* 3. LAS DOS VERSIONES SEPARADAS (CLARAS, NÍTIDAS Y CON ALTO CONTRASTE) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         {/* ============================================================ */}
         {/* TARJETA 1: VERSIÓN EN LÍNEA (CONECTADA)                      */}
         {/* ============================================================ */}
-        <div className="bg-linear-to-br from-emerald-950 via-slate-900 to-teal-950 border-2 border-emerald-500 rounded-3xl p-6 text-white shadow-xl flex flex-col justify-between relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-36 h-36 bg-emerald-500/10 rounded-full blur-3xl group-hover:scale-125 transition-transform" />
-          
-          <div className="space-y-4 relative z-10">
+        <div className="bg-white border-2 border-emerald-500 rounded-3xl p-6 sm:p-7 text-slate-900 shadow-xl flex flex-col justify-between relative overflow-hidden group hover:border-emerald-600 transition-all">
+          <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
                 <span>Opción 1 • Con Internet</span>
               </span>
-              <span className="text-[11px] font-bold text-emerald-200">Sincronización en vivo</span>
+              <span className="text-xs font-bold text-emerald-700">Sincronización en vivo</span>
             </div>
 
             <div>
-              <h3 className="text-xl font-black text-white flex items-center gap-2">
-                <GlobeHemisphereWest size={24} className="text-emerald-400" weight="bold" />
+              <h3 className="text-xl font-black text-slate-900 flex items-center gap-2">
+                <GlobeHemisphereWest size={24} className="text-emerald-600" weight="bold" />
                 <span>Versión En Línea</span>
               </h3>
-              <p className="text-xs text-slate-300 mt-1 leading-relaxed">
-                Ejecución directa desde el navegador con conexión. Almacena las respuestas y los 10 indicadores cognitivos directamente en la base de datos y en tu Dashboard.
+              <p className="text-xs text-slate-600 mt-1.5 leading-relaxed font-medium">
+                Ejecución directa desde el navegador con conexión a internet. Almacena las respuestas y los 10 indicadores cognitivos directamente en la base de datos y en tu Dashboard.
               </p>
             </div>
 
-            <div className="p-3 bg-white/5 border border-white/10 rounded-xl space-y-1 text-xs">
-              <div className="text-emerald-300 font-bold flex items-center gap-1">
-                <CheckCircle size={15} weight="fill" />
+            <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-2xl space-y-1 text-xs">
+              <div className="text-emerald-900 font-extrabold flex items-center gap-1.5">
+                <CheckCircle size={16} weight="fill" className="text-emerald-600" />
                 <span>Ventaja Principal:</span>
               </div>
-              <p className="text-slate-300 text-[11px]">
+              <p className="text-emerald-950 text-[11.5px] font-medium leading-relaxed">
                 Cero manejo de llaves USB. Solo compartes el enlace y supervisas en tu pantalla.
               </p>
             </div>
           </div>
 
-          <div className="pt-6 space-y-3 relative z-10">
+          <div className="pt-6 space-y-2.5">
             <div className="flex flex-wrap items-center gap-2">
               <a
                 href="/webapps/diagnostico_9no_modulo01_en_linea.html"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs rounded-xl shadow-md hover:shadow-lg transition-all"
+                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs rounded-xl shadow-md transition-all"
               >
                 <span>Abrir Versión en Línea</span>
                 <ArrowSquareOut size={16} weight="bold" />
@@ -169,16 +164,16 @@ export default function SelectorVersionesDiagnostico({
 
               <button
                 onClick={copiarEnlaceOnline}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-xl border border-slate-700 transition-colors"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl border border-slate-300 transition-colors"
                 title="Copiar enlace web para enviar a los estudiantes"
               >
-                {copiadoOnline ? <Check size={16} className="text-emerald-400" weight="bold" /> : <Copy size={16} weight="bold" />}
+                {copiadoOnline ? <Check size={16} className="text-emerald-700" weight="bold" /> : <Copy size={16} weight="bold" />}
                 <span>{copiadoOnline ? "¡Copiado!" : "Copiar Enlace"}</span>
               </button>
 
               <button
                 onClick={() => setModalQROnline(true)}
-                className="inline-flex items-center gap-1.5 px-3 py-2.5 bg-emerald-800/60 hover:bg-emerald-700 text-emerald-200 font-bold text-xs rounded-xl border border-emerald-600/40 transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs rounded-xl border border-emerald-300 transition-colors"
                 title="Proyectar código QR para que los estudiantes abran la página"
               >
                 <QrCode size={16} weight="bold" />
@@ -191,45 +186,43 @@ export default function SelectorVersionesDiagnostico({
         {/* ============================================================ */}
         {/* TARJETA 2: VERSIÓN DESCONECTADA / OFFLINE (SIN INTERNET)     */}
         {/* ============================================================ */}
-        <div className="bg-linear-to-br from-slate-950 via-slate-900 to-blue-950 border-2 border-slate-400 rounded-3xl p-6 text-white shadow-xl flex flex-col justify-between relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-36 h-36 bg-blue-500/10 rounded-full blur-3xl group-hover:scale-125 transition-transform" />
-          
-          <div className="space-y-4 relative z-10">
+        <div className="bg-white border-2 border-amber-500 rounded-3xl p-6 sm:p-7 text-slate-900 shadow-xl flex flex-col justify-between relative overflow-hidden group hover:border-amber-600 transition-all">
+          <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="px-3 py-1 rounded-full bg-slate-500/20 text-slate-300 border border-slate-400/30 text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5">
-                <HardDrive size={14} weight="bold" />
+              <span className="px-3 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300 text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5">
+                <HardDrive size={14} weight="bold" className="text-amber-700" />
                 <span>Opción 2 • Sin Internet (USB)</span>
               </span>
-              <span className="text-[11px] font-bold text-slate-300">100% Autónomo</span>
+              <span className="text-xs font-bold text-amber-700">100% Autónomo</span>
             </div>
 
             <div>
-              <h3 className="text-xl font-black text-white flex items-center gap-2">
-                <HardDrive size={24} className="text-amber-400" weight="bold" />
+              <h3 className="text-xl font-black text-slate-900 flex items-center gap-2">
+                <HardDrive size={24} className="text-amber-600" weight="bold" />
                 <span>Versión Desconectada (Offline)</span>
               </h3>
-              <p className="text-xs text-slate-300 mt-1 leading-relaxed">
-                Archivo <code>.html</code> empaquetado y autosuficiente. Se ejecuta en las computadoras del laboratorio sin depender de conexión a internet. Al finalizar genera el QR y archivo <code>.json</code>.
+              <p className="text-xs text-slate-600 mt-1.5 leading-relaxed font-medium">
+                Archivo <code>.html</code> empaquetado y autosuficiente. Se ejecuta en las computadoras del laboratorio sin depender de conexión a internet. Al finalizar genera el código QR y archivo <code>.json</code>.
               </p>
             </div>
 
-            <div className="p-3 bg-white/5 border border-white/10 rounded-xl space-y-1 text-xs">
-              <div className="text-amber-300 font-bold flex items-center gap-1">
-                <ShieldCheck size={15} weight="fill" />
+            <div className="p-3.5 bg-amber-50 border border-amber-200 rounded-2xl space-y-1 text-xs">
+              <div className="text-amber-900 font-extrabold flex items-center gap-1.5">
+                <ShieldCheck size={16} weight="fill" className="text-amber-600" />
                 <span>Ventaja Principal:</span>
               </div>
-              <p className="text-slate-300 text-[11px]">
+              <p className="text-amber-950 text-[11.5px] font-medium leading-relaxed">
                 Inmunidad total a caídas de internet. Los resultados se transfieren por escaneo QR o carga por lote.
               </p>
             </div>
           </div>
 
-          <div className="pt-6 space-y-3 relative z-10">
+          <div className="pt-6 space-y-2.5">
             <div className="flex flex-wrap items-center gap-2">
               <a
                 href="/webapps/diagnostico_9no_modulo01_desconectado_offline.html"
                 download="diagnostico_9no_modulo01_desconectado_offline.html"
-                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl shadow-md hover:shadow-lg transition-all"
+                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs rounded-xl shadow-md transition-all"
               >
                 <DownloadSimple size={16} weight="bold" />
                 <span>Descargar para Llave USB (.html)</span>
@@ -239,7 +232,7 @@ export default function SelectorVersionesDiagnostico({
                 href="/webapps/diagnostico_9no_modulo01_desconectado_offline.html"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-xl border border-slate-700 transition-colors"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl border border-slate-300 transition-colors"
                 title="Probar en el navegador local"
               >
                 <span>Probar</span>

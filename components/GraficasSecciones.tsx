@@ -518,7 +518,7 @@ export default function GraficasSecciones({
       {vistaActiva === "distribucion" && (
         <div className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="p-5 bg-linear-to-br from-emerald-50 to-emerald-100/50 rounded-2xl border border-emerald-200">
+            <div className="p-5 bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-2xl border border-emerald-200">
               <div className="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-1">
                 Promedio General Global
               </div>
@@ -528,7 +528,7 @@ export default function GraficasSecciones({
               </p>
             </div>
 
-            <div className="p-5 bg-linear-to-br from-blue-50 to-blue-100/50 rounded-2xl border border-blue-200">
+            <div className="p-5 bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-2xl border border-blue-200">
               <div className="text-xs font-bold text-blue-800 uppercase tracking-wider mb-1">
                 Secciones Activas
               </div>
@@ -538,7 +538,7 @@ export default function GraficasSecciones({
               </p>
             </div>
 
-            <div className="p-5 bg-linear-to-br from-purple-50 to-purple-100/50 rounded-2xl border border-purple-200">
+            <div className="p-5 bg-gradient-to-br from-purple-50 to-purple-100/50 rounded-2xl border border-purple-200">
               <div className="text-xs font-bold text-purple-800 uppercase tracking-wider mb-1">
                 Indicadores en Alerta
               </div>

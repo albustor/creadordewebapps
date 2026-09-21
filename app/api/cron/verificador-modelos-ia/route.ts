@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auditarSaludModelos } from "@/lib/aiResilience";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: NextRequest) {
   try {
     const auditoria = await auditarSaludModelos();

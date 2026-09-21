@@ -265,7 +265,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* Banner Principal del Observatorio Macro */}
-      <div className="bg-linear-to-r from-slate-900 via-blue-950 to-emerald-950 text-white p-6 sm:p-8 rounded-3xl shadow-xl border border-slate-800">
+      <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-emerald-950 text-white p-6 sm:p-8 rounded-3xl shadow-xl border border-slate-800">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
