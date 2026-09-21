@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#003366">
-  <title>Aplicativo Docente: Registro y Evaluación Diagnóstica 9° (Módulo 1 - MEP)</title>
+  <title>Aplicativo Docente: Registro y Evaluación Diagnóstica 9° (Módulo 1)</title>
+  <script src="/vendor/html5-qrcode.min.js"></script>
   
   <style>
     :root {
@@ -380,6 +381,9 @@
       <span class="mep-badge" id="badgeSincronizacionServidor" style="background:#dcfce7; border-color:#86efac; color:#15803d; font-size:10.5px;">
         🟢 Base de Datos: Sincronizada
       </span>
+      <button class="btn btn-accent" style="font-size: 11.5px; padding: 5px 12px; min-height: 30px; background: #0284c7; border-color: #0369a1;" onclick="mostrarModalEscanerQR()" title="Escanear código QR de la pantalla del estudiante con la cámara">
+        📷 Escanear QR
+      </button>
       <button class="btn btn-secondary" style="font-size: 11.5px; padding: 5px 12px; min-height: 30px;" onclick="sincronizarConBaseDeDatos(true)" title="Sincronizar manualmente con el Dashboard central y base de datos">
         🔄 Sincronizar
       </button>
@@ -796,23 +800,58 @@
 
   </main>
 
-  <!-- MODAL ESCÁNER QR DE ALUMNOS -->
+  <!-- MODAL ESCÁNER QR DE ALUMNOS (CÁMARA EN VIVO & MANUAL) -->
   <div id="modalEscanerQR" class="modal">
-    <div class="modal-content" style="max-width: 480px; text-align: center;">
-      <h3 style="color: #0369a1; margin-bottom: 6px; font-size: 1.25rem;">📷 Sincronización QR del Estudiante</h3>
-      <p style="font-size: 11.5px; color: #64748b; margin-bottom: 12px;">
-        Pega el código o token de respaldo generado en la pantalla del estudiante:
-      </p>
+    <div class="modal-content" style="max-width: 520px; text-align: center;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 8px;">
+        <h3 style="color: #0369a1; margin: 0; font-size: 1.2rem; font-weight: 900; display: flex; align-items: center; gap: 6px;">
+          📷 Escáner QR de Evidencias
+        </h3>
+        <button class="btn btn-outline" style="padding: 2px 8px; min-height: 26px;" onclick="cerrarModalEscanerQR()">✕</button>
+      </div>
 
-      <textarea id="inputTokenQR" placeholder="Pega aquí el código (Ej: MEP-9NO-M01|Valeria Montero|9-1|COG:10/10|PSI:A|SOC:Muy cómodo/a)" rows="3" style="width: 100%; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 8px; color: #0f172a; font-size: 11.5px; outline: none; margin-bottom: 12px;"></textarea>
+      <!-- Selector de Método: Cámara vs Manual -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px;">
+        <button type="button" id="btnTabScanCamara" class="btn btn-accent" style="font-size: 11.5px; padding: 7px;" onclick="cambiarTabEscaner('camara')">
+          📷 Cámara en Vivo
+        </button>
+        <button type="button" id="btnTabScanManual" class="btn btn-secondary" style="font-size: 11.5px; padding: 7px;" onclick="cambiarTabEscaner('manual')">
+          ⌨️ Pegar Código
+        </button>
+      </div>
 
-      <div style="display: flex; gap: 8px; justify-content: center;">
-        <button class="btn btn-accent" onclick="procesarTokenQRManual()">
-          ⚡ Aplicar e Importar al Estudiante
+      <!-- Panel Cámara en Vivo -->
+      <div id="panelScanCamara" style="display: block;">
+        <div id="qrCameraScanner" style="width: 100%; min-height: 260px; background: #020617; border-radius: 12px; overflow: hidden; border: 2px solid #38bdf8; position: relative;"></div>
+        
+        <div id="qrCameraStatus" style="font-size: 11.5px; margin-top: 8px; font-weight: 700; color: #0369a1; padding: 6px; background: #e0f2fe; border-radius: 6px;">
+          📸 Apunta la cámara hacia el código QR en la pantalla de la computadora de la persona estudiante.
+        </div>
+
+        <div style="display: flex; gap: 8px; justify-content: center; margin-top: 10px;">
+          <button type="button" class="btn btn-secondary" style="font-size: 11px;" onclick="iniciarCamaraQR()">
+            🔄 Reiniciar Cámara
+          </button>
+          <button type="button" class="btn btn-danger" style="font-size: 11px;" onclick="detenerCamaraQR()">
+            ⏹️ Detener Cámara
+          </button>
+        </div>
+      </div>
+
+      <!-- Panel Manual -->
+      <div id="panelScanManual" style="display: none;">
+        <p style="font-size: 11.5px; color: #64748b; margin-bottom: 8px;">
+          Pega el código JSON o token de respaldo generado en el diagnóstico del estudiante:
+        </p>
+        <textarea id="inputTokenQR" placeholder='Pega aquí el código QR (Ej: {"nom":"Juan Pérez","sec":"Sección 9-1",...})' rows="4" style="width: 100%; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 8px; color: #0f172a; font-size: 11.5px; outline: none; margin-bottom: 12px;"></textarea>
+        
+        <button type="button" class="btn btn-accent" style="width: 100%; font-size: 12px; padding: 9px;" onclick="procesarTokenQRManual()">
+          ⚡ Importar Datos del Estudiante
         </button>
-        <button class="btn btn-secondary" onclick="cerrarModalEscanerQR()">
-          Cancelar
-        </button>
+      </div>
+
+      <div style="margin-top: 14px; text-align: right;">
+        <button type="button" class="btn btn-secondary" style="font-size: 11px;" onclick="cerrarModalEscanerQR()">Cerrar</button>
       </div>
     </div>
   </div>
@@ -1729,69 +1768,200 @@
       }
     }
 
+    var html5QrScannerInstance = null;
+
+    function cambiarTabEscaner(tab) {
+      var panelCam = document.getElementById("panelScanCamara");
+      var panelMan = document.getElementById("panelScanManual");
+      var btnCam = document.getElementById("btnTabScanCamara");
+      var btnMan = document.getElementById("btnTabScanManual");
+
+      if (tab === "camara") {
+        if (panelCam) panelCam.style.display = "block";
+        if (panelMan) panelMan.style.display = "none";
+        if (btnCam) btnCam.className = "btn btn-accent";
+        if (btnMan) btnMan.className = "btn btn-secondary";
+        iniciarCamaraQR();
+      } else {
+        if (panelCam) panelCam.style.display = "none";
+        if (panelMan) panelMan.style.display = "block";
+        if (btnCam) btnCam.className = "btn btn-secondary";
+        if (btnMan) btnMan.className = "btn btn-accent";
+        detenerCamaraQR();
+      }
+    }
+
     function mostrarModalEscanerQR() {
-      document.getElementById("modalEscanerQR").style.display = "flex";
+      var modal = document.getElementById("modalEscanerQR");
+      if (modal) {
+        modal.style.display = "flex";
+        cambiarTabEscaner("camara");
+      }
     }
 
     function cerrarModalEscanerQR() {
-      document.getElementById("modalEscanerQR").style.display = "none";
+      detenerCamaraQR();
+      var modal = document.getElementById("modalEscanerQR");
+      if (modal) modal.style.display = "none";
+    }
+
+    function iniciarCamaraQR() {
+      detenerCamaraQR();
+      var statusEl = document.getElementById("qrCameraStatus");
+      if (typeof Html5Qrcode === "undefined") {
+        if (statusEl) {
+          statusEl.innerHTML = "⚠️ Librería de escáner en carga local. Puedes pegar el código en la pestaña 'Pegar Código'.";
+        }
+        return;
+      }
+
+      try {
+        html5QrScannerInstance = new Html5Qrcode("qrCameraScanner");
+        var config = { fps: 12, qrbox: { width: 240, height: 240 } };
+
+        html5QrScannerInstance.start(
+          { facingMode: "environment" },
+          config,
+          function onScanSuccess(decodedText) {
+            procesarDatosQR(decodedText);
+          },
+          function onScanFailure(error) {
+            // Ignorar frames no leídos
+          }
+        ).catch(function(err) {
+          console.warn("No se pudo iniciar cámara trasera, intentando cualquier cámara:", err);
+          html5QrScannerInstance.start(
+            {},
+            config,
+            function onScanSuccess(decodedText) {
+              procesarDatosQR(decodedText);
+            },
+            function onScanFailure() {}
+          ).catch(function(e2) {
+            if (statusEl) {
+              statusEl.innerHTML = "⚠️ No se pudo acceder a la cámara (" + (e2.message || "Permiso denegado") + "). Usa la pestaña 'Pegar Código'.";
+              statusEl.style.color = "#b91c1c";
+            }
+          });
+        });
+      } catch(err) {
+        console.error("Error al iniciar lector QR:", err);
+      }
+    }
+
+    function detenerCamaraQR() {
+      if (html5QrScannerInstance) {
+        try {
+          html5QrScannerInstance.stop().then(function() {
+            try { html5QrScannerInstance.clear(); } catch(e){}
+            html5QrScannerInstance = null;
+          }).catch(function() {
+            html5QrScannerInstance = null;
+          });
+        } catch(e) {
+          html5QrScannerInstance = null;
+        }
+      }
+    }
+
+    function procesarDatosQR(rawTexto) {
+      if (!rawTexto) return;
+      var texto = rawTexto.trim();
+
+      var nom = "";
+      var sec = "Sección 9-1";
+      var ced = "";
+      var fecha = "Hoy";
+      var hora = new Date().toLocaleTimeString('es-CR', { hour: '2-digit', minute: '2-digit' });
+      var vectorCog = Array(10).fill("L");
+      var porc = 100;
+
+      // 1. Caso JSON estructurado
+      if (texto.startsWith("{") && texto.endsWith("}")) {
+        try {
+          var obj = JSON.parse(texto);
+          nom = obj.nom || obj.estudianteNombre || obj.nombre || "";
+          sec = obj.sec || obj.seccionOGrupo || obj.seccion || "Sección 9-1";
+          ced = obj.ced || obj.estudianteCedula || obj.cedula || "";
+          fecha = obj.fec || obj.fechaEntrega || "Hoy";
+          hora = obj.hor || obj.horaEntrega || hora;
+          porc = obj.porc !== undefined ? obj.porc : (obj.puntaje !== undefined ? obj.puntaje : 100);
+
+          if (Array.isArray(obj.cog)) {
+            vectorCog = obj.cog.slice();
+          } else if (typeof obj.cog === "number") {
+            vectorCog = [];
+            for (var c = 0; c < 10; c++) {
+              vectorCog.push(c < obj.cog ? "L" : "RA");
+            }
+          }
+        } catch(e) {}
+      }
+
+      // 2. Caso Texto separado por Pipes (Ej: DIAG-9NO|Nombre|Seccion|COG:10/10...)
+      if (!nom && texto.includes("|")) {
+        var partes = texto.split("|");
+        if (partes.length >= 2) {
+          nom = partes[1] ? partes[1].trim() : "";
+          sec = partes[2] ? partes[2].trim() : "Sección 9-1";
+        }
+      }
+
+      if (!nom) {
+        nom = texto.substring(0, 30);
+      }
+
+      // Buscar o crear estudiante en la nómina
+      var matchEst = estadoDocente.estudiantes.find(function(x) {
+        return x && x.nombre && x.nombre.toLowerCase().trim() === nom.toLowerCase().trim();
+      });
+
+      if (matchEst) {
+        var rIdx = estadoDocente.estudiantes.indexOf(matchEst);
+        matchEst.evaluado = true;
+        matchEst.horaEntrega = hora;
+        matchEst.fechaEntrega = fecha;
+        matchEst.cog = vectorCog;
+        matchEst.psi = Array(6).fill("A");
+        matchEst.soc = Array(7).fill("A");
+        matchEst.necesidad = porc >= 80 ? "Dominio Alto / Consolidado" : "En Desarrollo";
+        matchEst.descripcionDesempeno = "Sincronizado vía QR (" + hora + "): estudiante completó " + porc + "% del diagnóstico.";
+        matchEst.accion = matchEst.descripcionDesempeno;
+        guardarNominaEnStorage();
+        renderizarTodo();
+        cerrarModalEscanerQR();
+        irAObservacionEstudiante(rIdx);
+        alert("🎉 ¡Estudiante «" + nom + "» (" + sec + ") escaneado y registrado con éxito con sus 10 indicadores calificados!");
+      } else {
+        var nuevoEst = {
+          id: "EST-" + (estadoDocente.estudiantes.length + 1),
+          nombre: nom,
+          seccion: sec,
+          evaluado: true,
+          horaEntrega: hora,
+          fechaEntrega: fecha,
+          cog: vectorCog,
+          psi: Array(6).fill("A"),
+          soc: Array(7).fill("A"),
+          obsPsi: Array(6).fill(""),
+          obsSoc: Array(7).fill(""),
+          necesidad: porc >= 80 ? "Dominio Alto / Consolidado" : "En Desarrollo",
+          descripcionDesempeno: "Sincronizado vía QR (" + hora + ")."
+        };
+        estadoDocente.estudiantes.push(nuevoEst);
+        var nIdx = estadoDocente.estudiantes.length - 1;
+        guardarNominaEnStorage();
+        renderizarTodo();
+        cerrarModalEscanerQR();
+        irAObservacionEstudiante(nIdx);
+        alert("🎉 ¡Estudiante «" + nom + "» (" + sec + ") creado y sincronizado con éxito desde el QR!");
+      }
     }
 
     function procesarTokenQRManual() {
       var raw = document.getElementById("inputTokenQR").value.trim();
       if (!raw) return;
-
-      // Formato: MEP-9NO-M01|Nombre|Sección|COG:10/10|PSI:A|SOC:Muy cómodo/a
-      var partes = raw.split("|");
-      if (partes.length >= 4) {
-        var nom = partes[1];
-        var sec = partes[2];
-        var matchEst = estadoDocente.estudiantes.find(function(x){ return x.nombre.toLowerCase().includes(nom.toLowerCase()) || nom.toLowerCase().includes(x.nombre.toLowerCase()); });
-
-        if (matchEst) {
-          var rIdx = estadoDocente.estudiantes.indexOf(matchEst);
-          matchEst.evaluado = true;
-          matchEst.horaEntrega = new Date().toLocaleTimeString('es-CR', { hour: '2-digit', minute: '2-digit' });
-          matchEst.fechaEntrega = "Hoy";
-          matchEst.cog = Array(10).fill("L");
-          matchEst.psi = Array(6).fill("A");
-          matchEst.soc = Array(7).fill("A");
-          matchEst.necesidad = "Dominio Alto / Consolidado";
-          matchEst.descripcionDesempeno = "Sincronizado vía QR: estudiante completó 100% de la WebApp «Aula Inteligente».";
-          matchEst.accion = matchEst.descripcionDesempeno;
-          guardarNominaEnStorage();
-          renderizarTodo();
-          irAObservacionEstudiante(rIdx);
-          cerrarModalEscanerQR();
-          alert("✅ ¡Estudiante " + nom + " sincronizado con éxito desde el comprobante QR!");
-        } else {
-          // Crear nuevo estudiante
-          var nuevoEst = {
-            id: "EST-" + (estadoDocente.estudiantes.length + 1),
-            nombre: nom,
-            seccion: sec,
-            evaluado: true,
-            horaEntrega: new Date().toLocaleTimeString('es-CR', { hour: '2-digit', minute: '2-digit' }),
-            fechaEntrega: "Hoy",
-            cog: Array(10).fill("L"),
-            psi: Array(6).fill("A"),
-            soc: Array(7).fill("A"),
-            obsPsi: Array(6).fill(""),
-            obsSoc: Array(7).fill(""),
-            necesidad: "Dominio Alto / Consolidado",
-            descripcionDesempeno: "Sincronizado vía QR de comprobante."
-          };
-          estadoDocente.estudiantes.push(nuevoEst);
-          var nIdx = estadoDocente.estudiantes.length - 1;
-          guardarNominaEnStorage();
-          renderizarTodo();
-          irAObservacionEstudiante(nIdx);
-          cerrarModalEscanerQR();
-          alert("✅ Estudiante " + nom + " creado y sincronizado con éxito.");
-        }
-      } else {
-        alert("Formato de token no reconocido. Asegúrate de copiar el código completo del comprobante.");
-      }
+      procesarDatosQR(raw);
     }
   </script>
 </body>
