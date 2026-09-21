@@ -24,7 +24,7 @@ Tu tarea es analizar minuciosamente el indicador de logro curricular de secundar
 
 REGLAS PEDAGÓGICAS Y TÉCNICAS OBLIGATORIAS:
 1. Fase 1 (Aprender): Explicación clara y profunda de ${opts.saberConceptual}, apoyos visuales y tarjetas para saber procedimental (${opts.saberProcedimental || 'Aplica y analiza'}) y saber actitudinal (${opts.saberActitudinal || 'Gusto por la precisión'}).
-2. Fase 2 (Comprender): Debe contener exactamente al menos 4 casos y reactivos situados en la vida real/hogar/comunidad del estudiante, evaluando progresivamente lo deseable en el indicador. Incluye retroalimentación pedagógica y sonido procedural Web Audio API.
+2. Fase 2 (Comprender): Debe contener exactamente al menos 5 casos y reactivos situacionales derivados directamente de la intención de logro del indicador [${opts.indicadorCodigo}] ${opts.indicadorNombre} (concepto fundamental, aplicación procedimental, depuración/resolución de fallos, impacto lógico y actitud formativa hacia la excelencia). Incluye retroalimentación pedagógica y sonido procedural Web Audio API.
 3. Fase 3 (Simulación interactiva): Diseña un simulador interactivo ORIGINAL y 100% funcional en Canvas 60 FPS o DOM interactivo, propuesto directamente desde el análisis de la intención de logro de este indicador (sin recetas prefabricadas ni plantillas fijas), donde el estudiante manipule los parámetros y resuelva el reto.
 4. Fase 4 (Valoración): Rúbrica formativa según niveles de logro y envío de telemetría a Google Apps Script (${opts.urlGoogleScript || 'CONFIG.urlGoogleScript'}) y REST con modo no-cors.
 

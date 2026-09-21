@@ -90,9 +90,9 @@ export interface OpcionesGeneracionWebApp {
  * Genera el Prompt estructurado para copiar y llevar a IAs externas (Gemini Canvas, Claude, ChatGPT, DeepSeek, Qwen)
  */
 export function generarPromptParaIAExterna(opts: OpcionesGeneracionWebApp): string {
-  const preguntasTxt = opts.preguntasComprender && opts.preguntasComprender.length >= 4
+  const preguntasTxt = opts.preguntasComprender && opts.preguntasComprender.length >= 5
     ? opts.preguntasComprender.map((p, idx) => `   Caso ${idx + 1}: ${p.pregunta}\n   Opciones: ${p.opciones.join(" | ")}\n   Explicación: ${p.explicacion}`).join("\n\n")
-    : `   Diseña exactamente 4 casos reflexivos situados en la vida cotidiana que validen de forma progresiva los criterios de logro de [${opts.indicadorCodigo}] ${opts.indicadorNombre} enfocado en ${opts.saberConceptual}.`;
+    : `   Diseña exactamente al menos 5 casos reflexivos situados en la vida cotidiana que validen de forma progresiva la intención de logro de [${opts.indicadorCodigo}] ${opts.indicadorNombre} enfocado en ${opts.saberConceptual}.`;
 
   const valoresTxt = opts.valoresTransversalesMEP && opts.valoresTransversalesMEP.length > 0
     ? opts.valoresTransversalesMEP.join(", ")
@@ -152,9 +152,9 @@ ${neeInfo}
    - Apoyo visual interactivo (diagramas SVG, tarjetas conceptuales o glosario ilustrado).
    - Inclusión explícita de saber procedimental y saber actitudinal.
 
-3. FASE 2 (COMPRENDER - 4 Casos situacionales basados en el indicador):
-   - OBLIGATORIO: Diseña exactamente al menos 4 casos/reactivos situados en la vida real, el hogar o la comunidad escolar.
-   - Cada caso debe evaluar de forma progresiva lo deseable en el indicador [${opts.indicadorCodigo}] ${opts.indicadorNombre} (desde el criterio inicial hasta el avanzado).
+3. FASE 2 (COMPRENDER - Mínimo 5 Casos situacionales basados directamente en la intención de logro):
+   - OBLIGATORIO: Diseña exactamente al menos 5 casos y reactivos situados en la vida real, el hogar o la comunidad escolar.
+   - Cada caso debe salir y evaluar de forma progresiva la intención de logro del indicador [${opts.indicadorCodigo}] ${opts.indicadorNombre} (concepto fundamental, aplicación procedimental, depuración/resolución de fallos, impacto lógico y actitud formativa hacia la excelencia).
    - Opciones múltiples (A, B, C) con retroalimentación formativa profunda para aciertos y desaciertos, y sonido procedural Web Audio API.
 ${preguntasTxt}
 
@@ -179,10 +179,10 @@ ${preguntasTxt}
 }
 
 /**
- * Genera al menos 4 preguntas/casos conceptuales dinámicos y adaptados al saber e indicador seleccionado
+ * Genera al menos 5 preguntas/casos conceptuales dinámicos y adaptados a la intención de logro del indicador
  */
 function obtenerPreguntasContextuales(opts: OpcionesGeneracionWebApp): PreguntaComprender[] {
-  if (opts.preguntasComprender && opts.preguntasComprender.length >= 4) {
+  if (opts.preguntasComprender && opts.preguntasComprender.length >= 5) {
     return opts.preguntasComprender;
   }
 
@@ -222,7 +222,17 @@ function obtenerPreguntasContextuales(opts: OpcionesGeneracionWebApp): PreguntaC
         explicacion: "El orden secuencial es la base de la algoritmia; cambiar el orden transforma directamente el comportamiento.",
       },
       {
-        pregunta: `Caso 4: Frente al criterio avanzado del indicador [${opts.indicadorCodigo}], ¿cómo se demuestra la actitud "${opts.saberActitudinal || 'Gusto por la precisión'}"?`,
+        pregunta: `Caso 4: Al modularizar una tarea compleja en subalgoritmos más pequeños, ¿qué beneficio se obtiene para la resolución del problema?`,
+        opciones: [
+          "Facilita la comprensión, permite probar partes individuales y simplifica la detección de errores.",
+          "Hace que el programa sea imposible de leer por otras personas.",
+          "Aumenta la cantidad de cables necesarios en el laboratorio.",
+        ],
+        correcta: 0,
+        explicacion: "La modularización descompone la complejidad y permite reutilizar bloques lógicos verificados.",
+      },
+      {
+        pregunta: `Caso 5: Frente al criterio avanzado del indicador [${opts.indicadorCodigo}], ¿cómo se demuestra la actitud "${opts.saberActitudinal || 'Gusto por la precisión'}"?`,
         opciones: [
           "Verificando meticulosamente cada condición límite y optimizando la solución para que sea clara y eficiente.",
           "Entregando la primera solución sin probar si funciona en todos los casos.",
@@ -276,6 +286,16 @@ function obtenerPreguntasContextuales(opts: OpcionesGeneracionWebApp): PreguntaC
         correcta: 0,
         explicacion: "La incompatibilidad de tipos es un fallo común que se previene verificando el tipo de dato manipulado.",
       },
+      {
+        pregunta: `Caso 5: Para alcanzar el nivel de logro consolidado, ¿cómo aplicas la persistencia y precisión en el manejo de datos?`,
+        opciones: [
+          "Comprobando los rangos válidos de entrada y asegurando que las variables conserven su consistencia durante todo el flujo.",
+          "Ignorando si un valor numérico se desborda o se convierte en nulo.",
+          "Declarando todas las variables con letras al azar de una sola letra.",
+        ],
+        correcta: 0,
+        explicacion: "La consistencia y validación de tipos y rangos son sellos distintivos de un desarrollo técnico avanzado.",
+      },
     ];
   }
 
@@ -312,7 +332,17 @@ function obtenerPreguntasContextuales(opts: OpcionesGeneracionWebApp): PreguntaC
         explicacion: "Las expresiones de comparación lógica se reducen estrictamente a Verdadero o Falso.",
       },
       {
-        pregunta: `Caso 4: Al depurar un programa con múltiples condicionales anidados, ¿qué buena práctica asegura la comprensión del código?`,
+        pregunta: `Caso 4: Al combinar dos condiciones con el operador lógico 'Y' (AND), ¿cuándo se ejecutará la acción principal?`,
+        opciones: [
+          "Únicamente cuando AMBAS condiciones sean simultáneamente verdaderas.",
+          "Cuando al menos una de las dos condiciones sea falsa.",
+          "En ningún momento, porque el operador 'Y' bloquea el programa.",
+        ],
+        correcta: 0,
+        explicacion: "La conjunción lógica 'Y' exige que todas las premisas sean verdaderas para validar la expresión.",
+      },
+      {
+        pregunta: `Caso 5: Al depurar un programa con múltiples condicionales anidados, ¿qué buena práctica asegura la comprensión del código?`,
         opciones: [
           "Modularizar las condiciones, usar sangría (indentación) adecuada y probar cada caso posible.",
           "Escribir todas las condiciones en una sola línea sin espacios ni comentarios.",
@@ -366,13 +396,23 @@ function obtenerPreguntasContextuales(opts: OpcionesGeneracionWebApp): PreguntaC
         correcta: 0,
         explicacion: "Gestionar conscientemente nuestra presencia digital protege nuestra reputación y seguridad a largo plazo.",
       },
+      {
+        pregunta: `Caso 5: ¿Qué medida técnica previene la infección de malware al utilizar memorias USB en los equipos del laboratorio?`,
+        opciones: [
+          "Escanear la unidad con el antivirus actualizado y desactivar la reproducción automática de archivos.",
+          "Soplar el conector USB antes de insertarlo.",
+          "Cambiar el color del fondo de pantalla antes de conectar la memoria.",
+        ],
+        correcta: 0,
+        explicacion: "El análisis antivirus proactivo previene la propagación de software malicioso entre equipos.",
+      },
     ];
   }
 
-  // Fallback adaptado con 4 casos completos basados en el indicador
+  // Fallback adaptado con 5 casos completos basados en la intención de logro del indicador
   return [
     {
-      pregunta: `Caso 1: En una actividad vinculada con "${opts.saberConceptual}", ¿cuál es el objetivo central al abordar el indicador [${opts.indicadorCodigo}]?`,
+      pregunta: `Caso 1: En una actividad vinculada con "${opts.saberConceptual}", ¿cuál es el objetivo conceptual central al abordar el indicador [${opts.indicadorCodigo}]?`,
       opciones: [
         `Comprender los principios de ${opts.saberConceptual} para resolver situaciones cotidianas con orden y sentido crítico.`,
         "Memorizar conceptos sin entender cómo se aplican en la práctica.",
@@ -392,7 +432,17 @@ function obtenerPreguntasContextuales(opts: OpcionesGeneracionWebApp): PreguntaC
       explicacion: "El nivel intermedio consolida la aplicación estructurada de métodos y la autorregulación ante los retos.",
     },
     {
-      pregunta: `Caso 3: Para alcanzar el nivel avanzado (Consolidado) en [${opts.indicadorCodigo}] ${opts.indicadorNombre}, ¿qué evidencia es necesaria?`,
+      pregunta: `Caso 3: Si se presenta un comportamiento inesperado en el sistema durante la experimentación, ¿qué estrategia formativa permite superarlo?`,
+      opciones: [
+        "Analizar la causa raíz del error, formular una hipótesis de ajuste y verificar nuevamente el resultado.",
+        "Apagar el equipo y fingir que el problema no ocurrió.",
+        "Repetir exactamente la misma acción sin reflexionar.",
+      ],
+      correcta: 0,
+      explicacion: "Aprender del error de manera sistemática desarrolla el pensamiento computacional y la resiliencia.",
+    },
+    {
+      pregunta: `Caso 4: Para alcanzar el nivel avanzado (Consolidado) en [${opts.indicadorCodigo}] ${opts.indicadorNombre}, ¿qué evidencia es necesaria?`,
       opciones: [
         `Demostrar autonomía, precisión técnica y capacidad de transferir ${opts.saberConceptual} a nuevos contextos.`,
         "Requerir supervisión permanente para realizar cada paso elemental.",
@@ -402,7 +452,7 @@ function obtenerPreguntasContextuales(opts: OpcionesGeneracionWebApp): PreguntaC
       explicacion: "El logro consolidado se caracteriza por la autonomía, la precisión y la transferencia reflexiva del conocimiento.",
     },
     {
-      pregunta: `Caso 4: ¿De qué manera la actitud formativa "${opts.saberActitudinal || 'Gusto por la precisión'}" fortalece el aprendizaje en esta actividad?`,
+      pregunta: `Caso 5: ¿De qué manera la actitud formativa "${opts.saberActitudinal || 'Gusto por la precisión'}" fortalece el aprendizaje en esta actividad?`,
       opciones: [
         "Impulsa a ser meticuloso con los detalles y a convertir los desaciertos en oportunidades de mejora continua.",
         "Hace que el estudiante compita deslealmente con sus compañeros.",
