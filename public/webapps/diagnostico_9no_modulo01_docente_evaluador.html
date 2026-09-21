@@ -280,11 +280,143 @@
     .badge-completado { background: #064e3b; color: #34d399; border: 1px solid #10b981; }
     .badge-pendiente { background: #78350f; color: #fbbf24; border: 1px solid #f59e0b; }
 
+    /* ESTILOS DE ACORDEÓN HORIZONTAL POR ESTUDIANTE EN OBSERVACIÓN DOCENTE */
+    .student-accordion-card {
+      background: #0f172a;
+      border: 1.5px solid #334155;
+      border-radius: 12px;
+      margin-bottom: 14px;
+      transition: all 0.25s ease;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    }
+
+    .student-accordion-card:hover {
+      border-color: #38bdf8;
+    }
+
+    .student-accordion-card.expanded {
+      border-color: #38bdf8;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+    }
+
+    .student-accordion-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: #1e293b;
+      cursor: pointer;
+      user-select: none;
+      border-bottom: 1px solid transparent;
+      transition: background 0.2s;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .student-accordion-card.expanded .student-accordion-header {
+      border-bottom-color: #334155;
+      background: linear-gradient(90deg, #1e3a8a 0%, #1e293b 100%);
+    }
+
+    .student-info-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 240px;
+    }
+
+    .student-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      background: #0f172a;
+      border: 1.5px solid #38bdf8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .student-name-title {
+      font-size: 14px;
+      font-weight: 900;
+      color: #f8fafc;
+      letter-spacing: -0.2px;
+      margin: 0;
+    }
+
+    .student-meta-sub {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 1px;
+    }
+
+    .student-badges-mid {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .student-actions-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .accordion-toggle-btn {
+      background: #0f172a;
+      border: 1px solid #38bdf8;
+      color: #38bdf8;
+      border-radius: 6px;
+      padding: 5px 10px;
+      font-size: 11px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .accordion-toggle-btn:hover {
+      background: #38bdf8;
+      color: #0f172a;
+    }
+
+    .chevron-icon {
+      transition: transform 0.25s ease;
+      display: inline-block;
+    }
+
+    .student-accordion-card.expanded .chevron-icon {
+      transform: rotate(180deg);
+    }
+
+    .student-accordion-body {
+      display: none;
+      padding: 16px;
+      background: #090e17;
+      animation: fadeInAccordion 0.2s ease-in-out;
+    }
+
+    .student-accordion-card.expanded .student-accordion-body {
+      display: block;
+    }
+
+    @keyframes fadeInAccordion {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     /* VISTA DE IMPRESIÓN OFICIAL */
     @media print {
       body { background: white !important; color: black !important; }
-      header, .view-nav, .top-tools, .btn, .no-print { display: none !important; }
-      .card { box-shadow: none !important; border: 1px solid #ccc !important; background: white !important; color: black !important; }
+      header, .view-nav, .top-tools, .btn, .no-print, .accordion-toggle-btn { display: none !important; }
+      .card, .student-accordion-card { box-shadow: none !important; border: 1px solid #ccc !important; background: white !important; color: black !important; }
+      .student-accordion-body { display: block !important; }
       .custom-table th, .custom-table td { color: black !important; background: white !important; border-color: #333 !important; }
       .print-only { display: block !important; }
     }
@@ -319,6 +451,8 @@
     @media (max-width: 768px) {
       .view-nav { grid-template-columns: repeat(2, 1fr); }
       .rubric-row { grid-template-columns: 1fr; }
+      .student-accordion-header { flex-direction: column; align-items: flex-start; }
+      .student-actions-right { width: 100%; justify-content: flex-end; }
     }
   </style>
 </head>
@@ -454,152 +588,62 @@
     </div>
 
     <!-- ==================================================================== -->
-    <!-- VISTA 2: OBSERVACIÓN DOCENTE EXCLUSIVA (PSICOMOTORA & SOCIOAFECTIVA) -->
+    <!-- VISTA 2: OBSERVACIÓN DOCENTE (PSICOMOTORA & SOCIOAFECTIVA POR ALUMNO)-->
     <!-- ==================================================================== -->
     <div id="vista2" class="card" style="display: none;">
       
-      <!-- ENCABEZADO DEL ESTUDIANTE SELECCIONADO -->
-      <div style="display: flex; justify-content: space-between; align-items: center; background: #1e293b; border: 1.5px solid #38bdf8; border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+      <!-- TOOLBAR SUPERIOR DE OBSERVACIÓN DOCENTE -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
         <div>
-          <span style="font-size: 10px; color: #38bdf8; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Estudiante Seleccionado para Registro de Observación:</span>
-          <h2 style="font-size: 1.3rem; color: white; font-weight: 900; margin-top: 2px;" id="labelNombreEstudianteActivo">
-            Valeria Montero Jiménez
-          </h2>
-          <span style="font-size: 11.5px; color: #94a3b8;" id="labelSeccionEstudianteActivo">
-            Sección: 9-1 • III Ciclo • Módulo 1 (2026)
+          <span class="mep-badge" style="background: #1e3a8a; border-color: #38bdf8; color: #93c5fd;">
+            Instrumento de Observación Docente • Evaluación 100% Formativa
           </span>
+          <h2 style="font-size: 1.25rem; color: #f8fafc; font-weight: 900; margin-top: 2px;">
+            2. Lista de Estudiantes & Observación Psicomotora y Socioafectiva
+          </h2>
+          <p style="font-size: 11.5px; color: #94a3b8; margin-top: 2px;">
+            Lista completa de la sección. El nombre se ubica a la izquierda; use la flecha hacia abajo (acordeón) para desplegar y registrar horizontalmente las áreas psicomotora y socioafectiva de cada estudiante.
+          </p>
         </div>
 
-        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-          <button class="btn btn-outline" onclick="mostrarModalEscanerQR()" title="Escanear comprobante QR del estudiante">
+        <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+          <button class="btn btn-outline" style="font-size: 11px; padding: 4px 10px;" onclick="expandirTodosEstudiantes(true)">
+            🔽 Expandir Todos
+          </button>
+          <button class="btn btn-outline" style="font-size: 11px; padding: 4px 10px;" onclick="expandirTodosEstudiantes(false)">
+            🔼 Colapsar Todos
+          </button>
+          <button class="btn btn-accent" style="font-size: 11px; padding: 4px 10px;" onclick="mostrarModalEscanerQR()">
             📷 Escanear QR Alumno
           </button>
-          <button class="btn btn-accent" onclick="guardarEvaluacionEstudianteActual()">
-            💾 Guardar Observación
-          </button>
         </div>
       </div>
 
-      <!-- BANNER INFORMATIVO: ÁREA COGNOSCITIVA OBTENIDA VÍA TELEMETRÍA/WEBAPP -->
-      <div style="background: rgba(37, 99, 235, 0.12); border: 1.5px solid #2563eb; border-radius: 12px; padding: 12px 16px; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <div style="width: 38px; height: 38px; rounded-xl; background: #1e3a8a; color: #60a5fa; display: flex; align-items: center; justify-content: center; font-size: 20px; border-radius: 10px;">
-            🧠
-          </div>
-          <div>
-            <strong style="font-size: 12.5px; color: #93c5fd; display: block;">
-              Área Cognoscitiva: Indicadores de Aprendizaje de Logro (1 al 10)
-            </strong>
-            <span style="font-size: 11px; color: #cbd5e1;" id="bannerCognitivoEstado">
-              Sincronizado automáticamente desde la WebApp del estudiante (10 Reactivos Completados).
-            </span>
-          </div>
-        </div>
-        <div style="text-align: right;">
-          <span class="badge-status badge-completado" style="font-size: 12px; padding: 4px 10px;" id="badgePuntajeCognitivo">
-            10 / 10 Logrados (100%)
-          </span>
-        </div>
-      </div>
-
-      <!-- 1. ÁREA PSICOMOTORA (LISTA DE OBSERVACIÓN - 6 CONDUCTAS RETO PRÁCTICO) -->
-      <div style="margin-bottom: 22px; background: #0f172a; border: 1px solid #334155; border-radius: 12px; padding: 14px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 4px;">
-          <div>
-            <strong style="font-size: 13.5px; color: #34d399; display: flex; align-items: center; gap: 6px;">
-              🖐️ 1. Lista de Observación – Área Psicomotora (Reto «Conecta el Prototipo»)
-            </strong>
-            <span style="font-size: 11px; color: #94a3b8;">Registro formativo del docente durante la manipulación y conexionado.</span>
-          </div>
-          <div style="display: flex; gap: 4px;">
-            <button class="btn btn-outline" style="font-size: 10px; padding: 3px 8px; min-height: 24px; border-color: #34d399; color: #34d399;" onclick="marcarTodosPsicomotor('A')">
-              ✅ Marcar Todos Nivel A (Autónomo)
-            </button>
-            <button class="btn btn-outline" style="font-size: 10px; padding: 3px 8px; min-height: 24px;" onclick="marcarTodosPsicomotor('B')">
-              🟡 Nivel B
-            </button>
-          </div>
+      <!-- BARRA DE FILTRO Y BÚSQUEDA RÁPIDA -->
+      <div style="background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 10px 14px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 260px;">
+          <span style="font-size: 13px;">🔍</span>
+          <input type="text" id="inputBuscarEstudianteObs" placeholder="Buscar estudiante por nombre o apellido..." style="width: 100%; max-width: 320px; background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 6px 10px; color: white; font-size: 11.5px; outline: none;" oninput="renderizarObservacionDocente()">
+          <select id="filtroSeccionObs" style="background: #0f172a; border: 1px solid #334155; color: white; border-radius: 6px; padding: 6px 10px; font-size: 11.5px;" onchange="renderizarObservacionDocente()">
+            <option value="TODAS">Todas las Secciones</option>
+            <option value="Sección 9-1">Sección 9-1</option>
+            <option value="Sección 9-2">Sección 9-2</option>
+            <option value="Sección 9-3">Sección 9-3</option>
+          </select>
         </div>
 
-        <div class="rubric-row rubric-header" style="color: #34d399; background: #1e293b;">
-          <div>Conducta Observable (Hacer y Manipulación)</div>
-          <div style="text-align: center;">Escala (A / B / C)</div>
-          <div>Observación Pedagógica del Docente</div>
-        </div>
-
-        <div id="contenedorRubricaPsicomotora">
-          <!-- 6 Conductas inyectadas por JS -->
+        <div style="display: flex; gap: 12px; font-size: 11.5px; color: #cbd5e1; align-items: center;">
+          <span>Total: <strong style="color: #38bdf8;" id="cntTotalObs">0</strong></span>
+          <span>•</span>
+          <span>Evaluados: <strong style="color: #34d399;" id="cntEvaluadosObs">0</strong></span>
+          <span>•</span>
+          <span>Pendientes: <strong style="color: #fbbf24;" id="cntPendientesObs">0</strong></span>
         </div>
       </div>
 
-      <!-- 2. ÁREA SOCIOAFECTIVA (LISTA DE OBSERVACIÓN - 7 CONDUCTAS CONVIVIR) -->
-      <div style="margin-bottom: 22px; background: #0f172a; border: 1px solid #334155; border-radius: 12px; padding: 14px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 4px;">
-          <div>
-            <strong style="font-size: 13.5px; color: #fbbf24; display: flex; align-items: center; gap: 6px;">
-              ❤️ 2. Lista de Observación – Área Socioafectiva (7 Conductas Actitudinales)
-            </strong>
-            <span style="font-size: 11px; color: #94a3b8;">Registro formativo sobre colaboración, ética, resiliencia y uso seguro.</span>
-          </div>
-          <div style="display: flex; gap: 4px;">
-            <button class="btn btn-outline" style="font-size: 10px; padding: 3px 8px; min-height: 24px; border-color: #fbbf24; color: #fbbf24;" onclick="marcarTodosSocio('A')">
-              ✅ Marcar Todos Nivel A (Consistente)
-            </button>
-            <button class="btn btn-outline" style="font-size: 10px; padding: 3px 8px; min-height: 24px;" onclick="marcarTodosSocio('B')">
-              🟡 Nivel B
-            </button>
-          </div>
-        </div>
-
-        <div class="rubric-row rubric-header" style="color: #fbbf24; background: #1e293b;">
-          <div>Conducta Observable (Ser y Convivir)</div>
-          <div style="text-align: center;">Escala (A / B / C)</div>
-          <div>Observación Pedagógica del Docente</div>
-        </div>
-
-        <div id="contenedorRubricaSocioafectiva">
-          <!-- 7 Conductas inyectadas por JS -->
-        </div>
-      </div>
-
-      <!-- 3. SÍNTESIS INDIVIDUAL FORMATIVA: LOGROS Y CONSIDERACIONES PARA EL DESARROLLO -->
-      <div style="background: #1e293b; border: 1.5px solid #38bdf8; border-radius: 12px; padding: 16px; box-shadow: 0 4px 16px rgba(56, 189, 248, 0.15);">
-        <strong style="font-size: 13px; color: #38bdf8; display: block; margin-bottom: 10px; font-weight: 800;">
-          🎯 3. Registro Cualitativo: Logros Observados & Aspectos a Considerar en el Desarrollo
-        </strong>
-
-        <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 14px; margin-bottom: 12px;">
-          <div>
-            <label style="display: block; font-size: 11px; font-weight: 700; color: #cbd5e1; margin-bottom: 4px;">
-              Necesidad Prioritaria Detectada:
-            </label>
-            <select id="selectNecesidadPrioritaria" style="width: 100%; background: #0f172a; border: 1.5px solid #334155; border-radius: 8px; padding: 8px 10px; color: white; font-size: 12px; font-weight: 600;">
-              <option value="Dominio Alto / Consolidado">Dominio Alto / Consolidado (Avanzar complejidad)</option>
-              <option value="Algoritmo y Secuenciación">Algoritmo y Secuenciación (Lógica previa)</option>
-              <option value="Sensor, Actuador o Microcontrolador">Sensor, Actuador o Microcontrolador (Exploración guiada)</option>
-              <option value="Proceso de Depuración">Proceso de Depuración (Prueba-error-corrección)</option>
-              <option value="Orientación Espacial y Conexiones">Orientación Espacial y Conexiones (Manipulación progresiva)</option>
-              <option value="Socioafectiva y Resiliencia">Socioafectiva y Resiliencia (Acompañamiento colaborativo)</option>
-            </select>
-          </div>
-
-          <div>
-            <label style="display: block; font-size: 11px; font-weight: 700; color: #cbd5e1; margin-bottom: 4px;">
-              Condición de Aplicación de la Prueba:
-            </label>
-            <select id="selectCondicionAplicacion" style="width: 100%; background: #0f172a; border: 1.5px solid #334155; border-radius: 8px; padding: 8px 10px; color: white; font-size: 12px; font-weight: 600;">
-              <option value="Ordinaria">Aplicación Ordinaria (Fecha y Hora Oficial)</option>
-              <option value="Extemporanea">Aplicación Extemporánea / Otra Fecha (Justificación Docente)</option>
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <label style="display: block; font-size: 11px; font-weight: 700; color: #cbd5e1; margin-bottom: 4px;">
-            Descripción del Desempeño Individual (Para la Matriz de Sistematización Pág. 15):
-          </label>
-          <textarea id="inputAccionPedagogica" rows="2" placeholder="Describa los logros alcanzados y los aspectos clave a considerar durante la mediación pedagógica..." style="width: 100%; background: #0f172a; border: 1.5px solid #334155; border-radius: 8px; padding: 8px 10px; color: white; font-size: 12px; resize: vertical;"></textarea>
-        </div>
+      <!-- CONTENEDOR DE TARJETAS DESPLEGABLES (ACORDEÓN) POR ESTUDIANTE -->
+      <div id="contenedorEstudiantesObservacion">
+        <!-- Inyectado dinámicamente por renderizarObservacionDocente() -->
       </div>
 
     </div>
@@ -827,7 +871,8 @@
       vistaActual: 1,
       estudiantes: [],
       estudianteActivoIdx: 0,
-      seccionFiltro: "TODAS"
+      seccionFiltro: "TODAS",
+      tarjetasExpandidas: {}
     };
 
     // Inicializar aplicativo
@@ -838,6 +883,12 @@
       }
       renderizarTodo();
     });
+
+    function renderizarTodo() {
+      renderizarListaEstudiantes();
+      renderizarObservacionDocente();
+      renderizarConsolidadoGrupal();
+    }
 
     function cambiarVista(num) {
       estadoDocente.vistaActual = num;
@@ -850,29 +901,33 @@
           else t.className = "view-tab";
         }
       }
+      if (num === 2) renderizarObservacionDocente();
       if (num === 3) renderizarConsolidadoGrupal();
     }
 
     function cargarSeccionDemo(sec) {
       var demos = {
         "9-1": [
-          { id: "EST-01", nombre: "Valeria Montero Jiménez", seccion: "Sección 9-1", evaluado: true, cog: Array(10).fill("L"), psi: Array(6).fill("A"), soc: Array(7).fill("A"), necesidad: "Dominio Alto / Consolidado", accion: "Aumentar complejidad con proyectos de robótica avanzada." },
-          { id: "EST-02", nombre: "Kevin Morales Vargas", seccion: "Sección 9-1", evaluado: true, cog: ["L","L","L","L","ED","ED","L","ED","L","L"], psi: ["A","A","B","A","B","A"], soc: ["A","A","A","B","A","A","A"], necesidad: "Algoritmo y Secuenciación", accion: "Ejercicios de diagramas de flujo y descomposición lógica." },
-          { id: "EST-03", nombre: "Sofía Castro Navarro", seccion: "Sección 9-1", evaluado: true, cog: ["L","L","L","L","L","L","L","L","L","L"], psi: ["A","A","A","A","A","A"], soc: ["A","A","A","A","A","A","A"], necesidad: "Dominio Alto / Consolidado", accion: "Liderar proyecto integrador en domótica escolar." },
-          { id: "EST-04", nombre: "Matías Rojas Alvarado", seccion: "Sección 9-1", evaluado: false, cog: Array(10).fill("ED"), psi: Array(6).fill("B"), soc: Array(7).fill("B"), necesidad: "Sensor, Actuador o Microcontrolador", accion: "Exploración guiada de hardware en simulador." },
-          { id: "EST-05", nombre: "Jimena Esquivel Cordero", seccion: "Sección 9-1", evaluado: true, cog: Array(10).fill("L"), psi: Array(6).fill("A"), soc: Array(7).fill("A"), necesidad: "Dominio Alto / Consolidado", accion: "Avanzar a retos de automatización autónoma." }
+          { id: "EST-01", nombre: "Valeria Montero Jiménez", seccion: "Sección 9-1", evaluado: true, horaEntrega: "07:45", fechaEntrega: "Hoy", cog: Array(10).fill("L"), psi: Array(6).fill("A"), soc: Array(7).fill("A"), necesidad: "Dominio Alto / Consolidado", descripcionDesempeno: "Demuestra excelente dominio en identificación de microcontroladores y sensores con autonomía. Conexionado preciso en simulador 2D." },
+          { id: "EST-02", nombre: "Kevin Morales Vargas", seccion: "Sección 9-1", evaluado: true, horaEntrega: "08:10", fechaEntrega: "Hoy", cog: ["L","L","L","L","ED","ED","L","ED","L","L"], psi: ["A","A","B","A","B","A"], soc: ["A","A","A","B","A","A","A"], necesidad: "Algoritmo y Secuenciación", descripcionDesempeno: "Reconoce los flujos E-P-S; se recomienda reforzar secuencias de algoritmos y conversión de energía." },
+          { id: "EST-03", nombre: "Sofía Castro Navarro", seccion: "Sección 9-1", evaluado: true, horaEntrega: "08:15", fechaEntrega: "Hoy", cog: ["L","L","L","L","L","L","L","L","L","L"], psi: ["A","A","A","A","A","A"], soc: ["A","A","A","A","A","A","A"], necesidad: "Dominio Alto / Consolidado", descripcionDesempeno: "Desempeño sobresaliente en las 3 áreas evaluadas. Acompaña constructivamente a sus compañeros." },
+          { id: "EST-04", nombre: "Matías Rojas Alvarado", seccion: "Sección 9-1", evaluado: false, horaEntrega: "", fechaEntrega: "", cog: Array(10).fill("ED"), psi: Array(6).fill("B"), soc: Array(7).fill("B"), necesidad: "Sensor, Actuador o Microcontrolador", descripcionDesempeno: "En proceso de diagnóstico. Requiere acompañamiento en conexionado físico de pines digitales." },
+          { id: "EST-05", nombre: "Jimena Esquivel Cordero", seccion: "Sección 9-1", evaluado: true, horaEntrega: "08:30", fechaEntrega: "Hoy", cog: Array(10).fill("L"), psi: Array(6).fill("A"), soc: Array(7).fill("A"), necesidad: "Dominio Alto / Consolidado", descripcionDesempeno: "Manipulación autónoma y análisis reflexivo de los diagramas de bloques." }
         ],
         "9-2": [
-          { id: "EST-06", nombre: "David Fernández Mora", seccion: "Sección 9-2", evaluado: true, cog: Array(10).fill("L"), psi: Array(6).fill("A"), soc: Array(7).fill("A"), necesidad: "Dominio Alto / Consolidado", accion: "Reforzar programación de actuadores servos." },
-          { id: "EST-07", nombre: "Camila Solano Ugalde", seccion: "Sección 9-2", evaluado: false, cog: Array(10).fill("ED"), psi: Array(6).fill("B"), soc: Array(7).fill("B"), necesidad: "Proceso de Depuración", accion: "Retos breves de prueba y depuración guiada." }
+          { id: "EST-06", nombre: "David Fernández Mora", seccion: "Sección 9-2", evaluado: true, horaEntrega: "09:05", fechaEntrega: "Hoy", cog: Array(10).fill("L"), psi: Array(6).fill("A"), soc: Array(7).fill("A"), necesidad: "Dominio Alto / Consolidado", descripcionDesempeno: "Reforzar programación de actuadores y servomotores en la mediación posterior." },
+          { id: "EST-07", nombre: "Camila Solano Ugalde", seccion: "Sección 9-2", evaluado: false, horaEntrega: "", fechaEntrega: "", cog: Array(10).fill("ED"), psi: Array(6).fill("B"), soc: Array(7).fill("B"), necesidad: "Proceso de Depuración", descripcionDesempeno: "Pendiente de diagnóstico completo. Requiere apoyo en depuración de errores lógicos." }
         ]
       };
 
       var nuevos = demos[sec] || [];
       estadoDocente.estudiantes = nuevos;
+      estadoDocente.tarjetasExpandidas = {};
+      if (nuevos.length > 0) {
+        estadoDocente.tarjetasExpandidas[0] = true;
+      }
       guardarNominaEnStorage();
-      renderizarListaEstudiantes();
-      seleccionarEstudiante(0);
+      renderizarTodo();
       alert("Nómina cargada con éxito: " + nuevos.length + " estudiantes de " + sec);
     }
 
@@ -898,17 +953,21 @@
             nombre: nom,
             seccion: sec,
             evaluado: false,
+            horaEntrega: "",
+            fechaEntrega: "",
             cog: Array(10).fill("ED"),
             psi: Array(6).fill("B"),
             soc: Array(7).fill("B"),
+            obsPsi: Array(6).fill(""),
+            obsSoc: Array(7).fill(""),
             necesidad: "Sensor, Actuador o Microcontrolador",
-            accion: "Planificar exploración guiada de entradas y salidas."
+            descripcionDesempeno: "Diagnóstico inicial registrado en nómina."
           });
           agregados++;
         });
 
         guardarNominaEnStorage();
-        renderizarListaEstudiantes();
+        renderizarTodo();
         alert("¡Archivo importado con éxito! Se añadieron " + agregados + " estudiantes a la nómina.");
       };
       reader.readAsText(file);
@@ -931,11 +990,15 @@
             nombre: nom,
             seccion: sec,
             evaluado: false,
+            horaEntrega: "",
+            fechaEntrega: "",
             cog: Array(10).fill("ED"),
             psi: Array(6).fill("B"),
             soc: Array(7).fill("B"),
+            obsPsi: Array(6).fill(""),
+            obsSoc: Array(7).fill(""),
             necesidad: "Algoritmo y Secuenciación",
-            accion: "Iniciar con secuencias concretas y descomposición de algoritmos."
+            descripcionDesempeno: "Diagnóstico inicial incorporado."
           });
           agregados++;
         }
@@ -943,227 +1006,390 @@
 
       document.getElementById("txtEstudiantesPegar").value = "";
       guardarNominaEnStorage();
-      renderizarListaEstudiantes();
+      renderizarTodo();
       alert("Se incorporaron " + agregados + " estudiantes.");
     }
 
     function limpiarNomina() {
       if (confirm("¿Deseas vaciar la lista de estudiantes actual?")) {
         estadoDocente.estudiantes = [];
+        estadoDocente.tarjetasExpandidas = {};
         guardarNominaEnStorage();
-        renderizarListaEstudiantes();
+        renderizarTodo();
       }
     }
 
     function renderizarListaEstudiantes() {
       var cont = document.getElementById("contenedorListaEstudiantes");
-      var filtro = document.getElementById("filtroSeccion").value;
+      if (!cont) return;
+      var filtro = document.getElementById("filtroSeccion") ? document.getElementById("filtroSeccion").value : "TODAS";
       cont.innerHTML = "";
 
       var filtrados = estadoDocente.estudiantes.filter(function(e) {
         return filtro === "TODAS" || e.seccion === filtro;
       });
 
-      document.getElementById("totalEstudiantesContador").innerText = filtrados.length;
+      var contTot = document.getElementById("totalEstudiantesContador");
+      if (contTot) contTot.innerText = filtrados.length;
 
       filtrados.forEach(function(est, idx) {
         var realIdx = estadoDocente.estudiantes.indexOf(est);
         var div = document.createElement("div");
         div.className = "student-pill" + (realIdx === estadoDocente.estudianteActivoIdx ? " selected" : "");
-        div.onclick = function() { seleccionarEstudiante(realIdx); };
+        div.onclick = function() { 
+          irAObservacionEstudiante(realIdx);
+        };
 
         var badgeClass = est.evaluado ? "badge-completado" : "badge-pendiente";
         var badgeText = est.evaluado ? "✅ Evaluado" : "🟡 Pendiente";
 
-        div.innerHTML = '<div><strong style="color: white; font-size: 12px;">' + est.nombre + '</strong><span style="font-size: 10.5px; color: #94a3b8; display: block;">' + est.seccion + '</span></div><div style="display:flex; align-items:center; gap:8px;"><span class="badge-status ' + badgeClass + '">' + badgeText + '</span><button class="btn btn-outline" style="font-size:10px; padding:2px 6px; min-height:24px;" onclick="event.stopPropagation(); seleccionarEstudiante(' + realIdx + '); cambiarVista(2);">Evaluar ➔</button></div>';
+        div.innerHTML = '<div><strong style="color: white; font-size: 12px;">' + est.nombre + '</strong><span style="font-size: 10.5px; color: #94a3b8; display: block;">' + est.seccion + (est.horaEntrega ? ' • ' + est.horaEntrega : '') + '</span></div><div style="display:flex; align-items:center; gap:8px;"><span class="badge-status ' + badgeClass + '">' + badgeText + '</span><button class="btn btn-outline" style="font-size:10px; padding:2px 6px; min-height:24px;" onclick="event.stopPropagation(); irAObservacionEstudiante(' + realIdx + ');">Observar ➔</button></div>';
         cont.appendChild(div);
       });
     }
 
-    function seleccionarEstudiante(idx) {
-      if (!estadoDocente.estudiantes[idx]) return;
-      estadoDocente.estudianteActivoIdx = idx;
-      var est = estadoDocente.estudiantes[idx];
-
-      document.getElementById("labelNombreEstudianteActivo").innerText = est.nombre;
-      document.getElementById("labelSeccionEstudianteActivo").innerText = "Sección: " + est.seccion + " • III Ciclo • Módulo 1 (2026)" + (est.horaEntrega ? " • Entrega: " + est.horaEntrega : "");
-
-      document.getElementById("selectNecesidadPrioritaria").value = est.necesidad || "Dominio Alto / Consolidado";
-      var condEl = document.getElementById("selectCondicionAplicacion");
-      if (condEl) condEl.value = est.esExtemporaneo ? "Extemporanea" : "Ordinaria";
-      document.getElementById("inputAccionPedagogica").value = est.descripcionDesempeno || est.accion || "";
-
-      renderizarFormularioEvaluacion(est);
-      renderizarListaEstudiantes();
+    function irAObservacionEstudiante(realIdx) {
+      estadoDocente.estudianteActivoIdx = realIdx;
+      estadoDocente.tarjetasExpandidas[realIdx] = true;
+      cambiarVista(2);
+      setTimeout(function() {
+        var el = document.getElementById("cardEstudiante_" + realIdx);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
     }
 
-    function renderizarFormularioEvaluacion(est) {
-      // 1. Resumen de Estado Cognoscitivo (10 Indicadores de Logro recibidos de la WebApp)
-      var numLogCog = est.cog ? est.cog.filter(function(x){ return x === "L"; }).length : (est.evaluado ? 10 : 0);
-      var porcCog = Math.round((numLogCog / 10) * 100);
-      
-      var badgeCog = document.getElementById("badgePuntajeCognitivo");
-      if (badgeCog) {
-        badgeCog.innerText = numLogCog + " / 10 Logrados (" + porcCog + "%)";
-        badgeCog.className = porcCog >= 80 ? "badge-status badge-completado" : (porcCog >= 60 ? "badge-status badge-pendiente" : "badge-status");
+    /* ========================================================================
+       RENDERIZADO DE OBSERVACIÓN DOCENTE CON ACORDEÓN POR ESTUDIANTE (VISTA 2)
+       ======================================================================== */
+    function renderizarObservacionDocente() {
+      var cont = document.getElementById("contenedorEstudiantesObservacion");
+      if (!cont) return;
+
+      var query = document.getElementById("inputBuscarEstudianteObs") ? document.getElementById("inputBuscarEstudianteObs").value.toLowerCase().trim() : "";
+      var filtroSec = document.getElementById("filtroSeccionObs") ? document.getElementById("filtroSeccionObs").value : "TODAS";
+
+      var filtrados = estadoDocente.estudiantes.filter(function(est) {
+        var matchSec = (filtroSec === "TODAS" || est.seccion === filtroSec);
+        var matchNom = (!query || est.nombre.toLowerCase().includes(query) || (est.seccion && est.seccion.toLowerCase().includes(query)));
+        return matchSec && matchNom;
+      });
+
+      var total = filtrados.length;
+      var evaluados = filtrados.filter(function(e) { return e.evaluado; }).length;
+      var pendientes = total - evaluados;
+
+      if (document.getElementById("cntTotalObs")) document.getElementById("cntTotalObs").innerText = total;
+      if (document.getElementById("cntEvaluadosObs")) document.getElementById("cntEvaluadosObs").innerText = evaluados;
+      if (document.getElementById("cntPendientesObs")) document.getElementById("cntPendientesObs").innerText = pendientes;
+
+      cont.innerHTML = "";
+
+      if (filtrados.length === 0) {
+        cont.innerHTML = '<div style="text-align: center; padding: 40px 20px; background: #1e293b; border-radius: 12px; color: #94a3b8;"><span style="font-size: 32px; display: block; margin-bottom: 8px;">🔍</span>No se encontraron estudiantes para los filtros seleccionados.<br><button class="btn btn-accent" style="margin-top: 12px;" onclick="document.getElementById(\'inputBuscarEstudianteObs\').value=\'\'; renderizarObservacionDocente();">Limpiar Filtros</button></div>';
+        return;
       }
 
-      var estadoTxt = document.getElementById("bannerCognitivoEstado");
-      if (estadoTxt) {
-        if (est.evaluado || est.horaEntrega) {
-          estadoTxt.innerHTML = "✅ Sincronizado vía WebApp / QR (" + (est.fechaEntrega || "Hoy") + " • " + (est.horaEntrega || "10:30") + ") • Condición: <strong>" + (est.esExtemporaneo ? "Extemporánea" : "Ordinaria") + "</strong>";
+      filtrados.forEach(function(est) {
+        var realIdx = estadoDocente.estudiantes.indexOf(est);
+        var isExpanded = !!estadoDocente.tarjetasExpandidas[realIdx];
+
+        // Asegurar arrays de datos
+        if (!est.psi) est.psi = Array(6).fill("A");
+        if (!est.soc) est.soc = Array(7).fill("A");
+        if (!est.obsPsi) est.obsPsi = Array(6).fill("");
+        if (!est.obsSoc) est.obsSoc = Array(7).fill("");
+        if (!est.cog) est.cog = Array(10).fill("L");
+
+        var numLogCog = est.cog.filter(function(x){ return x === "L"; }).length;
+        var porcCog = Math.round((numLogCog / 10) * 100);
+
+        var numPsiA = est.psi.filter(function(x){ return x === "A"; }).length;
+        var numSocA = est.soc.filter(function(x){ return x === "A"; }).length;
+
+        var card = document.createElement("div");
+        card.id = "cardEstudiante_" + realIdx;
+        card.className = "student-accordion-card" + (isExpanded ? " expanded" : "");
+
+        // ENCABEZADO HORIZONTAL DE LA TARJETA
+        var headerHtml = '<div class="student-accordion-header" onclick="toggleAcordeonEstudiante(' + realIdx + ')">' +
+          '<div class="student-info-left">' +
+            '<div class="student-avatar">🧑‍🎓</div>' +
+            '<div>' +
+              '<h3 class="student-name-title">' + (realIdx + 1) + '. ' + est.nombre + '</h3>' +
+              '<div class="student-meta-sub">' +
+                '<span style="color: #38bdf8; font-weight: 700;">' + est.seccion + '</span> • ' +
+                (est.horaEntrega ? '<span style="color: #34d399;">🕒 ' + (est.fechaEntrega || 'Hoy') + ' ' + est.horaEntrega + '</span>' : '<span style="color: #fbbf24;">⏳ Pendiente WebApp</span>') +
+                (est.esExtemporaneo ? ' • <span class="badge-status" style="background:#451a03; color:#fdba74; border:1px solid #f97316;">Extemporánea</span>' : '') +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="student-badges-mid">' +
+            '<span class="badge-status" style="background: rgba(37, 99, 235, 0.2); color: #60a5fa; border: 1px solid #2563eb;" title="Área Cognoscitiva auto-sincronizada">' +
+              '🧠 ' + numLogCog + '/10 Cog (' + porcCog + '%)' +
+            '</span>' +
+            '<span class="badge-status" style="background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981;" title="Área Psicomotora: Conductas Autónomas">' +
+              '🖐️ ' + numPsiA + '/6 Psi (A)' +
+            '</span>' +
+            '<span class="badge-status" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b;" title="Área Socioafectiva: Conductas Consistentes">' +
+              '❤️ ' + numSocA + '/7 Soc (A)' +
+            '</span>' +
+            '<span class="badge-status ' + (est.evaluado ? "badge-completado" : "badge-pendiente") + '">' +
+              (est.evaluado ? "✅ Evaluado" : "🟡 Pendiente") +
+            '</span>' +
+          '</div>' +
+
+          '<div class="student-actions-right" onclick="event.stopPropagation()">' +
+            '<button class="btn btn-outline" style="font-size: 10.5px; padding: 4px 8px; min-height: 28px;" onclick="mostrarModalEscanerQR()" title="Escanear comprobante QR">' +
+              '📷 QR' +
+            '</button>' +
+            '<button class="btn btn-accent" style="font-size: 10.5px; padding: 4px 10px; min-height: 28px;" onclick="guardarObservacionEstudiante(' + realIdx + ')" title="Guardar cambios de este estudiante">' +
+              '💾 Guardar' +
+            '</button>' +
+            '<button class="accordion-toggle-btn" onclick="toggleAcordeonEstudiante(' + realIdx + ')">' +
+              '<span>' + (isExpanded ? 'Ocultar' : 'Desplegar') + '</span>' +
+              '<span class="chevron-icon">▼</span>' +
+            '</button>' +
+          '</div>' +
+        '</div>';
+
+        // CUERPO DESPLEGABLE CON LAS 2 RÚBRICAS HORIZONTALES Y SÍNTESIS
+        var bodyHtml = '<div class="student-accordion-body">' +
+
+          // 1. Banner Cognitivo WebApp
+          '<div style="background: rgba(37, 99, 235, 0.12); border: 1px solid #2563eb; border-radius: 8px; padding: 8px 12px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;">' +
+            '<div style="display: flex; align-items: center; gap: 8px;">' +
+              '<span style="font-size: 18px;">🧠</span>' +
+              '<span style="font-size: 11.5px; color: #93c5fd;"><strong>Área Cognoscitiva (10 Indicadores de Logro):</strong> ' +
+              (est.evaluado || est.horaEntrega ? '✅ Sincronizado desde la WebApp del estudiante (' + (est.horaEntrega || '08:00') + ').' : '⏳ Pendiente de resolución por parte del estudiante en la WebApp «Aula Inteligente».') + '</span>' +
+            '</div>' +
+            '<span class="badge-status ' + (porcCog >= 80 ? 'badge-completado' : 'badge-pendiente') + '">' + numLogCog + ' / 10 Logrados (' + porcCog + '%)</span>' +
+          '</div>' +
+
+          // 2. Área Psicomotora (Reto Práctico - 6 Conductas)
+          '<div style="background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 12px; margin-bottom: 14px;">' +
+            '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 4px;">' +
+              '<strong style="font-size: 12.5px; color: #34d399;">🖐️ 1. Lista de Observación – Área Psicomotora (Reto «Conecta el Prototipo» - 6 Conductas)</strong>' +
+              '<div style="display: flex; gap: 4px;">' +
+                '<button type="button" class="btn btn-outline" style="font-size: 10px; padding: 2px 6px; min-height: 22px; border-color: #34d399; color: #34d399;" onclick="marcarTodosPsiEstudiante(' + realIdx + ', \'A\')">✅ Todos A (Autónomo)</button>' +
+                '<button type="button" class="btn btn-outline" style="font-size: 10px; padding: 2px 6px; min-height: 22px; border-color: #fbbf24; color: #fbbf24;" onclick="marcarTodosPsiEstudiante(' + realIdx + ', \'B\')">🟡 Nivel B (Apoyo)</button>' +
+              '</div>' +
+            '</div>' +
+
+            '<div class="rubric-row rubric-header" style="color: #34d399; background: #1e293b;">' +
+              '<div>Conducta Observable (Hacer y Manipulación)</div>' +
+              '<div style="text-align: center;">Escala (A / B / C)</div>' +
+              '<div>Observación Pedagógica del Docente</div>' +
+            '</div>';
+
+        CONDUCTAS_PSICOMOTORAS.forEach(function(cd, j) {
+          var valP = est.psi[j] || "A";
+          var obsP = (est.obsPsi && est.obsPsi[j]) ? est.obsPsi[j] : "";
+          bodyHtml += '<div class="rubric-row">' +
+            '<div style="font-size: 11px; color: #cbd5e1;"><strong style="color: #34d399;">' + (j+1) + '.</strong> ' + cd + '</div>' +
+            '<div class="segmented-control">' +
+              '<button type="button" class="segmented-btn ' + (valP === "A" ? "active-a" : "") + '" onclick="setValPsiEstudiante(' + realIdx + ', ' + j + ', \'A\')">A (Autónomo)</button>' +
+              '<button type="button" class="segmented-btn ' + (valP === "B" ? "active-b" : "") + '" onclick="setValPsiEstudiante(' + realIdx + ', ' + j + ', \'B\')">B (Apoyo)</button>' +
+              '<button type="button" class="segmented-btn ' + (valP === "C" ? "active-c" : "") + '" onclick="setValPsiEstudiante(' + realIdx + ', ' + j + ', \'C\')">C (Acomp.)</button>' +
+            '</div>' +
+            '<div><input type="text" class="rubric-obs-input" placeholder="Observación psicomotora..." value="' + obsP.replace(/"/g, '&quot;') + '" onchange="setObsPsiEstudiante(' + realIdx + ', ' + j + ', this.value)"></div>' +
+          '</div>';
+        });
+
+        bodyHtml += '</div>';
+
+        // 3. Área Socioafectiva (7 Conductas Actitudinales)
+        bodyHtml += '<div style="background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 12px; margin-bottom: 14px;">' +
+          '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 4px;">' +
+            '<strong style="font-size: 12.5px; color: #fbbf24;">❤️ 2. Lista de Observación – Área Socioafectiva (7 Conductas Actitudinales)</strong>' +
+            '<div style="display: flex; gap: 4px;">' +
+              '<button type="button" class="btn btn-outline" style="font-size: 10px; padding: 2px 6px; min-height: 22px; border-color: #fbbf24; color: #fbbf24;" onclick="marcarTodosSocEstudiante(' + realIdx + ', \'A\')">✅ Todos A (Consistente)</button>' +
+              '<button type="button" class="btn btn-outline" style="font-size: 10px; padding: 2px 6px; min-height: 22px; border-color: #f97316; color: #f97316;" onclick="marcarTodosSocEstudiante(' + realIdx + ', \'B\')">🟡 Nivel B (Intermitente)</button>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="rubric-row rubric-header" style="color: #fbbf24; background: #1e293b;">' +
+            '<div>Conducta Observable (Ser y Convivir)</div>' +
+            '<div style="text-align: center;">Escala (A / B / C)</div>' +
+            '<div>Observación Pedagógica del Docente</div>' +
+          '</div>';
+
+        CONDUCTAS_SOCIOAFECTIVAS.forEach(function(sc, k) {
+          var valS = est.soc[k] || "A";
+          var obsS = (est.obsSoc && est.obsSoc[k]) ? est.obsSoc[k] : "";
+          bodyHtml += '<div class="rubric-row">' +
+            '<div style="font-size: 11px; color: #cbd5e1;"><strong style="color: #fbbf24;">' + (k+1) + '.</strong> ' + sc + '</div>' +
+            '<div class="segmented-control">' +
+              '<button type="button" class="segmented-btn ' + (valS === "A" ? "active-a" : "") + '" onclick="setValSocEstudiante(' + realIdx + ', ' + k + ', \'A\')">A (Consistente)</button>' +
+              '<button type="button" class="segmented-btn ' + (valS === "B" ? "active-b" : "") + '" onclick="setValSocEstudiante(' + realIdx + ', ' + k + ', \'B\')">B (Intermitente)</button>' +
+              '<button type="button" class="segmented-btn ' + (valS === "C" ? "active-c" : "") + '" onclick="setValSocEstudiante(' + realIdx + ', ' + k + ', \'C\')">C (Acomp.)</button>' +
+            '</div>' +
+            '<div><input type="text" class="rubric-obs-input" placeholder="Observación actitudinal..." value="' + obsS.replace(/"/g, '&quot;') + '" onchange="setObsSocEstudiante(' + realIdx + ', ' + k + ', this.value)"></div>' +
+          '</div>';
+        });
+
+        bodyHtml += '</div>';
+
+        // 4. Síntesis Cualitativa Individual y Matriz Pág. 15
+        bodyHtml += '<div style="background: #1e293b; border: 1.5px solid #38bdf8; border-radius: 10px; padding: 12px;">' +
+          '<strong style="font-size: 12.5px; color: #38bdf8; display: block; margin-bottom: 8px;">🎯 3. Registro Cualitativo Individual & Matriz Pág. 15 MEP</strong>' +
+          '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px;">' +
+            '<div>' +
+              '<label style="font-size: 10.5px; color: #94a3b8; display: block; margin-bottom: 2px;">Necesidad Prioritaria Detectada:</label>' +
+              '<select style="width: 100%; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 6px; padding: 6px 8px; font-size: 11px;" onchange="actualizarCampoEstudiante(' + realIdx + ', \'necesidad\', this.value)">' +
+                '<option value="Dominio Alto / Consolidado"' + (est.necesidad === "Dominio Alto / Consolidado" ? " selected" : "") + '>Dominio Alto / Consolidado (Avanzar complejidad)</option>' +
+                '<option value="Algoritmo y Secuenciación"' + (est.necesidad === "Algoritmo y Secuenciación" ? " selected" : "") + '>Algoritmo y Secuenciación (Lógica previa)</option>' +
+                '<option value="Sensor, Actuador o Microcontrolador"' + (est.necesidad === "Sensor, Actuador o Microcontrolador" ? " selected" : "") + '>Sensor, Actuador o Microcontrolador (Exploración guiada)</option>' +
+                '<option value="Proceso de Depuración"' + (est.necesidad === "Proceso de Depuración" ? " selected" : "") + '>Proceso de Depuración (Prueba-error-corrección)</option>' +
+                '<option value="Orientación Espacial y Conexiones"' + (est.necesidad === "Orientación Espacial y Conexiones" ? " selected" : "") + '>Orientación Espacial y Conexiones (Manipulación progresiva)</option>' +
+                '<option value="Socioafectiva y Resiliencia"' + (est.necesidad === "Socioafectiva y Resiliencia" ? " selected" : "") + '>Socioafectiva y Resiliencia (Acompañamiento colaborativo)</option>' +
+              '</select>' +
+            '</div>' +
+            '<div>' +
+              '<label style="font-size: 10.5px; color: #94a3b8; display: block; margin-bottom: 2px;">Condición de Aplicación:</label>' +
+              '<select style="width: 100%; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 6px; padding: 6px 8px; font-size: 11px;" onchange="actualizarCondicionEstudiante(' + realIdx + ', this.value)">' +
+                '<option value="Ordinaria"' + (!est.esExtemporaneo ? " selected" : "") + '>Aplicación Ordinaria (Fecha Oficial)</option>' +
+                '<option value="Extemporanea"' + (est.esExtemporaneo ? " selected" : "") + '>Aplicación Extemporánea (Justificación Docente)</option>' +
+              '</select>' +
+            '</div>' +
+          '</div>' +
+
+          '<div>' +
+            '<label style="font-size: 10.5px; color: #94a3b8; display: block; margin-bottom: 2px;">Descripción del desempeño individual (Pág. 15 MEP):</label>' +
+            '<textarea class="rubric-obs-input" rows="2" style="font-size: 11px; resize: vertical;" placeholder="Describa logros alcanzados y consideraciones formativas para el desarrollo..." onchange="actualizarCampoEstudiante(' + realIdx + ', \'descripcionDesempeno\', this.value)">' + (est.descripcionDesempeno || "") + '</textarea>' +
+          '</div>' +
+
+          '<div style="text-align: right; margin-top: 8px;">' +
+            '<button class="btn btn-accent" style="font-size: 11px; padding: 6px 14px;" onclick="guardarObservacionEstudiante(' + realIdx + ')">' +
+              '💾 Guardar Observación de ' + est.nombre.split(" ")[0] +
+            '</button>' +
+          '</div>' +
+        '</div>';
+
+        bodyHtml += '</div>';
+
+        card.innerHTML = headerHtml + bodyHtml;
+        cont.appendChild(card);
+      });
+    }
+
+    /* CONTROL DE ACORDEÓN POR ESTUDIANTE */
+    function toggleAcordeonEstudiante(idx) {
+      estadoDocente.tarjetasExpandidas[idx] = !estadoDocente.tarjetasExpandidas[idx];
+      var card = document.getElementById("cardEstudiante_" + idx);
+      if (card) {
+        if (estadoDocente.tarjetasExpandidas[idx]) {
+          card.classList.add("expanded");
         } else {
-          estadoTxt.innerHTML = "⏳ Pendiente de resolución por parte del estudiante en la WebApp «Aula Inteligente».";
+          card.classList.remove("expanded");
         }
       }
-
-      // 2. Rúbrica de Observación Psicomotora (6 Conductas Reto Práctico)
-      var contPsi = document.getElementById("contenedorRubricaPsicomotora");
-      if (contPsi) {
-        contPsi.innerHTML = "";
-        CONDUCTAS_PSICOMOTORAS.forEach(function(cd, j) {
-          var valP = (est.psi && est.psi[j]) ? est.psi[j] : "A";
-          var rowP = document.createElement("div");
-          rowP.className = "rubric-row";
-          rowP.innerHTML = '<div style="font-size:11.5px; color:#cbd5e1;"><strong style="color:#34d399;">' + (j+1) + '.</strong> ' + cd + '</div>' +
-            '<div class="segmented-control">' +
-              '<button type="button" class="segmented-btn ' + (valP === "A" ? "active-a" : "") + '" onclick="setValPsi(' + j + ', \'A\')">A (Autónomo)</button>' +
-              '<button type="button" class="segmented-btn ' + (valP === "B" ? "active-b" : "") + '" onclick="setValPsi(' + j + ', \'B\')">B (Apoyo)</button>' +
-              '<button type="button" class="segmented-btn ' + (valP === "C" ? "active-c" : "") + '" onclick="setValPsi(' + j + ', \'C\')">C (Acomp.)</button>' +
-            '</div>' +
-            '<div><input type="text" class="rubric-obs-input" placeholder="Observación del docente..." value="' + ((est.obsPsi && est.obsPsi[j]) || "") + '" onchange="setObsPsi(' + j + ', this.value)"></div>';
-          contPsi.appendChild(rowP);
-        });
-      }
-
-      // 3. Rúbrica de Observación Socioafectiva (7 Conductas Actitudinales)
-      var contSoc = document.getElementById("contenedorRubricaSocioafectiva");
-      if (contSoc) {
-        contSoc.innerHTML = "";
-        CONDUCTAS_SOCIOAFECTIVAS.forEach(function(sc, k) {
-          var valS = (est.soc && est.soc[k]) ? est.soc[k] : "A";
-          var rowS = document.createElement("div");
-          rowS.className = "rubric-row";
-          rowS.innerHTML = '<div style="font-size:11.5px; color:#cbd5e1;"><strong style="color:#fbbf24;">' + (k+1) + '.</strong> ' + sc + '</div>' +
-            '<div class="segmented-control">' +
-              '<button type="button" class="segmented-btn ' + (valS === "A" ? "active-a" : "") + '" onclick="setValSoc(' + k + ', \'A\')">A (Consistente)</button>' +
-              '<button type="button" class="segmented-btn ' + (valS === "B" ? "active-b" : "") + '" onclick="setValSoc(' + k + ', \'B\')">B (Intermitente)</button>' +
-              '<button type="button" class="segmented-btn ' + (valS === "C" ? "active-c" : "") + '" onclick="setValSoc(' + k + ', \'C\')">C (Acomp.)</button>' +
-            '</div>' +
-            '<div><input type="text" class="rubric-obs-input" placeholder="Observación actitudinal..." value="' + ((est.obsSoc && est.obsSoc[k]) || "") + '" onchange="setObsSoc(' + k + ', this.value)"></div>';
-          contSoc.appendChild(rowS);
-        });
-      }
     }
 
-    function setValPsi(idx, val) {
-      var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
+    function expandirTodosEstudiantes(expandir) {
+      estadoDocente.estudiantes.forEach(function(e, idx) {
+        estadoDocente.tarjetasExpandidas[idx] = expandir;
+      });
+      renderizarObservacionDocente();
+    }
+
+    /* SETTERS DE ESTADO FORMATIVO */
+    function setValPsiEstudiante(idx, condIdx, val) {
+      var est = estadoDocente.estudiantes[idx];
       if (est) {
         if (!est.psi) est.psi = Array(6).fill("A");
-        est.psi[idx] = val;
-        renderizarFormularioEvaluacion(est);
+        est.psi[condIdx] = val;
+        guardarNominaEnStorage();
+        renderizarObservacionDocente();
       }
     }
 
-    function setObsPsi(idx, val) {
-      var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
+    function setObsPsiEstudiante(idx, condIdx, val) {
+      var est = estadoDocente.estudiantes[idx];
       if (est) {
         if (!est.obsPsi) est.obsPsi = Array(6).fill("");
-        est.obsPsi[idx] = val;
+        est.obsPsi[condIdx] = val;
         guardarNominaEnStorage();
       }
     }
 
-    function setValSoc(idx, val) {
-      var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
+    function setValSocEstudiante(idx, condIdx, val) {
+      var est = estadoDocente.estudiantes[idx];
       if (est) {
         if (!est.soc) est.soc = Array(7).fill("A");
-        est.soc[idx] = val;
-        renderizarFormularioEvaluacion(est);
+        est.soc[condIdx] = val;
+        guardarNominaEnStorage();
+        renderizarObservacionDocente();
       }
     }
 
-    function setObsSoc(idx, val) {
-      var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
+    function setObsSocEstudiante(idx, condIdx, val) {
+      var est = estadoDocente.estudiantes[idx];
       if (est) {
         if (!est.obsSoc) est.obsSoc = Array(7).fill("");
-        est.obsSoc[idx] = val;
+        est.obsSoc[condIdx] = val;
         guardarNominaEnStorage();
       }
     }
 
-    function marcarTodosPsicomotor(val) {
-      var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
+    function marcarTodosPsiEstudiante(idx, val) {
+      var est = estadoDocente.estudiantes[idx];
       if (est) {
         est.psi = Array(6).fill(val);
-        renderizarFormularioEvaluacion(est);
+        guardarNominaEnStorage();
+        renderizarObservacionDocente();
       }
     }
 
-    function marcarTodosSocio(val) {
-      var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
+    function marcarTodosSocEstudiante(idx, val) {
+      var est = estadoDocente.estudiantes[idx];
       if (est) {
         est.soc = Array(7).fill(val);
-        renderizarFormularioEvaluacion(est);
+        guardarNominaEnStorage();
+        renderizarObservacionDocente();
       }
     }
 
-    function guardarEvaluacionEstudianteActual() {
-      var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
-      if (!est) return;
-
-      est.necesidad = document.getElementById("selectNecesidadPrioritaria").value;
-      var condEl = document.getElementById("selectCondicionAplicacion");
-      est.esExtemporaneo = condEl ? (condEl.value === "Extemporanea") : false;
-      est.descripcionDesempeno = document.getElementById("inputAccionPedagogica").value.trim();
-      est.accion = est.descripcionDesempeno;
-      est.evaluado = true;
-
-      guardarNominaEnStorage();
-      renderizarListaEstudiantes();
-      alert("✅ Observación docente de " + est.nombre + " guardada con éxito en la nómina.");
-    }
-
-    function marcarTodosPsicomotor(val) {
-      var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
+    function actualizarCampoEstudiante(idx, field, val) {
+      var est = estadoDocente.estudiantes[idx];
       if (est) {
-        est.psi = Array(6).fill(val);
-        renderizarFormularioEvaluacion(est);
+        est[field] = val;
+        if (field === 'descripcionDesempeno') est.accion = val;
+        guardarNominaEnStorage();
       }
     }
 
-    function marcarTodosSocio(val) {
-      var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
+    function actualizarCondicionEstudiante(idx, val) {
+      var est = estadoDocente.estudiantes[idx];
       if (est) {
-        est.soc = Array(7).fill(val);
-        renderizarFormularioEvaluacion(est);
+        est.esExtemporaneo = (val === "Extemporanea");
+        guardarNominaEnStorage();
       }
     }
 
-    function guardarEvaluacionEstudianteActual() {
-      var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
+    function guardarObservacionEstudiante(idx) {
+      var est = estadoDocente.estudiantes[idx];
       if (!est) return;
 
       est.evaluado = true;
-      est.necesidad = document.getElementById("selectNecesidadPrioritaria").value;
-      est.accion = document.getElementById("inputAccionPedagogica").value;
-
       guardarNominaEnStorage();
       renderizarListaEstudiantes();
-      alert("✅ Evaluación de " + est.nombre + " guardada con éxito.");
+      renderizarObservacionDocente();
+      renderizarConsolidadoGrupal();
+      alert("✅ Observación formativa de «" + est.nombre + "» guardada con éxito en la nómina.");
     }
 
+    /* MATRIZ DE SISTEMATIZACIÓN OFICIAL MEP PÁG. 15 */
     function renderizarConsolidadoGrupal() {
       var tbody = document.getElementById("tbodySistematizacionMatriz");
       if (!tbody) return;
       tbody.innerHTML = "";
 
-      var totalEst = estadoDocente.estudiantes.length;
-
       estadoDocente.estudiantes.forEach(function(est, idx) {
         var tr = document.createElement("tr");
 
-        // Celdas de Aprendizaje 1 a 10
         var celdasAp = "";
         for (var i = 0; i < 10; i++) {
           var val = (est.cog && est.cog[i]) ? est.cog[i] : "ED";
@@ -1171,7 +1397,7 @@
           celdasAp += '<td style="text-align:center; padding: 6px 4px;"><span class="badge-status" style="' + badgeClass + ' font-size:10.5px; padding: 2px 6px;">' + val + '</span></td>';
         }
 
-        var descDefault = est.descripcionDesempeno || (est.evaluado ? "Logra identificar conceptos de microcontroladores y sensores con autonomía. Requiere acompañamiento en correspondencia espacial de pines." : "Pendiente de diagnóstico.");
+        var descDefault = est.descripcionDesempeno || (est.evaluado ? "Identifica conceptos de microcontroladores y sensores con autonomía. Acompañar en conexionado y polaridad de pines." : "Pendiente de diagnóstico.");
 
         tr.innerHTML = '<td style="font-weight:700; color:white; position:sticky; left:0; background:#0f172a; z-index:5;">' + (idx+1) + '. ' + est.nombre + '<span style="display:block; font-size:10px; color:#94a3b8; font-weight:normal;">' + est.seccion + (est.horaEntrega ? ' • ' + est.horaEntrega : '') + '</span></td>' +
           celdasAp +
@@ -1184,6 +1410,7 @@
     function actualizarDescripcionEstudiante(idx, texto) {
       if (estadoDocente.estudiantes[idx]) {
         estadoDocente.estudiantes[idx].descripcionDesempeno = texto;
+        estadoDocente.estudiantes[idx].accion = texto;
         guardarNominaEnStorage();
       }
     }
@@ -1262,17 +1489,21 @@
         var matchEst = estadoDocente.estudiantes.find(function(x){ return x.nombre.toLowerCase().includes(nom.toLowerCase()) || nom.toLowerCase().includes(x.nombre.toLowerCase()); });
 
         if (matchEst) {
+          var rIdx = estadoDocente.estudiantes.indexOf(matchEst);
           matchEst.evaluado = true;
+          matchEst.horaEntrega = new Date().toLocaleTimeString('es-CR', { hour: '2-digit', minute: '2-digit' });
+          matchEst.fechaEntrega = "Hoy";
           matchEst.cog = Array(10).fill("L");
           matchEst.psi = Array(6).fill("A");
           matchEst.soc = Array(7).fill("A");
           matchEst.necesidad = "Dominio Alto / Consolidado";
-          matchEst.accion = "Sincronizado vía QR: estudiante completó 100% de la WebApp.";
+          matchEst.descripcionDesempeno = "Sincronizado vía QR: estudiante completó 100% de la WebApp «Aula Inteligente».";
+          matchEst.accion = matchEst.descripcionDesempeno;
           guardarNominaEnStorage();
-          renderizarListaEstudiantes();
-          seleccionarEstudiante(estadoDocente.estudiantes.indexOf(matchEst));
+          renderizarTodo();
+          irAObservacionEstudiante(rIdx);
           cerrarModalEscanerQR();
-          alert("✅ ¡Estudiante sincronizado con éxito desde el comprobante QR de la WebApp!");
+          alert("✅ ¡Estudiante " + nom + " sincronizado con éxito desde el comprobante QR!");
         } else {
           // Crear nuevo estudiante
           var nuevoEst = {
@@ -1280,16 +1511,21 @@
             nombre: nom,
             seccion: sec,
             evaluado: true,
+            horaEntrega: new Date().toLocaleTimeString('es-CR', { hour: '2-digit', minute: '2-digit' }),
+            fechaEntrega: "Hoy",
             cog: Array(10).fill("L"),
             psi: Array(6).fill("A"),
             soc: Array(7).fill("A"),
+            obsPsi: Array(6).fill(""),
+            obsSoc: Array(7).fill(""),
             necesidad: "Dominio Alto / Consolidado",
-            accion: "Sincronizado vía QR."
+            descripcionDesempeno: "Sincronizado vía QR de comprobante."
           };
           estadoDocente.estudiantes.push(nuevoEst);
+          var nIdx = estadoDocente.estudiantes.length - 1;
           guardarNominaEnStorage();
-          renderizarListaEstudiantes();
-          seleccionarEstudiante(estadoDocente.estudiantes.length - 1);
+          renderizarTodo();
+          irAObservacionEstudiante(nIdx);
           cerrarModalEscanerQR();
           alert("✅ Estudiante " + nom + " creado y sincronizado con éxito.");
         }
