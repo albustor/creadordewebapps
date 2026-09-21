@@ -1068,11 +1068,11 @@
           💡 Reto 2: Sustitución y Adaptación de Actuador
         </h3>
         <p style="font-size: 12px; color: #1e293b; line-height: 1.5; margin-bottom: 10px;">
-          <strong>Instrucción:</strong> Selecciona un actuador alternativo (Ventilador DC, Alarma Sonora o Relé de Potencia) y comprueba cómo el sistema automatizado adapta su respuesta física ante el umbral ambiental.
+          <strong>Instrucción:</strong> Selecciona un actuador alternativo (Ventilador DC o Alarma Sonora) y comprueba cómo el sistema automatizado adapta su respuesta física ante el umbral ambiental.
         </p>
         
         <!-- SELECTOR DE ACTUADORES -->
-        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
           <button type="button" class="btn btn-outline" id="btnSelAct_LED" onclick="seleccionarActuadorReto2('LED')" style="font-size: 11px; padding: 6px 4px; background: #e0f2fe; border-color: #0284c7; color: #0369a1; font-weight: 800;">
             💡 1. Lámpara LED
           </button>
@@ -1081,9 +1081,6 @@
           </button>
           <button type="button" class="btn btn-outline" id="btnSelAct_ALARMA" onclick="seleccionarActuadorReto2('ALARMA')" style="font-size: 11px; padding: 6px 4px;">
             🔔 3. Alarma Sonora
-          </button>
-          <button type="button" class="btn btn-outline" id="btnSelAct_RELE" onclick="seleccionarActuadorReto2('RELE')" style="font-size: 11px; padding: 6px 4px;">
-            ⚡ 4. Relé Potencia
           </button>
         </div>
       </div>
@@ -2047,7 +2044,7 @@
       document.getElementById("dmmVoltA0").innerText = (circuitoValido ? voltA0 : "0.00") + " V";
       document.getElementById("dmmSalidaD9").innerText = salidaActiva ? "HIGH" : "LOW";
       document.getElementById("dmmSalidaD9").style.color = salidaActiva ? "#15803d" : "#64748b";
-      document.getElementById("dmmWatts").innerText = salidaActiva ? (estado.actuadorActual === "VENTILADOR" ? "25 W" : (estado.actuadorActual === "ALARMA" ? "5 W" : (estado.actuadorActual === "RELE" ? "60 W" : "45 W"))) : "2 W";
+      document.getElementById("dmmWatts").innerText = salidaActiva ? (estado.actuadorActual === "VENTILADOR" ? "25 W" : (estado.actuadorActual === "ALARMA" ? "5 W" : "45 W")) : "2 W";
 
       document.getElementById("labelLuxAmbiental").innerText = "Luz: " + estado.luzActual + " Lux (" + (condicionCumplida ? "Poca Luz" : "Luz Suficiente") + ")";
 
@@ -2075,7 +2072,6 @@
       if (salidaActiva) {
         if (estado.actuadorActual === "VENTILADOR") txtAula = "🌀 Ventilador On";
         else if (estado.actuadorActual === "ALARMA") txtAula = "🔔 Alarma Activa";
-        else if (estado.actuadorActual === "RELE") txtAula = "⚡ Relé Conmutado";
         else txtAula = "💡 Luz On";
       }
       document.getElementById("labelEstadoAula").innerText = txtAula;
@@ -2125,7 +2121,7 @@
 
     function seleccionarActuadorReto2(tipo) {
       estado.actuadorActual = tipo;
-      var tipos = ["LED", "VENTILADOR", "ALARMA", "RELE"];
+      var tipos = ["LED", "VENTILADOR", "ALARMA"];
       tipos.forEach(function(t) {
         var btn = document.getElementById("btnSelAct_" + t);
         if (btn) {
@@ -2146,8 +2142,7 @@
       var iconMap = {
         LED: { ico: "💡", tit: "LED (Salida)", eps: "LED (Pin D9)" },
         VENTILADOR: { ico: "🌀", tit: "Ventilador DC", eps: "Ventilador (Pin D9)" },
-        ALARMA: { ico: "🔔", tit: "Alarma Sonora", eps: "Buzzer (Pin D9)" },
-        RELE: { ico: "⚡", tit: "Relé Potencia", eps: "Relé (Pin D9)" }
+        ALARMA: { ico: "🔔", tit: "Alarma Sonora", eps: "Buzzer (Pin D9)" }
       };
 
       var meta = iconMap[tipo] || iconMap.LED;
@@ -2166,7 +2161,6 @@
     function cambiarTipoActuador() {
       if (estado.actuadorActual === "LED") seleccionarActuadorReto2("VENTILADOR");
       else if (estado.actuadorActual === "VENTILADOR") seleccionarActuadorReto2("ALARMA");
-      else if (estado.actuadorActual === "ALARMA") seleccionarActuadorReto2("RELE");
       else seleccionarActuadorReto2("LED");
     }
 
@@ -2416,18 +2410,6 @@
           ctxAula.arc(posX, posY, pulseR, 0, Math.PI * 2);
           ctxAula.stroke();
         }
-      } else if (estado.actuadorActual === "RELE") {
-        ctxAula.fillStyle = "#64748b";
-        ctxAula.fillRect(posX - 1, 0, 3, posY - 12);
-        ctxAula.fillStyle = "#1e293b";
-        ctxAula.fillRect(posX - 14, posY - 12, 28, 24);
-        ctxAula.strokeStyle = salidaActiva ? "#10b981" : "#cbd5e1";
-        ctxAula.lineWidth = 1.5;
-        ctxAula.strokeRect(posX - 14, posY - 12, 28, 24);
-        ctxAula.fillStyle = salidaActiva ? "#10b981" : "#475569";
-        ctxAula.beginPath();
-        ctxAula.arc(posX, posY, 5, 0, Math.PI * 2);
-        ctxAula.fill();
       } else {
         // LED POR DEFECTO
         ctxAula.fillStyle = "#64748b";
