@@ -24,32 +24,14 @@ export default function Navbar() {
   const { docente, cerrarSesion } = useDocente();
   const [menuAbierto, setMenuAbierto] = useState(false);
 
-  // Navegación principal consolidada:
-  // 1. Inicio | 2. Creación WebApps | 3. Zona Común | 4. Diagnóstico IA | 5. Dashboard
+  // Navegación exclusiva solicitada:
+  // 1. Diagnóstico IA | 2. Dashboard
   const enlaces = [
-    {
-      href: "/",
-      label: "Inicio",
-      icon: <Sparkle size={18} weight="duotone" />,
-      titulo: "Página Principal",
-    },
-    {
-      href: "/taller-webapps",
-      label: "Creación WebApps",
-      icon: <CodeBlock size={18} weight="duotone" />,
-      titulo: "Recurso para Creación de WebApps Educativas",
-    },
-    {
-      href: "/comunidad",
-      label: "Zona Común",
-      icon: <UsersThree size={18} weight="duotone" />,
-      titulo: "Espacio Común y Galería de WebApps Creadas",
-    },
     {
       href: "/diagnostico",
       label: "Diagnóstico IA",
       icon: <Lightning size={18} weight="fill" className="text-amber-300" />,
-      titulo: "Diagnóstico por Documentos y Planeamiento",
+      titulo: "Diagnóstico Integrado y Evaluación Formativa",
     },
     {
       href: "/dashboard",
@@ -72,20 +54,20 @@ export default function Navbar() {
           
           {/* Logo & Marca con Estilo Verde Esmeralda Traslúcido */}
           <Link
-            href="/"
+            href="/diagnostico"
             className="flex items-center gap-3 shrink-0 group py-1 focus:outline-none"
-            title="Creador de WebApps - III Ciclo Secundaria"
+            title="Diagnóstico & Dashboard - III Ciclo Secundaria"
           >
             <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-400 via-emerald-600 to-teal-800 flex items-center justify-center text-white shadow-lg shadow-emerald-950/60 group-hover:scale-105 border border-emerald-400/30 transition-all">
-              <CodeBlock size={24} weight="bold" className="text-white" />
+              <Lightning size={24} weight="fill" className="text-amber-300" />
             </div>
             <div className="flex flex-col justify-center">
               <span className="font-black text-base sm:text-lg tracking-tight text-white leading-none whitespace-nowrap drop-shadow-xs">
-                Creador de WebApps
+                Diagnóstico & Dashboard
               </span>
               <span className="text-[11px] font-extrabold text-emerald-400 tracking-wider uppercase leading-none mt-1.5 whitespace-nowrap flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                III Ciclo • Secundaria
+                Formación Tecnológica • MEP
               </span>
             </div>
           </Link>

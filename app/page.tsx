@@ -262,54 +262,22 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Botones de Acción Rápida */}
-          <div className="flex flex-wrap items-center justify-center gap-3.5 pt-2">
-            <Link
-              href="/taller-webapps"
-              className="flex items-center gap-2 px-6 py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-sm rounded-xl shadow-lg hover:shadow-blue-500/25 transition-all transform hover:-translate-y-0.5"
-            >
-              <CodeBlock size={20} weight="bold" />
-              <span>Creador de WebApps</span>
-            </Link>
-
-            <Link
-              href="/comunidad"
-              className="flex items-center gap-2 px-6 py-3.5 bg-sky-600 hover:bg-sky-500 text-white font-extrabold text-sm rounded-xl shadow-lg hover:shadow-sky-500/25 transition-all transform hover:-translate-y-0.5"
-            >
-              <UsersThree size={20} weight="bold" />
-              <span>Zona Común (Galería)</span>
-            </Link>
-
+          {/* Botones de Acción Exclusivos */}
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
             <Link
               href="/diagnostico"
-              className="flex items-center gap-2 px-6 py-3.5 bg-white/10 hover:bg-white/20 text-white border border-white/20 font-extrabold text-sm rounded-xl backdrop-blur-sm transition-all"
+              className="flex items-center gap-2.5 px-7 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-sm sm:text-base rounded-2xl shadow-xl hover:shadow-blue-500/30 transition-all transform hover:-translate-y-0.5"
             >
-              <Sparkle size={20} weight="bold" className="text-amber-400" />
-              <span>Diagnóstico IA</span>
-            </Link>
-
-            <Link
-              href="/publicar"
-              className="flex items-center gap-2 px-6 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm rounded-xl shadow-lg hover:shadow-emerald-500/25 transition-all transform hover:-translate-y-0.5"
-            >
-              <ChalkboardTeacher size={20} weight="bold" />
-              <span>Proyección en Aula</span>
+              <Lightning size={22} weight="fill" className="text-amber-300" />
+              <span>Diagnóstico IA (9° Año - Módulo 1)</span>
             </Link>
 
             <Link
               href="/dashboard"
-              className="flex items-center gap-2 px-6 py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-sm rounded-xl shadow-lg transition-all"
+              className="flex items-center gap-2.5 px-7 py-4 bg-slate-800/90 hover:bg-slate-700 text-sky-300 border border-slate-700/80 font-black text-sm sm:text-base rounded-2xl shadow-lg transition-all transform hover:-translate-y-0.5"
             >
-              <ChartBar size={20} weight="bold" />
-              <span>Dashboard Analítico</span>
-            </Link>
-
-            <Link
-              href="/admin"
-              className="flex items-center gap-2 px-5 py-3.5 bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 font-extrabold text-sm rounded-xl transition-all"
-            >
-              <ShieldCheck size={20} weight="fill" className="text-blue-400" />
-              <span>Administración</span>
+              <ChartBar size={22} weight="bold" className="text-emerald-400" />
+              <span>Dashboard Analítico & Telemetría</span>
             </Link>
           </div>
         </div>
@@ -320,11 +288,11 @@ export default function HomePage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-mepCard flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-800 flex items-center justify-center">
-              <CodeBlock size={26} weight="duotone" />
+              <Lightning size={26} weight="fill" className="text-amber-500" />
             </div>
             <div>
-              <div className="text-2xl font-black text-slate-900">{webApps.length + 1}</div>
-              <div className="text-xs font-semibold text-slate-500">WebApps en Catálogo</div>
+              <div className="text-2xl font-black text-slate-900">10 Reactivos</div>
+              <div className="text-xs font-semibold text-slate-500">Diagnóstico 9° Módulo 1</div>
             </div>
           </div>
 
@@ -334,7 +302,7 @@ export default function HomePage() {
             </div>
             <div>
               <div className="text-2xl font-black text-slate-900">{telemetria.length}</div>
-              <div className="text-xs font-semibold text-slate-500">Resultados Recibidos</div>
+              <div className="text-xs font-semibold text-slate-500">Evaluaciones Registradas</div>
             </div>
           </div>
 
@@ -344,7 +312,7 @@ export default function HomePage() {
             </div>
             <div>
               <div className="text-2xl font-black text-slate-900">100% Offline</div>
-              <div className="text-xs font-semibold text-slate-500">Soporte QR Sin Internet</div>
+              <div className="text-xs font-semibold text-slate-500">Sincronización QR Docente</div>
             </div>
           </div>
 
@@ -353,134 +321,82 @@ export default function HomePage() {
               <Cpu size={26} weight="duotone" />
             </div>
             <div>
-              <div className="text-2xl font-black text-slate-900">Cascada 4 Niveles</div>
-              <div className="text-xs font-semibold text-slate-500">Resiliencia de IA</div>
+              <div className="text-2xl font-black text-slate-900">3 Áreas MEP</div>
+              <div className="text-xs font-semibold text-slate-500">Cognoscitiva, Psicomotora, Socioafectiva</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Módulos de la Plataforma */}
+      {/* Módulos Activos Exclusivos */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="text-center space-y-2">
           <span className="text-xs font-bold text-blue-700 uppercase tracking-widest">
-            Ecosistema Integrado
+            Módulos Habilitados
           </span>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-            Módulos Principales para el Aula Digital
+            Diagnóstico Integrado & Seguimiento en Tiempo Real
           </h2>
           <p className="text-sm text-slate-500 max-w-2xl mx-auto">
-            Herramientas diseñadas para facilitar la creación de contenido, la proyección en clase y el seguimiento formativo.
+            Accede directamente al diagnóstico oficial de 9° año y al dashboard para el registro y consolidación de evidencias formativas.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Módulo 1: Creador de WebApps */}
-          <div className="bg-white rounded-2xl border border-blue-200 p-6 shadow-mepCard flex flex-col justify-between hover:border-blue-400 transition-all group">
-            <div className="space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center group-hover:scale-105 transition-transform">
-                <CodeBlock size={28} weight="duotone" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Módulo 1: Diagnóstico IA */}
+          <div className="bg-white rounded-3xl border-2 border-blue-500/70 p-8 shadow-xl flex flex-col justify-between hover:border-blue-600 transition-all group">
+            <div className="space-y-4">
+              <div className="w-14 h-14 rounded-2xl bg-blue-100 text-blue-800 flex items-center justify-center group-hover:scale-105 transition-transform shadow-sm">
+                <Lightning size={32} weight="fill" className="text-amber-500" />
               </div>
-              <h3 className="text-base font-bold text-slate-900">Creador de WebApps</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Configura los saberes de III Ciclo (7°, 8°, 9°) y las 4 mecánicas interactivas. Compila la WebApp autónoma al instante.
+              <div>
+                <span className="px-3 py-1 bg-blue-100 text-blue-900 text-xs font-extrabold rounded-full">
+                  Formación Tecnológica • 9° Año
+                </span>
+                <h3 className="text-xl font-black text-slate-900 mt-2">
+                  Diagnóstico Integrado: «Aula Inteligente»
+                </h3>
+              </div>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Herramienta oficial que incluye la <strong>WebApp para el Estudiante</strong> (con simulador de circuitos 2D y reflexión individual) y el <strong>Aplicativo Evaluador Docente</strong> (con carga de nóminas por archivo y rúbricas oficiales MEP).
               </p>
             </div>
-            <div className="pt-6">
-              <Link
-                href="/taller-webapps"
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 group-hover:text-blue-900"
-              >
-                <span>Crear WebApps</span>
-                <ArrowRight size={14} weight="bold" />
-              </Link>
-            </div>
-          </div>
-
-          {/* Módulo 2: Zona Común / Galería */}
-          <div className="bg-white rounded-2xl border border-sky-200 p-6 shadow-mepCard flex flex-col justify-between hover:border-sky-400 transition-all group">
-            <div className="space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-sky-100 text-sky-800 flex items-center justify-center group-hover:scale-105 transition-transform">
-                <UsersThree size={28} weight="duotone" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900">Zona Común & Remix</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Visualiza, prueba y clona producciones de otros docentes para adaptar explicaciones, retos y rúbricas a tu aula.
-              </p>
-            </div>
-            <div className="pt-6">
-              <Link
-                href="/comunidad"
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-sky-700 group-hover:text-sky-900"
-              >
-                <span>Explorar Zona Común</span>
-                <ArrowRight size={14} weight="bold" />
-              </Link>
-            </div>
-          </div>
-
-          {/* Módulo 3: Diagnóstico IA */}
-          <div className="bg-white rounded-2xl border border-purple-200 p-6 shadow-mepCard flex flex-col justify-between hover:border-purple-400 transition-all group">
-            <div className="space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-purple-100 text-purple-800 flex items-center justify-center group-hover:scale-105 transition-transform">
-                <Sparkle size={28} weight="fill" className="text-amber-500" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900">Diagnóstico IA</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Sube tu planeamiento o guía didáctica. La IA diagnostica saberes conceptuales, procedimentales y actitudinales.
-              </p>
-            </div>
-            <div className="pt-6">
+            <div className="pt-8">
               <Link
                 href="/diagnostico"
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-700 group-hover:text-purple-900"
+                className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 bg-blue-700 hover:bg-blue-800 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all"
               >
-                <span>Diagnóstico Docente</span>
-                <ArrowRight size={14} weight="bold" />
+                <span>Ingresar al Módulo de Diagnóstico</span>
+                <ArrowRight size={16} weight="bold" />
               </Link>
             </div>
           </div>
 
-          {/* Módulo 4: Proyección de Aula */}
-          <div className="bg-white rounded-2xl border border-emerald-200 p-6 shadow-mepCard flex flex-col justify-between hover:border-emerald-400 transition-all group">
-            <div className="space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center group-hover:scale-105 transition-transform">
-                <ChalkboardTeacher size={28} weight="duotone" />
+          {/* Módulo 2: Dashboard Analítico */}
+          <div className="bg-white rounded-3xl border-2 border-indigo-500/70 p-8 shadow-xl flex flex-col justify-between hover:border-indigo-600 transition-all group">
+            <div className="space-y-4">
+              <div className="w-14 h-14 rounded-2xl bg-indigo-100 text-indigo-800 flex items-center justify-center group-hover:scale-105 transition-transform shadow-sm">
+                <ChartBar size={32} weight="duotone" />
               </div>
-              <h3 className="text-base font-bold text-slate-900">Proyección en Aula</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Proyecta WebApps en pantalla gigante con código QR de alta resolución, comparte enlaces por WhatsApp y descarga archivos.
+              <div>
+                <span className="px-3 py-1 bg-indigo-100 text-indigo-900 text-xs font-extrabold rounded-full">
+                  Telemetría & Analítica
+                </span>
+                <h3 className="text-xl font-black text-slate-900 mt-2">
+                  Dashboard de Resultados & Evidencias
+                </h3>
+              </div>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Visualiza el rendimiento grupal en tiempo real, escanea códigos QR offline con la cámara, consulta la distribución de logros por reactivo y exporta reportes en formato Excel y PDF.
               </p>
             </div>
-            <div className="pt-6">
-              <Link
-                href="/publicar"
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 group-hover:text-emerald-900"
-              >
-                <span>Abrir Proyección</span>
-                <ArrowRight size={14} weight="bold" />
-              </Link>
-            </div>
-          </div>
-
-          {/* Módulo 5: Dashboard Analítico */}
-          <div className="bg-white rounded-2xl border border-indigo-200 p-6 shadow-mepCard flex flex-col justify-between hover:border-indigo-400 transition-all group">
-            <div className="space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-800 flex items-center justify-center group-hover:scale-105 transition-transform">
-                <ChartBar size={28} weight="duotone" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900">Dashboard & Telemetría</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Seguimiento bimodal de Trabajo Cotidiano y Diagnósticos, escáner de QR offline con cámara y exportación en Excel y PDF.
-              </p>
-            </div>
-            <div className="pt-6">
+            <div className="pt-8">
               <Link
                 href="/dashboard"
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-700 group-hover:text-indigo-900"
+                className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 bg-indigo-700 hover:bg-indigo-800 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all"
               >
-                <span>Ver Dashboard</span>
-                <ArrowRight size={14} weight="bold" />
+                <span>Abrir Dashboard Analítico</span>
+                <ArrowRight size={16} weight="bold" />
               </Link>
             </div>
           </div>
@@ -538,10 +454,10 @@ export default function HomePage() {
                 Tanto en iOS (Safari) como en Android (Chrome), cualquier estudiante o docente puede agregar la actividad a la pantalla de inicio para usarla a pantalla completa sin distracciones.
               </p>
               <Link
-                href="/manuales"
+                href="/diagnostico"
                 className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-700 hover:bg-blue-600 text-white font-bold text-xs rounded-xl transition-colors"
               >
-                <span>Ver Manuales Ilustrados</span>
+                <span>Acceder a Diagnóstico IA</span>
                 <ArrowRight size={14} weight="bold" />
               </Link>
             </div>

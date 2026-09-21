@@ -25,36 +25,16 @@ export default function Footer() {
 
           {/* Col 2 */}
           <div>
-            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-3">Módulos</h4>
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-3">Módulos Activos</h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <Link href="/taller-webapps" className="hover:text-blue-400 transition-colors">
-                  Recurso para Creación de WebApps
-                </Link>
-              </li>
-              <li>
-                <Link href="/publicar" className="hover:text-blue-400 transition-colors">
-                  Publicador y Proyección de Aula
+                <Link href="/diagnostico" className="hover:text-blue-400 transition-colors font-semibold text-sky-400">
+                  Diagnóstico IA & Módulo 1 (9°)
                 </Link>
               </li>
               <li>
                 <Link href="/dashboard" className="hover:text-blue-400 transition-colors">
-                  Dashboard Analítico de Resultados
-                </Link>
-              </li>
-              <li>
-                <Link href="/comunidad" className="hover:text-blue-400 transition-colors font-semibold text-sky-400">
-                  Zona Común de WebApps (Galería)
-                </Link>
-              </li>
-              <li>
-                <Link href="/diagnostico" className="hover:text-blue-400 transition-colors">
-                  Diagnóstico IA & Documentos
-                </Link>
-              </li>
-              <li>
-                <Link href="/manuales" className="hover:text-blue-400 transition-colors">
-                  Guías de Instalación Móvil / PC
+                  Dashboard Analítico & Telemetría
                 </Link>
               </li>
             </ul>
