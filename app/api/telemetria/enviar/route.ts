@@ -77,21 +77,26 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Validación estricta de completitud: todas las preguntas deben estar respondidas
-    const validacionCompletitud = validarCompletitudValoracion(body);
-    if (!validacionCompletitud.valido) {
-      return NextResponse.json(
-        {
-          error: "Requisito de Completitud Incompleto",
-          mensaje: validacionCompletitud.mensaje,
-          completitudRequerida: true,
-        },
-        { status: 422, headers: corsHeaders }
-      );
+    // Si es un registro inicial al comenzar el diagnóstico (estadoProgreso: "iniciado")
+    const esRegistroInicial = (body as any).estadoProgreso === "iniciado" || (body as any).tipoActividad === "inicio_diagnostico";
+
+    if (!esRegistroInicial) {
+      // Validación estricta de completitud: todas las preguntas deben estar respondidas
+      const validacionCompletitud = validarCompletitudValoracion(body);
+      if (!validacionCompletitud.valido) {
+        return NextResponse.json(
+          {
+            error: "Requisito de Completitud Incompleto",
+            mensaje: validacionCompletitud.mensaje,
+            completitudRequerida: true,
+          },
+          { status: 422, headers: corsHeaders }
+        );
+      }
     }
 
-    // Validación de Token de Integridad
-    const esValido = await validarTokenAntiFraude(body);
+    // Validación de Token de Integridad (si aplica)
+    const esValido = esRegistroInicial ? true : await validarTokenAntiFraude(body);
 
     const resultadoProcesado = {
       ...body,
@@ -99,16 +104,28 @@ export async function POST(req: NextRequest) {
       timestamp: body.timestamp || Date.now(),
       integridadVerificada: esValido,
       recibidoEnServidor: new Date().toISOString(),
+      estadoProgreso: (body as any).estadoProgreso || (esRegistroInicial ? "iniciado" : "completado"),
     };
 
     // Guardar en la lista del servidor
     cargarRegistrosServidor();
-    // Evitar duplicados por id o timestamp
+    // Evitar duplicados por id o nombre + sección
     const indexExistente = registrosTelemetriaMemoria.findIndex(
-      (r) => r.idResultado === resultadoProcesado.idResultado || (r.estudianteNombre === resultadoProcesado.estudianteNombre && Math.abs(r.timestamp - resultadoProcesado.timestamp) < 2000)
+      (r) =>
+        r.idResultado === resultadoProcesado.idResultado ||
+        (r.estudianteNombre?.trim().toLowerCase() === resultadoProcesado.estudianteNombre?.trim().toLowerCase() &&
+         (r.seccionOGrupo === resultadoProcesado.seccionOGrupo || !resultadoProcesado.seccionOGrupo))
     );
+
     if (indexExistente >= 0) {
-      registrosTelemetriaMemoria[indexExistente] = resultadoProcesado;
+      // Fusionar actualizando datos
+      registrosTelemetriaMemoria[indexExistente] = {
+        ...registrosTelemetriaMemoria[indexExistente],
+        ...resultadoProcesado,
+        // Si ya estaba completado o este es completado, mantener completado
+        estadoProgreso: resultadoProcesado.estadoProgreso === "completado" ? "completado" : registrosTelemetriaMemoria[indexExistente].estadoProgreso,
+        ultimaActualizacion: new Date().toISOString()
+      };
     } else {
       registrosTelemetriaMemoria.unshift(resultadoProcesado);
     }
@@ -117,7 +134,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         success: true,
-        mensaje: "Telemetría recibida y validada correctamente",
+        mensaje: esRegistroInicial
+          ? "Estudiante registrado correctamente al iniciar diagnóstico"
+          : "Telemetría recibida y validada correctamente",
         data: resultadoProcesado,
         totalEnServidor: registrosTelemetriaMemoria.length,
       },
