@@ -588,92 +588,83 @@
     </div>
 
     <!-- ==================================================================== -->
-    <!-- VISTA 3: CONSOLIDADO GRUPAL & MATRIZ DE CORRESPONDENCIA MÓDULO 1     -->
+    <!-- VISTA 3: SISTEMATIZACIÓN DE DESEMPEÑOS Y LOGROS (OFICIAL PÁG. 15 MEP)-->
     <!-- ==================================================================== -->
     <div id="vista3" class="card" style="display: none;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
         <div>
           <span class="mep-badge" style="background: #1e3a8a; border-color: #38bdf8; color: #93c5fd;">
-            Página 9 Oficial MEP
+            Instrumento Oficial • Pág. 15 MEP
           </span>
-          <h2 style="font-size: 1.2rem; color: #f8fafc; margin-top: 2px;">
-            Consolidado Grupal y Matriz de Correspondencia con el Módulo 1
+          <h2 style="font-size: 1.25rem; color: #f8fafc; font-weight: 900; margin-top: 2px;">
+            d. Sistematización de Desempeños y Logros (Evaluación 100% Formativa)
           </h2>
+          <p style="font-size: 11.5px; color: #94a3b8; margin-top: 2px;">
+            Registro formativo de las respuestas y evidencias de cada persona estudiante en los 10 planteamientos e indicadores de desempeño.
+          </p>
         </div>
 
-        <div style="display: flex; gap: 6px;">
+        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
           <button class="btn btn-accent" onclick="exportarExcelConsolidado()">
-            📊 Descargar Matriz Completa
+            📊 Descargar Matriz Excel Oficial
+          </button>
+          <button class="btn btn-secondary" onclick="imprimirReporteOficial()">
+            🖨️ Imprimir Sistematización
           </button>
         </div>
       </div>
 
-      <!-- MATRIZ DE RESULTADOS DEL GRUPO (SECCIÓN 9 DEL DOCUMENTO BASE) -->
-      <div style="background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 14px; margin-bottom: 16px;">
-        <strong style="font-size: 13px; color: #38bdf8; display: block; margin-bottom: 8px;">
-          9. Registro de Resultados del Grupo
-        </strong>
+      <!-- ESCALA FORMATIVA OFICIAL -->
+      <div style="display: flex; align-items: center; gap: 12px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 8px 12px; margin-bottom: 12px; font-size: 11px; flex-wrap: wrap;">
+        <span style="font-weight: 800; color: #cbd5e1;">Escala de Desempeño:</span>
+        <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="badge-status" style="background: #064e3b; color: #34d399; border: 1px solid #10b981;">L</span> <strong>Logrado</strong> (Dominio autónomo)</span>
+        <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="badge-status" style="background: #78350f; color: #fbbf24; border: 1px solid #f59e0b;">ED</span> <strong>En Desarrollo</strong> (Requiere mediación)</span>
+        <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="badge-status" style="background: #7f1d1d; color: #fca5a5; border: 1px solid #ef4444;">RA</span> <strong>Requiere Acompañamiento</strong> (Apoyo focalizado)</span>
+      </div>
 
-        <table class="custom-table">
+      <!-- TABLA MATRIZ OFICIAL MEP PÁG 15 -->
+      <div style="background: #0f172a; border: 1.5px solid #38bdf8; border-radius: 12px; padding: 14px; overflow-x: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+        <table class="custom-table" id="tablaSistematizacionOficial" style="min-width: 950px;">
           <thead>
-            <tr>
-              <th>Área Evaluada</th>
-              <th>Fortaleza Predominante</th>
-              <th>Necesidad Predominante</th>
-              <th>% Estimado</th>
-              <th>Decisión Pedagógica MEP</th>
+            <tr style="background: #1e293b; text-align: center;">
+              <th style="width: 140px; text-align: left; position: sticky; left: 0; background: #1e293b; z-index: 10;">Estudiantes</th>
+              <th title="Microcontrolador (Lógica y procesamiento)">Ap. 1</th>
+              <th title="Sensor y Actuador (Entrada / Salida)">Ap. 2</th>
+              <th title="Entrada, Proceso y Salida (Flujo E-P-S)">Ap. 3</th>
+              <th title="Fuente de Energía y Voltaje">Ap. 4</th>
+              <th title="Conversión Energética">Ap. 5</th>
+              <th title="Conductores y Aislantes">Ap. 6</th>
+              <th title="Circuito Simple y Cierre">Ap. 7</th>
+              <th title="Ley de Ohm Cualitativa">Ap. 8</th>
+              <th title="Reto Conecta el Prototipo (Simulador 2D)">Ap. 9</th>
+              <th title="Reflexión y Seguridad en el Laboratorio">Ap. 10</th>
+              <th style="min-width: 280px; text-align: left;">Descripción del desempeño individual o grupal<br><span style="font-size: 9.5px; font-weight: normal; color: #94a3b8;">(Logros observados y aspectos a considerar en el desarrollo)</span></th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td style="font-weight: 800; color: #60a5fa;">Cognoscitiva</td>
-              <td id="grpFortCognitiva">Comprensión del microcontrolador y lógica E-P-S</td>
-              <td id="grpNecCognitiva">Depuración de circuitos y ciclo de vida del dato</td>
-              <td id="grpPorcCognitiva" style="color: #34d399; font-weight: 800;">85%</td>
-              <td>Actividades de análisis de datos y resolución de fallas en simulador.</td>
-            </tr>
-            <tr>
-              <td style="font-weight: 800; color: #34d399;">Psicomotora</td>
-              <td id="grpFortPsicomotora">Trazo y colocación adecuada de cables y tarjetas</td>
-              <td id="grpNecPsicomotora">Correspondencia espacial de pines de alimentación</td>
-              <td id="grpPorcPsicomotora" style="color: #34d399; font-weight: 800;">90%</td>
-              <td>Avanzar a retos de simulación de circuitos más complejos.</td>
-            </tr>
-            <tr>
-              <td style="font-weight: 800; color: #fbbf24;">Socioafectiva</td>
-              <td id="grpFortSocio">Persistencia y gusto por la precisión</td>
-              <td id="grpNecSocio">Manejo de la frustración en el primer intento</td>
-              <td id="grpPorcSocio" style="color: #34d399; font-weight: 800;">88%</td>
-              <td>Trabajo colaborativo en parejas con acompañamiento gradual.</td>
-            </tr>
+          <tbody id="tbodySistematizacionMatriz">
+            <!-- Filas inyectadas dinámicamente con las celdas de Ap1 a Ap10 y descripción editable -->
           </tbody>
         </table>
       </div>
 
-      <!-- TABLA DETALLADA DE ESTUDIANTES EVALUADOS -->
-      <div style="background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 14px;">
-        <strong style="font-size: 13px; color: #f8fafc; display: block; margin-bottom: 8px;">
-          7. Registro Individual Consolidado de Estudiantes (Página 8 MEP)
-        </strong>
-
-        <div style="overflow-x: auto;">
-          <table class="custom-table" id="tablaConsolidadoIndividual">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Estudiante</th>
-                <th>Sección</th>
-                <th>Cognoscitiva</th>
-                <th>Psicomotora</th>
-                <th>Socioafectiva</th>
-                <th>Necesidad Prioritaria</th>
-                <th>Acción Pedagógica Sugerida</th>
-              </tr>
-            </thead>
-            <tbody id="tbodyConsolidadoEstudiantes">
-              <!-- Filas dinámicas -->
-            </tbody>
-          </table>
+      <!-- RESUMEN DE CRITERIOS PEDAGÓGICOS DEL GRUPO -->
+      <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 16px; margin-top: 16px;">
+        <h3 style="font-size: 13.5px; color: #38bdf8; font-weight: 800; margin-bottom: 8px;">
+          📌 Síntesis Formativa Grupal para la Mediación Posterior:
+        </h3>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; font-size: 11.5px;">
+          <div style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 10px;">
+            <strong style="color: #60a5fa; display: block; margin-bottom: 4px;">🧠 Dimensión Cognoscitiva:</strong>
+            <span id="resumenGrupoCognitivo">Mayor fortaleza en identificación de sensores y lógica E-P-S; se debe reforzar polaridad y cálculo cualitativo de resistencia.</span>
+          </div>
+          <div style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 10px;">
+            <strong style="color: #34d399; display: block; margin-bottom: 4px;">🖐️ Dimensión Psicomotora:</strong>
+            <span id="resumenGrupoPsicomotor">Destreza adecuada en el conexionado sobre protoboard virtual; acompañar en la correspondencia espacial de pines 5V y GND.</span>
+          </div>
+          <div style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 10px;">
+            <strong style="color: #fbbf24; display: block; margin-bottom: 4px;">❤️ Dimensión Socioafectiva:</strong>
+            <span id="resumenGrupoSocio">Actitud positiva ante el error y perseverancia en las pruebas; fomentar el diálogo constructivo en el trabajo por parejas.</span>
+          </div>
         </div>
       </div>
     </div>
@@ -1102,63 +1093,62 @@
     }
 
     function renderizarConsolidadoGrupal() {
-      var tbody = document.getElementById("tbodyConsolidadoEstudiantes");
+      var tbody = document.getElementById("tbodySistematizacionMatriz");
+      if (!tbody) return;
       tbody.innerHTML = "";
 
       var totalEst = estadoDocente.estudiantes.length;
-      var sumCog = 0, sumPsi = 0, sumSoc = 0;
 
       estadoDocente.estudiantes.forEach(function(est, idx) {
-        var numLogCog = est.cog.filter(function(x){ return x === "L"; }).length;
-        var porcCog = Math.round((numLogCog / 10) * 100);
-        var nivelPsi = est.psi.filter(function(x){ return x === "A"; }).length >= 4 ? "Nivel A (Autónomo)" : "Nivel B";
-        var nivelSoc = est.soc.filter(function(x){ return x === "A"; }).length >= 5 ? "Nivel A (Consistente)" : "Nivel B";
-
-        sumCog += porcCog;
-        if (nivelPsi.includes("A")) sumPsi += 100; else sumPsi += 75;
-        if (nivelSoc.includes("A")) sumSoc += 100; else sumSoc += 80;
-
         var tr = document.createElement("tr");
-        tr.innerHTML = '<td>' + (idx+1) + '</td>' +
-          '<td style="font-weight:700; color:white;">' + est.nombre + '</td>' +
-          '<td>' + est.seccion + '</td>' +
-          '<td style="color:#38bdf8; font-weight:800;">' + porcCog + '% (' + numLogCog + '/10)</td>' +
-          '<td style="color:#34d399; font-weight:800;">' + nivelPsi + '</td>' +
-          '<td style="color:#fbbf24; font-weight:800;">' + nivelSoc + '</td>' +
-          '<td>' + (est.necesidad || "Consolidado") + '</td>' +
-          '<td style="font-size:11px;">' + (est.accion || "Retos guiados.") + '</td>';
+
+        // Celdas de Aprendizaje 1 a 10
+        var celdasAp = "";
+        for (var i = 0; i < 10; i++) {
+          var val = (est.cog && est.cog[i]) ? est.cog[i] : "ED";
+          var badgeClass = val === "L" ? "background:#064e3b; color:#34d399; border:1px solid #10b981;" : (val === "RA" ? "background:#7f1d1d; color:#fca5a5; border:1px solid #ef4444;" : "background:#78350f; color:#fbbf24; border:1px solid #f59e0b;");
+          celdasAp += '<td style="text-align:center; padding: 6px 4px;"><span class="badge-status" style="' + badgeClass + ' font-size:10.5px; padding: 2px 6px;">' + val + '</span></td>';
+        }
+
+        var descDefault = est.descripcionDesempeno || (est.evaluado ? "Logra identificar conceptos de microcontroladores y sensores con autonomía. Requiere acompañamiento en correspondencia espacial de pines." : "Pendiente de diagnóstico.");
+
+        tr.innerHTML = '<td style="font-weight:700; color:white; position:sticky; left:0; background:#0f172a; z-index:5;">' + (idx+1) + '. ' + est.nombre + '<span style="display:block; font-size:10px; color:#94a3b8; font-weight:normal;">' + est.seccion + (est.horaEntrega ? ' • ' + est.horaEntrega : '') + '</span></td>' +
+          celdasAp +
+          '<td><textarea class="rubric-obs-input" rows="2" style="font-size:11px; resize:vertical; min-height:42px;" onchange="actualizarDescripcionEstudiante(' + idx + ', this.value)" placeholder="Describa el desempeño observado, fortalezas y consideraciones para el desarrollo...">' + descDefault + '</textarea></td>';
+
         tbody.appendChild(tr);
       });
+    }
 
-      if (totalEst > 0) {
-        document.getElementById("grpPorcCognitiva").innerText = Math.round(sumCog / totalEst) + "%";
-        document.getElementById("grpPorcPsicomotora").innerText = Math.round(sumPsi / totalEst) + "%";
-        document.getElementById("grpPorcSocio").innerText = Math.round(sumSoc / totalEst) + "%";
+    function actualizarDescripcionEstudiante(idx, texto) {
+      if (estadoDocente.estudiantes[idx]) {
+        estadoDocente.estudiantes[idx].descripcionDesempeno = texto;
+        guardarNominaEnStorage();
       }
     }
 
     function exportarExcelConsolidado() {
-      var csv = ["ID,Nombre,Sección,Cognoscitiva,Psicomotora,Socioafectiva,Necesidad_Prioritaria,Accion_Pedagogica"];
+      var csv = ["Estudiante,Seccion,Hora_Entrega,Condicion,Ap1_Microcontrolador,Ap2_SensorActuador,Ap3_FlujoEPS,Ap4_FuenteEnergia,Ap5_ConversionEnergia,Ap6_ConductoresAislantes,Ap7_CircuitoSimple,Ap8_LeyOhm,Ap9_Simulacion2D,Ap10_ReflexionSeguridad,Descripcion_Desempeno_Formativo"];
       estadoDocente.estudiantes.forEach(function(e) {
-        var numLogCog = e.cog.filter(function(x){ return x === "L"; }).length;
-        var nivelPsi = e.psi.filter(function(x){ return x === "A"; }).length >= 4 ? "Nivel A" : "Nivel B";
-        var nivelSoc = e.soc.filter(function(x){ return x === "A"; }).length >= 5 ? "Nivel A" : "Nivel B";
+        var apVals = [];
+        for (var i = 0; i < 10; i++) {
+          apVals.push((e.cog && e.cog[i]) ? e.cog[i] : "ED");
+        }
+        var desc = (e.descripcionDesempeno || e.accion || "Desempeño formativo registrado").replace(/"/g, '""');
         csv.push([
-          e.id,
           '"' + e.nombre + '"',
           e.seccion,
-          numLogCog + "/10",
-          nivelPsi,
-          nivelSoc,
-          '"' + (e.necesidad || "") + '"',
-          '"' + (e.accion || "") + '"'
+          e.horaEntrega || "N/A",
+          e.esExtemporaneo ? "Extemporanea" : "Ordinaria",
+          apVals[0], apVals[1], apVals[2], apVals[3], apVals[4], apVals[5], apVals[6], apVals[7], apVals[8], apVals[9],
+          '"' + desc + '"'
         ].join(","));
       });
 
       var blob = new Blob(["\uFEFF" + csv.join("\n")], { type: "text/csv;charset=utf-8;" });
       var a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
-      a.download = "Consolidado_Diagnostico_MEP_9no_Modulo1.csv";
+      a.download = "Sistematizacion_Desempenos_Logros_9no_MEP_Pag15.csv";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);

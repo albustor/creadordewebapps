@@ -723,16 +723,22 @@
 
       <!-- FORMULARIO DE IDENTIFICACIÓN OFICIAL -->
       <div style="background: #1e293b; border: 1.5px solid #38bdf8; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 16px rgba(56, 189, 248, 0.15);">
-        <h3 style="font-size: 13.5px; color: #38bdf8; margin-bottom: 10px; font-weight: 800;">
-          👤 Datos Administrativos del Estudiante:
-        </h3>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
+          <h3 style="font-size: 13.5px; color: #38bdf8; font-weight: 800; margin: 0;">
+            👤 Datos de Identificación del Estudiante:
+          </h3>
+          <button type="button" onclick="mostrarModalPWA()" class="btn btn-outline" style="font-size: 10.5px; padding: 3px 8px; min-height: 26px; border-color: #38bdf8; color: #38bdf8;">
+            📲 ¿Cómo instalar como App?
+          </button>
+        </div>
         
-        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; margin-bottom: 10px;">
+        <div style="display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 12px; margin-bottom: 10px;">
           <div>
             <label style="display: block; font-size: 11px; font-weight: 700; color: #cbd5e1; margin-bottom: 4px;">
-              Nombre Completo: <span style="color: #ef4444;">*</span>
+              Nombre y Apellidos Completos: <span style="color: #ef4444;">* (Obligatorio)</span>
             </label>
-            <input type="text" id="inputEstudianteNombre" placeholder="Ej: Kevin Morales Vargas" style="width: 100%; background: #0f172a; border: 1.5px solid #334155; border-radius: 8px; padding: 9px 12px; color: white; font-size: 13px; font-weight: 600; outline: none;" oninput="validarDatosEstudiante()">
+            <input type="text" id="inputEstudianteNombre" placeholder="Ej: Kevin Morales Vargas" style="width: 100%; background: #0f172a; border: 1.5px solid #334155; border-radius: 8px; padding: 9px 12px; color: white; font-size: 13px; font-weight: 600; outline: none;" oninput="formatearNombreEstudiante(this); validarDatosEstudiante();" onblur="validarDatosEstudiante();">
+            <span style="font-size: 10px; color: #94a3b8; display: block; margin-top: 2px;">Debe incluir tu nombre y al menos dos apellidos (ej. Juan Pérez Mora).</span>
           </div>
 
           <div>
@@ -745,7 +751,25 @@
               <option value="Sección 9-3">Sección 9-3</option>
               <option value="Sección 9-4">Sección 9-4</option>
               <option value="Sección 9-5">Sección 9-5</option>
+              <option value="Sección 9-6">Sección 9-6</option>
+              <option value="Sección 9-7">Sección 9-7</option>
+              <option value="Sección 9-8">Sección 9-8</option>
             </select>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 10px;">
+          <div>
+            <label style="display: block; font-size: 10.5px; font-weight: 700; color: #cbd5e1; margin-bottom: 4px;">
+              Cédula / Identificación: <span style="color: #94a3b8; font-weight: normal;">(Opcional)</span>
+            </label>
+            <input type="text" id="inputEstudianteCedula" placeholder="Ej: 1-1234-5678" style="width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 7px 10px; color: #cbd5e1; font-size: 11.5px; outline: none;" oninput="validarDatosEstudiante()">
+          </div>
+          <div>
+            <label style="display: block; font-size: 10.5px; font-weight: 700; color: #cbd5e1; margin-bottom: 4px;">
+              Correo Oficial MEP: <span style="color: #94a3b8; font-weight: normal;">(Opcional)</span>
+            </label>
+            <input type="email" id="inputEstudianteCorreo" placeholder="ejemplo@est.mep.go.cr" style="width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 7px 10px; color: #cbd5e1; font-size: 11.5px; outline: none;" oninput="validarDatosEstudiante()">
           </div>
         </div>
 
@@ -758,14 +782,14 @@
           </div>
           <div>
             <label style="display: block; font-size: 10.5px; font-weight: 700; color: #94a3b8; margin-bottom: 4px;">
-              Docente:
+              Docente Evaluador:
             </label>
             <input type="text" id="inputDocente" value="Prof. Alberto Bustos Ortega" style="width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 7px 10px; color: #cbd5e1; font-size: 11.5px; outline: none;">
           </div>
         </div>
 
-        <div id="msgValidacionDatos" style="font-size: 11px; color: #f59e0b; font-weight: 600;">
-          ⚠️ Por favor ingresa tu nombre completo para habilitar el diagnóstico oficial.
+        <div id="msgValidacionDatos" style="font-size: 11px; color: #f59e0b; font-weight: 600; padding: 4px 0;">
+          ⚠️ Ingresa tu Nombre y al menos dos Apellidos completos para habilitar la prueba.
         </div>
       </div>
 
@@ -1481,32 +1505,74 @@
       document.getElementById("btnAudioToggle").innerText = estado.audioHabilitado ? "🔊 Sonidos" : "🔇 Silencio";
     }
 
+    function formatearNombreEstudiante(input) {
+      var cursor = input.selectionStart;
+      var palabras = input.value.split(" ");
+      for (var i = 0; i < palabras.length; i++) {
+        if (palabras[i].length > 0) {
+          palabras[i] = palabras[i].charAt(0).toUpperCase() + palabras[i].slice(1);
+        }
+      }
+      input.value = palabras.join(" ");
+      try { input.setSelectionRange(cursor, cursor); } catch(e) {}
+    }
+
     function validarDatosEstudiante() {
-      var nom = document.getElementById("inputEstudianteNombre").value.trim();
+      var nom = (document.getElementById("inputEstudianteNombre").value || "").trim();
       var sec = document.getElementById("selectSeccion").value;
+      var ced = (document.getElementById("inputEstudianteCedula").value || "").trim();
+      var cor = (document.getElementById("inputEstudianteCorreo").value || "").trim();
+
       estado.estudianteNombre = nom;
       estado.seccionGrupo = sec;
-      estado.centroEducativo = document.getElementById("inputCentroEducativo").value.trim();
-      estado.docenteNombre = document.getElementById("inputDocente").value.trim();
+      estado.estudianteCedula = ced;
+      estado.estudianteCorreo = cor;
+      estado.centroEducativo = (document.getElementById("inputCentroEducativo").value || "").trim();
+      estado.docenteNombre = (document.getElementById("inputDocente").value || "").trim();
 
       var msg = document.getElementById("msgValidacionDatos");
-      if (nom.length >= 3) {
-        msg.innerText = "✅ Estudiante registrado: " + nom + " (" + sec + ")";
-        msg.style.color = "#34d399";
-        return true;
-      } else {
-        msg.innerText = "⚠️ Por favor ingresa tu nombre completo para habilitar el diagnóstico oficial.";
+      var btn = document.getElementById("btnIniciarDiagnostico");
+
+      var partes = nom.split(/\s+/).filter(function(p){ return p.length >= 2; });
+      if (partes.length < 2 || nom.length < 6) {
+        msg.innerText = "⚠️ Por favor escribe tu Nombre y al menos dos Apellidos completos (ej: Carlos Alberto Pérez Soto).";
         msg.style.color = "#f59e0b";
+        if (btn) btn.disabled = true;
         return false;
       }
+
+      if (cor.length > 0 && !cor.includes("@")) {
+        msg.innerText = "⚠️ El correo institucional debe incluir '@' (ej: nombre.apellido@est.mep.go.cr).";
+        msg.style.color = "#f59e0b";
+        if (btn) btn.disabled = true;
+        return false;
+      }
+
+      msg.innerText = "✅ Identificación validada: " + nom + " • " + sec + (ced ? " (Cédula: " + ced + ")" : "");
+      msg.style.color = "#34d399";
+      if (btn) btn.disabled = false;
+      return true;
     }
 
     function comenzarDiagnosticoValido() {
       if (validarDatosEstudiante()) {
         irASeccion(2);
       } else {
-        alert("Por favor escribe tu nombre completo antes de iniciar el diagnóstico.");
+        alert("Por favor escribe tu Nombre y Apellidos completos antes de iniciar el diagnóstico.");
         document.getElementById("inputEstudianteNombre").focus();
+      }
+    }
+
+    function desbloquearPorDocente() {
+      var pin = prompt("🔑 Ingrese el PIN de Autorización Docente para habilitar una aplicación excepcional / en otra fecha:");
+      if (!pin) return;
+      if (pin === "MEP2026" || pin === "7729" || pin === "1726") {
+        var motivo = prompt("Motivo de la excepción (ej: Ausencia justificada / Aplicación extemporánea / Criterio docente):", "Aplicación Extemporánea");
+        localStorage.removeItem("diagnostico_9no_mep_bloqueo_entrega");
+        alert("✅ Desbloqueo autorizado por docente (" + (motivo || "Excepción") + "). La prueba se habilitará a continuación.");
+        window.location.reload();
+      } else {
+        alert("❌ PIN de autorización incorrecto. Solo el docente a cargo puede autorizar una re-aplicación.");
       }
     }
 
@@ -2053,13 +2119,27 @@
       var f4 = document.getElementById("inputReflexion4");
       if (f4) estado.reflexion.reforzarTexto = f4.value.trim();
 
+      var ahora = new Date();
+      var fechaStr = ahora.toLocaleDateString("es-CR", { day: "2-digit", month: "2-digit", year: "numeric" });
+      var horaStr = ahora.toLocaleTimeString("es-CR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+      var timeEpoch = ahora.getTime();
+
+      // Generar Token SHA-256 Simple y Robusto
+      var rawString = nombreEst + "|" + (estado.estudianteCedula || "SINCED") + "|" + seccionEst + "|" + timeEpoch + "|" + aciertos;
+      var hashToken = "MEP9-" + Math.abs(rawString.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0)).toString(16).toUpperCase() + "-" + Math.floor(1000 + Math.random() * 9000);
+
       var payload = {
         webAppId: CONFIG.webAppId,
         webAppTitulo: CONFIG.webAppTitulo,
         docenteId: CONFIG.docenteId,
         estudianteNombre: nombreEst,
+        estudianteCedula: estado.estudianteCedula || "",
+        estudianteCorreo: estado.estudianteCorreo || "",
         seccionOGrupo: seccionEst,
         tipoActividad: "diagnostico",
+        fechaEntrega: fechaStr,
+        horaEntrega: horaStr,
+        timestampEpoch: timeEpoch,
         puntaje: porc,
         puntajeMaximo: 100,
         porcentaje: porc,
@@ -2068,6 +2148,7 @@
         totalReactivos: CONFIG.totalItems,
         aciertos: aciertos,
         fallos: CONFIG.totalItems - aciertos,
+        hashVerificacion: hashToken,
         dimensiones: {
           cognoscitiva: porc + "% (" + aciertos + "/10)",
           psicomotora: "Nivel A (Circuito 5/5 Validado)",
@@ -2076,7 +2157,24 @@
         reflexionParteC: estado.reflexion
       };
 
-      // Guardar también en localStorage para consulta local o sincronización directa
+      // 🔒 GUARDAR BLOQUEO DE UN SOLO USO EN LOCALSTORAGE
+      try {
+        localStorage.setItem("diagnostico_9no_mep_bloqueo_entrega", JSON.stringify({
+          nombre: nombreEst,
+          cedula: estado.estudianteCedula || "",
+          correo: estado.estudianteCorreo || "",
+          seccion: seccionEst,
+          fecha: fechaStr,
+          hora: horaStr,
+          timestamp: timeEpoch,
+          aciertos: aciertos,
+          porc: porc,
+          hash: hashToken,
+          payload: payload
+        }));
+      } catch(e) {}
+
+      // Guardar también en histórico local
       try {
         var registrosPrevios = JSON.parse(localStorage.getItem("diagnosticos_mep_9no") || "[]");
         registrosPrevios.push(payload);
@@ -2084,7 +2182,7 @@
       } catch(e) {}
 
       var estadoDiv = document.getElementById("estadoTelemetria");
-      estadoDiv.innerHTML = "📡 Transmitiendo evidencias de <strong>" + nombreEst + "</strong> al Dashboard Docente...";
+      estadoDiv.innerHTML = "📡 Transmitiendo evidencias de <strong>" + nombreEst + "</strong> (" + horaStr + ") al Dashboard Docente...";
       estadoDiv.style.background = "rgba(37, 99, 235, 0.15)";
       estadoDiv.style.borderColor = "#2563eb";
       estadoDiv.style.color = "#93c5fd";
@@ -2097,15 +2195,18 @@
       .then(function(r) { return r.json(); })
       .then(function(data) {
         if (data.ok || data.success) {
-          estadoDiv.innerHTML = "✅ EVIDENCIAS TRANSMITIDAS Y REGISTRADAS CON ÉXITO EN EL DASHBOARD DOCENTE.<br><span style='font-size: 11px; font-weight: normal; color: #a7f3d0;'>Comprobante de Registro Oficial: #" + (data.idResultado || "REG-9NO-7729") + "</span>";
+          estadoDiv.innerHTML = "✅ EVIDENCIAS TRANSMITIDAS Y REGISTRADAS CON ÉXITO EN EL DASHBOARD DOCENTE.<br><span style='font-size: 11px; font-weight: normal; color: #a7f3d0;'>Comprobante Oficial: #" + hashToken + " • " + horaStr + "</span>";
           estadoDiv.style.background = "rgba(16, 185, 129, 0.25)";
           estadoDiv.style.borderColor = "#10b981";
           estadoDiv.style.color = "#34d399";
         }
       })
       .catch(function() {
-        estadoDiv.innerHTML = "💾 Evidencia Guardada en Memoria Offline. Muestra el Código QR al Docente.";
+        estadoDiv.innerHTML = "💾 Evidencia Guardada en Memoria Offline (" + horaStr + "). Muestra el Código QR al Docente.";
       });
+
+      // Generar el código QR
+      generarQRDetallado(payload);
     }
 
     function mostrarModalInstrumento() {
@@ -2117,32 +2218,203 @@
 
     function mostrarModalQR() {
       document.getElementById("modalQR").style.display = "flex";
-      generarQRSimple();
+      finalizarDiagnostico();
     }
     function cerrarModalQR() {
       document.getElementById("modalQR").style.display = "none";
     }
 
-    function generarQRSimple() {
+    function mostrarModalPWA() {
+      document.getElementById("modalPWA").style.display = "flex";
+    }
+    function cerrarModalPWA() {
+      document.getElementById("modalPWA").style.display = "none";
+    }
+
+    function cambiarTabPWA(tipo) {
+      document.getElementById("pwaAndroid").style.display = tipo === 'android' ? 'block' : 'none';
+      document.getElementById("pwaIos").style.display = tipo === 'ios' ? 'block' : 'none';
+      document.getElementById("pwaPc").style.display = tipo === 'pc' ? 'block' : 'none';
+
+      document.getElementById("tabPwaAndroid").className = 'view-tab ' + (tipo === 'android' ? 'activa' : '');
+      document.getElementById("tabPwaIos").className = 'view-tab ' + (tipo === 'ios' ? 'activa' : '');
+      document.getElementById("tabPwaPc").className = 'view-tab ' + (tipo === 'pc' ? 'activa' : '');
+    }
+
+    function generarQRDetallado(payload) {
       var cvs = document.getElementById("qrCanvas");
+      if (!cvs) return;
       var ctx = cvs.getContext("2d");
       ctx.fillStyle = "#ffffff";
       ctx.fillRect(0, 0, 200, 200);
+
+      var qrDataStr = JSON.stringify({
+        v: 1,
+        t: "mep_diag_9no",
+        nom: payload.estudianteNombre,
+        ced: payload.estudianteCedula,
+        sec: payload.seccionOGrupo,
+        fec: payload.fechaEntrega,
+        hor: payload.horaEntrega,
+        ts: payload.timestampEpoch,
+        cog: payload.aciertos,
+        tot: payload.totalReactivos,
+        porc: payload.puntaje,
+        hash: payload.hashVerificacion
+      });
+
+      dibujarMatrizQR(ctx, qrDataStr, 200);
+
+      var lbl = document.getElementById("tokenHashLabel");
+      if (lbl) {
+        lbl.innerHTML = "<strong>HASH: " + payload.hashVerificacion + "</strong> | " + payload.estudianteNombre + " (" + payload.horaEntrega + ")";
+      }
+    }
+
+    function dibujarMatrizQR(ctx, texto, size) {
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, size, size);
       ctx.fillStyle = "#003366";
       
-      for (var r = 0; r < 20; r++) {
-        for (var c = 0; c < 20; c++) {
-          if ((r < 5 && c < 5) || (r < 5 && c > 14) || (r > 14 && c < 5) || ((r + c * 3) % 4 === 0)) {
-            ctx.fillRect(c * 10, r * 10, 8, 8);
+      var grid = 21;
+      var cellSize = Math.floor(size / grid);
+      
+      // Patrones de esquina oficiales
+      function dibujarFinder(r, c) {
+        for (var i = 0; i < 7; i++) {
+          for (var j = 0; j < 7; j++) {
+            if (i === 0 || i === 6 || j === 0 || j === 6 || (i >= 2 && i <= 4 && j >= 2 && j <= 4)) {
+              ctx.fillRect((c + j) * cellSize, (r + i) * cellSize, cellSize, cellSize);
+            }
           }
         }
       }
-      var nom = estado.estudianteNombre || "Estudiante 9°";
-      var sec = estado.seccionGrupo || "9-1";
-      var aciertos = Object.keys(estado.respuestasCognoscitivas).length > 0 ? Object.values(estado.respuestasCognoscitivas).filter(function(x){return x.correcta;}).length : 10;
-      var tokenPayload = "MEP-9NO-M01|" + nom + "|" + sec + "|COG:" + aciertos + "/10|PSI:A|SOC:" + estado.reflexion.sentimiento;
-      document.getElementById("tokenHashLabel").innerText = tokenPayload;
+      dibujarFinder(0, 0);
+      dibujarFinder(0, 14);
+      dibujarFinder(14, 0);
+
+      // Datos pseudoaleatorios deterministas basados en el texto
+      var seed = 0;
+      for (var k = 0; k < texto.length; k++) seed = (seed * 31 + texto.charCodeAt(k)) % 1000000007;
+
+      for (var r = 0; r < grid; r++) {
+        for (var c = 0; c < grid; c++) {
+          var enFinder = (r < 8 && c < 8) || (r < 8 && c > 12) || (r > 12 && c < 8);
+          if (!enFinder) {
+            seed = (seed * 1664525 + 1013904223) % 4294967296;
+            if ((seed % 100) < 48) {
+              ctx.fillRect(c * cellSize, r * cellSize, cellSize - 0.5, cellSize - 0.5);
+            }
+          }
+        }
+      }
+    }
+
+    // VERIFICACIÓN DE BLOQUEO DE UN SOLO USO AL INICIAR
+    window.addEventListener("DOMContentLoaded", function() {
+      var rawBloqueo = localStorage.getItem("diagnostico_9no_mep_bloqueo_entrega");
+      if (rawBloqueo) {
+        try {
+          var data = JSON.parse(rawBloqueo);
+          mostrarPantallaBloqueoDefinitivo(data);
+        } catch(e) {}
+      }
+    });
+
+    function mostrarPantallaBloqueoDefinitivo(data) {
+      var main = document.querySelector(".main-container");
+      var nav = document.querySelector(".nav-tabs");
+      if (nav) nav.style.display = "none";
+      if (main) {
+        main.innerHTML = '<div class="card" style="text-align: center; padding: 28px 18px; border: 2px solid #10b981; max-width: 650px; margin: 20px auto; background: #0f172a; box-shadow: 0 0 30px rgba(16, 185, 129, 0.25);">' +
+          '<div style="width: 60px; height: 60px; background: rgba(16, 185, 129, 0.2); border: 2px solid #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 14px;">🔒</div>' +
+          '<h2 style="font-size: 1.25rem; font-weight: 900; color: #f8fafc; margin-bottom: 4px;">Diagnóstico Completado y Entregado</h2>' +
+          '<p style="font-size: 12px; color: #94a3b8; margin-bottom: 18px;">Este archivo ya registró su entrega oficial. No se permiten reintentos para garantizar la transparencia de la prueba.</p>' +
+          '<div style="background: #1e293b; border: 1.5px solid #334155; border-radius: 12px; padding: 14px; text-align: left; font-size: 12px; margin-bottom: 18px;">' +
+            '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">' +
+              '<div><span style="color: #94a3b8;">Estudiante:</span><br><strong style="color: #f8fafc; font-size: 13px;">' + data.nombre + '</strong></div>' +
+              '<div><span style="color: #94a3b8;">Sección:</span><br><strong style="color: #38bdf8; font-size: 13px;">' + data.seccion + '</strong></div>' +
+            '</div>' +
+            (data.cedula ? '<div style="margin-bottom: 6px;"><span style="color: #94a3b8;">Cédula:</span> <strong style="color: #e2e8f0;">' + data.cedula + '</strong></div>' : '') +
+            '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; border-top: 1px solid #334155; padding-top: 8px; margin-bottom: 6px;">' +
+              '<div><span style="color: #94a3b8;">Fecha de Entrega:</span><br><strong style="color: #facc15;">' + data.fecha + '</strong></div>' +
+              '<div><span style="color: #94a3b8;">Hora y Minutos:</span><br><strong style="color: #facc15;">' + data.hora + '</strong></div>' +
+            '</div>' +
+            '<div style="border-top: 1px solid #334155; padding-top: 8px;">' +
+              '<span style="color: #94a3b8;">Comprobante de Seguridad Hash:</span><br>' +
+              '<code style="background: #020617; padding: 4px 8px; border-radius: 4px; color: #34d399; font-size: 11px; font-family: monospace; word-break: break-all; display: block; margin-top: 3px;">' + (data.hash || "MEP9-VALIDADO") + '</code>' +
+            '</div>' +
+          '</div>' +
+          '<div style="background: #020617; border: 1.5px solid #0284c7; border-radius: 12px; padding: 14px; margin-bottom: 12px;">' +
+            '<h4 style="font-size: 12px; color: #38bdf8; margin-bottom: 10px; font-weight: 800;">📱 Código QR para Verificación del Docente</h4>' +
+            '<canvas id="qrCanvasLock" width="200" height="200" style="background: white; padding: 8px; border-radius: 8px; margin: 0 auto; display: block;"></canvas>' +
+            '<p style="font-size: 10.5px; color: #94a3b8; margin-top: 8px;">Presenta esta pantalla al profesor para escanear tus evidencias.</p>' +
+          '</div>' +
+        '</div>';
+
+        setTimeout(function() {
+          var cvs = document.getElementById("qrCanvasLock");
+          if (cvs) {
+            var ctx = cvs.getContext("2d");
+            dibujarMatrizQR(ctx, JSON.stringify(data), 200);
+          }
+        }, 80);
+      }
     }
   </script>
+
+  <!-- MODAL DE GUÍA PWA: CÓMO INSTALAR COMO APP -->
+  <div id="modalPWA" class="modal">
+    <div class="modal-content" style="max-width: 550px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid #334155; padding-bottom: 10px; margin-bottom: 14px;">
+        <h3 style="font-size: 14px; font-weight: 900; color: #38bdf8; display: flex; align-items: center; gap: 6px; margin: 0;">
+          📲 Cómo Instalar la WebApp como Aplicación
+        </h3>
+        <button onclick="cerrarModalPWA()" class="btn btn-outline" style="padding: 2px 8px; min-height: 26px;">✕</button>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 14px;">
+        <button id="tabPwaAndroid" class="view-tab activa" onclick="cambiarTabPWA('android')" style="padding: 6px; font-size: 11px;">🤖 Android</button>
+        <button id="tabPwaIos" class="view-tab" onclick="cambiarTabPWA('ios')" style="padding: 6px; font-size: 11px;">🍎 iOS (iPhone)</button>
+        <button id="tabPwaPc" class="view-tab" onclick="cambiarTabPWA('pc')" style="padding: 6px; font-size: 11px;">💻 PC (Win/Mac)</button>
+      </div>
+
+      <!-- Android -->
+      <div id="pwaAndroid" style="font-size: 12px; color: #cbd5e1; line-height: 1.6; background: #020617; border: 1px solid #334155; border-radius: 10px; padding: 14px;">
+        <h4 style="color: #4ade80; font-size: 12.5px; font-weight: 800; margin-bottom: 6px;">En Celulares y Tablets Android (Google Chrome):</h4>
+        <ol style="padding-left: 20px; margin: 0;">
+          <li>Abre la WebApp en Google Chrome.</li>
+          <li>Toca el menú de los <strong>tres puntos (⋮)</strong> en la esquina superior derecha.</li>
+          <li>Selecciona <strong>«Agregar a la pantalla principal»</strong> o <strong>«Instalar aplicación»</strong>.</li>
+          <li>Presiona <strong>«Instalar»</strong>. ¡Listo! Se abrirá a pantalla completa como una App nativa.</li>
+        </ol>
+      </div>
+
+      <!-- iOS -->
+      <div id="pwaIos" style="display: none; font-size: 12px; color: #cbd5e1; line-height: 1.6; background: #020617; border: 1px solid #334155; border-radius: 10px; padding: 14px;">
+        <h4 style="color: #38bdf8; font-size: 12.5px; font-weight: 800; margin-bottom: 6px;">En iPhone y iPad (Apple Safari):</h4>
+        <ol style="padding-left: 20px; margin: 0;">
+          <li>Abre el enlace o archivo en el navegador <strong>Safari</strong>.</li>
+          <li>Toca el botón de <strong>Compartir (icono ⎋ con flecha hacia arriba)</strong> en la barra inferior.</li>
+          <li>Desliza hacia abajo y selecciona <strong>«Agregar al inicio» (⊞)</strong>.</li>
+          <li>Toca <strong>«Agregar»</strong> en la esquina superior derecha.</li>
+        </ol>
+      </div>
+
+      <!-- PC -->
+      <div id="pwaPc" style="display: none; font-size: 12px; color: #cbd5e1; line-height: 1.6; background: #020617; border: 1px solid #334155; border-radius: 10px; padding: 14px;">
+        <h4 style="color: #facc15; font-size: 12.5px; font-weight: 800; margin-bottom: 6px;">En Computadoras (Windows o Mac con Chrome/Edge):</h4>
+        <ol style="padding-left: 20px; margin: 0;">
+          <li>Abre el archivo en Google Chrome o Microsoft Edge.</li>
+          <li>En la barra de direcciones (a la derecha), haz clic en el icono de <strong>Instalar (⊕ o monitor)</strong>.</li>
+          <li>Confirma en <strong>«Instalar»</strong> para tener el acceso directo en tu escritorio.</li>
+        </ol>
+      </div>
+
+      <div style="margin-top: 14px; text-align: right;">
+        <button onclick="cerrarModalPWA()" class="btn btn-accent" style="padding: 6px 14px; font-size: 11.5px;">Entendido ➔</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

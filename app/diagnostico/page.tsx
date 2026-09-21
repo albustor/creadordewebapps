@@ -10,6 +10,7 @@ import {
 } from "@/lib/generadorWebAppEngine";
 import WebAppPreviewFrame from "@/components/WebAppPreviewFrame";
 import QRModalProyeccion from "@/components/QRModalProyeccion";
+import { QRCodeSVG } from "qrcode.react";
 import {
   FileText,
   UploadSimple,
@@ -33,6 +34,11 @@ import {
   Table,
   Scales,
   UserCheck,
+  QrCode,
+  DeviceMobile,
+  Laptop,
+  ShareNetwork,
+  X,
 } from "@phosphor-icons/react";
 
 export default function DiagnosticoPage() {
@@ -43,6 +49,14 @@ export default function DiagnosticoPage() {
   const [nombreArchivo, setNombreArchivo] = useState("");
   const [analizando, setAnalizando] = useState(false);
   const [arrastrando, setArrastrando] = useState(false);
+
+  // Modales de Proyección QR y PWA
+  const [modalQREstudiante, setModalQREstudiante] = useState(false);
+  const [modalQRDocente, setModalQRDocente] = useState(false);
+  const [modalPWAGuia, setModalPWAGuia] = useState(false);
+  const [tabPWAGuia, setTabPWAGuia] = useState<"android" | "ios" | "pc">("android");
+  const [modoQREstudiante, setModoQREstudiante] = useState<"online" | "local">("online");
+  const [modoQRDocente, setModoQRDocente] = useState<"online" | "local">("online");
 
   // Resultados generados por la IA
   const [diagnostico, setDiagnostico] = useState<any | null>(null);
@@ -304,6 +318,13 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
               <span>Abrir App Estudiante</span>
               <ArrowSquareOut size={16} weight="bold" />
             </a>
+            <button
+              onClick={() => setModalQREstudiante(true)}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs rounded-xl shadow-sm transition-all"
+            >
+              <QrCode size={16} weight="bold" />
+              <span>📱 Proyectar QR</span>
+            </button>
             <a
               href="/webapps/diagnostico_9no_modulo01_aula_inteligente.html"
               download="diagnostico_9no_modulo01_aula_inteligente.html"
@@ -327,10 +348,10 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
             </div>
             <h3 className="text-lg font-black text-white flex items-center gap-2">
               <UserCheck size={22} className="text-emerald-400" weight="fill" />
-              <span>Evaluador Docente & Nómina de Estudiantes</span>
+              <span>Evaluador Docente & Sistematización Pág. 15</span>
             </h3>
             <p className="text-xs text-slate-300 leading-relaxed">
-              Permite <strong>cargar nóminas mediante archivo adjunto (.xlsx, .csv o texto)</strong>, calificar individualmente las 10 evidencias cognoscitivas, 6 psicomotoras y 7 socioafectivas, escanear QR de estudiantes y generar el consolidado grupal oficial.
+              Permite <strong>cargar nóminas mediante archivo adjunto (.xlsx, .csv o texto)</strong>, registrar en vivo la matriz de <strong>Sistematización de Desempeños y Logros (Pág. 15 MEP)</strong>, calificar observación docente, gestionar aplicaciones extemporáneas y exportar a Excel.
             </p>
           </div>
 
@@ -344,6 +365,13 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
               <span>Abrir App Docente</span>
               <ArrowSquareOut size={16} weight="bold" />
             </a>
+            <button
+              onClick={() => setModalQRDocente(true)}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs rounded-xl shadow-sm transition-all"
+            >
+              <QrCode size={16} weight="bold" />
+              <span>📱 QR Celular Docente</span>
+            </button>
             <a
               href="/webapps/diagnostico_9no_modulo01_docente_evaluador.html"
               download="diagnostico_9no_modulo01_docente_evaluador.html"
@@ -593,6 +621,248 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
               </button>
             </div>
 
+          </div>
+        </div>
+      )}
+
+      {/* MODAL QR PROYECCIÓN: ESTUDIANTE */}
+      {modalQREstudiante && (
+        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
+          <div className="bg-slate-900 border-2 border-blue-500 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl text-center relative text-white">
+            <button
+              onClick={() => setModalQREstudiante(false)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-white p-2"
+            >
+              <X size={20} weight="bold" />
+            </button>
+
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/20 text-sky-300 text-xs font-bold mb-3">
+              <Lightbulb size={16} weight="fill" className="text-amber-400" />
+              <span>Diagnóstico 9°: «Aula Inteligente»</span>
+            </div>
+
+            <h3 className="text-xl font-black text-white mb-2">
+              Proyectar a los Estudiantes
+            </h3>
+            <p className="text-xs text-slate-300 mb-5">
+              Los estudiantes pueden escanear este código con su celular o tableta para abrir y resolver la prueba en el aula.
+            </p>
+
+            {/* Selector Modo: En Línea vs Local */}
+            <div className="grid grid-cols-2 gap-2 bg-slate-950 p-1.5 rounded-xl border border-slate-800 mb-5">
+              <button
+                onClick={() => setModoQREstudiante("online")}
+                className={`py-2 text-xs font-bold rounded-lg transition-all ${
+                  modoQREstudiante === "online"
+                    ? "bg-blue-600 text-white shadow-md"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                🌐 En Línea (URL Web)
+              </button>
+              <button
+                onClick={() => setModoQREstudiante("local")}
+                className={`py-2 text-xs font-bold rounded-lg transition-all ${
+                  modoQREstudiante === "local"
+                    ? "bg-blue-600 text-white shadow-md"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                💾 En Local / Archivo
+              </button>
+            </div>
+
+            {/* Renderizado de Código QR */}
+            <div className="bg-white p-4 rounded-2xl inline-block shadow-xl border-4 border-slate-800 mb-4">
+              <QRCodeSVG
+                value={
+                  modoQREstudiante === "online"
+                    ? (typeof window !== "undefined" ? `${window.location.origin}/webapps/diagnostico_9no_modulo01_aula_inteligente.html` : "https://creador-webapps.local/webapps/diagnostico_9no_modulo01_aula_inteligente.html")
+                    : "file:///webapps/diagnostico_9no_modulo01_aula_inteligente.html"
+                }
+                size={210}
+                level="M"
+                includeMargin={false}
+              />
+            </div>
+
+            <div className="text-[11px] text-slate-400 font-mono break-all bg-slate-950/80 p-2.5 rounded-xl border border-slate-800 mb-5">
+              {modoQREstudiante === "online"
+                ? (typeof window !== "undefined" ? `${window.location.origin}/webapps/diagnostico_9no_modulo01_aula_inteligente.html` : "/webapps/diagnostico_9no_modulo01_aula_inteligente.html")
+                : "Apertura en Local: diagnostico_9no_modulo01_aula_inteligente.html"}
+            </div>
+
+            <div className="flex gap-2 justify-center">
+              <button
+                onClick={() => {
+                  setModalQREstudiante(false);
+                  setModalPWAGuia(true);
+                }}
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-sky-300 font-bold text-xs rounded-xl border border-slate-700 transition-all"
+              >
+                <DeviceMobile size={16} weight="bold" />
+                <span>¿Cómo instalar en el Celular?</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL QR PROYECCIÓN: DOCENTE */}
+      {modalQRDocente && (
+        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
+          <div className="bg-slate-900 border-2 border-purple-500 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl text-center relative text-white">
+            <button
+              onClick={() => setModalQRDocente(false)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-white p-2"
+            >
+              <X size={20} weight="bold" />
+            </button>
+
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-bold mb-3">
+              <UserCheck size={16} weight="fill" className="text-emerald-400" />
+              <span>Aplicativo & Evaluador Docente</span>
+            </div>
+
+            <h3 className="text-xl font-black text-white mb-2">
+              Abrir en tu Celular o Laptop
+            </h3>
+            <p className="text-xs text-slate-300 mb-5">
+              Escanea este QR con tu teléfono móvil para llevar el registro de aula, escanear a tus estudiantes y calificar observación en vivo.
+            </p>
+
+            <div className="bg-white p-4 rounded-2xl inline-block shadow-xl border-4 border-slate-800 mb-4">
+              <QRCodeSVG
+                value={
+                  typeof window !== "undefined"
+                    ? `${window.location.origin}/webapps/diagnostico_9no_modulo01_docente_evaluador.html`
+                    : "https://creador-webapps.local/webapps/diagnostico_9no_modulo01_docente_evaluador.html"
+                }
+                size={210}
+                level="M"
+                includeMargin={false}
+              />
+            </div>
+
+            <div className="text-[11px] text-slate-400 font-mono break-all bg-slate-950/80 p-2.5 rounded-xl border border-slate-800 mb-5">
+              {typeof window !== "undefined"
+                ? `${window.location.origin}/webapps/diagnostico_9no_modulo01_docente_evaluador.html`
+                : "/webapps/diagnostico_9no_modulo01_docente_evaluador.html"}
+            </div>
+
+            <div className="flex gap-2 justify-center">
+              <button
+                onClick={() => {
+                  setModalQRDocente(false);
+                  setModalPWAGuia(true);
+                }}
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold text-xs rounded-xl shadow-md transition-all"
+              >
+                <DeviceMobile size={16} weight="bold" />
+                <span>Instalar App en el Celular</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL GUÍA PWA: CÓMO INSTALAR COMO APP */}
+      {modalPWAGuia && (
+        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
+          <div className="bg-slate-900 border-2 border-sky-500 rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl relative text-white">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+              <h3 className="text-base sm:text-lg font-black text-white flex items-center gap-2">
+                <DeviceMobile size={22} className="text-sky-400" />
+                <span>Instalar como Aplicación (PWA)</span>
+              </h3>
+              <button
+                onClick={() => setModalPWAGuia(false)}
+                className="text-slate-400 hover:text-white p-1"
+              >
+                <X size={20} weight="bold" />
+              </button>
+            </div>
+
+            {/* Pestañas de Sistema Operativo */}
+            <div className="grid grid-cols-3 gap-2 bg-slate-950 p-1.5 rounded-xl border border-slate-800 mb-4">
+              <button
+                onClick={() => setTabPWAGuia("android")}
+                className={`py-2 text-xs font-bold rounded-lg transition-all ${
+                  tabPWAGuia === "android"
+                    ? "bg-emerald-600 text-white shadow-md"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                🤖 Android
+              </button>
+              <button
+                onClick={() => setTabPWAGuia("ios")}
+                className={`py-2 text-xs font-bold rounded-lg transition-all ${
+                  tabPWAGuia === "ios"
+                    ? "bg-sky-600 text-white shadow-md"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                🍎 iOS (iPhone)
+              </button>
+              <button
+                onClick={() => setTabPWAGuia("pc")}
+                className={`py-2 text-xs font-bold rounded-lg transition-all ${
+                  tabPWAGuia === "pc"
+                    ? "bg-indigo-600 text-white shadow-md"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                💻 PC (Win/Mac)
+              </button>
+            </div>
+
+            {/* Contenido Android */}
+            {tabPWAGuia === "android" && (
+              <div className="space-y-3 bg-slate-950/80 p-4 rounded-2xl border border-slate-800 text-xs text-slate-300 leading-relaxed">
+                <h4 className="font-bold text-emerald-400 text-sm">En Celulares y Tablets Android (Google Chrome):</h4>
+                <ol className="list-decimal list-inside space-y-1.5 pl-1">
+                  <li>Abre la WebApp en <strong>Google Chrome</strong>.</li>
+                  <li>Toca el menú de los <strong>tres puntos (⋮)</strong> en la esquina superior derecha.</li>
+                  <li>Selecciona <strong>«Agregar a la pantalla principal»</strong> o <strong>«Instalar aplicación»</strong>.</li>
+                  <li>Presiona <strong>«Instalar»</strong>. Se creará un acceso directo en tu pantalla de inicio para usarla a pantalla completa sin conexión.</li>
+                </ol>
+              </div>
+            )}
+
+            {/* Contenido iOS */}
+            {tabPWAGuia === "ios" && (
+              <div className="space-y-3 bg-slate-950/80 p-4 rounded-2xl border border-slate-800 text-xs text-slate-300 leading-relaxed">
+                <h4 className="font-bold text-sky-400 text-sm">En iPhone y iPad (Apple Safari):</h4>
+                <ol className="list-decimal list-inside space-y-1.5 pl-1">
+                  <li>Abre el enlace o archivo en el navegador <strong>Safari</strong>.</li>
+                  <li>Toca el botón de <strong>Compartir (icono ⎋ con flecha hacia arriba)</strong> en la barra inferior.</li>
+                  <li>Desliza hacia abajo y presiona <strong>«Agregar al inicio» (⊞)</strong>.</li>
+                  <li>Toca <strong>«Agregar»</strong> en la esquina superior derecha.</li>
+                </ol>
+              </div>
+            )}
+
+            {/* Contenido PC */}
+            {tabPWAGuia === "pc" && (
+              <div className="space-y-3 bg-slate-950/80 p-4 rounded-2xl border border-slate-800 text-xs text-slate-300 leading-relaxed">
+                <h4 className="font-bold text-amber-400 text-sm">En Computadoras (Windows / Mac con Chrome o Edge):</h4>
+                <ol className="list-decimal list-inside space-y-1.5 pl-1">
+                  <li>Abre el archivo en <strong>Google Chrome</strong> o <strong>Microsoft Edge</strong>.</li>
+                  <li>En la barra de direcciones (a la derecha), haz clic en el icono de <strong>Instalar (⊕ o monitor)</strong>.</li>
+                  <li>Confirma en <strong>«Instalar»</strong> para tener el aplicativo en tu escritorio y barra de tareas.</li>
+                </ol>
+              </div>
+            )}
+
+            <div className="mt-5 flex justify-end">
+              <button
+                onClick={() => setModalPWAGuia(false)}
+                className="px-5 py-2.5 bg-sky-600 hover:bg-sky-500 text-white font-extrabold text-xs rounded-xl shadow-md transition-all"
+              >
+                Entendido
+              </button>
+            </div>
           </div>
         </div>
       )}
