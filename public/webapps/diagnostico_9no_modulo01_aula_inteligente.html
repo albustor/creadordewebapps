@@ -1328,53 +1328,47 @@
     </div>
 
     <!-- ==================================================================== -->
-    <!-- ETAPA 5: INFORME DIAGNÓSTICO CONSOLIDADO Y TELEMETRÍA CERTIFICADA    -->
+    <!-- ETAPA 5: COMPROBANTE DE ENTREGA Y CÓDIGO QR PARA EL DOCENTE         -->
     <!-- ==================================================================== -->
-    <div id="seccion5" class="card" style="display: none; text-align: center;">
+    <div id="seccion5" class="card" style="display: none; text-align: center; max-width: 680px; margin: 0 auto;">
       <div style="font-size: 38px; margin-bottom: 6px;">🎉</div>
       <h2 style="font-size: 1.4rem; color: #38bdf8; font-weight: 900;">
-        Diagnóstico Integrado Consolidado
+        ¡Diagnóstico Completado con Éxito!
       </h2>
-      <p style="font-size: 12.5px; color: #94a3b8; margin-bottom: 12px;" id="etiquetaEstudianteResumen">
+      <p style="font-size: 12.5px; color: #94a3b8; margin-bottom: 14px;" id="etiquetaEstudianteResumen">
         Estudiante: <strong style="color: white;">Estudiante 9° Año</strong> • Sección: <strong style="color: white;">Sección 9-1</strong>
       </p>
 
-      <!-- RESULTADOS EN LAS 3 ÁREAS DE FORMACIÓN TECNOLÓGICA -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 16px;">
-        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 12px;">
-          <div style="font-size: 10px; font-weight: 800; color: #60a5fa; text-transform: uppercase;">1. Área Cognoscitiva</div>
-          <div id="resCognoscitiva" style="font-size: 24px; font-weight: 900; color: #38bdf8; margin: 4px 0;">100%</div>
-          <div style="font-size: 10.5px; color: #34d399;" id="resCognoscitivaDetalle">10 / 10 Reactivos Correctos</div>
+      <!-- TARJETA DEL CÓDIGO QR PARA QUE EL DOCENTE ESCANEE DESDE LA PANTALLA DE LA COMPUTADORA -->
+      <div style="background: #090e17; border: 2px solid #38bdf8; border-radius: 14px; padding: 20px; margin-bottom: 16px; box-shadow: 0 0 25px rgba(56, 189, 248, 0.2);">
+        <h3 style="font-size: 13px; color: #38bdf8; font-weight: 800; margin-bottom: 8px;">
+          🖥️ Código QR de Entrega (Presenta esta pantalla al Docente)
+        </h3>
+        <p style="font-size: 11px; color: #94a3b8; margin-bottom: 14px;">
+          Tus respuestas han sido procesadas. El docente escaneará este código QR desde su celular o computadora para registrar tu diagnóstico formativo.
+        </p>
+
+        <div style="display: inline-block; background: white; padding: 12px; border-radius: 12px; box-shadow: 0 4px 14px rgba(0,0,0,0.5);">
+          <canvas id="qrCanvasFinal" width="200" height="200" style="display: block;"></canvas>
         </div>
 
-        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 12px;">
-          <div style="font-size: 10px; font-weight: 800; color: #34d399; text-transform: uppercase;">2. Área Psicomotora</div>
-          <div id="resPsicomotora" style="font-size: 24px; font-weight: 900; color: #10b981; margin: 4px 0;">Nivel A</div>
-          <div style="font-size: 10.5px; color: #93c5fd;" id="resPsicomotoraDetalle">Circuito Enlazado 100%</div>
-        </div>
-
-        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 12px;">
-          <div style="font-size: 10px; font-weight: 800; color: #f59e0b; text-transform: uppercase;">3. Área Socioafectiva</div>
-          <div id="resSocioafectiva" style="font-size: 24px; font-weight: 900; color: #fbbf24; margin: 4px 0;">Nivel A</div>
-          <div style="font-size: 10.5px; color: #cbd5e1;" id="resSocioDetalle">Reflexión Completada</div>
+        <div style="margin-top: 12px; font-size: 11px; color: #cbd5e1;" id="tokenHashLabelFinal">
+          <strong>HASH DE SEGURIDAD:</strong> <span style="color: #34d399; font-family: monospace;">MEP9-VALIDADO</span>
         </div>
       </div>
 
-      <!-- ESTADO DE TRANSMISIÓN TELEMÉTRICA -->
-      <div id="estadoTelemetria" style="padding: 12px 16px; border-radius: 10px; margin-bottom: 16px; font-size: 12.5px; font-weight: 700; background: rgba(37, 99, 235, 0.15); border: 1.5px solid #2563eb; color: #93c5fd;">
-        📡 Transmitiendo evidencias diagnósticas al Dashboard del Docente...
+      <!-- ESTADO DE TRANSMISIÓN TELEMÉTRICA / LOCAL -->
+      <div id="estadoTelemetria" style="padding: 10px 14px; border-radius: 10px; margin-bottom: 16px; font-size: 12px; font-weight: 700; background: rgba(37, 99, 235, 0.15); border: 1.5px solid #2563eb; color: #93c5fd;">
+        📡 Evidencia lista para sincronización docente.
       </div>
 
-      <!-- ACCIONES DE RESPALDO Y RÚBRICA -->
+      <!-- ACCIONES -->
       <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
-        <button class="btn btn-accent" onclick="mostrarModalQR()" title="Muestra este QR al docente para sincronización instantánea">
-          📱 Mostrar Comprobante QR (Respaldo Docente)
+        <button class="btn btn-accent" onclick="mostrarModalQR()" title="Muestra el código QR ampliado">
+          🔍 Ver QR Ampliado
         </button>
-        <a href="/webapps/diagnostico_9no_modulo01_docente_evaluador.html" target="_blank" class="btn btn-docente">
-          👨‍🏫 Abrir Instrumento Docente
-        </a>
         <button class="btn btn-outline" onclick="mostrarModalInstrumento()">
-          📋 Ver Rúbrica de Evaluación MEP
+          📋 Ver Criterios MEP
         </button>
       </div>
     </div>
@@ -2106,8 +2100,10 @@
       if (Object.keys(estado.respuestasCognoscitivas).length === 0) aciertos = CONFIG.totalItems;
 
       var porc = Math.round((aciertos / CONFIG.totalItems) * 100);
-      document.getElementById("resCognoscitiva").innerText = porc + "%";
-      document.getElementById("resCognoscitivaDetalle").innerText = aciertos + " / " + CONFIG.totalItems + " Correctos";
+      var elCog = document.getElementById("resCognoscitiva");
+      if (elCog) elCog.innerText = porc + "%";
+      var elCogDet = document.getElementById("resCognoscitivaDetalle");
+      if (elCogDet) elCogDet.innerText = aciertos + " / " + CONFIG.totalItems + " Correctos";
 
       // Capturar textos complementarios de la Parte C
       var f1 = document.getElementById("inputReflexion1");
@@ -2242,12 +2238,6 @@
     }
 
     function generarQRDetallado(payload) {
-      var cvs = document.getElementById("qrCanvas");
-      if (!cvs) return;
-      var ctx = cvs.getContext("2d");
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(0, 0, 200, 200);
-
       var qrDataStr = JSON.stringify({
         v: 1,
         t: "mep_diag_9no",
@@ -2263,11 +2253,32 @@
         hash: payload.hashVerificacion
       });
 
-      dibujarMatrizQR(ctx, qrDataStr, 200);
+      // Canvas en pantalla de finalización de computadora
+      var cvsFinal = document.getElementById("qrCanvasFinal");
+      if (cvsFinal) {
+        var ctxF = cvsFinal.getContext("2d");
+        ctxF.fillStyle = "#ffffff";
+        ctxF.fillRect(0, 0, 200, 200);
+        dibujarMatrizQR(ctxF, qrDataStr, 200);
+      }
+
+      // Canvas modal
+      var cvs = document.getElementById("qrCanvas");
+      if (cvs) {
+        var ctx = cvs.getContext("2d");
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, 200, 200);
+        dibujarMatrizQR(ctx, qrDataStr, 200);
+      }
 
       var lbl = document.getElementById("tokenHashLabel");
       if (lbl) {
         lbl.innerHTML = "<strong>HASH: " + payload.hashVerificacion + "</strong> | " + payload.estudianteNombre + " (" + payload.horaEntrega + ")";
+      }
+
+      var lblFinal = document.getElementById("tokenHashLabelFinal");
+      if (lblFinal) {
+        lblFinal.innerHTML = "<strong>HASH DE SEGURIDAD:</strong> <span style='color: #34d399; font-family: monospace; font-size: 13px; font-weight: bold;'>" + payload.hashVerificacion + "</span> • " + payload.horaEntrega;
       }
     }
 
