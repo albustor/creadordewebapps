@@ -28,6 +28,11 @@ export interface PayloadTelemetria {
   }>;
   timestamp: number;
   tokenAntiFraude?: string;
+  estadoProgreso?: "iniciado" | "completado";
+  observacionDocente?: string;
+  horaInicio?: string;
+  horaEntrega?: string;
+  fechaEntrega?: string;
 }
 
 const SECRET_SALT = "CreadorWebApps-Token-Integridad-2026-Secret";

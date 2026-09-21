@@ -13,6 +13,42 @@ let registrosTelemetriaMemoria: any[] = [];
 // Ruta del archivo de persistencia local
 const CACHE_TELEMETRIA_PATH = path.join(process.cwd(), ".next", "telemetria_docente_cache.json");
 
+function normalizarSeccionServidor(sec?: string): string {
+  if (!sec) return "Sección 9-1";
+  const limpia = sec.replace(/^secci[oó]n\s*/i, "").trim();
+  return limpia.startsWith("9-") ? `Sección ${limpia}` : `Sección 9-${limpia}`;
+}
+
+function deduplicarRegistrosEnMemoria() {
+  const mapa = new Map<string, any>();
+  registrosTelemetriaMemoria.forEach((r) => {
+    if (r && r.estudianteNombre) {
+      const nom = r.estudianteNombre.trim().toLowerCase();
+      const sec = normalizarSeccionServidor(r.seccionOGrupo).trim().toLowerCase();
+      const clave = `${nom}::${sec}`;
+      const normR = { ...r, seccionOGrupo: normalizarSeccionServidor(r.seccionOGrupo) };
+
+      if (!mapa.has(clave)) {
+        mapa.set(clave, normR);
+      } else {
+        const existente = mapa.get(clave);
+        const puntajeNuevo = r.porcentaje ?? r.puntaje ?? 0;
+        const puntajeExistente = existente.porcentaje ?? existente.puntaje ?? 0;
+        if (r.estadoProgreso === "completado" && existente.estadoProgreso !== "completado") {
+          mapa.set(clave, normR);
+        } else if (puntajeNuevo > puntajeExistente) {
+          mapa.set(clave, normR);
+        } else if (puntajeNuevo === puntajeExistente && (r.timestamp || 0) >= (existente.timestamp || 0)) {
+          mapa.set(clave, normR);
+        }
+      }
+    }
+  });
+  registrosTelemetriaMemoria = Array.from(mapa.values()).sort(
+    (a, b) => (b.timestamp || 0) - (a.timestamp || 0)
+  );
+}
+
 function cargarRegistrosServidor() {
   try {
     if (fs.existsSync(CACHE_TELEMETRIA_PATH)) {
@@ -20,6 +56,7 @@ function cargarRegistrosServidor() {
       if (data && data.trim().length > 0) {
         try {
           registrosTelemetriaMemoria = JSON.parse(data);
+          deduplicarRegistrosEnMemoria();
         } catch {
           registrosTelemetriaMemoria = [];
         }
@@ -32,6 +69,7 @@ function cargarRegistrosServidor() {
 
 function guardarRegistrosServidor() {
   try {
+    deduplicarRegistrosEnMemoria();
     const dir = path.dirname(CACHE_TELEMETRIA_PATH);
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
@@ -86,9 +124,11 @@ export async function POST(req: NextRequest) {
       }
 
       const esRegistroInicial = (body as any).estadoProgreso === "iniciado" || (body as any).tipoActividad === "inicio_diagnostico";
+      const secNormalizada = normalizarSeccionServidor(body.seccionOGrupo);
 
       const resultadoProcesado = {
         ...body,
+        seccionOGrupo: secNormalizada,
         idResultado: body.idResultado || "res-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6),
         timestamp: body.timestamp || Date.now(),
         integridadVerificada: true,
@@ -96,18 +136,37 @@ export async function POST(req: NextRequest) {
         estadoProgreso: (body as any).estadoProgreso || (esRegistroInicial ? "iniciado" : "completado"),
       };
 
-      const indexExistente = registrosTelemetriaMemoria.findIndex(
-        (r) =>
-          r.idResultado === resultadoProcesado.idResultado ||
-          (r.estudianteNombre?.trim().toLowerCase() === resultadoProcesado.estudianteNombre?.trim().toLowerCase() &&
-           (r.seccionOGrupo === resultadoProcesado.seccionOGrupo || !resultadoProcesado.seccionOGrupo))
-      );
+      const nomNorm = resultadoProcesado.estudianteNombre.trim().toLowerCase();
+      const secNorm = secNormalizada.trim().toLowerCase();
+
+      const indexExistente = registrosTelemetriaMemoria.findIndex((r) => {
+        const rNom = (r.estudianteNombre || "").trim().toLowerCase();
+        const rSec = normalizarSeccionServidor(r.seccionOGrupo).trim().toLowerCase();
+        return rNom === nomNorm && rSec === secNorm;
+      });
 
       if (indexExistente >= 0) {
+        const existente = registrosTelemetriaMemoria[indexExistente];
+        const puntajeNuevo = resultadoProcesado.porcentaje ?? resultadoProcesado.puntaje ?? 0;
+        const puntajeExistente = existente.porcentaje ?? existente.puntaje ?? 0;
+
+        // Mantener el puntaje más alto / completado
+        const puntajeFinal = Math.max(puntajeNuevo, puntajeExistente);
+        const aciertosFinal = Math.max(resultadoProcesado.aciertos ?? 0, existente.aciertos ?? 0);
+        const nivelFinal =
+          puntajeFinal >= 80 ? "Avanzado" : puntajeFinal <= 59 ? "Inicial" : "Intermedio";
+
         registrosTelemetriaMemoria[indexExistente] = {
-          ...registrosTelemetriaMemoria[indexExistente],
+          ...existente,
           ...resultadoProcesado,
-          estadoProgreso: resultadoProcesado.estadoProgreso === "completado" ? "completado" : registrosTelemetriaMemoria[indexExistente].estadoProgreso,
+          puntaje: puntajeFinal,
+          porcentaje: puntajeFinal,
+          aciertos: aciertosFinal,
+          nivelLogro: nivelFinal,
+          estadoProgreso:
+            resultadoProcesado.estadoProgreso === "completado" || existente.estadoProgreso === "completado"
+              ? "completado"
+              : "iniciado",
           ultimaActualizacion: new Date().toISOString(),
         };
       } else {

@@ -693,8 +693,6 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
                 ? (typeof window !== "undefined" ? `${window.location.origin}/webapps/diagnostico_9no_modulo01_aula_inteligente.html` : "/webapps/diagnostico_9no_modulo01_aula_inteligente.html")
                 : "Apertura en Local: diagnostico_9no_modulo01_aula_inteligente.html"}
             </div>
-
-            </div>
           </div>
         </div>
       )}

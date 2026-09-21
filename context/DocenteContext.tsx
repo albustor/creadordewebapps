@@ -235,7 +235,7 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       SafeStorage.setItem("telemetria_registros", JSON.stringify([]));
     }
 
-    // Sincronizar con el endpoint del servidor
+    // Sincronizar con el endpoint del servidor con deduplicación por estudiante y sección
     const sincronizarTelemetriaServidor = async () => {
       try {
         const docenteGuardadoRaw = SafeStorage.getItem("docente_activo");
@@ -244,6 +244,18 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
         const nombreDoc = docenteActivoObj?.nombreCompleto?.toLowerCase()?.trim() || "";
         const correoDoc = docenteActivoObj?.correoInstitucional?.toLowerCase()?.trim() || "";
 
+        const normalizarSeccion = (sec?: string): string => {
+          if (!sec) return "Sección 9-1";
+          const limpia = sec.replace(/^secci[oó]n\s*/i, "").trim();
+          return limpia.startsWith("9-") ? `Sección ${limpia}` : `Sección 9-${limpia}`;
+        };
+
+        const normalizarClave = (item: PayloadTelemetria): string => {
+          const nom = (item.estudianteNombre || "").toLowerCase().trim();
+          const sec = normalizarSeccion(item.seccionOGrupo).toLowerCase().trim();
+          return `${nom}::${sec}`;
+        };
+
         const url = docenteId ? `/api/telemetria/enviar?docenteId=${encodeURIComponent(docenteId)}` : "/api/telemetria/enviar";
         const res = await fetch(url);
         if (res.ok) {
@@ -251,14 +263,14 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
           if (json.registros && Array.isArray(json.registros)) {
             setTelemetria((prev) => {
               const mapa = new Map<string, PayloadTelemetria>();
-              // Agregar los previos que no coincidan con el docente registrado como estudiante
+              // Agregar los previos
               prev.forEach((item) => {
                 const estNom = item.estudianteNombre?.toLowerCase()?.trim() || "";
                 const estCor = item.estudianteCorreo?.toLowerCase()?.trim() || "";
                 const esDocente = (nombreDoc && estNom === nombreDoc) || (correoDoc && estCor === correoDoc);
-                if (!esDocente) {
-                  const key = item.idResultado || `${item.estudianteNombre}_${item.timestamp}`;
-                  mapa.set(key, item);
+                if (!esDocente && estNom) {
+                  const key = normalizarClave(item);
+                  mapa.set(key, { ...item, seccionOGrupo: normalizarSeccion(item.seccionOGrupo) });
                 }
               });
               // Mezclar con los del servidor
@@ -266,9 +278,29 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
                 const estNom = item.estudianteNombre?.toLowerCase()?.trim() || "";
                 const estCor = item.estudianteCorreo?.toLowerCase()?.trim() || "";
                 const esDocente = (nombreDoc && estNom === nombreDoc) || (correoDoc && estCor === correoDoc);
-                if (!esDocente) {
-                  const key = item.idResultado || `${item.estudianteNombre}_${item.timestamp}`;
-                  mapa.set(key, item);
+                if (!esDocente && estNom) {
+                  const key = normalizarClave(item);
+                  const existente = mapa.get(key);
+                  const secNorm = normalizarSeccion(item.seccionOGrupo);
+                  const itemNorm = { ...item, seccionOGrupo: secNorm };
+                  
+                  if (!existente) {
+                    mapa.set(key, itemNorm);
+                  } else {
+                    // Si ya existe, conservar el registro con mayor completitud o puntaje consolidado
+                    const puntajeNuevo = item.porcentaje ?? item.puntaje ?? 0;
+                    const puntajeExistente = existente.porcentaje ?? existente.puntaje ?? 0;
+                    if (
+                      item.estadoProgreso === "completado" &&
+                      existente.estadoProgreso !== "completado"
+                    ) {
+                      mapa.set(key, itemNorm);
+                    } else if (puntajeNuevo > puntajeExistente) {
+                      mapa.set(key, itemNorm);
+                    } else if (puntajeNuevo === puntajeExistente && item.timestamp >= existente.timestamp) {
+                      mapa.set(key, itemNorm);
+                    }
+                  }
                 }
               });
               const unificados = Array.from(mapa.values()).sort((a, b) => b.timestamp - a.timestamp);
@@ -511,9 +543,30 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
+  const normalizarSeccionTexto = (sec?: string): string => {
+    if (!sec) return "Sección 9-1";
+    const limpia = sec.replace(/^secci[oó]n\s*/i, "").trim();
+    return limpia.startsWith("9-") ? `Sección ${limpia}` : `Sección 9-${limpia}`;
+  };
+
+  const normalizarClaveItem = (item: PayloadTelemetria): string => {
+    const nom = (item.estudianteNombre || "").toLowerCase().trim();
+    const sec = normalizarSeccionTexto(item.seccionOGrupo).toLowerCase().trim();
+    return `${nom}::${sec}`;
+  };
+
   const agregarResultadoTelemetria = (res: PayloadTelemetria) => {
     setTelemetria((prev) => {
-      const updated = [res, ...prev];
+      const mapa = new Map<string, PayloadTelemetria>();
+      prev.forEach((p) => {
+        if (p.estudianteNombre) {
+          mapa.set(normalizarClaveItem(p), p);
+        }
+      });
+      const key = normalizarClaveItem(res);
+      const resNorm = { ...res, seccionOGrupo: normalizarSeccionTexto(res.seccionOGrupo) };
+      mapa.set(key, resNorm);
+      const updated = Array.from(mapa.values()).sort((a, b) => b.timestamp - a.timestamp);
       SafeStorage.setItem("telemetria_registros", JSON.stringify(updated));
       return updated;
     });
@@ -529,7 +582,20 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
 
   const importarLoteResultados = (lote: PayloadTelemetria[]) => {
     setTelemetria((prev) => {
-      const updated = [...lote, ...prev];
+      const mapa = new Map<string, PayloadTelemetria>();
+      prev.forEach((p) => {
+        if (p.estudianteNombre) {
+          mapa.set(normalizarClaveItem(p), p);
+        }
+      });
+      lote.forEach((item) => {
+        if (item.estudianteNombre) {
+          const key = normalizarClaveItem(item);
+          const itemNorm = { ...item, seccionOGrupo: normalizarSeccionTexto(item.seccionOGrupo) };
+          mapa.set(key, itemNorm);
+        }
+      });
+      const updated = Array.from(mapa.values()).sort((a, b) => b.timestamp - a.timestamp);
       SafeStorage.setItem("telemetria_registros", JSON.stringify(updated));
       return updated;
     });

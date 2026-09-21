@@ -887,9 +887,15 @@
       try { docActivo = rawDoc ? JSON.parse(rawDoc) : null; } catch(e) {}
       var docId = docActivo && docActivo.idDocente ? docActivo.idDocente : "ASESOR-FT-7729";
 
+      var normalizarSec = function(s) {
+        if (!s) return "Sección 9-1";
+        var lim = s.replace(/^secci[oó]n\s*/i, "").trim();
+        return lim.startsWith("9-") ? "Sección " + lim : "Sección 9-" + lim;
+      };
+
       var lote = [];
       estadoDocente.estudiantes.forEach(function(est, idx) {
-        if (!est || !est.nombre) return;
+        if (!est || !est.nombre || !est.nombre.trim()) return;
         var aciertos = 0;
         if (est.cog && Array.isArray(est.cog)) {
           est.cog.forEach(function(val) {
@@ -902,14 +908,15 @@
         }
         var porcentajeCalc = Math.round((aciertos / 10) * 100);
         var nivelCalc = porcentajeCalc >= 80 ? "Avanzado" : (porcentajeCalc <= 59 ? "Inicial" : "Intermedio");
+        var secNorm = normalizarSec(est.seccion);
 
         lote.push({
-          idResultado: "doc-eval-" + (est.id || idx) + "-" + est.nombre.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase(),
+          idResultado: "doc-eval-" + est.nombre.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase() + "-" + secNorm.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase(),
           webAppId: "diagnostico_9no_modulo01_aula_inteligente",
           webAppTitulo: "Diagnóstico Integrado 9°: «Aula Inteligente»",
           docenteId: docId,
           estudianteNombre: est.nombre.trim(),
-          seccionOGrupo: est.seccion || "Sección 9-1",
+          seccionOGrupo: secNorm,
           puntaje: porcentajeCalc,
           puntajeMaximo: 100,
           porcentaje: porcentajeCalc,
