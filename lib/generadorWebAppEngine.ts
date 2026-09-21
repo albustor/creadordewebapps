@@ -47,6 +47,7 @@ export interface OpcionesGeneracionWebApp {
   modo: "Individual" | "Parejas";
   descripcionReto?: string;
   urlTelemetriaBase?: string;
+  urlGoogleScript?: string;
   
   // Contexto Estudiantil y Valores Transversales
   elementosContextoEstudiantil?: string;
@@ -1005,7 +1006,8 @@ export function generarCodigoHTMLAutonomo(opts: OpcionesGeneracionWebApp): strin
       rubricaInicial: "${escapeJS(rubricaInicial)}",
       rubricaIntermedia: "${escapeJS(rubricaIntermedia)}",
       rubricaAvanzada: "${escapeJS(rubricaAvanzada)}",
-      urlTelemetria: "${urlApi}"
+      urlTelemetria: "${urlApi}",
+      urlGoogleScript: "${escapeJS(opts.urlGoogleScript || "")}"
     };
 
     var PREGUNTAS = ${JSON.stringify(preguntas)};
@@ -1569,6 +1571,22 @@ export function generarCodigoHTMLAutonomo(opts: OpcionesGeneracionWebApp): strin
         }
       } catch(e) {}
 
+      // 1. Envío directo a Google Apps Script (Webhook Google Sheets) si está configurado
+      if (CONFIG.urlGoogleScript && CONFIG.urlGoogleScript.trim().length > 5) {
+        try {
+          fetch(CONFIG.urlGoogleScript, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          }).then(function() {
+            estadoDiv.innerHTML = "✅ ¡Trabajo enviado con éxito a la hoja de cálculo del docente (Google Sheets)!";
+            estadoDiv.style.background = "#dcfce7";
+            estadoDiv.style.color = "#166534";
+          }).catch(function() {});
+        } catch(e) {}
+      }
+
       var endpoints = [];
       if (window.location.protocol === "http:" || window.location.protocol === "https:") {
         endpoints.push(window.location.origin + "/api/telemetria/enviar");
@@ -1578,9 +1596,11 @@ export function generarCodigoHTMLAutonomo(opts: OpcionesGeneracionWebApp): strin
 
       function intentarEndpoint(index) {
         if (index >= endpoints.length) {
-          estadoDiv.innerHTML = "✅ ¡Registrado localmente! También puedes mostrar el código QR al docente.";
-          estadoDiv.style.background = "#dcfce7";
-          estadoDiv.style.color = "#166534";
+          if (!CONFIG.urlGoogleScript) {
+            estadoDiv.innerHTML = "✅ ¡Registrado localmente! También puedes mostrar el código QR al docente.";
+            estadoDiv.style.background = "#dcfce7";
+            estadoDiv.style.color = "#166534";
+          }
           return;
         }
 

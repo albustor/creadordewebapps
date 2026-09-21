@@ -118,10 +118,11 @@ function CreadorWebAppsContenido() {
     "Honestidad Académica",
   ]);
 
-  // 3. Recursos Tecnológicos del Aula
+  // 3. Recursos Tecnológicos del Aula y Telemetría
   const [recursoTecnologico, setRecursoTecnologico] = useState<string>(
     "Celulares en Parejas o Individuales (Touch-First)"
   );
+  const [urlGoogleScript, setUrlGoogleScript] = useState<string>("");
 
   // 4. Inclusión y Apoyo NEE (DUA Permanente)
   const [activarAjusteNEE, setActivarAjusteNEE] = useState(false);
@@ -137,6 +138,10 @@ function CreadorWebAppsContenido() {
   const [codigoHTMLGenerado, setCodigoHTMLGenerado] = useState("");
   const [copiadoPrompt, setCopiadoPrompt] = useState(false);
   const [vistaActiva, setVistaActiva] = useState<"formulario" | "preview">("formulario");
+
+  // Generación Directa con Inteligencia Artificial Multi-Proveedor
+  const [generandoConIA, setGenerandoConIA] = useState(false);
+  const [infoModeloIA, setInfoModeloIA] = useState<{ provider: string; model: string; latencyMs: number } | null>(null);
 
   // Subida de código Canvas / HTML y Almacenamiento en la Nube
   const [codigoCanvasPegado, setCodigoCanvasPegado] = useState("");
@@ -241,6 +246,7 @@ function CreadorWebAppsContenido() {
       elementosContextoEstudiantil: contextoHogar,
       valoresTransversalesMEP: [...ejesTransversalesSeleccionados, ...valoresSeleccionados],
       recursoTecnologicoAula: recursoTecnologico,
+      urlGoogleScript: urlGoogleScript.trim() || undefined,
       ajusteNEE: ajusteNEEObj,
       seccionesDisponibles: seccionesArray.length > 0 ? seccionesArray : ["7-1", "7-2"],
       rubricaCotidiano: {
@@ -284,11 +290,43 @@ function CreadorWebAppsContenido() {
     ejesTransversalesSeleccionados,
     valoresSeleccionados,
     recursoTecnologico,
+    urlGoogleScript,
     activarAjusteNEE,
     tipoAjusteNEE,
     indicacionNEE,
     docente,
   ]);
+
+  // Generación Directa mediante Cascada de Inteligencia Artificial (Gemini / Groq / Qwen)
+  const handleGenerarConIA = async () => {
+    setGenerandoConIA(true);
+    setInfoModeloIA(null);
+    try {
+      const opts = getOpciones();
+      const res = await fetch("/api/ia/generar-webapp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(opts),
+      });
+      const data = await res.json();
+      if (data.success && data.html) {
+        setCodigoCanvasPegado(data.html);
+        setInfoModeloIA({
+          provider: data.providerUsed,
+          model: data.modelUsed,
+          latencyMs: data.latencyMs,
+        });
+        setVistaActiva("preview");
+      } else {
+        alert("La IA devolvió un error: " + (data.error || "Intente nuevamente."));
+      }
+    } catch (err: any) {
+      console.error("Error al generar con IA:", err);
+      alert("Error de conexión al generar con IA. Se mantendrá el motor determinista local.");
+    } finally {
+      setGenerandoConIA(false);
+    }
+  };
 
   const copiarPrompt = () => {
     navigator.clipboard.writeText(promptGenerado);
@@ -945,17 +983,35 @@ function CreadorWebAppsContenido() {
                 })}
               </div>
 
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Secciones habilitadas para esta webapp:
-                </label>
-                <input
-                  type="text"
-                  value={seccionesTexto}
-                  onChange={(e) => setSeccionesTexto(e.target.value)}
-                  placeholder="Ej: 7-1, 7-2, 7-3, 7-4"
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono font-semibold"
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Secciones habilitadas para esta webapp:
+                  </label>
+                  <input
+                    type="text"
+                    value={seccionesTexto}
+                    onChange={(e) => setSeccionesTexto(e.target.value)}
+                    placeholder="Ej: 7-1, 7-2, 7-3, 7-4"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono font-semibold"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1 flex items-center justify-between">
+                    <span>Webhook Google Apps Script:</span>
+                    <span className="text-[10px] text-emerald-800 font-bold bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
+                      Sheets
+                    </span>
+                  </label>
+                  <input
+                    type="url"
+                    value={urlGoogleScript}
+                    onChange={(e) => setUrlGoogleScript(e.target.value)}
+                    placeholder="https://script.google.com/macros/s/.../exec (opcional)"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono font-semibold focus:outline-none focus:border-emerald-600 focus:bg-white"
+                  />
+                </div>
               </div>
             </div>
 
@@ -1045,16 +1101,59 @@ function CreadorWebAppsContenido() {
           {/* COLUMNA DERECHA: PROMPT MAESTRO + SUBIDA DE CANVAS + COMPARTIR PWA Y PROYECCIÓN (5 Cols) */}
           <div className="lg:col-span-5 space-y-6">
             
+            {/* TARJETA 1: GENERACIÓN CON IA MULTI-PROVEEDOR */}
+            <div className="bg-gradient-to-br from-indigo-950 via-slate-900 to-blue-950 text-white rounded-3xl p-6 sm:p-7 border border-indigo-500/40 shadow-2xl space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Sparkle size={22} weight="fill" className="text-amber-400" />
+                  <h3 className="text-base font-black text-white">Generador IA Multi-Proveedor</h3>
+                </div>
+                <span className="px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 text-[10px] font-bold">
+                  Gemini • Groq • Qwen
+                </span>
+              </div>
+              
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Analiza el indicador curricular y genera automáticamente la WebApp con simuladores Canvas interactivos, reactivos reflexivos y telemetría hacia Google Sheets.
+              </p>
+
+              {/* Botón Generar con IA */}
+              <button
+                onClick={handleGenerarConIA}
+                disabled={generandoConIA}
+                className="w-full flex items-center justify-center gap-2.5 py-3.5 px-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-xs sm:text-sm rounded-2xl shadow-lg hover:shadow-indigo-500/30 transition-all transform hover:-translate-y-0.5 disabled:opacity-50 cursor-pointer"
+              >
+                {generandoConIA ? (
+                  <ArrowsClockwise size={20} weight="bold" className="animate-spin text-white" />
+                ) : (
+                  <Sparkle size={20} weight="fill" className="text-amber-300" />
+                )}
+                <span>{generandoConIA ? "Analizando indicador y generando con IA..." : "✨ Generar y Optimizar con IA"}</span>
+              </button>
+
+              {infoModeloIA && (
+                <div className="p-3 bg-slate-950/80 border border-indigo-500/40 rounded-xl flex items-center justify-between text-[11px] text-indigo-200 animate-fadeIn">
+                  <span className="font-bold flex items-center gap-1.5">
+                    <CheckCircle size={15} weight="fill" className="text-emerald-400" />
+                    <span>Modelo: {infoModeloIA.model}</span>
+                  </span>
+                  <span className="font-mono bg-indigo-900/80 px-2 py-0.5 rounded text-[10px] text-indigo-300">
+                    ⚡ {infoModeloIA.latencyMs}ms
+                  </span>
+                </div>
+              )}
+            </div>
+
             {/* TARJETA DE PROMPT MAESTRO BLINDADO */}
             <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-7 border border-slate-800 shadow-2xl space-y-5">
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Sparkle size={20} weight="fill" className="text-amber-400" />
+                    <CodeBlock size={20} weight="bold" className="text-emerald-400" />
                     <h3 className="text-base font-black text-white">Prompt Maestro Blindado</h3>
                   </div>
                   <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-bold">
-                    Universal
+                    Exportar
                   </span>
                 </div>
                 <p className="text-xs text-slate-300 leading-relaxed">
