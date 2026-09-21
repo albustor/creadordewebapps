@@ -694,17 +694,6 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
                 : "Apertura en Local: diagnostico_9no_modulo01_aula_inteligente.html"}
             </div>
 
-            <div className="flex gap-2 justify-center">
-              <button
-                onClick={() => {
-                  setModalQREstudiante(false);
-                  setModalPWAGuia(true);
-                }}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-sky-300 font-bold text-xs rounded-xl border border-slate-700 transition-all"
-              >
-                <DeviceMobile size={16} weight="bold" />
-                <span>¿Cómo instalar en el Celular?</span>
-              </button>
             </div>
           </div>
         </div>
@@ -727,10 +716,10 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
             </div>
 
             <h3 className="text-xl font-black text-white mb-2">
-              Abrir en tu Celular o Laptop
+              Instrumento Docente Evaluador
             </h3>
             <p className="text-xs text-slate-300 mb-5">
-              Escanea este QR con tu teléfono móvil para llevar el registro de aula, escanear a tus estudiantes y calificar observación en vivo.
+              Accede al instrumento de evaluación y registro de observación diagnóstica optimizado para computadoras de laboratorios, PCs y portátiles.
             </p>
 
             <div className="bg-white p-4 rounded-2xl inline-block shadow-xl border-4 border-slate-800 mb-4">
@@ -750,19 +739,6 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
               {typeof window !== "undefined"
                 ? `${window.location.origin}/webapps/diagnostico_9no_modulo01_docente_evaluador.html`
                 : "/webapps/diagnostico_9no_modulo01_docente_evaluador.html"}
-            </div>
-
-            <div className="flex gap-2 justify-center">
-              <button
-                onClick={() => {
-                  setModalQRDocente(false);
-                  setModalPWAGuia(true);
-                }}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold text-xs rounded-xl shadow-md transition-all"
-              >
-                <DeviceMobile size={16} weight="bold" />
-                <span>Instalar App en el Celular</span>
-              </button>
             </div>
           </div>
         </div>
