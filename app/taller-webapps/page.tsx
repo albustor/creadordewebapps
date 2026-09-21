@@ -231,6 +231,7 @@ function CreadorWebAppsContenido() {
       nivel: nivelEducativo,
       saberTitulo: `${moduloSeleccionado} • ${ejeSeleccionado.titulo || "Saber Tecnológico"}`,
       saberConceptual,
+      explicacionPedagogica: indicadorSeleccionado.explicacionPedagogica,
       indicadorCodigo: indicadorSeleccionado.codigo,
       indicadorNombre: indicadorSeleccionado.nombre,
       saberProcedimental,
@@ -242,6 +243,21 @@ function CreadorWebAppsContenido() {
       recursoTecnologicoAula: recursoTecnologico,
       ajusteNEE: ajusteNEEObj,
       seccionesDisponibles: seccionesArray.length > 0 ? seccionesArray : ["7-1", "7-2"],
+      rubricaCotidiano: {
+        inicial: indicadorSeleccionado.criterioInicial,
+        intermedio: indicadorSeleccionado.criterioIntermedio,
+        avanzado: indicadorSeleccionado.criterioAvanzado,
+      },
+      instrumentoEvaluacion: {
+        criterioCognitivo: `Identifica y explica los fundamentos de ${saberConceptual} según el indicador [${indicadorSeleccionado.codigo}].`,
+        criterioProcedimental: `Aplica ${saberProcedimental} en la resolución del reto interactivo.`,
+        criterioSocioafectivo: `Demuestra ${saberActitudinal} durante el desarrollo de la actividad.`,
+        escalas: {
+          consolidado: indicadorSeleccionado.criterioAvanzado,
+          desarrollo: indicadorSeleccionado.criterioIntermedio,
+          acompanamiento: indicadorSeleccionado.criterioInicial,
+        },
+      },
     };
   };
 
