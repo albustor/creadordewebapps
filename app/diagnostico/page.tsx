@@ -242,7 +242,7 @@ Escala Oficial MEP: A (Autónomo/Consistente), B (Apoyo ocasional), C (Requiere 
             Módulo de Entrada Curricular
           </span>
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900">
-            Diagnóstico Integrado MEP (III Ciclo)
+            Diagnóstico Integrado de Formación Tecnológica (III Ciclo)
           </h1>
           <p className="text-xs sm:text-sm text-slate-500">
             Interpretación en las 3 Áreas: 🧠 Cognoscitiva, 🖐️ Psicomotora y ❤️ Socioafectiva con Simulación y Telemetría SHA-256
@@ -287,14 +287,9 @@ Escala Oficial MEP: A (Autónomo/Consistente), B (Apoyo ocasional), C (Requiere 
                   <FileText size={20} className="text-blue-700" weight="duotone" />
                   <span>Documento del Diagnóstico</span>
                 </h2>
-                <button
-                  type="button"
-                  onClick={cargarEjemploOficialMEP}
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 rounded-lg text-xs font-bold transition-all"
-                >
-                  <Sparkle size={14} weight="fill" className="text-amber-600" />
-                  <span>Cargar Plantilla Oficial MEP 9°</span>
-                </button>
+                <span className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg">
+                  Subida Directa
+                </span>
               </div>
 
               {/* Zona Drag & Drop */}
@@ -338,7 +333,7 @@ Escala Oficial MEP: A (Autónomo/Consistente), B (Apoyo ocasional), C (Requiere 
                 <textarea
                   value={textoDocumento}
                   onChange={(e) => setTextoDocumento(e.target.value)}
-                  placeholder="Pega aquí el texto de tu instrumento diagnóstico o utiliza la plantilla oficial MEP..."
+                  placeholder="Pega aquí el texto de tu instrumento diagnóstico o documento curricular..."
                   rows={9}
                   className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white font-sans leading-relaxed"
                 />
@@ -375,8 +370,8 @@ Escala Oficial MEP: A (Autónomo/Consistente), B (Apoyo ocasional), C (Requiere 
                     <CheckCircle size={22} weight="fill" className="text-emerald-600" />
                     <h3 className="text-sm font-black text-slate-900">Diagnóstico Integrado 360°</h3>
                   </div>
-                  <span className="px-2.5 py-0.5 bg-emerald-100 text-emerald-900 font-bold text-[10px] rounded-full">
-                    Alineado a III Ciclo MEP
+                  <span className="px-2.5 py-0.5 bg-blue-100 text-blue-900 font-bold text-[10px] rounded-full">
+                    Currículo III Ciclo
                   </span>
                 </div>
 
@@ -449,36 +444,35 @@ Escala Oficial MEP: A (Autónomo/Consistente), B (Apoyo ocasional), C (Requiere 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <button
                       onClick={() => setVistaActiva("preview")}
-                      className="flex items-center justify-center gap-1.5 bg-blue-700 hover:bg-blue-800 text-white font-extrabold py-3 px-3 rounded-xl text-xs transition-colors shadow-md"
+                      className="flex items-center justify-center gap-2 py-3 px-4 bg-blue-700 hover:bg-blue-800 text-white font-black text-xs rounded-xl transition-all shadow-md"
                     >
-                      <Play size={16} weight="fill" />
-                      <span>Probar Simulador en Vivo</span>
+                      <Eye size={18} weight="bold" />
+                      <span>Probar WebApp Interactiva</span>
                     </button>
-
                     <button
-                      onClick={() => setModalProyeccionAbierto(true)}
-                      className="flex items-center justify-center gap-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold py-3 px-3 rounded-xl text-xs transition-all shadow-md"
+                      onClick={descargarHTML}
+                      className="flex items-center justify-center gap-2 py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-xl transition-all shadow-md"
                     >
-                      <ChalkboardTeacher size={18} weight="bold" />
-                      <span>📽️ Proyectar en Aula (QR)</span>
+                      <DownloadSimple size={18} weight="bold" />
+                      <span>Guardar Archivo .html</span>
                     </button>
                   </div>
 
-                  <div className="flex gap-2">
+                  <div className="flex items-center justify-between gap-2 pt-1">
                     <button
                       onClick={copiarPrompt}
-                      className="flex-1 flex items-center justify-center gap-1.5 bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 px-3 rounded-xl text-xs transition-colors shadow-md"
+                      className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl border border-slate-200 transition-colors"
                     >
-                      {copiadoPrompt ? <Check size={16} weight="bold" /> : <Copy size={16} weight="bold" />}
-                      <span>{copiadoPrompt ? "¡Copiado!" : "Copiar Prompt"}</span>
+                      {copiadoPrompt ? <Check size={16} className="text-emerald-600" /> : <Copy size={16} />}
+                      <span>{copiadoPrompt ? "Prompt Copiado" : "Copiar Prompt para Gemini Canvas"}</span>
                     </button>
-
                     <button
-                      onClick={descargarHTML}
-                      className="flex-1 flex items-center justify-center gap-1.5 bg-emerald-700 hover:bg-emerald-600 text-white font-extrabold py-2.5 px-3 rounded-xl text-xs transition-colors shadow-md"
+                      onClick={() => setModalProyeccionAbierto(true)}
+                      className="flex items-center justify-center gap-1.5 py-2 px-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition-colors"
+                      title="Proyectar QR en Aula"
                     >
-                      <DownloadSimple size={16} weight="bold" />
-                      <span>⬇️ Descargar .html</span>
+                      <ChalkboardTeacher size={16} weight="bold" />
+                      <span>Proyectar</span>
                     </button>
                   </div>
                 </div>
@@ -488,7 +482,7 @@ Escala Oficial MEP: A (Autónomo/Consistente), B (Apoyo ocasional), C (Requiere 
                 <FileText size={48} className="mx-auto text-slate-400" weight="duotone" />
                 <h3 className="text-sm font-bold text-slate-700">Esperando Documento de Diagnóstico</h3>
                 <p className="text-xs text-slate-500 leading-relaxed max-w-sm mx-auto">
-                  Sube tu archivo curricular o pulsa <strong>«Cargar Plantilla Oficial MEP 9°»</strong> para interpretar las 3 áreas y generar la WebApp interactiva.
+                  Sube tu archivo curricular o pega el texto en el área de la izquierda para interpretar las 3 áreas y generar la WebApp interactiva.
                 </p>
               </div>
             )}
