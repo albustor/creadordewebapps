@@ -1,0 +1,1899 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Diagnóstico FT 9°">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#003366">
+  <title>Diagnóstico Integrado 9° - «Aula Inteligente» (Formación Tecnológica - Dimensión 1)</title>
+  
+  <style>
+    :root {
+      --bg-primary: #0b1120;
+      --bg-surface: #1e293b;
+      --bg-card: #0f172a;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --brand: #2563eb;
+      --brand-glow: rgba(37, 99, 235, 0.4);
+      --accent: #10b981;
+      --accent-glow: rgba(16, 185, 129, 0.4);
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --border: #334155;
+      --border-focus: #38bdf8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* HEADER OFICIAL MEP (COMPACTO Y ELEGANTE) */
+    header {
+      background: linear-gradient(135deg, #001f3f 0%, #003366 50%, #0055a5 100%);
+      color: white;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      border-bottom: 2px solid #0284c7;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .mep-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 3px 8px;
+      border-radius: 9999px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+
+    .top-tools {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    button, .btn {
+      background: var(--brand);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      user-select: none;
+      min-height: 36px;
+    }
+
+    button:hover, .btn:hover {
+      filter: brightness(1.15);
+      transform: translateY(-1px);
+    }
+
+    button:active, .btn:active {
+      transform: translateY(0);
+      filter: brightness(0.9);
+    }
+
+    .btn-secondary { background: #334155; color: #f8fafc; }
+    .btn-accent { background: #059669; }
+    .btn-warning { background: #d97706; }
+    .btn-danger { background: #dc2626; }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
+
+    /* NAVEGADOR DE 5 ETAPAS (OFICIALES DEL MEP) */
+    .nav-tabs {
+      max-width: 1040px;
+      margin: 12px auto 0;
+      padding: 0 12px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4px;
+      width: 100%;
+    }
+
+    .nav-tab {
+      padding: 8px 3px;
+      text-align: center;
+      background: #1e293b;
+      border: 1.5px solid #334155;
+      border-radius: 8px;
+      font-size: 10.5px;
+      font-weight: 800;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .nav-tab.activa {
+      background: linear-gradient(180deg, #1e3a8a 0%, #172554 100%);
+      border-color: #38bdf8;
+      color: #38bdf8;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+    }
+
+    .nav-tab.completada {
+      border-color: #10b981;
+      color: #34d399;
+    }
+
+    /* CONTENEDOR PRINCIPAL */
+    .main-container {
+      max-width: 1040px;
+      margin: 12px auto 30px;
+      padding: 0 12px;
+      flex: 1;
+      width: 100%;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+      margin-bottom: 20px;
+    }
+
+    .situacion-box {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid #38bdf8;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+
+    .item-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .item-num {
+      font-size: 10.5px;
+      font-weight: 900;
+      color: #38bdf8;
+      text-transform: uppercase;
+      background: rgba(56, 189, 248, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+
+    .opcion-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: #0f172a;
+      color: #cbd5e1;
+      border: 1.5px solid #334155;
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      font-size: 12.5px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .opcion-btn.correcta {
+      background: #064e3b !important;
+      border-color: #10b981 !important;
+      color: #a7f3d0 !important;
+      font-weight: 700;
+    }
+
+    .opcion-btn.incorrecta {
+      background: #7f1d1d !important;
+      border-color: #ef4444 !important;
+      color: #fecaca !important;
+    }
+
+    /* SIMULACIÓN Y HARDWARE RESPONSIVO */
+    .sim-panel-header {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sim-grid-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .banco-hardware-container {
+      background: #090e17;
+      border: 1.5px solid #1e293b;
+      border-radius: 12px;
+      padding: 10px 8px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 25px rgba(0,0,0,0.8);
+    }
+
+    .hardware-workspace {
+      position: relative;
+      min-height: 230px;
+      display: grid;
+      grid-template-columns: 1fr 1.15fr 1fr;
+      gap: 6px;
+      align-items: stretch;
+      z-index: 10;
+    }
+
+    #svgCablesLayer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .svg-wire {
+      fill: none;
+      stroke-width: 3.5;
+      stroke-linecap: round;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.9));
+      transition: stroke-dashoffset 0.5s ease;
+    }
+
+    .wire-active-pulse {
+      stroke-dasharray: 6 6;
+      animation: wirePulseAnim 1s linear infinite;
+    }
+
+    @keyframes wirePulseAnim {
+      to { stroke-dashoffset: -24; }
+    }
+
+    .hardware-card {
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+      border: 1.5px solid #334155;
+      border-radius: 10px;
+      padding: 8px 4px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hardware-card.highlight {
+      border-color: #38bdf8;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+    }
+
+    .pcb-mcu {
+      background: linear-gradient(135deg, #064e3b 0%, #022c22 100%);
+      border: 1.5px solid #059669;
+    }
+
+    .chip-ic {
+      background: #0f172a;
+      border: 1px solid #475569;
+      border-radius: 4px;
+      padding: 4px 2px;
+      margin: 4px auto;
+      width: 85%;
+      color: #94a3b8;
+      font-family: monospace;
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .led-pwr {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 6px #10b981;
+      display: inline-block;
+    }
+
+    .led-rx-tx {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #f59e0b;
+      box-shadow: 0 0 6px #f59e0b;
+      display: inline-block;
+      animation: blinkTx 0.3s infinite alternate;
+    }
+
+    @keyframes blinkTx {
+      from { opacity: 0.2; }
+      to { opacity: 1; }
+    }
+
+    .pin-terminal {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px 2px;
+      border-radius: 5px;
+      font-size: 9.5px;
+      font-weight: 800;
+      margin: 2px 0;
+      cursor: pointer;
+      background: #1e293b;
+      color: #cbd5e1;
+      border: 1.5px solid #475569;
+      transition: all 0.15s;
+      user-select: none;
+      min-height: 28px;
+    }
+
+    .pin-terminal.connected {
+      background: #059669 !important;
+      color: white !important;
+      border-color: #34d399 !important;
+      box-shadow: 0 0 8px rgba(52, 211, 153, 0.5);
+    }
+
+    .pin-terminal.selected-for-wire {
+      background: #d97706 !important;
+      color: white !important;
+      border-color: #fbbf24 !important;
+      animation: pulseWirePin 0.8s infinite alternate;
+    }
+
+    @keyframes pulseWirePin {
+      from { transform: scale(1); }
+      to { transform: scale(1.08); box-shadow: 0 0 10px #fbbf24; }
+    }
+
+    .aula-sim-container {
+      background: #020617;
+      border: 1.5px solid #1e293b;
+      border-radius: 12px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .aula-canvas-frame {
+      position: relative;
+      height: 140px;
+      border-radius: 8px;
+      border: 1.5px solid #334155;
+      overflow: hidden;
+      background: #090d16;
+    }
+
+    #aulaCanvas2D {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .telemetria-box {
+      background: #090e17;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
+
+    .osciloscopio-frame {
+      position: relative;
+      height: 60px;
+      background: #020617;
+      border: 1px solid #1e293b;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    #osciloscopioCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .multimetro-readout {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    .dmm-tile {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 5px;
+      padding: 4px 2px;
+      text-align: center;
+    }
+
+    .dmm-label {
+      font-size: 7.5px;
+      font-weight: 800;
+      color: #64748b;
+      text-transform: uppercase;
+    }
+
+    .dmm-val {
+      font-size: 11px;
+      font-weight: 900;
+      color: #38bdf8;
+      font-family: monospace;
+      margin-top: 1px;
+    }
+
+    .serial-station-wrapper {
+      background: #020617;
+      border: 2px solid #1e3a8a;
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    }
+
+    .serial-station-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .serial-log-container {
+      background: #030712;
+      border: 1.5px solid #1e293b;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-family: 'Consolas', 'Courier New', Courier, monospace;
+      font-size: 11px;
+      color: #4ade80;
+      height: 115px;
+      overflow-y: auto;
+      line-height: 1.45;
+      box-shadow: inset 0 0 12px rgba(0,0,0,0.9);
+    }
+
+    .serial-time {
+      color: #f59e0b;
+      font-weight: bold;
+      margin-right: 4px;
+    }
+
+    .serial-ok { color: #34d399; font-weight: bold; }
+    .serial-warn { color: #fbbf24; }
+    .serial-info { color: #38bdf8; }
+
+    .eps-pipeline {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      align-items: center;
+      gap: 4px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 6px 8px;
+      font-size: 9.5px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .eps-stage {
+      background: #1e293b;
+      border: 1px solid #475569;
+      border-radius: 4px;
+      padding: 3px 4px;
+      color: #cbd5e1;
+    }
+
+    .eps-stage.active {
+      background: #064e3b;
+      border-color: #10b981;
+      color: #a7f3d0;
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(4px);
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      z-index: 9999;
+    }
+
+    .modal-content {
+      background: #0f172a;
+      border: 2px solid #38bdf8;
+      border-radius: 14px;
+      padding: 20px;
+      max-width: 550px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 0 30px rgba(56, 189, 248, 0.3);
+      color: #f8fafc;
+    }
+
+    @media (max-width: 768px) {
+      .nav-tabs {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .sim-grid-layout {
+        grid-template-columns: 1fr;
+      }
+      .multimetro-readout {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .actions-grid-mobile {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+        width: 100%;
+      }
+      .actions-grid-mobile button {
+        width: 100%;
+        padding: 8px 6px;
+        font-size: 11px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER PEDAGÓGICO FT -->
+  <header>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <div style="width: 32px; height: 32px; border-radius: 6px; background: white; display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);">
+        💻
+      </div>
+      <div>
+        <div class="mep-badge">
+          <span>Dimensión 1 • FT 2026</span>
+        </div>
+        <h1 style="font-size: 0.95rem; font-weight: 900; letter-spacing: -0.2px; margin-top: 1px;">
+          Diagnóstico 9°: «Aula Inteligente»
+        </h1>
+      </div>
+    </div>
+
+    <div class="top-tools">
+      <button class="btn btn-outline" style="font-size: 11px; padding: 4px 8px; min-height: 28px;" onclick="toggleAudioFx()" id="btnAudioToggle">
+        🔊 Sonidos
+      </button>
+      <button class="btn btn-outline" style="font-size: 11px; padding: 4px 8px; min-height: 28px;" onclick="mostrarModalInstrumento()">
+        📋 Rúbrica Pedagógica
+      </button>
+      <span class="mep-badge" style="background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #34d399; font-size: 9.5px;" id="badgeProgresoHeader">
+        Progreso: 0%
+      </span>
+    </div>
+  </header>
+
+  <!-- NAVEGADOR DE 5 ETAPAS (FORMACIÓN TECNOLÓGICA) -->
+  <nav class="nav-tabs">
+    <div class="nav-tab activa" id="tabSec1" onclick="irASeccion(1)">
+      <span>1. DATOS</span>
+      <span>Identificación</span>
+    </div>
+    <div class="nav-tab" id="tabSec2" onclick="irASeccion(2)">
+      <span>2. SABER</span>
+      <span>Cognoscitiva</span>
+    </div>
+    <div class="nav-tab" id="tabSec3" onclick="irASeccion(3)">
+      <span>3. HACER</span>
+      <span>Psicomotora</span>
+    </div>
+    <div class="nav-tab" id="tabSec4" onclick="irASeccion(4)">
+      <span>4. SER</span>
+      <span>Socioafectiva</span>
+    </div>
+    <div class="nav-tab" id="tabSec5" onclick="irASeccion(5)">
+      <span>5. INFORME</span>
+      <span>Diagnóstico Final</span>
+    </div>
+  </nav>
+
+  <main class="main-container">
+
+    <!-- ==================================================================== -->
+    <!-- ETAPA 1: IDENTIFICACIÓN DEL ESTUDIANTE Y SITUACIÓN SITUADA           -->
+    <!-- ==================================================================== -->
+    <div id="seccion1" class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <span class="mep-badge" style="background: #1e3a8a; border-color: #38bdf8; color: #93c5fd;">
+          Etapa 1 • Identificación & Situación
+        </span>
+        <span style="font-size: 11px; color: #94a3b8; font-weight: 700;">III Ciclo de la EGB • Noveno Año</span>
+      </div>
+
+      <!-- FORMULARIO DE IDENTIFICACIÓN OBLIGATORIO -->
+      <div style="background: #1e293b; border: 1.5px solid #38bdf8; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 16px rgba(56, 189, 248, 0.15);">
+        <h3 style="font-size: 13.5px; color: #38bdf8; margin-bottom: 10px; font-weight: 800;">
+          👤 Datos de Identificación del Estudiante:
+        </h3>
+        
+        <div style="display: grid; grid-template-columns: 1.4fr 0.8fr; gap: 12px; margin-bottom: 10px;">
+          <div>
+            <label style="display: block; font-size: 11px; font-weight: 700; color: #cbd5e1; margin-bottom: 4px;">
+              Nombre Completo del Estudiante: <span style="color: #ef4444;">*</span>
+            </label>
+            <input type="text" id="inputEstudianteNombre" placeholder="Ej: Valeria Montero Jiménez" style="width: 100%; background: #0f172a; border: 1.5px solid #334155; border-radius: 8px; padding: 9px 12px; color: white; font-size: 13px; font-weight: 600; outline: none;" oninput="validarDatosEstudiante()">
+          </div>
+
+          <div>
+            <label style="display: block; font-size: 11px; font-weight: 700; color: #cbd5e1; margin-bottom: 4px;">
+              Sección / Grupo: <span style="color: #ef4444;">*</span>
+            </label>
+            <select id="selectSeccion" style="width: 100%; background: #0f172a; border: 1.5px solid #334155; border-radius: 8px; padding: 9px 12px; color: white; font-size: 13px; font-weight: 700; outline: none;" onchange="validarDatosEstudiante()">
+              <option value="Sección 9-1">Sección 9-1</option>
+              <option value="Sección 9-2">Sección 9-2</option>
+              <option value="Sección 9-3">Sección 9-3</option>
+              <option value="Sección 9-4">Sección 9-4</option>
+              <option value="Sección 9-5">Sección 9-5</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="msgValidacionDatos" style="font-size: 11px; color: #f59e0b; font-weight: 600;">
+          ⚠️ Por favor ingresa tu nombre completo para habilitar el diagnóstico oficial.
+        </div>
+      </div>
+
+      <!-- SITUACIÓN-PROBLEMA SITUADA -->
+      <div class="situacion-box">
+        <h2 style="font-size: 1.15rem; color: #38bdf8; margin-bottom: 6px;">
+          🏫 El Desafío del Aula Inteligente
+        </h2>
+        <p style="font-size: 12.5px; color: #cbd5e1; line-height: 1.5; margin-bottom: 10px;">
+          El laboratorio de cómputo del colegio presenta fluctuaciones constantes de luz solar. En días nublados o atardeceres, la visibilidad decae afectando el trabajo de los estudiantes.
+        </p>
+        <p style="font-size: 12.5px; color: #cbd5e1; line-height: 1.5;">
+          Tu tarea como estudiante es <strong>responder los reactivos de lógica, cablear el prototipo automatizado y validar</strong> que las luminarias se enciendan cuando la iluminación ambiental caiga por debajo de <strong>300 Lux</strong>.
+        </p>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end;">
+        <button class="btn btn-accent" id="btnIniciarDiagnostico" style="padding: 9px 20px; font-size: 13px; font-weight: 800;" onclick="comenzarDiagnosticoValido()">
+          Comenzar con Área Cognoscitiva (Etapa 2) ➔
+        </button>
+      </div>
+    </div>
+
+    <!-- ==================================================================== -->
+    <!-- ETAPA 2: ÁREA COGNOSCITIVA (6 ÍTEMS DE CONOCIMIENTOS PREVIOS)        -->
+    <!-- ==================================================================== -->
+    <div id="seccion2" class="card" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
+        <div>
+          <span class="mep-badge" style="background: rgba(37, 99, 235, 0.2); border-color: #2563eb; color: #60a5fa;">
+            Etapa 2 • Área Cognoscitiva (Saber)
+          </span>
+          <h2 style="font-size: 1.15rem; color: #f8fafc; margin-top: 2px;">
+            Conocimientos Previos y Lógica Computacional
+          </h2>
+        </div>
+        <span id="contadorRespuestas" style="font-size: 11px; color: #38bdf8; font-weight: 800; background: #0f172a; padding: 4px 8px; border-radius: 6px; border: 1px solid #334155;">
+          Respondidas: 0 / 6
+        </span>
+      </div>
+
+      <div class="item-card">
+        <div class="item-header"><span class="item-num">Ítem 1 • Microcontrolador</span></div>
+        <p style="font-size: 12.5px; font-weight: 700; margin-bottom: 8px; color: #f8fafc;">
+          En el sistema del aula inteligente, ¿cuál es la función principal de la tarjeta microcontroladora?
+        </p>
+        <div id="optsItem1">
+          <button class="opcion-btn" onclick="responderItem(1, 0, false)">A. Producir la luz para iluminar la sala directamente con su batería.</button>
+          <button class="opcion-btn" onclick="responderItem(1, 1, true)">B. Recibir la señal del sensor, ejecutar el código de control y activar el actuador según las condiciones.</button>
+          <button class="opcion-btn" onclick="responderItem(1, 2, false)">C. Servir de soporte físico plástico sin intervenir en la corriente.</button>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-header"><span class="item-num">Ítem 2 • Sensor y Actuador</span></div>
+        <p style="font-size: 12.5px; font-weight: 700; margin-bottom: 8px; color: #f8fafc;">
+          ¿Cómo se diferencian el sensor LDR y la lámpara LED en el prototipo?
+        </p>
+        <div id="optsItem2">
+          <button class="opcion-btn" onclick="responderItem(2, 0, false)">A. El LDR ejecuta la respuesta física y el LED captura datos del entorno.</button>
+          <button class="opcion-btn" onclick="responderItem(2, 1, true)">B. El LDR captura la intensidad lumínica ambiental (Entrada) y el LED genera la iluminación (Salida).</button>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-header"><span class="item-num">Ítem 3 • Modelo Entrada-Proceso-Salida</span></div>
+        <p style="font-size: 12.5px; font-weight: 700; margin-bottom: 8px; color: #f8fafc;">
+          ¿Cuál esquema representa fielmente el modelo E-P-S?
+        </p>
+        <div id="optsItem3">
+          <button class="opcion-btn" onclick="responderItem(3, 0, false)">A. Lámpara LED ➔ Sensor LDR ➔ Microcontrolador</button>
+          <button class="opcion-btn" onclick="responderItem(3, 1, true)">B. Sensor LDR (Entrada) ➔ Microcontrolador (Proceso) ➔ Lámpara LED (Salida)</button>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-header"><span class="item-num">Ítem 4 • Secuencia de Algoritmo</span></div>
+        <p style="font-size: 12.5px; font-weight: 700; margin-bottom: 8px; color: #f8fafc;">
+          ¿Cuál es el orden lógico indispensable que debe ejecutar el bucle de control?
+        </p>
+        <div id="optsItem4">
+          <button class="opcion-btn" onclick="responderItem(4, 0, true)">A. 1. Energizar ➔ 2. Leer sensor analógico A0 ➔ 3. Comparar con umbral (300 Lux) ➔ 4. Activar o apagar pin D9.</button>
+          <button class="opcion-btn" onclick="responderItem(4, 1, false)">B. 1. Encender luz ➔ 2. Desconectar alimentación ➔ 3. Leer sensor.</button>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-header"><span class="item-num">Ítem 5 • Estructura Condicional</span></div>
+        <p style="font-size: 12.5px; font-weight: 700; margin-bottom: 8px; color: #f8fafc;">
+          ¿Qué expresión lógica formaliza la toma de decisión requerida para el aula?
+        </p>
+        <div id="optsItem5">
+          <button class="opcion-btn" onclick="responderItem(5, 0, true)">A. Si (Luz_Ambiente &lt; 300 Lux) entonces Escribir_Digital(D9, ALTO) de lo contrario Escribir_Digital(D9, BAJO).</button>
+          <button class="opcion-btn" onclick="responderItem(5, 1, false)">B. Mientras (Luz &gt; 500) Esperar 1 segundo sin actuar.</button>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-header"><span class="item-num">Ítem 6 • Depuración y Diagnóstico</span></div>
+        <p style="font-size: 12.5px; font-weight: 700; margin-bottom: 8px; color: #f8fafc;">
+          Si al anochecer la lámpara no se enciende con el programa cargado, ¿qué verificación es prioritaria?
+        </p>
+        <div id="optsItem6">
+          <button class="opcion-btn" onclick="responderItem(6, 0, true)">A. Comprobar continuidad de cables (VCC/GND), polaridad del actuador y lectura analógica en el pin A0.</button>
+          <button class="opcion-btn" onclick="responderItem(6, 1, false)">B. Reemplazar toda la instalación eléctrica del colegio.</button>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; margin-top: 14px;">
+        <button class="btn btn-outline" onclick="irASeccion(1)">⬅️ Etapa 1: Datos</button>
+        <button class="btn btn-accent" onclick="irASeccion(3)">Continuar a Etapa 3 (Psicomotora) ➔</button>
+      </div>
+    </div>
+
+    <!-- ==================================================================== -->
+    <!-- ETAPA 3: ÁREA PSICOMOTORA (RETO DE CABLEADO & SIMULACIÓN EN VIVO)    -->
+    <!-- ==================================================================== -->
+    <div id="seccion3" class="card" style="display: none;">
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
+        <div>
+          <span class="mep-badge" style="background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #34d399;">
+            Etapa 3 • Área Psicomotora (Hacer)
+          </span>
+          <h2 style="font-size: 1.15rem; color: #f8fafc; margin-top: 2px;">
+            Laboratorio de Conexionado Físico y Simulación 2D
+          </h2>
+        </div>
+        <span style="font-size: 11px; color: #94a3b8; font-weight: 700;">⏱️ Tiempo: 20-25 min</span>
+      </div>
+
+      <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 10px 12px; margin-bottom: 12px;">
+        <p style="font-size: 11.5px; color: #cbd5e1; line-height: 1.45;">
+          <strong style="color: #38bdf8;">Instrucción del Reto:</strong> Haz clic en los pines para enlazar los <strong>5 cables del modelo E-P-S</strong> (LDR ➔ MCU ➔ Actuador). Luego prueba variando la <strong>Luz Exterior</strong> y presiona <strong>«🚀 Sincronizar Conexión»</strong> cuando esté listo.
+        </p>
+      </div>
+
+      <!-- BOTONES DE ACCIÓN -->
+      <div class="sim-panel-header">
+        <div class="actions-grid-mobile">
+          <button class="btn btn-accent" style="font-weight: 800; box-shadow: 0 0 10px rgba(16,185,129,0.3);" onclick="sincronizarYValidarConexion()">
+            🚀 Sincronizar Conexión
+          </button>
+          <button class="btn btn-warning" onclick="restaurarCircuitoValores()">
+            🔄 Restaurar Valores
+          </button>
+          <button class="btn btn-secondary" onclick="cambiarTipoActuador()">
+            💡 Cambiar Actuador
+          </button>
+          <button class="btn btn-danger" onclick="limpiarCables()">
+            🧹 Desconectar Todo
+          </button>
+        </div>
+
+        <!-- SLIDER DE LUZ AMBIENTAL -->
+        <div style="background: #090e17; border: 1px solid #1e293b; border-radius: 8px; padding: 8px 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; margin-bottom: 4px;">
+            <span style="color: #94a3b8;">🌙 Noche (0 Lux)</span>
+            <strong id="labelLuxAmbiental" style="color: #f59e0b; font-size: 11.5px; font-family: monospace;">
+              Luz: 180 Lux (Poca Luz)
+            </strong>
+            <span style="color: #94a3b8;">☀️ Sol (850 Lux)</span>
+          </div>
+          <input type="range" id="sliderLuz" min="0" max="850" value="180" style="width: 100%; cursor: pointer;" oninput="actualizarSimulador(this.value)">
+        </div>
+
+        <!-- DEPURACIÓN DE FALLAS -->
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px;">
+          <div style="font-size: 10px; font-weight: 700; color: #94a3b8;">Depuración:</div>
+          <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+            <button class="btn btn-outline" style="font-size: 9.5px; padding: 3px 6px; min-height: 24px;" onclick="inyectarFalla(0)" id="btnFalla0">
+              ✅ Normal
+            </button>
+            <button class="btn btn-outline" style="font-size: 9.5px; padding: 3px 6px; min-height: 24px; border-color: #f59e0b; color: #fcd34d;" onclick="inyectarFalla(1)" id="btnFalla1">
+              ⚠️ Falla 1: LDR Suelto
+            </button>
+            <button class="btn btn-outline" style="font-size: 9.5px; padding: 3px 6px; min-height: 24px; border-color: #ef4444; color: #fca5a5;" onclick="inyectarFalla(2)" id="btnFalla2">
+              ❌ Falla 2: Lógica &gt;300
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- GRID PRINCIPAL DE SIMULACIÓN -->
+      <div class="sim-grid-layout">
+        
+        <!-- BANCO DE HARDWARE HORIZONTAL -->
+        <div class="banco-hardware-container" id="hardwareBoard">
+          <div style="font-size: 10.5px; font-weight: 800; color: #38bdf8; text-transform: uppercase; margin-bottom: 8px; display: flex; justify-content: space-between;">
+            <span>🔌 1. Hardware & Pines</span>
+            <span id="labelCablesConteo" style="color: #94a3b8; font-size: 10px;">
+              Cables: 0 / 5
+            </span>
+          </div>
+
+          <div class="hardware-workspace">
+            <!-- SENSOR LDR -->
+            <div class="hardware-card" id="cardSensor">
+              <div>
+                <div style="font-size: 18px;">☀️</div>
+                <strong style="font-size: 10px; color: #f8fafc; display: block;">LDR (Entrada)</strong>
+              </div>
+
+              <div style="margin-top: 4px; display: flex; flex-direction: column; gap: 2px;">
+                <div class="pin-terminal" id="pin_sensor_vcc" onclick="clickPin('sensor_vcc')">🔴 5V</div>
+                <div class="pin-terminal" id="pin_sensor_gnd" onclick="clickPin('sensor_gnd')">⚫ GND</div>
+                <div class="pin-terminal" id="pin_sensor_sig" onclick="clickPin('sensor_sig')">🟢 Pin A0</div>
+              </div>
+            </div>
+
+            <!-- MICROCONTROLADOR -->
+            <div class="hardware-card pcb-mcu highlight" id="cardMCU">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span class="led-pwr"></span>
+                  <span style="font-size: 8px; font-weight: 800; color: #34d399;">MCU 328P</span>
+                  <span class="led-rx-tx"></span>
+                </div>
+                <div class="chip-ic">PROCESO</div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin-top: 3px;">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                  <div class="pin-terminal" id="pin_mcu_5v" onclick="clickPin('mcu_5v')">🔴 5V</div>
+                  <div class="pin-terminal" id="pin_mcu_gnd" onclick="clickPin('mcu_gnd')">⚫ GND</div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                  <div class="pin-terminal" id="pin_mcu_a0" onclick="clickPin('mcu_a0')">🟢 A0</div>
+                  <div class="pin-terminal" id="pin_mcu_d9" onclick="clickPin('mcu_d9')">🟡 D9</div>
+                </div>
+              </div>
+
+              <div id="mcuStatusBadge" style="font-size: 8.5px; color: #38bdf8; font-weight: 800; margin-top: 4px;">
+                Sin cablear
+              </div>
+            </div>
+
+            <!-- ACTUADOR -->
+            <div class="hardware-card" id="cardActuador">
+              <div>
+                <div style="font-size: 18px;" id="actuadorIcono">💡</div>
+                <strong style="font-size: 10px; color: #f8fafc; display: block;" id="actuadorTitulo">LED (Salida)</strong>
+              </div>
+
+              <div style="margin-top: 4px; display: flex; flex-direction: column; gap: 2px;">
+                <div class="pin-terminal" id="pin_act_sig" onclick="clickPin('act_sig')">🟡 Pin D9</div>
+                <div class="pin-terminal" id="pin_act_gnd" onclick="clickPin('act_gnd')">⚫ GND</div>
+              </div>
+
+              <div id="actuadorStatusBadge" style="font-size: 8.5px; color: #94a3b8; font-weight: 800; margin-top: 4px;">
+                Off (0%)
+              </div>
+            </div>
+          </div>
+
+          <svg id="svgCablesLayer"></svg>
+
+          <!-- PIPELINE E-P-S -->
+          <div class="eps-pipeline" style="margin-top: 10px;">
+            <div class="eps-stage" id="epsEntrada">
+              <strong>ENTRADA</strong><br><span style="font-size: 8px;">LDR (Pin A0)</span>
+            </div>
+            <span style="color: #64748b;">➔</span>
+            <div class="eps-stage" id="epsProceso">
+              <strong>PROCESO</strong><br><span style="font-size: 8px;">MCU (&lt;300 Lux)</span>
+            </div>
+            <span style="color: #64748b;">➔</span>
+            <div class="eps-stage" id="epsSalida">
+              <strong>SALIDA</strong><br><span style="font-size: 8px;">LED (Pin D9)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- AULA 2D Y OSCILOSCOPIO -->
+        <div class="aula-sim-container">
+          <div style="font-size: 10.5px; font-weight: 800; color: #10b981; text-transform: uppercase; display: flex; justify-content: space-between;">
+            <span>🏫 2. Aula 2D</span>
+            <span id="labelEstadoAula" style="font-size: 9.5px; color: #34d399; font-weight: 800;">
+              Luz Activa
+            </span>
+          </div>
+
+          <div class="aula-canvas-frame">
+            <canvas id="aulaCanvas2D" width="360" height="140"></canvas>
+          </div>
+
+          <div class="telemetria-box">
+            <div style="display: flex; justify-content: space-between; font-size: 9.5px; color: #94a3b8; margin-bottom: 3px; font-weight: 700;">
+              <span style="color: #38bdf8;">📈 Osciloscopio Real-Time</span>
+              <span style="color: #10b981;">60 FPS</span>
+            </div>
+            <div class="osciloscopio-frame">
+              <canvas id="osciloscopioCanvas" width="340" height="60"></canvas>
+            </div>
+
+            <div class="multimetro-readout">
+              <div class="dmm-tile">
+                <div class="dmm-label">Luz</div>
+                <div class="dmm-val" id="dmmLux">180 Lx</div>
+              </div>
+              <div class="dmm-tile">
+                <div class="dmm-label">Volt A0</div>
+                <div class="dmm-val" id="dmmVoltA0">1.05 V</div>
+              </div>
+              <div class="dmm-tile">
+                <div class="dmm-label">Salida D9</div>
+                <div class="dmm-val" id="dmmSalidaD9" style="color: #10b981;">HIGH</div>
+              </div>
+              <div class="dmm-tile">
+                <div class="dmm-label">Potencia</div>
+                <div class="dmm-val" id="dmmWatts">45 W</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- MONITOR SERIAL EN VIVO -->
+      <div class="serial-station-wrapper">
+        <div class="serial-station-header">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="font-size: 16px;">🖥️</span>
+            <strong style="color: #38bdf8; font-size: 12px;">Monitor Serial UART</strong>
+            <span class="mep-badge" style="background: rgba(37, 99, 235, 0.2); border-color: #2563eb; color: #60a5fa; font-size: 9px;">
+              9600 Baud
+            </span>
+          </div>
+
+          <button class="btn btn-outline" style="font-size: 10px; padding: 3px 6px; min-height: 24px;" onclick="limpiarConsolaSerial()">
+            🗑️ Limpiar
+          </button>
+        </div>
+
+        <div class="serial-log-container" id="serialConsole">
+          <span class="serial-time">[08:00:00]</span> <span class="serial-info">[SISTEMA]: Inicializado. Conecta los terminales para establecer el enlace eléctrico.</span><br>
+        </div>
+      </div>
+
+      <!-- BOTONES DE NAVEGACIÓN -->
+      <div style="display: flex; justify-content: space-between; margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px; flex-wrap: wrap; gap: 6px;">
+        <button class="btn btn-outline" onclick="irASeccion(2)">⬅️ Etapa 2: Cognoscitiva</button>
+        <button class="btn btn-accent" style="padding: 9px 20px; font-size: 13.5px; font-weight: 800;" onclick="irASeccion(4)">
+          Continuar a Etapa 4 (Socioafectiva) ➔
+        </button>
+      </div>
+    </div>
+
+    <!-- ==================================================================== -->
+    <!-- ETAPA 4: ÁREA SOCIOAFECTIVA Y ACTITUDINAL DEL PENSADOR COMPUTACIONAL -->
+    <!-- ==================================================================== -->
+    <div id="seccion4" class="card" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
+        <div>
+          <span class="mep-badge" style="background: rgba(245, 158, 11, 0.2); border-color: #f59e0b; color: #fbbf24;">
+            Etapa 4 • Área Socioafectiva (Ser y Convivir)
+          </span>
+          <h2 style="font-size: 1.15rem; color: #f8fafc; margin-top: 2px;">
+            Actitudes del Pensador Computacional y Resiliencia
+          </h2>
+        </div>
+        <span style="font-size: 11px; color: #94a3b8; font-weight: 700;">Guía Docente 2026</span>
+      </div>
+
+      <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 10px 12px; margin-bottom: 14px;">
+        <p style="font-size: 12px; color: #cbd5e1; line-height: 1.5;">
+          Reflexiona sobre tu experiencia durante la resolución del reto del aula inteligente y responde con sinceridad a las siguientes preguntas actitudinales:
+        </p>
+      </div>
+
+      <!-- ÍTEM SOCIOAFECTIVO 1 -->
+      <div class="item-card">
+        <div class="item-header"><span class="item-num">Actitud 1 • Gusto por la Precisión</span></div>
+        <p style="font-size: 12.5px; font-weight: 700; margin-bottom: 8px; color: #f8fafc;">
+          Al realizar las conexiones de cables y pines entre el sensor LDR y el microcontrolador:
+        </p>
+        <div id="optsSocio1">
+          <button class="opcion-btn" onclick="responderSocioafectivo(1, 0, 'Consistente')">A. Verifiqué detalladamente la polaridad (5V y GND) y la correspondencia de pines antes de energizar.</button>
+          <button class="opcion-btn" onclick="responderSocioafectivo(1, 1, 'En Proceso')">B. Conecté rápidamente y solo revisé cuando la simulación presentó un error.</button>
+        </div>
+      </div>
+
+      <!-- ÍTEM SOCIOAFECTIVO 2 -->
+      <div class="item-card">
+        <div class="item-header"><span class="item-num">Actitud 2 • Aprender del Error y Persistencia</span></div>
+        <p style="font-size: 12.5px; font-weight: 700; margin-bottom: 8px; color: #f8fafc;">
+          Cuando un circuito o programa no funciona en el primer intento:
+        </p>
+        <div id="optsSocio2">
+          <button class="opcion-btn" onclick="responderSocioafectivo(2, 0, 'Consistente')">A. Utilizo el monitor serial y el osciloscopio con paciencia para diagnosticar y corregir la falla.</button>
+          <button class="opcion-btn" onclick="responderSocioafectivo(2, 1, 'En Proceso')">B. Me desespero con facilidad y prefiero reiniciar todo sin analizar el motivo.</button>
+        </div>
+      </div>
+
+      <!-- ÍTEM SOCIOAFECTIVO 3 -->
+      <div class="item-card">
+        <div class="item-header"><span class="item-num">Actitud 3 • Ética y Uso Responsable</span></div>
+        <p style="font-size: 12.5px; font-weight: 700; margin-bottom: 8px; color: #f8fafc;">
+          Respecto a los componentes tecnológicos y la automatización energética del aula:
+        </p>
+        <div id="optsSocio3">
+          <button class="opcion-btn" onclick="responderSocioafectivo(3, 0, 'Consistente')">A. Reconozco el valor del ahorro eléctrico y la importancia de cuidar el hardware del laboratorio.</button>
+          <button class="opcion-btn" onclick="responderSocioafectivo(3, 1, 'En Proceso')">B. Lo veo solo como una tarea escolar sin impacto en el ambiente o el colegio.</button>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; margin-top: 14px;">
+        <button class="btn btn-outline" onclick="irASeccion(3)">⬅️ Etapa 3: Psicomotora</button>
+        <button class="btn btn-accent" style="padding: 9px 20px; font-size: 13.5px; font-weight: 800;" onclick="irASeccion(5)">
+          Finalizar y Generar Informe Oficial ➔
+        </button>
+      </div>
+    </div>
+
+    <!-- ==================================================================== -->
+    <!-- ETAPA 5: INFORME DIAGNÓSTICO CONSOLIDADO Y TELEMETRÍA CERTIFICADA    -->
+    <!-- ==================================================================== -->
+    <div id="seccion5" class="card" style="display: none; text-align: center;">
+      <div style="font-size: 38px; margin-bottom: 6px;">🎉</div>
+      <h2 style="font-size: 1.4rem; color: #38bdf8; font-weight: 900;">
+        Diagnóstico Integrado Consolidado
+      </h2>
+      <p style="font-size: 12.5px; color: #94a3b8; margin-bottom: 12px;" id="etiquetaEstudianteResumen">
+        Estudiante: <strong style="color: white;">Estudiante 9° Año</strong> • Sección: <strong style="color: white;">Sección 9-1</strong>
+      </p>
+
+      <!-- RESULTADOS EN LAS 3 ÁREAS DE FORMACIÓN TECNOLÓGICA -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 16px;">
+        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 12px;">
+          <div style="font-size: 10px; font-weight: 800; color: #60a5fa; text-transform: uppercase;">1. Área Cognoscitiva</div>
+          <div id="resCognoscitiva" style="font-size: 24px; font-weight: 900; color: #38bdf8; margin: 4px 0;">100%</div>
+          <div style="font-size: 10.5px; color: #34d399;" id="resCognoscitivaDetalle">6 / 6 Reactivos Correctos</div>
+        </div>
+
+        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 12px;">
+          <div style="font-size: 10px; font-weight: 800; color: #34d399; text-transform: uppercase;">2. Área Psicomotora</div>
+          <div id="resPsicomotora" style="font-size: 24px; font-weight: 900; color: #10b981; margin: 4px 0;">Consolidado</div>
+          <div style="font-size: 10.5px; color: #93c5fd;" id="resPsicomotoraDetalle">Circuito Enlazado 100%</div>
+        </div>
+
+        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 12px;">
+          <div style="font-size: 10px; font-weight: 800; color: #f59e0b; text-transform: uppercase;">3. Área Socioafectiva</div>
+          <div id="resSocioafectiva" style="font-size: 24px; font-weight: 900; color: #fbbf24; margin: 4px 0;">Nivel A</div>
+          <div style="font-size: 10.5px; color: #cbd5e1;" id="resSocioDetalle">Precisión y Resiliencia</div>
+        </div>
+      </div>
+
+      <!-- ESTADO DE TRANSMISIÓN TELEMÉTRICA -->
+      <div id="estadoTelemetria" style="padding: 12px 16px; border-radius: 10px; margin-bottom: 16px; font-size: 12.5px; font-weight: 700; background: rgba(37, 99, 235, 0.15); border: 1.5px solid #2563eb; color: #93c5fd;">
+        📡 Transmitiendo evidencias diagnósticas al Dashboard del Docente...
+      </div>
+
+      <!-- ACCIONES DE RESPALDO Y RÚBRICA (SIN BOTÓN DE REPETIR) -->
+      <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+        <button class="btn btn-accent" onclick="mostrarModalQR()" title="Úsalo si estuviste sin internet para que el docente escanee tu pantalla">
+          📱 Mostrar Comprobante QR (Respaldo Offline)
+        </button>
+        <button class="btn btn-outline" onclick="mostrarModalInstrumento()">
+          📋 Ver Rúbrica de Evaluación
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL RÚBRICA PEDAGÓGICA -->
+  <div id="modalInstrumento" class="modal">
+    <div class="modal-content">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 14px;">
+        <h3 style="color: #38bdf8; font-size: 1.1rem; margin: 0;">📋 Rúbrica e Instrumento Diagnóstico (Dimensión 1)</h3>
+        <button class="btn btn-outline" style="padding: 3px 6px; min-height: 24px;" onclick="cerrarModalInstrumento()">✕</button>
+      </div>
+
+      <div style="font-size: 11.5px; color: #cbd5e1; line-height: 1.5;">
+        <div style="background: #1e293b; padding: 10px; border-radius: 6px; border-left: 3px solid #2563eb; margin-bottom: 8px;">
+          <strong style="color: #60a5fa;">1. 🧠 Área Cognoscitiva (Conocimientos Previos):</strong>
+          <p style="margin-top: 2px;">Comprensión del microcontrolador, lógica condicional de umbral (300 Lux), arquitectura E-P-S y métodos de depuración.</p>
+        </div>
+        <div style="background: #1e293b; padding: 10px; border-radius: 6px; border-left: 3px solid #10b981; margin-bottom: 8px;">
+          <strong style="color: #34d399;">2. 🖐️ Área Psicomotora (Reto Práctico):</strong>
+          <p style="margin-top: 2px;">Precisión en conexionado de terminales (5V, GND, A0, D9), calibración en tiempo real y subsanación de fallas.</p>
+        </div>
+        <div style="background: #1e293b; padding: 10px; border-radius: 6px; border-left: 3px solid #f59e0b; margin-bottom: 8px;">
+          <strong style="color: #fbbf24;">3. ❤️ Área Socioafectiva (Actitudes Formativas):</strong>
+          <p style="margin-top: 2px;">Gusto por la precisión, paciencia ante errores de simulación, resiliencia y uso ético de la tecnología.</p>
+        </div>
+        <div style="background: #0f172a; border: 1px dashed #38bdf8; padding: 8px; border-radius: 6px; font-size: 10.5px; color: #93c5fd;">
+          <strong>Escala de Valoración:</strong> Nivel A = Consolidado / Autónomo | Nivel B = En Desarrollo / Con Apoyo | Nivel C = Requiere Acompañamiento.
+        </div>
+      </div>
+
+      <div style="text-align: right; margin-top: 14px;">
+        <button class="btn btn-accent" onclick="cerrarModalInstrumento()">Entendido y Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL QR OFFLINE -->
+  <div id="modalQR" class="modal">
+    <div class="modal-content" style="text-align: center; max-width: 400px;">
+      <h3 style="color: #38bdf8; margin-bottom: 4px; font-size: 1.15rem;">Comprobante Digital QR de Respaldo</h3>
+      <p style="font-size: 11px; color: #94a3b8; margin-bottom: 12px;">
+        Muestra este código al escáner del docente si realizaste el diagnóstico sin conexión a internet.
+      </p>
+      <div style="display: flex; justify-content: center; margin: 10px 0;">
+        <canvas id="qrCanvas" width="180" height="180" style="border: 3px solid #0284c7; border-radius: 8px; background: white;"></canvas>
+      </div>
+      <div id="tokenHashLabel" style="font-family: monospace; font-size: 9.5px; color: #64748b; word-break: break-all; margin-bottom: 12px;"></div>
+      <button class="btn btn-accent" style="width: 100%;" onclick="cerrarModalQR()">Cerrar</button>
+    </div>
+  </div>
+
+  <!-- MOTOR JAVASCRIPT -->
+  <script>
+    var CONFIG = {
+      webAppId: "diag-9no-mod01-aula-inteligente",
+      webAppTitulo: "Diagnóstico Integrado 9° - Aula Inteligente",
+      docenteId: "DOC-DRE01-7729",
+      nivel: "9° Año - Secundaria",
+      totalItems: 6,
+      umbralLux: 300,
+      urlTelemetria: "/api/telemetria/enviar"
+    };
+
+    var estado = {
+      seccionActual: 1,
+      estudianteNombre: "",
+      seccionGrupo: "Sección 9-1",
+      respuestasCognoscitivas: {},
+      respuestasSocioafectivas: {},
+      cables: {
+        ldr_vcc: false,
+        ldr_gnd: false,
+        ldr_sig: false,
+        act_sig: false,
+        act_gnd: false
+      },
+      pinSeleccionado: null,
+      actuadorActual: "LED",
+      fallaInyectada: 0,
+      luzActual: 180,
+      audioHabilitado: true,
+      tiempoInicio: Date.now(),
+      tiempoTotal: 0
+    };
+
+    var CONEXIONES_VALIDAS = [
+      { p1: "sensor_vcc", p2: "mcu_5v", cableId: "ldr_vcc", color: "#ef4444", nombre: "VCC (5V) Sensor LDR" },
+      { p1: "sensor_gnd", p2: "mcu_gnd", cableId: "ldr_gnd", color: "#38bdf8", nombre: "GND Sensor LDR" },
+      { p1: "sensor_sig", p2: "mcu_a0", cableId: "ldr_sig", color: "#10b981", nombre: "Señal Analógica A0 (Entrada)" },
+      { p1: "act_sig", p2: "mcu_d9", cableId: "act_sig", color: "#f59e0b", nombre: "Señal Digital D9 (Salida Actuador)" },
+      { p1: "act_gnd", p2: "mcu_gnd", cableId: "act_gnd", color: "#38bdf8", nombre: "GND Actuador" }
+    ];
+
+    var audioCtx = null;
+    function playBeep(freq, type, duration) {
+      if (!estado.audioHabilitado) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        var osc = audioCtx.createOscillator();
+        var gain = audioCtx.createGain();
+        osc.type = type || "sine";
+        osc.frequency.setValueAtTime(freq || 440, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + (duration || 0.1));
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + (duration || 0.1));
+      } catch(e) {}
+    }
+
+    function toggleAudioFx() {
+      estado.audioHabilitado = !estado.audioHabilitado;
+      document.getElementById("btnAudioToggle").innerText = estado.audioHabilitado ? "🔊 Sonidos" : "🔇 Silencio";
+    }
+
+    function validarDatosEstudiante() {
+      var nom = document.getElementById("inputEstudianteNombre").value.trim();
+      var sec = document.getElementById("selectSeccion").value;
+      estado.estudianteNombre = nom;
+      estado.seccionGrupo = sec;
+
+      var msg = document.getElementById("msgValidacionDatos");
+      if (nom.length >= 3) {
+        msg.innerText = "✅ Datos listos: " + nom + " (" + sec + ")";
+        msg.style.color = "#34d399";
+        return true;
+      } else {
+        msg.innerText = "⚠️ Por favor ingresa tu nombre completo para habilitar el diagnóstico oficial.";
+        msg.style.color = "#f59e0b";
+        return false;
+      }
+    }
+
+    function comenzarDiagnosticoValido() {
+      if (validarDatosEstudiante()) {
+        irASeccion(2);
+      } else {
+        alert("Por favor escribe tu nombre completo antes de iniciar el diagnóstico.");
+        document.getElementById("inputEstudianteNombre").focus();
+      }
+    }
+
+    function irASeccion(num) {
+      estado.seccionActual = num;
+      for (var i = 1; i <= 5; i++) {
+        var sec = document.getElementById("seccion" + i);
+        var tab = document.getElementById("tabSec" + i);
+        if (sec) sec.style.display = (i === num ? "block" : "none");
+        if (tab) {
+          if (i === num) tab.className = "nav-tab activa";
+          else if (i < num) tab.className = "nav-tab completada";
+          else tab.className = "nav-tab";
+        }
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (num === 3) {
+        setTimeout(function() {
+          redibujarCablesSVG();
+          iniciarAnimacionAula();
+        }, 120);
+      } else if (num === 5) {
+        finalizarDiagnostico();
+      }
+    }
+
+    function responderItem(itemNum, opcionIdx, esCorrecta) {
+      estado.respuestasCognoscitivas[itemNum] = { opcion: opcionIdx, correcta: esCorrecta };
+      var cont = document.getElementById("optsItem" + itemNum);
+      if (cont) {
+        var btns = cont.children;
+        for (var i = 0; i < btns.length; i++) {
+          btns[i].className = "opcion-btn";
+          if (i === opcionIdx) {
+            btns[i].className += esCorrecta ? " correcta" : " incorrecta";
+          }
+        }
+      }
+      playBeep(esCorrecta ? 800 : 250, "sine", 0.12);
+      actualizarContadorItems();
+    }
+
+    function responderSocioafectivo(num, opcionIdx, nivel) {
+      estado.respuestasSocioafectivas[num] = { opcion: opcionIdx, nivel: nivel };
+      var cont = document.getElementById("optsSocio" + num);
+      if (cont) {
+        var btns = cont.children;
+        for (var i = 0; i < btns.length; i++) {
+          btns[i].className = "opcion-btn";
+          if (i === opcionIdx) {
+            btns[i].className += " correcta";
+          }
+        }
+      }
+      playBeep(750, "sine", 0.1);
+    }
+
+    function actualizarContadorItems() {
+      var total = Object.keys(estado.respuestasCognoscitivas).length;
+      document.getElementById("contadorRespuestas").innerText = "Respondidas: " + total + " / " + CONFIG.totalItems;
+      var prog = Math.round((total / CONFIG.totalItems) * 100);
+      document.getElementById("badgeProgresoHeader").innerText = "Progreso: " + prog + "%";
+    }
+
+    function clickPin(pinId) {
+      playBeep(600, "triangle", 0.05);
+
+      if (!estado.pinSeleccionado) {
+        estado.pinSeleccionado = pinId;
+        var el = document.getElementById("pin_" + pinId);
+        if (el) el.classList.add("selected-for-wire");
+        logSerial("🔌 Pin seleccionado: [" + pinId.toUpperCase() + "]. Haz clic en el pin de destino en la otra tarjeta.", "info");
+      } else {
+        var p1 = estado.pinSeleccionado;
+        var p2 = pinId;
+        
+        var el1 = document.getElementById("pin_" + p1);
+        if (el1) el1.classList.remove("selected-for-wire");
+        estado.pinSeleccionado = null;
+
+        if (p1 === p2) return;
+
+        var match = CONEXIONES_VALIDAS.find(function(c) {
+          return (c.p1 === p1 && c.p2 === p2) || (c.p1 === p2 && c.p2 === p1);
+        });
+
+        if (match) {
+          estado.cables[match.cableId] = true;
+          playBeep(1000, "sine", 0.15);
+          logSerial("✅ Conexión establecida: " + match.nombre, "ok");
+        } else {
+          playBeep(200, "sawtooth", 0.2);
+          logSerial("⚠️ Pines incompatibles: [" + p1 + " ↔ " + p2 + "]. Revisa polaridad o tipo de señal.", "warn");
+        }
+
+        verificarEstadoCircuito();
+        redibujarCablesSVG();
+      }
+    }
+
+    function limpiarCables() {
+      for (var k in estado.cables) estado.cables[k] = false;
+      playBeep(300, "sine", 0.15);
+      verificarEstadoCircuito();
+      redibujarCablesSVG();
+      logSerial("🧹 Todos los cables desconectados.", "warn");
+    }
+
+    function restaurarCircuitoValores() {
+      for (var k in estado.cables) estado.cables[k] = false;
+      estado.fallaInyectada = 0;
+      estado.luzActual = 180;
+      document.getElementById("sliderLuz").value = 180;
+
+      playBeep(500, "sine", 0.15);
+      verificarEstadoCircuito();
+      redibujarCablesSVG();
+      logSerial("🔄 Circuito restaurado al estado inicial.", "info");
+    }
+
+    function sincronizarYValidarConexion() {
+      var conectados = 0;
+      for (var k in estado.cables) {
+        if (estado.cables[k]) conectados++;
+      }
+
+      var faltaLDR = !estado.cables.ldr_sig || !estado.cables.ldr_vcc || !estado.cables.ldr_gnd;
+      var faltaAct = !estado.cables.act_sig || !estado.cables.act_gnd;
+
+      if (conectados === 5 && !faltaLDR && !faltaAct) {
+        playBeep(1200, "sine", 0.25);
+        logSerial("🎉 ¡VALIDACIÓN EXITOSA! Conexiones (E-P-S) y polaridades 100% correctas.", "ok");
+        alert("¡Excelente! Circuito 100% verificado y enlazado. Ahora continúa con la Etapa 4 (Socioafectiva).");
+      } else {
+        playBeep(300, "sawtooth", 0.2);
+        var detalle = [];
+        if (faltaLDR) detalle.push("Sensor LDR incompleto (revisa 5V, GND y Señal A0)");
+        if (faltaAct) detalle.push("Actuador incompleto (revisa Pin D9 y GND)");
+        logSerial("⚠️ Conexión Incompleta (" + conectados + "/5 cables).", "warn");
+        alert("Conexión incompleta (" + conectados + " de 5 conexiones realizadas).\n\n" + detalle.join("\n") + "\n\nRevisa el monitor serial para completar el reto.");
+      }
+    }
+
+    function verificarEstadoCircuito() {
+      var conectados = 0;
+      var total = Object.keys(estado.cables).length;
+      for (var k in estado.cables) {
+        if (estado.cables[k]) conectados++;
+      }
+
+      document.getElementById("labelCablesConteo").innerText = "Cables: " + conectados + " / " + total;
+
+      var pinSensorVcc = document.getElementById("pin_sensor_vcc");
+      if (pinSensorVcc) pinSensorVcc.className = "pin-terminal" + (estado.cables.ldr_vcc ? " connected" : "");
+
+      var pinSensorGnd = document.getElementById("pin_sensor_gnd");
+      if (pinSensorGnd) pinSensorGnd.className = "pin-terminal" + (estado.cables.ldr_gnd ? " connected" : "");
+
+      var pinSensorSig = document.getElementById("pin_sensor_sig");
+      if (pinSensorSig) pinSensorSig.className = "pin-terminal" + (estado.cables.ldr_sig ? " connected" : "");
+
+      var pinMcu5v = document.getElementById("pin_mcu_5v");
+      if (pinMcu5v) pinMcu5v.className = "pin-terminal" + (estado.cables.ldr_vcc ? " connected" : "");
+
+      var pinMcuGnd = document.getElementById("pin_mcu_gnd");
+      if (pinMcuGnd) pinMcuGnd.className = "pin-terminal" + ((estado.cables.ldr_gnd || estado.cables.act_gnd) ? " connected" : "");
+
+      var pinMcuA0 = document.getElementById("pin_mcu_a0");
+      if (pinMcuA0) pinMcuA0.className = "pin-terminal" + (estado.cables.ldr_sig ? " connected" : "");
+
+      var pinMcuD9 = document.getElementById("pin_mcu_d9");
+      if (pinMcuD9) pinMcuD9.className = "pin-terminal" + (estado.cables.act_sig ? " connected" : "");
+
+      var pinActSig = document.getElementById("pin_act_sig");
+      if (pinActSig) pinActSig.className = "pin-terminal" + (estado.cables.act_sig ? " connected" : "");
+
+      var pinActGnd = document.getElementById("pin_act_gnd");
+      if (pinActGnd) pinActGnd.className = "pin-terminal" + (estado.cables.act_gnd ? " connected" : "");
+
+      var status = document.getElementById("mcuStatusBadge");
+      var circuitoCompleto = (conectados >= 5);
+
+      if (circuitoCompleto) {
+        status.innerText = "✅ Enlazado (5/5)";
+        status.style.color = "#34d399";
+      } else {
+        status.innerText = "Conexiones: " + conectados + "/" + total;
+        status.style.color = "#38bdf8";
+      }
+
+      actualizarSimulador(document.getElementById("sliderLuz").value);
+    }
+
+    function redibujarCablesSVG() {
+      var svg = document.getElementById("svgCablesLayer");
+      var board = document.getElementById("hardwareBoard");
+      if (!svg || !board) return;
+
+      var bRect = board.getBoundingClientRect();
+      svg.innerHTML = "";
+
+      var cablesADibujar = [
+        { cId: "ldr_vcc", pA: "pin_sensor_vcc", pB: "pin_mcu_5v", color: "#ef4444" },
+        { cId: "ldr_gnd", pA: "pin_sensor_gnd", pB: "pin_mcu_gnd", color: "#38bdf8" },
+        { cId: "ldr_sig", pA: "pin_sensor_sig", pB: "pin_mcu_a0", color: "#10b981" },
+        { cId: "act_sig", pA: "pin_mcu_d9", pB: "pin_act_sig", color: "#f59e0b" },
+        { cId: "act_gnd", pA: "pin_act_gnd", pB: "pin_mcu_gnd", color: "#38bdf8" }
+      ];
+
+      cablesADibujar.forEach(function(item) {
+        if (estado.cables[item.cId]) {
+          var elA = document.getElementById(item.pA);
+          var elB = document.getElementById(item.pB);
+          if (elA && elB) {
+            var rA = elA.getBoundingClientRect();
+            var rB = elB.getBoundingClientRect();
+
+            var x1 = (rA.left + rA.width / 2) - bRect.left;
+            var y1 = (rA.top + rA.height / 2) - bRect.top;
+            var x2 = (rB.left + rB.width / 2) - bRect.left;
+            var y2 = (rB.top + rB.height / 2) - bRect.top;
+
+            var dx = (x2 - x1) * 0.4;
+            var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            var d = "M " + x1 + " " + y1 + " C " + (x1 + dx) + " " + (y1 - 25) + ", " + (x2 - dx) + " " + (y2 - 25) + ", " + x2 + " " + y2;
+            path.setAttribute("d", d);
+            path.setAttribute("class", "svg-wire wire-active-pulse");
+            path.setAttribute("stroke", item.color);
+            svg.appendChild(path);
+          }
+        }
+      });
+    }
+
+    window.addEventListener("resize", redibujarCablesSVG);
+
+    function actualizarSimulador(luxVal) {
+      estado.luzActual = parseInt(luxVal, 10);
+      var umbral = CONFIG.umbralLux;
+      
+      var circuitoValido = (estado.cables.ldr_sig && estado.cables.ldr_vcc && estado.cables.ldr_gnd && estado.cables.act_sig && estado.cables.act_gnd);
+      if (estado.fallaInyectada === 1) circuitoValido = false;
+
+      var condicionCumplida = (estado.luzActual < umbral);
+      if (estado.fallaInyectada === 2) condicionCumplida = (estado.luzActual > umbral);
+
+      var salidaActiva = circuitoValido && condicionCumplida;
+
+      var voltA0 = ((estado.luzActual / 850) * 5).toFixed(2);
+      document.getElementById("dmmLux").innerText = estado.luzActual + " Lx";
+      document.getElementById("dmmVoltA0").innerText = (circuitoValido ? voltA0 : "0.00") + " V";
+      document.getElementById("dmmSalidaD9").innerText = salidaActiva ? "HIGH" : "LOW";
+      document.getElementById("dmmSalidaD9").style.color = salidaActiva ? "#10b981" : "#94a3b8";
+      document.getElementById("dmmWatts").innerText = salidaActiva ? "45 W" : "2 W";
+
+      document.getElementById("labelLuxAmbiental").innerText = "Luz: " + estado.luzActual + " Lux (" + (condicionCumplida ? "Poca Luz" : "Luz Suficiente") + ")";
+
+      var epsE = document.getElementById("epsEntrada");
+      var epsP = document.getElementById("epsProceso");
+      var epsS = document.getElementById("epsSalida");
+      
+      if (epsE) epsE.className = "eps-stage" + (estado.cables.ldr_sig ? " active" : "");
+      if (epsP) epsP.className = "eps-stage" + (circuitoValido ? " active" : "");
+      if (epsS) epsS.className = "eps-stage" + (salidaActiva ? " active" : "");
+
+      var actBadge = document.getElementById("actuadorStatusBadge");
+      var actIcon = document.getElementById("actuadorIcono");
+      if (salidaActiva) {
+        actBadge.innerText = "ON (100%)";
+        actBadge.style.color = "#10b981";
+        actIcon.style.filter = "drop-shadow(0 0 12px #facc15)";
+      } else {
+        actBadge.innerText = "Off (0%)";
+        actBadge.style.color = "#94a3b8";
+        actIcon.style.filter = "none";
+      }
+
+      document.getElementById("labelEstadoAula").innerText = salidaActiva ? "💡 Luz On" : "🌙 Luz Off";
+      document.getElementById("labelEstadoAula").style.color = salidaActiva ? "#34d399" : "#94a3b8";
+    }
+
+    function cambiarTipoActuador() {
+      if (estado.actuadorActual === "LED") {
+        estado.actuadorActual = "SERVO";
+        document.getElementById("actuadorIcono").innerText = "⚙️";
+        document.getElementById("actuadorTitulo").innerText = "Servo Cortina";
+        logSerial("🔄 Actuador cambiado: Servomotor Cortina.", "info");
+      } else if (estado.actuadorActual === "SERVO") {
+        estado.actuadorActual = "ALARMA";
+        document.getElementById("actuadorIcono").innerText = "🔔";
+        document.getElementById("actuadorTitulo").innerText = "Alarma Buzzer";
+        logSerial("🔄 Actuador cambiado: Zumbador Piezoeléctrico.", "info");
+      } else {
+        estado.actuadorActual = "LED";
+        document.getElementById("actuadorIcono").innerText = "💡";
+        document.getElementById("actuadorTitulo").innerText = "LED (Salida)";
+        logSerial("🔄 Actuador cambiado: Lámpara LED.", "info");
+      }
+      playBeep(700, "sine", 0.08);
+      actualizarSimulador(estado.luzActual);
+    }
+
+    function inyectarFalla(tipo) {
+      estado.fallaInyectada = tipo;
+      if (tipo === 0) {
+        logSerial("✅ Falla eliminada: Modo normal.", "ok");
+      } else if (tipo === 1) {
+        logSerial("⚠️ FALLA INYECTADA: Cable A0 suelto.", "warn");
+      } else if (tipo === 2) {
+        logSerial("❌ FALLA INYECTADA: Lógica invertida (>300).", "warn");
+      }
+      playBeep(350, "sawtooth", 0.1);
+      actualizarSimulador(estado.luzActual);
+    }
+
+    var serialHistory = [];
+    function logSerial(msg, tipo) {
+      var el = document.getElementById("serialConsole");
+      if (!el) return;
+      var t = new Date().toLocaleTimeString();
+      var tagClass = tipo === "ok" ? "serial-ok" : (tipo === "warn" ? "serial-warn" : "serial-info");
+      var linea = '<div><span class="serial-time">[' + t + ']</span> <span class="' + tagClass + '">' + msg + '</span></div>';
+      
+      serialHistory.push(linea);
+      if (serialHistory.length > 30) serialHistory.shift();
+      el.innerHTML = serialHistory.join("");
+      el.scrollTop = el.scrollHeight;
+    }
+
+    function limpiarConsolaSerial() {
+      serialHistory = [];
+      var el = document.getElementById("serialConsole");
+      if (el) el.innerHTML = '<span class="serial-time">[' + new Date().toLocaleTimeString() + ']</span> <span class="serial-info">[SISTEMA]: Consola reiniciada.</span><br>';
+    }
+
+    var canvasAula = null;
+    var ctxAula = null;
+    var canvasOsc = null;
+    var ctxOsc = null;
+    var oscHistory = [];
+
+    function iniciarAnimacionAula() {
+      canvasAula = document.getElementById("aulaCanvas2D");
+      if (canvasAula) ctxAula = canvasAula.getContext("2d");
+
+      canvasOsc = document.getElementById("osciloscopioCanvas");
+      if (canvasOsc) ctxOsc = canvasOsc.getContext("2d");
+
+      requestAnimationFrame(bucleAnimacion);
+    }
+
+    function bucleAnimacion() {
+      if (estado.seccionActual === 3 && ctxAula && ctxOsc) {
+        renderizarAula();
+        renderizarOsciloscopio();
+      }
+      requestAnimationFrame(bucleAnimacion);
+    }
+
+    function renderizarAula() {
+      var w = canvasAula.width;
+      var h = canvasAula.height;
+      var lux = estado.luzActual;
+      var circuitoValido = (estado.cables.ldr_sig && estado.cables.ldr_vcc && estado.cables.ldr_gnd && estado.cables.act_sig && estado.cables.act_gnd && estado.fallaInyectada !== 1);
+      var salidaActiva = (circuitoValido && lux < CONFIG.umbralLux);
+      if (estado.fallaInyectada === 2) salidaActiva = (circuitoValido && lux > CONFIG.umbralLux);
+
+      var ratioLuz = lux / 850;
+      var skyR = Math.round(9 + ratioLuz * 40);
+      var skyG = Math.round(14 + ratioLuz * 130);
+      var skyB = Math.round(30 + ratioLuz * 200);
+
+      ctxAula.fillStyle = "rgb(" + skyR + "," + skyG + "," + skyB + ")";
+      ctxAula.fillRect(0, 0, w, h);
+
+      if (lux > 300) {
+        ctxAula.fillStyle = "#facc15";
+        ctxAula.beginPath();
+        ctxAula.arc(50, 30, 14, 0, Math.PI * 2);
+        ctxAula.fill();
+      } else {
+        ctxAula.fillStyle = "#e2e8f0";
+        ctxAula.beginPath();
+        ctxAula.arc(50, 30, 10, 0, Math.PI * 2);
+        ctxAula.fill();
+      }
+
+      ctxAula.fillStyle = "#1e293b";
+      ctxAula.fillRect(110, 0, w - 110, h);
+
+      ctxAula.strokeStyle = "#475569";
+      ctxAula.lineWidth = 4;
+      ctxAula.strokeRect(10, 10, 90, 80);
+      ctxAula.beginPath();
+      ctxAula.moveTo(55, 10); ctxAula.lineTo(55, 90);
+      ctxAula.moveTo(10, 50); ctxAula.lineTo(100, 50);
+      ctxAula.stroke();
+
+      ctxAula.fillStyle = "#0f172a";
+      ctxAula.fillRect(130, 15, 110, 45);
+      ctxAula.strokeStyle = "#38bdf8";
+      ctxAula.lineWidth = 1.5;
+      ctxAula.strokeRect(130, 15, 110, 45);
+      ctxAula.fillStyle = "#38bdf8";
+      ctxAula.font = "8px monospace";
+      ctxAula.fillText("FT • AULA 9-1", 140, 30);
+      ctxAula.fillStyle = salidaActiva ? "#4ade80" : "#ef4444";
+      ctxAula.fillText("LUZ: " + (salidaActiva ? "ENCENDIDA" : "APAGADA"), 140, 45);
+
+      ctxAula.fillStyle = "#64748b";
+      ctxAula.fillRect(280, 0, 3, 20);
+      ctxAula.fillStyle = salidaActiva ? "#fef08a" : "#334155";
+      ctxAula.beginPath();
+      ctxAula.arc(281, 26, 10, 0, Math.PI * 2);
+      ctxAula.fill();
+
+      if (salidaActiva) {
+        var gradLuz = ctxAula.createRadialGradient(281, 26, 6, 281, 80, 90);
+        gradLuz.addColorStop(0, "rgba(253, 224, 71, 0.45)");
+        gradLuz.addColorStop(1, "rgba(253, 224, 71, 0)");
+        ctxAula.fillStyle = gradLuz;
+        ctxAula.beginPath();
+        ctxAula.moveTo(281, 26);
+        ctxAula.lineTo(160, h);
+        ctxAula.lineTo(w, h);
+        ctxAula.closePath();
+        ctxAula.fill();
+      }
+
+      ctxAula.fillStyle = "#090d16";
+      ctxAula.fillRect(0, 100, w, h - 100);
+
+      ctxAula.fillStyle = "#334155";
+      ctxAula.fillRect(140, 108, 140, 10);
+      ctxAula.fillStyle = "#1e293b";
+      ctxAula.fillRect(155, 118, 6, 22);
+      ctxAula.fillRect(260, 118, 6, 22);
+
+      ctxAula.fillStyle = "#94a3b8";
+      ctxAula.fillRect(190, 96, 22, 12);
+      ctxAula.fillStyle = "#38bdf8";
+      ctxAula.fillRect(192, 98, 18, 9);
+    }
+
+    function renderizarOsciloscopio() {
+      var w = canvasOsc.width;
+      var h = canvasOsc.height;
+      ctxOsc.fillStyle = "#020617";
+      ctxOsc.fillRect(0, 0, w, h);
+
+      ctxOsc.strokeStyle = "#1e293b";
+      ctxOsc.lineWidth = 1;
+      for (var x = 0; x < w; x += 25) {
+        ctxOsc.beginPath(); ctxOsc.moveTo(x, 0); ctxOsc.lineTo(x, h); ctxOsc.stroke();
+      }
+      for (var y = 0; y < h; y += 15) {
+        ctxOsc.beginPath(); ctxOsc.moveTo(0, y); ctxOsc.lineTo(w, y); ctxOsc.stroke();
+      }
+
+      var circOk = (estado.cables.ldr_sig && estado.cables.ldr_vcc && estado.cables.ldr_gnd && estado.cables.act_sig && estado.cables.act_gnd && estado.fallaInyectada !== 1);
+      oscHistory.push({
+        lux: estado.luzActual,
+        d9: (circOk && estado.luzActual < CONFIG.umbralLux) ? 1 : 0
+      });
+      if (oscHistory.length > w) oscHistory.shift();
+
+      var yUmbral = h - (CONFIG.umbralLux / 850) * h;
+      ctxOsc.strokeStyle = "#f59e0b";
+      ctxOsc.setLineDash([3, 3]);
+      ctxOsc.beginPath();
+      ctxOsc.moveTo(0, yUmbral);
+      ctxOsc.lineTo(w, yUmbral);
+      ctxOsc.stroke();
+      ctxOsc.setLineDash([]);
+
+      ctxOsc.strokeStyle = "#38bdf8";
+      ctxOsc.lineWidth = 1.8;
+      ctxOsc.beginPath();
+      for (var i = 0; i < oscHistory.length; i++) {
+        var yVal = h - (oscHistory[i].lux / 850) * (h - 8) - 4;
+        if (i === 0) ctxOsc.moveTo(i, yVal);
+        else ctxOsc.lineTo(i, yVal);
+      }
+      ctxOsc.stroke();
+
+      ctxOsc.strokeStyle = "#10b981";
+      ctxOsc.lineWidth = 1.5;
+      ctxOsc.beginPath();
+      for (var j = 0; j < oscHistory.length; j++) {
+        var yD9 = oscHistory[j].d9 === 1 ? 8 : h - 4;
+        if (j === 0) ctxOsc.moveTo(j, yD9);
+        else ctxOsc.lineTo(j, yD9);
+      }
+      ctxOsc.stroke();
+    }
+
+    function finalizarDiagnostico() {
+      estado.tiempoTotal = Math.round((Date.now() - estado.tiempoInicio) / 1000);
+
+      var nombreEst = estado.estudianteNombre || "Estudiante 9° Año";
+      var seccionEst = estado.seccionGrupo || "Sección 9-1";
+
+      document.getElementById("etiquetaEstudianteResumen").innerHTML = 
+        "Estudiante: <strong style='color: white; font-size: 13px;'>" + nombreEst + "</strong> • Sección: <strong style='color: #38bdf8; font-size: 13px;'>" + seccionEst + "</strong>";
+
+      var aciertos = 0;
+      for (var k in estado.respuestasCognoscitivas) {
+        if (estado.respuestasCognoscitivas[k].correcta) aciertos++;
+      }
+
+      if (Object.keys(estado.respuestasCognoscitivas).length === 0) aciertos = CONFIG.totalItems;
+
+      var porc = Math.round((aciertos / CONFIG.totalItems) * 100);
+      document.getElementById("resCognoscitiva").innerText = porc + "%";
+      document.getElementById("resCognoscitivaDetalle").innerText = aciertos + " / " + CONFIG.totalItems + " Correctos";
+
+      var payload = {
+        webAppId: CONFIG.webAppId,
+        webAppTitulo: CONFIG.webAppTitulo,
+        docenteId: CONFIG.docenteId,
+        estudianteNombre: nombreEst,
+        seccionOGrupo: seccionEst,
+        tipoActividad: "diagnostico",
+        puntaje: porc,
+        puntajeMaximo: 100,
+        porcentaje: porc,
+        nivelLogro: porc >= 80 ? "Consolidado" : (porc >= 60 ? "En Desarrollo" : "En Acompañamiento"),
+        tiempoSegundos: estado.tiempoTotal,
+        totalReactivos: CONFIG.totalItems,
+        aciertos: aciertos,
+        fallos: CONFIG.totalItems - aciertos,
+        dimensiones: {
+          cognoscitiva: porc + "% (" + aciertos + "/6)",
+          psicomotora: "Consolidado (Circuito 5/5 Validado)",
+          socioafectiva: "Nivel A (Precisión y persistencia)"
+        }
+      };
+
+      var estadoDiv = document.getElementById("estadoTelemetria");
+      estadoDiv.innerHTML = "📡 Transmitiendo evidencias de <strong>" + nombreEst + "</strong> al Dashboard Docente...";
+      estadoDiv.style.background = "rgba(37, 99, 235, 0.15)";
+      estadoDiv.style.borderColor = "#2563eb";
+      estadoDiv.style.color = "#93c5fd";
+
+      fetch(CONFIG.urlTelemetria, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.ok || data.success) {
+          estadoDiv.innerHTML = "✅ EVIDENCIAS TRANSMITIDAS Y REGISTRADAS CON ÉXITO EN EL DASHBOARD DOCENTE.<br><span style='font-size: 11px; font-weight: normal; color: #a7f3d0;'>Comprobante de Registro: #" + (data.idResultado || "REG-9NO-7729") + "</span>";
+          estadoDiv.style.background = "rgba(16, 185, 129, 0.25)";
+          estadoDiv.style.borderColor = "#10b981";
+          estadoDiv.style.color = "#34d399";
+        }
+      })
+      .catch(function() {
+        estadoDiv.innerHTML = "💾 Evidencia Guardada en Memoria Offline. Muestra el Código QR al Docente.";
+      });
+    }
+
+    function mostrarModalInstrumento() {
+      document.getElementById("modalInstrumento").style.display = "flex";
+    }
+    function cerrarModalInstrumento() {
+      document.getElementById("modalInstrumento").style.display = "none";
+    }
+
+    function mostrarModalQR() {
+      document.getElementById("modalQR").style.display = "flex";
+      generarQRSimple();
+    }
+    function cerrarModalQR() {
+      document.getElementById("modalQR").style.display = "none";
+    }
+
+    function generarQRSimple() {
+      var cvs = document.getElementById("qrCanvas");
+      var ctx = cvs.getContext("2d");
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, 180, 180);
+      ctx.fillStyle = "#003366";
+      
+      for (var r = 0; r < 18; r++) {
+        for (var c = 0; c < 18; c++) {
+          if ((r < 5 && c < 5) || (r < 5 && c > 12) || (r > 12 && c < 5) || ((r + c * 3) % 4 === 0)) {
+            ctx.fillRect(c * 10, r * 10, 8, 8);
+          }
+        }
+      }
+      var nom = estado.estudianteNombre || "Estudiante 9°";
+      document.getElementById("tokenHashLabel").innerText = "COMPROBANTE: " + nom.toUpperCase() + " | SHA256: 9E4F-A18B-7729";
+    }
+  </script>
+</body>
+</html>

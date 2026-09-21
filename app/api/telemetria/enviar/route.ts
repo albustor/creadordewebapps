@@ -1,0 +1,155 @@
+import { NextRequest, NextResponse } from "next/server";
+import fs from "fs";
+import path from "path";
+import {
+  PayloadTelemetria,
+  validarTokenAntiFraude,
+  validarCompletitudValoracion,
+} from "@/lib/antiFraude";
+
+// Almacenamiento en memoria para telemetría
+let registrosTelemetriaMemoria: any[] = [];
+
+// Ruta del archivo de persistencia local
+const CACHE_TELEMETRIA_PATH = path.join(process.cwd(), ".next", "telemetria_docente_cache.json");
+
+function cargarRegistrosServidor() {
+  try {
+    if (fs.existsSync(CACHE_TELEMETRIA_PATH)) {
+      const data = fs.readFileSync(CACHE_TELEMETRIA_PATH, "utf8");
+      if (data && data.trim().length > 0) {
+        try {
+          registrosTelemetriaMemoria = JSON.parse(data);
+        } catch {
+          registrosTelemetriaMemoria = [];
+        }
+      }
+    }
+  } catch (e) {
+    registrosTelemetriaMemoria = [];
+  }
+}
+
+function guardarRegistrosServidor() {
+  try {
+    const dir = path.dirname(CACHE_TELEMETRIA_PATH);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    fs.writeFileSync(CACHE_TELEMETRIA_PATH, JSON.stringify(registrosTelemetriaMemoria, null, 2), "utf8");
+  } catch (e) {
+    // Si falla el guardado en disco, se mantiene en memoria sin fallar la respuesta
+  }
+}
+
+// Cargar al inicio
+try {
+  cargarRegistrosServidor();
+} catch (e) {}
+
+// Headers CORS para permitir envíos desde file:/// y cualquier origen local
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, DELETE",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With",
+};
+
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders });
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    let body: PayloadTelemetria;
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json(
+        { success: false, error: "Cuerpo de solicitud JSON no válido o vacío" },
+        { status: 400, headers: corsHeaders }
+      );
+    }
+
+    if (!body.docenteId || !body.estudianteNombre) {
+      return NextResponse.json(
+        { error: "Faltan campos obligatorios (docenteId, estudianteNombre)" },
+        { status: 400, headers: corsHeaders }
+      );
+    }
+
+    // Validación estricta de completitud: todas las preguntas deben estar respondidas
+    const validacionCompletitud = validarCompletitudValoracion(body);
+    if (!validacionCompletitud.valido) {
+      return NextResponse.json(
+        {
+          error: "Requisito de Completitud Incompleto",
+          mensaje: validacionCompletitud.mensaje,
+          completitudRequerida: true,
+        },
+        { status: 422, headers: corsHeaders }
+      );
+    }
+
+    // Validación de Token de Integridad
+    const esValido = await validarTokenAntiFraude(body);
+
+    const resultadoProcesado = {
+      ...body,
+      idResultado: body.idResultado || "res-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6),
+      timestamp: body.timestamp || Date.now(),
+      integridadVerificada: esValido,
+      recibidoEnServidor: new Date().toISOString(),
+    };
+
+    // Guardar en la lista del servidor
+    cargarRegistrosServidor();
+    // Evitar duplicados por id o timestamp
+    const indexExistente = registrosTelemetriaMemoria.findIndex(
+      (r) => r.idResultado === resultadoProcesado.idResultado || (r.estudianteNombre === resultadoProcesado.estudianteNombre && Math.abs(r.timestamp - resultadoProcesado.timestamp) < 2000)
+    );
+    if (indexExistente >= 0) {
+      registrosTelemetriaMemoria[indexExistente] = resultadoProcesado;
+    } else {
+      registrosTelemetriaMemoria.unshift(resultadoProcesado);
+    }
+    guardarRegistrosServidor();
+
+    return NextResponse.json(
+      {
+        success: true,
+        mensaje: "Telemetría recibida y validada correctamente",
+        data: resultadoProcesado,
+        totalEnServidor: registrosTelemetriaMemoria.length,
+      },
+      { headers: corsHeaders }
+    );
+  } catch (error: any) {
+    console.error("Error en API de telemetría:", error);
+    return NextResponse.json(
+      { error: "Error interno al procesar telemetría", details: error?.message },
+      { status: 500, headers: corsHeaders }
+    );
+  }
+}
+
+export async function GET(req: NextRequest) {
+  cargarRegistrosServidor();
+  const { searchParams } = new URL(req.url);
+  const docenteId = searchParams.get("docenteId");
+
+  const datos = docenteId
+    ? registrosTelemetriaMemoria.filter((r) => r.docenteId === docenteId)
+    : registrosTelemetriaMemoria;
+
+  return NextResponse.json(
+    {
+      status: "online",
+      servicio: "API Ingesta de Telemetría Educativa - Creador de WebApps",
+      totalRegistros: datos.length,
+      registros: datos,
+      timestamp: new Date().toISOString(),
+    },
+    { headers: corsHeaders }
+  );
+}
+
