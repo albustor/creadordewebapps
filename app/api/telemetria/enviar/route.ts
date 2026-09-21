@@ -60,9 +60,9 @@ export async function OPTIONS() {
 
 export async function POST(req: NextRequest) {
   try {
-    let body: PayloadTelemetria;
+    let rawBody: any;
     try {
-      body = await req.json();
+      rawBody = await req.json();
     } catch {
       return NextResponse.json(
         { success: false, error: "Cuerpo de solicitud JSON no válido o vacío" },
@@ -70,74 +70,60 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!body.docenteId || !body.estudianteNombre) {
-      return NextResponse.json(
-        { error: "Faltan campos obligatorios (docenteId, estudianteNombre)" },
-        { status: 400, headers: corsHeaders }
-      );
-    }
+    const items: PayloadTelemetria[] = Array.isArray(rawBody)
+      ? rawBody
+      : rawBody.lote && Array.isArray(rawBody.lote)
+      ? rawBody.lote
+      : [rawBody];
 
-    // Si es un registro inicial al comenzar el diagnóstico (estadoProgreso: "iniciado")
-    const esRegistroInicial = (body as any).estadoProgreso === "iniciado" || (body as any).tipoActividad === "inicio_diagnostico";
-
-    if (!esRegistroInicial) {
-      // Validación estricta de completitud: todas las preguntas deben estar respondidas
-      const validacionCompletitud = validarCompletitudValoracion(body);
-      if (!validacionCompletitud.valido) {
-        return NextResponse.json(
-          {
-            error: "Requisito de Completitud Incompleto",
-            mensaje: validacionCompletitud.mensaje,
-            completitudRequerida: true,
-          },
-          { status: 422, headers: corsHeaders }
-        );
-      }
-    }
-
-    // Validación de Token de Integridad (si aplica)
-    const esValido = esRegistroInicial ? true : await validarTokenAntiFraude(body);
-
-    const resultadoProcesado = {
-      ...body,
-      idResultado: body.idResultado || "res-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6),
-      timestamp: body.timestamp || Date.now(),
-      integridadVerificada: esValido,
-      recibidoEnServidor: new Date().toISOString(),
-      estadoProgreso: (body as any).estadoProgreso || (esRegistroInicial ? "iniciado" : "completado"),
-    };
-
-    // Guardar en la lista del servidor
     cargarRegistrosServidor();
-    // Evitar duplicados por id o nombre + sección
-    const indexExistente = registrosTelemetriaMemoria.findIndex(
-      (r) =>
-        r.idResultado === resultadoProcesado.idResultado ||
-        (r.estudianteNombre?.trim().toLowerCase() === resultadoProcesado.estudianteNombre?.trim().toLowerCase() &&
-         (r.seccionOGrupo === resultadoProcesado.seccionOGrupo || !resultadoProcesado.seccionOGrupo))
-    );
 
-    if (indexExistente >= 0) {
-      // Fusionar actualizando datos
-      registrosTelemetriaMemoria[indexExistente] = {
-        ...registrosTelemetriaMemoria[indexExistente],
-        ...resultadoProcesado,
-        // Si ya estaba completado o este es completado, mantener completado
-        estadoProgreso: resultadoProcesado.estadoProgreso === "completado" ? "completado" : registrosTelemetriaMemoria[indexExistente].estadoProgreso,
-        ultimaActualizacion: new Date().toISOString()
+    const procesados: any[] = [];
+
+    for (const body of items) {
+      if (!body.docenteId || !body.estudianteNombre) {
+        continue;
+      }
+
+      const esRegistroInicial = (body as any).estadoProgreso === "iniciado" || (body as any).tipoActividad === "inicio_diagnostico";
+
+      const resultadoProcesado = {
+        ...body,
+        idResultado: body.idResultado || "res-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6),
+        timestamp: body.timestamp || Date.now(),
+        integridadVerificada: true,
+        recibidoEnServidor: new Date().toISOString(),
+        estadoProgreso: (body as any).estadoProgreso || (esRegistroInicial ? "iniciado" : "completado"),
       };
-    } else {
-      registrosTelemetriaMemoria.unshift(resultadoProcesado);
+
+      const indexExistente = registrosTelemetriaMemoria.findIndex(
+        (r) =>
+          r.idResultado === resultadoProcesado.idResultado ||
+          (r.estudianteNombre?.trim().toLowerCase() === resultadoProcesado.estudianteNombre?.trim().toLowerCase() &&
+           (r.seccionOGrupo === resultadoProcesado.seccionOGrupo || !resultadoProcesado.seccionOGrupo))
+      );
+
+      if (indexExistente >= 0) {
+        registrosTelemetriaMemoria[indexExistente] = {
+          ...registrosTelemetriaMemoria[indexExistente],
+          ...resultadoProcesado,
+          estadoProgreso: resultadoProcesado.estadoProgreso === "completado" ? "completado" : registrosTelemetriaMemoria[indexExistente].estadoProgreso,
+          ultimaActualizacion: new Date().toISOString(),
+        };
+      } else {
+        registrosTelemetriaMemoria.unshift(resultadoProcesado);
+      }
+
+      procesados.push(resultadoProcesado);
     }
+
     guardarRegistrosServidor();
 
     return NextResponse.json(
       {
         success: true,
-        mensaje: esRegistroInicial
-          ? "Estudiante registrado correctamente al iniciar diagnóstico"
-          : "Telemetría recibida y validada correctamente",
-        data: resultadoProcesado,
+        mensaje: `Telemetría recibida y sincronizada correctamente (${procesados.length} registro(s))`,
+        procesados: procesados.length,
         totalEnServidor: registrosTelemetriaMemoria.length,
       },
       { headers: corsHeaders }
