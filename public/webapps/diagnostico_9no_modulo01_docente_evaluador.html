@@ -360,12 +360,12 @@
       <span>Carga de Lista & Sección</span>
     </div>
     <div class="view-tab" id="tabV2" onclick="cambiarVista(2)">
-      <span>2. EVALUACIÓN</span>
-      <span>Rúbrica Individual (3 Áreas)</span>
+      <span>2. OBSERVACIÓN DOCENTE</span>
+      <span>Psicomotora & Socioafectiva</span>
     </div>
     <div class="view-tab" id="tabV3" onclick="cambiarVista(3)">
-      <span>3. CONSOLIDADO</span>
-      <span>Matriz Grupal & Módulo 1</span>
+      <span>3. SISTEMATIZACIÓN</span>
+      <span>Indicadores de Logro (Pág. 15)</span>
     </div>
     <div class="view-tab" id="tabV4" onclick="cambiarVista(4)">
       <span>4. DECISIONES</span>
@@ -454,76 +454,77 @@
     </div>
 
     <!-- ==================================================================== -->
-    <!-- VISTA 2: EVALUACIÓN INDIVIDUAL EN LAS 3 ÁREAS OFICIALES MEP           -->
+    <!-- VISTA 2: OBSERVACIÓN DOCENTE EXCLUSIVA (PSICOMOTORA & SOCIOAFECTIVA) -->
     <!-- ==================================================================== -->
     <div id="vista2" class="card" style="display: none;">
       
       <!-- ENCABEZADO DEL ESTUDIANTE SELECCIONADO -->
-      <div style="display: flex; justify-content: space-between; align-items: center; background: #1e293b; border: 1.5px solid #38bdf8; border-radius: 12px; padding: 12px 16px; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; background: #1e293b; border: 1.5px solid #38bdf8; border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
         <div>
-          <span style="font-size: 10px; color: #38bdf8; font-weight: 800; text-transform: uppercase;">Estudiante Seleccionado para Evaluación:</span>
-          <h2 style="font-size: 1.25rem; color: white; font-weight: 900;" id="labelNombreEstudianteActivo">
+          <span style="font-size: 10px; color: #38bdf8; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Estudiante Seleccionado para Registro de Observación:</span>
+          <h2 style="font-size: 1.3rem; color: white; font-weight: 900; margin-top: 2px;" id="labelNombreEstudianteActivo">
             Valeria Montero Jiménez
           </h2>
-          <span style="font-size: 11px; color: #94a3b8;" id="labelSeccionEstudianteActivo">
+          <span style="font-size: 11.5px; color: #94a3b8;" id="labelSeccionEstudianteActivo">
             Sección: 9-1 • III Ciclo • Módulo 1 (2026)
           </span>
         </div>
 
-        <div style="display: flex; gap: 6px; align-items: center;">
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
           <button class="btn btn-outline" onclick="mostrarModalEscanerQR()" title="Escanear comprobante QR del estudiante">
             📷 Escanear QR Alumno
           </button>
           <button class="btn btn-accent" onclick="guardarEvaluacionEstudianteActual()">
-            💾 Guardar Evaluación
+            💾 Guardar Observación
           </button>
         </div>
       </div>
 
-      <!-- 1. ÁREA COGNOSCITIVA (LISTA DE COTEJO - 10 EVIDENCIAS DOCUMENTO BASE) -->
-      <div style="margin-bottom: 20px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 4px;">
-          <strong style="font-size: 13px; color: #60a5fa;">
-            🧠 1. Lista de Cotejo – Área Cognoscitiva (10 Evidencias MEP)
-          </strong>
-          <div style="display: flex; gap: 4px;">
-            <button class="btn btn-outline" style="font-size: 10px; padding: 2px 6px; min-height: 22px;" onclick="marcarTodosCognitivo('L')">
-              ✅ Todos Logrado
-            </button>
-            <button class="btn btn-outline" style="font-size: 10px; padding: 2px 6px; min-height: 22px;" onclick="marcarTodosCognitivo('ED')">
-              🟡 En Desarrollo
-            </button>
+      <!-- BANNER INFORMATIVO: ÁREA COGNOSCITIVA OBTENIDA VÍA TELEMETRÍA/WEBAPP -->
+      <div style="background: rgba(37, 99, 235, 0.12); border: 1.5px solid #2563eb; border-radius: 12px; padding: 12px 16px; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 38px; height: 38px; rounded-xl; background: #1e3a8a; color: #60a5fa; display: flex; align-items: center; justify-content: center; font-size: 20px; border-radius: 10px;">
+            🧠
+          </div>
+          <div>
+            <strong style="font-size: 12.5px; color: #93c5fd; display: block;">
+              Área Cognoscitiva: Indicadores de Aprendizaje de Logro (1 al 10)
+            </strong>
+            <span style="font-size: 11px; color: #cbd5e1;" id="bannerCognitivoEstado">
+              Sincronizado automáticamente desde la WebApp del estudiante (10 Reactivos Completados).
+            </span>
           </div>
         </div>
-
-        <div class="rubric-row rubric-header">
-          <div>Evidencia Observable (Saber)</div>
-          <div style="text-align: center;">Nivel de Logro</div>
-          <div>Observaciones Pedagógicas</div>
-        </div>
-
-        <div id="contenedorRubricaCognitiva">
-          <!-- 10 Evidencias inyectadas por JS -->
+        <div style="text-align: right;">
+          <span class="badge-status badge-completado" style="font-size: 12px; padding: 4px 10px;" id="badgePuntajeCognitivo">
+            10 / 10 Logrados (100%)
+          </span>
         </div>
       </div>
 
-      <!-- 2. ÁREA PSICOMOTORA (LISTA DE OBSERVACIÓN - 6 CONDUCTAS RETO PRÁCTICO) -->
-      <div style="margin-bottom: 20px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 4px;">
-          <strong style="font-size: 13px; color: #34d399;">
-            🖐️ 2. Lista de Observación – Área Psicomotora (Reto «Conecta el Prototipo»)
-          </strong>
+      <!-- 1. ÁREA PSICOMOTORA (LISTA DE OBSERVACIÓN - 6 CONDUCTAS RETO PRÁCTICO) -->
+      <div style="margin-bottom: 22px; background: #0f172a; border: 1px solid #334155; border-radius: 12px; padding: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 4px;">
+          <div>
+            <strong style="font-size: 13.5px; color: #34d399; display: flex; align-items: center; gap: 6px;">
+              🖐️ 1. Lista de Observación – Área Psicomotora (Reto «Conecta el Prototipo»)
+            </strong>
+            <span style="font-size: 11px; color: #94a3b8;">Registro formativo del docente durante la manipulación y conexionado.</span>
+          </div>
           <div style="display: flex; gap: 4px;">
-            <button class="btn btn-outline" style="font-size: 10px; padding: 2px 6px; min-height: 22px;" onclick="marcarTodosPsicomotor('A')">
-              ✅ Todos Nivel A
+            <button class="btn btn-outline" style="font-size: 10px; padding: 3px 8px; min-height: 24px; border-color: #34d399; color: #34d399;" onclick="marcarTodosPsicomotor('A')">
+              ✅ Marcar Todos Nivel A (Autónomo)
+            </button>
+            <button class="btn btn-outline" style="font-size: 10px; padding: 3px 8px; min-height: 24px;" onclick="marcarTodosPsicomotor('B')">
+              🟡 Nivel B
             </button>
           </div>
         </div>
 
-        <div class="rubric-row rubric-header" style="color: #34d399;">
-          <div>Conducta Observable (Hacer)</div>
+        <div class="rubric-row rubric-header" style="color: #34d399; background: #1e293b;">
+          <div>Conducta Observable (Hacer y Manipulación)</div>
           <div style="text-align: center;">Escala (A / B / C)</div>
-          <div>Evidencia / Observación</div>
+          <div>Observación Pedagógica del Docente</div>
         </div>
 
         <div id="contenedorRubricaPsicomotora">
@@ -531,23 +532,29 @@
         </div>
       </div>
 
-      <!-- 3. ÁREA SOCIOAFECTIVA (LISTA DE OBSERVACIÓN - 7 CONDUCTAS CONVIVIR) -->
-      <div style="margin-bottom: 20px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 4px;">
-          <strong style="font-size: 13px; color: #fbbf24;">
-            ❤️ 3. Lista de Observación – Área Socioafectiva (7 Conductas Actitudinales)
-          </strong>
+      <!-- 2. ÁREA SOCIOAFECTIVA (LISTA DE OBSERVACIÓN - 7 CONDUCTAS CONVIVIR) -->
+      <div style="margin-bottom: 22px; background: #0f172a; border: 1px solid #334155; border-radius: 12px; padding: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 4px;">
+          <div>
+            <strong style="font-size: 13.5px; color: #fbbf24; display: flex; align-items: center; gap: 6px;">
+              ❤️ 2. Lista de Observación – Área Socioafectiva (7 Conductas Actitudinales)
+            </strong>
+            <span style="font-size: 11px; color: #94a3b8;">Registro formativo sobre colaboración, ética, resiliencia y uso seguro.</span>
+          </div>
           <div style="display: flex; gap: 4px;">
-            <button class="btn btn-outline" style="font-size: 10px; padding: 2px 6px; min-height: 22px;" onclick="marcarTodosSocio('A')">
-              ✅ Todos Nivel A
+            <button class="btn btn-outline" style="font-size: 10px; padding: 3px 8px; min-height: 24px; border-color: #fbbf24; color: #fbbf24;" onclick="marcarTodosSocio('A')">
+              ✅ Marcar Todos Nivel A (Consistente)
+            </button>
+            <button class="btn btn-outline" style="font-size: 10px; padding: 3px 8px; min-height: 24px;" onclick="marcarTodosSocio('B')">
+              🟡 Nivel B
             </button>
           </div>
         </div>
 
-        <div class="rubric-row rubric-header" style="color: #fbbf24;">
+        <div class="rubric-row rubric-header" style="color: #fbbf24; background: #1e293b;">
           <div>Conducta Observable (Ser y Convivir)</div>
           <div style="text-align: center;">Escala (A / B / C)</div>
-          <div>Evidencia / Observación</div>
+          <div>Observación Pedagógica del Docente</div>
         </div>
 
         <div id="contenedorRubricaSocioafectiva">
@@ -555,18 +562,18 @@
         </div>
       </div>
 
-      <!-- SÍNTESIS INDIVIDUAL Y ACCIÓN PEDAGÓGICA (PÁG 8-9 DEL DOCUMENTO BASE) -->
-      <div style="background: #1e293b; border: 1.5px solid #334155; border-radius: 10px; padding: 14px;">
-        <strong style="font-size: 12.5px; color: #38bdf8; display: block; margin-bottom: 10px;">
-          🎯 Registro Individual: Necesidad Prioritaria & Acción Pedagógica Sugerida
+      <!-- 3. SÍNTESIS INDIVIDUAL FORMATIVA: LOGROS Y CONSIDERACIONES PARA EL DESARROLLO -->
+      <div style="background: #1e293b; border: 1.5px solid #38bdf8; border-radius: 12px; padding: 16px; box-shadow: 0 4px 16px rgba(56, 189, 248, 0.15);">
+        <strong style="font-size: 13px; color: #38bdf8; display: block; margin-bottom: 10px; font-weight: 800;">
+          🎯 3. Registro Cualitativo: Logros Observados & Aspectos a Considerar en el Desarrollo
         </strong>
 
-        <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 12px;">
+        <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 14px; margin-bottom: 12px;">
           <div>
             <label style="display: block; font-size: 11px; font-weight: 700; color: #cbd5e1; margin-bottom: 4px;">
               Necesidad Prioritaria Detectada:
             </label>
-            <select id="selectNecesidadPrioritaria" style="width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 7px 10px; color: white; font-size: 12px;">
+            <select id="selectNecesidadPrioritaria" style="width: 100%; background: #0f172a; border: 1.5px solid #334155; border-radius: 8px; padding: 8px 10px; color: white; font-size: 12px; font-weight: 600;">
               <option value="Dominio Alto / Consolidado">Dominio Alto / Consolidado (Avanzar complejidad)</option>
               <option value="Algoritmo y Secuenciación">Algoritmo y Secuenciación (Lógica previa)</option>
               <option value="Sensor, Actuador o Microcontrolador">Sensor, Actuador o Microcontrolador (Exploración guiada)</option>
@@ -578,10 +585,20 @@
 
           <div>
             <label style="display: block; font-size: 11px; font-weight: 700; color: #cbd5e1; margin-bottom: 4px;">
-              Acción Pedagógica Sugerida (Para Estrategias de Mediación):
+              Condición de Aplicación de la Prueba:
             </label>
-            <input type="text" id="inputAccionPedagogica" value="Incorporar retos guiados de simulación y descomposición algorítmica." style="width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 7px 10px; color: white; font-size: 12px;">
+            <select id="selectCondicionAplicacion" style="width: 100%; background: #0f172a; border: 1.5px solid #334155; border-radius: 8px; padding: 8px 10px; color: white; font-size: 12px; font-weight: 600;">
+              <option value="Ordinaria">Aplicación Ordinaria (Fecha y Hora Oficial)</option>
+              <option value="Extemporanea">Aplicación Extemporánea / Otra Fecha (Justificación Docente)</option>
+            </select>
           </div>
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 11px; font-weight: 700; color: #cbd5e1; margin-bottom: 4px;">
+            Descripción del Desempeño Individual (Para la Matriz de Sistematización Pág. 15):
+          </label>
+          <textarea id="inputAccionPedagogica" rows="2" placeholder="Describa los logros alcanzados y los aspectos clave a considerar durante la mediación pedagógica..." style="width: 100%; background: #0f172a; border: 1.5px solid #334155; border-radius: 8px; padding: 8px 10px; color: white; font-size: 12px; resize: vertical;"></textarea>
         </div>
       </div>
 
@@ -969,98 +986,142 @@
       var est = estadoDocente.estudiantes[idx];
 
       document.getElementById("labelNombreEstudianteActivo").innerText = est.nombre;
-      document.getElementById("labelSeccionEstudianteActivo").innerText = "Sección: " + est.seccion + " • III Ciclo • Módulo 1 (2026)";
+      document.getElementById("labelSeccionEstudianteActivo").innerText = "Sección: " + est.seccion + " • III Ciclo • Módulo 1 (2026)" + (est.horaEntrega ? " • Entrega: " + est.horaEntrega : "");
 
       document.getElementById("selectNecesidadPrioritaria").value = est.necesidad || "Dominio Alto / Consolidado";
-      document.getElementById("inputAccionPedagogica").value = est.accion || "Incorporar retos guiados de simulación.";
+      var condEl = document.getElementById("selectCondicionAplicacion");
+      if (condEl) condEl.value = est.esExtemporaneo ? "Extemporanea" : "Ordinaria";
+      document.getElementById("inputAccionPedagogica").value = est.descripcionDesempeno || est.accion || "";
 
       renderizarFormularioEvaluacion(est);
       renderizarListaEstudiantes();
     }
 
     function renderizarFormularioEvaluacion(est) {
-      // 1. Cognitiva
-      var contCog = document.getElementById("contenedorRubricaCognitiva");
-      contCog.innerHTML = "";
-      EVIDENCIAS_COGNITIVAS.forEach(function(ev, i) {
-        var val = est.cog[i] || "ED";
-        var row = document.createElement("div");
-        row.className = "rubric-row";
-        row.innerHTML = '<div style="font-size:11.5px; color:#cbd5e1;">' + (i+1) + '. ' + ev + '</div>' +
-          '<div class="segmented-control">' +
-            '<button type="button" class="segmented-btn ' + (val === "L" ? "active-logrado" : "") + '" onclick="setValCog(' + i + ', \'L\')">Logrado</button>' +
-            '<button type="button" class="segmented-btn ' + (val === "ED" ? "active-desarrollo" : "") + '" onclick="setValCog(' + i + ', \'ED\')">En Des.</button>' +
-            '<button type="button" class="segmented-btn ' + (val === "RA" ? "active-apoyo" : "") + '" onclick="setValCog(' + i + ', \'RA\')">Req. Apoyo</button>' +
-          '</div>' +
-          '<div><input type="text" class="rubric-obs-input" placeholder="Observación..." value="" id="obsCog_' + i + '"></div>';
-        contCog.appendChild(row);
-      });
+      // 1. Resumen de Estado Cognoscitivo (10 Indicadores de Logro recibidos de la WebApp)
+      var numLogCog = est.cog ? est.cog.filter(function(x){ return x === "L"; }).length : (est.evaluado ? 10 : 0);
+      var porcCog = Math.round((numLogCog / 10) * 100);
+      
+      var badgeCog = document.getElementById("badgePuntajeCognitivo");
+      if (badgeCog) {
+        badgeCog.innerText = numLogCog + " / 10 Logrados (" + porcCog + "%)";
+        badgeCog.className = porcCog >= 80 ? "badge-status badge-completado" : (porcCog >= 60 ? "badge-status badge-pendiente" : "badge-status");
+      }
 
-      // 2. Psicomotora
+      var estadoTxt = document.getElementById("bannerCognitivoEstado");
+      if (estadoTxt) {
+        if (est.evaluado || est.horaEntrega) {
+          estadoTxt.innerHTML = "✅ Sincronizado vía WebApp / QR (" + (est.fechaEntrega || "Hoy") + " • " + (est.horaEntrega || "10:30") + ") • Condición: <strong>" + (est.esExtemporaneo ? "Extemporánea" : "Ordinaria") + "</strong>";
+        } else {
+          estadoTxt.innerHTML = "⏳ Pendiente de resolución por parte del estudiante en la WebApp «Aula Inteligente».";
+        }
+      }
+
+      // 2. Rúbrica de Observación Psicomotora (6 Conductas Reto Práctico)
       var contPsi = document.getElementById("contenedorRubricaPsicomotora");
-      contPsi.innerHTML = "";
-      CONDUCTAS_PSICOMOTORAS.forEach(function(cd, j) {
-        var valP = est.psi[j] || "A";
-        var rowP = document.createElement("div");
-        rowP.className = "rubric-row";
-        rowP.innerHTML = '<div style="font-size:11.5px; color:#cbd5e1;">' + (j+1) + '. ' + cd + '</div>' +
-          '<div class="segmented-control">' +
-            '<button type="button" class="segmented-btn ' + (valP === "A" ? "active-a" : "") + '" onclick="setValPsi(' + j + ', \'A\')">A (Autónomo)</button>' +
-            '<button type="button" class="segmented-btn ' + (valP === "B" ? "active-b" : "") + '" onclick="setValPsi(' + j + ', \'B\')">B (Apoyo)</button>' +
-            '<button type="button" class="segmented-btn ' + (valP === "C" ? "active-c" : "") + '" onclick="setValPsi(' + j + ', \'C\')">C (Acomp.)</button>' +
-          '</div>' +
-          '<div><input type="text" class="rubric-obs-input" placeholder="Observación de conducta..." value="" id="obsPsi_' + j + '"></div>';
-        contPsi.appendChild(rowP);
-      });
+      if (contPsi) {
+        contPsi.innerHTML = "";
+        CONDUCTAS_PSICOMOTORAS.forEach(function(cd, j) {
+          var valP = (est.psi && est.psi[j]) ? est.psi[j] : "A";
+          var rowP = document.createElement("div");
+          rowP.className = "rubric-row";
+          rowP.innerHTML = '<div style="font-size:11.5px; color:#cbd5e1;"><strong style="color:#34d399;">' + (j+1) + '.</strong> ' + cd + '</div>' +
+            '<div class="segmented-control">' +
+              '<button type="button" class="segmented-btn ' + (valP === "A" ? "active-a" : "") + '" onclick="setValPsi(' + j + ', \'A\')">A (Autónomo)</button>' +
+              '<button type="button" class="segmented-btn ' + (valP === "B" ? "active-b" : "") + '" onclick="setValPsi(' + j + ', \'B\')">B (Apoyo)</button>' +
+              '<button type="button" class="segmented-btn ' + (valP === "C" ? "active-c" : "") + '" onclick="setValPsi(' + j + ', \'C\')">C (Acomp.)</button>' +
+            '</div>' +
+            '<div><input type="text" class="rubric-obs-input" placeholder="Observación del docente..." value="' + ((est.obsPsi && est.obsPsi[j]) || "") + '" onchange="setObsPsi(' + j + ', this.value)"></div>';
+          contPsi.appendChild(rowP);
+        });
+      }
 
-      // 3. Socioafectiva
+      // 3. Rúbrica de Observación Socioafectiva (7 Conductas Actitudinales)
       var contSoc = document.getElementById("contenedorRubricaSocioafectiva");
-      contSoc.innerHTML = "";
-      CONDUCTAS_SOCIOAFECTIVAS.forEach(function(sc, k) {
-        var valS = est.soc[k] || "A";
-        var rowS = document.createElement("div");
-        rowS.className = "rubric-row";
-        rowS.innerHTML = '<div style="font-size:11.5px; color:#cbd5e1;">' + (k+1) + '. ' + sc + '</div>' +
-          '<div class="segmented-control">' +
-            '<button type="button" class="segmented-btn ' + (valS === "A" ? "active-a" : "") + '" onclick="setValSoc(' + k + ', \'A\')">A (Consistente)</button>' +
-            '<button type="button" class="segmented-btn ' + (valS === "B" ? "active-b" : "") + '" onclick="setValSoc(' + k + ', \'B\')">B (Intermitente)</button>' +
-            '<button type="button" class="segmented-btn ' + (valS === "C" ? "active-c" : "") + '" onclick="setValSoc(' + k + ', \'C\')">C (Acomp.)</button>' +
-          '</div>' +
-          '<div><input type="text" class="rubric-obs-input" placeholder="Observación actitudinal..." value="" id="obsSoc_' + k + '"></div>';
-        contSoc.appendChild(rowS);
-      });
-    }
-
-    function setValCog(idx, val) {
-      var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
-      if (est) {
-        est.cog[idx] = val;
-        renderizarFormularioEvaluacion(est);
+      if (contSoc) {
+        contSoc.innerHTML = "";
+        CONDUCTAS_SOCIOAFECTIVAS.forEach(function(sc, k) {
+          var valS = (est.soc && est.soc[k]) ? est.soc[k] : "A";
+          var rowS = document.createElement("div");
+          rowS.className = "rubric-row";
+          rowS.innerHTML = '<div style="font-size:11.5px; color:#cbd5e1;"><strong style="color:#fbbf24;">' + (k+1) + '.</strong> ' + sc + '</div>' +
+            '<div class="segmented-control">' +
+              '<button type="button" class="segmented-btn ' + (valS === "A" ? "active-a" : "") + '" onclick="setValSoc(' + k + ', \'A\')">A (Consistente)</button>' +
+              '<button type="button" class="segmented-btn ' + (valS === "B" ? "active-b" : "") + '" onclick="setValSoc(' + k + ', \'B\')">B (Intermitente)</button>' +
+              '<button type="button" class="segmented-btn ' + (valS === "C" ? "active-c" : "") + '" onclick="setValSoc(' + k + ', \'C\')">C (Acomp.)</button>' +
+            '</div>' +
+            '<div><input type="text" class="rubric-obs-input" placeholder="Observación actitudinal..." value="' + ((est.obsSoc && est.obsSoc[k]) || "") + '" onchange="setObsSoc(' + k + ', this.value)"></div>';
+          contSoc.appendChild(rowS);
+        });
       }
     }
 
     function setValPsi(idx, val) {
       var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
       if (est) {
+        if (!est.psi) est.psi = Array(6).fill("A");
         est.psi[idx] = val;
         renderizarFormularioEvaluacion(est);
+      }
+    }
+
+    function setObsPsi(idx, val) {
+      var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
+      if (est) {
+        if (!est.obsPsi) est.obsPsi = Array(6).fill("");
+        est.obsPsi[idx] = val;
+        guardarNominaEnStorage();
       }
     }
 
     function setValSoc(idx, val) {
       var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
       if (est) {
+        if (!est.soc) est.soc = Array(7).fill("A");
         est.soc[idx] = val;
         renderizarFormularioEvaluacion(est);
       }
     }
 
-    function marcarTodosCognitivo(val) {
+    function setObsSoc(idx, val) {
       var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
       if (est) {
-        est.cog = Array(10).fill(val);
+        if (!est.obsSoc) est.obsSoc = Array(7).fill("");
+        est.obsSoc[idx] = val;
+        guardarNominaEnStorage();
+      }
+    }
+
+    function marcarTodosPsicomotor(val) {
+      var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
+      if (est) {
+        est.psi = Array(6).fill(val);
         renderizarFormularioEvaluacion(est);
       }
+    }
+
+    function marcarTodosSocio(val) {
+      var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
+      if (est) {
+        est.soc = Array(7).fill(val);
+        renderizarFormularioEvaluacion(est);
+      }
+    }
+
+    function guardarEvaluacionEstudianteActual() {
+      var est = estadoDocente.estudiantes[estadoDocente.estudianteActivoIdx];
+      if (!est) return;
+
+      est.necesidad = document.getElementById("selectNecesidadPrioritaria").value;
+      var condEl = document.getElementById("selectCondicionAplicacion");
+      est.esExtemporaneo = condEl ? (condEl.value === "Extemporanea") : false;
+      est.descripcionDesempeno = document.getElementById("inputAccionPedagogica").value.trim();
+      est.accion = est.descripcionDesempeno;
+      est.evaluado = true;
+
+      guardarNominaEnStorage();
+      renderizarListaEstudiantes();
+      alert("✅ Observación docente de " + est.nombre + " guardada con éxito en la nómina.");
     }
 
     function marcarTodosPsicomotor(val) {
