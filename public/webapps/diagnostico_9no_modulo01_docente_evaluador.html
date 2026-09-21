@@ -482,8 +482,8 @@
               <option value="Sección 9-2">Sección 9-2</option>
               <option value="Sección 9-3">Sección 9-3</option>
             </select>
-            <button class="btn btn-danger" style="font-size: 11px; padding: 4px 8px; min-height: 26px;" onclick="limpiarNomina()">
-              🗑️ Vaciar Nómina
+            <button class="btn btn-danger" style="font-size: 12px; padding: 6px 14px; font-weight: 800; min-height: 32px;" onclick="limpiarNomina()">
+              🗑️ Vaciar Nómina / Iniciar en Blanco
             </button>
           </div>
         </div>
@@ -855,9 +855,17 @@
         badge.style.color = "#0369a1";
       }
 
+      var rawDoc = localStorage.getItem("docente_activo") || localStorage.getItem("antigravity_docente_sesion");
+      var docActivo = null;
+      try { docActivo = rawDoc ? JSON.parse(rawDoc) : null; } catch(e) {}
+      var docId = docActivo && docActivo.idDocente ? docActivo.idDocente : "";
+      var docNom = docActivo && docActivo.nombreCompleto ? docActivo.nombreCompleto.toLowerCase().trim() : "";
+      var docCor = docActivo && docActivo.correoInstitucional ? docActivo.correoInstitucional.toLowerCase().trim() : "";
+
       var registrosRemotos = [];
       try {
-        var res = await fetch("/api/telemetria/enviar");
+        var urlFetch = docId ? "/api/telemetria/enviar?docenteId=" + encodeURIComponent(docId) : "/api/telemetria/enviar";
+        var res = await fetch(urlFetch);
         if (res.ok) {
           var json = await res.json();
           if (json.registros && Array.isArray(json.registros)) {
@@ -877,12 +885,20 @@
       var mapaRegistros = new Map();
       registrosLocales.forEach(function(r) {
         if (r && r.estudianteNombre) {
+          var estNom = (r.estudianteNombre || "").toLowerCase().trim();
+          var estCor = (r.estudianteCorreo || "").toLowerCase().trim();
+          if (docNom && (estNom === docNom || estNom.includes(docNom))) return;
+          if (docCor && estCor === docCor) return;
           var k = (r.estudianteNombre + "::" + (r.seccionOGrupo || "")).toLowerCase().trim();
           mapaRegistros.set(k, r);
         }
       });
       registrosRemotos.forEach(function(r) {
         if (r && r.estudianteNombre) {
+          var estNom = (r.estudianteNombre || "").toLowerCase().trim();
+          var estCor = (r.estudianteCorreo || "").toLowerCase().trim();
+          if (docNom && (estNom === docNom || estNom.includes(docNom))) return;
+          if (docCor && estCor === docCor) return;
           var k = (r.estudianteNombre + "::" + (r.seccionOGrupo || "")).toLowerCase().trim();
           mapaRegistros.set(k, r);
         }
@@ -1117,11 +1133,38 @@
       alert("Se incorporaron " + agregados + " estudiantes.");
     }
 
-    function limpiarNomina() {
-      if (confirm("¿Deseas vaciar la lista de estudiantes actual?")) {
+    async function limpiarNomina() {
+      if (confirm("⚠️ ¿Estás seguro de vaciar la nómina de estudiantes y todas las observaciones registradas para iniciar de cero?")) {
         estadoDocente.estudiantes = [];
         guardarNominaEnStorage();
+        try {
+          localStorage.removeItem("nomina_docente_9no_mep");
+          localStorage.removeItem("diagnosticos_mep_9no");
+        } catch(e) {}
+        
+        // Limpiar también en el servidor para el docente actual
+        try {
+          var rawDoc = localStorage.getItem("docente_activo") || localStorage.getItem("antigravity_docente_sesion");
+          var docObj = rawDoc ? JSON.parse(rawDoc) : null;
+          var url = docObj && docObj.idDocente 
+            ? "/api/telemetria/enviar?all=true&docenteId=" + encodeURIComponent(docObj.idDocente) 
+            : "/api/telemetria/enviar?all=true";
+          fetch(url, { method: "DELETE" }).catch(function(){});
+        } catch(e) {}
+
         renderizarTodo();
+        alert("✅ La nómina de estudiantes ha sido vaciada. La vista ha iniciado en blanco.");
+      }
+    }
+
+    function eliminarEstudianteIndividual(idx) {
+      if (estadoDocente.estudiantes[idx]) {
+        var nom = estadoDocente.estudiantes[idx].nombre;
+        if (confirm("¿Deseas eliminar a " + nom + " de la nómina?")) {
+          estadoDocente.estudiantes.splice(idx, 1);
+          guardarNominaEnStorage();
+          renderizarTodo();
+        }
       }
     }
 
@@ -1158,7 +1201,12 @@
         var badgeClass = est.evaluado ? "badge-completado" : "badge-pendiente";
         var badgeText = est.evaluado ? "✅ Evaluado" : "🟡 Pendiente";
 
-        div.innerHTML = '<div><strong style="color: #0f172a; font-size: 12.5px;">' + est.nombre + '</strong><span style="font-size: 11px; color: #64748b; display: block;">' + est.seccion + (est.horaEntrega ? ' • ' + est.horaEntrega : '') + '</span></div><div style="display:flex; align-items:center; gap:8px;"><span class="badge-status ' + badgeClass + '">' + badgeText + '</span><button class="btn btn-outline" style="font-size:10.5px; padding:3px 8px; min-height:26px;" onclick="event.stopPropagation(); irAObservacionEstudiante(' + realIdx + ');">Matriz ➔</button></div>';
+        div.innerHTML = '<div><strong style="color: #0f172a; font-size: 12.5px;">' + est.nombre + '</strong><span style="font-size: 11px; color: #64748b; display: block;">' + est.seccion + (est.horaEntrega ? ' • ' + est.horaEntrega : '') + '</span></div>' +
+          '<div style="display:flex; align-items:center; gap:8px;">' +
+            '<span class="badge-status ' + badgeClass + '">' + badgeText + '</span>' +
+            '<button class="btn btn-outline" style="font-size:11px; padding:3px 8px; min-height:26px;" onclick="event.stopPropagation(); irAObservacionEstudiante(' + realIdx + ');">Matriz ➔</button>' +
+            '<button class="btn btn-danger" style="font-size:11px; padding:3px 8px; min-height:26px;" onclick="event.stopPropagation(); eliminarEstudianteIndividual(' + realIdx + ');" title="Eliminar estudiante individual">🗑️</button>' +
+          '</div>';
         cont.appendChild(div);
       });
     }

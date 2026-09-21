@@ -1150,15 +1150,12 @@
 
       <!-- CONTROLES Y HERRAMIENTAS DEL SIMULADOR -->
       <div class="sim-panel-header">
-        <div class="actions-grid-mobile">
+        <div class="actions-grid-mobile" style="grid-template-columns: repeat(3, 1fr);">
           <button class="btn btn-accent" style="font-weight: 800; box-shadow: 0 0 10px rgba(16,185,129,0.2);" onclick="sincronizarYValidarConexion()">
             🚀 Sincronizar Conexión
           </button>
           <button class="btn btn-warning" onclick="restaurarCircuitoValores()">
             🔄 Restaurar Valores
-          </button>
-          <button class="btn btn-secondary" onclick="cambiarTipoActuador()">
-            💡 Cambiar Actuador
           </button>
           <button class="btn btn-danger" onclick="limpiarCables()">
             🧹 Desconectar Todo

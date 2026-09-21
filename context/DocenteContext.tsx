@@ -236,21 +236,38 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
     // Sincronizar con el endpoint del servidor
     const sincronizarTelemetriaServidor = async () => {
       try {
-        const res = await fetch("/api/telemetria/enviar");
+        const docenteGuardadoRaw = SafeStorage.getItem("docente_activo");
+        const docenteActivoObj = docenteGuardadoRaw ? JSON.parse(docenteGuardadoRaw) : null;
+        const docenteId = docenteActivoObj?.idDocente;
+        const nombreDoc = docenteActivoObj?.nombreCompleto?.toLowerCase()?.trim() || "";
+        const correoDoc = docenteActivoObj?.correoInstitucional?.toLowerCase()?.trim() || "";
+
+        const url = docenteId ? `/api/telemetria/enviar?docenteId=${encodeURIComponent(docenteId)}` : "/api/telemetria/enviar";
+        const res = await fetch(url);
         if (res.ok) {
           const json = await res.json();
-          if (json.registros && Array.isArray(json.registros) && json.registros.length > 0) {
+          if (json.registros && Array.isArray(json.registros)) {
             setTelemetria((prev) => {
               const mapa = new Map<string, PayloadTelemetria>();
-              // Agregar los previos
+              // Agregar los previos que no coincidan con el docente registrado como estudiante
               prev.forEach((item) => {
-                const key = item.idResultado || `${item.estudianteNombre}_${item.timestamp}`;
-                mapa.set(key, item);
+                const estNom = item.estudianteNombre?.toLowerCase()?.trim() || "";
+                const estCor = item.estudianteCorreo?.toLowerCase()?.trim() || "";
+                const esDocente = (nombreDoc && estNom === nombreDoc) || (correoDoc && estCor === correoDoc);
+                if (!esDocente) {
+                  const key = item.idResultado || `${item.estudianteNombre}_${item.timestamp}`;
+                  mapa.set(key, item);
+                }
               });
               // Mezclar con los del servidor
               json.registros.forEach((item: PayloadTelemetria) => {
-                const key = item.idResultado || `${item.estudianteNombre}_${item.timestamp}`;
-                mapa.set(key, item);
+                const estNom = item.estudianteNombre?.toLowerCase()?.trim() || "";
+                const estCor = item.estudianteCorreo?.toLowerCase()?.trim() || "";
+                const esDocente = (nombreDoc && estNom === nombreDoc) || (correoDoc && estCor === correoDoc);
+                if (!esDocente) {
+                  const key = item.idResultado || `${item.estudianteNombre}_${item.timestamp}`;
+                  mapa.set(key, item);
+                }
               });
               const unificados = Array.from(mapa.values()).sort((a, b) => b.timestamp - a.timestamp);
               SafeStorage.setItem("telemetria_registros", JSON.stringify(unificados));
@@ -425,11 +442,28 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       SafeStorage.setItem("telemetria_registros", JSON.stringify(updated));
       return updated;
     });
+
+    // Notificar al servidor para eliminar definitivamente
+    try {
+      fetch(`/api/telemetria/enviar?timestamp=${timestamp}`, { method: "DELETE" }).catch(() => {});
+    } catch(e) {}
   };
 
   const limpiarTelemetria = () => {
     setTelemetria([]);
     SafeStorage.setItem("telemetria_registros", JSON.stringify([]));
+    try {
+      SafeStorage.removeItem("diagnosticos_mep_9no");
+      SafeStorage.removeItem("nomina_docente_9no_mep");
+    } catch(e) {}
+
+    // Notificar al servidor para vaciar los registros
+    try {
+      const url = docente?.idDocente 
+        ? `/api/telemetria/enviar?all=true&docenteId=${encodeURIComponent(docente.idDocente)}`
+        : "/api/telemetria/enviar?all=true";
+      fetch(url, { method: "DELETE" }).catch(() => {});
+    } catch(e) {}
   };
 
   const restablecerDatosDemostracion = () => {

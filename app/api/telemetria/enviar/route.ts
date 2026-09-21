@@ -172,3 +172,82 @@ export async function GET(req: NextRequest) {
   );
 }
 
+export async function DELETE(req: NextRequest) {
+  try {
+    cargarRegistrosServidor();
+    const { searchParams } = new URL(req.url);
+    const timestampStr = searchParams.get("timestamp");
+    const idResultado = searchParams.get("idResultado");
+    const docenteId = searchParams.get("docenteId");
+    const vaciarTodo = searchParams.get("all") === "true";
+
+    if (vaciarTodo) {
+      if (docenteId) {
+        // Vaciar solo los registros del docente indicado
+        registrosTelemetriaMemoria = registrosTelemetriaMemoria.filter(
+          (r) => r.docenteId !== docenteId
+        );
+      } else {
+        // Vaciar todos los registros del servidor
+        registrosTelemetriaMemoria = [];
+      }
+      guardarRegistrosServidor();
+      return NextResponse.json(
+        {
+          success: true,
+          mensaje: "Todos los registros de telemetría han sido eliminados correctamente del servidor",
+          restantes: registrosTelemetriaMemoria.length,
+        },
+        { headers: corsHeaders }
+      );
+    }
+
+    if (idResultado) {
+      const prevLength = registrosTelemetriaMemoria.length;
+      registrosTelemetriaMemoria = registrosTelemetriaMemoria.filter(
+        (r) => r.idResultado !== idResultado
+      );
+      guardarRegistrosServidor();
+      return NextResponse.json(
+        {
+          success: true,
+          mensaje: "Registro eliminado correctamente por ID",
+          eliminado: prevLength !== registrosTelemetriaMemoria.length,
+          restantes: registrosTelemetriaMemoria.length,
+        },
+        { headers: corsHeaders }
+      );
+    }
+
+    if (timestampStr) {
+      const ts = Number(timestampStr);
+      const prevLength = registrosTelemetriaMemoria.length;
+      registrosTelemetriaMemoria = registrosTelemetriaMemoria.filter(
+        (r) => Number(r.timestamp) !== ts && Number(r.timestampEpoch) !== ts
+      );
+      guardarRegistrosServidor();
+      return NextResponse.json(
+        {
+          success: true,
+          mensaje: "Registro eliminado correctamente por Timestamp",
+          eliminado: prevLength !== registrosTelemetriaMemoria.length,
+          restantes: registrosTelemetriaMemoria.length,
+        },
+        { headers: corsHeaders }
+      );
+    }
+
+    return NextResponse.json(
+      { error: "Parámetros insuficientes para eliminar (se requiere timestamp, idResultado, docenteId o all=true)" },
+      { status: 400, headers: corsHeaders }
+    );
+  } catch (error: any) {
+    console.error("Error al eliminar telemetría en servidor:", error);
+    return NextResponse.json(
+      { error: "Error interno al eliminar registros", details: error?.message },
+      { status: 500, headers: corsHeaders }
+    );
+  }
+}
+
+

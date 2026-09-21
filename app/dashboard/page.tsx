@@ -99,7 +99,20 @@ export default function DashboardAnaliticoPage() {
 
   // Filtrado reactivo de telemetría
   const telemetriaFiltrada = useMemo(() => {
+    const nombreDocenteLimpio = docente?.nombreCompleto?.toLowerCase()?.trim() || "";
+    const correoDocenteLimpio = docente?.correoInstitucional?.toLowerCase()?.trim() || "";
+
     return telemetria.filter((r) => {
+      // Excluir al docente registrado si aparece como estudiante
+      const estNom = r.estudianteNombre?.toLowerCase()?.trim() || "";
+      const estCor = r.estudianteCorreo?.toLowerCase()?.trim() || "";
+      if (nombreDocenteLimpio && (estNom === nombreDocenteLimpio || estNom.includes(nombreDocenteLimpio))) {
+        return false;
+      }
+      if (correoDocenteLimpio && estCor === correoDocenteLimpio) {
+        return false;
+      }
+
       const coincideTexto =
         r.estudianteNombre.toLowerCase().includes(filtroTexto.toLowerCase()) ||
         r.webAppTitulo.toLowerCase().includes(filtroTexto.toLowerCase());
@@ -375,26 +388,32 @@ export default function DashboardAnaliticoPage() {
               )}
             </select>
 
-            {/* Botones de Gestión de Datos de Prueba */}
-            <div className="flex items-center gap-1.5 border-l border-slate-200 pl-2">
+            {/* Botones de Gestión y Limpieza de Datos */}
+            <div className="flex items-center gap-2 border-l border-slate-200 pl-3">
               <button
                 onClick={() => {
-                  if (confirm("¿Estás seguro de limpiar la telemetría de prueba para comenzar a registrar los datos reales de tu aula?")) {
+                  if (confirm("⚠️ ¿Estás seguro de vaciar toda la telemetría y lista de estudiantes para iniciar de cero con tu grupo real? Esta acción no se puede deshacer.")) {
                     limpiarTelemetria();
                   }
                 }}
-                className="p-2 text-slate-500 hover:text-rose-700 hover:bg-rose-50 rounded-xl border border-slate-200 transition-colors"
-                title="Limpiar telemetría de prueba (Empezar de cero con tus estudiantes)"
+                className="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 hover:text-rose-800 border-1.5 border-rose-200 hover:border-rose-300 rounded-xl font-extrabold text-xs flex items-center gap-2 transition-all shadow-xs"
+                title="Limpiar y vaciar toda la telemetría (Empezar en blanco con tu aula)"
               >
-                <Broom size={16} weight="bold" />
+                <Trash size={17} weight="bold" className="text-rose-600" />
+                <Broom size={17} weight="bold" className="text-rose-600" />
+                <span>Vaciar / Iniciar en Blanco</span>
               </button>
 
               <button
-                onClick={() => restablecerDatosDemostracion()}
-                className="p-2 text-slate-500 hover:text-blue-700 hover:bg-blue-50 rounded-xl border border-slate-200 transition-colors"
-                title="Restablecer datos de prueba y demostración inicial"
+                onClick={() => {
+                  if (confirm("¿Deseas cargar datos de demostración para explorar los gráficos y analítica del dashboard?")) {
+                    restablecerDatosDemostracion();
+                  }
+                }}
+                className="p-2 text-slate-600 hover:text-blue-700 bg-slate-50 hover:bg-blue-50 rounded-xl border border-slate-200 transition-colors"
+                title="Cargar datos de prueba de demostración (opcional)"
               >
-                <ArrowsClockwise size={16} weight="bold" />
+                <ArrowsClockwise size={17} weight="bold" />
               </button>
             </div>
           </div>
@@ -481,23 +500,27 @@ export default function DashboardAnaliticoPage() {
                         </span>
                       </td>
                       <td className="py-3 px-4 text-right">
-                        <div className="flex items-center justify-end gap-1">
+                        <div className="flex items-center justify-end gap-1.5">
                           {/* Editar registro */}
                           <button
                             onClick={() => abrirEditar(item)}
-                            className="p-1.5 text-slate-500 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
+                            className="p-2 text-slate-600 hover:text-blue-700 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 rounded-xl transition-all shadow-xs"
                             title="Editar datos del registro"
                           >
-                            <NotePencil size={16} weight="bold" />
+                            <NotePencil size={18} weight="bold" />
                           </button>
 
                           {/* Eliminar registro */}
                           <button
-                            onClick={() => eliminarResultado(item.timestamp)}
-                            className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition-colors"
-                            title="Eliminar registro"
+                            onClick={() => {
+                              if (confirm(`¿Eliminar registro de ${item.estudianteNombre}?`)) {
+                                eliminarResultado(item.timestamp);
+                              }
+                            }}
+                            className="p-2 text-rose-600 hover:text-white bg-rose-50 hover:bg-rose-600 border border-rose-200 hover:border-rose-600 rounded-xl transition-all shadow-xs"
+                            title={`Eliminar registro de ${item.estudianteNombre}`}
                           >
-                            <Trash size={16} />
+                            <Trash size={18} weight="bold" />
                           </button>
                         </div>
                       </td>

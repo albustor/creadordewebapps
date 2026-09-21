@@ -9,6 +9,8 @@ export interface PayloadTelemetria {
   webAppTitulo: string;
   docenteId: string;
   estudianteNombre: string;
+  estudianteCorreo?: string;
+  estudianteCedula?: string;
   seccionOGrupo: string;
   puntaje: number;
   puntajeMaximo: number;
