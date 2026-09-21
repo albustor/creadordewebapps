@@ -1771,10 +1771,52 @@
       }
     }
 
-    function desbloquearDatosIdentificacionDocente() {
-      var pin = prompt("🔑 Ingrese la contraseña de administrador docente para desbloquear la edición de datos:");
+    function verificarContrasenaDocente(pin) {
       if (!pin) return false;
-      if (pin === "EdcRfvTgb1726**" || pin === "admin" || pin === "1726" || pin === "7729") {
+      var passLimpia = pin.trim();
+      
+      // 1. Contraseñas maestras del asesor / administrador institucional
+      if (
+        passLimpia === "EdcRfvTgb1726**" ||
+        passLimpia === "admin" ||
+        passLimpia === "1726" ||
+        passLimpia === "7729"
+      ) {
+        return true;
+      }
+
+      // 2. Contraseña del docente registrado en sesión activa
+      try {
+        var rawDoc = localStorage.getItem("docente_activo") || localStorage.getItem("antigravity_docente_sesion");
+        if (rawDoc) {
+          var docObj = JSON.parse(rawDoc);
+          if (docObj && docObj.contrasena && docObj.contrasena.trim() === passLimpia) {
+            return true;
+          }
+        }
+      } catch(e) {}
+
+      // 3. Contraseñas de docentes registrados localmente en la plataforma
+      try {
+        var rawUsuarios = localStorage.getItem("usuarios_registrados_locales");
+        if (rawUsuarios) {
+          var lista = JSON.parse(rawUsuarios);
+          if (Array.isArray(lista)) {
+            var encontrado = lista.some(function(u) {
+              return u && u.contrasena && u.contrasena.trim() === passLimpia;
+            });
+            if (encontrado) return true;
+          }
+        }
+      } catch(e) {}
+
+      return false;
+    }
+
+    function desbloquearDatosIdentificacionDocente() {
+      var pin = prompt("🔑 Ingrese la contraseña de la persona docente o asesora registrada para habilitar la edición de datos:");
+      if (!pin) return false;
+      if (verificarContrasenaDocente(pin)) {
         estado.datosBloqueados = false;
         var elNom = document.getElementById("inputEstudianteNombre");
         var elSec = document.getElementById("selectSeccion");
@@ -1804,10 +1846,11 @@
         if (tab1) {
           tab1.style.opacity = "1";
         }
-        alert("✅ Modo de edición docente habilitado.");
+        guardarProgresoEnLocalStorage();
+        alert("✅ Autorización confirmada. Modo de edición de datos habilitado por la persona docente.");
         return true;
       } else {
-        alert("❌ Contraseña de administrador docente incorrecta.");
+        alert("❌ Contraseña de docente o asesor incorrecta. No se permite la edición de datos.");
         return false;
       }
     }
@@ -1816,6 +1859,7 @@
       if (validarDatosEstudiante()) {
         bloquearDatosIdentificacion();
         registrarInicioEstudianteServidor();
+        guardarProgresoEnLocalStorage();
         irASeccion(2);
       } else {
         alert("Por favor escribe tu Nombre y Apellidos completos antes de iniciar el diagnóstico.");
@@ -1824,15 +1868,16 @@
     }
 
     function desbloquearPorDocente() {
-      var pin = prompt("🔑 Ingrese el PIN de Autorización Docente para habilitar una aplicación excepcional / en otra fecha:");
+      var pin = prompt("🔑 Ingrese la contraseña de la persona docente o asesora registrada para habilitar una aplicación extemporánea:");
       if (!pin) return;
-      if (pin === "MEP2026" || pin === "7729" || pin === "1726" || pin === "admin" || pin === "EdcRfvTgb1726**") {
-        var motivo = prompt("Motivo de la excepción (ej: Ausencia justificada / Aplicación extemporánea / Criterio docente):", "Aplicación Extemporánea");
+      if (verificarContrasenaDocente(pin)) {
+        var motivo = prompt("Motivo del desbloqueo (ej: Corrección de datos / Aplicación extemporánea / Criterio docente):", "Criterio Docente");
         localStorage.removeItem("diagnostico_9no_mep_bloqueo_entrega");
-        alert("✅ Desbloqueo autorizado por docente (" + (motivo || "Excepción") + "). La prueba se habilitará a continuación.");
+        localStorage.removeItem("diagnostico_9no_sesion_activa");
+        alert("✅ Desbloqueo autorizado por docente (" + (motivo || "Autorizado") + ").");
         window.location.reload();
       } else {
-        alert("❌ PIN de autorización incorrecto. Solo el docente a cargo puede autorizar una re-aplicación.");
+        alert("❌ Contraseña de docente o asesor incorrecta.");
       }
     }
 
