@@ -27,14 +27,16 @@ import {
   PlayCircle,
   Key,
   ListDashes,
+  GlobeHemisphereWest,
   NotePencil,
 } from "@phosphor-icons/react";
 import AuthGuard from "@/components/AuthGuard";
+import ObservatorioMacroNacional from "@/components/ObservatorioMacroNacional";
 import { LISTA_DRE_MEP } from "@/lib/dreCircuitos";
 
 export default function AdminPage() {
   const { docente } = useDocente();
-  const [tabActiva, setTabActiva] = useState<"solicitudes" | "docentes" | "historico" | "recursos" | "nueva_solicitud">("solicitudes");
+  const [tabActiva, setTabActiva] = useState<"observatorio" | "solicitudes" | "docentes" | "historico" | "recursos" | "nueva_solicitud">("observatorio");
   const [usuarios, setUsuarios] = useState<any[]>([]);
   const [historico, setHistorico] = useState<any[]>([]);
   const [cargando, setCargando] = useState(false);
@@ -311,6 +313,16 @@ export default function AdminPage() {
       {/* Pestañas de Navegación del Panel */}
       <div className="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200 overflow-x-auto">
         <button
+          onClick={() => setTabActiva("observatorio")}
+          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+            tabActiva === "observatorio" ? "bg-emerald-700 text-white shadow-xs" : "text-slate-600 hover:text-slate-900"
+          }`}
+        >
+          <GlobeHemisphereWest size={16} weight="bold" />
+          <span>Observatorio Macro Nacional</span>
+        </button>
+
+        <button
           onClick={() => setTabActiva("solicitudes")}
           className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
             tabActiva === "solicitudes" ? "bg-white text-blue-900 shadow-xs" : "text-slate-600 hover:text-slate-900"
@@ -360,6 +372,11 @@ export default function AdminPage() {
           <span>Nueva Solicitud de Ingreso</span>
         </button>
       </div>
+
+      {/* TAB 0: OBSERVATORIO MACRO NACIONAL */}
+      {tabActiva === "observatorio" && (
+        <ObservatorioMacroNacional usuariosDocentes={usuarios} />
+      )}
 
       {/* TAB 1: SOLICITUDES DE ASESORÍAS */}
       {tabActiva === "solicitudes" && (

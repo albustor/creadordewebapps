@@ -4,6 +4,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import { useDocente } from "@/context/DocenteContext";
 import { SafeStorage } from "@/lib/firebase";
 import SemaforoLogro from "@/components/SemaforoLogro";
+import GraficasSecciones from "@/components/GraficasSecciones";
 import RecomendacionesDUA from "@/components/RecomendacionesDUA";
 import QRScannerResultados from "@/components/QRScannerResultados";
 import {
@@ -466,7 +467,15 @@ export default function DashboardAnaliticoPage() {
           </div>
         </div>
 
-        {/* 2. RESUMEN DEL SEMÁFORO DE LOGRO */}
+        {/* 2. ANALÍTICA VISUAL Y GRÁFICAS COMPARATIVAS POR SECCIÓN */}
+        <GraficasSecciones
+          registros={telemetriaFiltrada}
+          configuracion={configuracion}
+          seccionSeleccionada={filtroGrupo}
+          onSeleccionarSeccion={(sec) => setFiltroGrupo(sec)}
+        />
+
+        {/* 3. RESUMEN DEL SEMÁFORO DE LOGRO */}
         <SemaforoLogro registros={telemetriaFiltrada} configuracion={configuracion} />
 
         {/* 3. RECOMENDACIONES PEDAGÓGICAS (HORIZONTAL FULL WIDTH) */}
