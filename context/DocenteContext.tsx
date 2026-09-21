@@ -229,8 +229,8 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
         setTelemetria(JSON.parse(savedTelemetria));
       } catch {}
     } else {
-      setTelemetria(SAMPLE_TELEMETRIA);
-      SafeStorage.setItem("telemetria_registros", JSON.stringify(SAMPLE_TELEMETRIA));
+      setTelemetria([]);
+      SafeStorage.setItem("telemetria_registros", JSON.stringify([]));
     }
 
     // Sincronizar con el endpoint del servidor

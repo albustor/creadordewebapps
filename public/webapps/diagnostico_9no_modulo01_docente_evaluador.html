@@ -824,9 +824,6 @@
     // Inicializar aplicativo
     window.addEventListener("DOMContentLoaded", function() {
       cargarNominaDesdeStorage();
-      if (estadoDocente.estudiantes.length === 0) {
-        cargarSeccionDemo('9-1');
-      }
       renderizarTodo();
       
       // Sincronización inmediata y periódica con la base de datos
@@ -1127,6 +1124,15 @@
       var contTot = document.getElementById("totalEstudiantesContador");
       if (contTot) contTot.innerText = filtrados.length;
 
+      if (filtrados.length === 0) {
+        cont.innerHTML = '<div style="text-align:center; padding: 26px 16px; color: #64748b; font-size: 12px; background: #f8fafc; border-radius: 10px; border: 1.5px dashed #cbd5e1; margin-top: 6px;">' +
+          '<div style="font-size: 26px; margin-bottom: 6px;">📋</div>' +
+          '<strong style="color: #0369a1; display: block; margin-bottom: 4px; font-size: 13px;">Nómina de Estudiantes en Blanco</strong>' +
+          '<span style="color: #475569; line-height: 1.5; display: block; max-width: 450px; margin: 0 auto;">Puedes cargar una lista (.csv, .xlsx, .txt), pegar la nómina arriba o esperar a que tus estudiantes inicien el diagnóstico desde su WebApp para registrarse automáticamente.</span>' +
+        '</div>';
+        return;
+      }
+
       filtrados.forEach(function(est, idx) {
         var realIdx = estadoDocente.estudiantes.indexOf(est);
         var div = document.createElement("div");
@@ -1138,7 +1144,7 @@
         var badgeClass = est.evaluado ? "badge-completado" : "badge-pendiente";
         var badgeText = est.evaluado ? "✅ Evaluado" : "🟡 Pendiente";
 
-        div.innerHTML = '<div><strong style="color: white; font-size: 12px;">' + est.nombre + '</strong><span style="font-size: 10.5px; color: #94a3b8; display: block;">' + est.seccion + (est.horaEntrega ? ' • ' + est.horaEntrega : '') + '</span></div><div style="display:flex; align-items:center; gap:8px;"><span class="badge-status ' + badgeClass + '">' + badgeText + '</span><button class="btn btn-outline" style="font-size:10px; padding:2px 6px; min-height:24px;" onclick="event.stopPropagation(); irAObservacionEstudiante(' + realIdx + ');">Matriz ➔</button></div>';
+        div.innerHTML = '<div><strong style="color: #0f172a; font-size: 12.5px;">' + est.nombre + '</strong><span style="font-size: 11px; color: #64748b; display: block;">' + est.seccion + (est.horaEntrega ? ' • ' + est.horaEntrega : '') + '</span></div><div style="display:flex; align-items:center; gap:8px;"><span class="badge-status ' + badgeClass + '">' + badgeText + '</span><button class="btn btn-outline" style="font-size:10.5px; padding:3px 8px; min-height:26px;" onclick="event.stopPropagation(); irAObservacionEstudiante(' + realIdx + ');">Matriz ➔</button></div>';
         cont.appendChild(div);
       });
     }
@@ -1437,6 +1443,15 @@
       var tbody = document.getElementById("tbodySistematizacionMatriz");
       if (!tbody) return;
       tbody.innerHTML = "";
+
+      if (estadoDocente.estudiantes.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="12" style="text-align: center; padding: 36px 16px; color: #64748b; font-size: 12px; background: #f8fafc;">' +
+          '<div style="font-size: 26px; margin-bottom: 6px;">📊</div>' +
+          '<strong style="color: #0369a1; display: block; margin-bottom: 4px; font-size: 13px;">Matriz de Sistematización en Blanco</strong>' +
+          '<span style="color: #475569; display: block; max-width: 450px; margin: 0 auto;">La sistematización se completará automáticamente conforme los estudiantes resuelvan la prueba o incorpores tu nómina de grupo.</span>' +
+        '</td></tr>';
+        return;
+      }
 
       estadoDocente.estudiantes.forEach(function(est, idx) {
         var tr = document.createElement("tr");
