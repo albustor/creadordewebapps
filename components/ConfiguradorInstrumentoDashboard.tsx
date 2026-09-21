@@ -41,22 +41,21 @@ export interface ConfiguracionDashboardDocente {
 }
 
 export const CONFIGURACION_DEFAULT: ConfiguracionDashboardDocente = {
-  tipoProceso: "cotidiano",
-  nombreInstrumento: "Instrumento de Evaluación de Trabajo Cotidiano (III Ciclo)",
-  asignatura: "Programación y Algoritmos",
-  nivelEducativo: "7° Año - Secundaria",
-  periodo: "Módulo 1 (I Periodo)",
+  tipoProceso: "diagnostico",
+  nombreInstrumento: "Diagnóstico Integrado 9°: «Aula Inteligente»",
+  asignatura: "Formación Tecnológica",
+  nivelEducativo: "9° Año - Secundaria",
+  periodo: "Diagnóstico Inicial (Módulo 1)",
   umbralInicialMax: 59,
   umbralIntermedioMax: 79,
   umbralAvanzadoMin: 80,
   criteriosPersonalizados: {
-    inicial: "Requiere acompañamiento para estructurar las entradas y salidas del proceso algorítmico.",
-    intermedio: "Diseña y ejecuta secuencias algorítmicas con bifurcaciones lógicas de forma guiada.",
-    avanzado: "Aplica, optimiza y depura algoritmos complejos de manera autónoma y precisa.",
+    inicial: "Requiere acompañamiento para conectar circuitos y formular la lógica condicional en la simulación.",
+    intermedio: "Diseña circuitos básicos y formula secuencias algorítmicas con asistencia guiada.",
+    avanzado: "Diseña, conecta y programa sistemas automatizados y algoritmos con total autonomía y precisión.",
   },
   indicadoresClave: [
-    "7.PR.01: Estructura y características esenciales del algoritmo",
-    "7.PR.02: Proposiciones, conectores lógicos y tablas de verdad",
+    "SEC.9NO.DIAG.01: Análisis y conexión de sensores, circuitos y lógica de control automatizado en el aula inteligente",
   ],
   fechaActualizacion: new Date().toISOString(),
 };

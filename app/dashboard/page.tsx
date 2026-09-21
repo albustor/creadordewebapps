@@ -470,7 +470,11 @@ export default function DashboardAnaliticoPage() {
         <SemaforoLogro registros={telemetriaFiltrada} configuracion={configuracion} />
 
         {/* 3. RECOMENDACIONES PEDAGÓGICAS (HORIZONTAL FULL WIDTH) */}
-        <RecomendacionesDUA registros={telemetriaFiltrada} configuracion={configuracion} />
+        <RecomendacionesDUA
+          registros={telemetriaFiltrada}
+          configuracion={configuracion}
+          seccionSeleccionada={filtroGrupo}
+        />
 
         {/* Modal de Edición de Registro */}
         {registroEditando && (

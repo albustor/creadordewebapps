@@ -50,42 +50,45 @@ export interface RecomendacionesEstructuradas {
 export function generarRecomendacionesPedagogicas(
   ctx: RecomendacionPedagogicaContext
 ): RecomendacionesEstructuradas {
-  const nivelLimpio = ctx.nivel || "III Ciclo (Secundaria)";
-  const saberConcept = ctx.saberConceptual || "Fundamentos y Conceptos Clave";
-  const saberProc = ctx.saberProcedimental || "Aplicación, formulación y resolución práctica";
-  const saberAct = ctx.saberActitudinal || "Perseverancia, rigor y aprendizaje del error";
-  const indCod = ctx.indicadorCodigo || "SEC.COT.01";
-  const indNom = ctx.indicadorNombre || "Demostración de desempeño en el trabajo cotidiano";
-  const esDiag = !!ctx.esDiagnostico;
+  const nivelLimpio = ctx.nivel || "9° Año - Secundaria";
+  const saberConcept = ctx.saberConceptual || "Fundamentos y Conceptos Clave de Circuitos y Sensores";
+  const saberProc = ctx.saberProcedimental || "Formulación de algoritmos, análisis y conexionado práctico en simulador 2D";
+  const saberAct = ctx.saberActitudinal || "Pensamiento crítico, perseverancia y aprendizaje reflexivo del error";
+  const indCod = ctx.indicadorCodigo || "SEC.9NO.DIAG.01";
+  const indNom = ctx.indicadorNombre || "Diagnóstico Integrado 9°: «Aula Inteligente»";
+  const esDiag = ctx.esDiagnostico !== undefined ? ctx.esDiagnostico : true;
   const promedio = ctx.porcentajePromedio ?? 70;
+  const cantRezago = ctx.estudiantesRezago?.length || 0;
 
-  // Ajustes Conceptuales según nivel y contenido
+  // Ajustes Conceptuales según los datos reales del grupo
   let conceptualAcciones: string[] = [];
-  if (nivelLimpio.includes("7")) {
+  if (promedio < 60) {
     conceptualAcciones = [
-      `Vincular "${saberConcept}" con metáforas cotidianas y experiencias del entorno inmediato de jóvenes de 12-13 años.`,
-      "Implementar organizadores gráficos y tarjetas de conceptos antes de interactuar con la simulación interactiva.",
-      "Promover la formulación de preguntas guiadas ('¿Qué pasaría si...?') para verificar la comprensión de los términos antes de la práctica.",
+      `Activar sesiones de nivelación conceptual inmediata sobre "${saberConcept}" utilizando esquemas visuales e interactivos.`,
+      `Implementar tarjetas de conceptos pareadas antes de ingresar a la simulación para afianzar el vocabulario técnico de 9° año.`,
+      `Verificar la comprensión de variables de entrada y salida mediante preguntas socráticas guiadas ('¿Qué activa este sensor?').`,
     ];
-  } else if (nivelLimpio.includes("8")) {
+  } else if (promedio < 80) {
     conceptualAcciones = [
-      `Profundizar en la relación de causa-efecto del concepto "${saberConcept}" mediante diagramas de flujo y modelos visuales.`,
-      "Contrastar conceptos erróneos frecuentes detectados en la fase de 'Comprender' con ejemplos y contraejemplos guiados.",
-      "Facilitar sesiones cortas de diálogo socrático donde los estudiantes expliquen el concepto con sus propias palabras.",
+      `Fomentar el análisis crítico y la abstracción del concepto "${saberConcept}" en sistemas y problemas de automatización de 9° año.`,
+      `Contrastar concepciones erróneas detectadas en las preguntas de comprobación mediante ejemplos guiados en el aula inteligente.`,
+      `Desafiar a los estudiantes a sintetizar el flujo lógico en esquemas visuales antes de programar la simulación.`,
     ];
   } else {
-    // 9° Año o General
+    // Grupo consolidado
     conceptualAcciones = [
-      `Fomentar el análisis crítico y la abstracción del concepto "${saberConcept}" en sistemas y problemas de mayor complejidad.`,
-      "Conectar el concepto con implicaciones éticas, sociales o tecnológicas del mundo contemporáneo.",
-      "Desafiar a los estudiantes a sintetizar el concepto en esquemas modulares reutilizables.",
+      `Proponer retos de mayor abstracción sobre "${saberConcept}", integrando múltiples sensores y actuadores simultáneos.`,
+      `Conectar el funcionamiento del aula inteligente con implicaciones éticas y de eficiencia energética en el mundo real.`,
+      `Incentivar la creación de tutoriales o esquemas modulares reutilizables para apoyar a compañeros en desarrollo.`,
     ];
   }
 
-  // Ajustes Procedimentales
+  // Ajustes Procedimentales basados en los datos
   const procedimentalAcciones = [
-    `Descomponer la tarea procedimental ("${saberProc}") en 3 micro-pasos guiados para estudiantes que obtuvieron <60%.`,
-    "Implementar la técnica de 'Pensamiento en Voz Alta' en parejas, donde un estudiante explica el procedimiento mientras el otro valida.",
+    cantRezago > 0
+      ? `Descomponer la tarea procedimental ("${saberProc}") en micro-pasos guiados para los ${cantRezago} estudiantes que obtuvieron ≤59%.`
+      : `Diseñar retos modulares en el simulador interactivo para consolidar la formulación de algoritmos autónomos.`,
+    "Implementar la técnica de 'Pensamiento en Voz Alta' en parejas de laboratorio, donde un estudiante explica el conexionado mientras el otro valida.",
     "Proporcionar una lista de cotejo de auto-verificación previa a la entrega final de la simulación o reto.",
     "Permitir múltiples intentos en el simulador sin penalización punitiva, enfatizando el andamiaje progresivo.",
   ];

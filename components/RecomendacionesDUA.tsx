@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { PayloadTelemetria } from "@/lib/antiFraude";
 import { ConfiguracionDashboardDocente } from "./ConfiguradorInstrumentoDashboard";
 import {
@@ -16,19 +16,63 @@ import {
   BookOpen,
   Gear,
   Handshake,
-  Target,
+  Sparkle,
+  ArrowsClockwise,
+  Cpu,
+  Check,
 } from "@phosphor-icons/react";
+
+interface AIAnalisisResponse {
+  resumenEjecutivo?: string;
+  nivelGlobal?: string;
+  ajustesSaberConceptual?: {
+    titulo: string;
+    descripcion: string;
+    accionesConcretas: string[];
+  };
+  ajustesSaberProcedimental?: {
+    titulo: string;
+    descripcion: string;
+    accionesConcretas: string[];
+  };
+  ajustesSaberActitudinal?: {
+    titulo: string;
+    descripcion: string;
+    accionesConcretas: string[];
+  };
+  orientacionPlaneamientoDidactico?: {
+    fundamentacion: string;
+    pasosIntegracionPlaneamiento: string[];
+    llamadoAccion: string;
+  };
+  estudiantesPrioritarios?: Array<{
+    nombre: string;
+    puntaje: number;
+    accionFocalizada: string;
+  }>;
+}
 
 interface RecomendacionesDUAProps {
   registros: PayloadTelemetria[];
   configuracion?: ConfiguracionDashboardDocente;
+  seccionSeleccionada?: string;
 }
 
 export default function RecomendacionesDUA({
   registros,
   configuracion,
+  seccionSeleccionada = "Todas",
 }: RecomendacionesDUAProps) {
-  const [tabActiva, setTabActiva] = useState<"todos" | "conceptual" | "procedimental" | "actitudinal">("todos");
+  const [aiData, setAiData] = useState<AIAnalisisResponse | null>(null);
+  const [cargandoIA, setCargandoIA] = useState<boolean>(false);
+  const [errorIA, setErrorIA] = useState<string | null>(null);
+  const [metaIA, setMetaIA] = useState<{
+    providerUsed: string;
+    modelUsed: string;
+    latencyMs: number;
+    cached: boolean;
+    fechaGeneracion: string;
+  } | null>(null);
 
   const minAvanzado = configuracion?.umbralAvanzadoMin ?? 80;
   const maxInicial = configuracion?.umbralInicialMax ?? 59;
@@ -40,7 +84,15 @@ export default function RecomendacionesDUA({
   });
 
   const total = registros.length;
-  const tasaAlerta = total > 0 ? Math.round((estudiantesRezago.length / total) * 100) : 0;
+  const avanzados = registros.filter((r) => (r.porcentaje ?? r.puntaje) >= minAvanzado).length;
+  const iniciales = estudiantesRezago.length;
+  const intermedios = Math.max(0, total - avanzados - iniciales);
+
+  const pctAvanzado = total > 0 ? Math.round((avanzados / total) * 100) : 0;
+  const pctIntermedio = total > 0 ? Math.round((intermedios / total) * 100) : 0;
+  const pctInicial = total > 0 ? Math.round((iniciales / total) * 100) : 0;
+  const tasaAlerta = pctInicial;
+
   const promedioPuntaje =
     total > 0
       ? Math.round(
@@ -48,10 +100,12 @@ export default function RecomendacionesDUA({
         )
       : 70;
 
-  // Generar recomendaciones pedagógicas contextualizadas
-  const recomendaciones: RecomendacionesEstructuradas = generarRecomendacionesPedagogicas({
+  // Generar análisis heurístico inmediato basado en datos
+  const recomendacionesBase: RecomendacionesEstructuradas = generarRecomendacionesPedagogicas({
     nivel: configuracion?.nivelEducativo || "9° Año - Secundaria",
-    saberConceptual: configuracion?.saberConceptual || "Fundamentos y conceptos clave de circuitos, sensores y microcontroladores",
+    saberConceptual:
+      configuracion?.saberConceptual ||
+      "Fundamentos y conceptos clave de circuitos, sensores y microcontroladores",
     saberProcedimental: "Formulación de algoritmos, análisis y conexionado práctico en simulador 2D",
     saberActitudinal: "Pensamiento crítico, perseverancia y aprendizaje reflexivo del error",
     indicadorCodigo: configuracion?.indicadorCodigo || "SEC.9NO.DIAG.01",
@@ -61,6 +115,109 @@ export default function RecomendacionesDUA({
     esDiagnostico: true,
     estudiantesRezago: estudiantesRezago.map((e) => e.estudianteNombre),
   });
+
+  // Función para solicitar a la IA en Cascada Multi-Proveedor el análisis pedagógico
+  const ejecutarAnalisisConIA = useCallback(async () => {
+    setCargandoIA(true);
+    setErrorIA(null);
+
+    try {
+      const payload = {
+        registros: registros.map((r) => ({
+          estudiante: r.estudianteNombre,
+          puntaje: r.porcentaje ?? r.puntaje,
+          seccion: r.seccionOGrupo,
+          tiempoSegundos: r.tiempoSegundos,
+        })),
+        seccion: seccionSeleccionada,
+        promedio: promedioPuntaje,
+        totalEstudiantes: total,
+        porcentajeAvanzado: pctAvanzado,
+        porcentajeIntermedio: pctIntermedio,
+        porcentajeInicial: pctInicial,
+        estudiantesAcompaniamiento: estudiantesRezago.map((e) => ({
+          nombre: e.estudianteNombre,
+          puntaje: e.porcentaje ?? e.puntaje,
+          seccion: e.seccionOGrupo,
+        })),
+        indicador: configuracion?.nombreInstrumento || "Diagnóstico Integrado 9°: «Aula Inteligente»",
+        asignatura: configuracion?.asignatura || "Formación Tecnológica",
+        nivel: configuracion?.nivelEducativo || "9° Año - Secundaria",
+      };
+
+      const res = await fetch("/api/ia/analisis-telemetria", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setAiData(data.data);
+        setMetaIA(data.meta);
+      } else {
+        setErrorIA(data.error || "No se pudo completar el análisis con IA.");
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Error de conexión";
+      setErrorIA(msg);
+    } finally {
+      setCargandoIA(false);
+    }
+  }, [
+    registros,
+    seccionSeleccionada,
+    promedioPuntaje,
+    total,
+    pctAvanzado,
+    pctIntermedio,
+    pctInicial,
+    estudiantesRezago,
+    configuracion,
+  ]);
+
+  // Selección de datos finales: IA si está disponible, o heurístico contextual
+  const conceptualFinal = {
+    titulo:
+      aiData?.ajustesSaberConceptual?.titulo || recomendacionesBase.ajustesSaberConceptual.titulo,
+    descripcion:
+      aiData?.ajustesSaberConceptual?.descripcion ||
+      recomendacionesBase.ajustesSaberConceptual.descripcion,
+    acciones:
+      aiData?.ajustesSaberConceptual?.accionesConcretas ||
+      recomendacionesBase.ajustesSaberConceptual.accionesConcretas,
+  };
+
+  const procedimentalFinal = {
+    titulo:
+      aiData?.ajustesSaberProcedimental?.titulo ||
+      recomendacionesBase.ajustesSaberProcedimental.titulo,
+    descripcion:
+      aiData?.ajustesSaberProcedimental?.descripcion ||
+      recomendacionesBase.ajustesSaberProcedimental.descripcion,
+    acciones:
+      aiData?.ajustesSaberProcedimental?.accionesConcretas ||
+      recomendacionesBase.ajustesSaberProcedimental.accionesConcretas,
+  };
+
+  const actitudinalFinal = {
+    titulo:
+      aiData?.ajustesSaberActitudinal?.titulo || recomendacionesBase.ajustesSaberActitudinal.titulo,
+    descripcion:
+      aiData?.ajustesSaberActitudinal?.descripcion ||
+      recomendacionesBase.ajustesSaberActitudinal.descripcion,
+    acciones:
+      aiData?.ajustesSaberActitudinal?.accionesConcretas ||
+      recomendacionesBase.ajustesSaberActitudinal.accionesConcretas,
+  };
+
+  const planeamientoFundamentacion =
+    aiData?.orientacionPlaneamientoDidactico?.fundamentacion ||
+    recomendacionesBase.orientacionPlaneamientoDidactico.fundamentacion;
+
+  const planeamientoPasos =
+    aiData?.orientacionPlaneamientoDidactico?.pasosIntegracionPlaneamiento ||
+    recomendacionesBase.orientacionPlaneamientoDidactico.pasosIntegracionPlaneamiento;
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-6">
@@ -78,6 +235,12 @@ export default function RecomendacionesDUA({
               <span className="text-xs text-slate-500 font-semibold">
                 Formación tecnológica • 9° año
               </span>
+              {metaIA && (
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-900 flex items-center gap-1 border border-blue-200">
+                  <Cpu size={12} weight="bold" />
+                  <span>{metaIA.modelUsed}</span>
+                </span>
+              )}
             </div>
             <h3 className="font-extrabold text-base text-slate-900 mt-0.5">
               Recomendaciones pedagógicas y sugerencias de mediación
@@ -85,15 +248,71 @@ export default function RecomendacionesDUA({
           </div>
         </div>
 
-        {tasaAlerta > 0 && (
-          <span className="px-3 py-1 bg-amber-100 text-amber-950 font-bold text-xs rounded-full flex items-center gap-1.5 self-start sm:self-auto">
-            <WarningCircle size={16} weight="fill" className="text-amber-600" />
-            <span>
-              {estudiantesRezago.length} en acompañamiento ({tasaAlerta}%)
+        <div className="flex items-center gap-2.5 flex-wrap">
+          {tasaAlerta > 0 && (
+            <span className="px-3 py-1 bg-amber-100 text-amber-950 font-bold text-xs rounded-full flex items-center gap-1.5">
+              <WarningCircle size={16} weight="fill" className="text-amber-600" />
+              <span>
+                {estudiantesRezago.length} en acompañamiento ({tasaAlerta}%)
+              </span>
             </span>
-          </span>
-        )}
+          )}
+
+          <button
+            onClick={ejecutarAnalisisConIA}
+            disabled={cargandoIA || total === 0}
+            title={
+              total === 0
+                ? "Se requieren registros de telemetría para analizar con IA"
+                : "Ejecutar análisis en cascada multi-proveedor sobre los datos del grupo"
+            }
+            className={`px-3.5 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1.5 transition-all shadow-xs ${
+              cargandoIA
+                ? "bg-slate-200 text-slate-500 cursor-not-allowed"
+                : total === 0
+                ? "bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200"
+                : "bg-indigo-700 hover:bg-indigo-800 text-white cursor-pointer active:scale-95"
+            }`}
+          >
+            {cargandoIA ? (
+              <>
+                <ArrowsClockwise size={14} className="animate-spin" />
+                <span>Analizando datos con IA...</span>
+              </>
+            ) : aiData ? (
+              <>
+                <Sparkle size={14} weight="fill" className="text-amber-300" />
+                <span>Re-analizar con IA</span>
+              </>
+            ) : (
+              <>
+                <Sparkle size={14} weight="bold" />
+                <span>Generar análisis con IA</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
+
+      {/* Resumen Ejecutivo si fue generado por la IA */}
+      {aiData?.resumenEjecutivo && (
+        <div className="p-4 bg-indigo-50/80 border border-indigo-200 rounded-xl space-y-1.5">
+          <div className="flex items-center gap-2 text-indigo-950 font-extrabold text-xs uppercase tracking-wide">
+            <Sparkle size={15} weight="fill" className="text-indigo-600" />
+            <span>Diagnóstico Ejecutivo de Aula (IA Multi-Proveedor):</span>
+          </div>
+          <p className="text-xs text-indigo-900 leading-relaxed font-medium">
+            {aiData.resumenEjecutivo}
+          </p>
+        </div>
+      )}
+
+      {/* Error de IA si ocurrió */}
+      {errorIA && (
+        <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 rounded-xl text-xs font-semibold">
+          ⚠️ {errorIA}. Se están mostrando las recomendaciones pedagógicas adaptativas calculadas a partir de los datos.
+        </div>
+      )}
 
       {/* Alerta de estudiantes en acompañamiento si existen */}
       {estudiantesRezago.length > 0 && (
@@ -101,7 +320,7 @@ export default function RecomendacionesDUA({
           <h4 className="text-xs font-bold text-amber-950 flex items-center gap-1.5">
             <WarningCircle size={16} className="text-amber-700" weight="fill" />
             <span>
-              Estudiantes que requieren acompañamiento pedagógico focalizado:
+              Estudiantes que requieren acompañamiento pedagógico focalizado ({estudiantesRezago.length}):
             </span>
           </h4>
           <div className="flex flex-wrap gap-2">
@@ -128,10 +347,10 @@ export default function RecomendacionesDUA({
               <span>Saber Conceptual</span>
             </div>
             <h4 className="text-xs font-bold text-slate-900">
-              {recomendaciones.ajustesSaberConceptual.titulo}
+              {conceptualFinal.titulo}
             </h4>
             <p className="text-xs text-slate-600 leading-relaxed">
-              {recomendaciones.ajustesSaberConceptual.descripcion}
+              {conceptualFinal.descripcion}
             </p>
           </div>
 
@@ -140,7 +359,7 @@ export default function RecomendacionesDUA({
               Acciones didácticas sugeridas:
             </span>
             <ul className="space-y-1.5">
-              {recomendaciones.ajustesSaberConceptual.accionesConcretas.map((acc, idx) => (
+              {conceptualFinal.acciones.map((acc, idx) => (
                 <li key={idx} className="flex items-start gap-1.5 text-xs text-slate-700">
                   <CaretRight size={13} className="text-blue-700 shrink-0 mt-0.5" weight="bold" />
                   <span>{acc}</span>
@@ -158,10 +377,10 @@ export default function RecomendacionesDUA({
               <span>Saber Procedimental</span>
             </div>
             <h4 className="text-xs font-bold text-slate-900">
-              {recomendaciones.ajustesSaberProcedimental.titulo}
+              {procedimentalFinal.titulo}
             </h4>
             <p className="text-xs text-slate-600 leading-relaxed">
-              {recomendaciones.ajustesSaberProcedimental.descripcion}
+              {procedimentalFinal.descripcion}
             </p>
           </div>
 
@@ -170,7 +389,7 @@ export default function RecomendacionesDUA({
               Estrategias de aplicación en laboratorio:
             </span>
             <ul className="space-y-1.5">
-              {recomendaciones.ajustesSaberProcedimental.accionesConcretas.map((acc, idx) => (
+              {procedimentalFinal.acciones.map((acc, idx) => (
                 <li key={idx} className="flex items-start gap-1.5 text-xs text-slate-700">
                   <CaretRight size={13} className="text-emerald-700 shrink-0 mt-0.5" weight="bold" />
                   <span>{acc}</span>
@@ -188,10 +407,10 @@ export default function RecomendacionesDUA({
               <span>Saber Actitudinal</span>
             </div>
             <h4 className="text-xs font-bold text-slate-900">
-              {recomendaciones.ajustesSaberActitudinal.titulo}
+              {actitudinalFinal.titulo}
             </h4>
             <p className="text-xs text-slate-600 leading-relaxed">
-              {recomendaciones.ajustesSaberActitudinal.descripcion}
+              {actitudinalFinal.descripcion}
             </p>
           </div>
 
@@ -200,7 +419,7 @@ export default function RecomendacionesDUA({
               Fomento del clima de aula:
             </span>
             <ul className="space-y-1.5">
-              {recomendaciones.ajustesSaberActitudinal.accionesConcretas.map((acc, idx) => (
+              {actitudinalFinal.acciones.map((acc, idx) => (
                 <li key={idx} className="flex items-start gap-1.5 text-xs text-slate-700">
                   <CaretRight size={13} className="text-purple-700 shrink-0 mt-0.5" weight="bold" />
                   <span>{acc}</span>
@@ -216,22 +435,23 @@ export default function RecomendacionesDUA({
       <div className="p-4.5 rounded-2xl border border-emerald-300 bg-emerald-950/5 space-y-3">
         <div className="flex items-center gap-2 text-xs font-black text-emerald-950">
           <FileText size={18} className="text-emerald-800" weight="fill" />
-          <span>{recomendaciones.orientacionPlaneamientoDidactico.titulo}</span>
+          <span>Integración en el Planeamiento Didáctico Oficial (Diagnóstico 9°)</span>
         </div>
 
         <p className="text-xs text-slate-700 leading-relaxed font-medium">
-          {recomendaciones.orientacionPlaneamientoDidactico.fundamentacion}
+          {planeamientoFundamentacion}
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-          {recomendaciones.orientacionPlaneamientoDidactico.pasosIntegracionPlaneamiento.map(
-            (paso, idx) => (
-              <div key={idx} className="bg-white p-3 rounded-xl border border-slate-200 text-xs text-slate-700 flex items-start gap-2 shadow-2xs">
-                <CheckCircle size={15} className="text-emerald-600 shrink-0 mt-0.5" weight="fill" />
-                <span>{paso}</span>
-              </div>
-            )
-          )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
+          {planeamientoPasos.map((paso, idx) => (
+            <div
+              key={idx}
+              className="bg-white p-3 rounded-xl border border-slate-200 text-xs text-slate-700 flex items-start gap-2 shadow-2xs"
+            >
+              <CheckCircle size={15} className="text-emerald-600 shrink-0 mt-0.5" weight="fill" />
+              <span>{paso}</span>
+            </div>
+          ))}
         </div>
       </div>
     </div>

@@ -47,14 +47,8 @@ export default function SemaforoLogro({ registros, configuracion }: SemaforoLogr
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span
-              className={`px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider ${
-                esDiagnostico
-                  ? "bg-purple-100 text-purple-900 border border-purple-200"
-                  : "bg-blue-100 text-blue-900 border border-blue-200"
-              }`}
-            >
-              {esDiagnostico ? "Enfoque: Diagnóstico Inicial" : "Enfoque: Trabajo Cotidiano"}
+            <span className="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-purple-100 text-purple-900 border border-purple-200">
+              Enfoque: Diagnóstico Integrado 9°
             </span>
             <span className="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full font-bold">
               {total} Evaluaciones
@@ -62,12 +56,10 @@ export default function SemaforoLogro({ registros, configuracion }: SemaforoLogr
           </div>
 
           <h3 className="font-extrabold text-base text-slate-900">
-            {esDiagnostico ? "Semáforo Diagnóstico de Saberes Previos" : "Semáforo de Logro Formativo"}
+            Semáforo Diagnóstico de Saberes Previos
           </h3>
           <p className="text-xs text-slate-500">
-            {esDiagnostico
-              ? "Detección de necesidades formativas y acompañamiento pedagógico"
-              : "Distribución del desempeño según la rúbrica formativa de Trabajo Cotidiano"}
+            Detección de necesidades formativas y acompañamiento pedagógico en tiempo real
           </p>
         </div>
 
