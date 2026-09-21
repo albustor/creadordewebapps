@@ -871,11 +871,19 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
       <QRModalProyeccion
         abierto={modalProyeccionAbierto}
         alCerrar={() => setModalProyeccionAbierto(false)}
-        urlWebApp={typeof window !== "undefined" ? window.location.href : "https://creador-webapps.local"}
+        urlWebApp={
+          typeof window !== "undefined"
+            ? `${window.location.origin}/webapps/diagnostico_9no_modulo01_aula_inteligente.html${
+                docente?.nombreCompleto
+                  ? `?docente=${encodeURIComponent(docente.nombreCompleto)}&institucion=${encodeURIComponent(docente.institucionNombre || "")}`
+                  : ""
+              }`
+            : "http://localhost:3000/webapps/diagnostico_9no_modulo01_aula_inteligente.html"
+        }
         titulo={diagnostico?.tituloSugerido || "Diagnóstico Integrado 9° - Aula Inteligente"}
         asignatura="Formación Tecnológica"
         nivel="9° Año - Secundaria"
-        docenteNombre={docente?.nombreCompleto || "Prof. Alberto Bustos Ortega"}
+        docenteNombre={docente?.nombreCompleto || ""}
       />
     </div>
   );

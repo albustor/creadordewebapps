@@ -823,6 +823,20 @@
 
     // Inicializar aplicativo
     window.addEventListener("DOMContentLoaded", function() {
+      // Configurar enlace con datos del docente activo
+      try {
+        var rawDoc = localStorage.getItem("docente_activo") || localStorage.getItem("antigravity_docente_sesion");
+        if (rawDoc) {
+          var doc = JSON.parse(rawDoc);
+          if (doc && doc.nombreCompleto) {
+            var btnEst = document.querySelector(".btn-estudiante");
+            if (btnEst) {
+              btnEst.href = "/webapps/diagnostico_9no_modulo01_aula_inteligente.html?docente=" + encodeURIComponent(doc.nombreCompleto) + "&institucion=" + encodeURIComponent(doc.institucionNombre || "");
+            }
+          }
+        }
+      } catch(e) {}
+
       cargarNominaDesdeStorage();
       renderizarTodo();
       

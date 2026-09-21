@@ -1673,7 +1673,7 @@
 
       var partes = nom.split(/\s+/).filter(function(p){ return p.length >= 2; });
       if (partes.length < 2 || nom.length < 6) {
-        msg.innerText = "⚠️ Por favor escribe tu Nombre y al menos dos Apellidos completos (ej: Carlos Alberto Pérez Soto).";
+        msg.innerText = "⚠️ Por favor escribe tu Nombre y al menos dos Apellidos completos (ej: Carlos Daniel Pérez Soto).";
         msg.style.color = "#f59e0b";
         if (btn) btn.disabled = true;
         return false;
@@ -2758,8 +2758,57 @@
       }
     }
 
-    // VERIFICACIÓN DE BLOQUEO DE UN SOLO USO AL INICIAR
+    // INICIALIZACIÓN DINÁMICA DE DATOS DEL DOCENTE REGISTRADO
     window.addEventListener("DOMContentLoaded", function() {
+      try {
+        var params = new URLSearchParams(window.location.search);
+        var docParam = params.get("docente") || params.get("docenteNombre") || params.get("profesor");
+        var instParam = params.get("institucion") || params.get("colegio") || params.get("centroEducativo");
+        var secParam = params.get("seccion") || params.get("seccionGrupo");
+
+        var docNombre = docParam || "";
+        var instNombre = instParam || "";
+
+        // Si no viene por URL, buscar si hay una sesión activa de docente en este navegador
+        if (!docNombre) {
+          var rawDoc = localStorage.getItem("docente_activo") || localStorage.getItem("antigravity_docente_sesion");
+          if (rawDoc) {
+            try {
+              var parsedDoc = JSON.parse(rawDoc);
+              if (parsedDoc && parsedDoc.nombreCompleto) {
+                docNombre = parsedDoc.nombreCompleto;
+                if (!instNombre && parsedDoc.institucionNombre) {
+                  instNombre = parsedDoc.institucionNombre;
+                }
+                if (parsedDoc.idDocente) {
+                  CONFIG.docenteId = parsedDoc.idDocente;
+                }
+              }
+            } catch(e) {}
+          }
+        }
+
+        var inputDoc = document.getElementById("inputDocente");
+        if (inputDoc && docNombre) {
+          inputDoc.value = docNombre;
+          estado.docenteNombre = docNombre;
+        }
+
+        var inputInst = document.getElementById("inputCentroEducativo");
+        if (inputInst && instNombre) {
+          inputInst.value = instNombre;
+          estado.centroEducativo = instNombre;
+        }
+
+        var selectSec = document.getElementById("selectSeccion");
+        if (selectSec && secParam) {
+          selectSec.value = secParam;
+          estado.seccionGrupo = secParam;
+        }
+      } catch(err) {
+        console.error("Error al cargar sesion del docente registrado:", err);
+      }
+
       var rawBloqueo = localStorage.getItem("diagnostico_9no_mep_bloqueo_entrega");
       if (rawBloqueo) {
         try {

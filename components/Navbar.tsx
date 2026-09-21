@@ -145,7 +145,7 @@ export default function Navbar() {
                   <div className="text-left flex flex-col justify-center">
                     <span className="text-xs font-extrabold text-white leading-none whitespace-nowrap flex items-center gap-1">
                       {(() => {
-                        const raw = docente?.nombreCompleto || "Alberto Bustos";
+                        const raw = docente?.nombreCompleto || "Docente";
                         const limpio = raw
                           .replace(/^(Prof\.|Profa\.|Lic\.|Licda\.|Ing\.|Dr\.|Dra\.|Don|Doña)\s+/i, "")
                           .trim();
@@ -153,7 +153,7 @@ export default function Navbar() {
                         if (partes.length >= 2) {
                           return `${partes[0]} ${partes[1]}`;
                         }
-                        return partes[0] || "Alberto Bustos";
+                        return partes[0] || "Docente";
                       })()}
                     </span>
                     <span
@@ -249,10 +249,10 @@ export default function Navbar() {
                     </div>
                     <div>
                       <div className="text-sm font-bold text-white leading-none">
-                        {docente?.nombreCompleto || "Prof. Alberto Bustos Ortega"}
+                        {docente?.nombreCompleto || "Docente MEP"}
                       </div>
                       <div className="text-[11px] text-emerald-300/80 font-mono mt-1">
-                        {docente?.correoInstitucional || "alberto.bustos.ortega@mep.go.cr"}
+                        {docente?.correoInstitucional || ""}
                       </div>
                     </div>
                   </div>
