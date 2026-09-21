@@ -48,10 +48,12 @@ interface DocenteContextType {
   webApps: WebAppInfo[];
   webAppsComunidad: WebAppComunidad[];
   telemetria: PayloadTelemetria[];
+  isInitialized: boolean;
   guardarDocente: (data: DocenteData) => void;
+  registrarDocente: (data: DocenteData) => { exito: boolean; mensaje: string };
   guardarWebApp: (webapp: WebAppInfo) => void;
   compartirEnComunidad: (webapp: WebAppInfo | WebAppComunidad) => void;
-  iniciarSesion: (correo: string, contrasena: string) => { exito: boolean; mensaje: string };
+  iniciarSesion: (correoOUsuario: string, contrasena: string) => { exito: boolean; mensaje: string };
   cerrarSesion: () => void;
   agregarResultadoTelemetria: (res: PayloadTelemetria) => void;
   actualizarResultadoTelemetria: (timestamp: number, datosActualizados: Partial<PayloadTelemetria>) => void;
@@ -327,37 +329,134 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
     SafeStorage.setItem("docente_activo", JSON.stringify(data));
   };
 
-  const iniciarSesion = (correo: string, contrasena: string): { exito: boolean; mensaje: string } => {
-    const emailLimpio = correo.trim().toLowerCase();
+  const registrarDocente = (data: DocenteData): { exito: boolean; mensaje: string } => {
+    try {
+      const usuariosGuardadosRaw = SafeStorage.getItem("usuarios_registrados_locales");
+      let listaUsuarios: DocenteData[] = [];
+      if (usuariosGuardadosRaw) {
+        try {
+          listaUsuarios = JSON.parse(usuariosGuardadosRaw);
+        } catch {}
+      }
+
+      const indexExistente = listaUsuarios.findIndex(
+        (u) => u.correoInstitucional.toLowerCase() === data.correoInstitucional.toLowerCase()
+      );
+      if (indexExistente >= 0) {
+        listaUsuarios[indexExistente] = data;
+      } else {
+        listaUsuarios.push(data);
+      }
+      SafeStorage.setItem("usuarios_registrados_locales", JSON.stringify(listaUsuarios));
+      guardarDocente(data);
+
+      // Sincronizar con API del servidor
+      try {
+        fetch("/api/admin/usuarios", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            accion: "solicitar_registro",
+            usuarioData: {
+              nombreCompleto: data.nombreCompleto,
+              correoInstitucional: data.correoInstitucional,
+              cedula: data.cedula,
+              telefono: data.telefono,
+              dreCodigo: data.dreCodigo,
+              dreNombre: data.dreNombre,
+              circuito: data.circuito,
+              institucionNombre: data.institucionNombre,
+              rol: data.rol,
+            },
+          }),
+        }).catch(() => {});
+      } catch {}
+
+      return { exito: true, mensaje: "Cuenta registrada e inicio de sesión completado con éxito." };
+    } catch (e: any) {
+      return { exito: false, mensaje: e?.message || "Error al registrar la cuenta." };
+    }
+  };
+
+  const iniciarSesion = (correoOUsuario: string, contrasena: string): { exito: boolean; mensaje: string } => {
+    const credencialLimpia = correoOUsuario.trim().toLowerCase();
     const passLimpia = contrasena.trim();
 
+    if (!credencialLimpia || !passLimpia) {
+      return { exito: false, mensaje: "Por favor complete el usuario y la contraseña." };
+    }
+
+    // 1. Acceso Administrador / Asesor Principal
     if (
-      emailLimpio === "alberto.bustos.ortega@mep.go.cr" &&
+      (credencialLimpia === "alberto.bustos.ortega@mep.go.cr" ||
+        credencialLimpia === "alberto.bustos" ||
+        credencialLimpia === "admin") &&
       passLimpia === "EdcRfvTgb1726**"
     ) {
       guardarDocente(DOCENTE_DEFAULT);
       return { exito: true, mensaje: "Sesión iniciada correctamente en el entorno de Formación Tecnológica." };
     }
 
-    if (!emailLimpio.endsWith("@mep.go.cr")) {
-      return {
-        exito: false,
-        mensaje: "Correo institucional no válido. Únicamente se admiten cuentas oficiales del MEP (@mep.go.cr, ej: nombre.apellido.apellido@mep.go.cr).",
-      };
+    // 2. Búsqueda en usuarios registrados localmente
+    const usuariosGuardadosRaw = SafeStorage.getItem("usuarios_registrados_locales");
+    if (usuariosGuardadosRaw) {
+      try {
+        const listaUsuarios: DocenteData[] = JSON.parse(usuariosGuardadosRaw);
+        const match = listaUsuarios.find(
+          (u) =>
+            u.correoInstitucional.toLowerCase() === credencialLimpia ||
+            u.correoInstitucional.toLowerCase().split("@")[0] === credencialLimpia ||
+            u.nombreCompleto.toLowerCase() === credencialLimpia
+        );
+        if (match) {
+          if (match.contrasena && match.contrasena !== passLimpia) {
+            return { exito: false, mensaje: "Contraseña incorrecta. Verifique sus credenciales." };
+          }
+          guardarDocente(match);
+          return { exito: true, mensaje: `Bienvenido(a), ${match.nombreCompleto}.` };
+        }
+      } catch {}
     }
+
+    // 3. Validación de formato de correo o usuario docente
+    const esEmail = credencialLimpia.includes("@");
+    const correoCompleto = esEmail
+      ? credencialLimpia
+      : `${credencialLimpia}@mep.go.cr`;
 
     if (passLimpia.length >= 6) {
+      const nombreFormateado = correoCompleto
+        .split("@")[0]
+        .split(".")
+        .map((p) => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase())
+        .join(" ");
+
+      const randomId = `DOC-${Math.floor(1000 + Math.random() * 9000)}`;
+
       const docenteNuevo: DocenteData = {
-        ...DOCENTE_DEFAULT,
-        correoInstitucional: emailLimpio,
-        nombreCompleto: emailLimpio.split("@")[0].replace(/\./g, " ").toUpperCase(),
+        idDocente: randomId,
+        nombreCompleto: `Prof. ${nombreFormateado}`,
+        correoInstitucional: correoCompleto,
         contrasena: passLimpia,
+        cedula: "",
+        telefono: "",
+        dreCodigo: "DRE01",
+        dreNombre: "Dirección Regional San José Central",
+        circuito: "Circuito 01",
+        codigoPresupuestario: "",
+        institucionNombre: "Liceo / Colegio de Secundaria",
+        rol: "Docente de Formación Tecnológica",
+        asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
+        fechaRegistro: new Date().toISOString(),
       };
-      guardarDocente(docenteNuevo);
-      return { exito: true, mensaje: "Bienvenido docente. Perfil configurado con éxito." };
+      registrarDocente(docenteNuevo);
+      return { exito: true, mensaje: "Sesión iniciada correctamente." };
     }
 
-    return { exito: false, mensaje: "Credenciales no válidas. Ingrese su correo institucional MEP (@mep.go.cr) y contraseña (mínimo 6 caracteres)." };
+    return {
+      exito: false,
+      mensaje: "Contraseña no válida. Debe contener un mínimo de 6 caracteres.",
+    };
   };
 
   const cerrarSesion = () => {
@@ -483,7 +582,9 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
         webApps,
         webAppsComunidad,
         telemetria,
+        isInitialized,
         guardarDocente,
+        registrarDocente,
         guardarWebApp,
         compartirEnComunidad,
         iniciarSesion,

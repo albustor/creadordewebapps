@@ -1,13 +1,14 @@
 "use client";
 
-import React from "react";
-import SeccionBloqueada from "@/components/SeccionBloqueada";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function ManualesPage() {
-  return (
-    <SeccionBloqueada
-      titulo="Manuales y Guías Ocultos"
-      descripcion="Esta sección está deshabilitada temporalmente. Diríjase a Diagnóstico IA o al Dashboard para acceder a las funcionalidades autorizadas."
-    />
-  );
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace("/diagnostico");
+  }, [router]);
+
+  return null;
 }

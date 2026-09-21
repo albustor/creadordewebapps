@@ -1,13 +1,14 @@
 "use client";
 
-import React from "react";
-import SeccionBloqueada from "@/components/SeccionBloqueada";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function ComunidadPage() {
-  return (
-    <SeccionBloqueada
-      titulo="Espacio Común / Comunidad Oculto"
-      descripcion="La sección de comunidad y repositorio compartido de WebApps se encuentra actualmente bloqueada y fuera de servicio. Solo están habilitadas las secciones de Diagnóstico IA y Dashboard Analítico."
-    />
-  );
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace("/diagnostico");
+  }, [router]);
+
+  return null;
 }

@@ -5,9 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useDocente } from "@/context/DocenteContext";
 import {
-  Sparkle,
+  House,
   ChartBar,
-  CodeBlock,
   UserCircle,
   List,
   X,
@@ -16,7 +15,6 @@ import {
   SignOut,
   SignIn,
   Lightning,
-  UsersThree,
 } from "@phosphor-icons/react";
 
 export default function Navbar() {
@@ -24,20 +22,25 @@ export default function Navbar() {
   const { docente, cerrarSesion } = useDocente();
   const [menuAbierto, setMenuAbierto] = useState(false);
 
-  // Navegación exclusiva solicitada:
-  // 1. Diagnóstico IA | 2. Dashboard
+  // Navegación: Inicio, Diagnóstico, Dashboard
   const enlaces = [
     {
+      href: "/",
+      label: "Inicio",
+      icon: <House size={18} weight="bold" />,
+      titulo: "Página de inicio y acceso",
+    },
+    {
       href: "/diagnostico",
-      label: "Diagnóstico IA",
+      label: "Diagnóstico",
       icon: <Lightning size={18} weight="fill" className="text-amber-300" />,
-      titulo: "Diagnóstico Integrado y Evaluación Formativa",
+      titulo: "Diagnóstico integrado de 9° año",
     },
     {
       href: "/dashboard",
       label: "Dashboard",
       icon: <ChartBar size={18} weight="duotone" />,
-      titulo: "Dashboard Analítico y Telemetría",
+      titulo: "Dashboard analítico y telemetría de resultados",
     },
   ];
 
@@ -52,11 +55,11 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20 gap-3">
           
-          {/* Logo & Marca con Estilo Verde Esmeralda Traslúcido */}
+          {/* Logo & Marca */}
           <Link
-            href="/diagnostico"
+            href={docente ? "/diagnostico" : "/"}
             className="flex items-center gap-3 shrink-0 group py-1 focus:outline-none"
-            title="Diagnóstico & Dashboard - III Ciclo Secundaria"
+            title="Diagnóstico & Dashboard - 9° Año"
           >
             <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-400 via-emerald-600 to-teal-800 flex items-center justify-center text-white shadow-lg shadow-emerald-950/60 group-hover:scale-105 border border-emerald-400/30 transition-all">
               <Lightning size={24} weight="fill" className="text-amber-300" />
@@ -67,12 +70,12 @@ export default function Navbar() {
               </span>
               <span className="text-[11px] font-extrabold text-emerald-400 tracking-wider uppercase leading-none mt-1.5 whitespace-nowrap flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                Formación Tecnológica • MEP
+                Formación tecnológica • 9° año
               </span>
             </div>
           </Link>
 
-          {/* Navegación Desktop - Botones de Mayor Tamaño y Traslúcidos */}
+          {/* Navegación Desktop */}
           <nav className="hidden md:flex items-center gap-1.5 lg:gap-2">
             {enlaces.map((enlace) => {
               const activo = pathname === enlace.href;
@@ -96,15 +99,15 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Perfil Docente / Panel Asesores & Cerrar Sesión */}
+          {/* Perfil Docente / Acceso */}
           <div className="hidden sm:flex items-center gap-2.5 shrink-0">
             {docente ? (
               <>
-                {/* Enlace directo a Administración si es Asesor / Super Admin */}
+                {/* Enlace a Administración si es Asesor / Admin */}
                 {esAdminOAsesor && (
                   <Link
                     href="/admin"
-                    title="Panel de Administración, Asesorías y Gobernanza"
+                    title="Panel de administración y gobernanza"
                     className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all ${
                       pathname === "/admin"
                         ? "bg-amber-500/20 text-amber-300 border-amber-400/50 shadow-sm"
@@ -118,11 +121,7 @@ export default function Navbar() {
 
                 <Link
                   href="/registro"
-                  title={
-                    esAdminOAsesor
-                      ? "Perfil Asesor & Administrador General"
-                      : "Configuración de Perfil y Credenciales Docente"
-                  }
+                  title="Configuración de perfil docente"
                   className={`inline-flex items-center gap-2.5 px-3 py-1.5 rounded-xl border transition-all shadow-md group ${
                     esAdminOAsesor
                       ? "border-amber-400/40 bg-gradient-to-r from-emerald-900/90 to-teal-950/90 hover:border-amber-300 text-white"
@@ -168,7 +167,7 @@ export default function Navbar() {
 
                 <button
                   onClick={() => cerrarSesion()}
-                  title="Cerrar Sesión"
+                  title="Cerrar sesión"
                   className="p-2.5 rounded-xl text-emerald-200 hover:text-rose-300 hover:bg-rose-950/40 border border-emerald-700/40 transition-colors"
                 >
                   <SignOut size={18} weight="bold" />
@@ -176,11 +175,11 @@ export default function Navbar() {
               </>
             ) : (
               <Link
-                href="/registro"
+                href="/"
                 className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white text-xs sm:text-sm font-black rounded-xl shadow-lg transition-all"
               >
                 <SignIn size={18} weight="bold" />
-                <span>Ingreso Docente</span>
+                <span>Ingreso docente</span>
               </Link>
             )}
           </div>
@@ -249,7 +248,7 @@ export default function Navbar() {
                     </div>
                     <div>
                       <div className="text-sm font-bold text-white leading-none">
-                        {docente?.nombreCompleto || "Docente MEP"}
+                        {docente?.nombreCompleto || "Docente"}
                       </div>
                       <div className="text-[11px] text-emerald-300/80 font-mono mt-1">
                         {docente?.correoInstitucional || ""}
@@ -269,17 +268,17 @@ export default function Navbar() {
                   className="w-full flex items-center justify-center gap-2 p-3 bg-rose-950/40 text-rose-300 border border-rose-800/40 rounded-xl text-xs font-bold transition-colors"
                 >
                   <SignOut size={18} weight="bold" />
-                  <span>Cerrar Sesión</span>
+                  <span>Cerrar sesión</span>
                 </button>
               </>
             ) : (
               <Link
-                href="/registro"
+                href="/"
                 onClick={() => setMenuAbierto(false)}
                 className="w-full flex items-center justify-center gap-2 p-3.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl text-sm font-bold shadow-lg"
               >
                 <SignIn size={18} weight="bold" />
-                <span>Ingreso Docente</span>
+                <span>Ingreso docente</span>
               </Link>
             )}
           </div>
@@ -288,4 +287,3 @@ export default function Navbar() {
     </header>
   );
 }
-

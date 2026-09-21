@@ -13,6 +13,7 @@ import ConfiguradorInstrumentoDashboard, {
 } from "@/components/ConfiguradorInstrumentoDashboard";
 import { exportarAExcel, exportarAPDF } from "@/lib/exportUtils";
 import { PayloadTelemetria } from "@/lib/antiFraude";
+import AuthGuard from "@/components/AuthGuard";
 import {
   ChartBar,
   Camera,
@@ -182,31 +183,32 @@ export default function DashboardAnaliticoPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      {/* Cabecera del Dashboard */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-6">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-blue-700 uppercase tracking-widest">
-              Big Data Pedagógico (III Ciclo)
-            </span>
-            <span
-              className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase ${
-                esDiagnostico
-                  ? "bg-purple-100 text-purple-900 border border-purple-300"
-                  : "bg-emerald-100 text-emerald-900 border border-emerald-300"
-              }`}
-            >
-              {esDiagnostico ? "Modo: Diagnóstico Inicial" : "Modo: Trabajo Cotidiano"}
-            </span>
+    <AuthGuard>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+        {/* Cabecera del Dashboard */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-6">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-emerald-700 uppercase tracking-widest">
+                Formación tecnológica • 9° año
+              </span>
+              <span
+                className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase ${
+                  esDiagnostico
+                    ? "bg-purple-100 text-purple-900 border border-purple-300"
+                    : "bg-emerald-100 text-emerald-900 border border-emerald-300"
+                }`}
+              >
+                {esDiagnostico ? "Diagnóstico inicial" : "Trabajo cotidiano"}
+              </span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">
+              Dashboard Analítico & Telemetría
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500">
+              Monitoreo en tiempo real del progreso grupal e individual, analítica de reactivos y recomendaciones pedagógicas. Optimizado para computadoras de laboratorios, PCs y portátiles.
+            </p>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900">
-            Dashboard Analítico de Telemetría
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-500">
-            Monitoreo en tiempo real del progreso grupal, analítica de errores y recomendaciones formativas
-          </p>
-        </div>
 
         {/* Botones de Acción Primarios */}
         <div className="flex flex-wrap items-center gap-2.5">
@@ -629,5 +631,6 @@ export default function DashboardAnaliticoPage() {
         }}
       />
     </div>
+  </AuthGuard>
   );
 }

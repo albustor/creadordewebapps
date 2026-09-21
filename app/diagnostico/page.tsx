@@ -10,6 +10,7 @@ import {
 } from "@/lib/generadorWebAppEngine";
 import WebAppPreviewFrame from "@/components/WebAppPreviewFrame";
 import QRModalProyeccion from "@/components/QRModalProyeccion";
+import AuthGuard from "@/components/AuthGuard";
 import { QRCodeSVG } from "qrcode.react";
 import {
   FileText,
@@ -260,13 +261,14 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      {/* Cabecera Principal */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
-        <div>
-          <span className="text-xs font-bold text-blue-700 uppercase tracking-widest block">
-            Módulo de Entrada Curricular • Formación Tecnológica 2026
-          </span>
+    <AuthGuard>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        {/* Cabecera Principal */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
+          <div>
+            <span className="text-xs font-bold text-emerald-700 uppercase tracking-widest block">
+              Módulo de Diagnóstico • Formación Tecnológica (9° Año)
+            </span>
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900">
             Diagnóstico Integrado 9°: «Aula Inteligente»
           </h1>
@@ -886,5 +888,6 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
         docenteNombre={docente?.nombreCompleto || ""}
       />
     </div>
+  </AuthGuard>
   );
 }

@@ -29,6 +29,7 @@ import {
   ListDashes,
   NotePencil,
 } from "@phosphor-icons/react";
+import AuthGuard from "@/components/AuthGuard";
 import { LISTA_DRE_MEP } from "@/lib/dreCircuitos";
 
 export default function AdminPage() {
@@ -186,25 +187,26 @@ export default function AdminPage() {
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      {/* Cabecera Principal */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-6">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-blue-700 uppercase tracking-widest">
-              Gobernanza y Asesoría Nacional MEP
-            </span>
-            <span className="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-900 text-[10px] font-black border border-blue-200">
-              Control Exclusivo
-            </span>
+    <AuthGuard>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+        {/* Cabecera Principal */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-6">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-emerald-700 uppercase tracking-widest">
+                Administración • Formación tecnológica
+              </span>
+              <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 text-[10px] font-black border border-emerald-200">
+                Gobernanza
+              </span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">
+              Panel de administración
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500">
+              Validación de solicitudes docentes, histórico de auditoría y gestión de cuentas.
+            </p>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900">
-            Panel de Administración & Asesorías
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-500">
-            Validación de solicitudes para Asesores Nacionales/Regionales, histórico de auditoría y gestión de cuentas
-          </p>
-        </div>
 
         {/* Tarjeta de Identidad del Administrador General */}
         <div className="bg-slate-900 text-white rounded-2xl p-4 border border-slate-800 flex items-center gap-3.5 shadow-lg">
@@ -899,5 +901,6 @@ export default function AdminPage() {
         </form>
       )}
     </div>
+  </AuthGuard>
   );
 }

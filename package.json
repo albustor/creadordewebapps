@@ -3,11 +3,21 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3001",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3001",
     "lint": "next lint",
     "test:dashboard": "node scripts/validar-dashboard-telemetria.mjs"
+  },
+  "curiolHub": {
+    "name": "Herramienta Creador de WebApps",
+    "port": 3001,
+    "category": "Herramientas",
+    "color": "emerald",
+    "status": "terminado",
+    "icon": "ph-cube",
+    "description": "Creador y simulador pedagógico de WebApps autónomas con IA, telemetría y rúbricas oficiales",
+    "route": "/taller-webapps"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.7",

@@ -8,8 +8,8 @@ import Footer from "@/components/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Creador de WebApps",
-  description: "Plataforma de generación de WebApps interactivas autónomas, distribución multiplataforma y telemetría en tiempo real.",
+  title: "Diagnóstico & Dashboard - Formación Tecnológica",
+  description: "Entorno interactivo para la aplicación del diagnóstico de 9° año y dashboard analítico de resultados.",
 };
 
 export default function RootLayout({

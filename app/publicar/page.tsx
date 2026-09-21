@@ -1,13 +1,14 @@
 "use client";
 
-import React from "react";
-import SeccionBloqueada from "@/components/SeccionBloqueada";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function PublicarPage() {
-  return (
-    <SeccionBloqueada
-      titulo="Módulo de Publicación Bloqueado"
-      descripcion="La publicación directa de archivos HTML externos se encuentra deshabilitada. Utilice la sección de Diagnóstico IA o el Dashboard Analítico."
-    />
-  );
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace("/diagnostico");
+  }, [router]);
+
+  return null;
 }

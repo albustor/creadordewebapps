@@ -25,6 +25,7 @@ import {
   ShieldStar,
   Info,
 } from "@phosphor-icons/react";
+import AuthGuard from "@/components/AuthGuard";
 
 export default function RegistroDocentePage() {
   const { docente, guardarDocente, iniciarSesion, cerrarSesion } = useDocente();
@@ -70,15 +71,15 @@ export default function RegistroDocentePage() {
   const [inicializado, setInicializado] = useState(false);
   useEffect(() => {
     if (docente && !inicializado) {
-      setNombre(docente.nombreCompleto);
-      setCorreo(docente.correoInstitucional);
-      setCedula(docente.cedula);
+      setNombre(docente.nombreCompleto || "");
+      setCorreo(docente.correoInstitucional || "");
+      setCedula(docente.cedula || "");
       setTelefono(docente.telefono || "");
-      setDreCodigo(docente.dreCodigo || "DRE-NACIONAL");
-      setCircuito(docente.circuito || "Nivel Nacional / Ámbito General");
-      setCodigoPresupuestario(docente.codigoPresupuestario || "FT-NACIONAL-2026");
-      setInstitucion(docente.institucionNombre || "Asesoría Nacional de Formación Tecnológica (Dimensión 1 y 2)");
-      setRol(docente.rol || "Asesor de Formación Tecnológica & Administrador General (Dimensión 1 y 2)");
+      setDreCodigo(docente.dreCodigo || "DRE01");
+      setCircuito(docente.circuito || "Circuito 01");
+      setCodigoPresupuestario(docente.codigoPresupuestario || "");
+      setInstitucion(docente.institucionNombre || "");
+      setRol(docente.rol || "Docente de Formación Tecnológica");
       setAsignaturas([ASIGNATURA_UNICA]);
       setInicializado(true);
     }
@@ -140,10 +141,11 @@ export default function RegistroDocentePage() {
       return;
     }
 
+    const esSuperAdminAlberto = correoLimpio === "alberto.bustos.ortega@mep.go.cr";
     const idDocenteUnico =
-      docente?.idDocente && !docente.idDocente.includes("DOC-DRE01-7729")
+      docente?.idDocente && !docente.idDocente.includes("DOC-DRE01-7729") && (esSuperAdminAlberto || docente.idDocente !== "ASESOR-FT-7729")
         ? docente.idDocente
-        : (esAsesoriaNacional || rol.includes("Asesor")
+        : (esSuperAdminAlberto
           ? "ASESOR-FT-7729"
           : `DOC-${dreCodigo.replace("-", "")}-${Math.floor(1000 + Math.random() * 9000)}`);
 
@@ -158,7 +160,7 @@ export default function RegistroDocentePage() {
       dreNombre: esAsesoriaNacional ? "Asesoría de Formación Tecnológica" : dreSeleccionada.nombre,
       circuito: esAsesoriaNacional ? "Nivel Nacional / Ámbito General" : circuito,
       codigoPresupuestario: esAsesoriaNacional ? "FT-NACIONAL-2026" : codigoPresupuestario,
-      institucionNombre: esAsesoriaNacional ? "Asesoría Nacional de Formación Tecnológica (Dimensión 1 y 2)" : institucion,
+      institucionNombre: esAsesoriaNacional ? "Asesoría Nacional de Formación Tecnológica (Dimensión 1 y 2)" : (institucion || "Liceo / Colegio de Secundaria"),
       rol,
       asignaturas,
       fechaRegistro: docente?.fechaRegistro || new Date().toISOString(),
@@ -220,19 +222,23 @@ export default function RegistroDocentePage() {
     setTimeout(() => setLoginMensaje(null), 4000);
   };
 
-  const idActual = docente?.idDocente || "DOC-DRE01-7729";
+  const idActual = docente?.idDocente || "";
   const [urlEspacioPublico, setUrlEspacioPublico] = useState<string>("");
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== "undefined" && idActual) {
       setUrlEspacioPublico(`${window.location.origin}/docente/resultados/${idActual}`);
+    } else {
+      setUrlEspacioPublico("");
     }
   }, [idActual]);
 
   const copiarID = () => {
-    navigator.clipboard.writeText(idActual);
-    setCopiadoID(true);
-    setTimeout(() => setCopiadoID(false), 2000);
+    if (idActual) {
+      navigator.clipboard.writeText(idActual);
+      setCopiadoID(true);
+      setTimeout(() => setCopiadoID(false), 2000);
+    }
   };
 
   const copiarEnlace = () => {
@@ -244,40 +250,55 @@ export default function RegistroDocentePage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      {/* Cabecera */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
-        <div>
-          <span className="text-xs font-bold text-blue-700 uppercase tracking-widest">
-            Formación Tecnológica • Dimensión 1 (III Ciclo de Secundaria)
-          </span>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900">
-            Perfil Docente & Configuración de Acceso
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-500">
-            Recurso de apoyo didáctico para docentes de 7°, 8° y 9° Año • Sincronización y Vinculación Técnica
-          </p>
-        </div>
+    <AuthGuard>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+        {/* Cabecera */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
+          <div>
+            <span className="text-xs font-bold text-emerald-700 uppercase tracking-widest">
+              Formación tecnológica • 9° año
+            </span>
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900">
+              Perfil docente & configuración de acceso
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500">
+              Gestión de perfil y credenciales para el entorno de diagnóstico
+            </p>
+          </div>
 
         {/* Tarjeta de ID Docente / Asesor */}
-        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-blue-700 text-white flex items-center justify-center font-bold shadow-2xs">
-            <IdentificationCard size={22} weight="bold" />
-          </div>
-          <div>
-            <div className="text-[11px] font-bold text-blue-900 uppercase">
-              {esAsesoriaNacional ? "ID Asesoría Técnica" : "ID Docente Único"}
+        {docente && idActual ? (
+          <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-blue-700 text-white flex items-center justify-center font-bold shadow-2xs">
+              <IdentificationCard size={22} weight="bold" />
             </div>
-            <div className="font-mono text-sm font-extrabold text-blue-950">{idActual}</div>
+            <div>
+              <div className="text-[11px] font-bold text-blue-900 uppercase">
+                {esAsesoriaNacional ? "ID Asesoría Técnica" : "ID Docente Único"}
+              </div>
+              <div className="font-mono text-sm font-extrabold text-blue-950">{idActual}</div>
+            </div>
+            <button
+              onClick={copiarID}
+              className="ml-2 p-2 rounded-lg bg-white border border-blue-200 hover:bg-blue-100 text-blue-800 transition-colors"
+              title="Copiar ID"
+            >
+              {copiadoID ? <Check size={16} weight="bold" className="text-emerald-600" /> : <Copy size={16} weight="bold" />}
+            </button>
           </div>
-          <button
-            onClick={copiarID}
-            className="ml-2 p-2 rounded-lg bg-white border border-blue-200 hover:bg-blue-100 text-blue-800 transition-colors"
-            title="Copiar ID"
-          >
-            {copiadoID ? <Check size={16} weight="bold" className="text-emerald-600" /> : <Copy size={16} weight="bold" />}
-          </button>
-        </div>
+        ) : (
+          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-slate-200 text-slate-600 flex items-center justify-center font-bold">
+              <UserCircle size={22} weight="bold" />
+            </div>
+            <div>
+              <div className="text-[11px] font-bold text-slate-500 uppercase">
+                Estado de la Cuenta
+              </div>
+              <div className="text-xs font-bold text-slate-700">Sin sesión iniciada</div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Tarjeta Informativa de Carácter No Oficial & Autonomía Docente */}
@@ -321,25 +342,27 @@ export default function RegistroDocentePage() {
         </button>
       </div>
 
-      {/* Espacio Público de Recepción */}
-      <div className="bg-gradient-to-r from-blue-900 to-slate-900 text-white p-5 rounded-2xl shadow-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2 text-xs font-bold text-sky-300">
-            <Sparkle size={16} weight="fill" className="text-amber-400" />
-            <span>Tu Enlace Público de Recepción de Resultados</span>
+      {/* Espacio Público de Recepción - SOLO SI HAY SESIÓN ACTIVA */}
+      {docente && urlEspacioPublico && (
+        <div className="bg-gradient-to-r from-blue-900 to-slate-900 text-white p-5 rounded-2xl shadow-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-fadeIn">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2 text-xs font-bold text-sky-300">
+              <Sparkle size={16} weight="fill" className="text-amber-400" />
+              <span>Tu Enlace Público de Recepción de Resultados</span>
+            </div>
+            <div className="font-mono text-xs text-slate-300 select-all break-all">
+              {urlEspacioPublico}
+            </div>
           </div>
-          <div className="font-mono text-xs text-slate-300 select-all break-all">
-            {urlEspacioPublico}
-          </div>
+          <button
+            onClick={copiarEnlace}
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl transition-all shrink-0"
+          >
+            {copiadoEnlace ? <Check size={16} weight="bold" /> : <LinkIcon size={16} weight="bold" />}
+            <span>{copiadoEnlace ? "¡Enlace Copiado!" : "Copiar Enlace Público"}</span>
+          </button>
         </div>
-        <button
-          onClick={copiarEnlace}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl transition-all shrink-0"
-        >
-          {copiadoEnlace ? <Check size={16} weight="bold" /> : <LinkIcon size={16} weight="bold" />}
-          <span>{copiadoEnlace ? "¡Enlace Copiado!" : "Copiar Enlace Público"}</span>
-        </button>
-      </div>
+      )}
 
       {pestanaActiva === "perfil" ? (
         /* Formulario de Perfil */
@@ -370,7 +393,7 @@ export default function RegistroDocentePage() {
                 type="text"
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
-                placeholder="Ej: Prof. Alberto Bustos Ortega"
+                placeholder="Ej: Nombre y Apellidos completos"
                 required
                 className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-blue-600 focus:bg-white transition-all font-semibold text-slate-900"
               />
@@ -637,35 +660,39 @@ export default function RegistroDocentePage() {
               <span>Credenciales Docentes</span>
             </h2>
 
-            <span className="px-3 py-1 bg-emerald-100 text-emerald-900 text-xs font-extrabold rounded-full flex items-center gap-1">
-              <Check size={14} weight="bold" />
-              <span>Cuenta Activa & Verificada</span>
-            </span>
+            {docente ? (
+              <span className="px-3 py-1 bg-emerald-100 text-emerald-900 text-xs font-extrabold rounded-full flex items-center gap-1">
+                <Check size={14} weight="bold" />
+                <span>Cuenta Activa & Verificada</span>
+              </span>
+            ) : (
+              <span className="px-3 py-1 bg-slate-100 text-slate-700 text-xs font-bold rounded-full">
+                Sin Sesión Iniciada
+              </span>
+            )}
           </div>
 
           {/* Tarjeta de Cuenta Actual */}
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-5 space-y-3">
-            <div className="text-xs font-bold text-blue-900 uppercase">
+          <div className="bg-gradient-to-r from-slate-50 to-blue-50 border border-slate-200 rounded-2xl p-5 space-y-3">
+            <div className="text-xs font-bold text-slate-500 uppercase">
               {docente ? "Cuenta Conectada" : "Estado de la Sesión"}
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
                 <div className="text-base font-black text-slate-900">
-                  {docente?.nombreCompleto || "Sin sesión activa"}
+                  {docente ? docente.nombreCompleto : "Sin sesión activa"}
                 </div>
                 <div className="text-xs font-mono text-blue-700 font-semibold">
-                  {docente?.correoInstitucional || "Ingresa con tu correo institucional MEP (@mep.go.cr) para identificarte"}
+                  {docente ? docente.correoInstitucional : "Ingresa con tu correo institucional MEP (@mep.go.cr) para identificarte"}
                 </div>
                 {docente && (
                   <div className="text-[11px] text-slate-500 mt-0.5">
-                    {esAsesoriaNacional
-                      ? "Asesoría Nacional de Formación Tecnológica (Dimensión 1 y 2)"
-                      : `${dreSeleccionada.nombre} • ${circuito} • ${institucion}`}
+                    {docente.institucionNombre ? `${docente.institucionNombre} • ` : ""}{docente.rol}
                   </div>
                 )}
               </div>
 
-              {docente && (
+              {docente && idActual && (
                 <div className="flex items-center gap-2">
                   <span className="px-2.5 py-1 bg-blue-700 text-white text-xs font-mono font-bold rounded-lg">
                     {idActual}
@@ -759,5 +786,6 @@ export default function RegistroDocentePage() {
         </div>
       )}
     </div>
+  </AuthGuard>
   );
 }
