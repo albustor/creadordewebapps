@@ -312,28 +312,6 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
 
           <div className="flex flex-wrap items-center gap-2.5 relative z-10 shrink-0">
             <a
-              href="/webapps/borrador2_diagnostico_9no_modulo01_docente_evaluador.html"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-3 bg-amber-600 hover:bg-amber-700 text-white font-black text-xs rounded-xl shadow-xs transition-all animate-pulse"
-              title="Abre el borrador 2 de evaluación docente (MEP 2026) con acceso libre para revisión"
-            >
-              <span>🧪 Borrador 2 Docente (MEP 2026)</span>
-              <ArrowSquareOut size={16} weight="bold" />
-            </a>
-
-            <a
-              href="/webapps/borrador2_diagnostico_9no_modulo01_aula_inteligente.html"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-xl shadow-xs transition-all"
-              title="Abre el borrador 2 del estudiante con el nuevo simulador de 3 bloques sin pistas de color"
-            >
-              <span>🧪 Borrador 2 Estudiante (MEP 2026)</span>
-              <ArrowSquareOut size={16} weight="bold" />
-            </a>
-
-            <a
               href="/webapps/diagnostico_9no_modulo01_docente_evaluador.html"
               target="_blank"
               rel="noopener noreferrer"
