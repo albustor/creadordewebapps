@@ -63,7 +63,15 @@ export async function ejecutarCascadaIA(prompt: string, systemInstruction?: stri
   // 2. NIVEL 1: GOOGLE GEMINI (gemini-3.6-flash / gemini-3.5-flash / gemini-flash-latest)
   const geminiApiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
   if (geminiApiKey) {
-    const modelosGemini = ["gemini-3.6-flash", "gemini-3.5-flash", "gemini-flash-latest", "gemini-2.5-flash"];
+    const modelosGemini = [
+      "gemini-2.5-flash",
+      "gemini-2.0-flash",
+      "gemini-1.5-flash",
+      "gemini-flash-latest",
+      "gemini-3.6-flash",
+      "gemini-3.5-flash",
+      "gemini-3.5-flash-lite",
+    ];
     for (const mod of modelosGemini) {
       try {
         const response = await fetch(
