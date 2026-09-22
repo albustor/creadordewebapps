@@ -22,7 +22,6 @@ import {
   Buildings,
   GraduationCap,
   Sparkle,
-  Crown,
   Eye,
   EyeSlash,
   WhatsappLogo,
@@ -79,7 +78,7 @@ export default function HomePage() {
     }
   };
 
-  // Autocompletar demo de Asesoría Nacional
+  // Autocompletar demo de pruebas
   const usarDemo = () => {
     setLoginCredencial("alberto.bustos.ortega@mep.go.cr");
     setLoginPin("1726");
@@ -227,7 +226,7 @@ export default function HomePage() {
               </h1>
 
               <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto font-medium leading-relaxed">
-                Ingreso rápido con <strong>Cédula / Correo MEP</strong> y <strong>PIN de 4 dígitos</strong> para aplicación de diagnósticos y telemetría analítica.
+                Ingreso con <strong>Cédula / Correo MEP</strong> y <strong>PIN de 4 dígitos</strong> para aplicación de diagnósticos y telemetría analítica.
               </p>
             </div>
 
@@ -347,10 +346,10 @@ export default function HomePage() {
                     <button
                       type="button"
                       onClick={usarDemo}
-                      className="text-[11px] font-bold text-amber-400 hover:text-amber-300 hover:underline flex items-center gap-1"
+                      className="text-[11px] font-bold text-slate-400 hover:text-emerald-400 hover:underline flex items-center gap-1.5 transition-colors"
                     >
-                      <Crown size={15} weight="fill" />
-                      <span>Demo Asesoría (Alberto Bustos / PIN 1726)</span>
+                      <Key size={14} className="text-emerald-400" />
+                      <span>Cargar credenciales de demostración (Alberto Bustos / PIN 1726)</span>
                     </button>
 
                     <button
@@ -477,22 +476,21 @@ export default function HomePage() {
                     </p>
                   </div>
 
-                  {/* CHECKBOX SEPARADOR: ¿Soy Asesor Nacional / Administrador MEP? */}
-                  <div className="p-3.5 bg-slate-950/80 border border-amber-500/40 rounded-2xl space-y-2">
-                    <label className="flex items-start gap-3 cursor-pointer select-none">
+                  {/* Checkbox: Asignación a Asesoría de Formación Tecnológica */}
+                  <div className="p-3 bg-slate-950/60 border border-slate-800 rounded-xl">
+                    <label className="flex items-start gap-2.5 cursor-pointer select-none">
                       <input
                         type="checkbox"
                         checked={esAsesorNacional}
                         onChange={(e) => setEsAsesorNacional(e.target.checked)}
-                        className="mt-1 w-4 h-4 rounded text-amber-500 focus:ring-amber-400 border-slate-700 bg-slate-900 cursor-pointer"
+                        className="mt-0.5 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-slate-700 bg-slate-900 cursor-pointer"
                       />
                       <div className="space-y-0.5">
-                        <span className="text-xs font-black text-amber-300 flex items-center gap-1.5">
-                          <Crown size={16} weight="fill" className="text-amber-400" />
-                          <span>Soy Asesor Nacional / Administrador MEP</span>
+                        <span className="text-xs font-bold text-slate-300">
+                          Asignación a Asesoría de Formación Tecnológica
                         </span>
                         <p className="text-[11px] text-slate-400 font-medium">
-                          Al marcar esta casilla, se asigna automáticamente el rol de Asesoría Nacional y se desactivan la Dirección Regional y el Centro Educativo.
+                          Desactiva la selección de DRE y Centro Educativo al ser de ámbito nacional.
                         </p>
                       </div>
                     </label>
@@ -505,8 +503,7 @@ export default function HomePage() {
                         Dirección Regional (DRE):
                       </label>
                       {esAsesorNacional ? (
-                        <div className="px-3 py-2.5 bg-slate-900/60 border border-slate-800 rounded-xl text-xs font-bold text-amber-300/80 flex items-center gap-2 cursor-not-allowed">
-                          <Crown size={15} weight="fill" className="text-amber-400 shrink-0" />
+                        <div className="px-3 py-2.5 bg-slate-950/60 border border-slate-800 rounded-xl text-xs font-semibold text-slate-400 flex items-center gap-2 cursor-not-allowed">
                           <span>Asesoría de Formación Tecnológica</span>
                         </div>
                       ) : (
@@ -641,16 +638,8 @@ export default function HomePage() {
             {/* Barra de Estado de Docente Autenticado */}
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-emerald-950/60 border border-emerald-600/50 p-4 rounded-2xl backdrop-blur-md">
               <div className="flex items-center gap-3 w-full sm:w-auto">
-                <div className={`w-11 h-11 rounded-xl border flex items-center justify-center shrink-0 ${
-                  docente.dreCodigo === "DRE-NACIONAL" || docente.correoInstitucional === "alberto.bustos.ortega@mep.go.cr"
-                    ? "bg-amber-500/20 border-amber-400/50 text-amber-300"
-                    : "bg-emerald-500/20 border-emerald-400/40 text-emerald-300"
-                }`}>
-                  {docente.dreCodigo === "DRE-NACIONAL" || docente.correoInstitucional === "alberto.bustos.ortega@mep.go.cr" ? (
-                    <Crown size={26} weight="fill" />
-                  ) : (
-                    <UserCircle size={26} weight="fill" />
-                  )}
+                <div className="w-11 h-11 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 flex items-center justify-center shrink-0">
+                  <UserCircle size={26} weight="fill" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
@@ -658,7 +647,7 @@ export default function HomePage() {
                       {docente.nombreCompleto}
                     </span>
                     <span className="px-2 py-0.5 rounded-full bg-emerald-400/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-bold">
-                      {docente.dreCodigo === "DRE-NACIONAL" ? "Asesoría Nacional MEP" : "Docente Activo"}
+                      {docente.dreCodigo === "DRE-NACIONAL" ? "Asesoría Nacional" : "Docente Activo"}
                     </span>
                   </div>
                   <div className="text-xs text-emerald-200/80 font-mono mt-0.5">

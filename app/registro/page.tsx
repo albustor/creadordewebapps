@@ -23,7 +23,6 @@ import {
   Eye,
   EyeSlash,
   ArrowClockwise,
-  Crown,
   Flask,
   ArrowSquareOut,
 } from "@phosphor-icons/react";
@@ -418,15 +417,15 @@ export default function RegistroDocentePage() {
         {/* Tarjeta de Estado / ID Docente */}
         {docente ? (
           <div className="bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-4 flex items-center gap-3 shadow-xs">
-            <div className={`w-10 h-10 rounded-xl text-white flex items-center justify-center font-bold shadow-xs ${esAsesorNacional ? "bg-amber-600" : "bg-emerald-700"}`}>
-              {esAsesorNacional ? <Crown size={24} weight="bold" /> : <ShieldCheck size={24} weight="bold" />}
+            <div className="w-10 h-10 rounded-xl text-white flex items-center justify-center font-bold shadow-xs bg-emerald-700">
+              <ShieldCheck size={24} weight="bold" />
             </div>
             <div>
               <div className="text-[10px] font-black uppercase tracking-wider text-emerald-900 flex items-center gap-1.5">
                 <span>Sesión Activa</span>
                 {esAsesorNacional && (
-                  <span className="px-1.5 py-0.5 bg-amber-200 text-amber-950 font-black rounded text-[9px]">
-                    ASESORÍA NACIONAL
+                  <span className="px-1.5 py-0.5 bg-slate-200 text-slate-800 font-bold rounded text-[9px]">
+                    Asesoría Nacional
                   </span>
                 )}
               </div>
@@ -456,17 +455,17 @@ export default function RegistroDocentePage() {
         )}
       </div>
 
-      {/* BARRA DE ACCESOS RÁPIDOS PARA PRUEBAS Y ASESORÍA NACIONAL */}
-      <div className="p-4 bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 rounded-3xl text-white shadow-xl border border-slate-800 space-y-3">
+      {/* BARRA DE ACCESOS RÁPIDOS PARA PRUEBAS Y ASESORÍA */}
+      <div className="p-4 bg-slate-900 rounded-3xl text-white shadow-xl border border-slate-800 space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <Crown size={20} className="text-amber-400" weight="fill" />
-            <span className="text-xs font-black uppercase tracking-wider text-amber-300">
-              Herramientas de Asesoría & Pruebas Rápidas de Uso
+            <Flask size={18} className="text-emerald-400" />
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-200">
+              Perfiles Rápidos para Pruebas de Uso
             </span>
           </div>
-          <span className="text-[10.5px] text-slate-300">
-            Habilita perfiles completos con 1 clic para validar diagnósticos y telemetría
+          <span className="text-[10.5px] text-slate-400">
+            Habilita perfiles para validar diagnósticos y telemetría
           </span>
         </div>
 
@@ -475,11 +474,11 @@ export default function RegistroDocentePage() {
           <button
             type="button"
             onClick={cargarPerfilAsesorPrincipal}
-            className="px-3.5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black rounded-xl shadow-md transition-all flex items-center gap-1.5"
-            title="Cargar credenciales maestras del Prof. Alberto Bustos Ortega"
+            className="px-3.5 py-2 bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold rounded-xl shadow-md transition-all flex items-center gap-1.5"
+            title="Cargar credenciales del Prof. Alberto Bustos Ortega"
           >
-            <Crown size={16} weight="fill" />
-            <span>⚡ Modo Asesoría Nacional (Prof. Alberto Bustos)</span>
+            <Flask size={15} />
+            <span>Perfil Asesoría Nacional (Prof. Alberto Bustos)</span>
           </button>
 
           {/* Botones de prueba en regiones */}
@@ -512,7 +511,7 @@ export default function RegistroDocentePage() {
 
           <Link
             href="/admin"
-            className="ml-auto px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-black rounded-xl transition-colors flex items-center gap-1.5 shadow-xs"
+            className="ml-auto px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 shadow-xs"
           >
             <span>Panel de Administración</span>
             <ArrowSquareOut size={15} weight="bold" />
@@ -768,8 +767,8 @@ export default function RegistroDocentePage() {
               <span>Dirección Regional e Institución Educativa</span>
             </h3>
 
-            {/* Checkbox: ¿Soy Asesor Nacional / Administrador MEP? */}
-            <div className="p-4 bg-amber-50/80 border-2 border-amber-300/80 rounded-2xl space-y-2">
+            {/* Checkbox: Asignación a Asesoría de Formación Tecnológica */}
+            <div className="p-3.5 bg-slate-50 border border-slate-300 rounded-2xl">
               <label className="flex items-start gap-3 cursor-pointer select-none">
                 <input
                   type="checkbox"
@@ -781,15 +780,14 @@ export default function RegistroDocentePage() {
                       handleCambioDRE("DRE-01");
                     }
                   }}
-                  className="mt-1 w-4 h-4 rounded text-amber-600 focus:ring-amber-500 border-amber-400 bg-white cursor-pointer"
+                  className="mt-0.5 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300 bg-white cursor-pointer"
                 />
                 <div className="space-y-0.5">
-                  <span className="text-xs font-black text-amber-950 flex items-center gap-1.5">
-                    <Crown size={16} weight="fill" className="text-amber-600" />
-                    <span>Soy Asesor Nacional / Administrador MEP</span>
+                  <span className="text-xs font-bold text-slate-800">
+                    Asignación a Asesoría de Formación Tecnológica
                   </span>
-                  <p className="text-[11.5px] text-amber-900 font-medium">
-                    Al marcar esta casilla, se asigna automáticamente el rol de Asesoría Nacional y se desactivan los campos de Dirección Regional y Centro Educativo.
+                  <p className="text-[11.5px] text-slate-500 font-medium">
+                    Desactiva la selección de DRE y Centro Educativo al ser de ámbito nacional.
                   </p>
                 </div>
               </label>
@@ -803,8 +801,7 @@ export default function RegistroDocentePage() {
                 </label>
                 {dreNormActual === "DRE-NACIONAL" ? (
                   <div className="px-4 py-3 bg-slate-100 border border-slate-300 rounded-xl text-xs font-bold text-slate-500 flex items-center gap-2 cursor-not-allowed">
-                    <Crown size={16} weight="fill" className="text-amber-600 shrink-0" />
-                    <span>Asesoría de Formación Tecnológica (Nacional)</span>
+                    <span>Asesoría de Formación Tecnológica</span>
                   </div>
                 ) : (
                   <select

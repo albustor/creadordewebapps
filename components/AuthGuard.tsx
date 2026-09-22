@@ -21,7 +21,6 @@ import {
   Eye,
   EyeSlash,
   WhatsappLogo,
-  Crown,
   Info,
 } from "@phosphor-icons/react";
 
@@ -326,10 +325,10 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                   <button
                     type="button"
                     onClick={rellenarDemo}
-                    className="text-[11px] font-bold text-emerald-800 hover:text-emerald-950 hover:underline flex items-center gap-1"
+                    className="text-[11px] font-bold text-slate-500 hover:text-emerald-800 hover:underline flex items-center gap-1.5"
                   >
-                    <Crown size={15} weight="fill" className="text-amber-500" />
-                    <span>Demo Asesoría (Alberto Bustos / PIN 1726)</span>
+                    <Key size={14} className="text-emerald-700" />
+                    <span>Demo (Alberto Bustos / PIN 1726)</span>
                   </button>
 
                   <button
@@ -431,22 +430,21 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                   </p>
                 </div>
 
-                {/* Checkbox: Soy Asesor Nacional / Administrador MEP */}
-                <div className="p-3 bg-amber-50 border border-amber-300 rounded-2xl">
+                {/* Checkbox: Asignación a Asesoría de Formación Tecnológica */}
+                <div className="p-3 bg-slate-50 border border-slate-300 rounded-2xl">
                   <label className="flex items-start gap-2.5 cursor-pointer select-none">
                     <input
                       type="checkbox"
                       checked={esAsesorNacional}
                       onChange={(e) => setEsAsesorNacional(e.target.checked)}
-                      className="mt-0.5 w-4 h-4 rounded text-amber-600 focus:ring-amber-500 border-amber-400 cursor-pointer"
+                      className="mt-0.5 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300 cursor-pointer"
                     />
                     <div>
-                      <span className="text-xs font-black text-amber-950 flex items-center gap-1.5">
-                        <Crown size={15} weight="fill" className="text-amber-600" />
-                        <span>Soy Asesor Nacional / Administrador MEP</span>
+                      <span className="text-xs font-bold text-slate-800">
+                        Asignación a Asesoría de Formación Tecnológica
                       </span>
-                      <p className="text-[11px] text-amber-900 font-medium">
-                        Desactiva DRE y Centro Educativo al asignar rol nacional.
+                      <p className="text-[11px] text-slate-500 font-medium">
+                        Desactiva DRE y Centro Educativo al ser de ámbito nacional.
                       </p>
                     </div>
                   </label>
@@ -459,7 +457,6 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                     </label>
                     {esAsesorNacional ? (
                       <div className="px-3.5 py-2.5 bg-slate-100 border border-slate-300 rounded-xl text-xs font-bold text-slate-500 flex items-center gap-2 cursor-not-allowed">
-                        <Crown size={15} weight="fill" className="text-amber-600 shrink-0" />
                         <span>Asesoría de Formación Tecnológica</span>
                       </div>
                     ) : (
