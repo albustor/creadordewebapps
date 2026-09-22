@@ -220,7 +220,12 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
     if (savedDocente) {
       try {
         const parsed = JSON.parse(savedDocente);
-        if (parsed && parsed.correoInstitucional) {
+        const nomDoc = (parsed?.nombreCompleto || "").toLowerCase();
+        const corDoc = (parsed?.correoInstitucional || "").toLowerCase();
+        if (nomDoc.includes("allan morera") || corDoc.includes("allan.morera") || (nomDoc.includes("allan") && nomDoc.includes("morera"))) {
+          SafeStorage.removeItem("docente_activo");
+          setDocente(null);
+        } else if (parsed && parsed.correoInstitucional) {
           if (parsed.correoInstitucional.includes("@educacion.cr")) {
             parsed.correoInstitucional = parsed.correoInstitucional.replace("@educacion.cr", "@mep.go.cr");
             SafeStorage.setItem("docente_activo", JSON.stringify(parsed));
@@ -235,6 +240,28 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
     } else {
       setDocente(null);
     }
+
+    // Purgar usuario Allan Morera Araya de la lista local para permitir su nuevo registro
+    try {
+      const rawLocales = SafeStorage.getItem("usuarios_registrados_locales");
+      if (rawLocales) {
+        const parsedLocales = JSON.parse(rawLocales);
+        if (Array.isArray(parsedLocales)) {
+          const filtrados = parsedLocales.filter((u: any) => {
+            const nom = (u?.nombreCompleto || "").toLowerCase();
+            const cor = (u?.correoInstitucional || "").toLowerCase();
+            return !(nom.includes("allan morera") || cor.includes("allan.morera") || (nom.includes("allan") && nom.includes("morera")));
+          });
+          SafeStorage.setItem("usuarios_registrados_locales", JSON.stringify(filtrados));
+        }
+      }
+      // Limpiar posibles claves de bloqueo
+      Object.keys(localStorage || {}).forEach((key) => {
+        if (key.toLowerCase().includes("allan") || key.toLowerCase().includes("morera")) {
+          localStorage.removeItem(key);
+        }
+      });
+    } catch {}
 
     if (savedWebapps) {
       try {
@@ -470,9 +497,54 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       return { exito: false, mensaje: "Por favor ingrese su cédula/correo y su PIN de 4 dígitos." };
     }
 
-    // Comprobar bloqueo temporal por intentos fallidos (15 minutos)
     const lockKey = `auth_lock_${credencialLimpia}`;
     const attemptsKey = `auth_attempts_${credencialLimpia}`;
+
+    // Función auxiliar para limpiar intentos y bloqueos al tener éxito
+    const limpiarFallos = () => {
+      SafeStorage.removeItem(lockKey);
+      SafeStorage.removeItem(attemptsKey);
+    };
+
+    // 1. Verificación Inmediata: Administrador / Asesor Principal (Alberto Bustos Ortega)
+    const esSuperAdminAlberto =
+      credencialLimpia === "alberto.bustos.ortega@mep.go.cr" ||
+      credencialLimpia === "alberto.bustos" ||
+      credencialLimpia === "admin" ||
+      credencialLimpia === "5-0305-0179" ||
+      credencialLimpia === "503050179" ||
+      credencialLimpia === "1-1122-3344" ||
+      credencialLimpia === "111223344";
+
+    const esPinValidoAlberto =
+      pinOPassLimpia === "2617" ||
+      pinOPassLimpia === "1726" ||
+      pinOPassLimpia === "EdcRfvTgb2617**" ||
+      pinOPassLimpia === "EdcRfvTgb1726**" ||
+      pinOPassLimpia === "1122";
+
+    if (esSuperAdminAlberto && esPinValidoAlberto) {
+      limpiarFallos();
+      guardarDocente(DOCENTE_DEFAULT);
+      return { exito: true, mensaje: "Sesión iniciada correctamente como Asesor Principal de Formación Tecnológica." };
+    }
+
+    // 2. Verificación Inmediata: Docente de Prueba Regional (Esteban Gómez Chinchilla)
+    const esDocenteEsteban =
+      credencialLimpia === "esteban.gomez.chinchilla@mep.go.cr" ||
+      credencialLimpia === "esteban.gomez" ||
+      credencialLimpia === "5-0345-0891" ||
+      credencialLimpia === "503450891";
+
+    const esPinValidoEsteban = pinOPassLimpia === "5821" || pinOPassLimpia === "1726" || pinOPassLimpia === "2617";
+
+    if (esDocenteEsteban && esPinValidoEsteban) {
+      limpiarFallos();
+      guardarDocente(DOCENTE_PRUEBA_REGIONAL);
+      return { exito: true, mensaje: `Bienvenido(a), ${DOCENTE_PRUEBA_REGIONAL.nombreCompleto}.` };
+    }
+
+    // Comprobar bloqueo temporal por intentos fallidos (15 minutos) para intentos erróneos
     const lockUntilRaw = SafeStorage.getItem(lockKey);
     if (lockUntilRaw) {
       const lockUntil = parseInt(lockUntilRaw, 10);
@@ -510,45 +582,6 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
         mensaje: mensajePersonalizado || `PIN incorrecto. Te quedan ${restantes} intento(s) antes del bloqueo.`,
       };
     };
-
-    // Función auxiliar para limpiar intentos al tener éxito
-    const limpiarFallos = () => {
-      SafeStorage.removeItem(lockKey);
-      SafeStorage.removeItem(attemptsKey);
-    };
-
-    // 1. Acceso Administrador / Asesor Principal (Alberto Bustos Ortega)
-    if (
-      (credencialLimpia === "alberto.bustos.ortega@mep.go.cr" ||
-        credencialLimpia === "alberto.bustos" ||
-        credencialLimpia === "admin" ||
-        credencialLimpia === "5-0305-0179" ||
-        credencialLimpia === "503050179" ||
-        credencialLimpia === "1-1122-3344" ||
-        credencialLimpia === "111223344") &&
-      (pinOPassLimpia === "2617" ||
-        pinOPassLimpia === "1726" ||
-        pinOPassLimpia === "EdcRfvTgb2617**" ||
-        pinOPassLimpia === "EdcRfvTgb1726**" ||
-        pinOPassLimpia === "1122")
-    ) {
-      limpiarFallos();
-      guardarDocente(DOCENTE_DEFAULT);
-      return { exito: true, mensaje: "Sesión iniciada correctamente como Asesor Principal de Formación Tecnológica." };
-    }
-
-    // 2. Acceso Docente de Prueba Regional (Esteban Gómez Chinchilla)
-    if (
-      (credencialLimpia === "esteban.gomez.chinchilla@mep.go.cr" ||
-        credencialLimpia === "esteban.gomez" ||
-        credencialLimpia === "5-0345-0891" ||
-        credencialLimpia === "503450891") &&
-      (pinOPassLimpia === "5821" || pinOPassLimpia === "1726")
-    ) {
-      limpiarFallos();
-      guardarDocente(DOCENTE_PRUEBA_REGIONAL);
-      return { exito: true, mensaje: `Bienvenido(a), ${DOCENTE_PRUEBA_REGIONAL.nombreCompleto}.` };
-    }
 
     // 3. Búsqueda en usuarios registrados localmente (por Cédula, Correo o Usuario)
     const usuariosGuardadosRaw = SafeStorage.getItem("usuarios_registrados_locales");

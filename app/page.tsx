@@ -81,6 +81,10 @@ export default function HomePage() {
 
   // Autocompletar demo de pruebas
   const usarDemo = () => {
+    try {
+      localStorage.removeItem("auth_lock_alberto.bustos.ortega@mep.go.cr");
+      localStorage.removeItem("auth_attempts_alberto.bustos.ortega@mep.go.cr");
+    } catch (e) {}
     setLoginCredencial("alberto.bustos.ortega@mep.go.cr");
     setLoginPin("2617");
     setLoginMensaje(null);
@@ -347,19 +351,10 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
-                    <button
-                      type="button"
-                      onClick={usarDemo}
-                      className="text-[11px] font-bold text-stone-500 hover:text-emerald-800 hover:underline flex items-center gap-1.5 transition-colors"
-                    >
-                      <Key size={14} className="text-emerald-700" />
-                      <span>Cargar credenciales demo (Alberto Bustos / PIN 2617)</span>
-                    </button>
-
+                  <div className="pt-2">
                     <button
                       type="submit"
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition-all"
+                      className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition-all"
                     >
                       <SignIn size={16} weight="bold" />
                       <span>Ingresar con PIN</span>
