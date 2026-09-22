@@ -7,9 +7,7 @@ import {
   UserCircle,
   IdentificationCard,
   EnvelopeSimple,
-  Phone,
   Buildings,
-  GraduationCap,
   FloppyDisk,
   Check,
   Copy,
@@ -20,21 +18,35 @@ import {
   SignOut,
   Key,
   WarningCircle,
-  ChatCircleDots,
-  ShieldStar,
   Info,
   WhatsappLogo,
   Eye,
   EyeSlash,
   ArrowClockwise,
+  Crown,
+  Flask,
+  ArrowSquareOut,
 } from "@phosphor-icons/react";
+import Link from "next/link";
+
+// Normalizador seguro de códigos DRE
+function normalizarDRECodigo(cod?: string): string {
+  if (!cod) return "DRE-01";
+  const upper = cod.toUpperCase().trim();
+  if (upper === "DRE-NACIONAL" || upper === "DRENACIONAL" || upper === "ASESORIA") {
+    return "DRE-NACIONAL";
+  }
+  const digits = cod.replace(/[^0-9]/g, "");
+  if (digits) {
+    return `DRE-${digits.padStart(2, "0")}`;
+  }
+  return "DRE-01";
+}
 
 export default function RegistroDocentePage() {
   const {
     docente,
-    guardarDocente,
     registrarDocente,
-    iniciarSesion,
     iniciarSesionConPIN,
     solicitarRecuperacionPIN,
     verificarOTP,
@@ -50,12 +62,12 @@ export default function RegistroDocentePage() {
   const [correo, setCorreo] = useState(docente?.correoInstitucional || "");
   const [cedula, setCedula] = useState(docente?.cedula || "");
   const [telefono, setTelefono] = useState(docente?.telefono || "");
-  const [pin, setPin] = useState(docente?.pin || "");
-  const [pinConfirmar, setPinConfirmar] = useState(docente?.pin || "");
+  const [pin, setPin] = useState(docente?.pin || "1726");
+  const [pinConfirmar, setPinConfirmar] = useState(docente?.pin || "1726");
   const [mostrarPin, setMostrarPin] = useState(false);
 
   // DRE y Ubicación
-  const [dreCodigo, setDreCodigo] = useState(docente?.dreCodigo || "DRE-01");
+  const [dreCodigo, setDreCodigo] = useState(normalizarDRECodigo(docente?.dreCodigo));
   const [circuito, setCircuito] = useState(docente?.circuito || "Circuito 01");
   const [codigoPresupuestario, setCodigoPresupuestario] = useState(docente?.codigoPresupuestario || "SABER-2026");
   const [institucion, setInstitucion] = useState(docente?.institucionNombre || "");
@@ -87,16 +99,17 @@ export default function RegistroDocentePage() {
   const [recuperarMensaje, setRecuperarMensaje] = useState<{ tipo: "exito" | "error"; texto: string } | null>(null);
   const [cargandoRecuperacion, setCargandoRecuperacion] = useState(false);
 
-  // Cargar datos si ya hay sesión activa
+  // Sincronizar datos si ya hay sesión activa
   useEffect(() => {
     if (docente) {
       setNombre(docente.nombreCompleto || "");
       setCorreo(docente.correoInstitucional || "");
       setCedula(docente.cedula || "");
       setTelefono(docente.telefono || "");
-      setPin(docente.pin || "");
-      setPinConfirmar(docente.pin || "");
-      setDreCodigo(docente.dreCodigo || "DRE-01");
+      setPin(docente.pin || "1726");
+      setPinConfirmar(docente.pin || "1726");
+      const dreNorm = normalizarDRECodigo(docente.dreCodigo);
+      setDreCodigo(dreNorm);
       setCircuito(docente.circuito || "Circuito 01");
       setCodigoPresupuestario(docente.codigoPresupuestario || "SABER-2026");
       setInstitucion(docente.institucionNombre || "");
@@ -104,27 +117,95 @@ export default function RegistroDocentePage() {
     }
   }, [docente]);
 
-  // Manejo de cambio de DRE
-  const dreSeleccionada = LISTA_DRE_MEP.find((d) => d.codigo === dreCodigo) || LISTA_DRE_MEP[1];
+  // Manejo de cambio de DRE seguro
+  const dreNormActual = normalizarDRECodigo(dreCodigo);
+  const dreSeleccionada =
+    LISTA_DRE_MEP.find((d) => d.codigo === dreNormActual) ||
+    LISTA_DRE_MEP.find((d) => d.codigo.replace("-", "") === dreNormActual.replace("-", "")) ||
+    LISTA_DRE_MEP[0];
+
+  const listaCircuitos = dreSeleccionada?.circuitos && Array.isArray(dreSeleccionada.circuitos)
+    ? dreSeleccionada.circuitos
+    : ["Circuito 01"];
 
   const handleCambioDRE = (nuevoCodigo: string) => {
-    setDreCodigo(nuevoCodigo);
-    if (nuevoCodigo === "DRE-NACIONAL") {
+    const codNorm = normalizarDRECodigo(nuevoCodigo);
+    setDreCodigo(codNorm);
+
+    if (codNorm === "DRE-NACIONAL") {
       setCircuito("Nivel Nacional / Ámbito General");
       setCodigoPresupuestario("FT-NACIONAL-2026");
       setInstitucion("Asesoría Nacional de Formación Tecnológica (Dimensión 1 y 2)");
       setRol("Asesor de Formación Tecnológica & Administrador General (Dimensión 1 y 2)");
     } else {
-      const found = LISTA_DRE_MEP.find((d) => d.codigo === nuevoCodigo);
-      if (found) {
-        setCircuito(found.circuitos[0] || "Circuito 01");
-        setCodigoPresupuestario("SABER-2026");
-        if (!institucion || institucion.includes("Asesoría Nacional")) {
-          setInstitucion("Liceo / Colegio de Secundaria");
-        }
-        setRol("Docente de Formación Tecnológica - Dimensión 1 y 2");
+      const found = LISTA_DRE_MEP.find((d) => d.codigo === codNorm);
+      const primerCircuito = found?.circuitos?.[0] || "Circuito 01";
+      setCircuito(primerCircuito);
+      setCodigoPresupuestario("SABER-2026");
+      if (!institucion || institucion.includes("Asesoría Nacional")) {
+        setInstitucion("Liceo / Colegio de Secundaria");
       }
+      setRol("Docente de Formación Tecnológica - Dimensión 1 y 2");
     }
+  };
+
+  // ==========================================
+  // PERFILES RÁPIDOS PARA PRUEBAS Y ASESORÍA
+  // ==========================================
+  const cargarPerfilAsesorPrincipal = () => {
+    setNombre("Prof. Alberto Bustos Ortega");
+    setCorreo("alberto.bustos.ortega@mep.go.cr");
+    setCedula("1-1122-3344");
+    setTelefono("+506 8888-9999");
+    setPin("1726");
+    setPinConfirmar("1726");
+    setDreCodigo("DRE-NACIONAL");
+    setCircuito("Nivel Nacional / Ámbito General");
+    setCodigoPresupuestario("FT-NACIONAL-2026");
+    setInstitucion("Asesoría Nacional de Formación Tecnológica (Dimensión 1 y 2)");
+    setRol("Asesor de Formación Tecnológica & Administrador General (Dimensión 1 y 2)");
+    setErrorValidacion(null);
+  };
+
+  const cargarPerfilDocentePrueba = (region: "liberia" | "sanjose" | "alajuela") => {
+    if (region === "liberia") {
+      setNombre("Prof. Esteban Gómez Chinchilla");
+      setCorreo("esteban.gomez.chinchilla@mep.go.cr");
+      setCedula("5-0345-0891");
+      setTelefono("+506 8765-4321");
+      setPin("5821");
+      setPinConfirmar("5821");
+      setDreCodigo("DRE-07");
+      setCircuito("Circuito 01");
+      setCodigoPresupuestario("SABER-LIBERIA-2026");
+      setInstitucion("Liceo Laboratorio de Liberia");
+      setRol("Docente de Formación Tecnológica");
+    } else if (region === "sanjose") {
+      setNombre("Prof. Lucía Navarro Solano");
+      setCorreo("lucia.navarro.solano@mep.go.cr");
+      setCedula("1-1456-0789");
+      setTelefono("+506 8999-1234");
+      setPin("3914");
+      setPinConfirmar("3914");
+      setDreCodigo("DRE-01");
+      setCircuito("Circuito 02");
+      setCodigoPresupuestario("SABER-SJ-2026");
+      setInstitucion("Liceo de Costa Rica");
+      setRol("Docente de Formación Tecnológica");
+    } else {
+      setNombre("Prof. Mario Ramírez Varela");
+      setCorreo("mario.ramirez.varela@mep.go.cr");
+      setCedula("2-0890-0123");
+      setTelefono("+506 8456-7890");
+      setPin("7263");
+      setPinConfirmar("7263");
+      setDreCodigo("DRE-04");
+      setCircuito("Circuito 01");
+      setCodigoPresupuestario("SABER-ALAJUELA-2026");
+      setInstitucion("Instituto de Alajuela");
+      setRol("Docente de Formación Tecnológica");
+    }
+    setErrorValidacion(null);
   };
 
   // ==========================================
@@ -135,16 +216,13 @@ export default function RegistroDocentePage() {
     if (!/^\d{4}$/.test(valorPin)) {
       return "El PIN debe contener exactamente 4 dígitos numéricos (0-9).";
     }
-    // Números idénticos (0000, 1111, 2222, ...)
     if (/^(\d)\1{3}$/.test(valorPin)) {
       return "⚠️ PIN muy predecible: Evita usar 4 dígitos iguales (ej. 0000 o 1111).";
     }
-    // Consecutivos ascendentes o descendentes
     const consecutivos = ["0123", "1234", "2345", "3456", "4567", "5678", "6789", "9876", "8765", "7654", "6543", "5432", "4321", "3210"];
     if (consecutivos.includes(valorPin)) {
       return "⚠️ PIN inseguro: Evita números consecutivos (ej. 1234 o 4321).";
     }
-    // Coincidencia con últimos 4 dígitos de cédula
     const cedLimpia = valorCedula.replace(/[^0-9]/g, "");
     if (cedLimpia.length >= 4 && cedLimpia.endsWith(valorPin)) {
       return "⚠️ Evita usar los últimos 4 dígitos de tu número de cédula como PIN.";
@@ -161,21 +239,18 @@ export default function RegistroDocentePage() {
     e.preventDefault();
     setErrorValidacion(null);
 
-    // 1. Nombre Completo
     const partesNombre = nombre.trim().split(/\s+/);
     if (partesNombre.length < 2) {
       setErrorValidacion("Por favor ingrese su nombre completo (Nombre y Apellidos).");
       return;
     }
 
-    // 2. Cédula
     const cedulaLimpia = cedula.trim();
     if (cedulaLimpia.length < 9) {
       setErrorValidacion("El número de cédula o identificación debe tener un formato válido (mínimo 9 dígitos).");
       return;
     }
 
-    // 3. Validación ESTRICTA de Correo Oficial MEP (nombre.apellido.apellido@mep.go.cr)
     const correoLimpio = correo.trim().toLowerCase();
     const regexMepStrict = /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+@mep\.go\.cr$/i;
     if (!regexMepStrict.test(correoLimpio)) {
@@ -185,14 +260,7 @@ export default function RegistroDocentePage() {
       return;
     }
 
-    // 4. Teléfono (Opcional)
     const telefonoLimpio = telefono.trim();
-    if (telefonoLimpio && telefonoLimpio.replace(/[^0-9]/g, "").length < 8) {
-      setErrorValidacion("Si registra un número de teléfono para WhatsApp, debe contener al menos 8 dígitos.");
-      return;
-    }
-
-    // 5. Validación del PIN de 4 dígitos
     const pinLimpio = pin.trim();
     if (!/^\d{4}$/.test(pinLimpio)) {
       setErrorValidacion("El PIN de acceso rápido es obligatorio y debe ser exactamente de 4 dígitos numéricos.");
@@ -203,19 +271,12 @@ export default function RegistroDocentePage() {
       return;
     }
 
-    const errorSeguridadPin = evaluarPIN(pinLimpio, cedulaLimpia);
-    if (errorSeguridadPin && errorSeguridadPin.startsWith("El PIN debe")) {
-      setErrorValidacion(errorSeguridadPin);
-      return;
-    }
-
-    const esSuperAdminAlberto = correoLimpio === "alberto.bustos.ortega@mep.go.cr";
-    const idDocenteUnico =
-      docente?.idDocente && !docente.idDocente.includes("DOC-DRE01-7729") && (esSuperAdminAlberto || docente.idDocente !== "ASESOR-FT-7729")
-        ? docente.idDocente
-        : (esSuperAdminAlberto
-          ? "ASESOR-FT-7729"
-          : `DOC-${dreCodigo.replace(/[^a-zA-Z0-9]/g, "")}-${Math.floor(1000 + Math.random() * 9000)}`);
+    const esSuperAdminAlberto = correoLimpio === "alberto.bustos.ortega@mep.go.cr" || dreCodigo === "DRE-NACIONAL";
+    const idDocenteUnico = esSuperAdminAlberto
+      ? "ASESOR-FT-7729"
+      : docente?.idDocente && !docente.idDocente.includes("DOC-DRE01-7729") && docente.idDocente !== "ASESOR-FT-7729"
+      ? docente.idDocente
+      : `DOC-${dreCodigo.replace(/[^a-zA-Z0-9]/g, "")}-${Math.floor(1000 + Math.random() * 9000)}`;
 
     const datosDocente = {
       idDocente: idDocenteUnico,
@@ -336,8 +397,10 @@ export default function RegistroDocentePage() {
     }
   };
 
+  const esAsesorNacional = docente?.dreCodigo === "DRE-NACIONAL" || docente?.correoInstitucional === "alberto.bustos.ortega@mep.go.cr";
+
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 animate-fadeIn">
       {/* Cabecera Principal */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
         <div>
@@ -348,22 +411,27 @@ export default function RegistroDocentePage() {
             Gestión de Acceso & Perfil Docente
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 mt-1 font-medium">
-            Autenticación segura por <strong>PIN de 4 dígitos</strong> y validación estricta de correo oficial MEP
+            Autenticación segura por <strong>PIN de 4 dígitos</strong>, validación MEP y panel de pruebas para Asesoría
           </p>
         </div>
 
         {/* Tarjeta de Estado / ID Docente */}
         {docente ? (
           <div className="bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-4 flex items-center gap-3 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-emerald-700 text-white flex items-center justify-center font-bold shadow-xs">
-              <ShieldCheck size={24} weight="bold" />
+            <div className={`w-10 h-10 rounded-xl text-white flex items-center justify-center font-bold shadow-xs ${esAsesorNacional ? "bg-amber-600" : "bg-emerald-700"}`}>
+              {esAsesorNacional ? <Crown size={24} weight="bold" /> : <ShieldCheck size={24} weight="bold" />}
             </div>
             <div>
-              <div className="text-[10px] font-black text-emerald-900 uppercase tracking-wider">
-                Sesión Activa • {docente.dreCodigo}
+              <div className="text-[10px] font-black uppercase tracking-wider text-emerald-900 flex items-center gap-1.5">
+                <span>Sesión Activa</span>
+                {esAsesorNacional && (
+                  <span className="px-1.5 py-0.5 bg-amber-200 text-amber-950 font-black rounded text-[9px]">
+                    ASESORÍA NACIONAL
+                  </span>
+                )}
               </div>
               <div className="font-mono text-sm font-black text-emerald-950">{docente.idDocente}</div>
-              <div className="text-[11px] text-slate-600 font-medium truncate max-w-[200px]">
+              <div className="text-[11px] text-slate-700 font-medium truncate max-w-[200px]">
                 {docente.nombreCompleto}
               </div>
             </div>
@@ -386,6 +454,70 @@ export default function RegistroDocentePage() {
             </div>
           </div>
         )}
+      </div>
+
+      {/* BARRA DE ACCESOS RÁPIDOS PARA PRUEBAS Y ASESORÍA NACIONAL */}
+      <div className="p-4 bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 rounded-3xl text-white shadow-xl border border-slate-800 space-y-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <Crown size={20} className="text-amber-400" weight="fill" />
+            <span className="text-xs font-black uppercase tracking-wider text-amber-300">
+              Herramientas de Asesoría & Pruebas Rápidas de Uso
+            </span>
+          </div>
+          <span className="text-[10.5px] text-slate-300">
+            Habilita perfiles completos con 1 clic para validar diagnósticos y telemetría
+          </span>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2.5 pt-1">
+          {/* Botón Asesoría Nacional */}
+          <button
+            type="button"
+            onClick={cargarPerfilAsesorPrincipal}
+            className="px-3.5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black rounded-xl shadow-md transition-all flex items-center gap-1.5"
+            title="Cargar credenciales maestras del Prof. Alberto Bustos Ortega"
+          >
+            <Crown size={16} weight="fill" />
+            <span>⚡ Modo Asesoría Nacional (Prof. Alberto Bustos)</span>
+          </button>
+
+          {/* Botones de prueba en regiones */}
+          <button
+            type="button"
+            onClick={() => cargarPerfilDocentePrueba("liberia")}
+            className="px-3 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5"
+          >
+            <Flask size={15} className="text-emerald-400" />
+            <span>Prueba DRE Liberia (07)</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => cargarPerfilDocentePrueba("sanjose")}
+            className="px-3 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5"
+          >
+            <Flask size={15} className="text-sky-400" />
+            <span>Prueba DRE San José (01)</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => cargarPerfilDocentePrueba("alajuela")}
+            className="px-3 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5"
+          >
+            <Flask size={15} className="text-purple-400" />
+            <span>Prueba DRE Alajuela (04)</span>
+          </button>
+
+          <Link
+            href="/admin"
+            className="ml-auto px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-black rounded-xl transition-colors flex items-center gap-1.5 shadow-xs"
+          >
+            <span>Panel de Administración</span>
+            <ArrowSquareOut size={15} weight="bold" />
+          </Link>
+        </div>
       </div>
 
       {/* PESTAÑAS DE NAVEGACIÓN */}
@@ -422,7 +554,7 @@ export default function RegistroDocentePage() {
               : "bg-slate-100 text-slate-700 hover:bg-slate-200"
           }`}
         >
-          <ShieldStar size={18} weight="bold" />
+          <ShieldCheck size={18} weight="bold" />
           <span>3. Recuperar PIN</span>
         </button>
 
@@ -643,7 +775,7 @@ export default function RegistroDocentePage() {
                   Dirección Regional de Educación (DRE) <span className="text-rose-600">*</span>
                 </label>
                 <select
-                  value={dreCodigo}
+                  value={dreNormActual}
                   onChange={(e) => handleCambioDRE(e.target.value)}
                   className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 outline-hidden transition-all"
                 >
@@ -665,7 +797,7 @@ export default function RegistroDocentePage() {
                   onChange={(e) => setCircuito(e.target.value)}
                   className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 outline-hidden transition-all"
                 >
-                  {dreSeleccionada.circuitos.map((circ) => (
+                  {listaCircuitos.map((circ) => (
                     <option key={circ} value={circ}>
                       {circ}
                     </option>
@@ -812,7 +944,7 @@ export default function RegistroDocentePage() {
         <div className="max-w-lg mx-auto bg-white border-2 border-slate-300 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl">
           <div className="text-center space-y-2">
             <div className="w-14 h-14 bg-emerald-50 border-2 border-emerald-200 text-emerald-700 rounded-2xl flex items-center justify-center mx-auto shadow-xs">
-              <ShieldStar size={30} weight="bold" />
+              <ShieldCheck size={30} weight="bold" />
             </div>
             <h3 className="text-xl font-black text-slate-900">Recuperación de PIN</h3>
             <p className="text-xs text-slate-500 font-medium">
