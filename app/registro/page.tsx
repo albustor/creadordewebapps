@@ -573,7 +573,11 @@ export default function RegistroDocentePage() {
           {guardadoExitoso && (
             <div className="p-4 bg-emerald-50 border-2 border-emerald-300 text-emerald-950 rounded-2xl text-xs font-bold flex items-center gap-3 shadow-xs">
               <Check size={20} className="text-emerald-700 shrink-0" weight="bold" />
-              <div>¡Cuenta registrada y perfil guardado con éxito! Ya puedes utilizar tu PIN de 4 dígitos.</div>
+              <div>
+                {docente
+                  ? "¡Perfil y datos de contacto actualizados con éxito!"
+                  : "¡Cuenta registrada y perfil guardado con éxito! Ya puedes utilizar tu PIN de 4 dígitos."}
+              </div>
             </div>
           )}
 
@@ -860,7 +864,7 @@ export default function RegistroDocentePage() {
               className="px-8 py-3.5 bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs rounded-xl shadow-md hover:shadow-lg transition-all flex items-center gap-2"
             >
               <FloppyDisk size={18} weight="bold" />
-              <span>Guardar Perfil & Habilitar PIN</span>
+              <span>{docente ? "Actualizar Perfil & Guardar Cambios" : "Guardar Perfil & Habilitar PIN"}</span>
             </button>
           </div>
         </form>

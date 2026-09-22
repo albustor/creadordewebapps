@@ -406,7 +406,7 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       const correoLimpio = data.correoInstitucional.toLowerCase().trim();
 
       // Verificar si ya existe el correo o cédula registrada
-      const usuarioDuplicado = listaUsuarios.find((u) => {
+      const indiceDuplicado = listaUsuarios.findIndex((u) => {
         const uCedLimpia = normalizarCedulaParaComparar(u.cedula || "");
         const uCorreoLimpio = u.correoInstitucional.toLowerCase().trim();
         return (
@@ -415,7 +415,19 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
         );
       });
 
-      if (usuarioDuplicado) {
+      const esMismoDocente =
+        (docente && (
+          docente.idDocente === data.idDocente ||
+          docente.correoInstitucional.toLowerCase().trim() === correoLimpio ||
+          (cedLimpia && normalizarCedulaParaComparar(docente.cedula || "") === cedLimpia)
+        )) ||
+        (indiceDuplicado !== -1 && (
+          listaUsuarios[indiceDuplicado].idDocente === data.idDocente ||
+          listaUsuarios[indiceDuplicado].correoInstitucional.toLowerCase().trim() === correoLimpio
+        ));
+
+      if (indiceDuplicado !== -1 && !esMismoDocente) {
+        const usuarioDuplicado = listaUsuarios[indiceDuplicado];
         return {
           exito: false,
           mensaje: `⚠️ Ya existe una cuenta registrada con este correo o cédula (${usuarioDuplicado.nombreCompleto}). Por favor inicie sesión con su PIN o solicite recuperación si lo ha olvidado.`,
@@ -427,7 +439,12 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
         cedula: cedFormateada,
       };
 
-      listaUsuarios.push(docenteConCedulaFormateada);
+      if (indiceDuplicado !== -1) {
+        listaUsuarios[indiceDuplicado] = docenteConCedulaFormateada;
+      } else {
+        listaUsuarios.push(docenteConCedulaFormateada);
+      }
+
       SafeStorage.setItem("usuarios_registrados_locales", JSON.stringify(listaUsuarios));
       guardarDocente(docenteConCedulaFormateada);
 
