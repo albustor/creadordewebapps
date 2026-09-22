@@ -180,3 +180,6 @@ export const LISTA_DRE_MEP: DREInfo[] = [
     circuitos: ["Circuito 01", "Circuito 02", "Circuito 03"],
   },
 ];
+
+export const LISTA_DRE_REGIONALES: DREInfo[] = LISTA_DRE_MEP.filter((d) => d.codigo !== "DRE-NACIONAL");
+

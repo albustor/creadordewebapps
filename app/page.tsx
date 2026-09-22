@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useDocente } from "@/context/DocenteContext";
-import { LISTA_DRE_MEP } from "@/lib/dreCircuitos";
+import { LISTA_DRE_MEP, LISTA_DRE_REGIONALES } from "@/lib/dreCircuitos";
 import {
   Lightning,
   ChartBar,
@@ -22,40 +22,56 @@ import {
   Buildings,
   GraduationCap,
   Sparkle,
+  Crown,
+  Eye,
+  EyeSlash,
+  WhatsappLogo,
+  Info,
 } from "@phosphor-icons/react";
 
 export default function HomePage() {
-  const { docente, isInitialized, iniciarSesion, registrarDocente, cerrarSesion, telemetria } = useDocente();
+  const { docente, isInitialized, iniciarSesionConPIN, registrarDocente, cerrarSesion, telemetria } = useDocente();
 
   // Estado del formulario de autenticación
   const [tabAuth, setTabAuth] = useState<"login" | "registro">("login");
 
-  // Formulario Login
-  const [loginCorreo, setLoginCorreo] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
+  // Formulario Login con PIN
+  const [loginCredencial, setLoginCredencial] = useState("");
+  const [loginPin, setLoginPin] = useState("");
+  const [mostrarLoginPin, setMostrarLoginPin] = useState(false);
   const [loginMensaje, setLoginMensaje] = useState<{ tipo: "exito" | "error"; texto: string } | null>(null);
 
-  // Formulario Registro
+  // Formulario Registro con PIN y Checkbox de Asesoría
   const [regNombre, setRegNombre] = useState("");
   const [regCorreo, setRegCorreo] = useState("");
   const [regCedula, setRegCedula] = useState("");
-  const [regDRE, setRegDRE] = useState("DRE01");
+  const [regTelefono, setRegTelefono] = useState("");
+  const [esAsesorNacional, setEsAsesorNacional] = useState(false);
+  const [regDRE, setRegDRE] = useState("DRE-01");
   const [regInstitucion, setRegInstitucion] = useState("");
-  const [regPassword, setRegPassword] = useState("");
+  const [regPin, setRegPin] = useState("");
+  const [regPinConfirmar, setRegPinConfirmar] = useState("");
+  const [mostrarRegPin, setMostrarRegPin] = useState(false);
   const [regMensaje, setRegMensaje] = useState<{ tipo: "exito" | "error"; texto: string } | null>(null);
 
-  // Manejador de Login
+  // Manejador de Login con PIN
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setLoginMensaje(null);
 
-    const correoLimpio = loginCorreo.trim().toLowerCase();
-    if (!correoLimpio) {
-      setLoginMensaje({ tipo: "error", texto: "Por favor ingrese su correo electrónico." });
+    const credLimpia = loginCredencial.trim();
+    const pinLimpio = loginPin.trim();
+
+    if (!credLimpia) {
+      setLoginMensaje({ tipo: "error", texto: "Por favor ingrese su Cédula o Correo Institucional MEP." });
+      return;
+    }
+    if (!pinLimpio || !/^\d{4}$/.test(pinLimpio)) {
+      setLoginMensaje({ tipo: "error", texto: "El PIN debe tener exactamente 4 dígitos numéricos." });
       return;
     }
 
-    const res = iniciarSesion(correoLimpio, loginPassword);
+    const res = iniciarSesionConPIN(credLimpia, pinLimpio);
     if (res.exito) {
       setLoginMensaje({ tipo: "exito", texto: res.mensaje });
     } else {
@@ -63,51 +79,121 @@ export default function HomePage() {
     }
   };
 
-  // Autocompletar demo
+  // Autocompletar demo de Asesoría Nacional
   const usarDemo = () => {
-    setLoginCorreo("alberto.bustos.ortega@mep.go.cr");
-    setLoginPassword("EdcRfvTgb1726**");
+    setLoginCredencial("alberto.bustos.ortega@mep.go.cr");
+    setLoginPin("1726");
     setLoginMensaje(null);
   };
 
-  // Manejador de Registro
+  // Reglas de evaluación del PIN en tiempo real
+  const evaluarPIN = (valorPin: string, valorCedula: string) => {
+    if (!valorPin) return null;
+    if (!/^\d{4}$/.test(valorPin)) {
+      return "El PIN debe contener exactamente 4 dígitos numéricos (0-9).";
+    }
+    if (/^(\d)\1{3}$/.test(valorPin)) {
+      return "⚠️ PIN muy predecible: Evita usar 4 dígitos iguales (ej. 0000 o 1111).";
+    }
+    const consecutivos = ["0123", "1234", "2345", "3456", "4567", "5678", "6789", "9876", "8765", "7654", "6543", "5432", "4321", "3210"];
+    if (consecutivos.includes(valorPin)) {
+      return "⚠️ PIN inseguro: Evita números consecutivos (ej. 1234 o 4321).";
+    }
+    const cedLimpia = valorCedula.replace(/[^0-9]/g, "");
+    if (cedLimpia.length >= 4 && cedLimpia.endsWith(valorPin)) {
+      return "⚠️ Evita usar los últimos 4 dígitos de tu número de cédula como PIN.";
+    }
+    return null;
+  };
+
+  const advertenciaPin = evaluarPIN(regPin, regCedula);
+
+  // Manejador de Registro con PIN
   const handleRegistro = (e: React.FormEvent) => {
     e.preventDefault();
     setRegMensaje(null);
 
-    if (!regNombre.trim() || regNombre.trim().split(/\s+/).length < 2) {
+    // 1. Validar nombre completo (mínimo 2 palabras: Nombre y Apellidos)
+    const partesNombre = regNombre.trim().split(/\s+/);
+    if (partesNombre.length < 2) {
       setRegMensaje({ tipo: "error", texto: "Por favor ingrese su nombre completo (Nombre y Apellidos)." });
       return;
     }
 
+    // 2. Validar cédula (mínimo 9 dígitos)
+    const cedulaLimpia = regCedula.trim();
+    if (cedulaLimpia.replace(/[^0-9]/g, "").length < 9 && cedulaLimpia.length < 9) {
+      setRegMensaje({ tipo: "error", texto: "La cédula o identificación debe tener un formato válido (mínimo 9 dígitos)." });
+      return;
+    }
+
+    // 3. Validar correo institucional oficial MEP estricto: nombre.apellido.apellido@mep.go.cr
     const correoLimpio = regCorreo.trim().toLowerCase();
-    if (!correoLimpio) {
-      setRegMensaje({ tipo: "error", texto: "Por favor ingrese su correo electrónico." });
+    const regexMepStrict = /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+@mep\.go\.cr$/i;
+    if (!regexMepStrict.test(correoLimpio)) {
+      setRegMensaje({
+        tipo: "error",
+        texto: "El correo debe ser institucional oficial del MEP con estructura nombre.apellido.apellido@mep.go.cr",
+      });
       return;
     }
 
-    if (regPassword.trim().length < 6) {
-      setRegMensaje({ tipo: "error", texto: "La contraseña debe tener al menos 6 caracteres." });
+    // 4. Validar PIN de 4 dígitos
+    const pinLimpio = regPin.trim();
+    if (!/^\d{4}$/.test(pinLimpio)) {
+      setRegMensaje({ tipo: "error", texto: "El PIN de acceso rápido debe contener exactamente 4 dígitos numéricos." });
       return;
     }
 
-    const dreSeleccionada = LISTA_DRE_MEP.find((d) => d.codigo === regDRE) || LISTA_DRE_MEP[0];
-    const correoFormateado = correoLimpio.includes("@") ? correoLimpio : `${correoLimpio}@mep.go.cr`;
-    const randomId = `DOC-${regDRE.replace("-", "")}-${Math.floor(1000 + Math.random() * 9000)}`;
+    if (pinLimpio !== regPinConfirmar.trim()) {
+      setRegMensaje({ tipo: "error", texto: "La confirmación del PIN no coincide. Ingrese los mismos 4 dígitos." });
+      return;
+    }
+
+    // 5. Configurar asignación territorial o Asesoría Nacional
+    let dreCodigoFinal = regDRE;
+    let dreNombreFinal = "";
+    let circuitoFinal = "Circuito 01";
+    let institucionFinal = regInstitucion.trim() || "Liceo / Colegio de Secundaria";
+    let rolFinal = "Docente de Formación Tecnológica";
+    let codigoPresupuestarioFinal = "SABER-2026";
+
+    if (esAsesorNacional || correoLimpio === "alberto.bustos.ortega@mep.go.cr") {
+      dreCodigoFinal = "DRE-NACIONAL";
+      dreNombreFinal = "Asesoría de Formación Tecnológica";
+      circuitoFinal = "Nivel Nacional / Ámbito General";
+      institucionFinal = "Asesoría Nacional de Formación Tecnológica (Dimensión 1 y 2)";
+      rolFinal = "Asesor de Formación Tecnológica & Administrador General (Dimensión 1 y 2)";
+      codigoPresupuestarioFinal = "FT-NACIONAL-2026";
+    } else {
+      const dreEncontrada = LISTA_DRE_REGIONALES.find((d) => d.codigo === regDRE) || LISTA_DRE_REGIONALES[0];
+      dreNombreFinal = dreEncontrada.nombre;
+      circuitoFinal = dreEncontrada.circuitos[0] || "Circuito 01";
+      if (!institucionFinal) {
+        setRegMensaje({ tipo: "error", texto: "Por favor indique el nombre de su Centro Educativo o Liceo." });
+        return;
+      }
+    }
+
+    const esSuperAdminAlberto = correoLimpio === "alberto.bustos.ortega@mep.go.cr" || dreCodigoFinal === "DRE-NACIONAL";
+    const randomId = esSuperAdminAlberto
+      ? "ASESOR-FT-7729"
+      : `DOC-${dreCodigoFinal.replace(/[^a-zA-Z0-9]/g, "")}-${Math.floor(1000 + Math.random() * 9000)}`;
 
     const nuevoDocente = {
       idDocente: randomId,
       nombreCompleto: regNombre.trim().startsWith("Prof.") ? regNombre.trim() : `Prof. ${regNombre.trim()}`,
-      correoInstitucional: correoFormateado,
-      contrasena: regPassword.trim(),
-      cedula: regCedula.trim() || "N/A",
-      telefono: "",
-      dreCodigo: regDRE,
-      dreNombre: dreSeleccionada.nombre,
-      circuito: dreSeleccionada.circuitos[0] || "Circuito 01",
-      codigoPresupuestario: "FT-2026",
-      institucionNombre: regInstitucion.trim() || "Liceo / Colegio de Secundaria",
-      rol: "Docente de Formación Tecnológica",
+      correoInstitucional: correoLimpio,
+      pin: pinLimpio,
+      contrasena: pinLimpio,
+      cedula: cedulaLimpia,
+      telefono: regTelefono.trim(),
+      dreCodigo: dreCodigoFinal,
+      dreNombre: dreNombreFinal,
+      circuito: circuitoFinal,
+      codigoPresupuestario: codigoPresupuestarioFinal,
+      institucionNombre: institucionFinal,
+      rol: rolFinal,
       asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
       fechaRegistro: new Date().toISOString(),
     };
@@ -122,34 +208,34 @@ export default function HomePage() {
 
   return (
     <div className="space-y-12 pb-16">
-      {/* Si el docente NO ha iniciado sesión, mostrar pasarela de login / registro */}
+      {/* Si el docente NO ha iniciado sesión, mostrar pasarela de login / registro con PIN */}
       {!docente ? (
-        <section className="relative overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white pt-12 pb-20 px-4 sm:px-6 lg:px-8">
+        <section className="relative overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white pt-10 pb-20 px-4 sm:px-6 lg:px-8">
           <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:16px_16px]" />
           
           <div className="relative max-w-xl mx-auto space-y-6">
             
             {/* Título de la Plataforma */}
             <div className="text-center space-y-3">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-900/60 border border-emerald-500/40 text-emerald-300 text-xs font-bold">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-900/70 border border-emerald-500/50 text-emerald-300 text-xs font-bold shadow-sm">
                 <Lightning size={16} weight="fill" className="text-amber-400" />
-                <span>Formación tecnológica • 9° año</span>
+                <span>Formación Tecnológica • Programa Nacional MEP</span>
               </div>
 
               <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
                 Diagnóstico & Dashboard
               </h1>
 
-              <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto">
-                Acceso para la aplicación del diagnóstico de 9° año y la consolidación de resultados en el dashboard.
+              <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto font-medium leading-relaxed">
+                Ingreso rápido con <strong>Cédula / Correo MEP</strong> y <strong>PIN de 4 dígitos</strong> para aplicación de diagnósticos y telemetría analítica.
               </p>
             </div>
 
             {/* Tarjeta de Autenticación */}
-            <div className="bg-slate-900/90 border border-slate-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl space-y-6">
+            <div className="bg-slate-900/95 border border-slate-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl space-y-6">
               
               {/* Selector de Pestañas */}
-              <div className="grid grid-cols-2 p-1 bg-slate-950 rounded-2xl border border-slate-800">
+              <div className="grid grid-cols-2 p-1.5 bg-slate-950 rounded-2xl border border-slate-800">
                 <button
                   type="button"
                   onClick={() => {
@@ -162,8 +248,8 @@ export default function HomePage() {
                       : "text-slate-400 hover:text-white"
                   }`}
                 >
-                  <SignIn size={16} weight="bold" />
-                  <span>Iniciar sesión</span>
+                  <Key size={16} weight="bold" />
+                  <span>Iniciar con PIN</span>
                 </button>
 
                 <button
@@ -184,14 +270,14 @@ export default function HomePage() {
               </div>
 
               {tabAuth === "login" ? (
-                /* Formulario Login */
+                /* Formulario Login con PIN */
                 <form onSubmit={handleLogin} className="space-y-4">
                   {loginMensaje && (
                     <div
                       className={`p-3.5 rounded-xl text-xs font-bold flex items-center gap-2.5 ${
                         loginMensaje.tipo === "exito"
-                          ? "bg-emerald-950/80 border border-emerald-500/60 text-emerald-200"
-                          : "bg-rose-950/80 border border-rose-500/60 text-rose-200"
+                          ? "bg-emerald-950/90 border border-emerald-500/60 text-emerald-200"
+                          : "bg-rose-950/90 border border-rose-500/60 text-rose-200"
                       }`}
                     >
                       {loginMensaje.tipo === "exito" ? (
@@ -205,17 +291,17 @@ export default function HomePage() {
 
                   <div>
                     <label className="block text-xs font-bold text-slate-300 mb-1.5">
-                      Correo electrónico:
+                      Cédula o Correo Electrónico MEP:
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
-                        <EnvelopeSimple size={18} />
+                        <IdentificationCard size={18} />
                       </div>
                       <input
                         type="text"
-                        value={loginCorreo}
-                        onChange={(e) => setLoginCorreo(e.target.value)}
-                        placeholder="nombre.apellido.apellido@mep.go.cr o usuario"
+                        value={loginCredencial}
+                        onChange={(e) => setLoginCredencial(e.target.value)}
+                        placeholder="Ej: 1-1122-3344 o nombre.apellido.apellido@mep.go.cr"
                         required
                         className="w-full pl-10 pr-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-semibold"
                       />
@@ -223,21 +309,37 @@ export default function HomePage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1.5">
-                      Contraseña:
-                    </label>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="block text-xs font-bold text-slate-300">
+                        PIN de Acceso (4 Dígitos):
+                      </label>
+                      <Link
+                        href="/registro"
+                        className="text-[11px] font-bold text-emerald-400 hover:text-emerald-300 hover:underline"
+                      >
+                        ¿Olvidaste tu PIN?
+                      </Link>
+                    </div>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
                         <LockKey size={18} />
                       </div>
                       <input
-                        type="password"
-                        value={loginPassword}
-                        onChange={(e) => setLoginPassword(e.target.value)}
-                        placeholder="••••••••••••"
+                        type={mostrarLoginPin ? "text" : "password"}
+                        maxLength={4}
+                        value={loginPin}
+                        onChange={(e) => setLoginPin(e.target.value.replace(/[^0-9]/g, ""))}
+                        placeholder="••••"
                         required
-                        className="w-full pl-10 pr-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-semibold"
+                        className="w-full pl-10 pr-10 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-center text-lg font-mono font-black tracking-widest text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
                       />
+                      <button
+                        type="button"
+                        onClick={() => setMostrarLoginPin(!mostrarLoginPin)}
+                        className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-200"
+                      >
+                        {mostrarLoginPin ? <EyeSlash size={18} /> : <Eye size={18} />}
+                      </button>
                     </div>
                   </div>
 
@@ -245,10 +347,10 @@ export default function HomePage() {
                     <button
                       type="button"
                       onClick={usarDemo}
-                      className="text-[11px] font-bold text-emerald-400 hover:text-emerald-300 hover:underline flex items-center gap-1"
+                      className="text-[11px] font-bold text-amber-400 hover:text-amber-300 hover:underline flex items-center gap-1"
                     >
-                      <Key size={14} />
-                      <span>Cargar credenciales de demostración</span>
+                      <Crown size={15} weight="fill" />
+                      <span>Demo Asesoría (Alberto Bustos / PIN 1726)</span>
                     </button>
 
                     <button
@@ -256,7 +358,7 @@ export default function HomePage() {
                       className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-lg transition-all"
                     >
                       <SignIn size={16} weight="bold" />
-                      <span>Iniciar sesión</span>
+                      <span>Ingresar con PIN</span>
                     </button>
                   </div>
 
@@ -272,14 +374,14 @@ export default function HomePage() {
                   </div>
                 </form>
               ) : (
-                /* Formulario Registro */
-                <form onSubmit={handleRegistro} className="space-y-3.5">
+                /* Formulario Registro con PIN y Checkbox de Asesoría */
+                <form onSubmit={handleRegistro} className="space-y-4">
                   {regMensaje && (
                     <div
                       className={`p-3.5 rounded-xl text-xs font-bold flex items-center gap-2.5 ${
                         regMensaje.tipo === "exito"
-                          ? "bg-emerald-950/80 border border-emerald-500/60 text-emerald-200"
-                          : "bg-rose-950/80 border border-rose-500/60 text-rose-200"
+                          ? "bg-emerald-950/90 border border-emerald-500/60 text-emerald-200"
+                          : "bg-rose-950/90 border border-rose-500/60 text-rose-200"
                       }`}
                     >
                       {regMensaje.tipo === "exito" ? (
@@ -291,9 +393,10 @@ export default function HomePage() {
                     </div>
                   )}
 
+                  {/* Nombre Completo */}
                   <div>
                     <label className="block text-xs font-bold text-slate-300 mb-1">
-                      Nombre completo (Nombre y Apellidos):
+                      Nombre completo (Nombre y Apellidos) <span className="text-rose-400">*</span>:
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
@@ -305,34 +408,16 @@ export default function HomePage() {
                         onChange={(e) => setRegNombre(e.target.value)}
                         placeholder="Prof. Juan Pérez Gómez"
                         required
-                        className="w-full pl-10 pr-3.5 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-semibold"
+                        className="w-full pl-10 pr-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-semibold"
                       />
                     </div>
                   </div>
 
+                  {/* Cédula y Teléfono Opcional */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-xs font-bold text-slate-300 mb-1">
-                        Correo electrónico:
-                      </label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
-                          <EnvelopeSimple size={18} />
-                        </div>
-                        <input
-                          type="text"
-                          value={regCorreo}
-                          onChange={(e) => setRegCorreo(e.target.value)}
-                          placeholder="usuario@mep.go.cr"
-                          required
-                          className="w-full pl-10 pr-3.5 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-semibold"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-bold text-slate-300 mb-1">
-                        Cédula / Identificación:
+                        Cédula / Identificación <span className="text-rose-400">*</span>:
                       </label>
                       <div className="relative">
                         <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
@@ -343,28 +428,100 @@ export default function HomePage() {
                           value={regCedula}
                           onChange={(e) => setRegCedula(e.target.value)}
                           placeholder="1-1122-3344"
-                          className="w-full pl-10 pr-3.5 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-semibold"
+                          required
+                          className="w-full pl-10 pr-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-semibold"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-slate-300 mb-1 flex items-center justify-between">
+                        <span>WhatsApp (Opcional):</span>
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-emerald-500">
+                          <WhatsappLogo size={18} />
+                        </div>
+                        <input
+                          type="tel"
+                          value={regTelefono}
+                          onChange={(e) => setRegTelefono(e.target.value)}
+                          placeholder="8888-9999"
+                          className="w-full pl-10 pr-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-semibold"
                         />
                       </div>
                     </div>
                   </div>
 
+                  {/* Correo Oficial MEP */}
+                  <div>
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      Correo Electrónico Institucional MEP (@mep.go.cr) <span className="text-rose-400">*</span>:
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                        <EnvelopeSimple size={18} />
+                      </div>
+                      <input
+                        type="email"
+                        value={regCorreo}
+                        onChange={(e) => setRegCorreo(e.target.value)}
+                        placeholder="nombre.apellido.apellido@mep.go.cr"
+                        required
+                        className="w-full pl-10 pr-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-semibold"
+                      />
+                    </div>
+                    <p className="text-[11px] text-slate-400 mt-1 flex items-center gap-1 font-medium">
+                      <Info size={14} className="text-emerald-400 shrink-0" />
+                      <span>La comunicación oficial del MEP y reportes se enviarán a esta cuenta.</span>
+                    </p>
+                  </div>
+
+                  {/* CHECKBOX SEPARADOR: ¿Soy Asesor Nacional / Administrador MEP? */}
+                  <div className="p-3.5 bg-slate-950/80 border border-amber-500/40 rounded-2xl space-y-2">
+                    <label className="flex items-start gap-3 cursor-pointer select-none">
+                      <input
+                        type="checkbox"
+                        checked={esAsesorNacional}
+                        onChange={(e) => setEsAsesorNacional(e.target.checked)}
+                        className="mt-1 w-4 h-4 rounded text-amber-500 focus:ring-amber-400 border-slate-700 bg-slate-900 cursor-pointer"
+                      />
+                      <div className="space-y-0.5">
+                        <span className="text-xs font-black text-amber-300 flex items-center gap-1.5">
+                          <Crown size={16} weight="fill" className="text-amber-400" />
+                          <span>Soy Asesor Nacional / Administrador MEP</span>
+                        </span>
+                        <p className="text-[11px] text-slate-400 font-medium">
+                          Al marcar esta casilla, se asigna automáticamente el rol de Asesoría Nacional y se desactivan la Dirección Regional y el Centro Educativo.
+                        </p>
+                      </div>
+                    </label>
+                  </div>
+
+                  {/* DRE y Centro Educativo (se desactivan si esAsesorNacional está marcado) */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-xs font-bold text-slate-300 mb-1">
-                        Dirección Regional:
+                        Dirección Regional (DRE):
                       </label>
-                      <select
-                        value={regDRE}
-                        onChange={(e) => setRegDRE(e.target.value)}
-                        className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white focus:outline-none focus:border-emerald-500 font-semibold"
-                      >
-                        {LISTA_DRE_MEP.map((d) => (
-                          <option key={d.codigo} value={d.codigo}>
-                            {d.nombre}
-                          </option>
-                        ))}
-                      </select>
+                      {esAsesorNacional ? (
+                        <div className="px-3 py-2.5 bg-slate-900/60 border border-slate-800 rounded-xl text-xs font-bold text-amber-300/80 flex items-center gap-2 cursor-not-allowed">
+                          <Crown size={15} weight="fill" className="text-amber-400 shrink-0" />
+                          <span>Asesoría de Formación Tecnológica</span>
+                        </div>
+                      ) : (
+                        <select
+                          value={regDRE}
+                          onChange={(e) => setRegDRE(e.target.value)}
+                          className="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white focus:outline-none focus:border-emerald-500 font-semibold"
+                        >
+                          {LISTA_DRE_REGIONALES.map((d) => (
+                            <option key={d.codigo} value={d.codigo}>
+                              {d.codigo} - {d.nombre} ({d.provincia})
+                            </option>
+                          ))}
+                        </select>
+                      )}
                     </div>
 
                     <div>
@@ -377,46 +534,90 @@ export default function HomePage() {
                         </div>
                         <input
                           type="text"
-                          value={regInstitucion}
+                          value={esAsesorNacional ? "Asesoría Nacional (Dimensión 1 y 2)" : regInstitucion}
                           onChange={(e) => setRegInstitucion(e.target.value)}
-                          placeholder="Liceo / Colegio"
-                          className="w-full pl-10 pr-3.5 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-semibold"
+                          disabled={esAsesorNacional}
+                          placeholder={esAsesorNacional ? "Asignado automáticamente" : "Ej: Liceo de Costa Rica"}
+                          required={!esAsesorNacional}
+                          className={`w-full pl-10 pr-3.5 py-2.5 border rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+                            esAsesorNacional
+                              ? "bg-slate-900/60 border-slate-800 text-slate-400 cursor-not-allowed"
+                              : "bg-slate-950 border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                          }`}
                         />
                       </div>
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">
-                      Contraseña (mínimo 6 caracteres):
-                    </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
-                        <LockKey size={18} />
-                      </div>
-                      <input
-                        type="password"
-                        value={regPassword}
-                        onChange={(e) => setRegPassword(e.target.value)}
-                        placeholder="••••••••••••"
-                        required
-                        className="w-full pl-10 pr-3.5 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-semibold"
-                      />
+                  {/* PIN de 4 Dígitos */}
+                  <div className="p-3.5 bg-indigo-950/40 border border-indigo-500/40 rounded-2xl space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-black text-indigo-200 flex items-center gap-1.5">
+                        <LockKey size={16} weight="bold" className="text-indigo-400" />
+                        <span>PIN de Acceso Rápido (4 Dígitos Numéricos) <span className="text-rose-400">*</span></span>
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setMostrarRegPin(!mostrarRegPin)}
+                        className="text-[11px] font-bold text-indigo-300 hover:text-white flex items-center gap-1"
+                      >
+                        {mostrarRegPin ? <EyeSlash size={14} /> : <Eye size={14} />}
+                        <span>{mostrarRegPin ? "Ocultar" : "Ver PIN"}</span>
+                      </button>
                     </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[11px] font-bold text-slate-300 mb-1">
+                          Crea tu PIN (4 números)
+                        </label>
+                        <input
+                          type={mostrarRegPin ? "text" : "password"}
+                          maxLength={4}
+                          value={regPin}
+                          onChange={(e) => setRegPin(e.target.value.replace(/[^0-9]/g, ""))}
+                          placeholder="••••"
+                          required
+                          className="w-full px-3 py-2 bg-slate-950 border border-indigo-400/60 rounded-xl text-center font-mono text-base font-black text-white focus:outline-none focus:border-indigo-400"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-bold text-slate-300 mb-1">
+                          Confirma tu PIN
+                        </label>
+                        <input
+                          type={mostrarRegPin ? "text" : "password"}
+                          maxLength={4}
+                          value={regPinConfirmar}
+                          onChange={(e) => setRegPinConfirmar(e.target.value.replace(/[^0-9]/g, ""))}
+                          placeholder="••••"
+                          required
+                          className="w-full px-3 py-2 bg-slate-950 border border-indigo-400/60 rounded-xl text-center font-mono text-base font-black text-white focus:outline-none focus:border-indigo-400"
+                        />
+                      </div>
+                    </div>
+
+                    {advertenciaPin && (
+                      <div className="p-2 bg-amber-950/80 border border-amber-500/50 rounded-xl text-[11px] font-bold text-amber-200 flex items-center gap-2">
+                        <WarningCircle size={15} className="text-amber-400 shrink-0" weight="fill" />
+                        <span>{advertenciaPin}</span>
+                      </div>
+                    )}
                   </div>
 
                   <div className="pt-2">
                     <button
                       type="submit"
-                      className="w-full inline-flex items-center justify-center gap-2 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-lg transition-all"
+                      className="w-full inline-flex items-center justify-center gap-2 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-lg transition-all"
                     >
                       <UserPlus size={16} weight="bold" />
-                      <span>Registrarse e ingresar</span>
+                      <span>Registrarse e Ingresar con PIN</span>
                     </button>
                   </div>
 
                   <div className="pt-2 border-t border-slate-800 text-center">
-                    <span className="text-xs text-slate-400">¿Ya tienes cuenta? </span>
+                    <span className="text-xs text-slate-400">¿Ya tienes cuenta registrada? </span>
                     <button
                       type="button"
                       onClick={() => setTabAuth("login")}
@@ -440,8 +641,16 @@ export default function HomePage() {
             {/* Barra de Estado de Docente Autenticado */}
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-emerald-950/60 border border-emerald-600/50 p-4 rounded-2xl backdrop-blur-md">
               <div className="flex items-center gap-3 w-full sm:w-auto">
-                <div className="w-11 h-11 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 flex items-center justify-center shrink-0">
-                  <UserCircle size={26} weight="fill" />
+                <div className={`w-11 h-11 rounded-xl border flex items-center justify-center shrink-0 ${
+                  docente.dreCodigo === "DRE-NACIONAL" || docente.correoInstitucional === "alberto.bustos.ortega@mep.go.cr"
+                    ? "bg-amber-500/20 border-amber-400/50 text-amber-300"
+                    : "bg-emerald-500/20 border-emerald-400/40 text-emerald-300"
+                }`}>
+                  {docente.dreCodigo === "DRE-NACIONAL" || docente.correoInstitucional === "alberto.bustos.ortega@mep.go.cr" ? (
+                    <Crown size={26} weight="fill" />
+                  ) : (
+                    <UserCircle size={26} weight="fill" />
+                  )}
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
@@ -449,7 +658,7 @@ export default function HomePage() {
                       {docente.nombreCompleto}
                     </span>
                     <span className="px-2 py-0.5 rounded-full bg-emerald-400/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-bold">
-                      Activo
+                      {docente.dreCodigo === "DRE-NACIONAL" ? "Asesoría Nacional MEP" : "Docente Activo"}
                     </span>
                   </div>
                   <div className="text-xs text-emerald-200/80 font-mono mt-0.5">

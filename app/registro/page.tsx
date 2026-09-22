@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useDocente, DOCENTE_DEFAULT } from "@/context/DocenteContext";
-import { LISTA_DRE_MEP } from "@/lib/dreCircuitos";
+import { LISTA_DRE_MEP, LISTA_DRE_REGIONALES } from "@/lib/dreCircuitos";
 import {
   UserCircle,
   IdentificationCard,
@@ -768,23 +768,57 @@ export default function RegistroDocentePage() {
               <span>Dirección Regional e Institución Educativa</span>
             </h3>
 
+            {/* Checkbox: ¿Soy Asesor Nacional / Administrador MEP? */}
+            <div className="p-4 bg-amber-50/80 border-2 border-amber-300/80 rounded-2xl space-y-2">
+              <label className="flex items-start gap-3 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={dreNormActual === "DRE-NACIONAL"}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      handleCambioDRE("DRE-NACIONAL");
+                    } else {
+                      handleCambioDRE("DRE-01");
+                    }
+                  }}
+                  className="mt-1 w-4 h-4 rounded text-amber-600 focus:ring-amber-500 border-amber-400 bg-white cursor-pointer"
+                />
+                <div className="space-y-0.5">
+                  <span className="text-xs font-black text-amber-950 flex items-center gap-1.5">
+                    <Crown size={16} weight="fill" className="text-amber-600" />
+                    <span>Soy Asesor Nacional / Administrador MEP</span>
+                  </span>
+                  <p className="text-[11.5px] text-amber-900 font-medium">
+                    Al marcar esta casilla, se asigna automáticamente el rol de Asesoría Nacional y se desactivan los campos de Dirección Regional y Centro Educativo.
+                  </p>
+                </div>
+              </label>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* DRE */}
               <div className="space-y-1.5">
                 <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
                   Dirección Regional de Educación (DRE) <span className="text-rose-600">*</span>
                 </label>
-                <select
-                  value={dreNormActual}
-                  onChange={(e) => handleCambioDRE(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 outline-hidden transition-all"
-                >
-                  {LISTA_DRE_MEP.map((dre) => (
-                    <option key={dre.codigo} value={dre.codigo}>
-                      {dre.codigo} - {dre.nombre} ({dre.provincia})
-                    </option>
-                  ))}
-                </select>
+                {dreNormActual === "DRE-NACIONAL" ? (
+                  <div className="px-4 py-3 bg-slate-100 border border-slate-300 rounded-xl text-xs font-bold text-slate-500 flex items-center gap-2 cursor-not-allowed">
+                    <Crown size={16} weight="fill" className="text-amber-600 shrink-0" />
+                    <span>Asesoría de Formación Tecnológica (Nacional)</span>
+                  </div>
+                ) : (
+                  <select
+                    value={dreNormActual}
+                    onChange={(e) => handleCambioDRE(e.target.value)}
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 outline-hidden transition-all"
+                  >
+                    {LISTA_DRE_REGIONALES.map((dre) => (
+                      <option key={dre.codigo} value={dre.codigo}>
+                        {dre.codigo} - {dre.nombre} ({dre.provincia})
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
 
               {/* Circuito */}
@@ -792,17 +826,23 @@ export default function RegistroDocentePage() {
                 <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
                   Circuito Escolar
                 </label>
-                <select
-                  value={circuito}
-                  onChange={(e) => setCircuito(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 outline-hidden transition-all"
-                >
-                  {listaCircuitos.map((circ) => (
-                    <option key={circ} value={circ}>
-                      {circ}
-                    </option>
-                  ))}
-                </select>
+                {dreNormActual === "DRE-NACIONAL" ? (
+                  <div className="px-4 py-3 bg-slate-100 border border-slate-300 rounded-xl text-xs font-bold text-slate-500 cursor-not-allowed">
+                    Nivel Nacional / Ámbito General
+                  </div>
+                ) : (
+                  <select
+                    value={circuito}
+                    onChange={(e) => setCircuito(e.target.value)}
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 outline-hidden transition-all"
+                  >
+                    {listaCircuitos.map((circ) => (
+                      <option key={circ} value={circ}>
+                        {circ}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
 
               {/* Institución */}
@@ -812,10 +852,15 @@ export default function RegistroDocentePage() {
                 </label>
                 <input
                   type="text"
-                  value={institucion}
+                  value={dreNormActual === "DRE-NACIONAL" ? "Asesoría Nacional de Formación Tecnológica (Dimensión 1 y 2)" : institucion}
                   onChange={(e) => setInstitucion(e.target.value)}
-                  placeholder="Ej: Liceo de Santa Cruz / CTP de Puriscal"
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 outline-hidden transition-all"
+                  disabled={dreNormActual === "DRE-NACIONAL"}
+                  placeholder={dreNormActual === "DRE-NACIONAL" ? "Asignado automáticamente para Asesoría Nacional" : "Ej: Liceo de Santa Cruz / CTP de Puriscal"}
+                  className={`w-full px-4 py-3 border rounded-xl text-xs font-bold transition-all ${
+                    dreNormActual === "DRE-NACIONAL"
+                      ? "bg-slate-100 border-slate-300 text-slate-500 cursor-not-allowed"
+                      : "bg-slate-50 border-slate-300 text-slate-900 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 outline-hidden"
+                  }`}
                 />
               </div>
             </div>

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useDocente } from "@/context/DocenteContext";
-import { LISTA_DRE_MEP } from "@/lib/dreCircuitos";
+import { LISTA_DRE_MEP, LISTA_DRE_REGIONALES } from "@/lib/dreCircuitos";
 import {
   ShieldCheck,
   UserCircle,
@@ -21,6 +21,8 @@ import {
   Eye,
   EyeSlash,
   WhatsappLogo,
+  Crown,
+  Info,
 } from "@phosphor-icons/react";
 
 interface AuthGuardProps {
@@ -28,7 +30,7 @@ interface AuthGuardProps {
 }
 
 export default function AuthGuard({ children }: AuthGuardProps) {
-  const { docente, isInitialized, iniciarSesion, registrarDocente } = useDocente();
+  const { docente, isInitialized, iniciarSesionConPIN, registrarDocente } = useDocente();
 
   const [tab, setTab] = useState<"login" | "registro">("login");
 
@@ -43,10 +45,12 @@ export default function AuthGuard({ children }: AuthGuardProps) {
   const [regCorreo, setRegCorreo] = useState("");
   const [regCedula, setRegCedula] = useState("");
   const [regTelefono, setRegTelefono] = useState("");
+  const [esAsesorNacional, setEsAsesorNacional] = useState(false);
   const [regDRE, setRegDRE] = useState("DRE-01");
   const [regInstitucion, setRegInstitucion] = useState("");
   const [regPin, setRegPin] = useState("");
   const [regPinConfirmar, setRegPinConfirmar] = useState("");
+  const [mostrarRegPin, setMostrarRegPin] = useState(false);
   const [regMensaje, setRegMensaje] = useState<{ tipo: "exito" | "error"; texto: string } | null>(null);
 
   // Loading during hydration
@@ -69,7 +73,19 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     e.preventDefault();
     setLoginMensaje(null);
 
-    const res = iniciarSesion(loginCredencial, loginPin);
+    const credLimpia = loginCredencial.trim();
+    const pinLimpio = loginPin.trim();
+
+    if (!credLimpia) {
+      setLoginMensaje({ tipo: "error", texto: "Por favor ingrese su Cédula o Correo Institucional MEP." });
+      return;
+    }
+    if (!pinLimpio || !/^\d{4}$/.test(pinLimpio)) {
+      setLoginMensaje({ tipo: "error", texto: "El PIN debe tener exactamente 4 dígitos numéricos." });
+      return;
+    }
+
+    const res = iniciarSesionConPIN(credLimpia, pinLimpio);
     if (res.exito) {
       setLoginMensaje({ tipo: "exito", texto: res.mensaje });
     } else {
@@ -104,38 +120,66 @@ export default function AuthGuard({ children }: AuthGuardProps) {
       return;
     }
 
-    if (regCedula.trim().length < 9) {
+    const cedulaLimpia = regCedula.trim();
+    if (cedulaLimpia.replace(/[^0-9]/g, "").length < 9 && cedulaLimpia.length < 9) {
       setRegMensaje({ tipo: "error", texto: "La cédula debe tener un formato válido (mínimo 9 dígitos)." });
       return;
     }
 
-    if (!/^\d{4}$/.test(regPin.trim())) {
+    const pinLimpio = regPin.trim();
+    if (!/^\d{4}$/.test(pinLimpio)) {
       setRegMensaje({ tipo: "error", texto: "El PIN debe tener exactamente 4 dígitos numéricos." });
       return;
     }
 
-    if (regPin.trim() !== regPinConfirmar.trim()) {
+    if (pinLimpio !== regPinConfirmar.trim()) {
       setRegMensaje({ tipo: "error", texto: "La confirmación del PIN no coincide." });
       return;
     }
 
-    const dreSeleccionada = LISTA_DRE_MEP.find((d) => d.codigo === regDRE) || LISTA_DRE_MEP[1];
-    const randomId = `DOC-${regDRE.replace(/[^a-zA-Z0-9]/g, "")}-${Math.floor(1000 + Math.random() * 9000)}`;
+    let dreCodigoFinal = regDRE;
+    let dreNombreFinal = "";
+    let circuitoFinal = "Circuito 01";
+    let institucionFinal = regInstitucion.trim() || "Liceo / Colegio de Secundaria";
+    let rolFinal = "Docente de Formación Tecnológica";
+    let codigoPresupuestarioFinal = "SABER-2026";
+
+    if (esAsesorNacional || correoLimpio === "alberto.bustos.ortega@mep.go.cr") {
+      dreCodigoFinal = "DRE-NACIONAL";
+      dreNombreFinal = "Asesoría de Formación Tecnológica";
+      circuitoFinal = "Nivel Nacional / Ámbito General";
+      institucionFinal = "Asesoría Nacional de Formación Tecnológica (Dimensión 1 y 2)";
+      rolFinal = "Asesor de Formación Tecnológica & Administrador General (Dimensión 1 y 2)";
+      codigoPresupuestarioFinal = "FT-NACIONAL-2026";
+    } else {
+      const dreEncontrada = LISTA_DRE_REGIONALES.find((d) => d.codigo === regDRE) || LISTA_DRE_REGIONALES[0];
+      dreNombreFinal = dreEncontrada.nombre;
+      circuitoFinal = dreEncontrada.circuitos[0] || "Circuito 01";
+      if (!institucionFinal) {
+        setRegMensaje({ tipo: "error", texto: "Por favor ingrese el nombre de su Centro Educativo." });
+        return;
+      }
+    }
+
+    const esSuperAdminAlberto = correoLimpio === "alberto.bustos.ortega@mep.go.cr" || dreCodigoFinal === "DRE-NACIONAL";
+    const randomId = esSuperAdminAlberto
+      ? "ASESOR-FT-7729"
+      : `DOC-${dreCodigoFinal.replace(/[^a-zA-Z0-9]/g, "")}-${Math.floor(1000 + Math.random() * 9000)}`;
 
     const nuevoDocente = {
       idDocente: randomId,
       nombreCompleto: regNombre.trim().startsWith("Prof.") ? regNombre.trim() : `Prof. ${regNombre.trim()}`,
       correoInstitucional: correoLimpio,
-      pin: regPin.trim(),
-      contrasena: regPin.trim(),
-      cedula: regCedula.trim(),
+      pin: pinLimpio,
+      contrasena: pinLimpio,
+      cedula: cedulaLimpia,
       telefono: regTelefono.trim(),
-      dreCodigo: regDRE,
-      dreNombre: dreSeleccionada.nombre,
-      circuito: dreSeleccionada.circuitos[0] || "Circuito 01",
-      codigoPresupuestario: "SABER-2026",
-      institucionNombre: regInstitucion.trim() || "Liceo / Colegio de Secundaria",
-      rol: "Docente de Formación Tecnológica",
+      dreCodigo: dreCodigoFinal,
+      dreNombre: dreNombreFinal,
+      circuito: circuitoFinal,
+      codigoPresupuestario: codigoPresupuestarioFinal,
+      institucionNombre: institucionFinal,
+      rol: rolFinal,
       asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
       fechaRegistro: new Date().toISOString(),
     };
@@ -236,7 +280,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                       type="text"
                       value={loginCredencial}
                       onChange={(e) => setLoginCredencial(e.target.value)}
-                      placeholder="Ej: 1-1234-0567 o nombre.apellido@mep.go.cr"
+                      placeholder="Ej: 1-1122-3344 o nombre.apellido.apellido@mep.go.cr"
                       required
                       className="w-full pl-10 pr-3.5 py-3 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white font-medium transition-all"
                     />
@@ -284,8 +328,8 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                     onClick={rellenarDemo}
                     className="text-[11px] font-bold text-emerald-800 hover:text-emerald-950 hover:underline flex items-center gap-1"
                   >
-                    <Key size={14} />
-                    <span>(Demo Asesor: alberto.bustos / PIN 1726)</span>
+                    <Crown size={15} weight="fill" className="text-amber-500" />
+                    <span>Demo Asesoría (Alberto Bustos / PIN 1726)</span>
                   </button>
 
                   <button
@@ -293,7 +337,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                     className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all"
                   >
                     <SignIn size={18} weight="bold" />
-                    <span>Ingresar</span>
+                    <span>Ingresar con PIN</span>
                   </button>
                 </div>
 
@@ -308,7 +352,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                 </div>
               </form>
             ) : (
-              /* Formulario Rápido de Registro */
+              /* Formulario Rápido de Registro con PIN */
               <form onSubmit={handleRegistroSubmit} className="space-y-4">
                 {regMensaje && (
                   <div
@@ -329,7 +373,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 
                 <div>
                   <label className="block text-xs font-black text-slate-800 uppercase tracking-wider mb-1">
-                    Nombre Completo (Nombre y Apellidos):
+                    Nombre Completo (Nombre y Apellidos) <span className="text-rose-600">*</span>:
                   </label>
                   <input
                     type="text"
@@ -344,7 +388,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-black text-slate-800 uppercase tracking-wider mb-1">
-                      Cédula / Identificación:
+                      Cédula / Identificación <span className="text-rose-600">*</span>:
                     </label>
                     <input
                       type="text"
@@ -372,7 +416,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 
                 <div>
                   <label className="block text-xs font-black text-slate-800 uppercase tracking-wider mb-1">
-                    Correo Oficial MEP (@mep.go.cr):
+                    Correo Institucional MEP (@mep.go.cr) <span className="text-rose-600">*</span>:
                   </label>
                   <input
                     type="email"
@@ -382,9 +426,30 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                     required
                     className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 outline-none"
                   />
-                  <p className="text-[11px] text-slate-500 mt-1">
-                    📌 La comunicación oficial se enviará siempre a esta cuenta @mep.go.cr
+                  <p className="text-[11px] text-slate-500 mt-1 font-medium">
+                    📌 La comunicación oficial del MEP se enviará siempre a esta cuenta.
                   </p>
+                </div>
+
+                {/* Checkbox: Soy Asesor Nacional / Administrador MEP */}
+                <div className="p-3 bg-amber-50 border border-amber-300 rounded-2xl">
+                  <label className="flex items-start gap-2.5 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={esAsesorNacional}
+                      onChange={(e) => setEsAsesorNacional(e.target.checked)}
+                      className="mt-0.5 w-4 h-4 rounded text-amber-600 focus:ring-amber-500 border-amber-400 cursor-pointer"
+                    />
+                    <div>
+                      <span className="text-xs font-black text-amber-950 flex items-center gap-1.5">
+                        <Crown size={15} weight="fill" className="text-amber-600" />
+                        <span>Soy Asesor Nacional / Administrador MEP</span>
+                      </span>
+                      <p className="text-[11px] text-amber-900 font-medium">
+                        Desactiva DRE y Centro Educativo al asignar rol nacional.
+                      </p>
+                    </div>
+                  </label>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -392,40 +457,62 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                     <label className="block text-xs font-black text-slate-800 uppercase tracking-wider mb-1">
                       Dirección Regional (DRE):
                     </label>
-                    <select
-                      value={regDRE}
-                      onChange={(e) => setRegDRE(e.target.value)}
-                      className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 outline-none"
-                    >
-                      {LISTA_DRE_MEP.map((dre) => (
-                        <option key={dre.codigo} value={dre.codigo}>
-                          {dre.codigo} - {dre.nombre}
-                        </option>
-                      ))}
-                    </select>
+                    {esAsesorNacional ? (
+                      <div className="px-3.5 py-2.5 bg-slate-100 border border-slate-300 rounded-xl text-xs font-bold text-slate-500 flex items-center gap-2 cursor-not-allowed">
+                        <Crown size={15} weight="fill" className="text-amber-600 shrink-0" />
+                        <span>Asesoría de Formación Tecnológica</span>
+                      </div>
+                    ) : (
+                      <select
+                        value={regDRE}
+                        onChange={(e) => setRegDRE(e.target.value)}
+                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 outline-none"
+                      >
+                        {LISTA_DRE_REGIONALES.map((dre) => (
+                          <option key={dre.codigo} value={dre.codigo}>
+                            {dre.codigo} - {dre.nombre}
+                          </option>
+                        ))}
+                      </select>
+                    )}
                   </div>
 
                   <div>
                     <label className="block text-xs font-black text-slate-800 uppercase tracking-wider mb-1">
-                      Institución Educativa:
+                      Centro Educativo:
                     </label>
                     <input
                       type="text"
-                      value={regInstitucion}
+                      value={esAsesorNacional ? "Asesoría Nacional (Dimensión 1 y 2)" : regInstitucion}
                       onChange={(e) => setRegInstitucion(e.target.value)}
-                      placeholder="Liceo / Colegio"
-                      className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 outline-none"
+                      disabled={esAsesorNacional}
+                      placeholder={esAsesorNacional ? "Asignado automáticamente" : "Liceo / Colegio"}
+                      required={!esAsesorNacional}
+                      className={`w-full px-3.5 py-2.5 border rounded-xl text-xs font-bold ${
+                        esAsesorNacional
+                          ? "bg-slate-100 border-slate-300 text-slate-500 cursor-not-allowed"
+                          : "bg-slate-50 border-slate-300 text-slate-900 focus:bg-white focus:border-emerald-600 outline-none"
+                      }`}
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 p-3 bg-indigo-50 border border-indigo-200 rounded-2xl">
                   <div>
-                    <label className="block text-[11px] font-black text-indigo-950 uppercase mb-1">
-                      PIN de 4 dígitos
-                    </label>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="block text-[11px] font-black text-indigo-950 uppercase">
+                        PIN (4 dígitos)
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => setMostrarRegPin(!mostrarRegPin)}
+                        className="text-[10px] text-indigo-700 font-bold hover:underline"
+                      >
+                        {mostrarRegPin ? "Ocultar" : "Ver"}
+                      </button>
+                    </div>
                     <input
-                      type="password"
+                      type={mostrarRegPin ? "text" : "password"}
                       maxLength={4}
                       value={regPin}
                       onChange={(e) => setRegPin(e.target.value.replace(/[^0-9]/g, ""))}
@@ -440,7 +527,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                       Confirmar PIN
                     </label>
                     <input
-                      type="password"
+                      type={mostrarRegPin ? "text" : "password"}
                       maxLength={4}
                       value={regPinConfirmar}
                       onChange={(e) => setRegPinConfirmar(e.target.value.replace(/[^0-9]/g, ""))}
