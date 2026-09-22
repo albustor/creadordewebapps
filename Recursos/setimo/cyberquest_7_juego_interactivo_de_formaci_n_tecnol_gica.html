@@ -1,0 +1,1884 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberQuest 7° - Misión Tecnológica MEP</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Tone.js for Web Audio Synthesized Sound Effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Fira+Code:wght@400;600&display=swap');
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #0b0f19;
+            color: #f1f5f9;
+            user-select: none;
+        }
+        .font-code {
+            font-family: 'Fira Code', monospace;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        .glow-cyan {
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+        }
+        .glow-emerald {
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+        }
+        .glow-purple {
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+        }
+        .glow-amber {
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+        }
+        .glow-rose {
+            box-shadow: 0 0 20px rgba(244, 63, 94, 0.4);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between overflow-x-hidden bg-slate-950 text-slate-100">
+
+    <!-- Custom Toast Notification -->
+    <div id="toast" class="fixed top-5 right-5 z-50 transform translate-x-full transition-transform duration-300 ease-out flex items-center p-4 max-w-xs text-slate-100 bg-slate-900 border border-cyan-500/50 rounded-xl shadow-2xl space-x-3">
+        <div id="toast-icon" class="text-cyan-400 text-xl"><i class="fas fa-info-circle"></i></div>
+        <div id="toast-msg" class="text-xs font-semibold">Notificación de CyberQuest</div>
+    </div>
+
+    <!-- Custom Modal Dialog -->
+    <div id="custom-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl transform transition-all space-y-4">
+            <div class="flex items-center space-x-3 text-cyan-400">
+                <i id="modal-icon" class="fas fa-shield-halved text-2xl"></i>
+                <h3 id="modal-title" class="text-lg font-bold text-white">Mensaje del Sistema</h3>
+            </div>
+            <p id="modal-desc" class="text-sm text-slate-300 leading-relaxed">Descripción del mensaje...</p>
+            <div id="modal-actions" class="flex justify-end space-x-3 pt-2">
+                <button onclick="closeCustomModal()" class="px-5 py-2 bg-slate-800 hover:bg-slate-700 text-white font-semibold rounded-lg text-xs transition">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teacher Security PIN Modal -->
+    <div id="teacher-pin-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
+        <div class="bg-slate-900 border border-cyan-500/40 rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-4 text-center">
+            <div class="w-14 h-14 bg-cyan-950 text-cyan-400 rounded-full flex items-center justify-center mx-auto text-2xl border border-cyan-500/30">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold text-white">Acceso Docente MEP</h3>
+                <p class="text-xs text-slate-400 mt-1">Ingrese el PIN docente para ver informes de saberes procedimentales, actitudinales y psicomotores. (PIN: <span class="text-cyan-400 font-mono font-bold">1234</span>)</p>
+            </div>
+            <div>
+                <input type="password" id="teacher-pin-input" placeholder="••••" maxlength="6" class="w-full text-center text-2xl font-mono tracking-widest px-4 py-2 bg-slate-950 border border-slate-700 rounded-xl text-cyan-300 outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/20">
+                <p id="pin-error-text" class="text-xs text-rose-400 mt-1 hidden font-semibold">PIN Incorrecto. Intente con 1234.</p>
+            </div>
+            <div class="flex space-x-2">
+                <button onclick="closeTeacherPinModal()" class="w-1/2 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl font-bold text-xs">Cancelar</button>
+                <button onclick="verifyTeacherPin()" class="w-1/2 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl font-bold text-xs shadow-lg shadow-cyan-600/30">Ingresar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <header class="bg-slate-900/90 border-b border-slate-800 backdrop-blur-md sticky top-0 z-40 px-4 py-3">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center text-white shadow-lg glow-cyan">
+                    <i class="fas fa-gamepad text-lg"></i>
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs uppercase font-bold tracking-wider text-cyan-400">MEP - 7° Año</span>
+                        <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full border border-slate-700">Formación Tecnológica</span>
+                    </div>
+                    <h1 class="text-lg font-black tracking-wide text-white flex items-center gap-2">
+                        <span>CyberQuest 7°</span>
+                        <span class="text-xs font-normal text-slate-400 hidden sm:inline">| Saberes Integrados</span>
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Player HUD Bar -->
+            <div id="player-hud" class="hidden flex items-center space-x-4 bg-slate-950/80 px-4 py-2 rounded-xl border border-slate-800 text-xs">
+                <div class="flex items-center space-x-2">
+                    <span id="hud-avatar" class="text-lg">🤖</span>
+                    <span id="hud-name" class="font-bold text-slate-200">Jugador</span>
+                    <span id="hud-section" class="bg-cyan-950 text-cyan-300 px-2 py-0.5 rounded text-[10px] font-mono border border-cyan-800">7-1</span>
+                </div>
+                <div class="h-4 w-px bg-slate-800"></div>
+                <div class="flex items-center space-x-1.5 text-amber-400 font-bold" title="Puntaje Total acumulado">
+                    <i class="fas fa-star"></i>
+                    <span id="hud-score" class="font-mono text-sm">0</span> <span class="text-[10px] text-slate-400">PTS</span>
+                </div>
+                <div class="h-4 w-px bg-slate-800"></div>
+                <div class="flex items-center space-x-1.5 text-rose-400 font-bold" title="Resiliencia / Aprender del error">
+                    <i class="fas fa-heart-pulse"></i>
+                    <span id="hud-resilience" class="font-mono text-xs">100% Resiliencia</span>
+                </div>
+            </div>
+
+            <!-- Header Controls -->
+            <div class="flex items-center space-x-2">
+                <button onclick="toggleAudio()" id="audio-btn" class="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl transition text-xs" title="Activar/Desactivar Sonido">
+                    <i id="audio-icon" class="fas fa-volume-up text-cyan-400"></i>
+                </button>
+                <button onclick="openTeacherPinModal()" class="px-3 py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-xl transition text-xs font-bold flex items-center space-x-1.5">
+                    <i class="fas fa-user-check"></i>
+                    <span class="hidden md:inline">Panel Docente</span>
+                </button>
+                <button onclick="showScreen('registration-screen')" class="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl transition text-xs" title="Inicio / Cambiar Perfil">
+                    <i class="fas fa-home"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main id="app-container" class="max-w-7xl w-full mx-auto p-4 sm:p-6 flex-grow flex flex-col">
+
+        <!-- SCREEN 1: REGISTRATION & PAIR FORMATION -->
+        <section id="registration-screen" class="screen-view max-w-2xl mx-auto w-full my-auto py-8">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div class="text-center space-y-2">
+                    <span class="inline-block bg-cyan-950 text-cyan-400 border border-cyan-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                        <i class="fas fa-rocket mr-1"></i> Laboratorio de Diagnóstico Integrado
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-black text-white">Registro de Ciber-Agentes</h2>
+                    <p class="text-xs sm:text-sm text-slate-400">Fomenta la colaboración, el pensamiento computacional y la destreza motriz en 7° Año.</p>
+                </div>
+
+                <form onsubmit="startCyberQuest(event)" class="space-y-6">
+                    <!-- Avatar Selector -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 text-center">Selecciona tu Avatar de Equipo:</label>
+                        <div class="grid grid-cols-4 gap-3 max-w-md mx-auto">
+                            <button type="button" onclick="selectAvatar('🤖')" class="avatar-opt p-3 bg-slate-950 border-2 border-cyan-500 rounded-2xl text-3xl hover:scale-105 transition flex flex-col items-center space-y-1">
+                                <span>🤖</span>
+                                <span class="text-[10px] font-bold text-slate-400">CyberBot</span>
+                            </button>
+                            <button type="button" onclick="selectAvatar('🐱‍💻')" class="avatar-opt p-3 bg-slate-950 border-2 border-slate-800 rounded-2xl text-3xl hover:scale-105 transition flex flex-col items-center space-y-1">
+                                <span>🐱‍💻</span>
+                                <span class="text-[10px] font-bold text-slate-400">CodeCat</span>
+                            </button>
+                            <button type="button" onclick="selectAvatar('🥷')" class="avatar-opt p-3 bg-slate-950 border-2 border-slate-800 rounded-2xl text-3xl hover:scale-105 transition flex flex-col items-center space-y-1">
+                                <span>🥷</span>
+                                <span class="text-[10px] font-bold text-slate-400">LogicNinja</span>
+                            </button>
+                            <button type="button" onclick="selectAvatar('🦉')" class="avatar-opt p-3 bg-slate-950 border-2 border-slate-800 rounded-2xl text-3xl hover:scale-105 transition flex flex-col items-center space-y-1">
+                                <span>🦉</span>
+                                <span class="text-[10px] font-bold text-slate-400">TechnoOwl</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Input Fields -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                        <div>
+                            <label class="block font-bold text-slate-300 mb-1">Estudiante 1 (Líder de Consola) *</label>
+                            <input type="text" id="reg-student1" required placeholder="Ej: Sofía Castro Jiménez" class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-300 mb-1">Estudiante 2 (Co-piloto Colaborativo)</label>
+                            <input type="text" id="reg-student2" placeholder="Ej: Mateo Vargas Solís" class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-300 mb-1">Sección MEP *</label>
+                            <input type="text" id="reg-section" required placeholder="Ej: 7-1" class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-300 mb-1">Fecha</label>
+                            <input type="date" id="reg-date" required class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full py-4 bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-black text-sm uppercase tracking-wider rounded-2xl shadow-xl shadow-cyan-500/20 hover:scale-[1.01] transition flex items-center justify-center space-x-2">
+                        <span>Iniciar Misión de Saberes Integrados</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- SCREEN 2: LEVEL DASHBOARD / HUB -->
+        <section id="hub-screen" class="screen-view hidden space-y-6 my-auto">
+            <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-md relative">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800 pb-6">
+                    <div>
+                        <div class="flex items-center space-x-2 mb-1">
+                            <span class="text-2xl" id="hub-avatar-display">🤖</span>
+                            <h2 id="hub-welcome-title" class="text-xl sm:text-2xl font-bold text-white">¡Misión Activa, Agente!</h2>
+                        </div>
+                        <p class="text-xs text-slate-400">Completa los 5 módulos integrados: Desarrollo Motriz, Procedimental y Actitudinal.</p>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        <button onclick="showScreen('arcade-screen')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-cyan-500/30 rounded-xl font-bold transition flex items-center space-x-2">
+                            <i class="fas fa-bolt"></i>
+                            <span>Prueba de Reflejos Aritméticos</span>
+                        </button>
+                        <button onclick="showScreen('metacognition-screen')" class="px-4 py-2 bg-purple-950/80 hover:bg-purple-900 text-purple-300 border border-purple-500/30 rounded-xl font-bold transition flex items-center space-x-2">
+                            <i class="fas fa-brain"></i>
+                            <span>Autoevaluación Actitudinal</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Level Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mt-6">
+
+                    <!-- Level 0: Psychomotor Lab (NEW) -->
+                    <div class="level-card bg-slate-950 border border-slate-800 hover:border-rose-500 rounded-2xl p-4 flex flex-col justify-between transition group hover:shadow-xl hover:shadow-rose-500/10 relative overflow-hidden">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-start">
+                                <span class="p-2.5 bg-rose-950 text-rose-400 rounded-xl border border-rose-800 text-lg group-hover:scale-110 transition">
+                                    <i class="fas fa-hand-pointer"></i>
+                                </span>
+                                <span id="badge-l0" class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full font-bold">Pendiente</span>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-bold text-rose-400 uppercase tracking-wider">Módulo Psicomotor</span>
+                                <h3 class="text-sm font-bold text-white mt-0.5">Control Motriz, Ritmo y Espacio</h3>
+                                <p class="text-[11px] text-slate-400 mt-1">Evalúa coordinación viso-manual, lateralidad y control de inhibición en red.</p>
+                            </div>
+                        </div>
+                        <button onclick="startLevel(0)" class="mt-4 w-full py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-xl transition flex items-center justify-center space-x-2">
+                            <span>Reto Motriz</span>
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+
+                    <!-- Level 1 Card -->
+                    <div class="level-card bg-slate-950 border border-slate-800 hover:border-cyan-500 rounded-2xl p-4 flex flex-col justify-between transition group hover:shadow-xl hover:shadow-cyan-500/10 relative overflow-hidden">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-start">
+                                <span class="p-2.5 bg-cyan-950 text-cyan-400 rounded-xl border border-cyan-800 text-lg group-hover:scale-110 transition">
+                                    <i class="fas fa-microchip"></i>
+                                </span>
+                                <span id="badge-l1" class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full font-bold">Pendiente</span>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-bold text-cyan-400 uppercase tracking-wider">Reto 1 - Sistemas</span>
+                                <h3 class="text-sm font-bold text-white mt-0.5">Hardware vs Software y Redes</h3>
+                                <p class="text-[11px] text-slate-400 mt-1">Abstrae y clasifica componentes físicos, programas y la función del SO.</p>
+                            </div>
+                        </div>
+                        <button onclick="startLevel(1)" class="mt-4 w-full py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs rounded-xl transition flex items-center justify-center space-x-2">
+                            <span>Jugar Nivel 1</span>
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+
+                    <!-- Level 2 Card -->
+                    <div class="level-card bg-slate-950 border border-slate-800 hover:border-emerald-500 rounded-2xl p-4 flex flex-col justify-between transition group hover:shadow-xl hover:shadow-emerald-500/10 relative overflow-hidden">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-start">
+                                <span class="p-2.5 bg-emerald-950 text-emerald-400 rounded-xl border border-emerald-800 text-lg group-hover:scale-110 transition">
+                                    <i class="fas fa-folder-open"></i>
+                                </span>
+                                <span id="badge-l2" class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full font-bold">Pendiente</span>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Reto 2 - Multimedia</span>
+                                <h3 class="text-sm font-bold text-white mt-0.5">Archivos y Trazado Gráfico</h3>
+                                <p class="text-[11px] text-slate-400 mt-1">Organiza extensiones (.png, .mp3, .pdf) y practica diseño viso-motriz.</p>
+                            </div>
+                        </div>
+                        <button onclick="startLevel(2)" class="mt-4 w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl transition flex items-center justify-center space-x-2">
+                            <span>Jugar Nivel 2</span>
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+
+                    <!-- Level 3 Card -->
+                    <div class="level-card bg-slate-950 border border-slate-800 hover:border-amber-500 rounded-2xl p-4 flex flex-col justify-between transition group hover:shadow-xl hover:shadow-amber-500/10 relative overflow-hidden">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-start">
+                                <span class="p-2.5 bg-amber-950 text-amber-400 rounded-xl border border-amber-800 text-lg group-hover:scale-110 transition">
+                                    <i class="fas fa-cubes"></i>
+                                </span>
+                                <span id="badge-l3" class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full font-bold">Pendiente</span>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider">Reto 3 - Algoritmos</span>
+                                <h3 class="text-sm font-bold text-white mt-0.5">Bloques, Bucles y Depuración</h3>
+                                <p class="text-[11px] text-slate-400 mt-1">Formula secuencias, evalúa variables y aprende activamente del error.</p>
+                            </div>
+                        </div>
+                        <button onclick="startLevel(3)" class="mt-4 w-full py-2 bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold text-xs rounded-xl transition flex items-center justify-center space-x-2">
+                            <span>Jugar Nivel 3</span>
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+
+                    <!-- Level 4 Card -->
+                    <div class="level-card bg-slate-950 border border-slate-800 hover:border-purple-500 rounded-2xl p-4 flex flex-col justify-between transition group hover:shadow-xl hover:shadow-purple-500/10 relative overflow-hidden">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-start">
+                                <span class="p-2.5 bg-purple-950 text-purple-400 rounded-xl border border-purple-800 text-lg group-hover:scale-110 transition">
+                                    <i class="fas fa-calculator"></i>
+                                </span>
+                                <span id="badge-l4" class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full font-bold">Pendiente</span>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-bold text-purple-400 uppercase tracking-wider">Reto 4 - Lógica</span>
+                                <h3 class="text-sm font-bold text-white mt-0.5">Operadores y Precisión</h3>
+                                <p class="text-[11px] text-slate-400 mt-1">Aplica operadores (+,-,*,/,&gt;,&lt;,=) con gusto por la precisión.</p>
+                            </div>
+                        </div>
+                        <button onclick="startLevel(4)" class="mt-4 w-full py-2 bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs rounded-xl transition flex items-center justify-center space-x-2">
+                            <span>Jugar Nivel 4</span>
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- LEVEL 0: PSYCHOMOTOR & PERCEPTIVO-MOTRIZ LAB (NEW FEATURE) -->
+        <section id="level0-screen" class="screen-view hidden space-y-6 my-auto">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-6">
+                
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-4">
+                    <div>
+                        <span class="text-xs font-bold text-rose-400 uppercase tracking-wider"><i class="fas fa-child-reaching mr-1"></i> Módulo Psicomotor y Perceptivo-Motriz</span>
+                        <h2 class="text-xl sm:text-2xl font-black text-white">Evaluación de Conductas Motrices, Lateralidad y Ritmo</h2>
+                    </div>
+                    <button onclick="showScreen('hub-screen')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-bold">
+                        <i class="fas fa-arrow-left mr-1"></i> Volver al Hub
+                    </button>
+                </div>
+
+                <!-- Sub-test 1: Lateralidad y Coordinación Espacial en Rejilla -->
+                <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-4">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                        <h3 class="font-bold text-rose-400 text-xs uppercase tracking-wider flex items-center space-x-2">
+                            <i class="fas fa-compass"></i>
+                            <span>1. Conducta Perceptivo-Motriz: Lateralidad y Esquema Espacial</span>
+                        </h3>
+                        <span class="text-[10px] bg-rose-950 text-rose-300 px-2 py-0.5 rounded font-mono">Orientación Espacial</span>
+                    </div>
+
+                    <p class="text-xs text-slate-300">Guía al CyberBot hasta el servidor <i class="fas fa-server text-cyan-400"></i> utilizando los comandos de orientación (<strong class="text-rose-400">Izquierda, Derecha, Avanzar</strong>):</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+                        <!-- Spatial Grid -->
+                        <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800 flex justify-center">
+                            <div id="grid-container" class="grid grid-cols-4 gap-2 w-52 h-52 bg-slate-950 p-2 rounded-xl border border-slate-700">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Motion Commands Controls -->
+                        <div class="space-y-3 text-xs">
+                            <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 space-y-2">
+                                <span class="text-[10px] text-slate-400 uppercase font-mono">Controles de Orientación Lateral:</span>
+                                <div class="grid grid-cols-3 gap-2 text-center font-bold">
+                                    <div></div>
+                                    <button onclick="moveRobot('up')" class="p-2 bg-slate-800 hover:bg-rose-600 text-white rounded-lg transition"><i class="fas fa-arrow-up"></i></button>
+                                    <div></div>
+                                    <button onclick="moveRobot('left')" class="p-2 bg-slate-800 hover:bg-rose-600 text-white rounded-lg transition"><i class="fas fa-arrow-left"></i> Izq</button>
+                                    <button onclick="moveRobot('down')" class="p-2 bg-slate-800 hover:bg-rose-600 text-white rounded-lg transition"><i class="fas fa-arrow-down"></i></button>
+                                    <button onclick="moveRobot('right')" class="p-2 bg-slate-800 hover:bg-rose-600 text-white rounded-lg transition">Der <i class="fas fa-arrow-right"></i></button>
+                                </div>
+                            </div>
+
+                            <p id="grid-status-msg" class="text-[11px] text-amber-300 font-mono">Mueve el bot usando los controles espaciales.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub-test 2: Ritmo y Control de Pulsiones e Inhibición -->
+                <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-4">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                        <h3 class="font-bold text-amber-400 text-xs uppercase tracking-wider flex items-center space-x-2">
+                            <i class="fas fa-wave-square"></i>
+                            <span>2. Conducta Perceptivo-Motriz: Ritmo y Control de Pulsiones / Inhibición</span>
+                        </h3>
+                        <span class="text-[10px] bg-amber-950 text-amber-300 px-2 py-0.5 rounded font-mono">Sincronizador Lógico</span>
+                    </div>
+
+                    <p class="text-xs text-slate-300">Haz clic en el botón de pulsación <strong class="text-emerald-400">SÓLO cuando el indicador parpadee en VERDE (Ritmo)</strong>. Detén tus pulsaciones cuando cambie a <strong class="text-rose-400">ROJO (Inhibición Motriz)</strong>:</p>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-around gap-4 bg-slate-900 p-4 rounded-2xl border border-slate-800">
+                        <div class="text-center space-y-2">
+                            <div id="rhythm-light" class="w-16 h-16 rounded-full bg-rose-600 shadow-lg flex items-center justify-center text-white text-2xl font-black transition-all duration-300">
+                                STOP
+                            </div>
+                            <span id="rhythm-status-label" class="text-[11px] font-bold text-rose-400 block font-mono">EN ESPERA</span>
+                        </div>
+
+                        <div class="space-y-2 text-center">
+                            <button onclick="triggerRhythmPulse()" id="btn-pulse-act" class="px-6 py-4 bg-slate-800 hover:bg-slate-700 text-white font-black text-sm uppercase rounded-2xl border border-slate-600 transition active:scale-95 shadow-lg">
+                                <i class="fas fa-fingerprint mr-2"></i> Pulsar en Ritmo
+                            </button>
+                            <p class="text-[10px] text-slate-400">Pulsaciones correctas: <strong id="rhythm-success-count" class="text-emerald-400 font-mono">0 / 5</strong></p>
+                        </div>
+
+                        <button onclick="startRhythmTest()" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-xl transition">
+                            Iniciar Prueba de Ritmo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sub-test 3: Coordinación Viso-Manual y Trazo Fino -->
+                <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-4">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                        <h3 class="font-bold text-cyan-400 text-xs uppercase tracking-wider flex items-center space-x-2">
+                            <i class="fas fa-bezier-curve"></i>
+                            <span>3. Conducta Motriz: Coordinación Viso-Manual y Trazo de Precisión</span>
+                        </h3>
+                        <span class="text-[10px] bg-cyan-950 text-cyan-300 px-2 py-0.5 rounded font-mono">Motricidad Fina</span>
+                    </div>
+
+                    <p class="text-xs text-slate-300">Utiliza el cursor o tu dedo para trazar una línea continua desde la entrada del cable <strong class="text-cyan-400">(A)</strong> hasta el puerto del servidor <strong class="text-emerald-400">(B)</strong> sin salirte del canal:</p>
+
+                    <div class="flex flex-col items-center space-y-2">
+                        <canvas id="visomanual-canvas" width="400" height="120" class="bg-slate-900 border-2 border-slate-700 rounded-2xl cursor-crosshair"></canvas>
+                        <div class="flex justify-between w-full max-w-md text-[11px] text-slate-400 font-mono">
+                            <span id="viso-status">Puntos de precisión: 0%</span>
+                            <button onclick="resetVisoCanvas()" class="text-xs text-cyan-400 hover:underline"><i class="fas fa-arrows-rotate mr-1"></i> Reiniciar Canal</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="flex justify-end">
+                    <button onclick="evaluateLevel0()" class="px-6 py-3 bg-gradient-to-r from-rose-600 to-indigo-600 hover:from-rose-500 hover:to-indigo-500 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-lg glow-rose">
+                        Sincronizar Evaluación Psicomotora
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- LEVEL 1: HARDWARE, SOFTWARE & NETWORK QUEST -->
+        <section id="level1-screen" class="screen-view hidden space-y-6 my-auto">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-6">
+                
+                <!-- Level Header -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-4">
+                    <div>
+                        <span class="text-xs font-bold text-cyan-400 uppercase tracking-wider"><i class="fas fa-microchip mr-1"></i> Reto 1: Sistemas y Abstracción</span>
+                        <h2 class="text-xl sm:text-2xl font-black text-white">Clasificación de Hardware, Software y Redes</h2>
+                    </div>
+                    <button onclick="showScreen('hub-screen')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-bold">
+                        <i class="fas fa-arrow-left mr-1"></i> Volver al Hub
+                    </button>
+                </div>
+
+                <!-- Phase 1: Hardware vs Software Drag/Select Matcher -->
+                <div class="space-y-4">
+                    <p class="text-xs text-slate-300">Haz clic en cada elemento para asignarlo a <strong class="text-cyan-400">Hardware (Físico)</strong> o <strong class="text-emerald-400">Software (Lógico)</strong>:</p>
+
+                    <div id="hw-sw-items" class="flex flex-wrap gap-2 bg-slate-950 p-4 rounded-2xl border border-slate-800 min-h-[80px] items-center">
+                        <!-- Populated dynamically -->
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Hardware Drop Container -->
+                        <div class="bg-cyan-950/30 border-2 border-dashed border-cyan-500/40 rounded-2xl p-4 space-y-3">
+                            <h3 class="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center space-x-2">
+                                <i class="fas fa-desktop"></i>
+                                <span>Contenedor de Hardware (Componentes Físicos)</span>
+                            </h3>
+                            <div id="box-hardware" class="flex flex-wrap gap-2 min-h-[100px] p-2 bg-slate-950/60 rounded-xl"></div>
+                        </div>
+
+                        <!-- Software Drop Container -->
+                        <div class="bg-emerald-950/30 border-2 border-dashed border-emerald-500/40 rounded-2xl p-4 space-y-3">
+                            <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center space-x-2">
+                                <i class="fas fa-code"></i>
+                                <span>Contenedor de Software (Programas Lógicos)</span>
+                            </h3>
+                            <div id="box-software" class="flex flex-wrap gap-2 min-h-[100px] p-2 bg-slate-950/60 rounded-xl"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 2: OS & Network Quiz Questions -->
+                <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-4 text-xs">
+                    <h3 class="font-bold text-amber-400 uppercase tracking-wider flex items-center space-x-2">
+                        <i class="fas fa-wifi"></i>
+                        <span>Análisis de Redes y Sistema Operativo</span>
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            <label class="block font-semibold text-slate-300">¿Cuál es la función principal del Sistema Operativo en una computadora?</label>
+                            <select id="q-so" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white outline-none focus:border-cyan-500">
+                                <option value="">-- Seleccionar Respuesta --</option>
+                                <option value="correct">Gestionar los recursos del sistema y servir de interfaz con el usuario</option>
+                                <option value="wrong1">Imprimir documentos físicos en papel únicamente</option>
+                                <option value="wrong2">Proteger la pantalla del polvo</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block font-semibold text-slate-300">¿Qué ventaja principal ofrece estar conectado a una Red de Comunicación (Wi-Fi/Internet)?</label>
+                            <select id="q-red" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white outline-none focus:border-cyan-500">
+                                <option value="">-- Seleccionar Respuesta --</option>
+                                <option value="wrong1">Aumentar la memoria RAM física del procesador de inmediato</option>
+                                <option value="correct">Compartir archivos, comunicarse y acceder a información remota</option>
+                                <option value="wrong2">Evitar que la computadora requiera energía eléctrica</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="flex justify-end">
+                    <button onclick="evaluateLevel1()" class="px-6 py-3 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-lg glow-cyan">
+                        Verificar y Sincronizar Reto 1
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- LEVEL 2: FILE MANAGEMENT & MULTIMEDIA STUDIO -->
+        <section id="level2-screen" class="screen-view hidden space-y-6 my-auto">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-6">
+                
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-4">
+                    <div>
+                        <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider"><i class="fas fa-folder-open mr-1"></i> Reto 2: Gestión de Archivos y Diseño</span>
+                        <h2 class="text-xl sm:text-2xl font-black text-white">Organizador de Archivos y Editor Gráfico Multimedia</h2>
+                    </div>
+                    <button onclick="showScreen('hub-screen')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-bold">
+                        <i class="fas fa-arrow-left mr-1"></i> Volver al Hub
+                    </button>
+                </div>
+
+                <!-- File Sorting Challenge -->
+                <div class="space-y-4 text-xs">
+                    <p class="text-slate-300">Organiza los siguientes archivos en las carpetas correctas del Sistema Operativo:</p>
+                    
+                    <div id="file-pool" class="flex flex-wrap gap-2 bg-slate-950 p-4 rounded-2xl border border-slate-800 min-h-[70px] items-center">
+                        <!-- Populated dynamically -->
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="bg-slate-950 border border-slate-800 p-4 rounded-2xl space-y-2">
+                            <h4 class="font-bold text-cyan-400 flex items-center space-x-2">
+                                <i class="fas fa-images"></i>
+                                <span>Carpeta: Imágenes / Gráficos</span>
+                            </h4>
+                            <div id="folder-images" class="min-h-[90px] p-2 bg-slate-900/60 rounded-xl border border-slate-800 flex flex-wrap gap-2"></div>
+                        </div>
+
+                        <div class="bg-slate-950 border border-slate-800 p-4 rounded-2xl space-y-2">
+                            <h4 class="font-bold text-emerald-400 flex items-center space-x-2">
+                                <i class="fas fa-music"></i>
+                                <span>Carpeta: Música y Sonido</span>
+                            </h4>
+                            <div id="folder-audio" class="min-h-[90px] p-2 bg-slate-900/60 rounded-xl border border-slate-800 flex flex-wrap gap-2"></div>
+                        </div>
+
+                        <div class="bg-slate-950 border border-slate-800 p-4 rounded-2xl space-y-2">
+                            <h4 class="font-bold text-amber-400 flex items-center space-x-2">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>Carpeta: Documentos y Guías</span>
+                            </h4>
+                            <div id="folder-docs" class="min-h-[90px] p-2 bg-slate-900/60 rounded-xl border border-slate-800 flex flex-wrap gap-2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Mini Graphic Editor Tool -->
+                <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-4 text-xs">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                        <h3 class="font-bold text-purple-400 uppercase tracking-wider flex items-center space-x-2">
+                            <i class="fas fa-palette"></i>
+                            <span>Taller Práctico de Edición Gráfica Viso-Motriz</span>
+                        </h3>
+                        <span class="text-[10px] bg-purple-950 text-purple-300 px-2 py-0.5 rounded border border-purple-800 font-mono">Diseño Digital</span>
+                    </div>
+
+                    <p class="text-slate-300">Selecciona cuáles de los archivos listados (<code class="text-cyan-300">dibujo_personaje.png</code>, <code class="text-emerald-300">musica_fondo.mp3</code>, <code class="text-amber-300">instrucciones.pdf</code>, <code class="text-cyan-300">logotipo.jpg</code>) deben abrirse en un <strong>Editor de Gráficos Multimedia (Paint / Photoshop)</strong>:</p>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <label class="p-3 bg-slate-900 border border-slate-800 rounded-xl flex items-center space-x-2 cursor-pointer hover:border-purple-500">
+                            <input type="checkbox" id="gfx-opt-1" value="dibujo_personaje.png" class="w-4 h-4 text-purple-600 rounded">
+                            <span class="text-white font-mono">dibujo_personaje.png</span>
+                        </label>
+                        <label class="p-3 bg-slate-900 border border-slate-800 rounded-xl flex items-center space-x-2 cursor-pointer hover:border-purple-500">
+                            <input type="checkbox" id="gfx-opt-2" value="musica_fondo.mp3" class="w-4 h-4 text-purple-600 rounded">
+                            <span class="text-slate-400 font-mono">musica_fondo.mp3</span>
+                        </label>
+                        <label class="p-3 bg-slate-900 border border-slate-800 rounded-xl flex items-center space-x-2 cursor-pointer hover:border-purple-500">
+                            <input type="checkbox" id="gfx-opt-3" value="instrucciones.pdf" class="w-4 h-4 text-purple-600 rounded">
+                            <span class="text-slate-400 font-mono">instrucciones.pdf</span>
+                        </label>
+                        <label class="p-3 bg-slate-900 border border-slate-800 rounded-xl flex items-center space-x-2 cursor-pointer hover:border-purple-500">
+                            <input type="checkbox" id="gfx-opt-4" value="logotipo.jpg" class="w-4 h-4 text-purple-600 rounded">
+                            <span class="text-white font-mono">logotipo.jpg</span>
+                        </label>
+                    </div>
+
+                    <!-- Mini Canvas Paint Canvas -->
+                    <div class="space-y-2 pt-2">
+                        <label class="block font-semibold text-slate-300">Crea o personaliza un dibujo para el juego (Practica coordinación viso-motriz fina):</label>
+                        <div class="flex flex-col sm:flex-row items-center gap-3">
+                            <canvas id="paint-canvas" width="300" height="140" class="bg-slate-900 border-2 border-slate-700 rounded-xl cursor-crosshair"></canvas>
+                            <div class="space-y-2 text-[11px]">
+                                <p class="text-slate-400">Color de Pincel:</p>
+                                <div class="flex space-x-2">
+                                    <button onclick="setCanvasColor('#06b6d4')" class="w-7 h-7 rounded-full bg-cyan-500 border-2 border-white hover:scale-110 transition"></button>
+                                    <button onclick="setCanvasColor('#10b981')" class="w-7 h-7 rounded-full bg-emerald-500 border-2 border-white hover:scale-110 transition"></button>
+                                    <button onclick="setCanvasColor('#f59e0b')" class="w-7 h-7 rounded-full bg-amber-500 border-2 border-white hover:scale-110 transition"></button>
+                                    <button onclick="setCanvasColor('#a855f7')" class="w-7 h-7 rounded-full bg-purple-500 border-2 border-white hover:scale-110 transition"></button>
+                                </div>
+                                <button onclick="clearCanvas()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg font-bold">
+                                    <i class="fas fa-eraser mr-1"></i> Borrar Lienzo
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <button onclick="evaluateLevel2()" class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-lg glow-emerald">
+                        Verificar y Sincronizar Reto 2
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- LEVEL 3: BLOCK CODE PROGRAMMING & EXECUTION SIMULATOR -->
+        <section id="level3-screen" class="screen-view hidden space-y-6 my-auto">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-6">
+                
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-4">
+                    <div>
+                        <span class="text-xs font-bold text-amber-400 uppercase tracking-wider"><i class="fas fa-cubes mr-1"></i> Reto 3: Algoritmos y Depuración</span>
+                        <h2 class="text-xl sm:text-2xl font-black text-white">Simulador de Código en Bloques y Aprender del Error</h2>
+                    </div>
+                    <button onclick="showScreen('hub-screen')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-bold">
+                        <i class="fas fa-arrow-left mr-1"></i> Volver al Hub
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                    <!-- Left: Interactive Block Code Display -->
+                    <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-4">
+                        <div class="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
+                            <span class="text-amber-400 font-mono font-bold flex items-center space-x-2">
+                                <i class="fas fa-code-branch"></i>
+                                <span>Algoritmo Oficial de 7° Año</span>
+                            </span>
+                            <span class="text-slate-400 text-[10px]">Entorno en Bloques</span>
+                        </div>
+
+                        <!-- Scratch-like Block UI -->
+                        <div id="block-container" class="space-y-2 font-mono text-xs">
+                            <div id="blk-event" class="p-3 bg-amber-500/20 border-l-4 border-amber-500 text-amber-300 rounded-r-xl shadow flex items-center justify-between transition">
+                                <span>⚡ [EVENTO] Al hacer clic en Bandera Verde</span>
+                                <i class="fas fa-flag text-amber-400"></i>
+                            </div>
+
+                            <div id="blk-var" class="ml-4 p-2.5 bg-cyan-950/80 border-l-4 border-cyan-400 text-cyan-300 rounded-r-xl shadow transition">
+                                ⚙️ ESTABLECER <span class="bg-cyan-900 px-1.5 py-0.5 rounded text-white font-bold">puntos</span> = <span class="text-amber-300 font-bold">0</span>
+                            </div>
+
+                            <div id="blk-loop" class="ml-4 p-3 bg-purple-950/80 border-l-4 border-purple-500 text-purple-300 rounded-r-xl shadow space-y-2 transition">
+                                <div class="flex justify-between items-center font-bold">
+                                    <span>🔄 [REPETIR] 3 VECES HACER:</span>
+                                    <span id="loop-counter-badge" class="text-[10px] bg-purple-900 px-2 py-0.5 rounded text-purple-200">Ciclo: 0 / 3</span>
+                                </div>
+                                <div id="blk-loop-inner" class="ml-4 p-2 bg-slate-900 border-l-2 border-purple-400 text-emerald-300 rounded-r">
+                                    ➕ CAMBIAR <span class="text-white font-bold">puntos</span> POR <span class="text-white font-bold">puntos + 5</span>
+                                </div>
+                            </div>
+
+                            <div id="blk-cond" class="ml-4 p-3 bg-indigo-950/80 border-l-4 border-indigo-500 text-indigo-300 rounded-r-xl shadow space-y-2 transition">
+                                <div class="font-bold">
+                                    🔀 [CONDICIONAL] SI (<span class="text-amber-300 font-bold">puntos &gt; 10</span>) ENTONCES:
+                                </div>
+                                <div id="blk-if-true" class="ml-4 p-2 bg-emerald-950/50 border-l-2 border-emerald-400 text-emerald-300 rounded-r">
+                                    💬 MOSTRAR: "¡Has pasado de nivel!"
+                                </div>
+                                <div class="font-bold">SINO:</div>
+                                <div id="blk-if-false" class="ml-4 p-2 bg-rose-950/50 border-l-2 border-rose-400 text-rose-300 rounded-r">
+                                    💬 MOSTRAR: "Sigue intentándolo"
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex space-x-2 pt-2">
+                            <button onclick="runBlockSimulation()" id="btn-run-sim" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs uppercase tracking-wider rounded-xl transition flex items-center justify-center space-x-2 shadow-lg glow-amber">
+                                <i class="fas fa-play"></i>
+                                <span>Ejecutar Algoritmo Paso a Paso</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right: Output & Diagnostic Questions -->
+                    <div class="space-y-4 text-xs">
+                        <div class="bg-slate-950 border-2 border-slate-800 rounded-2xl p-4 text-center space-y-2">
+                            <span class="text-[10px] text-slate-400 uppercase font-mono tracking-wider">Pantalla de Salida del Programa</span>
+                            <div id="sim-screen" class="h-24 bg-slate-900 border border-slate-800 rounded-xl flex flex-col items-center justify-center space-y-1 transition p-2">
+                                <span class="text-slate-500 italic">Haz clic en "Ejecutar Algoritmo" para ver la simulación...</span>
+                            </div>
+                            <div class="flex justify-around text-slate-400 text-[11px] font-mono border-t border-slate-800/80 pt-2">
+                                <span>Variable <code class="text-cyan-400">puntos</code>: <strong id="sim-var-val" class="text-white">0</strong></span>
+                                <span>Estado: <strong id="sim-status" class="text-amber-400">Detenido</strong></span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-950 border border-slate-800 p-4 rounded-2xl space-y-3">
+                            <h4 class="font-bold text-white uppercase tracking-wider text-[11px] flex items-center space-x-1">
+                                <i class="fas fa-question-circle text-amber-400"></i>
+                                <span>Preguntas de Análisis Procedimental:</span>
+                            </h4>
+
+                            <div class="space-y-2">
+                                <label class="block font-semibold text-slate-300">1. ¿Cuál es el Evento que inicia la ejecución del algoritmo?</label>
+                                <select id="q-l3-event" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white outline-none focus:border-amber-400">
+                                    <option value="">-- Seleccionar Evento --</option>
+                                    <option value="correct">Al hacer clic en Bandera Verde</option>
+                                    <option value="wrong1">Al presionar la tecla espacio</option>
+                                    <option value="wrong2">Al mover el ratón</option>
+                                </select>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="block font-semibold text-slate-300">2. Después de repetir 3 veces la suma de 5, ¿cuál es el valor final de la variable <code class="text-cyan-400">puntos</code>?</label>
+                                <input type="number" id="q-l3-result" placeholder="Ej: 15" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white outline-none focus:border-amber-400 font-mono">
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="block font-semibold text-slate-300">3. Al evaluar la condición (<code class="text-amber-300">puntos &gt; 10</code>), ¿qué mensaje muestra la pantalla?</label>
+                                <select id="q-l3-msg" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white outline-none focus:border-amber-400">
+                                    <option value="">-- Seleccionar Mensaje --</option>
+                                    <option value="correct">¡Has pasado de nivel!</option>
+                                    <option value="wrong1">Sigue intentándolo</option>
+                                    <option value="wrong2">Error de sistema</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="flex justify-end">
+                    <button onclick="evaluateLevel3()" class="px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-black text-xs uppercase tracking-wider rounded-xl shadow-lg glow-amber">
+                        Verificar y Sincronizar Reto 3
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- LEVEL 4: OPERATORS & LOGIC ARENA -->
+        <section id="level4-screen" class="screen-view hidden space-y-6 my-auto">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-6">
+                
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-4">
+                    <div>
+                        <span class="text-xs font-bold text-purple-400 uppercase tracking-wider"><i class="fas fa-calculator mr-1"></i> Reto 4: Operadores y Gusto por la Precisión</span>
+                        <h2 class="text-xl sm:text-2xl font-black text-white">Laboratorio de Operadores Aritméticos y Relacionales</h2>
+                    </div>
+                    <button onclick="showScreen('hub-screen')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-bold">
+                        <i class="fas fa-arrow-left mr-1"></i> Volver al Hub
+                    </button>
+                </div>
+
+                <p class="text-xs text-slate-300">Demuestra tu <strong class="text-purple-400">Gusto por la Precisión</strong> eligiendo los <strong>Operadores Aritméticos (+, -, *, /)</strong> y <strong>Relacionales (&gt;, &lt;, =)</strong> exactos para depurar el código:</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+
+                    <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-3">
+                        <span class="text-[10px] bg-purple-950 text-purple-300 px-2 py-0.5 rounded font-bold">Desafío Aritmético 1</span>
+                        <p class="text-slate-300 text-[11px] font-sans">Para aumentar el puntaje en 10 unidades cada vez:</p>
+                        <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center space-x-2 text-white">
+                            <span>puntos = puntos</span>
+                            <select id="op-arith-1" class="px-2 py-1 bg-slate-950 border border-purple-500 rounded text-purple-300 font-bold outline-none">
+                                <option value="?">?</option>
+                                <option value="+">+</option>
+                                <option value="-">-</option>
+                                <option value="*">*</option>
+                                <option value="/">/</option>
+                            </select>
+                            <span>10</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-3">
+                        <span class="text-[10px] bg-purple-950 text-purple-300 px-2 py-0.5 rounded font-bold">Desafío Relacional 2</span>
+                        <p class="text-slate-300 text-[11px] font-sans">Verifica si la cantidad de <code class="text-cyan-300">vidas</code> es exactamente igual a cero:</p>
+                        <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center space-x-2 text-white">
+                            <span>SI (vidas</span>
+                            <select id="op-rel-1" class="px-2 py-1 bg-slate-950 border border-purple-500 rounded text-purple-300 font-bold outline-none">
+                                <option value="?">?</option>
+                                <option value="=">=</option>
+                                <option value=">">&gt;</option>
+                                <option value="<">&lt;</option>
+                            </select>
+                            <span>0) ENTONCES "Game Over"</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-3">
+                        <span class="text-[10px] bg-purple-950 text-purple-300 px-2 py-0.5 rounded font-bold">Desafío Relacional 3</span>
+                        <p class="text-slate-300 text-[11px] font-sans">El jugador avanza de nivel si su <code class="text-amber-300">nivel_score</code> supera los 50 puntos:</p>
+                        <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center space-x-2 text-white">
+                            <span>SI (nivel_score</span>
+                            <select id="op-rel-2" class="px-2 py-1 bg-slate-950 border border-purple-500 rounded text-purple-300 font-bold outline-none">
+                                <option value="?">?</option>
+                                <option value=">">&gt;</option>
+                                <option value="<">&lt;</option>
+                                <option value="=">=</option>
+                            </select>
+                            <span>50) ENTONCES "Siguiente Nivel"</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-3">
+                        <span class="text-[10px] bg-purple-950 text-purple-300 px-2 py-0.5 rounded font-bold">Desafío Aritmético 4</span>
+                        <p class="text-slate-300 text-[11px] font-sans">Para calcular la mitad del tiempo restante de una ronda:</p>
+                        <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center space-x-2 text-white">
+                            <span>tiempo_mitad = tiempo</span>
+                            <select id="op-arith-2" class="px-2 py-1 bg-slate-950 border border-purple-500 rounded text-purple-300 font-bold outline-none">
+                                <option value="?">?</option>
+                                <option value="/">/</option>
+                                <option value="*">*</option>
+                                <option value="-">-</option>
+                                <option value="+">+</option>
+                            </select>
+                            <span>2</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="flex justify-end">
+                    <button onclick="evaluateLevel4()" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-lg glow-purple">
+                        Verificar y Sincronizar Reto 4
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- METACOGNITION & ATTITUDINAL REFLECTION SCREEN -->
+        <section id="metacognition-screen" class="screen-view hidden space-y-6 my-auto max-w-3xl mx-auto w-full">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+                
+                <div class="text-center space-y-2 border-b border-slate-800 pb-4">
+                    <span class="bg-purple-950 text-purple-300 border border-purple-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                        <i class="fas fa-brain mr-1"></i> Reflexión de Saberes Actitudinales MEP
+                    </span>
+                    <h2 class="text-2xl font-black text-white">Autoevaluación de Actitudes Computacionales</h2>
+                    <p class="text-xs text-slate-400">Escriban sus vivencias sobre persistencia, tolerancia a la frustración y trabajo en equipo.</p>
+                </div>
+
+                <form onsubmit="submitMetacognition(event)" class="space-y-4 text-xs">
+                    <div>
+                        <label class="block font-bold text-slate-200 mb-1">1. [Aprender del Error / Tolerancia a Frustración] ¿Cómo reaccionaron cuando un algoritmo o ejercicio no funcionó al primer intento?</label>
+                        <textarea id="refl-q1" required rows="2" placeholder="Ej: Analizamos el error paso a paso, cambiamos el operador y no nos rendimos..." class="w-full p-3 bg-slate-950 border border-slate-700 rounded-xl text-white outline-none focus:border-purple-500"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-slate-200 mb-1">2. [Colaboración y Comunicación] ¿Cómo se dividieron las tareas entre la pareja de agentes para tomar decisiones precisas?</label>
+                        <textarea id="refl-q2" required rows="2" placeholder="Ej: Agente 1 manejaba la consola motriz y Agente 2 leía y verificaba la lógica de bloques..." class="w-full p-3 bg-slate-950 border border-slate-700 rounded-xl text-white outline-none focus:border-purple-500"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-slate-200 mb-1">3. [Desarrollo Motriz / Precisión] ¿Qué reto requirió mayor concentración física o viso-manual (la rejilla espacial, el pulso rítmico o los diagramas)?</label>
+                        <textarea id="refl-q3" required rows="2" placeholder="Ej: La prueba de ritmo y control de pulsiones exigió mucha concentración para frenar en la luz roja..." class="w-full p-3 bg-slate-950 border border-slate-700 rounded-xl text-white outline-none focus:border-purple-500"></textarea>
+                    </div>
+
+                    <div class="flex justify-between items-center pt-4">
+                        <button type="button" onclick="showScreen('hub-screen')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl">
+                            Volver al Hub
+                        </button>
+                        <button type="submit" class="px-6 py-3 bg-gradient-to-r from-purple-600 via-indigo-600 to-cyan-500 text-white font-black uppercase tracking-wider rounded-xl shadow-xl glow-purple">
+                            Generar Informe Tripartito
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </section>
+
+        <!-- CERTIFICATE & RESULTS VIEW -->
+        <section id="certificate-screen" class="screen-view hidden my-auto max-w-3xl mx-auto w-full">
+            <div id="printable-certificate" class="bg-slate-900 border-2 border-cyan-500/50 rounded-3xl p-6 sm:p-10 shadow-2xl text-center space-y-6 relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-8 opacity-10 text-9xl text-cyan-400 pointer-events-none">
+                    <i class="fas fa-award"></i>
+                </div>
+
+                <div class="space-y-2">
+                    <div class="flex justify-center items-center space-x-2">
+                        <span class="bg-emerald-950 text-emerald-400 border border-emerald-800 text-xs font-bold px-3 py-1 rounded-full uppercase">MEP - Sétimo Año</span>
+                        <span class="bg-cyan-950 text-cyan-400 border border-cyan-800 text-xs font-bold px-3 py-1 rounded-full uppercase">Diagnóstico Tripartito</span>
+                    </div>
+                    <h2 class="text-3xl font-black text-white tracking-wide uppercase">Insignia de Logro Integral</h2>
+                    <p class="text-xs text-slate-400">Desempeño Psicomotor, Procedimental y Actitudinal en Tecnología</p>
+                </div>
+
+                <div class="py-4 border-y border-slate-800 space-y-3">
+                    <p class="text-xs text-slate-400">Se otorga el presente reconocimiento a los agentes digitales:</p>
+                    <h3 id="cert-student-names" class="text-2xl font-black text-cyan-400">Nombre de Estudiantes</h3>
+                    <div class="flex justify-center items-center space-x-4 text-xs font-mono text-slate-300">
+                        <span>Sección: <strong id="cert-section" class="text-white">7-1</strong></span>
+                        <span>•</span>
+                        <span>Puntaje Total: <strong id="cert-score" class="text-amber-400 text-base">0 PTS</strong></span>
+                        <span>•</span>
+                        <span>Fecha: <strong id="cert-date" class="text-white">2026-09-22</strong></span>
+                    </div>
+                </div>
+
+                <!-- Detailed Indicator Performance Summary across 3 dimensions -->
+                <div class="text-left bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-3 text-xs">
+                    <h4 class="font-bold text-white uppercase text-[11px] flex items-center space-x-2 border-b border-slate-800 pb-2">
+                        <i class="fas fa-check-circle text-emerald-400"></i>
+                        <span>Resumen Diagnóstico de Saberes Evaluados (MEP):</span>
+                    </h4>
+                    <div id="cert-indicators-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+                        <!-- Dynamically filled -->
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-3 no-print">
+                    <button onclick="window.print()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl text-xs transition flex items-center space-x-2">
+                        <i class="fas fa-print"></i>
+                        <span>Imprimir / Exportar PDF</span>
+                    </button>
+                    <button onclick="openTeacherPinModal()" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl text-xs transition flex items-center space-x-2">
+                        <i class="fas fa-user-shield"></i>
+                        <span>Ir al Panel Docente</span>
+                    </button>
+                    <button onclick="showScreen('hub-screen')" class="px-5 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-xl text-xs transition">
+                        Volver al Menú
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TEACHER ADMIN & ANALYTICS PANEL -->
+        <section id="teacher-panel-screen" class="screen-view hidden space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+                
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800 pb-4">
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="bg-amber-500/20 text-amber-400 border border-amber-500/30 text-xs font-bold px-2.5 py-0.5 rounded-full uppercase">Gestión Pedagógica Integrada MEP</span>
+                            <span class="text-xs text-slate-400">PIN Verificado</span>
+                        </div>
+                        <h2 class="text-2xl font-black text-white mt-1">Sistematización Tripartita (Motriz, Procedimental, Actitudinal)</h2>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="exportDataJSON()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-cyan-300 rounded-xl text-xs font-bold flex items-center space-x-1">
+                            <i class="fas fa-file-export"></i>
+                            <span>Exportar Expediente JSON</span>
+                        </button>
+                        <button onclick="showScreen('hub-screen')" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold">
+                            <i class="fas fa-arrow-left mr-1"></i> Volver al Juego
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+                    <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                        <span class="text-slate-400 block mb-1">Total Parejas Registradas</span>
+                        <span id="stat-total-students" class="text-2xl font-black text-cyan-400 font-mono">0</span>
+                    </div>
+                    <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                        <span class="text-slate-400 block mb-1">Índice Promedio de Resiliencia</span>
+                        <span id="stat-avg-score" class="text-2xl font-black text-emerald-400 font-mono">100%</span>
+                    </div>
+                    <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                        <span class="text-slate-400 block mb-1">Madurez Psicomotora y Espacial</span>
+                        <span id="stat-status" class="text-lg font-bold text-amber-400">En Seguimiento</span>
+                    </div>
+                </div>
+
+                <!-- Student Submissions Table -->
+                <div class="space-y-3">
+                    <h3 class="font-bold text-white text-sm flex items-center space-x-2">
+                        <i class="fas fa-list text-cyan-400"></i>
+                        <span>Expediente Diagnóstico Integrado</span>
+                    </h3>
+
+                    <div class="overflow-x-auto rounded-2xl border border-slate-800">
+                        <table class="w-full text-xs text-left text-slate-300">
+                            <thead class="bg-slate-950 text-slate-400 uppercase font-mono text-[11px]">
+                                <tr>
+                                    <th class="p-3">Estudiante(s)</th>
+                                    <th class="p-3">Sección</th>
+                                    <th class="p-3 text-center">Psicomotor</th>
+                                    <th class="p-3 text-center">HW/SW</th>
+                                    <th class="p-3 text-center">Multimedia</th>
+                                    <th class="p-3 text-center">Algoritmo</th>
+                                    <th class="p-3 text-center">Lógica</th>
+                                    <th class="p-3 text-center">Puntaje Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="teacher-records-table-body" class="divide-y divide-slate-800 bg-slate-900/50">
+                                <tr>
+                                    <td colspan="8" class="p-4 text-center text-slate-500 italic">No hay registros de estudiantes sincronizados aún.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ARCADE / PRACTICE SCREEN -->
+        <section id="arcade-screen" class="screen-view hidden space-y-6 my-auto">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-6">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                    <div>
+                        <span class="text-xs font-bold text-cyan-400 uppercase tracking-wider">Prueba de Reflejos Digitales</span>
+                        <h2 class="text-xl font-black text-white">Minijuego de Reacción y Cálculo Rápido</h2>
+                    </div>
+                    <button onclick="showScreen('hub-screen')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-bold">
+                        Volver al Hub
+                    </button>
+                </div>
+
+                <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 text-center space-y-4">
+                    <div class="text-xs text-slate-400 uppercase font-mono">Atención y Reacción Inmediata</div>
+                    <div id="arcade-question" class="text-xl font-black text-cyan-300 font-mono">
+                        ¿Cuál es el resultado de 5 + 3 * 2?
+                    </div>
+                    <div id="arcade-answers" class="grid grid-cols-2 gap-3 max-w-md mx-auto text-xs font-bold">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900/80 border-t border-slate-800 text-slate-500 text-xs py-4 px-4 text-center no-print">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <span>Ministerio de Educación Pública (MEP) - Costa Rica | Formación Tecnológica 7° Año</span>
+            <span class="text-slate-400 font-mono">CyberQuest v4.0 Integrado • San Ramón, CR</span>
+        </div>
+    </footer>
+
+    <script>
+        // Global Game State
+        const gameState = {
+            student1: "",
+            student2: "",
+            section: "",
+            date: new Date().toISOString().split('T')[0],
+            avatar: "🤖",
+            score: 0,
+            resilience: 100,
+            soundEnabled: true,
+            levelsCompleted: {
+                0: false, // Psychomotor
+                1: false,
+                2: false,
+                3: false,
+                4: false
+            },
+            levelScores: {
+                0: 0,
+                1: 0,
+                2: 0,
+                3: 0,
+                4: 0
+            },
+            psychomotorData: {
+                gridSuccess: false,
+                rhythmHits: 0,
+                visoScore: 0
+            },
+            metacognition: {
+                q1: "",
+                q2: "",
+                q3: ""
+            }
+        };
+
+        // Storage for all student records
+        let studentDatabase = JSON.parse(localStorage.getItem('cyberquest_records') || '[]');
+
+        // Web Audio Synthesizer
+        let synth = null;
+        function initAudio() {
+            try {
+                if (typeof Tone !== 'undefined' && !synth) {
+                    synth = new Tone.Synth().toDestination();
+                }
+            } catch (e) {}
+        }
+
+        function playSound(type) {
+            if (!gameState.soundEnabled) return;
+            try {
+                initAudio();
+                const now = Tone.now();
+                if (type === 'click') {
+                    synth.triggerAttackRelease("C5", "8n", now);
+                } else if (type === 'success') {
+                    synth.triggerAttackRelease("G5", "8n", now);
+                    synth.triggerAttackRelease("C6", "8n", now + 0.1);
+                } else if (type === 'error') {
+                    synth.triggerAttackRelease("C3", "8n", now);
+                } else if (type === 'levelup') {
+                    synth.triggerAttackRelease("C5", "8n", now);
+                    synth.triggerAttackRelease("E5", "8n", now + 0.1);
+                    synth.triggerAttackRelease("G5", "8n", now + 0.2);
+                    synth.triggerAttackRelease("C6", "4n", now + 0.3);
+                }
+            } catch (e) {}
+        }
+
+        function toggleAudio() {
+            gameState.soundEnabled = !gameState.soundEnabled;
+            const icon = document.getElementById('audio-icon');
+            if (gameState.soundEnabled) {
+                icon.className = 'fas fa-volume-up text-cyan-400';
+                showToast('Sonido Activado', 'info');
+            } else {
+                icon.className = 'fas fa-volume-mute text-slate-500';
+                showToast('Sonido Silenciado', 'info');
+            }
+        }
+
+        function showToast(msg, type = 'info') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-msg');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastMsg.innerText = msg;
+            if (type === 'success') {
+                toastIcon.className = 'fas fa-check-circle text-emerald-400 text-xl';
+            } else if (type === 'error') {
+                toastIcon.className = 'fas fa-exclamation-triangle text-rose-400 text-xl';
+            } else {
+                toastIcon.className = 'fas fa-info-circle text-cyan-400 text-xl';
+            }
+
+            toast.classList.remove('translate-x-full');
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+            }, 3000);
+        }
+
+        function showCustomModal(title, desc, iconClass = 'fas fa-shield-halved text-2xl text-cyan-400') {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-desc').innerText = desc;
+            document.getElementById('modal-icon').className = iconClass;
+            document.getElementById('custom-modal').classList.remove('hidden');
+        }
+
+        function closeCustomModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
+        }
+
+        function openTeacherPinModal() {
+            document.getElementById('teacher-pin-input').value = '';
+            document.getElementById('pin-error-text').classList.add('hidden');
+            document.getElementById('teacher-pin-modal').classList.remove('hidden');
+        }
+
+        function closeTeacherPinModal() {
+            document.getElementById('teacher-pin-modal').classList.add('hidden');
+        }
+
+        function verifyTeacherPin() {
+            const pin = document.getElementById('teacher-pin-input').value;
+            if (pin === '1234') {
+                closeTeacherPinModal();
+                updateTeacherPanel();
+                showScreen('teacher-panel-screen');
+                playSound('success');
+            } else {
+                document.getElementById('pin-error-text').classList.remove('hidden');
+                playSound('error');
+            }
+        }
+
+        function showScreen(screenId) {
+            playSound('click');
+            document.querySelectorAll('.screen-view').forEach(s => s.classList.add('hidden'));
+            const target = document.getElementById(screenId);
+            if (target) target.classList.remove('hidden');
+
+            const hud = document.getElementById('player-hud');
+            if (screenId === 'registration-screen') {
+                hud.classList.add('hidden');
+            } else {
+                hud.classList.remove('hidden');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function selectAvatar(emoji) {
+            gameState.avatar = emoji;
+            document.querySelectorAll('.avatar-opt').forEach(btn => {
+                btn.classList.remove('border-cyan-500');
+                btn.classList.add('border-slate-800');
+            });
+            event.currentTarget.classList.remove('border-slate-800');
+            event.currentTarget.classList.add('border-cyan-500');
+            playSound('click');
+        }
+
+        function startCyberQuest(e) {
+            e.preventDefault();
+            gameState.student1 = document.getElementById('reg-student1').value.trim();
+            gameState.student2 = document.getElementById('reg-student2').value.trim();
+            gameState.section = document.getElementById('reg-section').value.trim();
+            gameState.date = document.getElementById('reg-date').value || gameState.date;
+
+            document.getElementById('hud-avatar').innerText = gameState.avatar;
+            document.getElementById('hud-name').innerText = gameState.student1.split(' ')[0] + (gameState.student2 ? ' & ' + gameState.student2.split(' ')[0] : '');
+            document.getElementById('hud-section').innerText = gameState.section;
+            document.getElementById('hub-avatar-display').innerText = gameState.avatar;
+            document.getElementById('hub-welcome-title').innerText = `¡Misión Activa, Agente ${gameState.student1.split(' ')[0]}!`;
+
+            playSound('levelup');
+            showToast('¡Perfil de Pareja Registrado!', 'success');
+            showScreen('hub-screen');
+        }
+
+        // ==========================================
+        // LEVEL 0: PSYCHOMOTOR & PERCEPTIVO-MOTRIZ LAB
+        // ==========================================
+        let robotPos = { r: 0, c: 0 };
+        const targetPos = { r: 3, c: 3 };
+
+        function initLevel0() {
+            robotPos = { r: 0, c: 0 };
+            renderGrid();
+            initVisoCanvas();
+        }
+
+        function renderGrid() {
+            const container = document.getElementById('grid-container');
+            container.innerHTML = '';
+
+            for (let r = 0; r < 4; r++) {
+                for (let c = 0; c < 4; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'w-10 h-10 rounded-lg flex items-center justify-center font-bold text-xs transition border border-slate-800 bg-slate-900';
+
+                    if (r === robotPos.r && c === robotPos.c) {
+                        cell.innerHTML = gameState.avatar;
+                        cell.classList.add('border-rose-500', 'bg-rose-950/60');
+                    } else if (r === targetPos.r && c === targetPos.c) {
+                        cell.innerHTML = `<i class="fas fa-server text-cyan-400"></i>`;
+                        cell.classList.add('border-cyan-500', 'bg-cyan-950/60');
+                    }
+                    container.appendChild(cell);
+                }
+            }
+        }
+
+        function moveRobot(dir) {
+            playSound('click');
+            if (dir === 'up' && robotPos.r > 0) robotPos.r--;
+            if (dir === 'down' && robotPos.r < 3) robotPos.r++;
+            if (dir === 'left' && robotPos.c > 0) robotPos.c--;
+            if (dir === 'right' && robotPos.c < 3) robotPos.c++;
+
+            renderGrid();
+
+            const msg = document.getElementById('grid-status-msg');
+            if (robotPos.r === targetPos.r && robotPos.c === targetPos.c) {
+                gameState.psychomotorData.gridSuccess = true;
+                msg.innerText = "¡Objetivo alcanzado! Lateralidad y orientación espacial correctas.";
+                msg.className = "text-[11px] text-emerald-400 font-bold font-mono";
+                playSound('success');
+            } else {
+                msg.innerText = `Posición: [Fila ${robotPos.r + 1}, Col ${robotPos.c + 1}]`;
+                msg.className = "text-[11px] text-amber-300 font-mono";
+            }
+        }
+
+        let rhythmInterval = null;
+        let isRhythmGreen = false;
+        function startRhythmTest() {
+            playSound('click');
+            const light = document.getElementById('rhythm-light');
+            const label = document.getElementById('rhythm-status-label');
+            
+            if (rhythmInterval) clearInterval(rhythmInterval);
+
+            rhythmInterval = setInterval(() => {
+                isRhythmGreen = Math.random() > 0.4;
+                if (isRhythmGreen) {
+                    light.className = 'w-16 h-16 rounded-full bg-emerald-500 shadow-lg flex items-center justify-center text-white text-2xl font-black transition-all duration-200 scale-105 glow-emerald';
+                    light.innerText = 'PULSA';
+                    label.innerText = '¡RITMO ACTIVO! (PULSAR)';
+                    label.className = 'text-[11px] font-bold text-emerald-400 block font-mono';
+                } else {
+                    light.className = 'w-16 h-16 rounded-full bg-rose-600 shadow-lg flex items-center justify-center text-white text-2xl font-black transition-all duration-200 scale-95';
+                    light.innerText = 'STOP';
+                    label.innerText = '¡INHIBICIÓN! (NO PULSAR)';
+                    label.className = 'text-[11px] font-bold text-rose-400 block font-mono';
+                }
+            }, 1200);
+        }
+
+        function triggerRhythmPulse() {
+            if (isRhythmGreen) {
+                gameState.psychomotorData.rhythmHits++;
+                document.getElementById('rhythm-success-count').innerText = `${gameState.psychomotorData.rhythmHits} / 5`;
+                playSound('success');
+                if (gameState.psychomotorData.rhythmHits >= 5) {
+                    clearInterval(rhythmInterval);
+                    showToast('¡Prueba de Ritmo e Inhibición Completada!', 'success');
+                }
+            } else {
+                playSound('error');
+                showToast('¡Inhibición Motriz! Debías detener el pulso.', 'error');
+            }
+        }
+
+        // Viso-manual fine motor tracing canvas
+        let visoCanvas, visoCtx, visoDrawing = false, visoPoints = 0;
+        function initVisoCanvas() {
+            visoCanvas = document.getElementById('visomanual-canvas');
+            if (!visoCanvas) return;
+            visoCtx = visoCanvas.getContext('2d');
+            resetVisoCanvas();
+
+            visoCanvas.onmousedown = () => { visoDrawing = true; };
+            visoCanvas.onmouseup = () => { visoDrawing = false; };
+            visoCanvas.onmousemove = drawVisoTrace;
+        }
+
+        function resetVisoCanvas() {
+            if (!visoCtx) return;
+            visoCtx.clearRect(0, 0, visoCanvas.width, visoCanvas.height);
+            visoPoints = 0;
+            document.getElementById('viso-status').innerText = 'Puntos de precisión: 0%';
+
+            // Draw canal guide
+            visoCtx.fillStyle = 'rgba(6, 182, 212, 0.1)';
+            visoCtx.fillRect(20, 40, 360, 40);
+            visoCtx.strokeStyle = 'rgba(6, 182, 212, 0.4)';
+            visoCtx.strokeRect(20, 40, 360, 40);
+
+            visoCtx.fillStyle = '#06b6d4';
+            visoCtx.font = '12px Outfit';
+            visoCtx.fillText('Entrada (A)', 25, 30);
+            visoCtx.fillText('Servidor (B)', 320, 30);
+        }
+
+        function drawVisoTrace(e) {
+            if (!visoDrawing) return;
+            const rect = visoCanvas.getBoundingClientRect();
+            const x = (e.clientX || e.pageX) - rect.left;
+            const y = (e.clientY || e.pageY) - rect.top;
+
+            if (y >= 40 && y <= 80 && x >= 20 && x <= 380) {
+                visoCtx.fillStyle = '#10b981';
+                visoCtx.beginPath();
+                visoCtx.arc(x, y, 3, 0, Math.PI * 2);
+                visoCtx.fill();
+                visoPoints = Math.min(100, visoPoints + 1);
+                gameState.psychomotorData.visoScore = visoPoints;
+                document.getElementById('viso-status').innerText = `Precisión Viso-Manual: ${visoPoints}%`;
+            } else {
+                visoCtx.fillStyle = '#f43f5e';
+                visoCtx.beginPath();
+                visoCtx.arc(x, y, 3, 0, Math.PI * 2);
+                visoCtx.fill();
+            }
+        }
+
+        function evaluateLevel0() {
+            let pts = 0;
+            if (gameState.psychomotorData.gridSuccess) pts += 70;
+            pts += Math.min(5, gameState.psychomotorData.rhythmHits) * 20;
+            pts += Math.round(gameState.psychomotorData.visoScore * 0.8);
+
+            const scoreEarned = Math.min(200, pts);
+            gameState.levelScores[0] = scoreEarned;
+            gameState.levelsCompleted[0] = true;
+            updateTotalScore();
+
+            document.getElementById('badge-l0').className = 'text-[10px] bg-emerald-950 text-emerald-400 px-2 py-0.5 rounded-full font-bold border border-emerald-800';
+            document.getElementById('badge-l0').innerText = `Completado (${scoreEarned} PTS)`;
+
+            playSound('levelup');
+            showCustomModal("¡Evaluación Psicomotora Sincronizada!", `Se ha registrado el desempeño en lateralidad, control de pulsiones rítmicas y coordinación viso-manual. Ganaste ${scoreEarned} Puntos.`, "fas fa-child-reaching text-rose-400 text-3xl");
+            showScreen('hub-screen');
+        }
+
+        // LEVEL 1 LOGIC
+        const level1Data = [
+            { id: 'item1', label: 'Monitor de Pantalla', type: 'hardware', icon: 'fa-desktop' },
+            { id: 'item2', label: 'Procesador (CPU)', type: 'hardware', icon: 'fa-microchip' },
+            { id: 'item3', label: 'Impresora Térmica', type: 'hardware', icon: 'fa-print' },
+            { id: 'item4', label: 'Parlantes de Audio', type: 'hardware', icon: 'fa-volume-high' },
+            { id: 'item5', label: 'Sistema Operativo (Windows/Linux)', type: 'software', icon: 'fa-window-restore' },
+            { id: 'item6', label: 'Plataforma Canvas MEP', type: 'software', icon: 'fa-graduation-cap' },
+            { id: 'item7', label: 'Microsoft Excel / Hoja de Cálculo', type: 'software', icon: 'fa-file-excel' },
+            { id: 'item8', label: 'Editor de Gráficos (Paint)', type: 'software', icon: 'fa-paint-brush' }
+        ];
+
+        let level1Selections = {};
+
+        function initLevel1() {
+            const pool = document.getElementById('hw-sw-items');
+            document.getElementById('box-hardware').innerHTML = '';
+            document.getElementById('box-software').innerHTML = '';
+            pool.innerHTML = '';
+            level1Selections = {};
+
+            level1Data.forEach(item => {
+                const tag = document.createElement('div');
+                tag.id = item.id;
+                tag.className = 'p-2 bg-slate-900 border border-slate-700 rounded-xl text-xs flex items-center space-x-2 cursor-pointer hover:border-cyan-400 transition';
+                tag.innerHTML = `<i class="fas ${item.icon} text-cyan-400"></i><span class="text-white">${item.label}</span>`;
+                tag.onclick = () => cycleLevel1Item(item, tag);
+                pool.appendChild(tag);
+            });
+        }
+
+        function cycleLevel1Item(item, elem) {
+            playSound('click');
+            const boxHw = document.getElementById('box-hardware');
+            const boxSw = document.getElementById('box-software');
+            const pool = document.getElementById('hw-sw-items');
+
+            if (!level1Selections[item.id]) {
+                level1Selections[item.id] = 'hardware';
+                boxHw.appendChild(elem);
+            } else if (level1Selections[item.id] === 'hardware') {
+                level1Selections[item.id] = 'software';
+                boxSw.appendChild(elem);
+            } else {
+                delete level1Selections[item.id];
+                pool.appendChild(elem);
+            }
+        }
+
+        function evaluateLevel1() {
+            let correctCount = 0;
+            level1Data.forEach(item => {
+                if (level1Selections[item.id] === item.type) correctCount++;
+            });
+
+            const qSo = document.getElementById('q-so').value;
+            const qRed = document.getElementById('q-red').value;
+
+            if (qSo === 'correct') correctCount += 2;
+            if (qRed === 'correct') correctCount += 2;
+
+            const maxPts = level1Data.length + 4;
+            const scoreEarned = Math.round((correctCount / maxPts) * 200);
+
+            gameState.levelScores[1] = scoreEarned;
+            gameState.levelsCompleted[1] = true;
+            updateTotalScore();
+
+            document.getElementById('badge-l1').className = 'text-[10px] bg-emerald-950 text-emerald-400 px-2 py-0.5 rounded-full font-bold border border-emerald-800';
+            document.getElementById('badge-l1').innerText = `Completado (${scoreEarned} PTS)`;
+
+            playSound('levelup');
+            showCustomModal("¡Reto 1 Superado!", `Has clasificado correctamente los componentes del laboratorio mediante la abstracción de sistemas. Ganaste ${scoreEarned} Puntos.`, "fas fa-trophy text-amber-400 text-3xl");
+            showScreen('hub-screen');
+        }
+
+        // LEVEL 2 LOGIC
+        const level2Files = [
+            { id: 'f1', name: 'dibujo_personaje.png', type: 'images', icon: 'fa-image text-cyan-400' },
+            { id: 'f2', name: 'musica_fondo.mp3', type: 'audio', icon: 'fa-music text-emerald-400' },
+            { id: 'f3', name: 'instrucciones.pdf', type: 'docs', icon: 'fa-file-pdf text-amber-400' },
+            { id: 'f4', name: 'logotipo.jpg', type: 'images', icon: 'fa-image text-cyan-400' }
+        ];
+
+        let fileSelections = {};
+
+        function initLevel2() {
+            const pool = document.getElementById('file-pool');
+            document.getElementById('folder-images').innerHTML = '';
+            document.getElementById('folder-audio').innerHTML = '';
+            document.getElementById('folder-docs').innerHTML = '';
+            pool.innerHTML = '';
+            fileSelections = {};
+
+            level2Files.forEach(f => {
+                const tag = document.createElement('div');
+                tag.id = f.id;
+                tag.className = 'p-2 bg-slate-900 border border-slate-700 rounded-xl text-xs flex items-center space-x-2 cursor-pointer hover:border-emerald-400 transition font-mono';
+                tag.innerHTML = `<i class="fas ${f.icon}"></i><span>${f.name}</span>`;
+                tag.onclick = () => cycleFileLocation(f, tag);
+                pool.appendChild(tag);
+            });
+
+            initCanvas();
+        }
+
+        function cycleFileLocation(f, elem) {
+            playSound('click');
+            const imgBox = document.getElementById('folder-images');
+            const audBox = document.getElementById('folder-audio');
+            const docBox = document.getElementById('folder-docs');
+            const pool = document.getElementById('file-pool');
+
+            if (!fileSelections[f.id]) {
+                fileSelections[f.id] = 'images';
+                imgBox.appendChild(elem);
+            } else if (fileSelections[f.id] === 'images') {
+                fileSelections[f.id] = 'audio';
+                audBox.appendChild(elem);
+            } else if (fileSelections[f.id] === 'audio') {
+                fileSelections[f.id] = 'docs';
+                docBox.appendChild(elem);
+            } else {
+                delete fileSelections[f.id];
+                pool.appendChild(elem);
+            }
+        }
+
+        let canvas, ctx, drawing = false, strokeColor = '#06b6d4';
+        function initCanvas() {
+            canvas = document.getElementById('paint-canvas');
+            if (!canvas) return;
+            ctx = canvas.getContext('2d');
+            
+            canvas.onmousedown = (e) => { drawing = true; draw(e); };
+            canvas.onmouseup = () => { drawing = false; ctx.beginPath(); };
+            canvas.onmousemove = draw;
+        }
+
+        function setCanvasColor(color) {
+            strokeColor = color;
+            playSound('click');
+        }
+
+        function clearCanvas() {
+            if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+            playSound('click');
+        }
+
+        function draw(e) {
+            if (!drawing) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX || e.pageX) - rect.left;
+            const y = (e.clientY || e.pageY) - rect.top;
+
+            ctx.lineWidth = 4;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = strokeColor;
+
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        function evaluateLevel2() {
+            let correct = 0;
+            level2Files.forEach(f => {
+                if (fileSelections[f.id] === f.type) correct++;
+            });
+
+            const c1 = document.getElementById('gfx-opt-1').checked;
+            const c2 = document.getElementById('gfx-opt-2').checked;
+            const c3 = document.getElementById('gfx-opt-3').checked;
+            const c4 = document.getElementById('gfx-opt-4').checked;
+
+            if (c1 && c4 && !c2 && !c3) correct += 2;
+
+            const scoreEarned = Math.round((correct / (level2Files.length + 2)) * 200);
+            gameState.levelScores[2] = scoreEarned;
+            gameState.levelsCompleted[2] = true;
+            updateTotalScore();
+
+            document.getElementById('badge-l2').className = 'text-[10px] bg-emerald-950 text-emerald-400 px-2 py-0.5 rounded-full font-bold border border-emerald-800';
+            document.getElementById('badge-l2').innerText = `Completado (${scoreEarned} PTS)`;
+
+            playSound('levelup');
+            showCustomModal("¡Reto 2 Superado!", `Archivos organizados y destreza de trazado fino completada. Ganaste ${scoreEarned} Puntos.`, "fas fa-folder-check text-emerald-400 text-3xl");
+            showScreen('hub-screen');
+        }
+
+        // LEVEL 3 LOGIC
+        let simInterval = null;
+        function runBlockSimulation() {
+            playSound('click');
+            const btn = document.getElementById('btn-run-sim');
+            btn.disabled = true;
+            
+            const simScreen = document.getElementById('sim-screen');
+            const varVal = document.getElementById('sim-var-val');
+            const simStatus = document.getElementById('sim-status');
+            const loopBadge = document.getElementById('loop-counter-badge');
+
+            let step = 0;
+            let puntos = 0;
+
+            if (simInterval) clearInterval(simInterval);
+
+            simInterval = setInterval(() => {
+                step++;
+
+                if (step === 1) {
+                    simScreen.innerHTML = `<span class="text-amber-400 font-bold">⚡ Evento Detectado: Iniciando programa...</span>`;
+                    simStatus.innerText = "Iniciando";
+                    playSound('click');
+                } else if (step === 2) {
+                    puntos = 0;
+                    varVal.innerText = puntos;
+                    simScreen.innerHTML += `<br><span class="text-cyan-300">Variable 'puntos' asignada en 0</span>`;
+                    playSound('click');
+                } else if (step <= 5) {
+                    const cycleNum = step - 2;
+                    puntos += 5;
+                    varVal.innerText = puntos;
+                    loopBadge.innerText = `Ciclo: ${cycleNum} / 3`;
+                    simScreen.innerHTML = `<span class="text-purple-300 font-bold">Ciclo ${cycleNum}: puntos = ${puntos - 5} + 5 ➔ <span class="text-white">${puntos}</span></span>`;
+                    playSound('click');
+                } else if (step === 6) {
+                    simScreen.innerHTML = `<span class="text-indigo-300">Evaluando Condicional: SI (${puntos} > 10) ➔ <strong class="text-emerald-400">VERDADERO</strong></span>`;
+                    playSound('click');
+                } else if (step === 7) {
+                    simScreen.innerHTML = `<div class="text-emerald-400 font-black text-sm glow-emerald p-2 bg-emerald-950 rounded-lg">💬 "¡Has pasado de nivel!"</div>`;
+                    simStatus.innerText = "Finalizado";
+                    btn.disabled = false;
+                    clearInterval(simInterval);
+                    playSound('success');
+                    confetti({ particleCount: 50, spread: 60 });
+                }
+            }, 900);
+        }
+
+        function evaluateLevel3() {
+            const qEv = document.getElementById('q-l3-event').value;
+            const qRes = document.getElementById('q-l3-result').value.trim();
+            const qMsg = document.getElementById('q-l3-msg').value;
+
+            let correct = 0;
+            if (qEv === 'correct') correct++;
+            if (qRes === '15') correct++;
+            if (qMsg === 'correct') correct++;
+
+            const scoreEarned = Math.round((correct / 3) * 200);
+            gameState.levelScores[3] = scoreEarned;
+            gameState.levelsCompleted[3] = true;
+            updateTotalScore();
+
+            document.getElementById('badge-l3').className = 'text-[10px] bg-emerald-950 text-emerald-400 px-2 py-0.5 rounded-full font-bold border border-emerald-800';
+            document.getElementById('badge-l3').innerText = `Completado (${scoreEarned} PTS)`;
+
+            playSound('levelup');
+            showCustomModal("¡Reto 3 Superado!", `Has interpretado correctamente la ejecución algorítmica y el flujo de control. Ganaste ${scoreEarned} Puntos.`, "fas fa-code text-amber-400 text-3xl");
+            showScreen('hub-screen');
+        }
+
+        // LEVEL 4 LOGIC
+        function evaluateLevel4() {
+            const op1 = document.getElementById('op-arith-1').value;
+            const op2 = document.getElementById('op-rel-1').value;
+            const op3 = document.getElementById('op-rel-2').value;
+            const op4 = document.getElementById('op-arith-2').value;
+
+            let correct = 0;
+            if (op1 === '+') correct++;
+            if (op2 === '=') correct++;
+            if (op3 === '>') correct++;
+            if (op4 === '/') correct++;
+
+            const scoreEarned = Math.round((correct / 4) * 200);
+            gameState.levelScores[4] = scoreEarned;
+            gameState.levelsCompleted[4] = true;
+            updateTotalScore();
+
+            document.getElementById('badge-l4').className = 'text-[10px] bg-emerald-950 text-emerald-400 px-2 py-0.5 rounded-full font-bold border border-emerald-800';
+            document.getElementById('badge-l4').innerText = `Completado (${scoreEarned} PTS)`;
+
+            playSound('levelup');
+            showCustomModal("¡Reto 4 Superado!", `Has demostrado gusto por la precisión en el manejo de operadores. Ganaste ${scoreEarned} Puntos.`, "fas fa-wand-magic-sparkles text-purple-400 text-3xl");
+            showScreen('hub-screen');
+        }
+
+        function startLevel(lvl) {
+            if (lvl === 0) { initLevel0(); showScreen('level0-screen'); }
+            if (lvl === 1) { initLevel1(); showScreen('level1-screen'); }
+            if (lvl === 2) { initLevel2(); showScreen('level2-screen'); }
+            if (lvl === 3) { showScreen('level3-screen'); }
+            if (lvl === 4) { showScreen('level4-screen'); }
+        }
+
+        function updateTotalScore() {
+            gameState.score = gameState.levelScores[0] + gameState.levelScores[1] + gameState.levelScores[2] + gameState.levelScores[3] + gameState.levelScores[4];
+            document.getElementById('hud-score').innerText = gameState.score;
+        }
+
+        function submitMetacognition(e) {
+            e.preventDefault();
+            gameState.metacognition.q1 = document.getElementById('refl-q1').value;
+            gameState.metacognition.q2 = document.getElementById('refl-q2').value;
+            gameState.metacognition.q3 = document.getElementById('refl-q3').value;
+
+            document.getElementById('cert-student-names').innerText = gameState.student1 + (gameState.student2 ? ' y ' + gameState.student2 : '');
+            document.getElementById('cert-section').innerText = gameState.section;
+            document.getElementById('cert-score').innerText = `${gameState.score} / 1000 PTS`;
+            document.getElementById('cert-date').innerText = gameState.date;
+
+            const grid = document.getElementById('cert-indicators-grid');
+            grid.innerHTML = `
+                <div class="p-2 bg-slate-900 rounded border border-slate-800">
+                    <span class="text-slate-400 font-bold block">1. Dimensión Psicomotora y Ritmo:</span>
+                    <span class="text-emerald-400 font-bold">${gameState.levelScores[0] >= 140 ? 'Satisfactorio (Autónomo)' : 'En Proceso de Desarrollo'}</span>
+                </div>
+                <div class="p-2 bg-slate-900 rounded border border-slate-800">
+                    <span class="text-slate-400 font-bold block">2. Hardware, Software y Abstracción:</span>
+                    <span class="text-emerald-400 font-bold">${gameState.levelScores[1] >= 140 ? 'Autónomo (A)' : 'Con Apoyo (CA)'}</span>
+                </div>
+                <div class="p-2 bg-slate-900 rounded border border-slate-800">
+                    <span class="text-slate-400 font-bold block">3. Archivos y Edición Viso-Motriz:</span>
+                    <span class="text-emerald-400 font-bold">${gameState.levelScores[2] >= 140 ? 'Autónomo (A)' : 'Con Apoyo (CA)'}</span>
+                </div>
+                <div class="p-2 bg-slate-900 rounded border border-slate-800">
+                    <span class="text-slate-400 font-bold block">4. Algoritmos, Bucle y Depuración:</span>
+                    <span class="text-emerald-400 font-bold">${gameState.levelScores[3] >= 140 ? 'Autónomo (A)' : 'Con Apoyo (CA)'}</span>
+                </div>
+                <div class="p-2 bg-slate-900 rounded border border-slate-800 sm:col-span-2">
+                    <span class="text-slate-400 font-bold block">5. Operadores y Gusto por la Precisión:</span>
+                    <span class="text-purple-400 font-bold">${gameState.levelScores[4] >= 140 ? 'Demuestra Precisión e Integración' : 'Requiere Refuerzo Lógico'}</span>
+                </div>
+            `;
+
+            const record = {
+                student1: gameState.student1,
+                student2: gameState.student2,
+                section: gameState.section,
+                date: gameState.date,
+                score: gameState.score,
+                resilience: gameState.resilience,
+                scores: { ...gameState.levelScores }
+            };
+
+            studentDatabase.push(record);
+            localStorage.setItem('cyberquest_records', JSON.stringify(studentDatabase));
+
+            playSound('levelup');
+            confetti({ particleCount: 100, spread: 80 });
+            showScreen('certificate-screen');
+        }
+
+        function updateTeacherPanel() {
+            document.getElementById('stat-total-students').innerText = studentDatabase.length;
+
+            if (studentDatabase.length > 0) {
+                const totalPts = studentDatabase.reduce((acc, curr) => acc + curr.score, 0);
+                const avgPct = Math.round((totalPts / (studentDatabase.length * 1000)) * 100);
+                document.getElementById('stat-avg-score').innerText = `${avgPct}%`;
+                document.getElementById('stat-status').innerText = avgPct >= 70 ? 'Desarrollo Óptimo' : 'Nivelación Psicomotora/Lógica';
+            }
+
+            const tbody = document.getElementById('teacher-records-table-body');
+            tbody.innerHTML = '';
+
+            if (studentDatabase.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-500 italic">No hay registros de estudiantes sincronizados aún.</td></tr>`;
+                return;
+            }
+
+            studentDatabase.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="p-3 font-bold text-white">${r.student1}${r.student2 ? ' / ' + r.student2 : ''}</td>
+                    <td class="p-3 font-mono text-cyan-400">${r.section}</td>
+                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded ${r.scores[0] >= 140 ? 'bg-rose-950 text-rose-300' : 'bg-slate-800 text-slate-400'} font-bold">${r.scores[0]}</span></td>
+                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded ${r.scores[1] >= 140 ? 'bg-emerald-950 text-emerald-400' : 'bg-amber-950 text-amber-400'} font-bold">${r.scores[1]}</span></td>
+                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded ${r.scores[2] >= 140 ? 'bg-emerald-950 text-emerald-400' : 'bg-amber-950 text-amber-400'} font-bold">${r.scores[2]}</span></td>
+                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded ${r.scores[3] >= 140 ? 'bg-emerald-950 text-emerald-400' : 'bg-amber-950 text-amber-400'} font-bold">${r.scores[3]}</span></td>
+                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded ${r.scores[4] >= 140 ? 'bg-emerald-950 text-emerald-400' : 'bg-amber-950 text-amber-400'} font-bold">${r.scores[4]}</span></td>
+                    <td class="p-3 text-center font-bold text-amber-400 font-mono">${r.score} PTS</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function exportDataJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(studentDatabase, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `mep_7mo_diagnostico_integral_${new Date().toISOString().split('T')[0]}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            showToast('Expediente Diagnóstico Exportado', 'success');
+        }
+
+        const arcadeQuestions = [
+            { q: "¿Cuál es el resultado de 5 + 3 * 2?", opts: ["16", "11", "10", "13"], a: "11" },
+            { q: "Si 'puntos' vale 8, ¿es verdadero (puntos > 10)?", opts: ["Falso", "Verdadero"], a: "Falso" },
+            { q: "¿Qué extensión corresponde a un archivo de audio?", opts: [".mp3", ".png", ".pdf", ".jpg"], a: ".mp3" },
+            { q: "¿Cuál es un componente físico (Hardware)?", opts: ["Monitores", "Canvas", "Excel", "Windows"], a: "Monitores" }
+        ];
+
+        function initArcade() {
+            const randomQ = arcadeQuestions[Math.floor(Math.random() * arcadeQuestions.length)];
+            document.getElementById('arcade-question').innerText = randomQ.q;
+            const container = document.getElementById('arcade-answers');
+            container.innerHTML = '';
+
+            randomQ.opts.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'p-3 bg-slate-900 border border-slate-700 hover:border-cyan-400 rounded-xl text-white transition';
+                btn.innerText = opt;
+                btn.onclick = () => {
+                    if (opt === randomQ.a) {
+                        playSound('success');
+                        showToast('¡Respuesta Correcta! +50 PTS', 'success');
+                        gameState.score += 50;
+                        document.getElementById('hud-score').innerText = gameState.score;
+                    } else {
+                        playSound('error');
+                        showToast('Respuesta Incorrecta', 'error');
+                    }
+                    initArcade();
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        window.onload = function() {
+            document.getElementById('reg-date').value = gameState.date;
+            initArcade();
+        };
+    </script>
+</body>
+</html>
