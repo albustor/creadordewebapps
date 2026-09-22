@@ -57,7 +57,52 @@ export default function AdminPage() {
   const [solInstitucion, setSolInstitucion] = useState("Asesoría Regional / Nacional");
   const [solRol, setSolRol] = useState<"Asesor Regional" | "Asesor Nacional" | "Asesor de Enseñanza Secundaria" | "Docente">("Asesor Nacional");
 
-  const esSuperAdmin = docente?.correoInstitucional === "alberto.bustos.ortega@mep.go.cr";
+  const esSuperAdmin = docente?.correoInstitucional?.toLowerCase().trim() === "alberto.bustos.ortega@mep.go.cr";
+
+  if (!esSuperAdmin) {
+    return (
+      <AuthGuard>
+        <div className="max-w-2xl mx-auto px-4 py-20 text-center space-y-6">
+          <div className="w-20 h-20 rounded-3xl bg-amber-50 border border-amber-200 text-amber-600 mx-auto flex items-center justify-center shadow-sm">
+            <LockKey size={40} weight="duotone" />
+          </div>
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold uppercase tracking-wider">
+              Área Restringida
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900">
+              Acceso Exclusivo de Gobernanza
+            </h1>
+            <p className="text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
+              El panel de administración y auditoría nacional está reservado exclusivamente para el Administrador General <strong>Alberto Bustos Ortega</strong>.
+            </p>
+          </div>
+
+          <div className="p-4 bg-white rounded-2xl border border-slate-200 shadow-sm text-xs text-slate-500 max-w-md mx-auto text-left space-y-1">
+            <div className="font-bold text-slate-800">Tu cuenta actual:</div>
+            <div><strong>Nombre:</strong> {docente?.nombreCompleto || "Usuario"}</div>
+            <div><strong>Rol:</strong> {docente?.rol || "Docente"}</div>
+            <div><strong>Correo:</strong> {docente?.correoInstitucional || "No registrado"}</div>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+            <Link
+              href="/diagnostico"
+              className="px-6 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 transition-all shadow-sm"
+            >
+              Ir a Diagnóstico
+            </Link>
+            <Link
+              href="/dashboard"
+              className="px-6 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-700 font-bold text-xs hover:bg-slate-50 transition-all"
+            >
+              Ver Dashboard
+            </Link>
+          </div>
+        </div>
+      </AuthGuard>
+    );
+  }
 
   const cargarUsuarios = async () => {
     setCargando(true);
@@ -82,7 +127,7 @@ export default function AdminPage() {
     if (!esSuperAdmin) {
       setMensajeAccion({
         tipo: "error",
-        texto: "Acceso denegado: Solo el Administrador General (Prof. Alberto Bustos Ortega) tiene autorización para ejecutar esta acción.",
+        texto: "Acceso denegado: Solo el Administrador General (Alberto Bustos Ortega) tiene autorización para ejecutar esta acción.",
       });
       setTimeout(() => setMensajeAccion(null), 4000);
       return;
@@ -220,7 +265,7 @@ export default function AdminPage() {
               Super Administrador General
             </div>
             <div className="text-xs font-extrabold text-white leading-tight">
-              Prof. Alberto Bustos Ortega
+              Alberto Bustos Ortega
             </div>
             <div className="text-[10px] font-mono text-slate-400 mt-0.5">
               alberto.bustos.ortega@mep.go.cr
@@ -228,24 +273,6 @@ export default function AdminPage() {
           </div>
         </div>
       </div>
-
-      {/* Alerta de Permisos si no está como Super Admin */}
-      {!esSuperAdmin && (
-        <div className="p-4 bg-amber-50 border border-amber-300 rounded-2xl flex items-start gap-3 text-xs text-amber-900">
-          <LockKey size={22} className="text-amber-700 shrink-0 mt-0.5" weight="bold" />
-          <div className="space-y-1">
-            <div className="font-extrabold text-amber-950">
-              Panel de Gobernanza Restringido • Solo Administrador General
-            </div>
-            <p className="leading-relaxed">
-              Estás conectado como <strong>{docente?.nombreCompleto || "Usuario"}</strong> (<em>{docente?.rol || "Asesor / Docente"}</em>). Como Asesor o Docente tienes <strong>acceso completo</strong> para realizar ejercicios, diseñar WebApps, proyectar simulaciones y consultar el <strong>Dashboard Analítico y Telemetría</strong>.
-            </p>
-            <p className="text-[11px] text-amber-800 font-semibold">
-              ℹ️ La activación, aprobación de credenciales y gestión de permisos está reservada exclusivamente para el Administrador General (<strong>Prof. Alberto Bustos Ortega</strong>).
-            </p>
-          </div>
-        </div>
-      )}
 
       {/* Mensajes de Notificación */}
       {mensajeAccion && (
@@ -823,7 +850,7 @@ export default function AdminPage() {
               Registrar Nueva Solicitud de Asesor o Docente
             </h2>
             <p className="text-xs text-slate-500">
-              La solicitud se agregará a la lista de pendientes para que el Administrador General (Prof. Alberto Bustos Ortega) la valide.
+              La solicitud se agregará a la lista de pendientes para que el Administrador General (Alberto Bustos Ortega) la valide.
             </p>
           </div>
 

@@ -268,13 +268,13 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
           <div>
             <span className="text-xs font-bold text-emerald-700 uppercase tracking-widest block">
-              Módulo de Diagnóstico • Formación Tecnológica (9° Año)
+              Módulo de diagnóstico • Formación tecnológica (9° año)
             </span>
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900">
-            Diagnóstico Integrado 9°: «Aula Inteligente»
+            Diagnóstico integrado 9°: «Aula inteligente»
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Evaluación formativa oficial en las 3 Dimensiones: 🧠 Cognoscitiva, 🖐️ Psicomotora y ❤️ Socioafectiva (Módulo 1)
+            Evaluación formativa oficial en las 3 dimensiones: 🧠 cognoscitiva, 🖐️ psicomotora y ❤️ socioafectiva (Módulo 1)
           </p>
         </div>
 
@@ -284,7 +284,7 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
             className="flex items-center gap-2 px-4 py-2.5 bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-300 rounded-xl text-xs font-bold shadow-xs transition-all"
           >
             <Scales size={16} weight="bold" className="text-purple-700" />
-            <span>Ver Cuadro Comparativo MEP</span>
+            <span>Ver cuadro comparativo MEP</span>
           </button>
         </div>
       </div>
@@ -299,24 +299,22 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
 
       {/* APLICATIVO PARA EL DOCENTE EVALUADOR */}
       <section>
-        <div className="bg-gradient-to-br from-purple-950 via-slate-900 to-indigo-950 border-2 border-purple-500/80 rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl group-hover:scale-125 transition-transform" />
-          
+        <div className="bg-indigo-50/80 border-2 border-indigo-200/90 rounded-3xl p-6 sm:p-8 text-slate-900 shadow-softPastel flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden group">
           <div className="space-y-3 relative z-10 max-w-2xl">
             <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-400/30 text-[10px] font-black uppercase tracking-wider">
-                Instrumento para el Docente
+              <span className="px-3 py-1 rounded-full bg-indigo-100 text-indigo-900 border border-indigo-300 text-[10px] font-black uppercase tracking-wider">
+                Instrumento para la persona docente
               </span>
-              <span className="text-xs font-bold text-purple-200">Guía Oficial de Evaluación</span>
+              <span className="text-xs font-bold text-indigo-800">Guía oficial de evaluación</span>
             </div>
             
-            <h3 className="text-xl font-black text-white flex items-center gap-2">
-              <UserCheck size={24} className="text-emerald-400" weight="fill" />
-              <span>Evaluador Docente & Sistematización de Desempeños</span>
+            <h3 className="text-xl font-black text-slate-900 flex items-center gap-2">
+              <UserCheck size={24} className="text-emerald-700" weight="fill" />
+              <span>Evaluador docente y sistematización de desempeños</span>
             </h3>
             
-            <p className="text-xs text-slate-300 leading-relaxed">
-              Permite registrar en vivo la matriz de <strong>Sistematización de Desempeños y Logros (Pág. 15)</strong>, escanear con la cámara del celular o laptop los <strong>códigos QR de los estudiantes</strong>, evaluar las 3 áreas (Cognoscitiva, Psicomotora y Socioafectiva) y exportar actas a Excel.
+            <p className="text-xs text-slate-600 leading-relaxed font-medium">
+              Permite registrar en vivo la matriz de <strong>sistematización de desempeños y logros (pág. 15)</strong>, escanear con la cámara del celular o laptop los <strong>códigos QR de los estudiantes</strong>, evaluar las 3 áreas (cognoscitiva, psicomotora y socioafectiva) y exportar actas a Excel.
             </p>
           </div>
 
@@ -325,27 +323,27 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
               href="/webapps/diagnostico_9no_modulo01_docente_evaluador.html"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black text-xs rounded-xl shadow-md hover:shadow-lg transition-all"
+              className="inline-flex items-center gap-2 px-5 py-3 bg-indigo-700 hover:bg-indigo-800 text-white font-black text-xs rounded-xl shadow-xs transition-all"
             >
-              <span>Abrir App Docente</span>
+              <span>Abrir aplicación docente</span>
               <ArrowSquareOut size={16} weight="bold" />
             </a>
             
             <button
               onClick={() => setModalQRDocente(true)}
-              className="inline-flex items-center gap-1.5 px-4 py-3 bg-purple-600/80 hover:bg-purple-600 text-white font-bold text-xs rounded-xl shadow-sm transition-all"
+              className="inline-flex items-center gap-1.5 px-4 py-3 bg-indigo-100 hover:bg-indigo-200 text-indigo-900 font-bold text-xs rounded-xl border border-indigo-300 transition-all shadow-xs"
             >
               <QrCode size={16} weight="bold" />
-              <span>📱 QR Celular Docente</span>
+              <span>QR para celular docente</span>
             </button>
             
             <a
               href="/webapps/diagnostico_9no_modulo01_docente_evaluador.html"
               download="diagnostico_9no_modulo01_docente_evaluador.html"
-              className="inline-flex items-center gap-1.5 px-3.5 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl border border-slate-700 transition-colors"
+              className="inline-flex items-center gap-1.5 px-3.5 py-3 bg-stone-100 hover:bg-stone-200 text-slate-800 text-xs font-bold rounded-xl border border-stone-300 transition-colors shadow-xs"
             >
               <DownloadSimple size={15} weight="bold" />
-              <span>Descargar .HTML</span>
+              <span>Descargar .html</span>
             </a>
           </div>
         </div>
@@ -358,15 +356,15 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
             
             <div className="flex items-center justify-between border-b border-slate-200 pb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center shadow-md">
+                 <div className="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center shadow-md">
                   <Scales size={24} weight="bold" />
                 </div>
                 <div>
                   <h3 className="text-lg font-black text-slate-900">
-                    Dictamen de Validación y Cuadro Comparativo Oficial MEP
+                    Dictamen de validación y cuadro comparativo oficial MEP
                   </h3>
                   <p className="text-xs text-slate-500">
-                    Contraste directo entre la Guía de Evaluación Diagnóstica 9° (Módulo 1) y los Aplicativos Web
+                    Contraste directo entre la Guía de evaluación diagnóstica 9° (Módulo 1) y los aplicativos web
                   </p>
                 </div>
               </div>
@@ -383,48 +381,48 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
               <table className="w-full text-left text-xs border-collapse border border-slate-200">
                 <thead>
                   <tr className="bg-slate-900 text-white">
-                    <th className="p-3 border border-slate-700">Elemento / Dimensión</th>
-                    <th className="p-3 border border-slate-700">Documento Base Oficial (PDF MEP)</th>
+                    <th className="p-3 border border-slate-700">Elemento / dimensión</th>
+                    <th className="p-3 border border-slate-700">Documento base oficial (PDF MEP)</th>
                     <th className="p-3 border border-slate-700">Implementación en WebApps</th>
                     <th className="p-3 border border-slate-700 text-center">Estado</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200">
                   <tr className="bg-slate-50">
-                    <td className="p-3 font-bold text-slate-900 border border-slate-200">1. Identificación y Portada</td>
+                    <td className="p-3 font-bold text-slate-900 border border-slate-200">1. Identificación y portada</td>
                     <td className="p-3 text-slate-600 border border-slate-200">Centro educativo, docente, sección, fecha, estudiante, tiempo de 70 min.</td>
-                    <td className="p-3 text-slate-700 border border-slate-200">Campos completos en ambas WebApps, con login del estudiante y gestión de nóminas en la App Docente.</td>
-                    <td className="p-3 text-center border border-slate-200"><span className="px-2 py-1 bg-emerald-100 text-emerald-800 font-extrabold rounded-md text-[10px]">🟢 100% Alineado</span></td>
+                    <td className="p-3 text-slate-700 border border-slate-200">Campos completos en ambas WebApps, con ingreso de estudiante y gestión de nóminas en la aplicación docente.</td>
+                    <td className="p-3 text-center border border-slate-200"><span className="px-2 py-1 bg-emerald-100 text-emerald-800 font-extrabold rounded-md text-[10px]">🟢 100% alineado</span></td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-bold text-slate-900 border border-slate-200">2. Situación-Problema</td>
-                    <td className="p-3 text-slate-600 border border-slate-200">«Aula Inteligente»: automatización de luminaria ante baja luz ambiental con MCU, sensor LDR y actuador.</td>
+                    <td className="p-3 font-bold text-slate-900 border border-slate-200">2. Situación-problema</td>
+                    <td className="p-3 text-slate-600 border border-slate-200">«Aula inteligente»: automatización de luminaria ante baja luz ambiental con MCU, sensor LDR y actuador.</td>
                     <td className="p-3 text-slate-700 border border-slate-200">Idéntico: Contexto situado del laboratorio de informática con umbral dinámico de 300 Lux.</td>
-                    <td className="p-3 text-center border border-slate-200"><span className="px-2 py-1 bg-emerald-100 text-emerald-800 font-extrabold rounded-md text-[10px]">🟢 100% Alineado</span></td>
+                    <td className="p-3 text-center border border-slate-200"><span className="px-2 py-1 bg-emerald-100 text-emerald-800 font-extrabold rounded-md text-[10px]">🟢 100% alineado</span></td>
                   </tr>
                   <tr className="bg-slate-50">
-                    <td className="p-3 font-bold text-slate-900 border border-slate-200">3. Parte A: Conocimientos Previos</td>
-                    <td className="p-3 text-slate-600 border border-slate-200">10 reactivos diagnósticos (Microcontrolador, sensor/actuador, EPS, algoritmo, condición, dato, depuración, ciclo del dato).</td>
+                    <td className="p-3 font-bold text-slate-900 border border-slate-200">3. Parte A: conocimientos previos</td>
+                    <td className="p-3 text-slate-600 border border-slate-200">10 reactivos diagnósticos (microcontrolador, sensor/actuador, EPS, algoritmo, condición, dato, depuración, ciclo del dato).</td>
                     <td className="p-3 text-slate-700 border border-slate-200">10 reactivos interactivos con explicaciones conceptuales, retroalimentación formativa y telemetría por reactivo.</td>
-                    <td className="p-3 text-center border border-slate-200"><span className="px-2 py-1 bg-emerald-100 text-emerald-800 font-extrabold rounded-md text-[10px]">🟢 100% Alineado</span></td>
+                    <td className="p-3 text-center border border-slate-200"><span className="px-2 py-1 bg-emerald-100 text-emerald-800 font-extrabold rounded-md text-[10px]">🟢 100% alineado</span></td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-bold text-slate-900 border border-slate-200">4. Parte B: Reto Práctico</td>
+                    <td className="p-3 font-bold text-slate-900 border border-slate-200">4. Parte B: reto práctico</td>
                     <td className="p-3 text-slate-600 border border-slate-200">«Conecta el prototipo»: tarjetas impresas en papel, líneas de cables, polaridad (5V, GND, pines), depuración de falla y cambio de actuador.</td>
-                    <td className="p-3 text-slate-700 border border-slate-200">Laboratorio interactivo Canvas/SVG 2D con cables dinámicos, osciloscopio 60 FPS, multímetro, inyector de fallas y alternancia LED/Servo/Buzzer.</td>
-                    <td className="p-3 text-center border border-slate-200"><span className="px-2 py-1 bg-emerald-100 text-emerald-800 font-extrabold rounded-md text-[10px]">🟢 100% Potenciado</span></td>
+                    <td className="p-3 text-slate-700 border border-slate-200">Laboratorio interactivo Canvas/SVG 2D con cables dinámicos, osciloscopio 60 FPS, multímetro, inyector de fallas y alternancia LED/servo/buzzer.</td>
+                    <td className="p-3 text-center border border-slate-200"><span className="px-2 py-1 bg-emerald-100 text-emerald-800 font-extrabold rounded-md text-[10px]">🟢 100% potenciado</span></td>
                   </tr>
                   <tr className="bg-slate-50">
-                    <td className="p-3 font-bold text-slate-900 border border-slate-200">5. Parte C: Reflexión Individual</td>
-                    <td className="p-3 text-slate-600 border border-slate-200">5 preguntas de autopercepción (Mayor facilidad, más difícil, reacción al error, qué reforzar y escala de comodidad de 4 niveles).</td>
+                    <td className="p-3 font-bold text-slate-900 border border-slate-200">5. Parte C: reflexión individual</td>
+                    <td className="p-3 text-slate-600 border border-slate-200">5 preguntas de autopercepción (mayor facilidad, más difícil, reacción al error, qué reforzar y escala de comodidad de 4 niveles).</td>
                     <td className="p-3 text-slate-700 border border-slate-200">Opciones guiadas con selectores visuales + campo de redacción libre + matriz de 4 sentimientos + codificación en el QR de respaldo.</td>
-                    <td className="p-3 text-center border border-slate-200"><span className="px-2 py-1 bg-emerald-100 text-emerald-800 font-extrabold rounded-md text-[10px]">🟢 100% Mejorado</span></td>
+                    <td className="p-3 text-center border border-slate-200"><span className="px-2 py-1 bg-emerald-100 text-emerald-800 font-extrabold rounded-md text-[10px]">🟢 100% mejorado</span></td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-bold text-slate-900 border border-slate-200">6. Guía Docente y Rúbricas</td>
-                    <td className="p-3 text-slate-600 border border-slate-200">Listas de cotejo y observación (10 cognoscitivas, 6 psicomotoras, 7 socioafectivas con escala A/B/C) y toma de decisiones (pág 10).</td>
-                    <td className="p-3 text-slate-700 border border-slate-200">Aplicativo Docente independiente con carga de nóminas por archivo, evaluación por estudiante, escáner QR y consolidado en Excel/PDF.</td>
-                    <td className="p-3 text-center border border-slate-200"><span className="px-2 py-1 bg-emerald-100 text-emerald-800 font-extrabold rounded-md text-[10px]">🟢 100% Cumplido</span></td>
+                    <td className="p-3 font-bold text-slate-900 border border-slate-200">6. Guía docente y rúbricas</td>
+                    <td className="p-3 text-slate-600 border border-slate-200">Listas de cotejo y observación (10 cognoscitivas, 6 psicomotoras, 7 socioafectivas con escala A/B/C) y toma de decisiones (pág. 10).</td>
+                    <td className="p-3 text-slate-700 border border-slate-200">Aplicación docente independiente con carga de nóminas por archivo, evaluación por estudiante, escáner QR y consolidado en Excel/PDF.</td>
+                    <td className="p-3 text-center border border-slate-200"><span className="px-2 py-1 bg-emerald-100 text-emerald-800 font-extrabold rounded-md text-[10px]">🟢 100% cumplido</span></td>
                   </tr>
                 </tbody>
               </table>
@@ -434,10 +432,10 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
             <div className="bg-purple-50 border border-purple-200 p-4 rounded-2xl text-xs space-y-2">
               <div className="flex items-center gap-2 font-black text-purple-950">
                 <CheckCircle size={18} weight="fill" className="text-purple-700" />
-                <span>Dictamen Final: Validez Curricular y Tecnológica Total (100%)</span>
+                <span>Dictamen final: validez curricular y tecnológica total (100%)</span>
               </div>
               <p className="text-slate-700 leading-relaxed">
-                Los dos aplicativos (Estudiante y Docente) preservan con absoluta fidelidad los criterios, indicadores de logro y estructura metodológica de la Guía de Evaluación Diagnóstica de Noveno Año (Módulo 1 - Formación Tecnológica 2026). Las mejoras digitales aplicadas en la Parte C y en la simulación 2D optimizan el registro de evidencias formativas y permiten el seguimiento tanto online como offline.
+                Los dos aplicativos (estudiante y docente) preservan con absoluta fidelidad los criterios, indicadores de logro y estructura metodológica de la Guía de evaluación diagnóstica de noveno año (Módulo 1 - Formación Tecnológica 2026). Las mejoras digitales aplicadas en la Parte C y en la simulación 2D optimizan el registro de evidencias formativas y permiten el seguimiento tanto en línea como desconectado.
               </p>
             </div>
 
@@ -446,7 +444,7 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
                 onClick={() => setModalComparativaAbierto(false)}
                 className="px-5 py-2.5 bg-slate-900 text-white font-bold text-xs rounded-xl shadow-md"
               >
-                Entendido y Cerrar
+                Entendido y cerrar
               </button>
             </div>
 
@@ -467,11 +465,11 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
 
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/20 text-sky-300 text-xs font-bold mb-3">
               <Lightbulb size={16} weight="fill" className="text-amber-400" />
-              <span>Diagnóstico 9°: «Aula Inteligente»</span>
+              <span>Diagnóstico 9°: «Aula inteligente»</span>
             </div>
 
             <h3 className="text-xl font-black text-white mb-2">
-              Proyectar a los Estudiantes
+              Proyectar a los estudiantes
             </h3>
             <p className="text-xs text-slate-300 mb-5">
               Los estudiantes pueden escanear este código con su celular o tableta para abrir y resolver la prueba en el aula.
@@ -487,7 +485,7 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
                     : "text-slate-400 hover:text-white"
                 }`}
               >
-                🌐 En Línea (URL Web)
+                🌐 En línea (URL web)
               </button>
               <button
                 onClick={() => setModoQREstudiante("local")}
@@ -497,7 +495,7 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
                     : "text-slate-400 hover:text-white"
                 }`}
               >
-                💾 En Local / Archivo
+                💾 En local / archivo
               </button>
             </div>
 
@@ -537,11 +535,11 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
 
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-bold mb-3">
               <UserCheck size={16} weight="fill" className="text-emerald-400" />
-              <span>Aplicativo & Evaluador Docente</span>
+              <span>Aplicativo y evaluador docente</span>
             </div>
 
             <h3 className="text-xl font-black text-white mb-2">
-              Instrumento Docente Evaluador
+              Instrumento docente evaluador
             </h3>
             <p className="text-xs text-slate-300 mb-5">
               Accede al instrumento de evaluación y registro de observación diagnóstica optimizado para computadoras de laboratorios, PCs y portátiles.
@@ -576,7 +574,7 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
             <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
               <h3 className="text-base sm:text-lg font-black text-white flex items-center gap-2">
                 <DeviceMobile size={22} className="text-sky-400" />
-                <span>Instalar como Aplicación (PWA)</span>
+                <span>Instalar como aplicación (PWA)</span>
               </h3>
               <button
                 onClick={() => setModalPWAGuia(false)}
@@ -623,7 +621,7 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
             {/* Contenido Android */}
             {tabPWAGuia === "android" && (
               <div className="space-y-3 bg-slate-950/80 p-4 rounded-2xl border border-slate-800 text-xs text-slate-300 leading-relaxed">
-                <h4 className="font-bold text-emerald-400 text-sm">En Celulares y Tablets Android (Google Chrome):</h4>
+                <h4 className="font-bold text-emerald-400 text-sm">En celulares y tabletas Android (Google Chrome):</h4>
                 <ol className="list-decimal list-inside space-y-1.5 pl-1">
                   <li>Abre la WebApp en <strong>Google Chrome</strong>.</li>
                   <li>Toca el menú de los <strong>tres puntos (⋮)</strong> en la esquina superior derecha.</li>
@@ -649,7 +647,7 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
             {/* Contenido PC */}
             {tabPWAGuia === "pc" && (
               <div className="space-y-3 bg-slate-950/80 p-4 rounded-2xl border border-slate-800 text-xs text-slate-300 leading-relaxed">
-                <h4 className="font-bold text-amber-400 text-sm">En Computadoras (Windows / Mac con Chrome o Edge):</h4>
+                <h4 className="font-bold text-amber-400 text-sm">En computadoras (Windows / Mac con Chrome o Edge):</h4>
                 <ol className="list-decimal list-inside space-y-1.5 pl-1">
                   <li>Abre el archivo en <strong>Google Chrome</strong> o <strong>Microsoft Edge</strong>.</li>
                   <li>En la barra de direcciones (a la derecha), haz clic en el icono de <strong>Instalar (⊕ o monitor)</strong>.</li>

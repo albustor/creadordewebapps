@@ -63,13 +63,13 @@ export default function SemaforoLogro({ registros, configuracion }: SemaforoLogr
           </p>
         </div>
 
-        <div className="flex items-center gap-4 text-xs font-bold text-slate-700 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
+        <div className="flex items-center gap-4 text-xs font-bold text-slate-700 bg-stone-50 px-3.5 py-2 rounded-xl border border-stone-200">
           <div>
-            Promedio: <span className="text-blue-700 font-extrabold">{promedioPuntaje}%</span>
+            Promedio: <span className="text-emerald-800 font-black">{total > 0 ? (promedioPuntaje / 10).toFixed(1) : "0.0"}/10 Saberes</span>
           </div>
-          <div className="text-slate-300">|</div>
+          <div className="text-stone-300">|</div>
           <div>
-            Tiempo medio: <span className="text-amber-600 font-extrabold">{tiempoPromedioSegundos}s</span>
+            Tiempo medio: <span className="text-amber-700 font-black">{tiempoPromedioSegundos}s</span>
           </div>
         </div>
       </div>

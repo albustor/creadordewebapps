@@ -264,30 +264,30 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
 
   return (
     <div className="space-y-8 animate-fadeIn">
-      {/* Banner Principal del Observatorio Macro */}
-      <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-emerald-950 text-white p-6 sm:p-8 rounded-3xl shadow-xl border border-slate-800">
+      {/* Banner Principal del Observatorio Macro en Blanco Cálido y Pastel */}
+      <div className="bg-white text-slate-900 p-6 sm:p-8 rounded-3xl shadow-softPastel border-2 border-emerald-200/90">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <span className="p-2 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+              <span className="p-2 rounded-xl bg-emerald-100 text-emerald-800 border border-emerald-300">
                 <GlobeHemisphereWest size={24} weight="bold" />
               </span>
-              <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
+              <span className="text-xs font-black uppercase tracking-widest text-emerald-800">
                 Observatorio Nacional • Formación Tecnológica 2026
               </span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+            <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
               Analítica Macro & Cobertura de Diagnóstico
             </h2>
-            <p className="text-xs sm:text-sm text-slate-300 max-w-3xl leading-relaxed">
-              Panel de supervisión general para el <strong>Prof. Alberto Bustos Ortega (Super Administrador)</strong>. Permite monitorear la aplicación del diagnóstico en liceos y colegios de las 27 DREs, comparar rendimientos y detectar brechas curriculares de entrada de año.
+            <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed font-medium">
+              Panel de supervisión general para <strong>Alberto Bustos Ortega (Super Administrador)</strong>. Permite monitorear la aplicación del diagnóstico en liceos y colegios de las 27 DREs, comparar rendimientos y detectar brechas curriculares de entrada de año.
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-3 shrink-0">
             <button
               onClick={exportarMacroExcel}
-              className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs rounded-xl shadow-lg transition-all"
+              className="flex items-center gap-2 px-4 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs rounded-xl shadow-xs transition-all"
             >
               <FileXls size={18} weight="bold" />
               <span>Exportar Macro (.xlsx)</span>
@@ -296,48 +296,48 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
         </div>
 
         {/* 4 Tarjetas KPI Macro Nacionales */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-8 pt-6 border-t border-slate-800/80">
-          <div className="p-4 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10">
-            <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-8 pt-6 border-t border-stone-200">
+          <div className="p-4 rounded-2xl bg-[#FCFBF9] border border-stone-200 shadow-xs">
+            <div className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">
               Instituciones Registradas
             </div>
-            <div className="text-2xl sm:text-3xl font-black text-white mt-1">
-              {metricasMacro.instAplicadas} <span className="text-sm font-semibold text-slate-400">/ {metricasMacro.totalInst}</span>
+            <div className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">
+              {metricasMacro.instAplicadas} <span className="text-sm font-semibold text-stone-500">/ {metricasMacro.totalInst}</span>
             </div>
-            <div className="flex items-center gap-1 text-[11px] text-emerald-400 font-bold mt-2">
+            <div className="flex items-center gap-1 text-[11px] text-emerald-700 font-bold mt-2">
               <span>{metricasMacro.tasaCobertura}% cobertura nacional</span>
             </div>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10">
-            <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+          <div className="p-4 rounded-2xl bg-[#FCFBF9] border border-stone-200 shadow-xs">
+            <div className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">
               Estudiantes Evaluados
             </div>
-            <div className="text-2xl sm:text-3xl font-black text-white mt-1">
+            <div className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">
               {metricasMacro.totalEstudiantes.toLocaleString()}
             </div>
-            <div className="text-[11px] text-slate-300 font-medium mt-2">
+            <div className="text-[11px] text-stone-600 font-medium mt-2">
               En {metricasMacro.instAplicadas} instituciones activas
             </div>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10">
-            <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+          <div className="p-4 rounded-2xl bg-[#FCFBF9] border border-stone-200 shadow-xs">
+            <div className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">
               Promedio Nacional
             </div>
-            <div className="text-2xl sm:text-3xl font-black text-emerald-400 mt-1">
+            <div className="text-2xl sm:text-3xl font-black text-emerald-700 mt-1">
               {metricasMacro.promedioNacional}%
             </div>
-            <div className="text-[11px] text-slate-300 font-medium mt-2">
+            <div className="text-[11px] text-stone-600 font-medium mt-2">
               Nivel de logro grupal consolidado
             </div>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10">
-            <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+          <div className="p-4 rounded-2xl bg-[#FCFBF9] border border-stone-200 shadow-xs">
+            <div className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">
               Brecha Crítica Detectada
             </div>
-            <div className="text-sm font-black text-rose-300 mt-1 line-clamp-1">
+            <div className="text-sm font-black text-rose-700 mt-1 line-clamp-1">
               IND-08: Ley de Ohm (49%)
             </div>
             <div className="text-[11px] text-rose-300/80 font-medium mt-2">

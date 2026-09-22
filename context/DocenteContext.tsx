@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { SafeStorage } from "@/lib/firebase";
 import { PayloadTelemetria } from "@/lib/antiFraude";
+import { formatearCedulaCR, normalizarCedulaParaComparar } from "@/lib/cedulaUtils";
 import {
   WebAppComunidad,
   PRODUCCIONES_COMUNIDAD_INICIALES,
@@ -73,11 +74,11 @@ const DocenteContext = createContext<DocenteContextType | undefined>(undefined);
 
 export const DOCENTE_DEFAULT: DocenteData = {
   idDocente: "ASESOR-FT-7729",
-  nombreCompleto: "Prof. Alberto Bustos Ortega",
+  nombreCompleto: "Alberto Bustos Ortega",
   correoInstitucional: "alberto.bustos.ortega@mep.go.cr",
   pin: "1726",
   contrasena: "1726",
-  cedula: "1-1122-3344",
+  cedula: "5-0305-0179",
   telefono: "+506 8888-9999",
   dreCodigo: "DRE-NACIONAL",
   dreNombre: "Asesoría de Formación Tecnológica",
@@ -400,12 +401,13 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
         } catch {}
       }
 
-      const cedLimpia = (data.cedula || "").replace(/[^0-9]/g, "");
+      const cedFormateada = formatearCedulaCR(data.cedula || "");
+      const cedLimpia = normalizarCedulaParaComparar(data.cedula || "");
       const correoLimpio = data.correoInstitucional.toLowerCase().trim();
 
       // Verificar si ya existe el correo o cédula registrada
       const usuarioDuplicado = listaUsuarios.find((u) => {
-        const uCedLimpia = (u.cedula || "").replace(/[^0-9]/g, "");
+        const uCedLimpia = normalizarCedulaParaComparar(u.cedula || "");
         const uCorreoLimpio = u.correoInstitucional.toLowerCase().trim();
         return (
           uCorreoLimpio === correoLimpio ||
@@ -420,9 +422,14 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
         };
       }
 
-      listaUsuarios.push(data);
+      const docenteConCedulaFormateada = {
+        ...data,
+        cedula: cedFormateada,
+      };
+
+      listaUsuarios.push(docenteConCedulaFormateada);
       SafeStorage.setItem("usuarios_registrados_locales", JSON.stringify(listaUsuarios));
-      guardarDocente(data);
+      guardarDocente(docenteConCedulaFormateada);
 
       // Sincronizar con API del servidor
       try {
@@ -515,6 +522,8 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       (credencialLimpia === "alberto.bustos.ortega@mep.go.cr" ||
         credencialLimpia === "alberto.bustos" ||
         credencialLimpia === "admin" ||
+        credencialLimpia === "5-0305-0179" ||
+        credencialLimpia === "503050179" ||
         credencialLimpia === "1-1122-3344" ||
         credencialLimpia === "111223344") &&
       (pinOPassLimpia === "EdcRfvTgb1726**" || pinOPassLimpia === "1726" || pinOPassLimpia === "1122")

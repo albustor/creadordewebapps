@@ -22,9 +22,9 @@ export interface UsuarioDocente {
 let USUARIOS_DB: UsuarioDocente[] = [
   {
     id: "SUPERADMIN-01",
-    nombreCompleto: "Prof. Alberto Bustos Ortega",
+    nombreCompleto: "Alberto Bustos Ortega",
     correoInstitucional: "alberto.bustos.ortega@mep.go.cr",
-    cedula: "1-1122-3344",
+    cedula: "5-0305-0179",
     telefono: "+506 8888-9999",
     dreCodigo: "DRE-NACIONAL",
     dreNombre: "Asesoría de Formación Tecnológica",

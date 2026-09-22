@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useDocente } from "@/context/DocenteContext";
 import { LISTA_DRE_MEP, LISTA_DRE_REGIONALES } from "@/lib/dreCircuitos";
+import { formatearCedulaCR } from "@/lib/cedulaUtils";
 import {
   Lightning,
   ChartBar,
@@ -98,9 +99,15 @@ export default function HomePage() {
     if (consecutivos.includes(valorPin)) {
       return "⚠️ PIN inseguro: Evita números consecutivos (ej. 1234 o 4321).";
     }
-    const cedLimpia = valorCedula.replace(/[^0-9]/g, "");
-    if (cedLimpia.length >= 4 && cedLimpia.endsWith(valorPin)) {
-      return "⚠️ Evita usar los últimos 4 dígitos de tu número de cédula como PIN.";
+    if (valorCedula) {
+      const soloNumeros = valorCedula.replace(/\D/g, "");
+      if (soloNumeros.length >= 4) {
+        const ultimos4 = soloNumeros.slice(-4);
+        const primeros4 = soloNumeros.slice(0, 4);
+        if (valorPin === ultimos4 || valorPin === primeros4) {
+          return "⚠️ Sugerencia: Evita usar los mismos dígitos iniciales o finales de tu cédula.";
+        }
+      }
     }
     return null;
   };
@@ -112,28 +119,23 @@ export default function HomePage() {
     e.preventDefault();
     setRegMensaje(null);
 
-    // 1. Validar nombre completo (mínimo 2 palabras: Nombre y Apellidos)
-    const partesNombre = regNombre.trim().split(/\s+/);
-    if (partesNombre.length < 2) {
-      setRegMensaje({ tipo: "error", texto: "Por favor ingrese su nombre completo (Nombre y Apellidos)." });
+    // 1. Validar nombre
+    if (!regNombre.trim()) {
+      setRegMensaje({ tipo: "error", texto: "Por favor ingrese su nombre y apellidos completos." });
       return;
     }
 
-    // 2. Validar cédula (mínimo 9 dígitos)
-    const cedulaLimpia = regCedula.trim();
-    if (cedulaLimpia.replace(/[^0-9]/g, "").length < 9 && cedulaLimpia.length < 9) {
-      setRegMensaje({ tipo: "error", texto: "La cédula o identificación debe tener un formato válido (mínimo 9 dígitos)." });
-      return;
-    }
-
-    // 3. Validar correo institucional oficial MEP estricto: nombre.apellido.apellido@mep.go.cr
+    // 2. Validar correo institucional MEP
     const correoLimpio = regCorreo.trim().toLowerCase();
-    const regexMepStrict = /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+@mep\.go\.cr$/i;
-    if (!regexMepStrict.test(correoLimpio)) {
-      setRegMensaje({
-        tipo: "error",
-        texto: "El correo debe ser institucional oficial del MEP con estructura nombre.apellido.apellido@mep.go.cr",
-      });
+    if (!correoLimpio.endsWith("@mep.go.cr")) {
+      setRegMensaje({ tipo: "error", texto: "El correo debe ser estrictamente institucional del MEP (@mep.go.cr)." });
+      return;
+    }
+
+    // 3. Validar y normalizar cédula en formato oficial de 9 dígitos (con ceros)
+    const cedulaLimpia = formatearCedulaCR(regCedula.trim());
+    if (!cedulaLimpia) {
+      setRegMensaje({ tipo: "error", texto: "Por favor ingrese su número de cédula o identificación." });
       return;
     }
 
@@ -157,12 +159,16 @@ export default function HomePage() {
     let rolFinal = "Docente de Formación Tecnológica";
     let codigoPresupuestarioFinal = "SABER-2026";
 
-    if (esAsesorNacional || correoLimpio === "alberto.bustos.ortega@mep.go.cr") {
+    const esSuperAdminAlberto = correoLimpio === "alberto.bustos.ortega@mep.go.cr";
+
+    if (esAsesorNacional || esSuperAdminAlberto) {
       dreCodigoFinal = "DRE-NACIONAL";
       dreNombreFinal = "Asesoría de Formación Tecnológica";
       circuitoFinal = "Nivel Nacional / Ámbito General";
       institucionFinal = "Asesoría Nacional de Formación Tecnológica (Dimensión 1 y 2)";
-      rolFinal = "Asesor de Formación Tecnológica & Administrador General (Dimensión 1 y 2)";
+      rolFinal = esSuperAdminAlberto
+        ? "Super Administrador & Asesor Nacional"
+        : "Asesor de Formación Tecnológica";
       codigoPresupuestarioFinal = "FT-NACIONAL-2026";
     } else {
       const dreEncontrada = LISTA_DRE_REGIONALES.find((d) => d.codigo === regDRE) || LISTA_DRE_REGIONALES[0];
@@ -174,14 +180,15 @@ export default function HomePage() {
       }
     }
 
-    const esSuperAdminAlberto = correoLimpio === "alberto.bustos.ortega@mep.go.cr" || dreCodigoFinal === "DRE-NACIONAL";
     const randomId = esSuperAdminAlberto
       ? "ASESOR-FT-7729"
-      : `DOC-${dreCodigoFinal.replace(/[^a-zA-Z0-9]/g, "")}-${Math.floor(1000 + Math.random() * 9000)}`;
+      : (esAsesorNacional
+          ? `ASESOR-FT-${Math.floor(1000 + Math.random() * 9000)}`
+          : `DOC-${dreCodigoFinal.replace(/[^a-zA-Z0-9]/g, "")}-${Math.floor(1000 + Math.random() * 9000)}`);
 
     const nuevoDocente = {
       idDocente: randomId,
-      nombreCompleto: regNombre.trim().startsWith("Prof.") ? regNombre.trim() : `Prof. ${regNombre.trim()}`,
+      nombreCompleto: regNombre.trim(),
       correoInstitucional: correoLimpio,
       pin: pinLimpio,
       contrasena: pinLimpio,
@@ -209,32 +216,30 @@ export default function HomePage() {
     <div className="space-y-12 pb-16">
       {/* Si el docente NO ha iniciado sesión, mostrar pasarela de login / registro con PIN */}
       {!docente ? (
-        <section className="relative overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white pt-10 pb-20 px-4 sm:px-6 lg:px-8">
-          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:16px_16px]" />
-          
+        <section className="relative overflow-hidden pt-8 pb-16 px-4 sm:px-6 lg:px-8">
           <div className="relative max-w-xl mx-auto space-y-6">
             
             {/* Título de la Plataforma */}
             <div className="text-center space-y-3">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-900/70 border border-emerald-500/50 text-emerald-300 text-xs font-bold shadow-sm">
-                <Lightning size={16} weight="fill" className="text-amber-400" />
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100/90 border border-emerald-300/80 text-emerald-900 text-xs font-extrabold shadow-xs">
+                <Lightning size={16} weight="fill" className="text-amber-600" />
                 <span>Formación Tecnológica • Programa Nacional MEP</span>
               </div>
 
-              <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
+              <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
                 Diagnóstico & Dashboard
               </h1>
 
-              <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto font-medium leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto font-medium leading-relaxed">
                 Ingreso con <strong>Cédula / Correo MEP</strong> y <strong>PIN de 4 dígitos</strong> para aplicación de diagnósticos y telemetría analítica.
               </p>
             </div>
 
-            {/* Tarjeta de Autenticación */}
-            <div className="bg-slate-900/95 border border-slate-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl space-y-6">
+            {/* Tarjeta de Autenticación en Blanco Cálido y Pastel */}
+            <div className="bg-white border border-stone-200/90 rounded-3xl p-6 sm:p-8 shadow-softPastel space-y-6">
               
               {/* Selector de Pestañas */}
-              <div className="grid grid-cols-2 p-1.5 bg-slate-950 rounded-2xl border border-slate-800">
+              <div className="grid grid-cols-2 p-1.5 bg-stone-100/90 rounded-2xl border border-stone-200">
                 <button
                   type="button"
                   onClick={() => {
@@ -243,8 +248,8 @@ export default function HomePage() {
                   }}
                   className={`flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all ${
                     tabAuth === "login"
-                      ? "bg-emerald-600 text-white shadow-md"
-                      : "text-slate-400 hover:text-white"
+                      ? "bg-emerald-700 text-white shadow-xs"
+                      : "text-slate-600 hover:text-slate-900"
                   }`}
                 >
                   <Key size={16} weight="bold" />
@@ -259,8 +264,8 @@ export default function HomePage() {
                   }}
                   className={`flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all ${
                     tabAuth === "registro"
-                      ? "bg-emerald-600 text-white shadow-md"
-                      : "text-slate-400 hover:text-white"
+                      ? "bg-emerald-700 text-white shadow-xs"
+                      : "text-slate-600 hover:text-slate-900"
                   }`}
                 >
                   <UserPlus size={16} weight="bold" />
@@ -275,52 +280,52 @@ export default function HomePage() {
                     <div
                       className={`p-3.5 rounded-xl text-xs font-bold flex items-center gap-2.5 ${
                         loginMensaje.tipo === "exito"
-                          ? "bg-emerald-950/90 border border-emerald-500/60 text-emerald-200"
-                          : "bg-rose-950/90 border border-rose-500/60 text-rose-200"
+                          ? "bg-emerald-50 border border-emerald-300 text-emerald-900"
+                          : "bg-rose-50 border border-rose-300 text-rose-900"
                       }`}
                     >
                       {loginMensaje.tipo === "exito" ? (
-                        <CheckCircle size={18} weight="fill" className="text-emerald-400 shrink-0" />
+                        <CheckCircle size={18} weight="fill" className="text-emerald-700 shrink-0" />
                       ) : (
-                        <WarningCircle size={18} weight="fill" className="text-rose-400 shrink-0" />
+                        <WarningCircle size={18} weight="fill" className="text-rose-700 shrink-0" />
                       )}
                       <span>{loginMensaje.texto}</span>
                     </div>
                   )}
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1.5">
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5">
                       Cédula o Correo Electrónico MEP:
                     </label>
                     <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                      <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
                         <IdentificationCard size={18} />
                       </div>
                       <input
                         type="text"
                         value={loginCredencial}
                         onChange={(e) => setLoginCredencial(e.target.value)}
-                        placeholder="Ej: 1-1122-3344 o nombre.apellido.apellido@mep.go.cr"
+                        placeholder="Ej: 5-0305-0179 o nombre.apellido.apellido@mep.go.cr"
                         required
-                        className="w-full pl-10 pr-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-semibold"
+                        className="w-full pl-10 pr-3.5 py-2.5 bg-[#FCFBF9] border border-stone-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-stone-400 focus:outline-none focus:border-emerald-600 focus:bg-white font-semibold"
                       />
                     </div>
                   </div>
 
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
-                      <label className="block text-xs font-bold text-slate-300">
+                      <label className="block text-xs font-bold text-slate-700">
                         PIN de Acceso (4 Dígitos):
                       </label>
                       <Link
                         href="/registro"
-                        className="text-[11px] font-bold text-emerald-400 hover:text-emerald-300 hover:underline"
+                        className="text-[11px] font-bold text-emerald-800 hover:text-emerald-900 hover:underline"
                       >
                         ¿Olvidaste tu PIN?
                       </Link>
                     </div>
                     <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                      <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
                         <LockKey size={18} />
                       </div>
                       <input
@@ -330,12 +335,12 @@ export default function HomePage() {
                         onChange={(e) => setLoginPin(e.target.value.replace(/[^0-9]/g, ""))}
                         placeholder="••••"
                         required
-                        className="w-full pl-10 pr-10 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-center text-lg font-mono font-black tracking-widest text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                        className="w-full pl-10 pr-10 py-2.5 bg-[#FCFBF9] border border-stone-300 rounded-xl text-center text-lg font-mono font-black tracking-widest text-slate-900 placeholder-stone-400 focus:outline-none focus:border-emerald-600 focus:bg-white"
                       />
                       <button
                         type="button"
                         onClick={() => setMostrarLoginPin(!mostrarLoginPin)}
-                        className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-200"
+                        className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-stone-400 hover:text-stone-700"
                       >
                         {mostrarLoginPin ? <EyeSlash size={18} /> : <Eye size={18} />}
                       </button>
@@ -346,27 +351,27 @@ export default function HomePage() {
                     <button
                       type="button"
                       onClick={usarDemo}
-                      className="text-[11px] font-bold text-slate-400 hover:text-emerald-400 hover:underline flex items-center gap-1.5 transition-colors"
+                      className="text-[11px] font-bold text-stone-500 hover:text-emerald-800 hover:underline flex items-center gap-1.5 transition-colors"
                     >
-                      <Key size={14} className="text-emerald-400" />
-                      <span>Cargar credenciales de demostración (Alberto Bustos / PIN 1726)</span>
+                      <Key size={14} className="text-emerald-700" />
+                      <span>Cargar credenciales demo (Alberto Bustos / PIN 1726)</span>
                     </button>
 
                     <button
                       type="submit"
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-lg transition-all"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition-all"
                     >
                       <SignIn size={16} weight="bold" />
                       <span>Ingresar con PIN</span>
                     </button>
                   </div>
 
-                  <div className="pt-3 border-t border-slate-800 text-center">
-                    <span className="text-xs text-slate-400">¿No tienes cuenta registrada? </span>
+                  <div className="pt-3 border-t border-stone-100 text-center">
+                    <span className="text-xs text-stone-500">¿No tienes cuenta registrada? </span>
                     <button
                       type="button"
                       onClick={() => setTabAuth("registro")}
-                      className="text-xs font-extrabold text-emerald-400 hover:text-emerald-300 hover:underline"
+                      className="text-xs font-extrabold text-emerald-800 hover:text-emerald-900 hover:underline"
                     >
                       Regístrate aquí
                     </button>
@@ -379,14 +384,14 @@ export default function HomePage() {
                     <div
                       className={`p-3.5 rounded-xl text-xs font-bold flex items-center gap-2.5 ${
                         regMensaje.tipo === "exito"
-                          ? "bg-emerald-950/90 border border-emerald-500/60 text-emerald-200"
-                          : "bg-rose-950/90 border border-rose-500/60 text-rose-200"
+                          ? "bg-emerald-50 border border-emerald-300 text-emerald-900"
+                          : "bg-rose-50 border border-rose-300 text-rose-900"
                       }`}
                     >
                       {regMensaje.tipo === "exito" ? (
-                        <CheckCircle size={18} weight="fill" className="text-emerald-400 shrink-0" />
+                        <CheckCircle size={18} weight="fill" className="text-emerald-700 shrink-0" />
                       ) : (
-                        <WarningCircle size={18} weight="fill" className="text-rose-400 shrink-0" />
+                        <WarningCircle size={18} weight="fill" className="text-rose-700 shrink-0" />
                       )}
                       <span>{regMensaje.texto}</span>
                     </div>
@@ -394,20 +399,20 @@ export default function HomePage() {
 
                   {/* Nombre Completo */}
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">
-                      Nombre completo (Nombre y Apellidos) <span className="text-rose-400">*</span>:
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                      Nombre completo (Nombre y Apellidos) <span className="text-rose-600">*</span>:
                     </label>
                     <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                      <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
                         <UserCircle size={18} />
                       </div>
                       <input
                         type="text"
                         value={regNombre}
                         onChange={(e) => setRegNombre(e.target.value)}
-                        placeholder="Prof. Juan Pérez Gómez"
+                        placeholder="Nombre y Apellidos (ej. Juan Pérez Gómez)"
                         required
-                        className="w-full pl-10 pr-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-semibold"
+                        className="w-full pl-10 pr-3.5 py-2.5 bg-[#FCFBF9] border border-stone-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-stone-400 focus:outline-none focus:border-emerald-600 focus:bg-white font-semibold"
                       />
                     </div>
                   </div>
@@ -415,30 +420,30 @@ export default function HomePage() {
                   {/* Cédula y Teléfono Opcional */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs font-bold text-slate-300 mb-1">
-                        Cédula / Identificación <span className="text-rose-400">*</span>:
+                      <label className="block text-xs font-bold text-slate-700 mb-1">
+                        Cédula / Identificación <span className="text-rose-600">*</span>:
                       </label>
                       <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
                           <IdentificationCard size={18} />
                         </div>
                         <input
                           type="text"
                           value={regCedula}
                           onChange={(e) => setRegCedula(e.target.value)}
-                          placeholder="1-1122-3344"
+                          placeholder="5-0305-0179"
                           required
-                          className="w-full pl-10 pr-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-semibold"
+                          className="w-full pl-10 pr-3.5 py-2.5 bg-[#FCFBF9] border border-stone-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-stone-400 focus:outline-none focus:border-emerald-600 focus:bg-white font-semibold"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-slate-300 mb-1 flex items-center justify-between">
+                      <label className="block text-xs font-bold text-slate-700 mb-1 flex items-center justify-between">
                         <span>Teléfono de Contacto (Opcional):</span>
                       </label>
                       <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
                           <Phone size={18} />
                         </div>
                         <input
@@ -446,23 +451,23 @@ export default function HomePage() {
                           value={regTelefono}
                           onChange={(e) => setRegTelefono(e.target.value)}
                           placeholder="8888-9999"
-                          className="w-full pl-10 pr-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-semibold"
+                          className="w-full pl-10 pr-3.5 py-2.5 bg-[#FCFBF9] border border-stone-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-stone-400 focus:outline-none focus:border-emerald-600 focus:bg-white font-semibold"
                         />
                       </div>
                     </div>
                   </div>
 
-                  <p className="text-[11px] text-slate-400 font-medium">
+                  <p className="text-[11px] text-stone-500 font-medium">
                     📌 <strong>Contacto Opcional:</strong> Canal complementario para avisos de gestión o asistencia técnica. Toda la comunicación oficial se mantendrá siempre por Correo Institucional MEP (@mep.go.cr).
                   </p>
 
                   {/* Correo Oficial MEP */}
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">
-                      Correo Electrónico Institucional MEP (@mep.go.cr) <span className="text-rose-400">*</span>:
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                      Correo Electrónico Institucional MEP (@mep.go.cr) <span className="text-rose-600">*</span>:
                     </label>
                     <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                      <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
                         <EnvelopeSimple size={18} />
                       </div>
                       <input
@@ -471,29 +476,29 @@ export default function HomePage() {
                         onChange={(e) => setRegCorreo(e.target.value)}
                         placeholder="nombre.apellido.apellido@mep.go.cr"
                         required
-                        className="w-full pl-10 pr-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-semibold"
+                        className="w-full pl-10 pr-3.5 py-2.5 bg-[#FCFBF9] border border-stone-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-stone-400 focus:outline-none focus:border-emerald-600 focus:bg-white font-semibold"
                       />
                     </div>
-                    <p className="text-[11px] text-slate-400 mt-1 flex items-center gap-1 font-medium">
-                      <Info size={14} className="text-emerald-400 shrink-0" />
+                    <p className="text-[11px] text-stone-500 mt-1 flex items-center gap-1 font-medium">
+                      <Info size={14} className="text-emerald-700 shrink-0" />
                       <span>La comunicación oficial del MEP y reportes se enviarán a esta cuenta.</span>
                     </p>
                   </div>
 
                   {/* Checkbox: Asignación a Asesoría de Formación Tecnológica */}
-                  <div className="p-3 bg-slate-950/60 border border-slate-800 rounded-xl">
+                  <div className="p-3 bg-stone-50 border border-stone-200 rounded-xl">
                     <label className="flex items-start gap-2.5 cursor-pointer select-none">
                       <input
                         type="checkbox"
                         checked={esAsesorNacional}
                         onChange={(e) => setEsAsesorNacional(e.target.checked)}
-                        className="mt-0.5 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-slate-700 bg-slate-900 cursor-pointer"
+                        className="mt-0.5 w-4 h-4 rounded text-emerald-700 focus:ring-emerald-600 border-stone-300 bg-white cursor-pointer"
                       />
                       <div className="space-y-0.5">
-                        <span className="text-xs font-bold text-slate-300">
+                        <span className="text-xs font-bold text-slate-800">
                           Asignación a Asesoría de Formación Tecnológica
                         </span>
-                        <p className="text-[11px] text-slate-400 font-medium">
+                        <p className="text-[11px] text-stone-500 font-medium">
                           Desactiva la selección de DRE y Centro Educativo al ser de ámbito nacional.
                         </p>
                       </div>
@@ -503,18 +508,18 @@ export default function HomePage() {
                   {/* DRE y Centro Educativo (se desactivan si esAsesorNacional está marcado) */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs font-bold text-slate-300 mb-1">
+                      <label className="block text-xs font-bold text-slate-700 mb-1">
                         Dirección Regional (DRE):
                       </label>
                       {esAsesorNacional ? (
-                        <div className="px-3 py-2.5 bg-slate-950/60 border border-slate-800 rounded-xl text-xs font-semibold text-slate-400 flex items-center gap-2 cursor-not-allowed">
+                        <div className="px-3 py-2.5 bg-stone-100 border border-stone-200 rounded-xl text-xs font-semibold text-stone-500 flex items-center gap-2 cursor-not-allowed">
                           <span>Asesoría de Formación Tecnológica</span>
                         </div>
                       ) : (
                         <select
                           value={regDRE}
                           onChange={(e) => setRegDRE(e.target.value)}
-                          className="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white focus:outline-none focus:border-emerald-500 font-semibold"
+                          className="w-full px-3 py-2.5 bg-[#FCFBF9] border border-stone-300 rounded-xl text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-emerald-600 font-semibold"
                         >
                           {LISTA_DRE_REGIONALES.map((d) => (
                             <option key={d.codigo} value={d.codigo}>
@@ -526,11 +531,11 @@ export default function HomePage() {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-slate-300 mb-1">
+                      <label className="block text-xs font-bold text-slate-700 mb-1">
                         Centro Educativo:
                       </label>
                       <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
                           <Buildings size={18} />
                         </div>
                         <input
@@ -542,8 +547,8 @@ export default function HomePage() {
                           required={!esAsesorNacional}
                           className={`w-full pl-10 pr-3.5 py-2.5 border rounded-xl text-xs sm:text-sm font-semibold transition-all ${
                             esAsesorNacional
-                              ? "bg-slate-900/60 border-slate-800 text-slate-400 cursor-not-allowed"
-                              : "bg-slate-950 border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                              ? "bg-stone-100 border-stone-200 text-stone-500 cursor-not-allowed"
+                              : "bg-[#FCFBF9] border-stone-300 text-slate-900 placeholder-stone-400 focus:outline-none focus:border-emerald-600 focus:bg-white"
                           }`}
                         />
                       </div>
@@ -551,16 +556,16 @@ export default function HomePage() {
                   </div>
 
                   {/* PIN de 4 Dígitos */}
-                  <div className="p-3.5 bg-indigo-950/40 border border-indigo-500/40 rounded-2xl space-y-3">
+                  <div className="p-3.5 bg-indigo-50/70 border border-indigo-200 rounded-2xl space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-black text-indigo-200 flex items-center gap-1.5">
-                        <LockKey size={16} weight="bold" className="text-indigo-400" />
-                        <span>PIN de Acceso Rápido (4 Dígitos Numéricos) <span className="text-rose-400">*</span></span>
+                      <span className="text-xs font-black text-indigo-950 flex items-center gap-1.5">
+                        <LockKey size={16} weight="bold" className="text-indigo-700" />
+                        <span>PIN de Acceso Rápido (4 Dígitos Numéricos) <span className="text-rose-600">*</span></span>
                       </span>
                       <button
                         type="button"
                         onClick={() => setMostrarRegPin(!mostrarRegPin)}
-                        className="text-[11px] font-bold text-indigo-300 hover:text-white flex items-center gap-1"
+                        className="text-[11px] font-bold text-indigo-800 hover:text-indigo-950 flex items-center gap-1"
                       >
                         {mostrarRegPin ? <EyeSlash size={14} /> : <Eye size={14} />}
                         <span>{mostrarRegPin ? "Ocultar" : "Ver PIN"}</span>
@@ -569,7 +574,7 @@ export default function HomePage() {
 
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-[11px] font-bold text-slate-300 mb-1">
+                        <label className="block text-[11px] font-bold text-slate-700 mb-1">
                           Crea tu PIN (4 números)
                         </label>
                         <input
@@ -579,12 +584,12 @@ export default function HomePage() {
                           onChange={(e) => setRegPin(e.target.value.replace(/[^0-9]/g, ""))}
                           placeholder="••••"
                           required
-                          className="w-full px-3 py-2 bg-slate-950 border border-indigo-400/60 rounded-xl text-center font-mono text-base font-black text-white focus:outline-none focus:border-indigo-400"
+                          className="w-full px-3 py-2 bg-white border border-indigo-300 rounded-xl text-center font-mono text-base font-black text-slate-900 focus:outline-none focus:border-indigo-600"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-[11px] font-bold text-slate-300 mb-1">
+                        <label className="block text-[11px] font-bold text-slate-700 mb-1">
                           Confirma tu PIN
                         </label>
                         <input
@@ -594,14 +599,14 @@ export default function HomePage() {
                           onChange={(e) => setRegPinConfirmar(e.target.value.replace(/[^0-9]/g, ""))}
                           placeholder="••••"
                           required
-                          className="w-full px-3 py-2 bg-slate-950 border border-indigo-400/60 rounded-xl text-center font-mono text-base font-black text-white focus:outline-none focus:border-indigo-400"
+                          className="w-full px-3 py-2 bg-white border border-indigo-300 rounded-xl text-center font-mono text-base font-black text-slate-900 focus:outline-none focus:border-indigo-600"
                         />
                       </div>
                     </div>
 
                     {advertenciaPin && (
-                      <div className="p-2 bg-amber-950/80 border border-amber-500/50 rounded-xl text-[11px] font-bold text-amber-200 flex items-center gap-2">
-                        <WarningCircle size={15} className="text-amber-400 shrink-0" weight="fill" />
+                      <div className="p-2 bg-amber-50 border border-amber-300 rounded-xl text-[11px] font-bold text-amber-900 flex items-center gap-2">
+                        <WarningCircle size={15} className="text-amber-700 shrink-0" weight="fill" />
                         <span>{advertenciaPin}</span>
                       </div>
                     )}
@@ -610,19 +615,19 @@ export default function HomePage() {
                   <div className="pt-2">
                     <button
                       type="submit"
-                      className="w-full inline-flex items-center justify-center gap-2 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-lg transition-all"
+                      className="w-full inline-flex items-center justify-center gap-2 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition-all"
                     >
                       <UserPlus size={16} weight="bold" />
                       <span>Registrarse e Ingresar con PIN</span>
                     </button>
                   </div>
 
-                  <div className="pt-2 border-t border-slate-800 text-center">
-                    <span className="text-xs text-slate-400">¿Ya tienes cuenta registrada? </span>
+                  <div className="pt-2 border-t border-stone-100 text-center">
+                    <span className="text-xs text-stone-500">¿Ya tienes cuenta registrada? </span>
                     <button
                       type="button"
                       onClick={() => setTabAuth("login")}
-                      className="text-xs font-extrabold text-emerald-400 hover:text-emerald-300 hover:underline"
+                      className="text-xs font-extrabold text-emerald-800 hover:text-emerald-900 hover:underline"
                     >
                       Inicia sesión aquí
                     </button>
@@ -634,27 +639,25 @@ export default function HomePage() {
         </section>
       ) : (
         /* Si el docente YA ha iniciado sesión, mostrar la vista principal con Diagnóstico y Dashboard */
-        <section className="relative overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white pt-10 pb-16 px-4 sm:px-6 lg:px-8">
-          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:16px_16px]" />
-
+        <section className="relative overflow-hidden pt-8 pb-16 px-4 sm:px-6 lg:px-8">
           <div className="relative max-w-5xl mx-auto space-y-8">
             
-            {/* Barra de Estado de Docente Autenticado */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-emerald-950/60 border border-emerald-600/50 p-4 rounded-2xl backdrop-blur-md">
+            {/* Barra de Estado de Docente Autenticado en Blanco Cálido */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white border border-stone-200/90 p-4 rounded-2xl shadow-softPastel">
               <div className="flex items-center gap-3 w-full sm:w-auto">
-                <div className="w-11 h-11 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 flex items-center justify-center shrink-0">
+                <div className="w-11 h-11 rounded-xl bg-emerald-100 border border-emerald-300/80 text-emerald-800 flex items-center justify-center shrink-0">
                   <UserCircle size={26} weight="fill" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm sm:text-base font-extrabold text-white">
+                    <span className="text-sm sm:text-base font-extrabold text-slate-900">
                       {docente.nombreCompleto}
                     </span>
-                    <span className="px-2 py-0.5 rounded-full bg-emerald-400/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-bold">
+                    <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-900 border border-emerald-200 text-[10px] font-bold">
                       {docente.dreCodigo === "DRE-NACIONAL" ? "Asesoría Nacional" : "Docente Activo"}
                     </span>
                   </div>
-                  <div className="text-xs text-emerald-200/80 font-mono mt-0.5">
+                  <div className="text-xs text-stone-500 font-mono mt-0.5">
                     {docente.correoInstitucional} • {docente.dreNombre} ({docente.idDocente})
                   </div>
                 </div>
@@ -663,14 +666,14 @@ export default function HomePage() {
               <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
                 <Link
                   href="/registro"
-                  className="flex items-center gap-1.5 px-3.5 py-2 bg-emerald-800/80 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl border border-emerald-500/40 transition-colors"
+                  className="flex items-center gap-1.5 px-3.5 py-2 bg-stone-100 hover:bg-stone-200/80 text-stone-800 text-xs font-bold rounded-xl border border-stone-300 transition-colors"
                 >
                   <IdentificationCard size={16} weight="bold" />
                   <span>Mi perfil</span>
                 </Link>
                 <button
                   onClick={() => cerrarSesion()}
-                  className="flex items-center gap-1.5 px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-bold rounded-xl border border-slate-700 transition-colors"
+                  className="flex items-center gap-1.5 px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-800 text-xs font-bold rounded-xl border border-rose-200 transition-colors"
                 >
                   <SignOut size={16} weight="bold" />
                   <span>Cerrar sesión</span>
@@ -680,16 +683,16 @@ export default function HomePage() {
 
             {/* Título Principal */}
             <div className="text-center space-y-3 pt-2">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-900/60 border border-emerald-500/40 text-emerald-300 text-xs font-bold">
-                <Lightning size={16} weight="fill" className="text-amber-400" />
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100/90 border border-emerald-300/80 text-emerald-900 text-xs font-extrabold shadow-xs">
+                <Lightning size={16} weight="fill" className="text-amber-600" />
                 <span>Formación tecnológica • 9° año</span>
               </div>
 
-              <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
+              <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
                 Diagnóstico & Dashboard
               </h1>
 
-              <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-sm sm:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
                 Seleccione el módulo que desea utilizar para la evaluación diagnóstica de los estudiantes o la revisión analítica de los resultados.
               </p>
             </div>
@@ -698,13 +701,13 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
               
               {/* Tarjeta 1: Diagnóstico */}
-              <div className="bg-white text-slate-900 rounded-3xl border-2 border-emerald-500/80 p-6 sm:p-8 shadow-xl flex flex-col justify-between hover:border-emerald-600 transition-all group">
+              <div className="bg-white text-slate-900 rounded-3xl border-2 border-emerald-300/80 p-6 sm:p-8 shadow-softPastel flex flex-col justify-between hover:border-emerald-500 transition-all group">
                 <div className="space-y-4">
-                  <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center group-hover:scale-105 transition-transform shadow-sm">
-                    <Lightning size={28} weight="fill" className="text-amber-500" />
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-100/90 text-emerald-800 border border-emerald-300/70 flex items-center justify-center group-hover:scale-105 transition-transform shadow-xs">
+                    <Lightning size={28} weight="fill" className="text-amber-600" />
                   </div>
                   <div>
-                    <span className="px-3 py-1 bg-emerald-100 text-emerald-900 text-xs font-extrabold rounded-full">
+                    <span className="px-3 py-1 bg-emerald-50 text-emerald-900 border border-emerald-200 text-xs font-extrabold rounded-full">
                       Módulo de Evaluación
                     </span>
                     <h3 className="text-xl font-black text-slate-900 mt-2">
@@ -718,7 +721,7 @@ export default function HomePage() {
                 <div className="pt-6">
                   <Link
                     href="/diagnostico"
-                    className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all"
+                    className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition-all"
                   >
                     <span>Ingresar a Diagnóstico</span>
                     <ArrowRight size={16} weight="bold" />
@@ -727,13 +730,13 @@ export default function HomePage() {
               </div>
 
               {/* Tarjeta 2: Dashboard */}
-              <div className="bg-white text-slate-900 rounded-3xl border-2 border-teal-500/80 p-6 sm:p-8 shadow-xl flex flex-col justify-between hover:border-teal-600 transition-all group">
+              <div className="bg-white text-slate-900 rounded-3xl border-2 border-teal-300/80 p-6 sm:p-8 shadow-softPastel flex flex-col justify-between hover:border-teal-500 transition-all group">
                 <div className="space-y-4">
-                  <div className="w-12 h-12 rounded-2xl bg-teal-100 text-teal-800 flex items-center justify-center group-hover:scale-105 transition-transform shadow-sm">
+                  <div className="w-12 h-12 rounded-2xl bg-teal-100/90 text-teal-800 border border-teal-300/70 flex items-center justify-center group-hover:scale-105 transition-transform shadow-xs">
                     <ChartBar size={28} weight="duotone" />
                   </div>
                   <div>
-                    <span className="px-3 py-1 bg-teal-100 text-teal-900 text-xs font-extrabold rounded-full">
+                    <span className="px-3 py-1 bg-teal-50 text-teal-900 border border-teal-200 text-xs font-extrabold rounded-full">
                       Telemetría & Analítica
                     </span>
                     <h3 className="text-xl font-black text-slate-900 mt-2">
@@ -747,7 +750,7 @@ export default function HomePage() {
                 <div className="pt-6">
                   <Link
                     href="/dashboard"
-                    className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 bg-teal-700 hover:bg-teal-800 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all"
+                    className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 bg-teal-700 hover:bg-teal-800 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition-all"
                   >
                     <span>Ingresar a Dashboard</span>
                     <ArrowRight size={16} weight="bold" />
@@ -758,19 +761,19 @@ export default function HomePage() {
 
             {/* Métricas Resumidas */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
-              <div className="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl text-center space-y-1">
-                <div className="text-2xl font-black text-white">10 Reactivos</div>
-                <div className="text-xs text-slate-400 font-semibold">Diagnóstico integrado de 9°</div>
+              <div className="bg-white border border-stone-200/90 p-4 rounded-2xl text-center space-y-1 shadow-xs">
+                <div className="text-2xl font-black text-slate-900">10 Reactivos</div>
+                <div className="text-xs text-stone-500 font-semibold">Diagnóstico integrado de 9°</div>
               </div>
 
-              <div className="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl text-center space-y-1">
-                <div className="text-2xl font-black text-emerald-400">{telemetria.length}</div>
-                <div className="text-xs text-slate-400 font-semibold">Evaluaciones registradas</div>
+              <div className="bg-white border border-stone-200/90 p-4 rounded-2xl text-center space-y-1 shadow-xs">
+                <div className="text-2xl font-black text-emerald-700">{telemetria.length}</div>
+                <div className="text-xs text-stone-500 font-semibold">Evaluaciones registradas</div>
               </div>
 
-              <div className="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl text-center space-y-1">
-                <div className="text-2xl font-black text-amber-400">100% Offline</div>
-                <div className="text-xs text-slate-400 font-semibold">Sincronización QR docente</div>
+              <div className="bg-white border border-stone-200/90 p-4 rounded-2xl text-center space-y-1 shadow-xs">
+                <div className="text-2xl font-black text-amber-700">100% Offline</div>
+                <div className="text-xs text-stone-500 font-semibold">Sincronización QR docente</div>
               </div>
             </div>
 

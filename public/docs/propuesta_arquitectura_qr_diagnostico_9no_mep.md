@@ -8,7 +8,7 @@
 
 **Fecha:** 21 de septiembre de 2026  
 **Documento Base:** Diagnóstico Integral de Formación Tecnológica 9° Año - Módulo 1: *«Aula Inteligente y Sistemas Embebidos»*  
-**Autor:** Prof. Alberto Bustos Ortega  
+**Autor:** Alberto Bustos Ortega  
 **Modalidad Operativa:** Dual (En Línea y 100% Desconectado / Local)
 
 ---

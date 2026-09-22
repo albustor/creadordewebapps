@@ -47,6 +47,7 @@ export default function GraficasSecciones({
   onSeleccionarSeccion,
 }: GraficasSeccionesProps) {
   const [vistaActiva, setVistaActiva] = useState<"secciones" | "indicadores" | "distribucion">("secciones");
+  const [tipoGraficoSecciones, setTipoGraficoSecciones] = useState<"vertical" | "horizontal">("vertical");
   const [seccionDetalle, setSeccionDetalle] = useState<string>("Todas");
 
   const minAvanzado = configuracion?.umbralAvanzadoMin ?? 80;
@@ -328,68 +329,195 @@ export default function GraficasSecciones({
                 ))}
               </div>
 
-              {/* Gráfico Comparativo de Barras SVG por Sección */}
-              <div className="p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-4">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                  <h4 className="font-extrabold text-xs uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                    <TrendUp size={16} className="text-emerald-700" />
-                    <span>Comparativa Visual de Rendimiento (%) por Sección</span>
-                  </h4>
-                  <div className="flex items-center gap-3 text-[11px] font-bold">
-                    <span className="flex items-center gap-1 text-emerald-700">
-                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block" /> Consolidado (≥{minAvanzado}%)
-                    </span>
-                    <span className="flex items-center gap-1 text-amber-700">
-                      <span className="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block" /> En Desarrollo
-                    </span>
-                    <span className="flex items-center gap-1 text-rose-700">
-                      <span className="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" /> Acompañamiento (≤{maxInicial}%)
-                    </span>
+              {/* Gráfico Comparativo de Barras por Sección */}
+              <div className="p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-5">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200/80 pb-4">
+                  <div>
+                    <h4 className="font-extrabold text-xs uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+                      <TrendUp size={16} className="text-emerald-700" />
+                      <span>Comparativa Visual de Rendimiento (%) por Sección</span>
+                    </h4>
+                    <p className="text-[11px] text-slate-500 mt-0.5">
+                      Evaluación formativa del porcentaje promedio de logro por cada grupo de 9° año
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    {/* Selector de Tipo de Gráfico (Vertical vs Horizontal) */}
+                    <div className="inline-flex bg-slate-200/80 p-1 rounded-xl text-xs font-bold">
+                      <button
+                        type="button"
+                        onClick={() => setTipoGraficoSecciones("vertical")}
+                        className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all ${
+                          tipoGraficoSecciones === "vertical"
+                            ? "bg-white text-emerald-800 shadow-xs"
+                            : "text-slate-600 hover:text-slate-900"
+                        }`}
+                        title="Ver en gráfico de barras verticales"
+                      >
+                        <ChartBar size={15} weight="bold" />
+                        <span>Barras Verticales</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setTipoGraficoSecciones("horizontal")}
+                        className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all ${
+                          tipoGraficoSecciones === "horizontal"
+                            ? "bg-white text-emerald-800 shadow-xs"
+                            : "text-slate-600 hover:text-slate-900"
+                        }`}
+                        title="Ver en barras horizontales"
+                      >
+                        <span>Horizontales</span>
+                      </button>
+                    </div>
+
+                    {/* Leyenda de Niveles */}
+                    <div className="hidden lg:flex items-center gap-3 text-[11px] font-bold border-l border-slate-200 pl-3">
+                      <span className="flex items-center gap-1 text-emerald-700">
+                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block" /> Consolidado (≥{minAvanzado}%)
+                      </span>
+                      <span className="flex items-center gap-1 text-amber-700">
+                        <span className="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block" /> En Desarrollo
+                      </span>
+                      <span className="flex items-center gap-1 text-rose-700">
+                        <span className="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" /> Acompañamiento (≤{maxInicial}%)
+                      </span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="space-y-3 pt-2">
-                  {datosPorSeccion.map((sec) => (
-                    <div key={sec.nombre} className="space-y-1.5">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="font-bold text-slate-800 flex items-center gap-2">
-                          <span className="w-2 h-2 rounded-full bg-emerald-600" />
-                          {sec.nombre} ({sec.total} estudiantes evaluados)
-                        </span>
-                        <div className="flex items-center gap-2 font-mono font-bold">
-                          <span className="text-slate-600">Promedio:</span>
-                          <span className="text-slate-900 bg-white px-2 py-0.5 rounded-md border border-slate-200">
-                            {sec.promedio}%
-                          </span>
-                        </div>
+                {/* ==================== VISTA VERTICAL ==================== */}
+                {tipoGraficoSecciones === "vertical" ? (
+                  <div className="pt-4 pb-2">
+                    <div className="relative h-72 w-full bg-white rounded-2xl border border-slate-200 p-4 pl-12 pr-4 shadow-xs">
+                      {/* Eje Y con líneas de referencia (100%, 80%, 60%, 40%, 20%, 0%) */}
+                      <div className="absolute left-3 top-4 bottom-14 flex flex-col justify-between text-[10px] font-mono font-bold text-slate-400 select-none">
+                        <span>100%</span>
+                        <span className="text-emerald-600">80%</span>
+                        <span className="text-amber-600">60%</span>
+                        <span>40%</span>
+                        <span>20%</span>
+                        <span>0%</span>
                       </div>
 
-                      <div className="h-6 w-full bg-slate-200/80 rounded-xl overflow-hidden flex shadow-inner border border-slate-300/60">
-                        <div
-                          style={{ width: `${sec.pctAvanzado}%` }}
-                          className="bg-emerald-500 hover:bg-emerald-600 transition-all h-full flex items-center justify-center text-[10px] text-white font-black"
-                          title={`Consolidados: ${sec.avanzados} (${sec.pctAvanzado}%)`}
-                        >
-                          {sec.pctAvanzado > 12 ? `${sec.pctAvanzado}%` : ""}
-                        </div>
-                        <div
-                          style={{ width: `${sec.pctIntermedio}%` }}
-                          className="bg-amber-400 hover:bg-amber-500 transition-all h-full flex items-center justify-center text-[10px] text-amber-950 font-black"
-                          title={`En Desarrollo: ${sec.intermedios} (${sec.pctIntermedio}%)`}
-                        >
-                          {sec.pctIntermedio > 12 ? `${sec.pctIntermedio}%` : ""}
-                        </div>
-                        <div
-                          style={{ width: `${sec.pctInicial}%` }}
-                          className="bg-rose-500 hover:bg-rose-600 transition-all h-full flex items-center justify-center text-[10px] text-white font-black"
-                          title={`Requiere Acompañamiento: ${sec.iniciales} (${sec.pctInicial}%)`}
-                        >
-                          {sec.pctInicial > 12 ? `${sec.pctInicial}%` : ""}
-                        </div>
+                      {/* Líneas horizontales punteadas */}
+                      <div className="absolute left-12 right-4 top-4 bottom-14 flex flex-col justify-between pointer-events-none">
+                        <div className="w-full border-b border-slate-200" />
+                        <div className="w-full border-b border-dashed border-emerald-300" />
+                        <div className="w-full border-b border-dashed border-amber-300" />
+                        <div className="w-full border-b border-slate-100" />
+                        <div className="w-full border-b border-slate-100" />
+                        <div className="w-full border-b border-slate-300" />
+                      </div>
+
+                      {/* Contenedor de Columnas / Barras Verticales */}
+                      <div className="relative h-full flex items-end justify-around gap-2 sm:gap-4 pb-10">
+                        {datosPorSeccion.map((sec) => {
+                          const pct = sec.promedio;
+                          const esAvanzado = pct >= minAvanzado;
+                          const esInicial = pct <= maxInicial;
+                          const colorBarra = esAvanzado
+                            ? "from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700"
+                            : esInicial
+                            ? "from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700"
+                            : "from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600";
+                          const colorBorde = esAvanzado ? "border-emerald-600" : (esInicial ? "border-rose-600" : "border-amber-600");
+                          const colorTexto = esAvanzado ? "text-emerald-800 bg-emerald-50 border-emerald-300" : (esInicial ? "text-rose-800 bg-rose-50 border-rose-300" : "text-amber-800 bg-amber-50 border-amber-300");
+
+                          return (
+                            <div
+                              key={sec.nombre}
+                              onClick={() => {
+                                if (onSeleccionarSeccion) onSeleccionarSeccion(sec.nombre);
+                              }}
+                              className="group flex flex-col items-center h-full justify-end flex-1 max-w-[90px] cursor-pointer"
+                              title={`${sec.nombre}: Promedio ${sec.promedio}%\n${sec.total} estudiantes evaluados\nConsolidados: ${sec.avanzados}\nEn Desarrollo: ${sec.intermedios}\nAcompañamiento: ${sec.iniciales}`}
+                            >
+                              {/* Valor numérico encima de la barra */}
+                              <div className="mb-1.5 transition-transform group-hover:-translate-y-1">
+                                <span className={`text-[11px] font-black font-mono px-1.5 py-0.5 rounded-md border shadow-xs ${colorTexto}`}>
+                                  {sec.promedio}%
+                                </span>
+                              </div>
+
+                              {/* Columna Vertical con Altura Proporcional */}
+                              <div className="w-full max-w-[48px] h-full flex items-end">
+                                <div
+                                  style={{ height: `${Math.max(sec.promedio, 6)}%` }}
+                                  className={`w-full rounded-t-xl bg-gradient-to-t ${colorBarra} border-t-2 border-x ${colorBorde} shadow-md transition-all duration-500 group-hover:shadow-lg flex flex-col justify-end p-1`}
+                                >
+                                  {/* Micro segmentos de desglose interno si hay espacio */}
+                                  {sec.promedio > 30 && (
+                                    <div className="w-full flex flex-col gap-0.5 opacity-90">
+                                      {sec.pctAvanzado > 0 && (
+                                        <div style={{ height: `${Math.max((sec.pctAvanzado / 100) * 8, 2)}px` }} className="w-full bg-white/40 rounded-full" />
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+
+                              {/* Etiqueta Inferior (Sección y Alumnos) */}
+                              <div className="mt-2 text-center select-none">
+                                <div className="text-[11.5px] font-black text-slate-800 group-hover:text-emerald-700 transition-colors whitespace-nowrap">
+                                  {sec.nombre}
+                                </div>
+                                <div className="text-[10px] font-bold text-slate-500">
+                                  {sec.total} est.
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ) : (
+                  /* ==================== VISTA HORIZONTAL ==================== */
+                  <div className="space-y-3 pt-2">
+                    {datosPorSeccion.map((sec) => (
+                      <div key={sec.nombre} className="space-y-1.5">
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="font-bold text-slate-800 flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-emerald-600" />
+                            {sec.nombre} ({sec.total} estudiantes evaluados)
+                          </span>
+                          <div className="flex items-center gap-2 font-mono font-bold">
+                            <span className="text-slate-600">Promedio:</span>
+                            <span className="text-slate-900 bg-white px-2 py-0.5 rounded-md border border-slate-200">
+                              {sec.promedio}%
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="h-6 w-full bg-slate-200/80 rounded-xl overflow-hidden flex shadow-inner border border-slate-300/60">
+                          <div
+                            style={{ width: `${sec.pctAvanzado}%` }}
+                            className="bg-emerald-500 hover:bg-emerald-600 transition-all h-full flex items-center justify-center text-[10px] text-white font-black"
+                            title={`Consolidados: ${sec.avanzados} (${sec.pctAvanzado}%)`}
+                          >
+                            {sec.pctAvanzado > 12 ? `${sec.pctAvanzado}%` : ""}
+                          </div>
+                          <div
+                            style={{ width: `${sec.pctIntermedio}%` }}
+                            className="bg-amber-400 hover:bg-amber-500 transition-all h-full flex items-center justify-center text-[10px] text-amber-950 font-black"
+                            title={`En Desarrollo: ${sec.intermedios} (${sec.pctIntermedio}%)`}
+                          >
+                            {sec.pctIntermedio > 12 ? `${sec.pctIntermedio}%` : ""}
+                          </div>
+                          <div
+                            style={{ width: `${sec.pctInicial}%` }}
+                            className="bg-rose-500 hover:bg-rose-600 transition-all h-full flex items-center justify-center text-[10px] text-white font-black"
+                            title={`Requiere Acompañamiento: ${sec.iniciales} (${sec.pctInicial}%)`}
+                          >
+                            {sec.pctInicial > 12 ? `${sec.pctInicial}%` : ""}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </>
           )}

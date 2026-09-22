@@ -38,7 +38,7 @@ export const PRODUCCIONES_COMUNIDAD_INICIALES: WebAppComunidad[] = [
   {
     id: "com-7-algoritmos-sim",
     titulo: "Laboratorio de Algoritmos y Condicionales (7°)",
-    autorNombre: "Prof. Alberto Bustos Ortega",
+    autorNombre: "Alberto Bustos Ortega",
     autorRol: "Docente de Innovación y Tecnología",
     autorDRE: "San José Central",
     autorCorreo: "alberto.bustos.ortega@mep.go.cr",
@@ -110,7 +110,7 @@ export const PRODUCCIONES_COMUNIDAD_INICIALES: WebAppComunidad[] = [
   {
     id: "com-7-booleano-tablero",
     titulo: "Tablero de Retos: Operadores Lógicos AND, OR y NOT",
-    autorNombre: "Prof. Alberto Bustos Ortega",
+    autorNombre: "Alberto Bustos Ortega",
     autorRol: "Docente de Innovación y Tecnología",
     autorDRE: "San José Central",
     autorCorreo: "alberto.bustos.ortega@mep.go.cr",
@@ -138,7 +138,7 @@ export const PRODUCCIONES_COMUNIDAD_INICIALES: WebAppComunidad[] = [
   {
     id: "com-8-circuitos-sim",
     titulo: "Simulador de Circuitos Eléctricos y Microcontroladores (8°)",
-    autorNombre: "Prof. Alberto Bustos Ortega",
+    autorNombre: "Alberto Bustos Ortega",
     autorRol: "Docente de Innovación y Tecnología",
     autorDRE: "San José Central",
     autorCorreo: "alberto.bustos.ortega@mep.go.cr",
@@ -210,7 +210,7 @@ export const PRODUCCIONES_COMUNIDAD_INICIALES: WebAppComunidad[] = [
   {
     id: "com-8-rover-aventura",
     titulo: "Aventura Gráfica: La Misión del Rover Autónomo",
-    autorNombre: "Prof. Alberto Bustos Ortega",
+    autorNombre: "Alberto Bustos Ortega",
     autorRol: "Docente de Innovación y Tecnología",
     autorDRE: "San José Central",
     autorCorreo: "alberto.bustos.ortega@mep.go.cr",
@@ -238,7 +238,7 @@ export const PRODUCCIONES_COMUNIDAD_INICIALES: WebAppComunidad[] = [
   {
     id: "com-9-domotica-sim",
     titulo: "Simulador de Casa Domótica y Ahorro Energético (9°)",
-    autorNombre: "Prof. Alberto Bustos Ortega",
+    autorNombre: "Alberto Bustos Ortega",
     autorRol: "Docente de Innovación y Tecnología",
     autorDRE: "San José Central",
     autorCorreo: "alberto.bustos.ortega@mep.go.cr",
@@ -286,7 +286,7 @@ export const PRODUCCIONES_COMUNIDAD_INICIALES: WebAppComunidad[] = [
   {
     id: "com-9-etica-ia-aventura",
     titulo: "Aventura Gráfica: Dilemas Éticos y Sesgos en la IA",
-    autorNombre: "Prof. Alberto Bustos Ortega",
+    autorNombre: "Alberto Bustos Ortega",
     autorRol: "Docente de Innovación y Tecnología",
     autorDRE: "San José Central",
     autorCorreo: "alberto.bustos.ortega@mep.go.cr",
@@ -334,7 +334,7 @@ export const PRODUCCIONES_COMUNIDAD_INICIALES: WebAppComunidad[] = [
   {
     id: "com-9-diag-aula-inteligente",
     titulo: "Diagnóstico Integrado 9°: «Aula Inteligente» (Estudiante)",
-    autorNombre: "Prof. Alberto Bustos Ortega",
+    autorNombre: "Alberto Bustos Ortega",
     autorRol: "Docente de Innovación y Tecnología",
     autorDRE: "San José Central",
     autorCorreo: "alberto.bustos.ortega@mep.go.cr",
@@ -358,7 +358,7 @@ export const PRODUCCIONES_COMUNIDAD_INICIALES: WebAppComunidad[] = [
   {
     id: "com-9-diag-docente-evaluador",
     titulo: "Evaluador Diagnóstico Docente 9° (Nómina y Rúbrica MEP)",
-    autorNombre: "Prof. Alberto Bustos Ortega",
+    autorNombre: "Alberto Bustos Ortega",
     autorRol: "Docente de Innovación y Tecnología",
     autorDRE: "San José Central",
     autorCorreo: "alberto.bustos.ortega@mep.go.cr",

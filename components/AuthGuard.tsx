@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useDocente } from "@/context/DocenteContext";
 import { LISTA_DRE_MEP, LISTA_DRE_REGIONALES } from "@/lib/dreCircuitos";
+import { formatearCedulaCR } from "@/lib/cedulaUtils";
 import {
   ShieldCheck,
   UserCircle,
@@ -119,9 +120,9 @@ export default function AuthGuard({ children }: AuthGuardProps) {
       return;
     }
 
-    const cedulaLimpia = regCedula.trim();
-    if (cedulaLimpia.replace(/[^0-9]/g, "").length < 9 && cedulaLimpia.length < 9) {
-      setRegMensaje({ tipo: "error", texto: "La cédula debe tener un formato válido (mínimo 9 dígitos)." });
+    const cedulaLimpia = formatearCedulaCR(regCedula.trim());
+    if (!cedulaLimpia || cedulaLimpia.replace(/[^0-9]/g, "").length < 9) {
+      setRegMensaje({ tipo: "error", texto: "La cédula debe tener un formato válido oficial (9 dígitos con ceros ej: 5-0305-0179)." });
       return;
     }
 
@@ -275,14 +276,14 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                     <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                       <IdentificationCard size={18} />
                     </div>
-                    <input
-                      type="text"
-                      value={loginCredencial}
-                      onChange={(e) => setLoginCredencial(e.target.value)}
-                      placeholder="Ej: 1-1122-3344 o nombre.apellido.apellido@mep.go.cr"
-                      required
-                      className="w-full pl-10 pr-3.5 py-3 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white font-medium transition-all"
-                    />
+                      <input
+                        type="text"
+                        value={loginCredencial}
+                        onChange={(e) => setLoginCredencial(e.target.value)}
+                        placeholder="Ej: 5-0305-0179 o nombre.apellido.apellido@mep.go.cr"
+                        required
+                        className="w-full pl-10 pr-3.5 py-3 bg-[#FCFBF9] border border-stone-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white font-medium transition-all"
+                      />
                   </div>
                 </div>
 
@@ -393,7 +394,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                       type="text"
                       value={regCedula}
                       onChange={(e) => setRegCedula(e.target.value)}
-                      placeholder="1-1122-3344"
+                      placeholder="5-0305-0179"
                       required
                       className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 outline-none"
                     />

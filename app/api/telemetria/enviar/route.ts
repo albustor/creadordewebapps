@@ -224,6 +224,7 @@ export async function DELETE(req: NextRequest) {
     const timestampStr = searchParams.get("timestamp");
     const idResultado = searchParams.get("idResultado");
     const docenteId = searchParams.get("docenteId");
+    const estudianteNombre = searchParams.get("estudianteNombre");
     const vaciarTodo = searchParams.get("all") === "true";
 
     if (vaciarTodo) {
@@ -241,6 +242,24 @@ export async function DELETE(req: NextRequest) {
         {
           success: true,
           mensaje: "Todos los registros de telemetría han sido eliminados correctamente del servidor",
+          restantes: registrosTelemetriaMemoria.length,
+        },
+        { headers: corsHeaders }
+      );
+    }
+
+    if (estudianteNombre) {
+      const nomLimpio = estudianteNombre.trim().toLowerCase();
+      const prevLength = registrosTelemetriaMemoria.length;
+      registrosTelemetriaMemoria = registrosTelemetriaMemoria.filter(
+        (r) => (r.estudianteNombre || "").trim().toLowerCase() !== nomLimpio
+      );
+      guardarRegistrosServidor();
+      return NextResponse.json(
+        {
+          success: true,
+          mensaje: `Estudiante ${estudianteNombre} eliminado correctamente del servidor`,
+          eliminado: prevLength !== registrosTelemetriaMemoria.length,
           restantes: registrosTelemetriaMemoria.length,
         },
         { headers: corsHeaders }

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useDocente, DOCENTE_DEFAULT } from "@/context/DocenteContext";
 import { LISTA_DRE_MEP, LISTA_DRE_REGIONALES } from "@/lib/dreCircuitos";
+import { formatearCedulaCR, normalizarCedulaParaComparar } from "@/lib/cedulaUtils";
 import {
   UserCircle,
   IdentificationCard,
@@ -152,9 +153,9 @@ export default function RegistroDocentePage() {
   // PERFILES RÁPIDOS PARA PRUEBAS Y ASESORÍA
   // ==========================================
   const cargarPerfilAsesorPrincipal = () => {
-    setNombre("Prof. Alberto Bustos Ortega");
+    setNombre("Alberto Bustos Ortega");
     setCorreo("alberto.bustos.ortega@mep.go.cr");
-    setCedula("1-1122-3344");
+    setCedula("5-0305-0179");
     setTelefono("+506 8888-9999");
     setPin("1726");
     setPinConfirmar("1726");
@@ -456,15 +457,15 @@ export default function RegistroDocentePage() {
       </div>
 
       {/* BARRA DE ACCESOS RÁPIDOS PARA PRUEBAS Y ASESORÍA */}
-      <div className="p-4 bg-slate-900 rounded-3xl text-white shadow-xl border border-slate-800 space-y-3">
+      <div className="p-5 bg-stone-50/90 rounded-3xl text-slate-900 shadow-xs border border-stone-300/80 space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <Flask size={18} className="text-emerald-400" />
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-200">
+            <Flask size={18} className="text-emerald-700" weight="bold" />
+            <span className="text-xs font-black uppercase tracking-wider text-slate-800">
               Perfiles Rápidos para Pruebas de Uso
             </span>
           </div>
-          <span className="text-[10.5px] text-slate-400">
+          <span className="text-[10.5px] text-stone-500 font-medium">
             Habilita perfiles para validar diagnósticos y telemetría
           </span>
         </div>
@@ -474,44 +475,44 @@ export default function RegistroDocentePage() {
           <button
             type="button"
             onClick={cargarPerfilAsesorPrincipal}
-            className="px-3.5 py-2 bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold rounded-xl shadow-md transition-all flex items-center gap-1.5"
-            title="Cargar credenciales del Prof. Alberto Bustos Ortega"
+            className="px-3.5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-xl shadow-xs transition-all flex items-center gap-1.5"
+            title="Cargar credenciales de Alberto Bustos Ortega"
           >
             <Flask size={15} />
-            <span>Perfil Asesoría Nacional (Prof. Alberto Bustos)</span>
+            <span>Perfil Asesoría Nacional (Alberto Bustos)</span>
           </button>
 
           {/* Botones de prueba en regiones */}
           <button
             type="button"
             onClick={() => cargarPerfilDocentePrueba("liberia")}
-            className="px-3 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5"
+            className="px-3 py-2 bg-white hover:bg-stone-100 border border-stone-300 text-slate-700 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 shadow-xs"
           >
-            <Flask size={15} className="text-emerald-400" />
+            <Flask size={15} className="text-emerald-700" />
             <span>Prueba DRE Liberia (07)</span>
           </button>
 
           <button
             type="button"
             onClick={() => cargarPerfilDocentePrueba("sanjose")}
-            className="px-3 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5"
+            className="px-3 py-2 bg-white hover:bg-stone-100 border border-stone-300 text-slate-700 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 shadow-xs"
           >
-            <Flask size={15} className="text-sky-400" />
+            <Flask size={15} className="text-sky-700" />
             <span>Prueba DRE San José (01)</span>
           </button>
 
           <button
             type="button"
             onClick={() => cargarPerfilDocentePrueba("alajuela")}
-            className="px-3 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5"
+            className="px-3 py-2 bg-white hover:bg-stone-100 border border-stone-300 text-slate-700 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 shadow-xs"
           >
-            <Flask size={15} className="text-purple-400" />
+            <Flask size={15} className="text-purple-700" />
             <span>Prueba DRE Alajuela (04)</span>
           </button>
 
           <Link
             href="/admin"
-            className="ml-auto px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 shadow-xs"
+            className="ml-auto px-3.5 py-2 bg-stone-800 hover:bg-stone-900 text-white text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 shadow-xs"
           >
             <span>Panel de Administración</span>
             <ArrowSquareOut size={15} weight="bold" />
@@ -520,13 +521,13 @@ export default function RegistroDocentePage() {
       </div>
 
       {/* PESTAÑAS DE NAVEGACIÓN */}
-      <div className="flex items-center gap-2 border-b border-slate-200 pb-2">
+      <div className="flex items-center gap-2 border-b border-stone-200 pb-2">
         <button
           onClick={() => setPestanaActiva("registro")}
           className={`px-5 py-2.5 rounded-xl font-extrabold text-xs flex items-center gap-2 transition-all ${
             pestanaActiva === "registro"
-              ? "bg-slate-900 text-white shadow-md"
-              : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+              ? "bg-emerald-700 text-white shadow-xs"
+              : "bg-stone-100 text-stone-700 hover:bg-stone-200"
           }`}
         >
           <IdentificationCard size={18} weight="bold" />
@@ -537,8 +538,8 @@ export default function RegistroDocentePage() {
           onClick={() => setPestanaActiva("login")}
           className={`px-5 py-2.5 rounded-xl font-extrabold text-xs flex items-center gap-2 transition-all ${
             pestanaActiva === "login"
-              ? "bg-slate-900 text-white shadow-md"
-              : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+              ? "bg-emerald-700 text-white shadow-xs"
+              : "bg-stone-100 text-stone-700 hover:bg-stone-200"
           }`}
         >
           <Key size={18} weight="bold" />
@@ -549,8 +550,8 @@ export default function RegistroDocentePage() {
           onClick={() => setPestanaActiva("recuperar")}
           className={`px-5 py-2.5 rounded-xl font-extrabold text-xs flex items-center gap-2 transition-all ${
             pestanaActiva === "recuperar"
-              ? "bg-slate-900 text-white shadow-md"
-              : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+              ? "bg-emerald-700 text-white shadow-xs"
+              : "bg-stone-100 text-stone-700 hover:bg-stone-200"
           }`}
         >
           <ShieldCheck size={18} weight="bold" />

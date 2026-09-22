@@ -379,22 +379,22 @@
 
     <div class="top-actions">
       <span class="mep-badge" id="badgeSincronizacionServidor" style="background:#dcfce7; border-color:#86efac; color:#15803d; font-size:10.5px;">
-        🟢 Base de Datos: Sincronizada
+        🟢 Base de datos: sincronizada
       </span>
       <button class="btn btn-accent" style="font-size: 11.5px; padding: 5px 12px; min-height: 30px; background: #0284c7; border-color: #0369a1;" onclick="mostrarModalEscanerQR()" title="Escanear código QR de la pantalla del estudiante con la cámara">
         📷 Escanear QR
       </button>
-      <button class="btn btn-secondary" style="font-size: 11.5px; padding: 5px 12px; min-height: 30px;" onclick="sincronizarConBaseDeDatos(true)" title="Sincronizar manualmente con el Dashboard central y base de datos">
+      <button class="btn btn-secondary" style="font-size: 11.5px; padding: 5px 12px; min-height: 30px;" onclick="sincronizarConBaseDeDatos(true)" title="Sincronizar manualmente con el dashboard central y base de datos">
         🔄 Sincronizar
       </button>
-      <a href="/dashboard" target="_blank" class="btn btn-online-hub" style="font-size: 11.5px; padding: 5px 12px; min-height: 30px;" title="Abrir Dashboard Analítico en Línea">
-        📈 Dashboard Web
+      <a href="/dashboard" target="_blank" class="btn btn-online-hub" style="font-size: 11.5px; padding: 5px 12px; min-height: 30px;" title="Abrir dashboard analítico en línea">
+        📈 Dashboard web
       </a>
       <button class="btn btn-accent" style="font-size: 11.5px; padding: 5px 12px; min-height: 30px;" onclick="exportarExcelConsolidado()">
         📊 Exportar Excel
       </button>
       <button class="btn btn-secondary" style="font-size: 11.5px; padding: 5px 12px; min-height: 30px;" onclick="imprimirReporteOficial()">
-        🖨️ Imprimir Acta Oficial
+        🖨️ Imprimir acta oficial
       </button>
     </div>
   </header>
@@ -403,19 +403,19 @@
   <nav class="view-nav no-print">
     <div class="view-tab activa" id="tabV1" onclick="cambiarVista(1)">
       <span style="font-weight: 900;">1. ESTUDIANTES</span>
-      <span style="font-size: 10px; color: #64748b;">Carga de Lista & Sección</span>
+      <span style="font-size: 10px; color: #64748b;">Carga de lista y sección</span>
     </div>
     <div class="view-tab" id="tabV2" onclick="cambiarVista(2)">
       <span style="font-weight: 900;">2. OBSERVACIÓN DOCENTE</span>
-      <span style="font-size: 10px; color: #64748b;">Psicomotora & Socioafectiva</span>
+      <span style="font-size: 10px; color: #64748b;">Psicomotora y socioafectiva</span>
     </div>
     <div class="view-tab" id="tabV3" onclick="cambiarVista(3)">
       <span style="font-weight: 900;">3. SISTEMATIZACIÓN</span>
-      <span style="font-size: 10px; color: #64748b;">Indicadores de Logro (Pág. 15)</span>
+      <span style="font-size: 10px; color: #64748b;">Indicadores de logro (pág. 15)</span>
     </div>
     <div class="view-tab" id="tabV4" onclick="cambiarVista(4)">
       <span style="font-weight: 900;">4. DECISIONES</span>
-      <span style="font-size: 10px; color: #64748b;">Criterios Pedagógicos Oficiales</span>
+      <span style="font-size: 10px; color: #64748b;">Criterios pedagógicos oficiales</span>
     </div>
   </nav>
 
@@ -428,15 +428,15 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
         <div>
           <span class="mep-badge">
-            Paso 1 • Gestión de Nómina
+            Paso 1 • Gestión de nómina
           </span>
           <h2 style="font-size: 1.25rem; color: #0f172a; font-weight: 900; margin-top: 4px;">
-            Cargar Lista de Estudiantes y Secciones
+            Cargar lista de estudiantes y secciones
           </h2>
         </div>
         <div style="display: flex; gap: 6px;">
           <button class="btn btn-accent" onclick="cargarSeccionDemo('9-1')">
-            ⚡ Cargar Demo 9-1 (5 Estudiantes)
+            ⚡ Cargar demo 9-1 (5 estudiantes)
           </button>
           <button class="btn btn-secondary" onclick="cargarSeccionDemo('9-2')">
             ⚡ Demo 9-2
@@ -450,14 +450,14 @@
         <div style="background: #f8fafc; border: 2px dashed #7dd3fc; border-radius: 12px; padding: 16px; text-align: center;">
           <div style="font-size: 30px; margin-bottom: 4px;">📂</div>
           <strong style="font-size: 13px; color: #0369a1; display: block; margin-bottom: 4px;">
-            Subir Archivo Adjunto de Estudiantes
+            Subir archivo adjunto de estudiantes
           </strong>
           <p style="font-size: 11.5px; color: #64748b; margin-bottom: 12px;">
-            Compatible con listas en formato <strong>.CSV, .TXT o Excel (.xlsx)</strong> (Columnas: Nombre, Apellidos, Sección).
+            Compatible con listas en formato <strong>.CSV, .TXT o Excel (.xlsx)</strong> (columnas: Nombre, Apellidos, Sección).
           </p>
 
           <label class="btn btn-accent" style="cursor: pointer; display: inline-flex;">
-            <span>Examinar Archivo...</span>
+            <span>Examinar archivo...</span>
             <input type="file" id="fileEstudiantes" accept=".csv,.txt,.json" class="no-print" style="display: none;" onchange="procesarArchivoEstudiantes(event)">
           </label>
         </div>
@@ -465,11 +465,11 @@
         <!-- PEGAR TEXTO DIRECTO -->
         <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 14px;">
           <strong style="font-size: 12.5px; color: #0f172a; display: block; margin-bottom: 4px;">
-            O Pegar Listado Rápido (Línea por Línea):
+            O pegar listado rápido (línea por línea):
           </strong>
           <textarea id="txtEstudiantesPegar" placeholder="Ejemplo:&#10;Valeria Montero Jiménez, Sección 9-1&#10;Kevin Morales Vargas, Sección 9-1&#10;Sofía Castro Navarro, Sección 9-1" rows="3" style="width: 100%; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px; color: #0f172a; font-size: 11.5px; outline: none; margin-bottom: 8px;"></textarea>
           <button class="btn btn-secondary" style="width: 100%; font-size: 11.5px;" onclick="importarTextoPegado()">
-            ➕ Procesar e Incorporar a la Nómina
+            ➕ Procesar e incorporar a la nómina
           </button>
         </div>
       </div>
@@ -478,11 +478,11 @@
       <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 14px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
           <strong style="font-size: 13px; color: #0369a1;">
-            📋 Nómina Actual de Estudiantes (<span id="totalEstudiantesContador">0</span> registrados)
+            📋 Nómina actual de estudiantes (<span id="totalEstudiantesContador">0</span> registrados)
           </strong>
           <div style="display: flex; gap: 8px;">
             <select id="filtroSeccion" style="background: #f8fafc; border: 1px solid #cbd5e1; color: #0f172a; border-radius: 6px; padding: 5px 10px; font-size: 11.5px;" onchange="renderizarListaEstudiantes()">
-              <option value="TODAS">Todas las Secciones</option>
+              <option value="TODAS">Todas las secciones</option>
               <option value="Sección 9-1">Sección 9-1</option>
               <option value="Sección 9-2">Sección 9-2</option>
               <option value="Sección 9-3">Sección 9-3</option>
@@ -505,7 +505,7 @@
               <option value="Sección 9-20">Sección 9-20</option>
             </select>
             <button class="btn btn-danger" style="font-size: 12px; padding: 6px 14px; font-weight: 800; min-height: 32px;" onclick="limpiarNomina()">
-              🗑️ Vaciar Nómina / Iniciar en Blanco
+              🗑️ Vaciar nómina / iniciar en blanco
             </button>
           </div>
         </div>
@@ -593,13 +593,137 @@
           </select>
         </div>
 
-        <div style="display: flex; gap: 10px; align-items: center;">
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <button type="button" class="btn" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #ffffff; border: none; font-size: 11px; padding: 4px 10px; min-height: 28px; font-weight: 800; display: flex; align-items: center; gap: 5px; box-shadow: 0 2px 6px rgba(99, 102, 241, 0.3);" onclick="abrirModalAnalisisIA()">
+            ✨ Analizar Sección con IA
+          </button>
           <button type="button" class="btn btn-outline" style="font-size: 11px; padding: 4px 10px; min-height: 28px;" id="btnMarcarTodoNivelA" onclick="marcarTodoGrupoNivelA()">
             ⚡ Marcar Toda la Sección Nivel A
           </button>
           <div style="font-size: 11.5px; color: #475569; margin-left: 4px;">
             Total: <strong style="color: #0284c7;" id="cntTotalObs">0</strong> • Evaluados: <strong style="color: #15803d;" id="cntEvaluadosObs">0</strong>
           </div>
+        </div>
+      </div>
+
+      <!-- PANEL DE GUÍA DE SIMBOLOGÍA OFICIAL MEP Y GLOSARIO DE INDICADORES -->
+      <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 12px 16px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.03);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="font-size: 16px;">📖</span>
+            <strong style="font-size: 12px; color: #0f172a; text-transform: uppercase; letter-spacing: 0.5px;">
+              Guía de Simbología Oficial MEP (Nivel de Desempeño Formativo)
+            </strong>
+          </div>
+          <span style="font-size: 10.5px; color: #64748b; font-weight: 700; background: #f1f5f9; padding: 2px 8px; border-radius: 6px;">
+            Evaluación 100% Cualitativa y Formativa
+          </span>
+        </div>
+
+        <!-- Simbología para las 3 Áreas -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; font-size: 11.5px;">
+          <!-- 1. Área Cognitiva (L / ED / RA) -->
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px;">
+            <strong style="color: #0369a1; display: block; margin-bottom: 4px; font-size: 11px;">
+              🧠 Área Cognitiva (Indicadores 1 al 10):
+            </strong>
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span class="badge-status" style="background: #dcfce7; color: #15803d; border: 1px solid #86efac; font-weight: 900; font-size: 10.5px; padding: 1px 7px;">L</span>
+                <span style="color: #334155;"><strong>Logrado:</strong> Dominio consolidado (&ge;80% / acierto del saber)</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span class="badge-status" style="background: #fef3c7; color: #b45309; border: 1px solid #fde68a; font-weight: 900; font-size: 10.5px; padding: 1px 6px;">ED</span>
+                <span style="color: #334155;"><strong>En Desarrollo:</strong> Nivel intermedio / comprensión en proceso (60%-79%)</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span class="badge-status" style="background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; font-weight: 900; font-size: 10.5px; padding: 1px 6px;">RA</span>
+                <span style="color: #334155;"><strong>Requiere Acompañamiento:</strong> Nivel inicial / dificultad (&le;59%)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Áreas Psicomotora y Socioafectiva (Escala A / B / C) -->
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px;">
+            <strong style="color: #15803d; display: block; margin-bottom: 4px; font-size: 11px;">
+              🖐️ Psicomotora & ❤️ Socioafectiva (Escala A / B / C):
+            </strong>
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="background: #dcfce7; color: #15803d; border: 1px solid #86efac; font-weight: 900; font-size: 10.5px; padding: 1px 7px; border-radius: 4px;">A</span>
+                <span style="color: #334155;"><strong>Nivel Alto / Autónomo / Consistente:</strong> Ejecuta sin apoyo</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="background: #fef3c7; color: #b45309; border: 1px solid #fde68a; font-weight: 900; font-size: 10.5px; padding: 1px 7px; border-radius: 4px;">B</span>
+                <span style="color: #334155;"><strong>Nivel Medio / Con Apoyo / Intermitente:</strong> Requiere guía puntual</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; font-weight: 900; font-size: 10.5px; padding: 1px 7px; border-radius: 4px;">C</span>
+                <span style="color: #334155;"><strong>Nivel Inicial / Acompañamiento:</strong> Demanda modelado paso a paso</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Glosario y Desglose Completo de Criterios (Optimizado para Celular / Tableta) -->
+        <div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #cbd5e1; font-size: 11px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; margin-bottom: 6px;">
+            <span style="color: #0369a1; font-weight: 700; display: flex; align-items: center; gap: 4px;">
+              💡 <span>En celular o tableta: <strong>Toca cualquier encabezado (ej. ℹ️ P1, S1, Ind 1)</strong> en la tabla para ver su rúbrica y descripción completa.</span>
+            </span>
+          </div>
+
+          <details style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; cursor: pointer;">
+            <summary style="font-weight: 800; color: #0284c7; outline: none;">
+              📖 Toca aquí para ver el Glosario y Definición Completa de los 23 Criterios MEP
+            </summary>
+            
+            <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 10px;">
+              <!-- 1. Psicomotora -->
+              <div style="background: #ffffff; border: 1px solid #86efac; border-radius: 8px; padding: 10px;">
+                <strong style="color: #15803d; display: block; margin-bottom: 6px; font-size: 11.5px;">🖐️ 1. Área Psicomotora (6 Conductas de Taller):</strong>
+                <ul style="padding-left: 18px; line-height: 1.5; color: #334155; font-size: 10.5px;">
+                  <li><strong>P1. Espacio:</strong> Organiza espacialmente las tarjetas del microcontrolador, sensor y actuadores, ubicando correctamente los puntos de conexión.</li>
+                  <li><strong>P2. Precisión:</strong> Manipula terminales, líneas y puntos de inserción con precisión manual sin cruzar polaridades.</li>
+                  <li><strong>P3. Secuencia:</strong> Ejecuta la secuencia de conexionado en orden lógico: alimentación (VCC/GND), entradas de señal y salidas.</li>
+                  <li><strong>P4. Pines:</strong> Identifica pines analógicos (A0) y digitales (D9), respetando VCC 5V y masa GND sin cortocircuitos.</li>
+                  <li><strong>P5. Corrección:</strong> Corrige conexiones erróneas al observar el comportamiento del circuito en la simulación.</li>
+                  <li><strong>P6. Autonomía:</strong> Completa el montaje y prueba del prototipo de forma autónoma con acompañamiento mínimo.</li>
+                </ul>
+              </div>
+
+              <!-- 2. Socioafectiva -->
+              <div style="background: #ffffff; border: 1px solid #fde68a; border-radius: 8px; padding: 10px;">
+                <strong style="color: #b45309; display: block; margin-bottom: 6px; font-size: 11.5px;">❤️ 2. Área Socioafectiva (7 Conductas Actitudinales):</strong>
+                <ul style="padding-left: 18px; line-height: 1.5; color: #334155; font-size: 10.5px;">
+                  <li><strong>S1. Precisión:</strong> Muestra perseverancia, concentración y esmero técnico ante situaciones desafiantes en el prototipado.</li>
+                  <li><strong>S2. Error/Aprender:</strong> Asume el error técnico o fallo en el circuito como una oportunidad natural de aprendizaje e iteración.</li>
+                  <li><strong>S3. Flexibilidad:</strong> Demuestra flexibilidad al probar diferentes alternativas de solución o cambio de actuador.</li>
+                  <li><strong>S4. Resiliencia:</strong> Mantiene la calma, la paciencia y el autocontrol ante fallos lógicos o lecturas inesperadas de sensores.</li>
+                  <li><strong>S5. Comunicación:</strong> Comunica sus dudas, explicaciones técnicas y hallazgos con respeto, claridad y vocabulario apropiado.</li>
+                  <li><strong>S6. Colaboración:</strong> Colabora activamente, escucha y comparte ideas respetando el espacio y ritmo de sus compañeros/as.</li>
+                  <li><strong>S7. Ética/Uso:</strong> Valora la importancia del cuidado de los equipos, la seguridad eléctrica y el uso responsable de la tecnología.</li>
+                </ul>
+              </div>
+
+              <!-- 3. Cognitiva -->
+              <div style="background: #ffffff; border: 1px solid #7dd3fc; border-radius: 8px; padding: 10px;">
+                <strong style="color: #0369a1; display: block; margin-bottom: 6px; font-size: 11.5px;">🧠 3. Área Cognitiva (10 Indicadores de Aprendizaje de Logro):</strong>
+                <ul style="padding-left: 18px; line-height: 1.5; color: #334155; font-size: 10.5px;">
+                  <li><strong>Ind 1. Control:</strong> Microcontroladores, lógica de procesamiento, arquitectura 328P y voltajes (5V).</li>
+                  <li><strong>Ind 2. Sensor:</strong> Entradas sensoriales (LDR) vs. salidas/actuadores (LED, ventilador, alarma).</li>
+                  <li><strong>Ind 3. E-P-S:</strong> Flujo Entrada-Proceso-Salida y causa-efecto del sistema automatizado.</li>
+                  <li><strong>Ind 4. Fuente:</strong> Fuente de energía eléctrica continua (+5V y GND) y polaridad.</li>
+                  <li><strong>Ind 5. Conv. E:</strong> Conversión de energía eléctrica a lumínica, mecánica o sonora.</li>
+                  <li><strong>Ind 6. Conduc.:</strong> Materiales y caminos conductores para el flujo de corriente eléctrica.</li>
+                  <li><strong>Ind 7. Circuito:</strong> Circuito simple, camino cerrado y retorno a tierra (GND).</li>
+                  <li><strong>Ind 8. Ohm:</strong> Relación cualitativa de la Ley de Ohm y resistencia de protección.</li>
+                  <li><strong>Ind 9. Sim 2D:</strong> Conexión y funcionamiento del prototipo en el simulador 2D.</li>
+                  <li><strong>Ind 10. Reflex.:</strong> Reflexión metacognitiva, identificación de retos y seguridad en el taller.</li>
+                </ul>
+              </div>
+            </div>
+          </details>
         </div>
       </div>
 
@@ -635,6 +759,9 @@
         </div>
 
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button class="btn" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #ffffff; border: none; font-weight: 800; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(99, 102, 241, 0.35); font-size: 11.5px; padding: 6px 12px;" onclick="abrirModalAnalisisIA()">
+            ✨ Analizar con IA (360° Formativo)
+          </button>
           <button class="btn btn-accent" onclick="exportarExcelConsolidado()">
             📊 Descargar Matriz Excel Oficial
           </button>
@@ -680,37 +807,48 @@
       <!-- ACCIONES DE RECUPERACIÓN Y ACOMPAÑAMIENTO GRUPAL (SISTEMATIZACIÓN Y VINCULACIÓN A LA WEB) -->
       <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 18px; margin-top: 18px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
-          <h3 style="font-size: 13.5px; color: #0369a1; font-weight: 800;">
-            📌 Síntesis y Acciones de Recuperación y Acompañamiento Grupal:
-          </h3>
-          <a href="/" target="_blank" class="btn btn-online-hub" style="font-size: 11px; padding: 4px 10px;">
-            🌐 Abrir Dashboard Web de Inteligencia Artificial ➔
-          </a>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <h3 style="font-size: 13.5px; color: #0369a1; font-weight: 800;">
+              📌 Síntesis y Acciones de Recuperación y Acompañamiento Grupal:
+            </h3>
+            <span id="badgeEstadoSintesis" style="font-size: 10px; background: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; border-radius: 6px; padding: 2px 7px; font-weight: 700;">
+              ⚡ Análisis Dinámico Reactivo
+            </span>
+          </div>
+          
+          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <button type="button" class="btn" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #ffffff; border: none; font-size: 11px; padding: 4px 10px; font-weight: 800; display: flex; align-items: center; gap: 4px; box-shadow: 0 2px 6px rgba(99, 102, 241, 0.3);" onclick="abrirModalAnalisisIA()">
+              ✨ Generar Informe con IA
+            </button>
+            <a href="/" target="_blank" class="btn btn-online-hub" style="font-size: 11px; padding: 4px 10px;">
+              🌐 Abrir Dashboard Web ➔
+            </a>
+          </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; font-size: 11.5px; margin-bottom: 12px;">
-          <div style="background: #ffffff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 12px;">
-            <strong style="color: #0369a1; display: block; margin-bottom: 4px;">🧠 Dimensión Cognoscitiva:</strong>
-            <span id="resumenGrupoCognitivo">Fortaleza alta en identificación de sensores y flujo E-P-S (85% Logrado). Acciones: Taller guiado sobre polaridad y cálculo cualitativo de resistencia antes de la práctica en protoboard real.</span>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; font-size: 11.5px; margin-bottom: 12px;">
+          <div style="background: #ffffff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+            <strong style="color: #0369a1; display: block; margin-bottom: 6px; font-size: 12px;">🧠 Dimensión Cognoscitiva (10 Indicadores):</strong>
+            <div id="resumenGrupoCognitivo" style="line-height: 1.45; color: #334155;">Calculando síntesis cognoscitiva grupal...</div>
           </div>
-          <div style="background: #ffffff; border: 1px solid #bbf7d0; border-radius: 10px; padding: 12px;">
-            <strong style="color: #15803d; display: block; margin-bottom: 4px;">🖐️ Dimensión Psicomotora:</strong>
-            <span id="resumenGrupoPsicomotor">Destreza adecuada en el conexionado simulado (78% Nivel A). Acciones: Proporcionar tarjetas de correspondencia física para pines 5V/GND y ejercicios de ensamble con guía visual.</span>
+          <div style="background: #ffffff; border: 1px solid #bbf7d0; border-radius: 10px; padding: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+            <strong style="color: #15803d; display: block; margin-bottom: 6px; font-size: 12px;">🖐️ Dimensión Psicomotora (6 Conductas de Taller):</strong>
+            <div id="resumenGrupoPsicomotor" style="line-height: 1.45; color: #334155;">Calculando síntesis psicomotora grupal...</div>
           </div>
-          <div style="background: #ffffff; border: 1px solid #fde68a; border-radius: 10px; padding: 12px;">
-            <strong style="color: #b45309; display: block; margin-bottom: 4px;">❤️ Dimensión Socioafectiva:</strong>
-            <span id="resumenGrupoSocio">Excelente persistencia ante el error en simulación (90% Nivel A). Acciones: Consolidar el trabajo colaborativo en parejas mixtas para co-evaluación solidaria.</span>
+          <div style="background: #ffffff; border: 1px solid #fde68a; border-radius: 10px; padding: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+            <strong style="color: #b45309; display: block; margin-bottom: 6px; font-size: 12px;">❤️ Dimensión Socioafectiva (7 Conductas Actitudinales):</strong>
+            <div id="resumenGrupoSocio" style="line-height: 1.45; color: #334155;">Calculando síntesis socioafectiva grupal...</div>
           </div>
         </div>
 
         <div style="background: #e0f2fe; border: 1px solid #7dd3fc; border-radius: 8px; padding: 10px 14px; font-size: 11.5px; color: #0369a1; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
           <div>
             <strong>💡 ¿Deseas análisis predictivo con IA y generación de reportes automáticos por sección?</strong>
-            <span style="display: block; font-size: 11px; color: #0c4a6e;">Ingresa al Dashboard central en línea para visualizar estadísticas macro, tendencias por centro educativo y descarga de actas oficiales en PDF.</span>
+            <span style="display: block; font-size: 11px; color: #0c4a6e;">Haz clic en «✨ Generar Informe con IA» para obtener diagnóstico pedagógico 360°, plan DUA y acompañamiento individual para estudiantes en rezago.</span>
           </div>
-          <a href="/" target="_blank" class="btn btn-estudiante" style="font-size: 11px; padding: 4px 12px;">
-            Explorar en Línea
-          </a>
+          <button type="button" class="btn btn-estudiante" style="font-size: 11px; padding: 4px 12px;" onclick="abrirModalAnalisisIA()">
+            ✨ Ejecutar IA Ahora
+          </button>
         </div>
       </div>
     </div>
@@ -726,57 +864,75 @@
         10. Criterios para la Toma de Decisiones Pedagógicas y Planeamiento
       </h2>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 12px;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; font-size: 12px;">
         
-        <div style="background: #f8fafc; border: 1.5px solid #fde68a; border-radius: 10px; padding: 14px;">
-          <strong style="color: #b45309; display: block; margin-bottom: 4px;">
-            ⚠️ Si la mayoría presenta dificultad en algoritmo o secuenciación:
-          </strong>
+        <div id="cardDecAlgoritmo" style="background: #f8fafc; border: 1.5px solid #fde68a; border-radius: 10px; padding: 14px; transition: all 0.2s;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 6px; margin-bottom: 4px;">
+            <strong style="color: #b45309; display: block;">
+              ⚠️ Si la mayoría presenta dificultad en algoritmo o secuenciación:
+            </strong>
+            <span id="badgeDecAlgoritmo" style="display:none; font-size: 10px; font-weight: 800; background: #fef3c7; color: #b45309; border: 1px solid #fde68a; padding: 2px 6px; border-radius: 4px; white-space: nowrap;">⚡ ACTIVA</span>
+          </div>
           <p style="color: #334155; line-height: 1.45;">
             Iniciar con situaciones concretas de descomposición, secuencias y representación de algoritmos antes de aumentar la complejidad de programación.
           </p>
         </div>
 
-        <div style="background: #f8fafc; border: 1.5px solid #7dd3fc; border-radius: 10px; padding: 14px;">
-          <strong style="color: #0369a1; display: block; margin-bottom: 4px;">
-            🔌 Si la dificultad se concentra en sensor, actuador o microcontrolador:
-          </strong>
+        <div id="cardDecSensor" style="background: #f8fafc; border: 1.5px solid #7dd3fc; border-radius: 10px; padding: 14px; transition: all 0.2s;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 6px; margin-bottom: 4px;">
+            <strong style="color: #0369a1; display: block;">
+              🔌 Si la dificultad se concentra en sensor, actuador o microcontrolador:
+            </strong>
+            <span id="badgeDecSensor" style="display:none; font-size: 10px; font-weight: 800; background: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; padding: 2px 6px; border-radius: 4px; white-space: nowrap;">⚡ ACTIVA</span>
+          </div>
           <p style="color: #334155; line-height: 1.45;">
             Planificar una exploración guiada de componentes, entradas, procesamiento y salidas mediante simulación o prototipado guiado.
           </p>
         </div>
 
-        <div style="background: #f8fafc; border: 1.5px solid #fca5a5; border-radius: 10px; padding: 14px;">
-          <strong style="color: #b91c1c; display: block; margin-bottom: 4px;">
-            🐛 Si hay dificultad para depurar:
-          </strong>
+        <div id="cardDecDepuracion" style="background: #f8fafc; border: 1.5px solid #fca5a5; border-radius: 10px; padding: 14px; transition: all 0.2s;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 6px; margin-bottom: 4px;">
+            <strong style="color: #b91c1c; display: block;">
+              🐛 Si hay dificultad para depurar:
+            </strong>
+            <span id="badgeDecDepuracion" style="display:none; font-size: 10px; font-weight: 800; background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; padding: 2px 6px; border-radius: 4px; white-space: nowrap;">⚡ ACTIVA</span>
+          </div>
           <p style="color: #334155; line-height: 1.45;">
             Incorporar retos breves de prueba–error–corrección y verbalización del proceso de depuración técnica.
           </p>
         </div>
 
-        <div style="background: #f8fafc; border: 1.5px solid #e9d5ff; border-radius: 10px; padding: 14px;">
-          <strong style="color: #6d28d9; display: block; margin-bottom: 4px;">
-            ❤️ Si la dificultad principal es socioafectiva:
-          </strong>
+        <div id="cardDecSocioafectiva" style="background: #f8fafc; border: 1.5px solid #e9d5ff; border-radius: 10px; padding: 14px; transition: all 0.2s;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 6px; margin-bottom: 4px;">
+            <strong style="color: #6d28d9; display: block;">
+              ❤️ Si la dificultad principal es socioafectiva:
+            </strong>
+            <span id="badgeDecSocioafectiva" style="display:none; font-size: 10px; font-weight: 800; background: #f3e8ff; color: #6d28d9; border: 1px solid #d8b4fe; padding: 2px 6px; border-radius: 4px; white-space: nowrap;">⚡ ACTIVA</span>
+          </div>
           <p style="color: #334155; line-height: 1.45;">
             Diseñar actividades de iteración, colaboración y resolución de problemas con acompañamiento gradual y refuerzo positivo.
           </p>
         </div>
 
-        <div style="background: #f8fafc; border: 1.5px solid #fed7aa; border-radius: 10px; padding: 14px;">
-          <strong style="color: #c2410c; display: block; margin-bottom: 4px;">
-            🖐️ Si hay dificultades psicomotoras en orientación espacial o conexiones:
-          </strong>
+        <div id="cardDecPsicomotora" style="background: #f8fafc; border: 1.5px solid #fed7aa; border-radius: 10px; padding: 14px; transition: all 0.2s;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 6px; margin-bottom: 4px;">
+            <strong style="color: #c2410c; display: block;">
+              🖐️ Si hay dificultades psicomotoras en orientación espacial o conexiones:
+            </strong>
+            <span id="badgeDecPsicomotora" style="display:none; font-size: 10px; font-weight: 800; background: #ffedd5; color: #c2410c; border: 1px solid #fdba74; padding: 2px 6px; border-radius: 4px; white-space: nowrap;">⚡ ACTIVA</span>
+          </div>
           <p style="color: #334155; line-height: 1.45;">
             Proporcionar tareas progresivas de organización espacial, seguimiento de instrucciones y ejecución de secuencias antes de avanzar a prototipos más complejos.
           </p>
         </div>
 
-        <div style="background: #f8fafc; border: 1.5px solid #86efac; border-radius: 10px; padding: 14px;">
-          <strong style="color: #15803d; display: block; margin-bottom: 4px;">
-            🚀 Si el grupo muestra dominio inicial alto:
-          </strong>
+        <div id="cardDecDominioAlto" style="background: #f8fafc; border: 1.5px solid #86efac; border-radius: 10px; padding: 14px; transition: all 0.2s;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 6px; margin-bottom: 4px;">
+            <strong style="color: #15803d; display: block;">
+              🚀 Si el grupo muestra dominio inicial alto:
+            </strong>
+            <span id="badgeDecDominioAlto" style="display:none; font-size: 10px; font-weight: 800; background: #dcfce7; color: #15803d; border: 1px solid #86efac; padding: 2px 6px; border-radius: 4px; white-space: nowrap;">⚡ ACTIVA</span>
+          </div>
           <p style="color: #334155; line-height: 1.45;">
             Aumentar gradualmente la complejidad, incorporando datos, automatización y prototipos con mayor autonomía.
           </p>
@@ -853,7 +1009,183 @@
     </div>
   </div>
 
+  <!-- MODAL DE DETALLE DE CRITERIO / CONDUCTA (OPTIMIZADO PARA CELULARES Y TABLETAS) -->
+  <div id="modalDetalleCriterio" class="modal" onclick="if(event.target === this) cerrarModalDetalleCriterio()">
+    <div class="modal-content" style="max-width: 500px; text-align: left; padding: 20px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 8px;">
+        <div>
+          <span id="modalCriterioBadge" class="mep-badge" style="font-size: 10px; margin-bottom: 4px; display: inline-block;">Área</span>
+          <h3 id="modalCriterioCodigo" style="color: #0369a1; margin: 0; font-size: 1.2rem; font-weight: 900;">
+            Código y Nombre
+          </h3>
+        </div>
+        <button class="btn btn-outline" style="padding: 2px 8px; min-height: 26px; border-radius: 8px; font-weight: bold;" onclick="cerrarModalDetalleCriterio()">✕</button>
+      </div>
+
+      <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 12px 14px; margin-bottom: 12px;">
+        <strong style="font-size: 11px; color: #64748b; text-transform: uppercase; display: block; margin-bottom: 4px; letter-spacing: 0.5px;">
+          📌 Conducta / Indicador Observado (Guía Oficial MEP):
+        </strong>
+        <p id="modalCriterioTexto" style="font-size: 13px; color: #0f172a; line-height: 1.5; font-weight: 600; margin: 0;">
+          Texto completo de la conducta...
+        </p>
+      </div>
+
+      <div id="modalCriterioEscala" style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 12px; margin-bottom: 14px;">
+        <!-- Inyectado dinámicamente con los niveles A/B/C o L/ED/RA -->
+      </div>
+
+      <button type="button" class="btn btn-accent" style="width: 100%; font-size: 12.5px; padding: 10px; font-weight: 800; border-radius: 10px;" onclick="cerrarModalDetalleCriterio()">
+        ✓ Entendido / Continuar Evaluando
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL DE ANÁLISIS PEDAGÓGICO INTEGRAL CON INTELIGENCIA ARTIFICIAL -->
+  <div id="modalAnalisisIADocente" class="modal" onclick="if(event.target === this) cerrarModalAnalisisIA()">
+    <div class="modal-content" style="max-width: 850px; max-height: 90vh; overflow-y: auto; text-align: left; padding: 22px; border-radius: 18px; box-shadow: 0 15px 40px rgba(0,0,0,0.25);">
+      <!-- Cabecera -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <span class="mep-badge" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #ffffff; border: none;">
+              🤖 Inteligencia Artificial Pedagógica MEP
+            </span>
+            <span id="badgeIaProveedor" style="font-size: 10.5px; background: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 6px; font-weight: 700; border: 1px solid #cbd5e1;">
+              Cascada Multi-Proveedor: Gemini / Groq / Qwen
+            </span>
+          </div>
+          <h2 style="color: #0f172a; margin: 6px 0 2px 0; font-size: 1.3rem; font-weight: 900;">
+            Diagnóstico Pedagógico Integral 360° (Cognitivo, Psicomotor y Socioafectivo)
+          </h2>
+          <p style="font-size: 11.5px; color: #64748b; margin: 0;" id="subtituloIaAnalisis">
+            Análisis contextualizado de la sección evaluada y recomendaciones para el Planeamiento Didáctico Oficial.
+          </p>
+        </div>
+        <button class="btn btn-outline" style="padding: 4px 10px; border-radius: 8px; font-weight: bold;" onclick="cerrarModalAnalisisIA()">✕</button>
+      </div>
+
+      <!-- Estado de Carga (Spinner) -->
+      <div id="iaLoadingContainer" style="display: none; text-align: center; padding: 40px 20px;">
+        <div style="width: 46px; height: 46px; border: 4px solid #e0e7ff; border-top-color: #6366f1; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px auto;"></div>
+        <strong style="color: #4338ca; font-size: 14px; display: block; margin-bottom: 6px;">
+          Procesando datos con Inteligencia Artificial Multicapa...
+        </strong>
+        <p style="font-size: 12px; color: #64748b; max-width: 460px; margin: 0 auto; line-height: 1.5;">
+          Analizando indicadores de comprensión, destreza en simulador 2D, conductas de perseverancia y gestión del error para estructurar el plan DUA.
+        </p>
+      </div>
+
+      <!-- Contenedor de Resultados del Análisis -->
+      <div id="iaResultadosContainer" style="display: block;">
+        
+        <!-- 1. Resumen Ejecutivo -->
+        <div style="background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%); border: 1.5px solid #bfdbfe; border-radius: 12px; padding: 14px; margin-bottom: 14px;">
+          <strong style="color: #1e40af; font-size: 12px; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+            📊 <span>Síntesis Ejecutiva del Grupo:</span>
+          </strong>
+          <p id="iaResumenEjecutivo" style="font-size: 12px; color: #1e293b; line-height: 1.55; margin: 0; font-weight: 500;">
+            Cargando análisis...
+          </p>
+        </div>
+
+        <!-- 2. Rejilla de 3 Dimensiones -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin-bottom: 14px;">
+          
+          <!-- Cognitiva -->
+          <div style="background: #ffffff; border: 1.5px solid #7dd3fc; border-radius: 10px; padding: 12px;">
+            <strong style="color: #0369a1; font-size: 12px; display: block; margin-bottom: 4px;">🧠 Dimensión Cognitiva</strong>
+            <p id="iaSintesisCog" style="font-size: 11.5px; color: #334155; line-height: 1.45; margin: 0;">-</p>
+          </div>
+
+          <!-- Psicomotora -->
+          <div style="background: #ffffff; border: 1.5px solid #86efac; border-radius: 10px; padding: 12px;">
+            <strong style="color: #15803d; font-size: 12px; display: block; margin-bottom: 4px;">🖐️ Dimensión Psicomotora</strong>
+            <p id="iaSintesisPsi" style="font-size: 11.5px; color: #334155; line-height: 1.45; margin: 0;">-</p>
+          </div>
+
+          <!-- Socioafectiva -->
+          <div style="background: #ffffff; border: 1.5px solid #fde68a; border-radius: 10px; padding: 12px;">
+            <strong style="color: #b45309; font-size: 12px; display: block; margin-bottom: 4px;">❤️ Dimensión Socioafectiva</strong>
+            <p id="iaSintesisSoc" style="font-size: 11.5px; color: #334155; line-height: 1.45; margin: 0;">-</p>
+          </div>
+
+        </div>
+
+        <!-- 3. Orientaciones DUA para el Planeamiento Didáctico Oficial -->
+        <div style="background: #fdf4ff; border: 1.5px solid #f0abfc; border-radius: 12px; padding: 14px; margin-bottom: 14px;">
+          <strong style="color: #86198f; font-size: 12px; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+            📘 <span>Orientaciones DUA para las Estrategias de Mediación (Planeamiento MEP):</span>
+          </strong>
+          <p id="iaOrientacionDUA" style="font-size: 11.5px; color: #4a044e; line-height: 1.5; margin: 0;">
+            -
+          </p>
+        </div>
+
+        <!-- 4. Estudiantes que Requieren Acompañamiento Prioritario -->
+        <div style="background: #fff1f2; border: 1.5px solid #fecdd3; border-radius: 12px; padding: 14px; margin-bottom: 16px;">
+          <strong style="color: #9f1239; font-size: 12px; display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+            👥 <span>Atención a la Diversidad: Estudiantes en Nivel Inicial / Acompañamiento Prioritario:</span>
+          </strong>
+          <div id="iaListaRezagados" style="display: flex; flex-direction: column; gap: 6px;">
+            <!-- Inyectado dinámicamente -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Barra de Acciones del Modal -->
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; border-top: 1.5px solid #e2e8f0; padding-top: 14px;">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button type="button" class="btn btn-accent" style="font-weight: 800; font-size: 11.5px; padding: 7px 14px;" onclick="aplicarAnalisisIASistematizacion()">
+            📥 Aplicar a la Sistematización del Docente
+          </button>
+          <button type="button" class="btn btn-secondary" style="font-size: 11.5px; padding: 7px 12px;" onclick="copiarInformeIAPedagogico()">
+            📋 Copiar Informe para Planeamiento
+          </button>
+        </div>
+        <button type="button" class="btn btn-outline" style="font-size: 11.5px; padding: 7px 14px;" onclick="cerrarModalAnalisisIA()">
+          Cerrar
+        </button>
+      </div>
+
+    </div>
+  </div>
+
   <script>
+    // CRITERIOS Y CONDUCTAS OFICIALES MEP CON DESCRIPCIÓN COMPLETA PARA CELULAR Y TABLETA
+    var CRITERIOS_DETALLADOS = {
+      psi: [
+        { codigo: "P1. Espacio", titulo: "Organización Espacial", desc: "Organiza espacialmente las tarjetas del microcontrolador, sensor y actuadores, ubicando correctamente los puntos de conexión.", escalaA: "Ubica y distribuye todos los módulos de forma ordenada y autónoma.", escalaB: "Requiere apoyo para orientar la posición de las tarjetas.", escalaC: "Presenta desorientación espacial en la disposición de módulos." },
+        { codigo: "P2. Precisión", titulo: "Precisión de Manipulación", desc: "Manipula terminales, líneas y puntos de inserción con precisión manual sin cruzar polaridades.", escalaA: "Conecta con firmeza y exactitud cada terminal.", escalaB: "Requiere varios intentos para acertar el pin.", escalaC: "Manipulación imprecisa o forzada de conectores." },
+        { codigo: "P3. Secuencia", titulo: "Secuencia Lógica de Conexión", desc: "Ejecuta la secuencia de conexionado en orden lógico: alimentación (VCC/GND), entradas de señal y salidas.", escalaA: "Sigue el orden metodológico de forma fluida.", escalaB: "Requiere recordatorio de la secuencia de pasos.", escalaC: "Conecta de forma aleatoria sin orden metodológico." },
+        { codigo: "P4. Pines", titulo: "Identificación de Pines y Polaridad", desc: "Identifica pines analógicos (A0) y digitales (D9), respetando VCC 5V y masa GND sin provocar cortocircuitos.", escalaA: "Distingue y conecta cada pin sin errores de polaridad.", escalaB: "Duda entre pin analógico y digital pero corrige.", escalaC: "Confunde habitualmente pines de señal con alimentación." },
+        { codigo: "P5. Corrección", titulo: "Corrección Activa y Ajuste", desc: "Corrige conexiones erróneas al observar el comportamiento del circuito en la simulación interactiva.", escalaA: "Detecta y reubica cables erróneos de inmediato.", escalaB: "Requiere pistas docentes para localizar el cable suelto.", escalaC: "No identifica la causa del error en el circuito." },
+        { codigo: "P6. Autonomía", titulo: "Autonomía en el Taller", desc: "Completa el montaje y prueba del prototipo de forma autónoma con acompañamiento mínimo.", escalaA: "Concluye el reto completo con total independencia.", escalaB: "Solicita validación constante durante el proceso.", escalaC: "Depende de asistencia paso a paso para avanzar." }
+      ],
+      soc: [
+        { codigo: "S1. Precisión", titulo: "Perseverancia y Rigor", desc: "Muestra perseverancia, concentración y esmero técnico ante situaciones desafiantes en el prototipado.", escalaA: "Mantiene la concentración y busca la solución con esmero.", escalaB: "Requiere motivación ocasional ante la frustración.", escalaC: "Abandona la tarea con facilidad si no funciona al primer intento." },
+        { codigo: "S2. Error/Aprender", titulo: "Aprender del Error", desc: "Asume el error técnico o fallo en el circuito como una oportunidad natural de aprendizaje e iteración.", escalaA: "Analiza el fallo con actitud reflexiva y constructiva.", escalaB: "Acepta la corrección tras orientación del docente.", escalaC: "Muestra frustración o rechazo ante el error." },
+        { codigo: "S3. Flexibilidad", titulo: "Flexibilidad y Adaptabilidad", desc: "Demuestra flexibilidad al probar diferentes alternativas de solución o cambio de actuador.", escalaA: "Propone y prueba alternativas con iniciativa propia.", escalaB: "Sigue las alternativas sugeridas por el docente.", escalaC: "Muestra resistencia al cambio o fijación en un solo intento." },
+        { codigo: "S4. Resiliencia", titulo: "Autorregulación y Calma", desc: "Mantiene la calma, la paciencia y el autocontrol ante fallos lógicos o lecturas inesperadas de sensores.", escalaA: "Gestiona sus emociones con serenidad y paciencia.", escalaB: "Muestra inquietud pero logra autorregularse.", escalaC: "Se bloquea emocionalmente ante la dificultad técnica." },
+        { codigo: "S5. Comunicación", titulo: "Comunicación Asertiva", desc: "Comunica sus dudas, explicaciones técnicas y hallazgos con respeto, claridad y vocabulario apropiado.", escalaA: "Expresa sus ideas y preguntas con claridad y propiedad.", escalaB: "Comunica sus dudas de forma básica.", escalaC: "Dificultad para formular preguntas o expresar sus ideas." },
+        { codigo: "S6. Colaboración", titulo: "Colaboración y Trabajo en Equipo", desc: "Colabora activamente, escucha y comparte ideas respetando el espacio y ritmo de sus compañeros/as.", escalaA: "Apoya a sus pares y fomenta un clima colaborativo.", escalaB: "Participa en equipo cuando se le solicita.", escalaC: "Trabaja de forma aislada o interfiere en el trabajo ajeno." },
+        { codigo: "S7. Ética/Uso", titulo: "Ética y Cuidado Tecnológico", desc: "Valora la importancia del cuidado de los equipos, la seguridad eléctrica y el uso responsable de la tecnología.", escalaA: "Trata los componentes con máximo cuidado y respeta las normas.", escalaB: "Cumple las normas tras recordatorios del docente.", escalaC: "Uso descuidado o imprudente de los materiales del laboratorio." }
+      ],
+      cog: [
+        { codigo: "Ind 1. Control", titulo: "Microcontroladores y Lógica", desc: "Reconoce la función general del microcontrolador (MCU 328P), arquitectura básica, voltajes (5V) y lógica de procesamiento.", escalaA: "Logrado (L): Reconoce el MCU como cerebro central que procesa instrucciones.", escalaB: "En Desarrollo (ED): Noción parcial de la placa pero confunde entradas con salidas.", escalaC: "Requiere Acompañamiento (RA): Desconoce la función del microcontrolador." },
+        { codigo: "Ind 2. Sensor", titulo: "Sensores y Actuadores", desc: "Diferencia claramente entre componentes de entrada sensorial (LDR) y componentes de salida/acción (LED, Ventilador, Alarma).", escalaA: "Logrado (L): Clasifica con exactitud entradas sensoriales y salidas actuadoras.", escalaB: "En Desarrollo (ED): Identifica el componente pero confunde su rol en el sistema.", escalaC: "Requiere Acompañamiento (RA): No distingue entre captar datos y realizar acciones." },
+        { codigo: "Ind 3. E-P-S", titulo: "Flujo Entrada-Proceso-Salida", desc: "Comprende la relación sistémica: la entrada informa al MCU, el proceso evalúa condiciones y la salida actúa.", escalaA: "Logrado (L): Explica el flujo continuo y la causa-efecto del sistema automatizado.", escalaB: "En Desarrollo (ED): Comprende entrada y salida pero omite el procesamiento.", escalaC: "Requiere Acompañamiento (RA): No percibe la secuencia sistémica E-P-S." },
+        { codigo: "Ind 4. Fuente", titulo: "Fuente de Energía y Polaridad", desc: "Identifica que el circuito requiere alimentación eléctrica continua (+5V y masa GND) para funcionar.", escalaA: "Logrado (L): Reconoce la necesidad de energización y respeto de polaridad.", escalaB: "En Desarrollo (ED): Conecta alimentación pero olvida el retorno a GND.", escalaC: "Requiere Acompañamiento (RA): Desconoce cómo se energiza el circuito." },
+        { codigo: "Ind 5. Conv. E", titulo: "Conversión Energética", desc: "Reconoce cómo la energía eléctrica se transforma en luz (lámpara), movimiento mecánico (ventilador) o sonido (alarma).", escalaA: "Logrado (L): Identifica el tipo de transformación energética en cada actuador.", escalaB: "En Desarrollo (ED): Identifica que consume energía pero no el tipo de salida.", escalaC: "Requiere Acompañamiento (RA): No relaciona la electricidad con sus efectos útiles." },
+        { codigo: "Ind 6. Conduc.", titulo: "Conductores y Aislantes", desc: "Identifica los materiales y caminos conductores que permiten el flujo de corriente hacia los componentes.", escalaA: "Logrado (L): Comprende el papel de los cables y pistas conductoras.", escalaB: "En Desarrollo (ED): Conoce los cables pero no el concepto de conducción.", escalaC: "Requiere Acompañamiento (RA): Confunde materiales aislantes y conductores." },
+        { codigo: "Ind 7. Circuito", titulo: "Circuito Cerrado y Masa GND", desc: "Comprende que para que un actuador opere se requiere un camino cerrado con retorno a tierra/GND.", escalaA: "Logrado (L): Verifica el lazo cerrado y el punto común de referencia GND.", escalaB: "En Desarrollo (ED): Conecta la línea positiva pero olvida cerrar el circuito.", escalaC: "Requiere Acompañamiento (RA): No comprende el concepto de circuito cerrado." },
+        { codigo: "Ind 8. Ohm", titulo: "Ley de Ohm Cualitativa", desc: "Relaciona voltaje, corriente y resistencia; reconoce la necesidad de limitar la corriente para proteger componentes.", escalaA: "Logrado (L): Explica cualitativamente la relación V-I-R y la protección del circuito.", escalaB: "En Desarrollo (ED): Sabe que existe resistencia pero no su función protectora.", escalaC: "Requiere Acompañamiento (RA): Desconoce la relación entre voltaje y corriente." },
+        { codigo: "Ind 9. Sim 2D", titulo: "Reto «Conecta el Prototipo»", desc: "Aplica de forma práctica el cableado del sensor LDR al pin A0 y el actuador al pin D9 con respuesta automática en 2D.", escalaA: "Logrado (L): Cablea correctamente el circuito y valida el umbral en la simulación.", escalaB: "En Desarrollo (ED): Requiere orientación para conectar la señal analógica A0.", escalaC: "Requiere Acompañamiento (RA): No logra enlazar el sensor con el actuador." },
+        { codigo: "Ind 10. Reflex.", titulo: "Metacognición y Seguridad", desc: "Evalúa su propio proceso de aprendizaje, reconoce áreas de mejora y aplica normas de seguridad tecnológica.", escalaA: "Logrado (L): Reflexiona críticamente sobre aciertos, fallas y normas de taller.", escalaB: "En Desarrollo (ED): Responde parcialmente sobre sus dificultades.", escalaC: "Requiere Acompañamiento (RA): No identifica su propio nivel de logro o normas." }
+      ]
+    };
+
     // LISTA DE EVIDENCIAS OFICIALES MEP (DOCUMENTO BASE PÁGINA 7 Y 8)
     var EVIDENCIAS_COGNITIVAS = [
       "Reconoce la función general de un microcontrolador.",
@@ -894,6 +1226,62 @@
       estudianteActivoIdx: 0,
       seccionFiltro: "TODAS"
     };
+
+    function mostrarModalDetalleCriterio(area, idx) {
+      var modal = document.getElementById("modalDetalleCriterio");
+      if (!modal) return;
+      
+      var areaData = CRITERIOS_DETALLADOS[area];
+      if (!areaData || !areaData[idx]) return;
+      var item = areaData[idx];
+
+      var tituloEl = document.getElementById("modalCriterioCodigo") || document.getElementById("modalCriterioTitulo");
+      var areaBadgeEl = document.getElementById("modalCriterioBadge") || document.getElementById("modalCriterioAreaBadge");
+      var descEl = document.getElementById("modalCriterioTexto");
+      var escalaEl = document.getElementById("modalCriterioEscala");
+
+      var areaNombre = area === 'psi' ? "🖐️ 1. Área Psicomotora" : (area === 'soc' ? "❤️ 2. Área Socioafectiva" : "🧠 3. Área Cognitiva");
+      var areaColor = area === 'psi' ? "#15803d" : (area === 'soc' ? "#b45309" : "#0369a1");
+      var areaBg = area === 'psi' ? "#dcfce7" : (area === 'soc' ? "#fef3c7" : "#e0f2fe");
+
+      if (areaBadgeEl) {
+        areaBadgeEl.innerText = areaNombre;
+        areaBadgeEl.style.color = areaColor;
+        areaBadgeEl.style.background = areaBg;
+      }
+      if (tituloEl) {
+        tituloEl.innerText = item.codigo + ": " + item.titulo;
+        tituloEl.style.color = areaColor;
+      }
+      if (descEl) {
+        descEl.innerText = item.desc;
+      }
+
+      if (escalaEl) {
+        if (area === 'cog') {
+          escalaEl.innerHTML = '<strong style="display:block; font-size:11.5px; color:#0f172a; margin-bottom:6px;">📊 Niveles de Desempeño Oficial MEP:</strong>' +
+            '<div style="display:flex; flex-direction:column; gap:6px; font-size:11px;">' +
+              '<div style="padding:6px 8px; background:#dcfce7; border:1px solid #86efac; border-radius:6px; color:#15803d;"><strong>L (Logrado):</strong> ' + item.escalaA + '</div>' +
+              '<div style="padding:6px 8px; background:#fef3c7; border:1px solid #fde68a; border-radius:6px; color:#b45309;"><strong>ED (En Desarrollo):</strong> ' + item.escalaB + '</div>' +
+              '<div style="padding:6px 8px; background:#fee2e2; border:1px solid #fca5a5; border-radius:6px; color:#b91c1c;"><strong>RA (Requiere Acompañamiento):</strong> ' + item.escalaC + '</div>' +
+            '</div>';
+        } else {
+          escalaEl.innerHTML = '<strong style="display:block; font-size:11.5px; color:#0f172a; margin-bottom:6px;">📊 Niveles de Observación Formativa (A / B / C):</strong>' +
+            '<div style="display:flex; flex-direction:column; gap:6px; font-size:11px;">' +
+              '<div style="padding:6px 8px; background:#dcfce7; border:1px solid #86efac; border-radius:6px; color:#15803d;"><strong>Nivel A (Alto / Autónomo):</strong> ' + item.escalaA + '</div>' +
+              '<div style="padding:6px 8px; background:#fef3c7; border:1px solid #fde68a; border-radius:6px; color:#b45309;"><strong>Nivel B (Medio / Con Apoyo):</strong> ' + item.escalaB + '</div>' +
+              '<div style="padding:6px 8px; background:#fee2e2; border:1px solid #fca5a5; border-radius:6px; color:#b91c1c;"><strong>Nivel C (Inicial / Acompañamiento):</strong> ' + item.escalaC + '</div>' +
+            '</div>';
+        }
+      }
+
+      modal.style.display = "flex";
+    }
+
+    function cerrarModalDetalleCriterio() {
+      var modal = document.getElementById("modalDetalleCriterio");
+      if (modal) modal.style.display = "none";
+    }
 
     // Inicializar aplicativo
     window.addEventListener("DOMContentLoaded", function() {
@@ -1034,6 +1422,12 @@
         if (rawLoc) registrosLocales = JSON.parse(rawLoc);
       } catch(e) {}
 
+      var eliminadosLocales = [];
+      try {
+        var rawElim = localStorage.getItem("estudiantes_eliminados_docente");
+        if (rawElim) eliminadosLocales = JSON.parse(rawElim);
+      } catch(e) {}
+
       var mapaRegistros = new Map();
       registrosLocales.forEach(function(r) {
         if (r && r.estudianteNombre) {
@@ -1041,6 +1435,7 @@
           var estCor = (r.estudianteCorreo || "").toLowerCase().trim();
           if (docNom && (estNom === docNom || estNom.includes(docNom))) return;
           if (docCor && estCor === docCor) return;
+          if (eliminadosLocales.includes(estNom)) return;
           var k = (r.estudianteNombre + "::" + (r.seccionOGrupo || "")).toLowerCase().trim();
           mapaRegistros.set(k, r);
         }
@@ -1051,6 +1446,7 @@
           var estCor = (r.estudianteCorreo || "").toLowerCase().trim();
           if (docNom && (estNom === docNom || estNom.includes(docNom))) return;
           if (docCor && estCor === docCor) return;
+          if (eliminadosLocales.includes(estNom)) return;
           var k = (r.estudianteNombre + "::" + (r.seccionOGrupo || "")).toLowerCase().trim();
           mapaRegistros.set(k, r);
         }
@@ -1062,6 +1458,7 @@
         var nom = (rec.estudianteNombre || "").trim();
         var sec = rec.seccionOGrupo || "Sección 9-1";
         if (!nom) return;
+        if (eliminadosLocales.includes(nom.toLowerCase().trim())) return;
 
         var match = estadoDocente.estudiantes.find(function(e) {
           return e.nombre.toLowerCase().trim() === nom.toLowerCase();
@@ -1173,6 +1570,66 @@
       }
       if (num === 2) renderizarMatrizObservacion();
       if (num === 3) renderizarConsolidadoGrupal();
+      if (num === 4) renderizarDecisionesPedagogicas();
+    }
+
+    function renderizarDecisionesPedagogicas() {
+      var totalEst = estadoDocente.estudiantes.length;
+      if (totalEst === 0) return;
+
+      var totalCogL = 0, totalCogRA = 0;
+      var totalPsiC = 0, totalSocC = 0;
+      var indDebilesCount = { mcu_sensor: 0, algoritmo: 0, depuracion: 0 };
+
+      estadoDocente.estudiantes.forEach(function(est) {
+        var cog = est.cog || Array(10).fill("ED");
+        var psi = est.psi || Array(6).fill("A");
+        var soc = est.soc || Array(7).fill("A");
+
+        cog.forEach(function(val, cIdx) {
+          if (val === "L") totalCogL++;
+          else if (val === "RA") {
+            totalCogRA++;
+            if (cIdx === 0 || cIdx === 1 || cIdx === 3) indDebilesCount.mcu_sensor++;
+            if (cIdx === 2 || cIdx === 7) indDebilesCount.algoritmo++;
+            if (cIdx === 8) indDebilesCount.depuracion++;
+          }
+        });
+
+        psi.forEach(function(val) { if (val === "C") totalPsiC++; });
+        soc.forEach(function(val) { if (val === "C") totalSocC++; });
+      });
+
+      var porcCogL = Math.round((totalCogL / (totalEst * 10)) * 100) || 0;
+      var porcCogRA = Math.round((totalCogRA / (totalEst * 10)) * 100) || 0;
+      var porcPsiC = Math.round((totalPsiC / (totalEst * 6)) * 100) || 0;
+      var porcSocC = Math.round((totalSocC / (totalEst * 7)) * 100) || 0;
+
+      var activarCard = function(cardId, badgeId, activa, textoBadge, colorBorde, colorBg) {
+        var card = document.getElementById(cardId);
+        var badge = document.getElementById(badgeId);
+        if (card && badge) {
+          if (activa) {
+            badge.style.display = "inline-block";
+            badge.innerText = textoBadge || "⚡ ACTIVA PARA TU GRUPO";
+            card.style.borderColor = colorBorde || "#f59e0b";
+            card.style.background = colorBg || "#fffbeb";
+            card.style.boxShadow = "0 4px 12px rgba(0,0,0,0.06)";
+          } else {
+            badge.style.display = "none";
+            card.style.boxShadow = "none";
+            card.style.background = "#f8fafc";
+            card.style.borderColor = "#e2e8f0";
+          }
+        }
+      };
+
+      activarCard("cardDecAlgoritmo", "badgeDecAlgoritmo", indDebilesCount.algoritmo > 0, "⚡ DETECTADA EN SECCIÓN", "#f59e0b", "#fffbeb");
+      activarCard("cardDecSensor", "badgeDecSensor", indDebilesCount.mcu_sensor > 0, "⚡ DETECTADA EN SECCIÓN", "#0284c7", "#f0f9ff");
+      activarCard("cardDecDepuracion", "badgeDecDepuracion", indDebilesCount.depuracion > 0, "⚡ DETECTADA EN SECCIÓN", "#ef4444", "#fef2f2");
+      activarCard("cardDecSocioafectiva", "badgeDecSocioafectiva", porcSocC >= 25, "⚡ ALERTA ACTIVA EN GRUPO", "#8b5cf6", "#f5f3ff");
+      activarCard("cardDecPsicomotora", "badgeDecPsicomotora", porcPsiC >= 25, "⚡ DETECTADA EN TALLER", "#f97316", "#fff7ed");
+      activarCard("cardDecDominioAlto", "badgeDecDominioAlto", porcCogL >= 75 && porcSocC < 15, "⚡ GRUPO CONSOLIDA DOMINIO", "#10b981", "#f0fdf4");
     }
 
     function cambiarAreaObservacion(area) {
@@ -1308,16 +1765,18 @@
         try {
           localStorage.removeItem("nomina_docente_9no_mep");
           localStorage.removeItem("diagnosticos_mep_9no");
+          localStorage.removeItem("estudiantes_eliminados_docente");
         } catch(e) {}
         
-        // Limpiar también en el servidor para el docente actual
+        // Limpiar también en el servidor para el docente actual y general
         try {
           var rawDoc = localStorage.getItem("docente_activo") || localStorage.getItem("antigravity_docente_sesion");
           var docObj = rawDoc ? JSON.parse(rawDoc) : null;
-          var url = docObj && docObj.idDocente 
-            ? "/api/telemetria/enviar?all=true&docenteId=" + encodeURIComponent(docObj.idDocente) 
-            : "/api/telemetria/enviar?all=true";
-          fetch(url, { method: "DELETE" }).catch(function(){});
+          var url = "/api/telemetria/enviar?all=true";
+          if (docObj && docObj.idDocente) {
+            url += "&docenteId=" + encodeURIComponent(docObj.idDocente);
+          }
+          await fetch(url, { method: "DELETE" });
         } catch(e) {}
 
         renderizarTodo();
@@ -1325,12 +1784,40 @@
       }
     }
 
-    function eliminarEstudianteIndividual(idx) {
+    async function eliminarEstudianteIndividual(idx) {
       if (estadoDocente.estudiantes[idx]) {
         var nom = estadoDocente.estudiantes[idx].nombre;
         if (confirm("¿Deseas eliminar a " + nom + " de la nómina?")) {
           estadoDocente.estudiantes.splice(idx, 1);
           guardarNominaEnStorage();
+
+          // Registrar en lista negra de eliminados para evitar reaparición por sync
+          try {
+            var rawElim = localStorage.getItem("estudiantes_eliminados_docente");
+            var eliminados = rawElim ? JSON.parse(rawElim) : [];
+            if (!eliminados.includes(nom.toLowerCase().trim())) {
+              eliminados.push(nom.toLowerCase().trim());
+              localStorage.setItem("estudiantes_eliminados_docente", JSON.stringify(eliminados));
+            }
+          } catch(e) {}
+
+          // Eliminar de diagnosticos_mep_9no en localStorage
+          try {
+            var rawLoc = localStorage.getItem("diagnosticos_mep_9no");
+            if (rawLoc) {
+              var listLoc = JSON.parse(rawLoc);
+              var listFiltrada = listLoc.filter(function(r) {
+                return (r.estudianteNombre || "").toLowerCase().trim() !== nom.toLowerCase().trim();
+              });
+              localStorage.setItem("diagnosticos_mep_9no", JSON.stringify(listFiltrada));
+            }
+          } catch(e) {}
+
+          // Eliminar en el servidor
+          try {
+            fetch("/api/telemetria/enviar?estudianteNombre=" + encodeURIComponent(nom), { method: "DELETE" }).catch(function(){});
+          } catch(e) {}
+
           renderizarTodo();
         }
       }
@@ -1417,13 +1904,15 @@
 
       var area = estadoDocente.areaActiva || 'psi';
 
-      // 1. GENERAR ENCABEZADOS DE COLUMNAS (A1, B1, C1...)
+      // 1. GENERAR ENCABEZADOS DE COLUMNAS (A1, B1, C1...) CON SOPORTE TÁCTIL PARA CELULAR Y TABLETA
       if (area === 'psi') {
         var thConductas = "";
         var nombresPsiCortos = ["P1. Espacio", "P2. Precisión", "P3. Secuencia", "P4. Pines", "P5. Corrección", "P6. Autonomía"];
         CONDUCTAS_PSICOMOTORAS.forEach(function(cd, j) {
-          thConductas += '<th style="text-align:center; min-width: 105px; font-size: 11px; cursor: pointer;" title="' + cd + ' (Clic para ver conducta completa)">' +
-            '<span style="color:#15803d; font-weight:800; display:block;">' + nombresPsiCortos[j] + '</span>' +
+          thConductas += '<th style="text-align:center; min-width: 105px; font-size: 11px; cursor: pointer; user-select: none;" onclick="mostrarModalDetalleCriterio(\'psi\', ' + j + ')" title="' + cd + ' (Toca para ver detalle del criterio)">' +
+            '<span style="color:#15803d; font-weight:800; display:flex; align-items:center; justify-content:center; gap:3px;">' +
+              nombresPsiCortos[j] + ' <span style="font-size:10px; background:#dcfce7; color:#15803d; border-radius:4px; padding:0 3px; border:1px solid #86efac;">ℹ️</span>' +
+            '</span>' +
             '<span style="font-size:9.5px; color:#64748b; font-weight:normal;">Escala A/B/C</span>' +
           '</th>';
         });
@@ -1439,8 +1928,10 @@
         var thSoc = "";
         var nombresSocCortos = ["S1. Precisión", "S2. Error/Aprender", "S3. Flexibilidad", "S4. Resiliencia", "S5. Comunicación", "S6. Colaboración", "S7. Ética/Uso"];
         CONDUCTAS_SOCIOAFECTIVAS.forEach(function(sc, k) {
-          thSoc += '<th style="text-align:center; min-width: 105px; font-size: 11px; cursor: pointer;" title="' + sc + ' (Clic para ver conducta completa)">' +
-            '<span style="color:#b45309; font-weight:800; display:block;">' + nombresSocCortos[k] + '</span>' +
+          thSoc += '<th style="text-align:center; min-width: 105px; font-size: 11px; cursor: pointer; user-select: none;" onclick="mostrarModalDetalleCriterio(\'soc\', ' + k + ')" title="' + sc + ' (Toca para ver detalle del criterio)">' +
+            '<span style="color:#b45309; font-weight:800; display:flex; align-items:center; justify-content:center; gap:3px;">' +
+              nombresSocCortos[k] + ' <span style="font-size:10px; background:#fef3c7; color:#b45309; border-radius:4px; padding:0 3px; border:1px solid #fde68a;">ℹ️</span>' +
+            '</span>' +
             '<span style="font-size:9.5px; color:#64748b; font-weight:normal;">Escala A/B/C</span>' +
           '</th>';
         });
@@ -1468,8 +1959,10 @@
           "Ind. 10: Reflexión y Seguridad en el Laboratorio"
         ];
         for (var i = 0; i < 10; i++) {
-          thCog += '<th style="text-align:center; min-width: 80px; font-size: 11px;" title="' + titulosCompletos[i] + '">' +
-            '<span style="color:#0369a1; font-weight:800; display:block;">' + nombresCogCortos[i] + '</span>' +
+          thCog += '<th style="text-align:center; min-width: 85px; font-size: 11px; cursor: pointer; user-select: none;" onclick="mostrarModalDetalleCriterio(\'cog\', ' + i + ')" title="' + titulosCompletos[i] + ' (Toca para ver detalle del indicador)">' +
+            '<span style="color:#0369a1; font-weight:800; display:flex; align-items:center; justify-content:center; gap:2px;">' +
+              nombresCogCortos[i] + ' <span style="font-size:9.5px; background:#e0f2fe; color:#0369a1; border-radius:4px; padding:0 2px; border:1px solid #7dd3fc;">ℹ️</span>' +
+            '</span>' +
             '<span style="font-size:9.5px; color:#64748b; font-weight:normal;">L / ED / RA</span>' +
           '</th>';
         }
@@ -1669,20 +2162,137 @@
     }
 
     /* MATRIZ DE SISTEMATIZACIÓN OFICIAL MEP PÁG. 15 (INDICADORES DE APRENDIZAJE DE LOGRO) */
+    var ultimoAnalisisIADocente = null;
+
     function renderizarConsolidadoGrupal() {
       var tbody = document.getElementById("tbodySistematizacionMatriz");
       if (!tbody) return;
       tbody.innerHTML = "";
 
-      if (estadoDocente.estudiantes.length === 0) {
+      var totalEst = estadoDocente.estudiantes.length;
+
+      if (totalEst === 0) {
         tbody.innerHTML = '<tr><td colspan="12" style="text-align: center; padding: 36px 16px; color: #64748b; font-size: 12px; background: #f8fafc;">' +
           '<div style="font-size: 26px; margin-bottom: 6px;">📊</div>' +
           '<strong style="color: #0369a1; display: block; margin-bottom: 4px; font-size: 13px;">Matriz de Sistematización en Blanco</strong>' +
           '<span style="color: #475569; display: block; max-width: 450px; margin: 0 auto;">La sistematización se completará automáticamente conforme los estudiantes resuelvan la prueba o incorpores tu nómina de grupo.</span>' +
         '</td></tr>';
+
+        var rCog = document.getElementById("resumenGrupoCognitivo");
+        var rPsi = document.getElementById("resumenGrupoPsicomotor");
+        var rSoc = document.getElementById("resumenGrupoSocio");
+        if (rCog) rCog.innerText = "Sin datos registrados actualmente.";
+        if (rPsi) rPsi.innerText = "Sin datos registrados actualmente.";
+        if (rSoc) rSoc.innerText = "Sin datos registrados actualmente.";
         return;
       }
 
+      // 1. CÁLCULO ESTADÍSTICO REACTIVO REAL (3 DIMENSIONES)
+      var totalCogL = 0, totalCogED = 0, totalCogRA = 0;
+      var totalPsiA = 0, totalPsiB = 0, totalPsiC = 0;
+      var totalSocA = 0, totalSocB = 0, totalSocC = 0;
+
+      var conteoPorIndCog = Array(10).fill(0); // conteo de RA
+      var conteoPorCondPsi = Array(6).fill(0); // conteo de C
+      var conteoPorCondSoc = Array(7).fill(0); // conteo de C
+
+      estadoDocente.estudiantes.forEach(function(est) {
+        var cog = est.cog || Array(10).fill("ED");
+        var psi = est.psi || Array(6).fill("A");
+        var soc = est.soc || Array(7).fill("A");
+
+        cog.forEach(function(val, cIdx) {
+          if (val === "L") totalCogL++;
+          else if (val === "RA") { totalCogRA++; conteoPorIndCog[cIdx]++; }
+          else totalCogED++;
+        });
+
+        psi.forEach(function(val, pIdx) {
+          if (val === "A") totalPsiA++;
+          else if (val === "C") { totalPsiC++; conteoPorCondPsi[pIdx]++; }
+          else totalPsiB++;
+        });
+
+        soc.forEach(function(val, sIdx) {
+          if (val === "A") totalSocA++;
+          else if (val === "C") { totalSocC++; conteoPorCondSoc[sIdx]++; }
+          else totalSocB++;
+        });
+      });
+
+      var totalItemsCog = totalEst * 10;
+      var totalItemsPsi = totalEst * 6;
+      var totalItemsSoc = totalEst * 7;
+
+      var porcCogL = Math.round((totalCogL / totalItemsCog) * 100) || 0;
+      var porcCogRA = Math.round((totalCogRA / totalItemsCog) * 100) || 0;
+      var porcPsiA = Math.round((totalPsiA / totalItemsPsi) * 100) || 0;
+      var porcPsiC = Math.round((totalPsiC / totalItemsPsi) * 100) || 0;
+      var porcSocA = Math.round((totalSocA / totalItemsSoc) * 100) || 0;
+      var porcSocC = Math.round((totalSocC / totalItemsSoc) * 100) || 0;
+
+      var titulosCortosCog = ["Ind 1 (MCU)", "Ind 2 (Sensor/Actuador)", "Ind 3 (E-P-S)", "Ind 4 (Fuente 5V)", "Ind 5 (Conv. E)", "Ind 6 (Conductores)", "Ind 7 (Circuito)", "Ind 8 (Ley de Ohm)", "Ind 9 (Simulación 2D)", "Ind 10 (Reflexión)"];
+      var indDebiles = [];
+      conteoPorIndCog.forEach(function(cnt, i) { if (cnt > 0) indDebiles.push(titulosCortosCog[i]); });
+
+      var titulosCortosSoc = ["S1 (Precisión)", "S2 (Aprender del Error)", "S3 (Flexibilidad)", "S4 (Resiliencia/Calma)", "S5 (Comunicación)", "S6 (Colaboración)", "S7 (Cuidado/Ética)"];
+      var socDebiles = [];
+      conteoPorCondSoc.forEach(function(cnt, i) { if (cnt > 0) socDebiles.push(titulosCortosSoc[i]); });
+
+      var titulosCortosPsi = ["P1 (Espacio)", "P2 (Precisión)", "P3 (Secuencia)", "P4 (Pines)", "P5 (Corrección)", "P6 (Autonomía)"];
+      var psiDebiles = [];
+      conteoPorCondPsi.forEach(function(cnt, i) { if (cnt > 0) psiDebiles.push(titulosCortosPsi[i]); });
+
+      // Inyección en las 3 tarjetas de síntesis grupal
+      var resCogEl = document.getElementById("resumenGrupoCognitivo");
+      var resPsiEl = document.getElementById("resumenGrupoPsicomotor");
+      var resSocEl = document.getElementById("resumenGrupoSocio");
+
+      // Inyección en las 3 tarjetas de síntesis grupal con formato por puntos optimizado para celular
+      var resCogEl = document.getElementById("resumenGrupoCognitivo");
+      var resPsiEl = document.getElementById("resumenGrupoPsicomotor");
+      var resSocEl = document.getElementById("resumenGrupoSocio");
+
+      if (resCogEl) {
+        var estadoCogText = porcCogL >= 70 ? "Dominio Consolidado (" + porcCogL + "% Logrado)" : (porcCogRA >= 30 ? "Alerta Prioritaria (" + porcCogRA + "% Requiere Acompañamiento)" : "En Desarrollo (" + porcCogL + "% L / " + porcCogRA + "% RA)");
+        var estadoCogColor = porcCogL >= 70 ? "#15803d" : (porcCogRA >= 30 ? "#b91c1c" : "#b45309");
+        var brechaCog = indDebiles.length > 0 ? indDebiles.slice(0, 3).join(", ") : "Ninguna brecha crítica detectada";
+        var accionCog = porcCogRA >= 30 ? "Taller guiado de polaridad 5V/GND (Ind 4), circuito cerrado (Ind 7) y microcontrolador (Ind 1)." : "Reforzar algoritmos y relación causa-efecto con diagramas de bloques.";
+
+        resCogEl.innerHTML = '<ul style="margin: 0; padding-left: 16px; line-height: 1.5; font-size: 11px; display: flex; flex-direction: column; gap: 3px;">' +
+          '<li><strong>Desempeño Grupal:</strong> <span style="color:' + estadoCogColor + '; font-weight:700;">' + estadoCogText + '</span>.</li>' +
+          '<li><strong>Indicadores a Reforzar:</strong> ' + brechaCog + '.</li>' +
+          '<li><strong>Acciones en Aula:</strong> ' + accionCog + '</li>' +
+        '</ul>';
+      }
+
+      if (resPsiEl) {
+        var estadoPsiText = porcPsiA >= 70 ? "Destreza Autónoma (" + porcPsiA + "% Nivel A)" : (porcPsiC >= 30 ? "Requiere Mediación (" + porcPsiC + "% Nivel C)" : "Ejecución con Apoyo (" + porcPsiA + "% A / " + porcPsiC + "% C)");
+        var estadoPsiColor = porcPsiA >= 70 ? "#15803d" : (porcPsiC >= 30 ? "#b91c1c" : "#b45309");
+        var brechaPsi = psiDebiles.length > 0 ? psiDebiles.slice(0, 2).join(", ") : "Montaje fluido y ordenado";
+        var accionPsi = porcPsiC >= 30 ? "Tarjetas visuales de correspondencia para pines 5V/GND y ensamble guiado paso a paso." : "Estimular autonomía y ensamble en protoboard físico.";
+
+        resPsiEl.innerHTML = '<ul style="margin: 0; padding-left: 16px; line-height: 1.5; font-size: 11px; display: flex; flex-direction: column; gap: 3px;">' +
+          '<li><strong>Desempeño Psicomotor:</strong> <span style="color:' + estadoPsiColor + '; font-weight:700;">' + estadoPsiText + '</span>.</li>' +
+          '<li><strong>Conductas de Taller:</strong> ' + brechaPsi + '.</li>' +
+          '<li><strong>Acciones en Taller:</strong> ' + accionPsi + '</li>' +
+        '</ul>';
+      }
+
+      if (resSocEl) {
+        var estadoSocText = porcSocA >= 70 ? "Clima Positivo y Persistencia (" + porcSocA + "% Nivel A)" : (porcSocC >= 30 ? "Alerta Socioafectiva Prioritaria (" + porcSocC + "% Nivel C)" : "Actitud en Consolidación (" + porcSocA + "% A / " + porcSocC + "% C)");
+        var estadoSocColor = porcSocA >= 70 ? "#15803d" : (porcSocC >= 30 ? "#b91c1c" : "#b45309");
+        var brechaSoc = socDebiles.length > 0 ? socDebiles.slice(0, 3).join(", ") : "Excelente gestión del error y colaboración";
+        var accionSoc = porcSocC >= 30 ? "Desestigmatizar el error técnico («el error es un dato valioso de aprendizaje»), dinámicas de autorregulación y modelado docente empático." : "Fomentar trabajo colaborativo en parejas mixtas (Driver/Navigator).";
+
+        resSocEl.innerHTML = '<ul style="margin: 0; padding-left: 16px; line-height: 1.5; font-size: 11px; display: flex; flex-direction: column; gap: 3px;">' +
+          '<li><strong>Desempeño Socioafectivo:</strong> <span style="color:' + estadoSocColor + '; font-weight:700;">' + estadoSocText + '</span>.</li>' +
+          '<li><strong>Conductas Observadas:</strong> ' + brechaSoc + '.</li>' +
+          '<li><strong>Estrategia Socioemocional:</strong> ' + accionSoc + '</li>' +
+        '</ul>';
+      }
+
+      // 2. GENERACIÓN DE FILAS INDIVIDUALES CON ANÁLISIS PERSONALIZADO
       estadoDocente.estudiantes.forEach(function(est, idx) {
         var tr = document.createElement("tr");
 
@@ -1693,7 +2303,36 @@
           celdasAp += '<td style="text-align:center; padding: 6px 4px;"><span class="badge-status" style="' + badgeClass + ' font-size:11px; padding: 3px 6px;">' + val + '</span></td>';
         }
 
-        var descDefault = est.descripcionDesempeno || (est.evaluado ? "Identifica conceptos de microcontroladores y sensores con autonomía. Acompañar en conexionado y polaridad de pines." : "Pendiente de diagnóstico.");
+        // Generar texto personalizado si es el genérico inicial
+        var descDefault = est.descripcionDesempeno || "";
+        var esGenerico = !descDefault || descDefault.startsWith("Identifica conceptos de microcontroladores y sensores con autonomía") || descDefault.startsWith("Completó diagnóstico web («Aula Inteligente»)") || descDefault.startsWith("Diagnóstico inicial");
+
+        if (esGenerico) {
+          var numL = (est.cog || []).filter(function(x){ return x === "L"; }).length;
+          var numRA = (est.cog || []).filter(function(x){ return x === "RA"; }).length;
+          var numSA = (est.soc || []).filter(function(x){ return x === "A"; }).length;
+          var numSC = (est.soc || []).filter(function(x){ return x === "C"; }).length;
+          var numPA = (est.psi || []).filter(function(x){ return x === "A"; }).length;
+          var numPC = (est.psi || []).filter(function(x){ return x === "C"; }).length;
+
+          var parts = [];
+          if (numL >= 8) parts.push("Dominio cognoscitivo consolidado (" + numL + "/10 Logrado)");
+          else if (numRA >= 4) parts.push("Requiere acompañamiento conceptual (" + numRA + "/10 RA)");
+          else parts.push("Comprensión cognoscitiva en proceso (" + numL + "/10 Logrado)");
+
+          if (numPA >= 5) parts.push("destreza psicomotora autónoma (" + numPA + "/6 Nivel A)");
+          else if (numPC >= 2) parts.push("requiere apoyo en conexionado de pines y polaridad (" + numPC + "/6 Nivel C)");
+
+          if (numSA >= 6) parts.push("excelente perseverancia y colaboración (" + numSA + "/7 Nivel A)");
+          else if (numSC >= 2) parts.push("apoyo socioemocional ante el error y tolerancia a la frustración (" + numSC + "/7 Nivel C)");
+
+          var accionPlan = (numSC >= 2 || numRA >= 4)
+            ? "Andamiaje guiado, modelado paso a paso y mediación socioemocional empática."
+            : "Reforzar con retos de ampliación y trabajo colaborativo en parejas.";
+
+          descDefault = parts.join("; ") + ". Plan: " + accionPlan;
+          est.descripcionDesempeno = descDefault;
+        }
 
         tr.innerHTML = '<td style="font-weight:700; color:#0f172a; position:sticky; left:0; background:#ffffff; z-index:5; border-right: 2px solid #e2e8f0;">' + (idx+1) + '. ' + est.nombre + '<span style="display:block; font-size:10.5px; color:#64748b; font-weight:normal;">' + est.seccion + (est.horaEntrega ? ' • ' + est.horaEntrega : '') + '</span></td>' +
           celdasAp +
@@ -1701,6 +2340,197 @@
 
         tbody.appendChild(tr);
       });
+    }
+
+    /* ========================================================================
+       INTEGRACIÓN DEL ANÁLISIS PEDAGÓGICO INTEGRAL CON INTELIGENCIA ARTIFICIAL
+       ======================================================================== */
+    async function abrirModalAnalisisIA() {
+      var modal = document.getElementById("modalAnalisisIADocente");
+      if (!modal) return;
+
+      modal.style.display = "flex";
+
+      // Ejecutar análisis si no se ha hecho o hay cambios
+      await ejecutarAnalisisIADocente();
+    }
+
+    function cerrarModalAnalisisIA() {
+      var modal = document.getElementById("modalAnalisisIADocente");
+      if (modal) modal.style.display = "none";
+    }
+
+    async function ejecutarAnalisisIADocente() {
+      var loading = document.getElementById("iaLoadingContainer");
+      var results = document.getElementById("iaResultadosContainer");
+      if (loading) loading.style.display = "block";
+      if (results) results.style.display = "none";
+
+      var filtroSec = document.getElementById("filtroSeccionObs") ? document.getElementById("filtroSeccionObs").value : "Todas las Secciones";
+      var rawDoc = localStorage.getItem("docente_activo") || localStorage.getItem("antigravity_docente_sesion");
+      var docNombre = "Docente Evaluador";
+      try {
+        var d = rawDoc ? JSON.parse(rawDoc) : null;
+        if (d && d.nombreCompleto) docNombre = d.nombreCompleto;
+      } catch(e) {}
+
+      var payload = {
+        estudiantes: estadoDocente.estudiantes,
+        seccion: filtroSec,
+        docente: docNombre,
+        indicador: "Diagnóstico 9° Módulo 1 («Aula Inteligente»)"
+      };
+
+      try {
+        var res = await fetch("/api/ia/analisis-docente", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          var dataRes = await res.json();
+          if (dataRes.data) {
+            ultimoAnalisisIADocente = dataRes.data;
+            renderizarResultadosIA(dataRes.data, dataRes.meta);
+          }
+        }
+      } catch(err) {
+        console.warn("Fallo fetch IA, generando análisis local:", err);
+      } finally {
+        if (loading) loading.style.display = "none";
+        if (results) results.style.display = "block";
+      }
+    }
+
+    function renderizarResultadosIA(data, meta) {
+      if (!data) return;
+
+      var subEl = document.getElementById("subtituloIaAnalisis");
+      if (subEl) {
+        subEl.innerText = "Análisis generado para " + estadoDocente.estudiantes.length + " estudiantes con fecha: " + new Date().toLocaleTimeString();
+      }
+
+      var badgeProv = document.getElementById("badgeIaProveedor");
+      if (badgeProv && meta) {
+        badgeProv.innerText = "🤖 " + (meta.modelUsed || meta.providerUsed || "Cascada Multi-Proveedor IA");
+      }
+
+      var resEj = document.getElementById("iaResumenEjecutivo");
+      if (resEj) resEj.innerText = data.resumenEjecutivo || "Análisis completado.";
+
+      var sCog = document.getElementById("iaSintesisCog");
+      if (sCog) sCog.innerText = data.sintesisCognitiva || "-";
+
+      var sPsi = document.getElementById("iaSintesisPsi");
+      if (sPsi) sPsi.innerText = data.sintesisPsicomotora || "-";
+
+      var sSoc = document.getElementById("iaSintesisSoc");
+      if (sSoc) sSoc.innerText = data.sintesisSocioafectiva || "-";
+
+      var dDUA = document.getElementById("iaOrientacionDUA");
+      if (dDUA) dDUA.innerText = data.orientacionDUA || "-";
+
+      var rezCont = document.getElementById("iaListaRezagados");
+      if (rezCont) {
+        rezCont.innerHTML = "";
+        var lista = data.estudiantesAcompaniamiento || [];
+        if (lista.length === 0) {
+          rezCont.innerHTML = '<div style="font-size:11.5px; color:#15803d; background:#dcfce7; padding:8px 10px; border-radius:6px; font-weight:600;">✅ Todo el grupo se encuentra en niveles de desempeño intermedio o avanzado sin rezagos críticos.</div>';
+        } else {
+          lista.forEach(function(est) {
+            var div = document.createElement("div");
+            div.style.background = "#ffffff";
+            div.style.border = "1px solid #fca5a5";
+            div.style.borderRadius = "8px";
+            div.style.padding = "8px 10px";
+            div.style.fontSize = "11px";
+            div.innerHTML = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">' +
+              '<strong style="color:#9f1239; font-size:11.5px;">👤 ' + est.nombre + '</strong>' +
+              '<span style="background:#fee2e2; color:#b91c1c; border-radius:4px; padding:1px 6px; font-weight:700; font-size:10px;">Atención Prioritaria</span>' +
+            '</div>' +
+            '<div style="color:#475569; margin-bottom:3px;"><strong>Dificultad detectada:</strong> ' + est.motivo + '</div>' +
+            '<div style="color:#0f172a; font-weight:600;"><strong>Plan de Acompañamiento:</strong> ' + est.accionSugerida + '</div>';
+            rezCont.appendChild(div);
+          });
+        }
+      }
+    }
+
+    function aplicarAnalisisIASistematizacion() {
+      if (!ultimoAnalisisIADocente) {
+        alert("Primero ejecuta el análisis con IA.");
+        return;
+      }
+
+      // 1. Aplicar a las 3 cajas de síntesis con formato limpio para celular
+      var rCog = document.getElementById("resumenGrupoCognitivo");
+      var rPsi = document.getElementById("resumenGrupoPsicomotor");
+      var rSoc = document.getElementById("resumenGrupoSocio");
+
+      if (rCog) rCog.innerHTML = '<ul style="margin:0; padding-left:16px; line-height:1.5; font-size:11px; display:flex; flex-direction:column; gap:3px;">' +
+        '<li><strong style="color:#0369a1;">✨ Dimensión Cognitiva (IA):</strong> ' + ultimoAnalisisIADocente.sintesisCognitiva + '</li>' +
+      '</ul>';
+      if (rPsi) rPsi.innerHTML = '<ul style="margin:0; padding-left:16px; line-height:1.5; font-size:11px; display:flex; flex-direction:column; gap:3px;">' +
+        '<li><strong style="color:#15803d;">✨ Dimensión Psicomotora (IA):</strong> ' + ultimoAnalisisIADocente.sintesisPsicomotora + '</li>' +
+      '</ul>';
+      if (rSoc) rSoc.innerHTML = '<ul style="margin:0; padding-left:16px; line-height:1.5; font-size:11px; display:flex; flex-direction:column; gap:3px;">' +
+        '<li><strong style="color:#b45309;">✨ Dimensión Socioafectiva (IA):</strong> ' + ultimoAnalisisIADocente.sintesisSocioafectiva + '</li>' +
+      '</ul>';
+
+      var badgeSint = document.getElementById("badgeEstadoSintesis");
+      if (badgeSint) {
+        badgeSint.innerText = "✨ Generado por Inteligencia Artificial";
+        badgeSint.style.background = "#ede9fe";
+        badgeSint.style.color = "#6d28d9";
+        badgeSint.style.borderColor = "#c4b5fd";
+      }
+
+      // 2. Si la IA trajo descripciones individuales personalizadas, aplicarlas
+      if (ultimoAnalisisIADocente.descripcionesIndividuales) {
+        for (var nom in ultimoAnalisisIADocente.descripcionesIndividuales) {
+          var match = estadoDocente.estudiantes.find(function(e){ return e.nombre.toLowerCase().trim() === nom.toLowerCase().trim(); });
+          if (match) {
+            match.descripcionDesempeno = ultimoAnalisisIADocente.descripcionesIndividuales[nom];
+          }
+        }
+      }
+
+      guardarNominaEnStorage();
+      renderizarConsolidadoGrupal();
+      cerrarModalAnalisisIA();
+      cambiarVista(3);
+
+      alert("🎉 ¡El análisis pedagógico generado por la IA ha sido incorporado exitosamente en tu Instrumento de Sistematización Oficial!");
+    }
+
+    function copiarInformeIAPedagogico() {
+      if (!ultimoAnalisisIADocente) {
+        alert("No hay informe de IA disponible para copiar.");
+        return;
+      }
+
+      var texto = "=== INFORME PEDAGÓGICO DE DIAGNÓSTICO INTEGRAL 360° (MEP) ===\n\n" +
+        "1. RESUMEN EJECUTIVO:\n" + ultimoAnalisisIADocente.resumenEjecutivo + "\n\n" +
+        "2. DIMENSIÓN COGNITIVA:\n" + ultimoAnalisisIADocente.sintesisCognitiva + "\n\n" +
+        "3. DIMENSIÓN PSICOMOTORA:\n" + ultimoAnalisisIADocente.sintesisPsicomotora + "\n\n" +
+        "4. DIMENSIÓN SOCIOAFECTIVA:\n" + ultimoAnalisisIADocente.sintesisSocioafectiva + "\n\n" +
+        "5. ORIENTACIONES DUA PARA EL PLANEAMIENTO DIDÁCTICO:\n" + ultimoAnalisisIADocente.orientacionDUA + "\n\n" +
+        "6. ESTUDIANTES CON ACOMPAÑAMIENTO PRIORITARIO:\n";
+
+      (ultimoAnalisisIADocente.estudiantesAcompaniamiento || []).forEach(function(e) {
+        texto += "- " + e.nombre + ": " + e.motivo + " -> Plan: " + e.accionSugerida + "\n";
+      });
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(texto).then(function() {
+          alert("📋 ¡Informe pedagógico copiado al portapapeles! Listo para pegar en tu planeamiento didáctico oficial.");
+        }).catch(function() {
+          prompt("Copia el texto del informe:", texto);
+        });
+      } else {
+        prompt("Copia el texto del informe:", texto);
+      }
     }
 
     function actualizarDescripcionEstudiante(idx, texto) {

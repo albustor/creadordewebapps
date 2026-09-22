@@ -208,7 +208,7 @@ export default function DashboardAnaliticoPage() {
               </span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">
-              Dashboard Analítico & Telemetría
+              Dashboard analítico y telemetría
             </h1>
             <p className="text-xs sm:text-sm text-slate-500">
               Monitoreo en tiempo real del progreso grupal e individual, analítica y recomendaciones pedagógicas. Optimizado para computadoras de laboratorios, PCs y portátiles.
@@ -263,7 +263,7 @@ export default function DashboardAnaliticoPage() {
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
                 <h3 className="font-black text-lg text-slate-900">
-                  Registros Individuales de Telemetría ({telemetriaFiltrada.length})
+                  Registros individuales de telemetría ({telemetriaFiltrada.length})
                 </h3>
               </div>
               <p className="text-xs text-slate-500 mt-0.5">
@@ -310,8 +310,8 @@ export default function DashboardAnaliticoPage() {
               >
                 <option value="Todos">Todos los niveles</option>
                 <option value="Consolidado">🟢 Consolidado (&ge;{configuracion.umbralAvanzadoMin}%)</option>
-                <option value="En Desarrollo">🟡 En Desarrollo ({configuracion.umbralInicialMax + 1}-{configuracion.umbralAvanzadoMin - 1}%)</option>
-                <option value="Acompañamiento">🔴 Requiere Acompañamiento (&le;{configuracion.umbralInicialMax}%)</option>
+                <option value="En Desarrollo">🟡 En desarrollo ({configuracion.umbralInicialMax + 1}-{configuracion.umbralAvanzadoMin - 1}%)</option>
+                <option value="Acompañamiento">🔴 Requiere acompañamiento (&le;{configuracion.umbralInicialMax}%)</option>
               </select>
 
               {/* Botones de Gestión y Limpieza de Datos */}
@@ -347,30 +347,30 @@ export default function DashboardAnaliticoPage() {
           {/* Tabla de Registros */}
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs text-slate-700">
-              <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider text-[11px]">
+              <thead className="bg-[#FAF8F5] border-b border-stone-200 text-stone-600 font-bold uppercase tracking-wider text-[11px]">
                 <tr>
                   <th className="py-3.5 px-4">Estudiante</th>
-                  <th className="py-3.5 px-4">Sección / Grupo</th>
-                  <th className="py-3.5 px-4">Puntaje</th>
-                  <th className="py-3.5 px-4">Nivel de Logro</th>
+                  <th className="py-3.5 px-4">Sección / grupo</th>
+                  <th className="py-3.5 px-4">Saberes demostrados</th>
+                  <th className="py-3.5 px-4">Nivel formativo de logro</th>
                   <th className="py-3.5 px-4">Tiempo</th>
                   <th className="py-3.5 px-4">Integridad</th>
                   <th className="py-3.5 px-4 text-right">Acciones</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 font-medium">
+              <tbody className="divide-y divide-stone-100 font-medium">
                 {telemetriaFiltrada.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="py-12 text-center text-slate-400">
+                    <td colSpan={7} className="py-12 text-center text-stone-400">
                       <div className="max-w-sm mx-auto space-y-2">
-                        <Broom size={32} className="mx-auto text-slate-300" weight="duotone" />
+                        <Broom size={32} className="mx-auto text-stone-400" weight="duotone" />
                         <div className="font-bold text-slate-700">No hay registros de telemetría</div>
-                        <p className="text-xs text-slate-500">
+                        <p className="text-xs text-stone-500">
                           Los resultados aparecerán automáticamente cuando los estudiantes completen la evaluación diagnóstica en el laboratorio.
                         </p>
                         <button
                           onClick={restablecerDatosDemostracion}
-                          className="mt-2 inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-300 rounded-lg text-xs font-bold hover:bg-emerald-100"
+                          className="mt-2 inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-50 text-emerald-800 border border-emerald-300 rounded-lg text-xs font-bold hover:bg-emerald-100"
                         >
                           <ArrowsClockwise size={14} />
                           <span>Cargar datos de demostración</span>
@@ -382,41 +382,47 @@ export default function DashboardAnaliticoPage() {
                   telemetriaFiltrada.map((item, idx) => {
                     const puntajeFinal = item.porcentaje !== undefined ? item.porcentaje : item.puntaje;
                     const nivelCalculado = obtenerNivelDinamico(puntajeFinal);
+                    const aciertosCount = item.aciertos !== undefined ? item.aciertos : Math.round((puntajeFinal / 100) * 10);
                     const esAvanzado = nivelCalculado === "Consolidado" || item.nivelLogro === "Avanzado";
                     const esInicial = nivelCalculado === "Requiere Acompañamiento" || item.nivelLogro === "Inicial";
 
                     return (
-                      <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
+                      <tr key={idx} className="hover:bg-stone-50/80 transition-colors">
                         <td className="py-3 px-4 font-bold text-slate-900">
                           <div className="flex items-center gap-2">
-                            <div className="w-7 h-7 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-[11px]">
+                            <div className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center justify-center font-bold text-[11px]">
                               {item.estudianteNombre.charAt(0).toUpperCase()}
                             </div>
                             <span>{item.estudianteNombre}</span>
                           </div>
                         </td>
                         <td className="py-3 px-4 font-semibold text-slate-600">
-                          <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-xs">
+                          <span className="px-2 py-0.5 rounded-md bg-stone-100 text-stone-700 text-xs border border-stone-200">
                             {item.seccionOGrupo || "Sección 9-1"}
                           </span>
                         </td>
                         <td className="py-3 px-4">
-                          <span className="font-mono font-bold text-slate-900 text-sm">
-                            {puntajeFinal}%
-                          </span>
+                          <div className="flex flex-col">
+                            <span className="font-mono font-black text-slate-900 text-sm">
+                              {aciertosCount}/10 saberes
+                            </span>
+                            <span className="text-[10px] text-stone-500 font-medium">
+                              {aciertosCount} de 10 reactivos
+                            </span>
+                          </div>
                         </td>
                         <td className="py-3 px-4">
                           <span
-                            className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold ${
+                            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${
                               esAvanzado
-                                ? "bg-emerald-100 text-emerald-800"
+                                ? "bg-emerald-50 text-emerald-900 border-emerald-200"
                                 : esInicial
-                                ? "bg-rose-100 text-rose-800"
-                                : "bg-amber-100 text-amber-800"
+                                ? "bg-rose-50 text-rose-900 border-rose-200"
+                                : "bg-amber-50 text-amber-900 border-amber-200"
                             }`}
                           >
                             <span
-                              className={`w-1.5 h-1.5 rounded-full ${
+                              className={`w-2 h-2 rounded-full ${
                                 esAvanzado
                                   ? "bg-emerald-600"
                                   : esInicial
@@ -490,7 +496,7 @@ export default function DashboardAnaliticoPage() {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4 animate-fadeIn">
             <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-md p-6 space-y-4">
               <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                <h3 className="font-black text-slate-900 text-sm">Editar Registro de Telemetría</h3>
+                <h3 className="font-black text-slate-900 text-sm">Editar registro de telemetría</h3>
                 <button
                   onClick={() => setRegistroEditando(null)}
                   className="text-slate-400 hover:text-slate-700"
