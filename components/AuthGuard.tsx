@@ -96,7 +96,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
   // Handler for Demo Credentials fill
   const rellenarDemo = () => {
     setLoginCredencial("alberto.bustos.ortega@mep.go.cr");
-    setLoginPin("1726");
+    setLoginPin("2617");
     setLoginMensaje(null);
   };
 
@@ -329,7 +329,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                     className="text-[11px] font-bold text-slate-500 hover:text-emerald-800 hover:underline flex items-center gap-1.5"
                   >
                     <Key size={14} className="text-emerald-700" />
-                    <span>Demo (Alberto Bustos / PIN 1726)</span>
+                    <span>Demo (Alberto Bustos / PIN 2617)</span>
                   </button>
 
                   <button

@@ -62,8 +62,8 @@ export default function RegistroDocentePage() {
   const [correo, setCorreo] = useState(docente?.correoInstitucional || "");
   const [cedula, setCedula] = useState(docente?.cedula || "");
   const [telefono, setTelefono] = useState(docente?.telefono || "");
-  const [pin, setPin] = useState(docente?.pin || "1726");
-  const [pinConfirmar, setPinConfirmar] = useState(docente?.pin || "1726");
+  const [pin, setPin] = useState(docente?.pin || "2617");
+  const [pinConfirmar, setPinConfirmar] = useState(docente?.pin || "2617");
   const [mostrarPin, setMostrarPin] = useState(false);
 
   // DRE y Ubicación
@@ -106,8 +106,8 @@ export default function RegistroDocentePage() {
       setCorreo(docente.correoInstitucional || "");
       setCedula(docente.cedula || "");
       setTelefono(docente.telefono || "");
-      setPin(docente.pin || "1726");
-      setPinConfirmar(docente.pin || "1726");
+      setPin(docente.pin || "2617");
+      setPinConfirmar(docente.pin || "2617");
       const dreNorm = normalizarDRECodigo(docente.dreCodigo);
       setDreCodigo(dreNorm);
       setCircuito(docente.circuito || "Circuito 01");
@@ -157,8 +157,8 @@ export default function RegistroDocentePage() {
     setCorreo("alberto.bustos.ortega@mep.go.cr");
     setCedula("5-0305-0179");
     setTelefono("+506 8888-9999");
-    setPin("1726");
-    setPinConfirmar("1726");
+    setPin("2617");
+    setPinConfirmar("2617");
     setDreCodigo("DRE-NACIONAL");
     setCircuito("Nivel Nacional / Ámbito General");
     setCodigoPresupuestario("FT-NACIONAL-2026");
@@ -970,7 +970,7 @@ export default function RegistroDocentePage() {
             <button
               onClick={() => {
                 setLoginCredencial("alberto.bustos.ortega@mep.go.cr");
-                setLoginPin("1726");
+                setLoginPin("2617");
               }}
               className="text-[11px] font-bold text-slate-500 hover:text-slate-800 underline"
             >

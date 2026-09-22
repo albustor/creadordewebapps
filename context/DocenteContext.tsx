@@ -76,8 +76,8 @@ export const DOCENTE_DEFAULT: DocenteData = {
   idDocente: "ASESOR-FT-7729",
   nombreCompleto: "Alberto Bustos Ortega",
   correoInstitucional: "alberto.bustos.ortega@mep.go.cr",
-  pin: "1726",
-  contrasena: "1726",
+  pin: "2617",
+  contrasena: "2617",
   cedula: "5-0305-0179",
   telefono: "+506 8888-9999",
   dreCodigo: "DRE-NACIONAL",
@@ -526,7 +526,11 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
         credencialLimpia === "503050179" ||
         credencialLimpia === "1-1122-3344" ||
         credencialLimpia === "111223344") &&
-      (pinOPassLimpia === "EdcRfvTgb1726**" || pinOPassLimpia === "1726" || pinOPassLimpia === "1122")
+      (pinOPassLimpia === "2617" ||
+        pinOPassLimpia === "1726" ||
+        pinOPassLimpia === "EdcRfvTgb2617**" ||
+        pinOPassLimpia === "EdcRfvTgb1726**" ||
+        pinOPassLimpia === "1122")
     ) {
       limpiarFallos();
       guardarDocente(DOCENTE_DEFAULT);
