@@ -549,17 +549,17 @@
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px;">
         <button type="button" id="tabAreaPsi" class="view-tab activa" onclick="cambiarAreaObservacion('psi')" style="padding: 12px 10px; font-size: 12px; border-color: #86efac; color: #15803d; background: #dcfce7;">
           <span style="font-size: 13px; font-weight: 900;">🖐️ 1. ÁREA PSICOMOTORA</span>
-          <span style="font-size: 10px; color: #166534; font-weight: normal;">6 Conductas Reto «Conecta el Prototipo»</span>
+          <span style="font-size: 10px; color: #166534; font-weight: normal;">6 Saberes Procedimentales (Prácticas Taller)</span>
         </button>
 
         <button type="button" id="tabAreaSoc" class="view-tab" onclick="cambiarAreaObservacion('soc')" style="padding: 12px 10px; font-size: 12px; border-color: #fde68a; color: #b45309; background: #ffffff;">
           <span style="font-size: 13px; font-weight: 900;">❤️ 2. ÁREA SOCIOAFECTIVA</span>
-          <span style="font-size: 10px; color: #92400e; font-weight: normal;">7 Conductas Actitudinales (Ser y Convivir)</span>
+          <span style="font-size: 10px; color: #92400e; font-weight: normal;">4 Saberes Actitudinales (Actitudes MEP)</span>
         </button>
 
         <button type="button" id="tabAreaCog" class="view-tab" onclick="cambiarAreaObservacion('cog')" style="padding: 12px 10px; font-size: 12px; border-color: #7dd3fc; color: #0369a1; background: #ffffff;">
           <span style="font-size: 13px; font-weight: 900;">🧠 3. ÁREA COGNITIVA</span>
-          <span style="font-size: 10px; color: #0284c7; font-weight: normal;">10 Indicadores de Logro (Sincronizado WebApp)</span>
+          <span style="font-size: 10px; color: #0284c7; font-weight: normal;">10 Saberes Conceptuales (Indicadores WebApp)</span>
         </button>
       </div>
 
@@ -625,7 +625,7 @@
           <!-- 1. Área Cognitiva (L / ED / RA) -->
           <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px;">
             <strong style="color: #0369a1; display: block; margin-bottom: 4px; font-size: 11px;">
-              🧠 Área Cognitiva (Indicadores 1 al 10):
+              🧠 Área Cognitiva (Saberes Conceptuales):
             </strong>
             <div style="display: flex; flex-direction: column; gap: 4px;">
               <div style="display: flex; align-items: center; gap: 6px;">
@@ -675,48 +675,48 @@
 
           <details style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; cursor: pointer;">
             <summary style="font-weight: 800; color: #0284c7; outline: none;">
-              📖 Toca aquí para ver el Glosario y Definición Completa de los 23 Criterios MEP
+              📖 Toca aquí para ver el Glosario y Alineación Curricular Oficial MEP (20 Saberes y Criterios)
             </summary>
             
             <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 10px;">
-              <!-- 1. Psicomotora -->
+              <!-- 1. Psicomotora / Procedimental -->
               <div style="background: #ffffff; border: 1px solid #86efac; border-radius: 8px; padding: 10px;">
-                <strong style="color: #15803d; display: block; margin-bottom: 6px; font-size: 11.5px;">🖐️ 1. Área Psicomotora (6 Criterios de Prototipado y Taller):</strong>
+                <strong style="color: #15803d; display: block; margin-bottom: 6px; font-size: 11.5px;">🖐️ 1. Área Psicomotora (Saberes Procedimentales - 6 Prácticas del Pensador Computacional):</strong>
                 <ul style="padding-left: 18px; line-height: 1.5; color: #334155; font-size: 10.5px;">
-                  <li><strong>P1. Polaridad Eléctrica y Seguridad:</strong> Conexión correcta de VCC (5V) y GND sin generar cortocircuito en sensor y actuador.</li>
-                  <li><strong>P2. Cableado de Señales de Entrada (LDR y NTC):</strong> Conexión precisa de los pines de señal de los sensores a las entradas analógicas (A0) del microcontrolador.</li>
-                  <li><strong>P3. Cableado de Señales de Salida (LED y Ventilador DC):</strong> Conexión de los terminales de control de los actuadores a pines digitales de salida (D9 / D0-D7).</li>
-                  <li><strong>P4. Diagnóstico y Detección de Fallas Físicas (Reto 2):</strong> Identificación del pin erróneo (señal de ventilador en entrada A3 analógica en vez de salida digital).</li>
-                  <li><strong>P5. Corrección Física y Reconfiguración de Circuito:</strong> Desconexión y reconexión guiada en el simulador hasta lograr el funcionamiento del ventilador ante el aumento térmico.</li>
-                  <li><strong>P6. Validación Funcional con Variables Físicas:</strong> Uso de los controles de prueba (Luxómetro para LDR y Termómetro para NTC) para verificar los umbrales de activación de los prototipos.</li>
+                  <li><strong>P1. Polaridad y Seguridad Eléctrica (Manejo Ético y Seguro / Modulariza):</strong> Conexión correcta de VCC (+5V) y retorno a masa (GND) sin generar cortocircuito ni cruces de polaridad.</li>
+                  <li><strong>P2. Cableado de Señales Sensoriales (Abstrae / Modulariza):</strong> Conexión precisa de los pines de señal analógica de sensores (LDR y Termistor NTC) a la entrada analógica A0 del microcontrolador.</li>
+                  <li><strong>P3. Cableado de Control de Actuadores (Generaliza / Reconoce Patrones):</strong> Conexión de terminales de control de actuadores (Lámpara LED y Ventilador DC) a salidas digitales (D9 / D0-D7).</li>
+                  <li><strong>P4. Diagnóstico Analítico de Fallas (Depura / Abstrae):</strong> Identificación del pin erróneo donde la señal del ventilador fue conectada a la entrada analógica A3 en lugar de la salida digital D9.</li>
+                  <li><strong>P5. Corrección Física y Reconfiguración (Depura / Transfiere):</strong> Desconexión del terminal de A3 y reconexión a D9 en el simulador hasta lograr el encendido del ventilador ante calor (≥28°C).</li>
+                  <li><strong>P6. Validación Funcional con Variables Físicas (Formula Algoritmos / Valida):</strong> Uso de los controles de prueba (Luxómetro y Termómetro) para verificar experimentalmente los umbrales de activación (&lt;300 Lux y ≥28°C).</li>
                 </ul>
               </div>
 
-              <!-- 2. Socioafectiva -->
+              <!-- 2. Socioafectiva / Actitudinal -->
               <div style="background: #ffffff; border: 1px solid #fde68a; border-radius: 8px; padding: 10px;">
-                <strong style="color: #b45309; display: block; margin-bottom: 6px; font-size: 11.5px;">❤️ 2. Área Socioafectiva (4 Saberes Actitudinales):</strong>
+                <strong style="color: #b45309; display: block; margin-bottom: 6px; font-size: 11.5px;">❤️ 2. Área Socioafectiva (Saberes Actitudinales - 4 Actitudes del Pensador Computacional):</strong>
                 <ul style="padding-left: 18px; line-height: 1.5; color: #334155; font-size: 10.5px;">
-                  <li><strong>S1. Rigor Técnico y Precaución:</strong> Manipulación cuidadosa de los componentes y verificación de polaridades antes de energizar.</li>
-                  <li><strong>S2. Pensamiento Crítico y Resolución de Problemas:</strong> Análisis metódico de la falla del circuito antes de realizar modificaciones a ciegas.</li>
-                  <li><strong>S3. Argumentación y Justificación Técnica:</strong> Explicación coherente de por qué los actuadores requieren pines digitales y los sensores pines analógicos.</li>
-                  <li><strong>S4. Autonomía y Ética en el Registro:</strong> Cumplimiento ético e independiente de la prueba diagnóstica y registro transparente de sus aprendizajes previos.</li>
+                  <li><strong>S1. Gusto por la Precisión y Rigor Técnico:</strong> Demuestra ante los procesos de aprendizaje un comportamiento hacia la búsqueda de la exactitud, verificando con minuciosidad las conexiones antes de energizar.</li>
+                  <li><strong>S2. Aprender del Error:</strong> Demuestra ante los errores un comportamiento que le permite ganar experiencia a partir de desaciertos, analizando la falla del circuito antes de modificar a ciegas.</li>
+                  <li><strong>S3. Flexibilidad y Argumentación Técnica:</strong> Demuestra adaptabilidad y argumenta con rigor conceptual por qué los actuadores requieren señales de salida digital y los sensores entradas analógicas.</li>
+                  <li><strong>S4. Tolerancia a la Frustración y Autonomía:</strong> Demuestra persistencia, autoconfianza, concentración y honestidad en el registro diagnóstico formativo.</li>
                 </ul>
               </div>
 
-              <!-- 3. Cognitiva -->
+              <!-- 3. Cognitiva / Conceptual -->
               <div style="background: #ffffff; border: 1px solid #7dd3fc; border-radius: 8px; padding: 10px;">
-                <strong style="color: #0369a1; display: block; margin-bottom: 6px; font-size: 11.5px;">🧠 3. Área Cognitiva (10 Indicadores de Aprendizaje de Logro):</strong>
+                <strong style="color: #0369a1; display: block; margin-bottom: 6px; font-size: 11.5px;">🧠 3. Área Cognitiva (Saberes Conceptuales - 10 Indicadores de Logro MEP):</strong>
                 <ul style="padding-left: 18px; line-height: 1.5; color: #334155; font-size: 10.5px;">
-                  <li><strong>Ind 1. Control:</strong> Microcontroladores, lógica de procesamiento, arquitectura 328P y voltajes (5V).</li>
-                  <li><strong>Ind 2. Sensor:</strong> Entradas sensoriales (LDR) vs. salidas/actuadores (LED, ventilador, alarma).</li>
-                  <li><strong>Ind 3. E-P-S:</strong> Flujo Entrada-Proceso-Salida y causa-efecto del sistema automatizado.</li>
-                  <li><strong>Ind 4. Fuente:</strong> Fuente de energía eléctrica continua (+5V y GND) y polaridad.</li>
-                  <li><strong>Ind 5. Conv. E:</strong> Conversión de energía eléctrica a lumínica, mecánica o sonora.</li>
-                  <li><strong>Ind 6. Conduc.:</strong> Materiales y caminos conductores para el flujo de corriente eléctrica.</li>
-                  <li><strong>Ind 7. Circuito:</strong> Circuito simple, camino cerrado y retorno a tierra (GND).</li>
-                  <li><strong>Ind 8. Ohm:</strong> Relación cualitativa de la Ley de Ohm y resistencia de protección.</li>
-                  <li><strong>Ind 9. Sim 2D:</strong> Conexión y funcionamiento del prototipo en el simulador 2D.</li>
-                  <li><strong>Ind 10. Reflex.:</strong> Reflexión metacognitiva, identificación de retos y seguridad en el taller.</li>
+                  <li><strong>Ind 1. Control (Microcontrolador):</strong> Reconoce la lógica de procesamiento, arquitectura básica 328P y voltajes (5V).</li>
+                  <li><strong>Ind 2. Sensor (Sensor y Actuador):</strong> Diferencia entre componentes de entrada sensorial (LDR/NTC) y de salida (LED/Ventilador).</li>
+                  <li><strong>Ind 3. E-P-S (Flujo Sistémico):</strong> Comprende el ciclo sistémico Entrada ➔ Proceso ➔ Salida y relación causa-efecto.</li>
+                  <li><strong>Ind 4. Fuente (Energía y Polaridad):</strong> Identifica el suministro de energía continua (+5V y GND) y respeto de polaridad.</li>
+                  <li><strong>Ind 5. Conv. E (Transformación Energética):</strong> Reconoce la transformación de energía eléctrica a luz, movimiento o calor.</li>
+                  <li><strong>Ind 6. Conduc. (Conductores y Aislantes):</strong> Identifica materiales y caminos conductores para el flujo de corriente.</li>
+                  <li><strong>Ind 7. Circuito (Circuito Cerrado):</strong> Comprende el lazo cerrado y retorno a tierra común (GND) para energizar cargas.</li>
+                  <li><strong>Ind 8. Ohm (Ley de Ohm Cualitativa):</strong> Relaciona voltaje, corriente y resistencia protectora de componentes.</li>
+                  <li><strong>Ind 9. Sim 2D (Reto de Ensamble):</strong> Aplica el conexionado interactivo de sensores y actuadores en el simulador 2D.</li>
+                  <li><strong>Ind 10. Reflex. (Metacognición y Seguridad):</strong> Autoevalúa aprendizajes previos y normas de seguridad en el laboratorio tecnológico.</li>
                 </ul>
               </div>
             </div>
@@ -1153,18 +1153,18 @@
     // CRITERIOS Y CONDUCTAS OFICIALES MEP CON DESCRIPCIÓN COMPLETA PARA CELULAR Y TABLETA
     var CRITERIOS_DETALLADOS = {
       psi: [
-        { codigo: "P1. Polaridad", titulo: "Polaridad Eléctrica y Seguridad", desc: "Conexión correcta de VCC (5V) y GND sin generar cortocircuito en sensor y actuador.", escalaA: "Conecta VCC y GND con total exactitud y respeto de polaridad.", escalaB: "Requiere apoyo para verificar la línea positiva o retorno a masa.", escalaC: "Presenta cruce de polaridad o riesgo de cortocircuito." },
-        { codigo: "P2. Señal Entrada", titulo: "Cableado de Señales de Entrada (LDR y NTC)", desc: "Conexión precisa de los pines de señal de los sensores a las entradas analógicas (A0) del microcontrolador.", escalaA: "Enlaza la señal sensorial en el pin A0 analógico de forma directa.", escalaB: "Duda entre pin analógico y digital pero logra conectarlo.", escalaC: "Confunde habitualmente pines de señal con líneas de alimentación." },
-        { codigo: "P3. Señal Salida", titulo: "Cableado de Señales de Salida (LED y Ventilador)", desc: "Conexión de los terminales de control de los actuadores a pines digitales de salida (D9 / D0-D7).", escalaA: "Conecta el terminal de control del actuador al pin digital D9.", escalaB: "Requiere recordatorio de la función de los pines digitales.", escalaC: "Conecta la señal del actuador en terminales no asignados." },
-        { codigo: "P4. Diagnóstico Falla", titulo: "Diagnóstico y Detección de Fallas Físicas (Reto 2)", desc: "Identificación del pin erróneo (señal de ventilador en entrada A3 analógica en vez de salida digital).", escalaA: "Identifica con precisión el cable en A3 como causa de la falla.", escalaB: "Reconoce que hay falla pero requiere guía para ubicar el pin.", escalaC: "No logra diagnosticar la causa física de la falla." },
-        { codigo: "P5. Corrección Física", titulo: "Corrección Física y Reconfiguración", desc: "Desconexión y reconexión guiada en el simulador hasta lograr el funcionamiento del ventilador ante el aumento térmico.", escalaA: "Desconecta de A3 y reconecta a D9 con destreza y rapidez.", escalaB: "Realiza la corrección tras varios intentos guiados.", escalaC: "No logra corregir el cableado en el simulador." },
-        { codigo: "P6. Validación Fís.", titulo: "Validación Funcional con Variables Físicas", desc: "Uso de los controles de prueba (Luxómetro para LDR y Termómetro para NTC) para verificar los umbrales de activación.", escalaA: "Prueba y valida los umbrales de activación (<300 Lux y ≥28°C) con rigor.", escalaB: "Varía los controles pero no verifica con precisión los umbrales.", escalaC: "No realiza la prueba con las variables ambientales del simulador." }
+        { codigo: "P1. Polaridad", titulo: "Polaridad y Seguridad Eléctrica (Manejo Ético y Seguro / Modulariza)", desc: "Conexión correcta de VCC (+5V) y retorno a masa (GND) sin generar cortocircuito ni cruces de polaridad.", escalaA: "Nivel A (Alto / Autónomo): Conecta VCC y GND con total exactitud y respeto estricto de polaridad sin apoyo.", escalaB: "Nivel B (Medio / Con Apoyo): Requiere recordatorio puntual para verificar la línea positiva o retorno a masa.", escalaC: "Nivel C (Inicial / Acompañamiento): Presenta cruce de polaridad o riesgo de cortocircuito y requiere modelado paso a paso." },
+        { codigo: "P2. Señal Entrada", titulo: "Cableado de Señales Sensoriales (Abstrae / Modulariza)", desc: "Conexión precisa de los pines de señal analógica de sensores (LDR y Termistor NTC) a la entrada analógica A0 del microcontrolador.", escalaA: "Nivel A (Alto / Autónomo): Enlaza la señal sensorial en el pin A0 analógico de forma directa y autónoma.", escalaB: "Nivel B (Medio / Con Apoyo): Duda entre pin analógico y digital pero logra conectarlo tras orientación breve.", escalaC: "Nivel C (Inicial / Acompañamiento): Confunde habitualmente pines de señal analógica con líneas de alimentación o salidas." },
+        { codigo: "P3. Señal Salida", titulo: "Cableado de Control de Actuadores (Generaliza / Reconoce Patrones)", desc: "Conexión de terminales de control de actuadores (Lámpara LED y Ventilador DC) a salidas digitales (D9 / D0-D7).", escalaA: "Nivel A (Alto / Autónomo): Conecta con total precisión el terminal de control del actuador al pin digital D9.", escalaB: "Nivel B (Medio / Con Apoyo): Requiere recordatorio puntual de la función y mapeo de los pines digitales de salida.", escalaC: "Nivel C (Inicial / Acompañamiento): Conecta la señal del actuador en terminales analógicos o no asignados." },
+        { codigo: "P4. Diagnóstico Falla", titulo: "Diagnóstico Analítico de Fallas (Depura / Abstrae)", desc: "Identificación del pin erróneo donde la señal del ventilador fue conectada a la entrada analógica A3 en lugar de la salida digital D9.", escalaA: "Nivel A (Alto / Autónomo): Identifica con rapidez y precisión analítica el cable en A3 como causa raíz de la falla.", escalaB: "Nivel B (Medio / Con Apoyo): Reconoce que hay una falla en el circuito pero requiere guía para ubicar el pin incorrecto.", escalaC: "Nivel C (Inicial / Acompañamiento): No logra diagnosticar la causa física de la falla en el circuito." },
+        { codigo: "P5. Corrección Física", titulo: "Corrección Física y Reconfiguración (Depura / Transfiere)", desc: "Desconexión del terminal de A3 y reconexión a D9 en el simulador hasta lograr el encendido del ventilador ante calor (≥28°C).", escalaA: "Nivel A (Alto / Autónomo): Desconecta de A3 y reconecta a D9 con destreza, rapidez y total autonomía.", escalaB: "Nivel B (Medio / Con Apoyo): Realiza la corrección física tras varios intentos o sugerencias puntuales.", escalaC: "Nivel C (Inicial / Acompañamiento): No logra reconfigurar el cableado en el simulador sin supervisión continua." },
+        { codigo: "P6. Validación Fís.", titulo: "Validación Funcional con Variables Físicas (Formula Algoritmos / Valida)", desc: "Uso de los controles de prueba (Luxómetro y Termómetro) para verificar experimentalmente los umbrales de activación (<300 Lux y ≥28°C).", escalaA: "Nivel A (Alto / Autónomo): Prueba y valida los umbrales de activación (<300 Lux y ≥28°C) con rigor y metodología experimental.", escalaB: "Nivel B (Medio / Con Apoyo): Varía los controles ambientales pero requiere apoyo para verificar con precisión los umbrales exactos.", escalaC: "Nivel C (Inicial / Acompañamiento): Omite la prueba con las variables ambientales o no interpreta las lecturas de los instrumentos." }
       ],
       soc: [
-        { codigo: "S1. Rigor Técnico", titulo: "Rigor Técnico y Precaución", desc: "Manipulación cuidadosa de los componentes y verificación de polaridades antes de energizar.", escalaA: "Verifica con rigor y precaución cada cable antes de probar.", escalaB: "Requiere recordatorios ocasionales de verificación técnica.", escalaC: "Manipula los componentes de forma descuidada o apresurada." },
-        { codigo: "S2. Pensamiento Crítico", titulo: "Pensamiento Crítico y Resolución de Problemas", desc: "Análisis metódico de la falla del circuito antes de realizar modificaciones a ciegas.", escalaA: "Analiza metódicamente el comportamiento del circuito y formula hipótesis.", escalaB: "Prueba alternativas con ensayo y error tras sugerencias.", escalaC: "Modifica conexiones al azar sin análisis previo." },
-        { codigo: "S3. Argumentación", titulo: "Argumentación y Justificación Técnica", desc: "Explicación coherente de por qué los actuadores requieren pines digitales y los sensores pines analógicos.", escalaA: "Justifica con claridad conceptual la diferencia entre entradas analógicas y salidas digitales.", escalaB: "Explica de forma parcial la función de cada pin.", escalaC: "Dificultad para formular una justificación técnica comprensible." },
-        { codigo: "S4. Autonomía/Ética", titulo: "Autonomía y Ética en el Registro", desc: "Cumplimiento ético e independiente de la prueba diagnóstica y registro transparente de sus aprendizajes previos.", escalaA: "Trabaja con autonomía, concentración y honestidad en el registro.", escalaB: "Requiere motivación o supervisión periódica para mantenerse enfocado.", escalaC: "Muestra dependencia constante o desinterés en el registro." }
+        { codigo: "S1. Rigor Técnico", titulo: "Gusto por la Precisión y Rigor Técnico", desc: "Demuestra ante los procesos de aprendizaje un comportamiento hacia la búsqueda de la exactitud, verificando minuciosamente conexiones y polaridades antes de energizar.", escalaA: "Nivel A (Alto / Autónomo): Verifica con rigor, minuciosidad y precaución cada conexión y polaridad antes de energizar.", escalaB: "Nivel B (Medio / Con Apoyo): Requiere recordatorios ocasionales de verificación técnica y orden en el espacio de trabajo.", escalaC: "Nivel C (Inicial / Acompañamiento): Manipula los componentes de forma descuidada o apresurada sin verificar polaridades." },
+        { codigo: "S2. Aprender del Error", titulo: "Aprender del Error", desc: "Demuestra ante los errores un comportamiento que le permita ganar experiencia a partir de desaciertos, analizando la causa física antes de modificar a ciegas.", escalaA: "Nivel A (Alto / Autónomo): Analiza metódicamente el comportamiento del circuito ante fallas y formula hipótesis constructivas.", escalaB: "Nivel B (Medio / Con Apoyo): Prueba alternativas con ensayo y error constructivo tras recibir orientaciones del docente.", escalaC: "Nivel C (Inicial / Acompañamiento): Modifica conexiones al azar sin análisis reflexivo previo ante un error." },
+        { codigo: "S3. Argumentación", titulo: "Flexibilidad y Argumentación Técnica", desc: "Demuestra adaptabilidad y argumenta con claridad conceptual por qué los actuadores requieren salidas digitales y los sensores entradas analógicas.", escalaA: "Nivel A (Alto / Autónomo): Justifica con claridad y rigor conceptual la diferencia entre entradas analógicas y salidas digitales.", escalaB: "Nivel B (Medio / Con Apoyo): Explica de forma parcial la función de cada pin o requiere preguntas guía para argumentar.", escalaC: "Nivel C (Inicial / Acompañamiento): Presenta dificultad para formular una justificación técnica comprensible." },
+        { codigo: "S4. Autonomía/Ética", titulo: "Tolerancia a la Frustración y Autonomía", desc: "Demuestra ante los desafíos autoconfianza, persistencia, autocontrol, concentración y honestidad en el registro diagnóstico formativo.", escalaA: "Nivel A (Alto / Autónomo): Trabaja con autonomía, concentración, persistencia y honestidad total en el registro de datos.", escalaB: "Nivel B (Medio / Con Apoyo): Requiere motivación o supervisión periódica para mantener la concentración ante desafíos.", escalaC: "Nivel C (Inicial / Acompañamiento): Muestra frustración inmediata, dependencia constante o desinterés en el registro." }
       ],
       cog: [
         { codigo: "Ind 1. Control", titulo: "Microcontroladores y Lógica", desc: "Reconoce la función general del microcontrolador (MCU 328P), arquitectura básica, voltajes (5V) y lógica de procesamiento.", escalaA: "Logrado (L): Reconoce el MCU como cerebro central que procesa instrucciones.", escalaB: "En Desarrollo (ED): Noción parcial de la placa pero confunde entradas con salidas.", escalaC: "Requiere Acompañamiento (RA): Desconoce la función del microcontrolador." },
@@ -1195,19 +1195,19 @@
     ];
 
     var CONDUCTAS_PSICOMOTORAS = [
-      "Conexión correcta de VCC (5V) y GND sin generar cortocircuito en sensor y actuador.",
-      "Conexión precisa de los pines de señal de los sensores a las entradas analógicas (A0) del MCU.",
-      "Conexión de los terminales de control de los actuadores a pines digitales de salida (D9 / D0-D7).",
-      "Identificación del pin erróneo (señal de ventilador en entrada A3 analógica en vez de salida digital).",
-      "Desconexión y reconexión guiada en el simulador hasta lograr el funcionamiento del ventilador.",
-      "Uso de los controles de prueba (Luxómetro y Termómetro) para verificar umbrales de activación."
+      "P1. Polaridad y Seguridad Eléctrica: Conexión correcta de VCC (+5V) y retorno a masa (GND) sin generar cortocircuito ni cruces de polaridad.",
+      "P2. Cableado de Señales Sensoriales: Conexión precisa de los pines de señal analógica de sensores (LDR y Termistor NTC) a la entrada analógica A0 del microcontrolador.",
+      "P3. Cableado de Control de Actuadores: Conexión de terminales de control de actuadores (Lámpara LED y Ventilador DC) a salidas digitales (D9 / D0-D7).",
+      "P4. Diagnóstico Analítico de Fallas: Identificación del pin erróneo donde la señal del ventilador fue conectada a la entrada analógica A3 en lugar de la salida digital D9.",
+      "P5. Corrección Física y Reconfiguración: Desconexión del terminal de A3 y reconexión a D9 en el simulador hasta lograr el encendido del ventilador ante calor (≥28°C).",
+      "P6. Validación Funcional con Variables Físicas: Uso de los controles de prueba (Luxómetro y Termómetro) para verificar experimentalmente los umbrales de activación (<300 Lux y ≥28°C)."
     ];
 
     var CONDUCTAS_SOCIOAFECTIVAS = [
-      "Manipulación cuidadosa de los componentes y verificación de polaridades antes de energizar.",
-      "Análisis metódico de la falla del circuito antes de realizar modificaciones a ciegas.",
-      "Explicación coherente de por qué los actuadores requieren pines digitales y los sensores pines analógicos.",
-      "Cumplimiento ético e independiente de la prueba diagnóstica y registro transparente de aprendizajes."
+      "S1. Gusto por la Precisión y Rigor Técnico: Demuestra ante los procesos de aprendizaje un comportamiento hacia la búsqueda de la exactitud, verificando minuciosamente conexiones y polaridades antes de energizar.",
+      "S2. Aprender del Error: Demuestra ante los errores un comportamiento que le permita ganar experiencia a partir de desaciertos, analizando la causa física antes de modificar a ciegas.",
+      "S3. Flexibilidad y Argumentación Técnica: Demuestra adaptabilidad y argumenta con claridad conceptual por qué los actuadores requieren salidas digitales y los sensores entradas analógicas.",
+      "S4. Tolerancia a la Frustración y Autonomía: Demuestra ante los desafíos autoconfianza, persistencia, autocontrol, concentración y honestidad en el registro diagnóstico formativo."
     ];
 
     var estadoDocente = {
