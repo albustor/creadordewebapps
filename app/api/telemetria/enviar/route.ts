@@ -32,13 +32,12 @@ function deduplicarRegistrosEnMemoria() {
         mapa.set(clave, normR);
       } else {
         const existente = mapa.get(clave);
-        const puntajeNuevo = r.porcentaje ?? r.puntaje ?? 0;
-        const puntajeExistente = existente.porcentaje ?? existente.puntaje ?? 0;
-        if (r.estadoProgreso === "completado" && existente.estadoProgreso !== "completado") {
+        const esNuevoCompletado = r.estadoProgreso === "completado";
+        const esExistenteCompletado = existente.estadoProgreso === "completado";
+        
+        if (esNuevoCompletado && !esExistenteCompletado) {
           mapa.set(clave, normR);
-        } else if (puntajeNuevo > puntajeExistente) {
-          mapa.set(clave, normR);
-        } else if (puntajeNuevo === puntajeExistente && (r.timestamp || 0) >= (existente.timestamp || 0)) {
+        } else if ((r.timestamp || 0) >= (existente.timestamp || 0)) {
           mapa.set(clave, normR);
         }
       }
@@ -150,9 +149,21 @@ export async function POST(req: NextRequest) {
         const puntajeNuevo = resultadoProcesado.porcentaje ?? resultadoProcesado.puntaje ?? 0;
         const puntajeExistente = existente.porcentaje ?? existente.puntaje ?? 0;
 
-        // Mantener el puntaje más alto / completado
-        const puntajeFinal = Math.max(puntajeNuevo, puntajeExistente);
-        const aciertosFinal = Math.max(resultadoProcesado.aciertos ?? 0, existente.aciertos ?? 0);
+        // Si el nuevo registro es completado o más reciente, prevalece el puntaje real enviado
+        const esNuevoCompletado = resultadoProcesado.estadoProgreso === "completado";
+        const esExistenteCompletado = existente.estadoProgreso === "completado";
+
+        let puntajeFinal = puntajeNuevo;
+        let aciertosFinal = resultadoProcesado.aciertos ?? Math.round((puntajeNuevo / 100) * 10);
+        let cogFinal = resultadoProcesado.cog || existente.cog;
+
+        // Si el existente ya estaba completado y el nuevo es solo un ping de 'iniciado', conservar el completado
+        if (esExistenteCompletado && !esNuevoCompletado) {
+          puntajeFinal = puntajeExistente;
+          aciertosFinal = existente.aciertos ?? Math.round((puntajeExistente / 100) * 10);
+          cogFinal = existente.cog;
+        }
+
         const nivelFinal =
           puntajeFinal >= 80 ? "Avanzado" : puntajeFinal <= 59 ? "Inicial" : "Intermedio";
 
@@ -162,11 +173,10 @@ export async function POST(req: NextRequest) {
           puntaje: puntajeFinal,
           porcentaje: puntajeFinal,
           aciertos: aciertosFinal,
+          fallos: Math.max(0, 10 - aciertosFinal),
+          cog: cogFinal,
           nivelLogro: nivelFinal,
-          estadoProgreso:
-            resultadoProcesado.estadoProgreso === "completado" || existente.estadoProgreso === "completado"
-              ? "completado"
-              : "iniciado",
+          estadoProgreso: esNuevoCompletado || esExistenteCompletado ? "completado" : "iniciado",
           ultimaActualizacion: new Date().toISOString(),
         };
       } else {

@@ -2,9 +2,10 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useDocente } from "@/context/DocenteContext";
+import { useDocente, CentroEducativoDocente } from "@/context/DocenteContext";
 import { LISTA_DRE_MEP, LISTA_DRE_REGIONALES } from "@/lib/dreCircuitos";
 import { formatearCedulaCR } from "@/lib/cedulaUtils";
+import SelectorCentrosYSecciones, { CREAR_CENTRO_DEFAULT } from "@/components/SelectorCentrosYSecciones";
 import {
   ShieldCheck,
   UserCircle,
@@ -41,13 +42,14 @@ export default function AuthGuard({ children }: AuthGuardProps) {
   const [loginMensaje, setLoginMensaje] = useState<{ tipo: "exito" | "error"; texto: string } | null>(null);
 
   // Registro form state
+  const [tipoRol, setTipoRol] = useState<"Docente" | "Asesor Regional" | "Asesor Nacional">("Docente");
   const [regNombre, setRegNombre] = useState("");
   const [regCorreo, setRegCorreo] = useState("");
   const [regCedula, setRegCedula] = useState("");
   const [regTelefono, setRegTelefono] = useState("");
-  const [esAsesorNacional, setEsAsesorNacional] = useState(false);
   const [regDRE, setRegDRE] = useState("DRE-01");
   const [regInstitucion, setRegInstitucion] = useState("");
+  const [regCentros, setRegCentros] = useState<CentroEducativoDocente[]>([CREAR_CENTRO_DEFAULT(1)]);
   const [regPin, setRegPin] = useState("");
   const [regPinConfirmar, setRegPinConfirmar] = useState("");
   const [mostrarRegPin, setMostrarRegPin] = useState(false);
@@ -147,22 +149,34 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     let institucionFinal = regInstitucion.trim() || "Liceo / Colegio de Secundaria";
     let rolFinal = "Docente de Formación Tecnológica";
     let codigoPresupuestarioFinal = "SABER-2026";
+    let centrosFinales = regCentros;
 
-    if (esAsesorNacional || correoLimpio === "alberto.bustos.ortega@mep.go.cr") {
+    if (tipoRol === "Asesor Nacional" || correoLimpio === "alberto.bustos.ortega@mep.go.cr") {
       dreCodigoFinal = "DRE-NACIONAL";
       dreNombreFinal = "Asesoría de Formación Tecnológica";
       circuitoFinal = "Nivel Nacional / Ámbito General";
       institucionFinal = "Asesoría Nacional de Formación Tecnológica (Dimensión 1 y 2)";
       rolFinal = "Asesor de Formación Tecnológica & Administrador General (Dimensión 1 y 2)";
       codigoPresupuestarioFinal = "FT-NACIONAL-2026";
-    } else {
+    } else if (tipoRol === "Asesor Regional") {
       const dreEncontrada = LISTA_DRE_REGIONALES.find((d) => d.codigo === regDRE) || LISTA_DRE_REGIONALES[0];
+      dreCodigoFinal = dreEncontrada.codigo;
       dreNombreFinal = dreEncontrada.nombre;
       circuitoFinal = dreEncontrada.circuitos[0] || "Circuito 01";
-      if (!institucionFinal) {
-        setRegMensaje({ tipo: "error", texto: "Por favor ingrese el nombre de su Centro Educativo." });
+      institucionFinal = `Asesoría Regional de Educación - ${dreEncontrada.nombre}`;
+      rolFinal = "Asesor Regional de Educación";
+      codigoPresupuestarioFinal = `REG-${dreEncontrada.codigo}-2026`;
+    } else {
+      const centrosConNombre = regCentros.filter((c) => c.nombre && c.nombre.trim().length > 0);
+      if (centrosConNombre.length === 0) {
+        setRegMensaje({ tipo: "error", texto: "Por favor ingrese el nombre de al menos un Centro Educativo." });
         return;
       }
+      dreCodigoFinal = centrosConNombre[0].dreCodigo;
+      dreNombreFinal = centrosConNombre[0].dreNombre;
+      circuitoFinal = centrosConNombre[0].circuito;
+      institucionFinal = centrosConNombre.map((c) => c.nombre.trim()).join(" / ");
+      centrosFinales = centrosConNombre;
     }
 
     const esSuperAdminAlberto = correoLimpio === "alberto.bustos.ortega@mep.go.cr" || dreCodigoFinal === "DRE-NACIONAL";
@@ -178,6 +192,8 @@ export default function AuthGuard({ children }: AuthGuardProps) {
       contrasena: pinLimpio,
       cedula: cedulaLimpia,
       telefono: regTelefono.trim(),
+      tipoRol: tipoRol,
+      centrosEducativos: tipoRol === "Docente" ? centrosFinales : undefined,
       dreCodigo: dreCodigoFinal,
       dreNombre: dreNombreFinal,
       circuito: circuitoFinal,
@@ -426,69 +442,87 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                   </p>
                 </div>
 
-                {/* Checkbox: Asignación a Asesoría de Formación Tecnológica */}
-                <div className="p-3 bg-slate-50 border border-slate-300 rounded-2xl">
-                  <label className="flex items-start gap-2.5 cursor-pointer select-none">
-                    <input
-                      type="checkbox"
-                      checked={esAsesorNacional}
-                      onChange={(e) => setEsAsesorNacional(e.target.checked)}
-                      className="mt-0.5 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300 cursor-pointer"
-                    />
-                    <div>
-                      <span className="text-xs font-bold text-slate-800">
-                        Asignación a Asesoría de Formación Tecnológica
-                      </span>
-                      <p className="text-[11px] text-slate-500 font-medium">
-                        Desactiva DRE y Centro Educativo al ser de ámbito nacional.
-                      </p>
-                    </div>
+                {/* Selector de Rol Profesional MEP */}
+                <div className="space-y-2">
+                  <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
+                    Rol Profesional en el MEP <span className="text-rose-600">*</span>:
                   </label>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-black text-slate-800 uppercase tracking-wider mb-1">
-                      Dirección Regional (DRE):
-                    </label>
-                    {esAsesorNacional ? (
-                      <div className="px-3.5 py-2.5 bg-slate-100 border border-slate-300 rounded-xl text-xs font-bold text-slate-500 flex items-center gap-2 cursor-not-allowed">
-                        <span>Asesoría de Formación Tecnológica</span>
-                      </div>
-                    ) : (
-                      <select
-                        value={regDRE}
-                        onChange={(e) => setRegDRE(e.target.value)}
-                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 outline-none"
-                      >
-                        {LISTA_DRE_REGIONALES.map((dre) => (
-                          <option key={dre.codigo} value={dre.codigo}>
-                            {dre.codigo} - {dre.nombre}
-                          </option>
-                        ))}
-                      </select>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-black text-slate-800 uppercase tracking-wider mb-1">
-                      Centro Educativo:
-                    </label>
-                    <input
-                      type="text"
-                      value={esAsesorNacional ? "Asesoría Nacional (Dimensión 1 y 2)" : regInstitucion}
-                      onChange={(e) => setRegInstitucion(e.target.value)}
-                      disabled={esAsesorNacional}
-                      placeholder={esAsesorNacional ? "Asignado automáticamente" : "Liceo / Colegio"}
-                      required={!esAsesorNacional}
-                      className={`w-full px-3.5 py-2.5 border rounded-xl text-xs font-bold ${
-                        esAsesorNacional
-                          ? "bg-slate-100 border-slate-300 text-slate-500 cursor-not-allowed"
-                          : "bg-slate-50 border-slate-300 text-slate-900 focus:bg-white focus:border-emerald-600 outline-none"
+                  <div className="grid grid-cols-3 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setTipoRol("Docente")}
+                      className={`p-2.5 rounded-xl border-2 text-center transition-all flex flex-col items-center gap-1 ${
+                        tipoRol === "Docente"
+                          ? "bg-emerald-50 border-emerald-600 text-emerald-950 shadow-xs"
+                          : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100"
                       }`}
-                    />
+                    >
+                      <UserCircle size={20} weight={tipoRol === "Docente" ? "fill" : "regular"} className={tipoRol === "Docente" ? "text-emerald-700" : "text-slate-500"} />
+                      <span className="text-[11px] font-black leading-tight">Profesor / Docente</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setTipoRol("Asesor Regional")}
+                      className={`p-2.5 rounded-xl border-2 text-center transition-all flex flex-col items-center gap-1 ${
+                        tipoRol === "Asesor Regional"
+                          ? "bg-indigo-50 border-indigo-600 text-indigo-950 shadow-xs"
+                          : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100"
+                      }`}
+                    >
+                      <Buildings size={20} weight={tipoRol === "Asesor Regional" ? "fill" : "regular"} className={tipoRol === "Asesor Regional" ? "text-indigo-700" : "text-slate-500"} />
+                      <span className="text-[11px] font-black leading-tight">Asesor Regional</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setTipoRol("Asesor Nacional")}
+                      className={`p-2.5 rounded-xl border-2 text-center transition-all flex flex-col items-center gap-1 ${
+                        tipoRol === "Asesor Nacional"
+                          ? "bg-purple-50 border-purple-600 text-purple-950 shadow-xs"
+                          : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100"
+                      }`}
+                    >
+                      <Sparkle size={20} weight={tipoRol === "Asesor Nacional" ? "fill" : "regular"} className={tipoRol === "Asesor Nacional" ? "text-purple-700" : "text-slate-500"} />
+                      <span className="text-[11px] font-black leading-tight">Asesor Nacional</span>
+                    </button>
                   </div>
                 </div>
+
+                {/* Campos dependientes del rol */}
+                {tipoRol === "Asesor Nacional" ? (
+                  <div className="p-3.5 bg-purple-50 border border-purple-200 rounded-2xl text-xs text-purple-950 space-y-1">
+                    <div className="font-extrabold flex items-center gap-1.5 text-purple-900">
+                      <CheckCircle size={16} weight="fill" className="text-purple-700" />
+                      <span>Ámbito General y Cobertura Nacional</span>
+                    </div>
+                    <p className="text-[11px] text-purple-900 leading-relaxed">
+                      Acceso global a las 27 Direcciones Regionales de Educación (DRE) y observatorio macro del país.
+                    </p>
+                  </div>
+                ) : tipoRol === "Asesor Regional" ? (
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
+                      Dirección Regional (DRE) a Cargo <span className="text-rose-600">*</span>:
+                    </label>
+                    <select
+                      value={regDRE}
+                      onChange={(e) => setRegDRE(e.target.value)}
+                      className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-indigo-600 outline-none"
+                    >
+                      {LISTA_DRE_REGIONALES.map((dre) => (
+                        <option key={dre.codigo} value={dre.codigo}>
+                          {dre.codigo} - {dre.nombre} ({dre.provincia})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                ) : (
+                  <SelectorCentrosYSecciones
+                    centros={regCentros}
+                    onChangeCentros={setRegCentros}
+                  />
+                )}
 
                 <div className="grid grid-cols-2 gap-3 p-3 bg-indigo-50 border border-indigo-200 rounded-2xl">
                   <div>

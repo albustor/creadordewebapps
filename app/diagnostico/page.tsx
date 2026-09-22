@@ -289,17 +289,9 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
         </div>
       </div>
 
-      {/* SELECTOR OFICIAL DE VERSIONES SEPARADAS PARA EL ESTUDIANTE (EN LÍNEA VS OFFLINE) */}
-      <section className="space-y-4">
-        <SelectorVersionesDiagnostico
-          docenteNombre={docente?.nombreCompleto}
-          institucionNombre={docente?.institucionNombre}
-        />
-      </section>
-
-      {/* APLICATIVO PARA EL DOCENTE EVALUADOR */}
+      {/* 1. HERRAMIENTA PRINCIPAL PARA EL DOCENTE EVALUADOR */}
       <section>
-        <div className="bg-indigo-50/80 border-2 border-indigo-200/90 rounded-3xl p-6 sm:p-8 text-slate-900 shadow-softPastel flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden group">
+        <div className="bg-indigo-50/90 border-2 border-indigo-200/90 rounded-3xl p-6 sm:p-8 text-slate-900 shadow-softPastel flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden group hover:border-indigo-400 transition-all">
           <div className="space-y-3 relative z-10 max-w-2xl">
             <div className="flex items-center gap-2">
               <span className="px-3 py-1 rounded-full bg-indigo-100 text-indigo-900 border border-indigo-300 text-[10px] font-black uppercase tracking-wider">
@@ -308,9 +300,9 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
               <span className="text-xs font-bold text-indigo-800">Guía oficial de evaluación</span>
             </div>
             
-            <h3 className="text-xl font-black text-slate-900 flex items-center gap-2">
-              <UserCheck size={24} className="text-emerald-700" weight="fill" />
-              <span>Evaluador docente y sistematización de desempeños</span>
+            <h3 className="text-xl sm:text-2xl font-black text-slate-900 flex items-center gap-2">
+              <UserCheck size={26} className="text-indigo-700" weight="fill" />
+              <span>Herramienta de Evaluación Diagnóstica del Docente</span>
             </h3>
             
             <p className="text-xs text-slate-600 leading-relaxed font-medium">
@@ -320,10 +312,32 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
 
           <div className="flex flex-wrap items-center gap-2.5 relative z-10 shrink-0">
             <a
+              href="/webapps/borrador2_diagnostico_9no_modulo01_docente_evaluador.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-3 bg-amber-600 hover:bg-amber-700 text-white font-black text-xs rounded-xl shadow-xs transition-all animate-pulse"
+              title="Abre el borrador 2 de evaluación docente (MEP 2026) con acceso libre para revisión"
+            >
+              <span>🧪 Borrador 2 Docente (MEP 2026)</span>
+              <ArrowSquareOut size={16} weight="bold" />
+            </a>
+
+            <a
+              href="/webapps/borrador2_diagnostico_9no_modulo01_aula_inteligente.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-xl shadow-xs transition-all"
+              title="Abre el borrador 2 del estudiante con el nuevo simulador de 3 bloques sin pistas de color"
+            >
+              <span>🧪 Borrador 2 Estudiante (MEP 2026)</span>
+              <ArrowSquareOut size={16} weight="bold" />
+            </a>
+
+            <a
               href="/webapps/diagnostico_9no_modulo01_docente_evaluador.html"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-3 bg-indigo-700 hover:bg-indigo-800 text-white font-black text-xs rounded-xl shadow-xs transition-all"
+              className="inline-flex items-center gap-2 px-4 py-3 bg-indigo-700 hover:bg-indigo-800 text-white font-black text-xs rounded-xl shadow-xs transition-all"
             >
               <span>Abrir aplicación docente</span>
               <ArrowSquareOut size={16} weight="bold" />
@@ -331,22 +345,30 @@ Representar mediante tarjetas y líneas de conexión un sistema automatizado con
             
             <button
               onClick={() => setModalQRDocente(true)}
-              className="inline-flex items-center gap-1.5 px-4 py-3 bg-indigo-100 hover:bg-indigo-200 text-indigo-900 font-bold text-xs rounded-xl border border-indigo-300 transition-all shadow-xs"
+              className="inline-flex items-center gap-1.5 px-3.5 py-3 bg-indigo-100 hover:bg-indigo-200 text-indigo-900 font-bold text-xs rounded-xl border border-indigo-300 transition-all shadow-xs"
             >
               <QrCode size={16} weight="bold" />
-              <span>QR para celular docente</span>
+              <span>QR celular</span>
             </button>
             
             <a
               href="/webapps/diagnostico_9no_modulo01_docente_evaluador.html"
               download="diagnostico_9no_modulo01_docente_evaluador.html"
-              className="inline-flex items-center gap-1.5 px-3.5 py-3 bg-stone-100 hover:bg-stone-200 text-slate-800 text-xs font-bold rounded-xl border border-stone-300 transition-colors shadow-xs"
+              className="inline-flex items-center gap-1.5 px-3 py-3 bg-stone-100 hover:bg-stone-200 text-slate-800 text-xs font-bold rounded-xl border border-stone-300 transition-colors shadow-xs"
             >
               <DownloadSimple size={15} weight="bold" />
               <span>Descargar .html</span>
             </a>
           </div>
         </div>
+      </section>
+
+      {/* 2. SELECTOR OFICIAL DE VERSIONES SEPARADAS PARA EL ESTUDIANTE (EN LÍNEA VS OFFLINE) */}
+      <section className="space-y-4">
+        <SelectorVersionesDiagnostico
+          docenteNombre={docente?.nombreCompleto}
+          institucionNombre={docente?.institucionNombre}
+        />
       </section>
 
       {/* MODAL CUADRO COMPARATIVO Y DICTAMEN DE VALIDACIÓN CURRICULAR OFICIAL */}

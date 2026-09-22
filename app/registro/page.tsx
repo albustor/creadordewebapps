@@ -1,7 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useDocente, DOCENTE_DEFAULT } from "@/context/DocenteContext";
+import {
+  useDocente,
+  DOCENTE_DEFAULT,
+  CentroEducativoDocente,
+  DesgloseNivelSecciones,
+} from "@/context/DocenteContext";
 import { LISTA_DRE_MEP, LISTA_DRE_REGIONALES } from "@/lib/dreCircuitos";
 import { formatearCedulaCR, normalizarCedulaParaComparar } from "@/lib/cedulaUtils";
 import {
@@ -26,6 +31,11 @@ import {
   ArrowClockwise,
   Flask,
   ArrowSquareOut,
+  Plus,
+  Trash,
+  GraduationCap,
+  ChalkboardTeacher,
+  CheckCircle,
 } from "@phosphor-icons/react";
 import Link from "next/link";
 
@@ -66,13 +76,63 @@ export default function RegistroDocentePage() {
   const [pinConfirmar, setPinConfirmar] = useState(docente?.pin || "2617");
   const [mostrarPin, setMostrarPin] = useState(false);
 
-  // DRE y Ubicación
+  // Rol Seleccionado (Docente | Asesor Regional | Asesor Nacional)
+  const [tipoRol, setTipoRol] = useState<"Docente" | "Asesor Regional" | "Asesor Nacional">(
+    (docente?.tipoRol as any) ||
+      (docente?.dreCodigo === "DRE-NACIONAL" || docente?.correoInstitucional === "alberto.bustos.ortega@mep.go.cr"
+        ? "Asesor Nacional"
+        : docente?.rol?.includes("Asesor Regional")
+        ? "Asesor Regional"
+        : "Docente")
+  );
+
+  // DRE y Ubicación (Legacy / Principal)
   const [dreCodigo, setDreCodigo] = useState(normalizarDRECodigo(docente?.dreCodigo));
   const [circuito, setCircuito] = useState(docente?.circuito || "Circuito 01");
   const [codigoPresupuestario, setCodigoPresupuestario] = useState(docente?.codigoPresupuestario || "SABER-2026");
   const [institucion, setInstitucion] = useState(docente?.institucionNombre || "");
   const [rol, setRol] = useState(docente?.rol || "Docente de Formación Tecnológica");
   const ASIGNATURA_UNICA = "Formación Tecnológica (Dimensión 1 y 2)";
+
+  // ==========================================
+  // GESTIÓN DE CENTROS EDUCATIVOS Y NIVELES
+  // ==========================================
+  const CREAR_DESGLOSE_NIVELES_DEFAULT = (): DesgloseNivelSecciones[] => [
+    { nivel: "7°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["7-1", "7-2", "7-3"] },
+    { nivel: "8°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["8-1", "8-2", "8-3"] },
+    { nivel: "9°", activo: true, totalSeccionesColegio: 8, seccionesAtendidasDocente: ["9-1", "9-2", "9-3", "9-4", "9-5"] },
+    { nivel: "10°", activo: false, totalSeccionesColegio: 4, seccionesAtendidasDocente: [] },
+    { nivel: "11°", activo: false, totalSeccionesColegio: 4, seccionesAtendidasDocente: [] },
+    { nivel: "12°", activo: false, totalSeccionesColegio: 2, seccionesAtendidasDocente: [] },
+  ];
+
+  const CREAR_CENTRO_DEFAULT = (idNum: number, dreDef = "DRE-01", nomDef = ""): CentroEducativoDocente => {
+    const dreObj = LISTA_DRE_MEP.find((d) => d.codigo === dreDef) || LISTA_DRE_MEP[0];
+    return {
+      id: `CENTRO-${Date.now()}-${idNum}`,
+      nombre: nomDef,
+      dreCodigo: dreDef,
+      dreNombre: dreObj.nombre,
+      circuito: dreObj.circuitos[0] || "Circuito 01",
+      codigoPresupuestario: "SABER-2026",
+      desgloseNiveles: CREAR_DESGLOSE_NIVELES_DEFAULT(),
+    };
+  };
+
+  const [centros, setCentros] = useState<CentroEducativoDocente[]>(() => {
+    if (docente?.centrosEducativos && docente.centrosEducativos.length > 0) {
+      return docente.centrosEducativos;
+    }
+    return [
+      CREAR_CENTRO_DEFAULT(
+        1,
+        normalizarDRECodigo(docente?.dreCodigo),
+        docente?.institucionNombre && !docente.institucionNombre.includes("Asesoría Nacional")
+          ? docente.institucionNombre
+          : ""
+      ),
+    ];
+  });
 
   // Estados de validación
   const [errorValidacion, setErrorValidacion] = useState<string | null>(null);
@@ -114,6 +174,14 @@ export default function RegistroDocentePage() {
       setCodigoPresupuestario(docente.codigoPresupuestario || "SABER-2026");
       setInstitucion(docente.institucionNombre || "");
       setRol(docente.rol || "Docente de Formación Tecnológica");
+      if (docente.tipoRol) {
+        setTipoRol(docente.tipoRol);
+      } else if (docente.dreCodigo === "DRE-NACIONAL" || docente.correoInstitucional === "alberto.bustos.ortega@mep.go.cr") {
+        setTipoRol("Asesor Nacional");
+      }
+      if (docente.centrosEducativos && docente.centrosEducativos.length > 0) {
+        setCentros(docente.centrosEducativos);
+      }
     }
   }, [docente]);
 
@@ -233,6 +301,100 @@ export default function RegistroDocentePage() {
   const advertenciaPin = evaluarPIN(pin, cedula);
 
   // ==========================================
+  // HANDLERS PARA CENTROS EDUCATIVOS Y NIVELES
+  // ==========================================
+  const handleActualizarCentro = (index: number, campo: keyof CentroEducativoDocente, valor: any) => {
+    const nuevos = [...centros];
+    if (campo === "dreCodigo") {
+      const dreFound = LISTA_DRE_MEP.find((d) => d.codigo === valor) || LISTA_DRE_MEP[0];
+      nuevos[index] = {
+        ...nuevos[index],
+        dreCodigo: valor,
+        dreNombre: dreFound.nombre,
+        circuito: dreFound.circuitos[0] || "Circuito 01",
+      };
+    } else {
+      nuevos[index] = { ...nuevos[index], [campo]: valor };
+    }
+    setCentros(nuevos);
+  };
+
+  const handleAgregarCentro = () => {
+    setCentros([...centros, CREAR_CENTRO_DEFAULT(centros.length + 1)]);
+  };
+
+  const handleEliminarCentro = (index: number) => {
+    if (centros.length <= 1) return;
+    setCentros(centros.filter((_, i) => i !== index));
+  };
+
+  const handleToggleNivelActivo = (centroIndex: number, nivelIndex: number) => {
+    const nuevos = [...centros];
+    const nivelObj = nuevos[centroIndex].desgloseNiveles[nivelIndex];
+    nivelObj.activo = !nivelObj.activo;
+    if (!nivelObj.activo) {
+      nivelObj.seccionesAtendidasDocente = [];
+    } else if (nivelObj.seccionesAtendidasDocente.length === 0) {
+      const numNivel = nivelObj.nivel.replace(/[^0-9]/g, "") || "9";
+      const total = nivelObj.totalSeccionesColegio || 6;
+      const mitad = Math.max(1, Math.ceil(total / 2));
+      const sugeridas: string[] = [];
+      for (let i = 1; i <= mitad; i++) {
+        sugeridas.push(`${numNivel}-${i}`);
+      }
+      nivelObj.seccionesAtendidasDocente = sugeridas;
+    }
+    setCentros(nuevos);
+  };
+
+  const handleCambiarTotalSecciones = (centroIndex: number, nivelIndex: number, nuevoTotal: number) => {
+    const totalValido = Math.max(1, Math.min(25, isNaN(nuevoTotal) ? 1 : nuevoTotal));
+    const nuevos = [...centros];
+    const nivelObj = nuevos[centroIndex].desgloseNiveles[nivelIndex];
+    nivelObj.totalSeccionesColegio = totalValido;
+    const numNivel = nivelObj.nivel.replace(/[^0-9]/g, "") || "9";
+    nivelObj.seccionesAtendidasDocente = nivelObj.seccionesAtendidasDocente.filter((sec) => {
+      const secNum = parseInt(sec.split("-")[1] || "99", 10);
+      return secNum <= totalValido;
+    });
+    setCentros(nuevos);
+  };
+
+  const handleToggleSeccion = (centroIndex: number, nivelIndex: number, seccionCodigo: string) => {
+    const nuevos = [...centros];
+    const nivelObj = nuevos[centroIndex].desgloseNiveles[nivelIndex];
+    const existe = nivelObj.seccionesAtendidasDocente.includes(seccionCodigo);
+    if (existe) {
+      nivelObj.seccionesAtendidasDocente = nivelObj.seccionesAtendidasDocente.filter((s) => s !== seccionCodigo);
+    } else {
+      nivelObj.seccionesAtendidasDocente = [...nivelObj.seccionesAtendidasDocente, seccionCodigo].sort((a, b) => {
+        const numA = parseInt(a.split("-")[1] || "0", 10);
+        const numB = parseInt(b.split("-")[1] || "0", 10);
+        return numA - numB;
+      });
+    }
+    setCentros(nuevos);
+  };
+
+  const handleSeleccionarTodasSecciones = (centroIndex: number, nivelIndex: number) => {
+    const nuevos = [...centros];
+    const nivelObj = nuevos[centroIndex].desgloseNiveles[nivelIndex];
+    const numNivel = nivelObj.nivel.replace(/[^0-9]/g, "") || "9";
+    const todas: string[] = [];
+    for (let i = 1; i <= nivelObj.totalSeccionesColegio; i++) {
+      todas.push(`${numNivel}-${i}`);
+    }
+    nivelObj.seccionesAtendidasDocente = todas;
+    setCentros(nuevos);
+  };
+
+  const handleLimpiarSecciones = (centroIndex: number, nivelIndex: number) => {
+    const nuevos = [...centros];
+    nuevos[centroIndex].desgloseNiveles[nivelIndex].seccionesAtendidasDocente = [];
+    setCentros(nuevos);
+  };
+
+  // ==========================================
   // ENVÍO DE REGISTRO / ACTUALIZACIÓN
   // ==========================================
   const handleGuardarDocente = (e: React.FormEvent) => {
@@ -271,12 +433,56 @@ export default function RegistroDocentePage() {
       return;
     }
 
-    const esSuperAdminAlberto = correoLimpio === "alberto.bustos.ortega@mep.go.cr" || dreCodigo === "DRE-NACIONAL";
+    // Validar centros educativos si es Docente
+    if (tipoRol === "Docente") {
+      if (!centros || centros.length === 0) {
+        setErrorValidacion("Debe registrar al menos un Centro Educativo donde labora.");
+        return;
+      }
+      for (let i = 0; i < centros.length; i++) {
+        const c = centros[i];
+        if (!c.nombre || !c.nombre.trim()) {
+          setErrorValidacion(`Por favor ingrese el nombre del Centro Educativo #${i + 1}.`);
+          return;
+        }
+      }
+    }
+
+    const esSuperAdminAlberto = correoLimpio === "alberto.bustos.ortega@mep.go.cr" || tipoRol === "Asesor Nacional";
     const idDocenteUnico = esSuperAdminAlberto
       ? "ASESOR-FT-7729"
       : docente?.idDocente && !docente.idDocente.includes("DOC-DRE01-7729") && docente.idDocente !== "ASESOR-FT-7729"
       ? docente.idDocente
-      : `DOC-${dreCodigo.replace(/[^a-zA-Z0-9]/g, "")}-${Math.floor(1000 + Math.random() * 9000)}`;
+      : `DOC-${(centros[0]?.dreCodigo || dreCodigo).replace(/[^a-zA-Z0-9]/g, "")}-${Math.floor(1000 + Math.random() * 9000)}`;
+
+    let dreCodigoFinal = dreCodigo;
+    let dreNombreFinal = dreSeleccionada.nombre;
+    let circuitoFinal = circuito;
+    let institucionFinal = institucion || "Liceo / Colegio de Secundaria";
+    let rolFinal = "Docente de Formación Tecnológica";
+
+    if (tipoRol === "Asesor Nacional") {
+      dreCodigoFinal = "DRE-NACIONAL";
+      dreNombreFinal = "Asesoría de Formación Tecnológica";
+      circuitoFinal = "Nivel Nacional / Ámbito General";
+      institucionFinal = "Asesoría Nacional de Formación Tecnológica (Dimensión 1 y 2)";
+      rolFinal = esSuperAdminAlberto
+        ? "Asesor de Formación Tecnológica & Administrador General (Dimensión 1 y 2)"
+        : "Asesor Nacional de Formación Tecnológica";
+    } else if (tipoRol === "Asesor Regional") {
+      dreCodigoFinal = dreCodigo;
+      dreNombreFinal = dreSeleccionada.nombre;
+      circuitoFinal = circuito;
+      institucionFinal = `Asesoría Regional de Formación Tecnológica (${dreSeleccionada.nombre})`;
+      rolFinal = `Asesor Regional de Formación Tecnológica (${dreSeleccionada.nombre})`;
+    } else {
+      // Docente
+      dreCodigoFinal = centros[0]?.dreCodigo || dreCodigo;
+      dreNombreFinal = centros[0]?.dreNombre || dreSeleccionada.nombre;
+      circuitoFinal = centros[0]?.circuito || circuito;
+      institucionFinal = centros[0]?.nombre || institucion || "Liceo / Colegio de Secundaria";
+      rolFinal = "Docente de Formación Tecnológica";
+    }
 
     const datosDocente = {
       idDocente: idDocenteUnico,
@@ -286,12 +492,14 @@ export default function RegistroDocentePage() {
       telefono: telefonoLimpio,
       pin: pinLimpio,
       contrasena: pinLimpio,
-      dreCodigo,
-      dreNombre: dreCodigo === "DRE-NACIONAL" ? "Asesoría de Formación Tecnológica" : dreSeleccionada.nombre,
-      circuito: dreCodigo === "DRE-NACIONAL" ? "Nivel Nacional / Ámbito General" : circuito,
-      codigoPresupuestario: dreCodigo === "DRE-NACIONAL" ? "FT-NACIONAL-2026" : codigoPresupuestario,
-      institucionNombre: institucion || "Liceo / Colegio de Secundaria",
-      rol,
+      tipoRol,
+      centrosEducativos: tipoRol === "Docente" ? centros : undefined,
+      dreCodigo: dreCodigoFinal,
+      dreNombre: dreNombreFinal,
+      circuito: circuitoFinal,
+      codigoPresupuestario: dreCodigoFinal === "DRE-NACIONAL" ? "FT-NACIONAL-2026" : codigoPresupuestario,
+      institucionNombre: institucionFinal,
+      rol: rolFinal,
       asignaturas: [ASIGNATURA_UNICA],
       fechaRegistro: docente?.fechaRegistro || new Date().toISOString(),
     };
@@ -754,50 +962,136 @@ export default function RegistroDocentePage() {
             </div>
           </div>
 
-          {/* Tarjeta 3: Asignación Territorial DRE y Colegio */}
+          {/* Tarjeta 3: Selección de Rol Oficial */}
           <div className="bg-white border-2 border-slate-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
             <h3 className="text-base font-black text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
-              <Buildings size={22} className="text-emerald-700" weight="bold" />
-              <span>Dirección Regional e Institución Educativa</span>
+              <GraduationCap size={22} className="text-emerald-700" weight="bold" />
+              <span>Rol y Tipo de Usuario en el Sistema MEP</span>
             </h3>
 
-            {/* Checkbox: Asignación a Asesoría de Formación Tecnológica */}
-            <div className="p-3.5 bg-slate-50 border border-slate-300 rounded-2xl">
-              <label className="flex items-start gap-3 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  checked={dreNormActual === "DRE-NACIONAL"}
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      handleCambioDRE("DRE-NACIONAL");
-                    } else {
-                      handleCambioDRE("DRE-01");
-                    }
-                  }}
-                  className="mt-0.5 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300 bg-white cursor-pointer"
-                />
-                <div className="space-y-0.5">
-                  <span className="text-xs font-bold text-slate-800">
-                    Asignación a Asesoría de Formación Tecnológica
-                  </span>
-                  <p className="text-[11.5px] text-slate-500 font-medium">
-                    Desactiva la selección de DRE y Centro Educativo al ser de ámbito nacional.
-                  </p>
-                </div>
-              </label>
-            </div>
+            <p className="text-xs text-slate-600 font-medium">
+              Selecciona tu función en el programa de Formación Tecnológica para adaptar tu entorno de diagnóstico y analítica:
+            </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* DRE */}
-              <div className="space-y-1.5">
-                <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
-                  Dirección Regional de Educación (DRE) <span className="text-rose-600">*</span>
-                </label>
-                {dreNormActual === "DRE-NACIONAL" ? (
-                  <div className="px-4 py-3 bg-slate-100 border border-slate-300 rounded-xl text-xs font-bold text-slate-500 flex items-center gap-2 cursor-not-allowed">
-                    <span>Asesoría de Formación Tecnológica</span>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Opción 1: Docente */}
+              <button
+                type="button"
+                onClick={() => setTipoRol("Docente")}
+                className={`p-4.5 rounded-2xl border-2 text-left transition-all flex flex-col justify-between gap-3 ${
+                  tipoRol === "Docente"
+                    ? "border-emerald-600 bg-emerald-50/60 shadow-sm ring-2 ring-emerald-500/20"
+                    : "border-slate-200 bg-slate-50/50 hover:bg-slate-100/70 text-slate-700"
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <div className={`p-2.5 rounded-xl ${tipoRol === "Docente" ? "bg-emerald-600 text-white" : "bg-slate-200 text-slate-700"}`}>
+                    <ChalkboardTeacher size={22} weight="bold" />
                   </div>
-                ) : (
+                  {tipoRol === "Docente" && (
+                    <span className="px-2.5 py-0.5 bg-emerald-600 text-white text-[10px] font-black rounded-full uppercase">
+                      Seleccionado
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <div className="font-extrabold text-xs text-slate-900">Profesor / Docente de Aula</div>
+                  <div className="text-[11px] text-slate-500 font-medium leading-relaxed mt-0.5">
+                    Aplica diagnósticos a sus secciones y gestiona resultados de estudiantes.
+                  </div>
+                </div>
+              </button>
+
+              {/* Opción 2: Asesor Regional */}
+              <button
+                type="button"
+                onClick={() => setTipoRol("Asesor Regional")}
+                className={`p-4.5 rounded-2xl border-2 text-left transition-all flex flex-col justify-between gap-3 ${
+                  tipoRol === "Asesor Regional"
+                    ? "border-emerald-600 bg-emerald-50/60 shadow-sm ring-2 ring-emerald-500/20"
+                    : "border-slate-200 bg-slate-50/50 hover:bg-slate-100/70 text-slate-700"
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <div className={`p-2.5 rounded-xl ${tipoRol === "Asesor Regional" ? "bg-emerald-600 text-white" : "bg-slate-200 text-slate-700"}`}>
+                    <Buildings size={22} weight="bold" />
+                  </div>
+                  {tipoRol === "Asesor Regional" && (
+                    <span className="px-2.5 py-0.5 bg-emerald-600 text-white text-[10px] font-black rounded-full uppercase">
+                      Seleccionado
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <div className="font-extrabold text-xs text-slate-900">Asesor(a) Regional</div>
+                  <div className="text-[11px] text-slate-500 font-medium leading-relaxed mt-0.5">
+                    Supervisa y analiza el desempeño en los centros educativos de su DRE.
+                  </div>
+                </div>
+              </button>
+
+              {/* Opción 3: Asesor Nacional */}
+              <button
+                type="button"
+                onClick={() => setTipoRol("Asesor Nacional")}
+                className={`p-4.5 rounded-2xl border-2 text-left transition-all flex flex-col justify-between gap-3 ${
+                  tipoRol === "Asesor Nacional"
+                    ? "border-emerald-600 bg-emerald-50/60 shadow-sm ring-2 ring-emerald-500/20"
+                    : "border-slate-200 bg-slate-50/50 hover:bg-slate-100/70 text-slate-700"
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <div className={`p-2.5 rounded-xl ${tipoRol === "Asesor Nacional" ? "bg-emerald-600 text-white" : "bg-slate-200 text-slate-700"}`}>
+                    <GraduationCap size={22} weight="bold" />
+                  </div>
+                  {tipoRol === "Asesor Nacional" && (
+                    <span className="px-2.5 py-0.5 bg-emerald-600 text-white text-[10px] font-black rounded-full uppercase">
+                      Seleccionado
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <div className="font-extrabold text-xs text-slate-900">Asesoría Nacional</div>
+                  <div className="text-[11px] text-slate-500 font-medium leading-relaxed mt-0.5">
+                    Acceso macro nacional a todas las DRE y consolidación del país.
+                  </div>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          {/* Tarjeta 4A: Configuración para Asesor Nacional */}
+          {tipoRol === "Asesor Nacional" && (
+            <div className="bg-white border-2 border-slate-200 rounded-3xl p-6 sm:p-8 space-y-4 shadow-sm">
+              <h3 className="text-base font-black text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
+                <Buildings size={22} className="text-emerald-700" weight="bold" />
+                <span>Asignación Nacional (DRE-NACIONAL)</span>
+              </h3>
+              <div className="p-4 bg-emerald-50/80 border border-emerald-300 rounded-2xl text-xs text-emerald-950 font-medium space-y-1">
+                <div className="font-extrabold flex items-center gap-1.5 text-emerald-900">
+                  <CheckCircle size={18} weight="fill" className="text-emerald-700" />
+                  <span>Ámbito General y Cobertura Nacional</span>
+                </div>
+                <p>
+                  Tu usuario tendrá habilitada la visualización comparativa de todas las 27 Direcciones Regionales de Educación (DRE) y observatorio macro de diagnósticos del país.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Tarjeta 4B: Configuración para Asesor Regional */}
+          {tipoRol === "Asesor Regional" && (
+            <div className="bg-white border-2 border-slate-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
+              <h3 className="text-base font-black text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
+                <Buildings size={22} className="text-emerald-700" weight="bold" />
+                <span>Dirección Regional de Educación (DRE) a Cargo</span>
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
+                    Dirección Regional (DRE) <span className="text-rose-600">*</span>
+                  </label>
                   <select
                     value={dreNormActual}
                     onChange={(e) => handleCambioDRE(e.target.value)}
@@ -809,19 +1103,12 @@ export default function RegistroDocentePage() {
                       </option>
                     ))}
                   </select>
-                )}
-              </div>
+                </div>
 
-              {/* Circuito */}
-              <div className="space-y-1.5">
-                <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
-                  Circuito Escolar
-                </label>
-                {dreNormActual === "DRE-NACIONAL" ? (
-                  <div className="px-4 py-3 bg-slate-100 border border-slate-300 rounded-xl text-xs font-bold text-slate-500 cursor-not-allowed">
-                    Nivel Nacional / Ámbito General
-                  </div>
-                ) : (
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
+                    Circuito Escolar
+                  </label>
                   <select
                     value={circuito}
                     onChange={(e) => setCircuito(e.target.value)}
@@ -833,29 +1120,299 @@ export default function RegistroDocentePage() {
                       </option>
                     ))}
                   </select>
-                )}
-              </div>
-
-              {/* Institución */}
-              <div className="space-y-1.5 md:col-span-2">
-                <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
-                  Nombre del Liceo o Colegio de Secundaria
-                </label>
-                <input
-                  type="text"
-                  value={dreNormActual === "DRE-NACIONAL" ? "Asesoría Nacional de Formación Tecnológica (Dimensión 1 y 2)" : institucion}
-                  onChange={(e) => setInstitucion(e.target.value)}
-                  disabled={dreNormActual === "DRE-NACIONAL"}
-                  placeholder={dreNormActual === "DRE-NACIONAL" ? "Asignado automáticamente para Asesoría Nacional" : "Ej: Liceo de Santa Cruz / CTP de Puriscal"}
-                  className={`w-full px-4 py-3 border rounded-xl text-xs font-bold transition-all ${
-                    dreNormActual === "DRE-NACIONAL"
-                      ? "bg-slate-100 border-slate-300 text-slate-500 cursor-not-allowed"
-                      : "bg-slate-50 border-slate-300 text-slate-900 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 outline-hidden"
-                  }`}
-                />
+                </div>
               </div>
             </div>
-          </div>
+          )}
+
+          {/* Tarjeta 4C: Configuración Multicentro y Secciones por Nivel (Para Docentes) */}
+          {tipoRol === "Docente" && (
+            <div className="space-y-6">
+              {/* Barra de Gestión de Cantidad de Centros Educativos */}
+              <div className="bg-white border-2 border-emerald-200 rounded-3xl p-6 sm:p-8 space-y-4 shadow-sm">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-emerald-100 pb-4">
+                  <div>
+                    <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
+                      <Buildings size={22} className="text-emerald-700" weight="bold" />
+                      <span>¿En cuántos centros educativos laboras actualmente?</span>
+                    </h3>
+                    <p className="text-xs text-slate-600 font-medium mt-0.5">
+                      Puedes configurar tu carga institucional y seleccionar qué secciones atiendes en cada colegio.
+                    </p>
+                  </div>
+
+                  {/* Selector rápido de cantidad */}
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-black text-slate-700 uppercase tracking-wider">Centros:</span>
+                    <div className="flex items-center gap-1.5">
+                      {[1, 2, 3].map((num) => (
+                        <button
+                          key={num}
+                          type="button"
+                          onClick={() => {
+                            if (num > centros.length) {
+                              const extras: CentroEducativoDocente[] = [];
+                              for (let i = centros.length + 1; i <= num; i++) {
+                                extras.push(CREAR_CENTRO_DEFAULT(i));
+                              }
+                              setCentros([...centros, ...extras]);
+                            } else if (num < centros.length) {
+                              setCentros(centros.slice(0, num));
+                            }
+                          }}
+                          className={`w-9 h-9 rounded-xl font-black text-xs transition-all flex items-center justify-center ${
+                            centros.length === num
+                              ? "bg-emerald-700 text-white shadow-sm"
+                              : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                          }`}
+                        >
+                          {num}
+                        </button>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={handleAgregarCentro}
+                        className="px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold text-xs rounded-xl flex items-center gap-1.5 transition-colors"
+                      >
+                        <Plus size={15} weight="bold" />
+                        <span>Agregar Otro</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Render de cada Centro Educativo y su Matriz de Secciones */}
+              {centros.map((centro, centroIdx) => {
+                const dreObj = LISTA_DRE_MEP.find((d) => d.codigo === centro.dreCodigo) || LISTA_DRE_MEP[0];
+                const circuitosDelCentro = dreObj?.circuitos && Array.isArray(dreObj.circuitos)
+                  ? dreObj.circuitos
+                  : ["Circuito 01"];
+
+                return (
+                  <div
+                    key={centro.id || centroIdx}
+                    className="bg-white border-2 border-slate-300 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm relative overflow-hidden"
+                  >
+                    {/* Encabezado del Centro Educativo */}
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-4">
+                      <div className="flex items-center gap-3">
+                        <span className="w-9 h-9 bg-emerald-700 text-white font-black text-sm rounded-xl flex items-center justify-center shadow-xs">
+                          #{centroIdx + 1}
+                        </span>
+                        <div>
+                          <h4 className="text-sm font-black text-slate-900">
+                            {centro.nombre.trim() ? centro.nombre : `Centro Educativo #${centroIdx + 1}`}
+                          </h4>
+                          <p className="text-[11px] text-slate-500 font-medium">
+                            {centro.dreNombre} • {centro.circuito}
+                          </p>
+                        </div>
+                      </div>
+
+                      {centros.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => handleEliminarCentro(centroIdx)}
+                          className="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold rounded-xl flex items-center gap-1.5 transition-colors self-end sm:self-auto"
+                        >
+                          <Trash size={15} weight="bold" />
+                          <span>Eliminar Centro</span>
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Datos Básicos de la Institución */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                      <div className="space-y-1.5 md:col-span-1">
+                        <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
+                          Dirección Regional (DRE) <span className="text-rose-600">*</span>
+                        </label>
+                        <select
+                          value={centro.dreCodigo}
+                          onChange={(e) => handleActualizarCentro(centroIdx, "dreCodigo", e.target.value)}
+                          className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 outline-hidden transition-all"
+                        >
+                          {LISTA_DRE_REGIONALES.map((dre) => (
+                            <option key={dre.codigo} value={dre.codigo}>
+                              {dre.codigo} - {dre.nombre} ({dre.provincia})
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div className="space-y-1.5 md:col-span-1">
+                        <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
+                          Circuito Escolar
+                        </label>
+                        <select
+                          value={centro.circuito}
+                          onChange={(e) => handleActualizarCentro(centroIdx, "circuito", e.target.value)}
+                          className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 outline-hidden transition-all"
+                        >
+                          {circuitosDelCentro.map((circ) => (
+                            <option key={circ} value={circ}>
+                              {circ}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div className="space-y-1.5 md:col-span-1">
+                        <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
+                          Nombre del Liceo o CTP <span className="text-rose-600">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={centro.nombre}
+                          onChange={(e) => handleActualizarCentro(centroIdx, "nombre", e.target.value)}
+                          placeholder="Ej: Liceo Laboratorio / CTP..."
+                          className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 outline-hidden transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Matriz de Secciones por Nivel */}
+                    <div className="space-y-4 pt-2">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 border-b border-slate-100 pb-2">
+                        <div className="flex items-center gap-2">
+                          <GraduationCap size={18} className="text-emerald-700" weight="bold" />
+                          <span className="text-xs font-black text-slate-900 uppercase tracking-wider">
+                            Distribución de Secciones por Nivel en este Centro
+                          </span>
+                        </div>
+                        <span className="text-[11px] text-slate-500 font-medium">
+                          Indica el total del colegio y marca las secciones que tú atiendes
+                        </span>
+                      </div>
+
+                      <div className="space-y-4">
+                        {centro.desgloseNiveles.map((nivelItem, nivelIdx) => {
+                          const numNivel = nivelItem.nivel.replace(/[^0-9]/g, "") || "9";
+                          const totalCol = nivelItem.totalSeccionesColegio || 1;
+                          const asignadas = nivelItem.seccionesAtendidasDocente || [];
+
+                          // Generar lista de códigos de secciones del colegio
+                          const listaCodigosColegio: string[] = [];
+                          for (let s = 1; s <= totalCol; s++) {
+                            listaCodigosColegio.push(`${numNivel}-${s}`);
+                          }
+
+                          return (
+                            <div
+                              key={nivelItem.nivel}
+                              className={`p-4.5 rounded-2xl border-2 transition-all space-y-3.5 ${
+                                nivelItem.activo
+                                  ? "border-emerald-300 bg-emerald-50/30 shadow-xs"
+                                  : "border-slate-200 bg-slate-50/50 opacity-70"
+                              }`}
+                            >
+                              {/* Barra del Nivel: Toggle de Nivel + Total Secciones */}
+                              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                <label className="flex items-center gap-3 cursor-pointer select-none">
+                                  <input
+                                    type="checkbox"
+                                    checked={nivelItem.activo}
+                                    onChange={() => handleToggleNivelActivo(centroIdx, nivelIdx)}
+                                    className="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300 bg-white cursor-pointer"
+                                  />
+                                  <div className="flex items-center gap-2">
+                                    <span className="px-2.5 py-1 bg-slate-900 text-white text-xs font-black rounded-lg">
+                                      {nivelItem.nivel} Año
+                                    </span>
+                                    <span className="text-xs font-bold text-slate-800">
+                                      {nivelItem.activo ? "Imparto este nivel" : "No imparto este nivel"}
+                                    </span>
+                                  </div>
+                                </label>
+
+                                {nivelItem.activo && (
+                                  <div className="flex items-center gap-3 self-end sm:self-auto">
+                                    <div className="flex items-center gap-2">
+                                      <label className="text-[11px] font-bold text-slate-600">
+                                        Total secciones en el colegio:
+                                      </label>
+                                      <input
+                                        type="number"
+                                        min={1}
+                                        max={25}
+                                        value={nivelItem.totalSeccionesColegio}
+                                        onChange={(e) =>
+                                          handleCambiarTotalSecciones(
+                                            centroIdx,
+                                            nivelIdx,
+                                            parseInt(e.target.value, 10)
+                                          )
+                                        }
+                                        className="w-16 px-2.5 py-1 bg-white border border-slate-300 rounded-lg text-center text-xs font-black text-slate-900 focus:outline-none focus:border-emerald-600"
+                                      />
+                                    </div>
+
+                                    <div className="flex items-center gap-1.5 border-l border-slate-200 pl-3">
+                                      <button
+                                        type="button"
+                                        onClick={() => handleSeleccionarTodasSecciones(centroIdx, nivelIdx)}
+                                        className="px-2 py-1 bg-white hover:bg-slate-100 border border-slate-300 text-[10.5px] font-bold text-slate-700 rounded-lg transition-colors"
+                                      >
+                                        Todas
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={() => handleLimpiarSecciones(centroIdx, nivelIdx)}
+                                        className="px-2 py-1 bg-white hover:bg-slate-100 border border-slate-300 text-[10.5px] font-bold text-slate-500 rounded-lg transition-colors"
+                                      >
+                                        Limpiar
+                                      </button>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Chips de Selección de Secciones Asignadas al Docente */}
+                              {nivelItem.activo && (
+                                <div className="space-y-2 pt-1">
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-[11px] font-bold text-slate-700">
+                                      Marca las secciones que tú atiendes:
+                                    </span>
+                                    <span className="text-[11px] font-black text-emerald-800 bg-emerald-100/90 px-2.5 py-0.5 rounded-full">
+                                      Atiendes {asignadas.length} de {totalCol} secciones
+                                    </span>
+                                  </div>
+
+                                  <div className="flex flex-wrap gap-2 pt-1">
+                                    {listaCodigosColegio.map((secCodigo) => {
+                                      const estaSeleccionada = asignadas.includes(secCodigo);
+                                      return (
+                                        <button
+                                          key={secCodigo}
+                                          type="button"
+                                          onClick={() => handleToggleSeccion(centroIdx, nivelIdx, secCodigo)}
+                                          className={`px-3 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 transition-all shadow-2xs ${
+                                            estaSeleccionada
+                                              ? "bg-emerald-700 text-white ring-2 ring-emerald-600/30 scale-102"
+                                              : "bg-white text-slate-600 border border-slate-300 hover:bg-slate-100"
+                                          }`}
+                                        >
+                                          {estaSeleccionada && <Check size={14} weight="bold" />}
+                                          <span>Sección {secCodigo}</span>
+                                        </button>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
 
           {/* Botón de Guardar */}
           <div className="flex items-center justify-end gap-3 pt-4">

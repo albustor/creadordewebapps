@@ -947,12 +947,13 @@
         <div class="item-header"><span class="item-num">6. Identificación de elementos</span></div>
         <p style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #0f172a;">
           Relacione cada elemento con su función:<br>
-          <span style="color: #475569; font-size: 11.5px; font-weight: 600;">a. Ejecuta una acción. &nbsp;|&nbsp; b. Procesa información y controla el sistema. &nbsp;|&nbsp; c. Captura información del entorno.</span>
+          <span style="color: #0f172a; font-size: 12px; font-weight: 800; display: block; margin: 4px 0;">1. Sensor &nbsp;|&nbsp; 2. Actuador &nbsp;|&nbsp; 3. Microcontrolador</span>
+          <span style="color: #475569; font-size: 11.5px; font-weight: 600; display: block;">a. Ejecuta una acción. &nbsp;|&nbsp; b. Procesa información y controla el sistema. &nbsp;|&nbsp; c. Captura información del entorno.</span>
         </p>
         <div id="optsItem6">
-          <button class="opcion-btn" onclick="responderItem(6, 0, true, '¡Correcto! Sensor = c (Captura), Actuador = a (Ejecuta acción), Microcontrolador = b (Procesa y controla).')">A. Sensor: c | Actuador: a | Microcontrolador: b</button>
-          <button class="opcion-btn" onclick="responderItem(6, 1, false, 'El sensor captura información, no ejecuta acciones.')">B. Sensor: a | Actuador: b | Microcontrolador: c</button>
-          <button class="opcion-btn" onclick="responderItem(6, 2, false, 'El microcontrolador procesa información, no es sensor directo.')">C. Sensor: b | Actuador: c | Microcontrolador: a</button>
+          <button class="opcion-btn" onclick="responderItem(6, 0, true, '¡Correcto! 1. Sensor = c (Captura), 2. Actuador = a (Ejecuta acción), 3. Microcontrolador = b (Procesa y controla).')">A. 1. Sensor: c | 2. Actuador: a | 3. Microcontrolador: b</button>
+          <button class="opcion-btn" onclick="responderItem(6, 1, false, 'El sensor (1) captura información del entorno (c), no ejecuta acciones.')">B. 1. Sensor: a | 2. Actuador: b | 3. Microcontrolador: c</button>
+          <button class="opcion-btn" onclick="responderItem(6, 2, false, 'El microcontrolador (3) procesa información (b), no ejecuta directamente la acción física.')">C. 1. Sensor: b | 2. Actuador: c | 3. Microcontrolador: a</button>
         </div>
         <div id="retroItem6" class="retro-box"></div>
       </div>
@@ -1035,81 +1036,50 @@
           </h2>
         </div>
         <span style="font-size: 11px; color: #0369a1; font-weight: 800; background: #e0f2fe; padding: 4px 10px; border-radius: 6px; border: 1px solid #7dd3fc;" id="badgeSubRetoProgreso">
-          Reto Práctico: 1 de 3
+          Reto Práctico: 1 de 2
         </span>
       </div>
 
-      <!-- SUB-NAVEGADOR DE LOS 3 RETOS PRÁCTICOS -->
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px;">
-        <button type="button" class="nav-tab activa" id="btnTabSubReto1" onclick="cambiarSubReto(1)" style="padding: 8px; border-radius: 8px;">
-          <span style="font-size: 9.5px; font-weight: 800; color: #64748b; text-transform: uppercase;">Reto 1</span>
-          <span style="font-size: 11.5px; font-weight: 900; color: #0369a1;">🔌 1. Conectar una luz de acuerdo a la intensidad de luz ambiente</span>
+      <!-- SUB-NAVEGADOR DE LOS 2 RETOS PRÁCTICOS -->
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px;">
+        <button type="button" class="nav-tab activa" id="btnTabSubReto1" onclick="cambiarSubReto(1)" style="padding: 10px 8px; border-radius: 8px;">
+          <span style="font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase;">Reto 1</span>
+          <span style="font-size: 12px; font-weight: 900; color: #0369a1;">🔌 1. Conectar prototipo Iluminación Inteligente</span>
         </button>
-        <button type="button" class="nav-tab" id="btnTabSubReto2" onclick="cambiarSubReto(2)" style="padding: 8px; border-radius: 8px;">
-          <span style="font-size: 9.5px; font-weight: 800; color: #64748b; text-transform: uppercase;">Reto 2</span>
-          <span style="font-size: 11.5px; font-weight: 900; color: #0369a1;">🌀 2. Sustitución por ventilador ante calor intenso o alarma sonora</span>
-        </button>
-        <button type="button" class="nav-tab" id="btnTabSubReto3" onclick="cambiarSubReto(3)" style="padding: 8px; border-radius: 8px;">
-          <span style="font-size: 9.5px; font-weight: 800; color: #64748b; text-transform: uppercase;">Reto 3</span>
-          <span style="font-size: 11.5px; font-weight: 900; color: #0369a1;">🔍 3. Depurar y explicar propuesta con falla</span>
+        <button type="button" class="nav-tab" id="btnTabSubReto2" onclick="cambiarSubReto(2)" style="padding: 10px 8px; border-radius: 8px;">
+          <span style="font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase;">Reto 2</span>
+          <span style="font-size: 12px; font-weight: 900; color: #0369a1;">🔍 2. Depuración y Corrección de Circuito de Ventilación</span>
         </button>
       </div>
 
       <!-- ==================== BANNER DEL RETO 1 ==================== -->
       <div id="panelInstruccionReto1" style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px;">
         <h3 style="font-size: 13px; font-weight: 900; color: #15803d; margin-bottom: 4px;">
-          🔌 Reto 1: Conectar una luz de acuerdo a la intensidad de luz ambiente
+          🔌 Reto 1: Conectar prototipo de Iluminación Inteligente (Aula Inteligente)
         </h3>
         <p style="font-size: 12px; color: #1e293b; line-height: 1.5; margin: 0;">
           <strong>Instrucción:</strong> Conecta los <strong>5 terminales de polaridad y señal</strong> entre el sensor LDR (VCC 5V, GND, Pin A0) y el actuador de lámpara LED (Pin D9, GND). Luego varía la luz ambiental con el deslizador para validar que la lámpara encienda automáticamente cuando baje la iluminación (&lt;300 Lux).
         </p>
       </div>
 
-      <!-- ==================== BANNER DEL RETO 2 ==================== -->
-      <div id="panelInstruccionReto2" style="display: none; background: #eff6ff; border: 1.5px solid #7dd3fc; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px;">
-        <h3 style="font-size: 13px; font-weight: 900; color: #0369a1; margin-bottom: 4px;">
-          🌀 Reto 2: Sustitución por ventilador ante calor intenso o alarma sonora
-        </h3>
-        <p style="font-size: 12px; color: #1e293b; line-height: 1.5; margin-bottom: 6px;">
-          <strong>Instrucción y contexto:</strong> El reto de la lámpara fue superado en el Reto 1. En este segundo reto sustituimos el actuador e invertimos la lógica del sistema para responder a la nueva variable ambiental:
-        </p>
-        <ul style="margin: 0 0 10px 18px; font-size: 11.5px; color: #334155; line-height: 1.45;">
-          <li><strong>🌀 Ventilador DC:</strong> Invierte los valores y se activa cuando el <em>calor o intensidad ambiental es alta</em> (&gt;500 Lux) para refrigerar el aula.</li>
-          <li><strong>🔔 Alarma sonora:</strong> Emite sonido cuando se alcanza el <em>umbral crítico</em> (&gt;700 Lux) indicando que es la hora requerida para encender la ventilación o alertar.</li>
-        </ul>
-        
-        <!-- SELECTOR DE ACTUADORES DEL RETO 2 (VENTILADOR Y ALARMA) -->
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
-          <button type="button" class="btn btn-outline" id="btnSelAct_VENTILADOR" onclick="seleccionarActuadorReto2('VENTILADOR')" style="font-size: 11.5px; padding: 8px 6px; background: #e0f2fe; border-color: #0284c7; color: #0369a1; font-weight: 800;">
-            🌀 1. Ventilador DC (Activa ante calor intenso &gt;500 Lux)
-          </button>
-          <button type="button" class="btn btn-outline" id="btnSelAct_ALARMA" onclick="seleccionarActuadorReto2('ALARMA')" style="font-size: 11.5px; padding: 8px 6px;">
-            🔔 2. Alarma Sonora (Alerta umbral crítico &gt;700 Lux)
-          </button>
-        </div>
-      </div>
-
-      <!-- ==================== BANNER DEL RETO 3 (ARRIBA DEL SIMULADOR) ==================== -->
-      <div id="panelInstruccionReto3" style="display: none; background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 10px; padding: 14px; margin-bottom: 14px;">
+      <!-- ==================== BANNER DEL RETO 2 (DEPURACIÓN) ==================== -->
+      <div id="panelInstruccionReto2" style="display: none; background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 10px; padding: 14px; margin-bottom: 14px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 4px;">
           <h3 style="font-size: 13.5px; font-weight: 900; color: #92400e; margin: 0;">
-            🔍 Reto 3: Depurar y explicar propuesta con falla
+            🔍 Reto 2: Depuración y Corrección de Falla en Circuito de Climatización / Ventilación
           </h3>
-          <button type="button" class="btn btn-warning" style="font-size: 10.5px; padding: 3px 8px; min-height: 26px;" onclick="cargarCircuitoFallaReto3()">
-            ⚠️ Cargar propuesta con falla
+          <button type="button" class="btn btn-warning" style="font-size: 10.5px; padding: 4px 10px; min-height: 26px; font-weight: 800;" onclick="cargarCircuitoFallaReto2()">
+            ⚠️ Cargar circuito con falla
           </button>
         </div>
         <p style="font-size: 12px; color: #334155; line-height: 1.5; margin: 0;">
-          <strong>Situación para depurar:</strong> Un estudiante armó una propuesta donde <em>la lámpara nunca responde al oscurecer</em>. Utiliza el <strong>simulador interactivo de hardware que se encuentra a continuación</strong> para diagnosticar la falla, corregir el conexionado y registrar tu análisis técnico en las preguntas de la parte inferior.
+          <strong>Situación para depurar:</strong> Se ha conectado un circuito con <strong>Sensor de Temperatura (Termistor NTC)</strong> y un <strong>Actuador Ventilador DC</strong> para encender la ventilación cuando la temperatura supere los <strong>28°C</strong>. Sin embargo, <em>el ventilador nunca se enciende ante el calor</em>. Utiliza el <strong>simulador interactivo de hardware que se encuentra a continuación</strong> para diagnosticar la falla física, corregir el conexionado y registrar tu análisis técnico en las preguntas de la parte inferior.
         </p>
       </div>
 
       <!-- CONTROLES Y HERRAMIENTAS DEL SIMULADOR -->
       <div class="sim-panel-header">
-        <div class="actions-grid-mobile" style="grid-template-columns: repeat(3, 1fr);">
-          <button class="btn btn-accent" style="font-weight: 800; box-shadow: 0 0 10px rgba(16,185,129,0.2);" onclick="sincronizarYValidarConexion()">
-            🚀 Sincronizar Conexión
-          </button>
+        <div class="actions-grid-mobile" style="grid-template-columns: repeat(2, 1fr);">
           <button class="btn btn-warning" onclick="restaurarCircuitoValores()">
             🔄 Restaurar Valores
           </button>
@@ -1118,14 +1088,14 @@
           </button>
         </div>
 
-        <!-- SLIDER DE LUZ AMBIENTAL -->
+        <!-- SLIDER DE CONTROL VARIABLE -->
         <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 10px 14px;">
           <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; margin-bottom: 4px;">
-            <span style="color: #64748b; font-weight: 700;">🌙 Noche (0 Lux)</span>
+            <span id="lblSliderMin" style="color: #64748b; font-weight: 700;">🌙 Noche (0 Lux)</span>
             <strong id="labelLuxAmbiental" style="color: #b45309; font-size: 12px; font-family: monospace; font-weight: 900;">
               Luz: 180 Lux (Poca Luz)
             </strong>
-            <span style="color: #64748b; font-weight: 700;">☀️ Sol (850 Lux)</span>
+            <span id="lblSliderMax" style="color: #64748b; font-weight: 700;">☀️ Sol (850 Lux)</span>
           </div>
           <input type="range" id="sliderLuz" min="0" max="850" value="180" style="width: 100%; cursor: pointer;" oninput="actualizarSimulador(this.value)">
         </div>
@@ -1144,7 +1114,7 @@
           </div>
 
           <div class="hardware-workspace">
-            <!-- SENSOR LDR -->
+            <!-- SENSOR LDR / NTC -->
             <div class="hardware-card" id="cardSensor">
               <div>
                 <div style="font-size: 20px;">☀️</div>
@@ -1176,7 +1146,8 @@
                 </div>
                 <div style="display: flex; flex-direction: column; gap: 3px;">
                   <div class="pin-terminal" id="pin_mcu_a0" onclick="clickPin('mcu_a0')">🟢 A0</div>
-                  <div class="pin-terminal" id="pin_mcu_d9" onclick="clickPin('mcu_d9')">🟡 D9</div>
+                  <div class="pin-terminal" id="pin_mcu_a3" onclick="clickPin('mcu_a3')" style="display: none; background: #ffedd5; border-color: #fdba74; color: #c2410c;">🟠 A3 (Entrada)</div>
+                  <div class="pin-terminal" id="pin_mcu_d9" onclick="clickPin('mcu_d9')">🟡 D9 (Salida)</div>
                 </div>
               </div>
 
@@ -1193,7 +1164,7 @@
               </div>
 
               <div style="margin-top: 4px; display: flex; flex-direction: column; gap: 3px;">
-                <div class="pin-terminal" id="pin_act_sig" onclick="clickPin('act_sig')">🟡 Pin D9</div>
+                <div class="pin-terminal" id="pin_act_sig" onclick="clickPin('act_sig')">🟡 Pin SIG</div>
                 <div class="pin-terminal" id="pin_act_gnd" onclick="clickPin('act_gnd')">⚫ GND</div>
               </div>
 
@@ -1288,28 +1259,28 @@
       </div>
 
       <!-- ==================== PREGUNTAS DE DEPURACIÓN Y EXPLICACIÓN (ABAJO DEL SIMULADOR) ==================== -->
-      <div id="panelPreguntasReto3" style="display: none; margin-top: 14px; background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 10px; padding: 14px;">
+      <div id="panelPreguntasReto2" style="display: none; margin-top: 14px; background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 10px; padding: 14px;">
         <h3 style="font-size: 13px; font-weight: 900; color: #92400e; margin-bottom: 10px;">
-          📝 Preguntas de Diagnóstico y Depuración del Reto 3
+          📝 Reto 2: Diagnóstico Técnico y Corrección del Circuito de Climatización
         </h3>
 
         <!-- PASO 1: IDENTIFICACIÓN DEL ERROR -->
         <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px 12px; margin-bottom: 10px;">
           <label style="display: block; font-size: 11.5px; font-weight: 800; color: #0369a1; margin-bottom: 6px;">
-            1. ¿Cuál es el error presente en la conexión del prototipo?
+            1. ¿Cuál es el error físico que impide que el Ventilador DC se encienda cuando la temperatura supera el umbral?
           </label>
           <div style="display: grid; grid-template-columns: 1fr; gap: 4px;">
-            <button class="opcion-btn" id="btnDiagReto3_1" onclick="seleccionarDiagnosticoReto3(1, true, this)">
-              A. El terminal de señal del sensor LDR fue conectado a 5V en vez de la entrada analógica A0, anulando la variación de lectura de luminosidad.
+            <button class="opcion-btn" id="btnDiagReto2_1" onclick="seleccionarDiagnosticoReto2(1, true, this)">
+              A. El terminal de señal del Ventilador DC fue conectado a una entrada analógica (A3) en lugar de una salida digital (D0-D7 / D9), impidiendo que el microcontrolador le envíe la señal de activación.
             </button>
-            <button class="opcion-btn" id="btnDiagReto3_2" onclick="seleccionarDiagnosticoReto3(2, false, this)">
-              B. El microcontrolador requiere conectarse a Internet por Wi-Fi obligatoriamente.
+            <button class="opcion-btn" id="btnDiagReto2_2" onclick="seleccionarDiagnosticoReto2(2, false, this)">
+              B. Polaridad invertida en el terminal GND del sensor de temperatura, bloqueando el suministro general de energía.
             </button>
-            <button class="opcion-btn" id="btnDiagReto3_3" onclick="seleccionarDiagnosticoReto3(3, false, this)">
-              C. La lámpara LED no funciona con corriente directa.
+            <button class="opcion-btn" id="btnDiagReto2_3" onclick="seleccionarDiagnosticoReto2(3, false, this)">
+              C. El actuador Ventilador DC requiere obligatoriamente una fuente de 220V de corriente alterna.
             </button>
           </div>
-          <div id="retroDiagReto3" class="retro-box"></div>
+          <div id="retroDiagReto2" class="retro-box"></div>
         </div>
 
         <!-- PASO 2: CORRECCIÓN FÍSICA EN EL SIMULADOR -->
@@ -1318,27 +1289,27 @@
             2. Corrección física en el simulador interactivo:
           </label>
           <span style="font-size: 11px; color: #475569; display: block; margin-bottom: 6px;">
-            En el banco de hardware interactivo arriba, realiza la corrección del conexionado identificada en el simulador.
+            En el banco de hardware interactivo superior, desconecta el cable naranja de la entrada analógica A3 y reconéctalo al pin digital de salida D9.
           </span>
-          <div id="statusCorreccionReto3" style="font-size: 11.5px; font-weight: 800; color: #b45309;">
+          <div id="statusCorreccionReto2" style="font-size: 11.5px; font-weight: 800; color: #b45309;">
             ⏳ Estado: Pendiente de corrección física en el simulador.
           </div>
         </div>
 
-        <!-- PASO 3: EXPLICACIÓN TÉCNICA -->
+        <!-- PASO 3: JUSTIFICACIÓN TÉCNICA CONCEPTUAL -->
         <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px 12px;">
           <label style="display: block; font-size: 11.5px; font-weight: 800; color: #92400e; margin-bottom: 4px;">
             3. Explica la justificación técnica de tu corrección:
           </label>
           <div style="display: grid; grid-template-columns: 1fr; gap: 4px; margin-bottom: 6px;">
-            <button class="opcion-btn" id="btnJustReto3_1" onclick="seleccionarJustificacionReto3(1, 'El pin A0 es una entrada analógica que lee valores variables de voltaje proporcionales a la luz, mientras que 5V es una línea de alimentación fija.', this)">
-              • Porque el pin A0 es una entrada analógica que lee voltajes variables según la luz, mientras que 5V suministra una tensión fija sin variación.
+            <button class="opcion-btn" id="btnJustReto2_1" onclick="seleccionarJustificacionReto2(1, 'Porque los actuadores requieren señales de salida digital (HIGH/LOW o PWM) para recibir energía y órdenes de control, mientras que los pines analógicos A0-A3 están diseñados exclusivamente como entradas para leer el voltaje de los sensores.', this)">
+              • Porque los actuadores requieren señales de salida digital (HIGH/LOW o PWM) para recibir energía y órdenes de control, mientras que los pines analógicos A0-A3 están diseñados exclusivamente como entradas para leer el voltaje de los sensores.
             </button>
-            <button class="opcion-btn" id="btnJustReto3_2" onclick="seleccionarJustificacionReto3(2, 'Permite al microcontrolador ejecutar la estructura condicional con el umbral programado.', this)">
-              • Porque permite al programa del microcontrolador evaluar la condición lógica del umbral (&lt;300 Lux).
+            <button class="opcion-btn" id="btnJustReto2_2" onclick="seleccionarJustificacionReto2(2, 'Porque al reubicar el cable en el pin D9 se reinicia el procesador interno del microcontrolador.', this)">
+              • Porque al reubicar el cable en el pin D9 se reinicia el procesador interno del microcontrolador.
             </button>
           </div>
-          <textarea id="inputExplicacionReto3" rows="2" placeholder="Complementa tu justificación técnica con tus propias palabras aquí..." style="width: 100%; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 6px; padding: 8px 10px; color: #0f172a; font-size: 11.5px; outline: none;" oninput="actualizarTextoExplicacionReto3(this.value)"></textarea>
+          <textarea id="inputExplicacionReto2" rows="2" placeholder="Complementa tu justificación técnica con tus propias palabras aquí..." style="width: 100%; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 6px; padding: 8px 10px; color: #0f172a; font-size: 11.5px; outline: none;" oninput="actualizarTextoExplicacionReto2(this.value)"></textarea>
         </div>
       </div>
 
@@ -1351,7 +1322,7 @@
             ◀️ Reto Anterior
           </button>
           <button class="btn btn-accent" id="btnSubRetoNext" style="padding: 9px 20px; font-size: 13.5px; font-weight: 800;" onclick="avanzarSubReto()">
-            Validar Reto 1 y Pasar al Reto 2 ➔
+            Continuar al Reto 2: Depuración ➔
           </button>
         </div>
       </div>
@@ -1469,47 +1440,54 @@
     </div>
 
     <!-- ==================================================================== -->
-    <!-- ETAPA 5: COMPROBANTE DE ENTREGA Y CÓDIGO QR PARA EL DOCENTE         -->
+    <!-- ETAPA 5: COMPROBANTE DE ENTREGA DIGITAL EN LÍNEA PARA EL DOCENTE -->
     <!-- ==================================================================== -->
     <div id="seccion5" class="card" style="display: none; text-align: center; max-width: 680px; margin: 0 auto;">
-      <div style="font-size: 38px; margin-bottom: 6px;">🎉</div>
-      <h2 style="font-size: 1.4rem; color: #0369a1; font-weight: 900;">
+      <div style="font-size: 42px; margin-bottom: 8px;">🎉</div>
+      <h2 style="font-size: 1.45rem; color: #0369a1; font-weight: 900;">
         ¡Diagnóstico Completado con Éxito!
       </h2>
-      <p style="font-size: 12.5px; color: #475569; margin-bottom: 14px;" id="etiquetaEstudianteResumen">
+      <p style="font-size: 13px; color: #475569; margin-bottom: 16px;" id="etiquetaEstudianteResumen">
         Estudiante: <strong style="color: #0f172a;">Estudiante 9° Año</strong> • Sección: <strong style="color: #0284c7;">Sección 9-1</strong>
       </p>
 
-      <!-- TARJETA DEL CÓDIGO QR PARA QUE EL DOCENTE ESCANEE DESDE LA PANTALLA DE LA COMPUTADORA -->
-      <div style="background: #ffffff; border: 2px solid #7dd3fc; border-radius: 14px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.08);">
-        <h3 style="font-size: 13px; color: #0369a1; font-weight: 800; margin-bottom: 8px;">
-          🖥️ Código QR de Entrega (Presenta esta pantalla al Docente si lo solicita)
+      <!-- TARJETA DE CONFIRMACIÓN DE ENTREGA EN LÍNEA (SIN QR) -->
+      <div style="background: #ffffff; border: 2px solid #86efac; border-radius: 14px; padding: 22px 18px; margin-bottom: 16px; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.08);">
+        <div style="display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; background: #dcfce7; border-radius: 50%; color: #15803d; font-size: 26px; margin-bottom: 10px;">
+          ☁️
+        </div>
+        <h3 style="font-size: 14px; color: #15803d; font-weight: 900; margin-bottom: 8px;">
+          Evidencia Sincronizada Directamente en Línea
         </h3>
-        <p style="font-size: 11.5px; color: #64748b; margin-bottom: 14px;">
-          Tus respuestas han sido procesadas. El docente puede escanear este código QR o visualizar tu registro directo en el Instrumento Evaluador.
+        <p style="font-size: 12px; color: #334155; line-height: 1.5; margin-bottom: 14px;">
+          Tus respuestas del cuestionario y del simulador interactivo han sido enviadas y registradas con éxito en el <strong>Instrumento Evaluador Docente</strong>. No requieres presentar código QR, el docente ya tiene tu registro en su pantalla en tiempo real.
         </p>
 
-        <div style="display: inline-block; background: white; padding: 12px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); border: 1px solid #e2e8f0;">
-          <canvas id="qrCanvasFinal" width="200" height="200" style="display: block;"></canvas>
-        </div>
-
-        <div style="margin-top: 12px; font-size: 11.5px; color: #334155;" id="tokenHashLabelFinal">
-          <strong>HASH DE SEGURIDAD:</strong> <span style="color: #15803d; font-family: monospace; font-weight: 800;">DIAG9-VALIDADO</span>
+        <div style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 10px; padding: 12px; display: inline-block; width: 100%; max-width: 480px; text-align: left;">
+          <div style="display: flex; justify-content: space-between; font-size: 11.5px; margin-bottom: 6px;">
+            <span style="color: #64748b; font-weight: 700;">📡 Modo de Transmisión:</span>
+            <strong style="color: #0369a1;">Sincronización Directa (En Línea)</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 11.5px; margin-bottom: 6px;">
+            <span style="color: #64748b; font-weight: 700;">🕒 Hora de Recepción:</span>
+            <strong style="color: #0f172a;" id="horaEntregaOnlineLabel">Registrada</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 11.5px;" id="tokenHashLabelFinal">
+            <span style="color: #64748b; font-weight: 700;">🛡️ Hash de Verificación:</span>
+            <span style="color: #15803d; font-family: monospace; font-weight: 800;">DIAG9-VALIDADO</span>
+          </div>
         </div>
       </div>
 
-      <!-- ESTADO DE TRANSMISIÓN TELEMÉTRICA / LOCAL -->
+      <!-- ESTADO DE TRANSMISIÓN TELEMÉTRICA -->
       <div id="estadoTelemetria" style="padding: 10px 14px; border-radius: 10px; margin-bottom: 16px; font-size: 12px; font-weight: 700; background: #e0f2fe; border: 1.5px solid #7dd3fc; color: #0369a1;">
         📡 Evidencia sincronizada con la base de datos docente.
       </div>
 
       <!-- ACCIONES Y REINICIO PARA SIGUIENTE ESTUDIANTE -->
       <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
-        <button class="btn" style="background: #059669; color: white; font-weight: 900; font-size: 12.5px; padding: 9px 18px; border-radius: 10px; box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25);" onclick="prepararSiguienteEstudiante(false)" title="Prepara el equipo para el siguiente estudiante en el laboratorio">
+        <button class="btn" style="background: #059669; color: white; font-weight: 900; font-size: 12.5px; padding: 9px 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25);" onclick="prepararSiguienteEstudiante(false)" title="Prepara el equipo para el siguiente estudiante en el laboratorio">
           ✨ Iniciar Siguiente Estudiante
-        </button>
-        <button class="btn btn-accent" onclick="mostrarModalQR()" title="Muestra el código QR ampliado">
-          🔍 Ver QR Ampliado
         </button>
         <button class="btn btn-outline" onclick="mostrarModalInstrumento()">
           📋 Ver Criterios de Logro
@@ -1601,18 +1579,20 @@
         ldr_gnd: false,
         ldr_sig: false,
         act_sig: false,
-        act_gnd: false
+        act_gnd: false,
+        act_sig_erroneo_a3: false
       },
       subRetoActual: 1,
-      reto3Iniciado: false,
-      reto3Diagnostico: null,
-      reto3Justificacion: "",
-      reto3JustificacionOpc: 0,
-      reto3Explicacion: "",
+      reto2Iniciado: false,
+      reto2Diagnostico: null,
+      reto2Justificacion: "",
+      reto2JustificacionOpc: 0,
+      reto2Explicacion: "",
       pinSeleccionado: null,
       actuadorActual: "LED",
       fallaInyectada: 0,
       luzActual: 180,
+      tempActual: 32,
       audioHabilitado: true,
       tiempoInicio: Date.now(),
       tiempoTotal: 0
@@ -1621,11 +1601,12 @@
     var subRetoActual = 1;
 
     var CONEXIONES_VALIDAS = [
-      { p1: "sensor_vcc", p2: "mcu_5v", cableId: "ldr_vcc", color: "#ef4444", nombre: "VCC (5V) Sensor LDR" },
-      { p1: "sensor_gnd", p2: "mcu_gnd", cableId: "ldr_gnd", color: "#38bdf8", nombre: "GND Sensor LDR" },
+      { p1: "sensor_vcc", p2: "mcu_5v", cableId: "ldr_vcc", color: "#ef4444", nombre: "VCC (5V) Sensor" },
+      { p1: "sensor_gnd", p2: "mcu_gnd", cableId: "ldr_gnd", color: "#38bdf8", nombre: "GND Sensor" },
       { p1: "sensor_sig", p2: "mcu_a0", cableId: "ldr_sig", color: "#10b981", nombre: "Señal Analógica A0 (Entrada)" },
       { p1: "act_sig", p2: "mcu_d9", cableId: "act_sig", color: "#f59e0b", nombre: "Señal Digital D9 (Salida Actuador)" },
-      { p1: "act_gnd", p2: "mcu_gnd", cableId: "act_gnd", color: "#38bdf8", nombre: "GND Actuador" }
+      { p1: "act_gnd", p2: "mcu_gnd", cableId: "act_gnd", color: "#38bdf8", nombre: "GND Actuador" },
+      { p1: "act_sig", p2: "mcu_a3", cableId: "act_sig_erroneo_a3", color: "#ea580c", nombre: "⚠️ Señal Actuador a Entrada A3 (Conexión Errónea)" }
     ];
 
     var audioCtx = null;
@@ -1829,46 +1810,117 @@
       return false;
     }
 
-    function desbloquearDatosIdentificacionDocente() {
-      var pin = prompt("🔑 Ingrese la contraseña de la persona docente o asesora registrada para habilitar la edición de datos:");
-      if (!pin) return false;
-      if (verificarContrasenaDocente(pin)) {
-        estado.datosBloqueados = false;
-        var elNom = document.getElementById("inputEstudianteNombre");
-        var elSec = document.getElementById("selectSeccion");
-        var elCed = document.getElementById("inputEstudianteCedula");
-        var elCor = document.getElementById("inputEstudianteCorreo");
-        var elCent = document.getElementById("inputCentroEducativo");
-        var elDoc = document.getElementById("inputDocente");
-        var btn = document.getElementById("btnIniciarDiagnostico");
-        var lbl1 = document.getElementById("tabSec1Label");
-        var sub1 = document.getElementById("tabSec1Sub");
+    // MODAL SEGURO DE AUTORIZACIÓN CON MÁSCARA DE CONTRASEÑA/PIN (TIPO PASSWORD ***)
+    function solicitarPinDocenteModal(opciones) {
+      opciones = opciones || {};
+      var modalExistente = document.getElementById("modalPinDocenteSeguro");
+      if (modalExistente) modalExistente.remove();
 
-        if (elNom) elNom.disabled = false;
-        if (elSec) elSec.disabled = false;
-        if (elCed) elCed.disabled = false;
-        if (elCor) elCor.disabled = false;
-        if (elCent) elCent.disabled = false;
-        if (elDoc) elDoc.disabled = false;
-        if (btn) {
-          btn.disabled = false;
-          btn.innerHTML = "Comenzar Parte A (Conocimientos previos) ➔";
-          btn.style.background = "#0284c7";
-          btn.style.cursor = "pointer";
-        }
-        if (lbl1) lbl1.innerText = "1. Datos";
-        if (sub1) sub1.innerText = "Identificación";
-        var tab1 = document.getElementById("tabSec1");
-        if (tab1) {
-          tab1.style.opacity = "1";
-        }
-        guardarProgresoEnLocalStorage();
-        alert("✅ Autorización confirmada. Modo de edición de datos habilitado por la persona docente.");
-        return true;
-      } else {
-        alert("❌ Contraseña de docente o asesor incorrecta. No se permite la edición de datos.");
-        return false;
+      var overlay = document.createElement("div");
+      overlay.id = "modalPinDocenteSeguro";
+      overlay.style.cssText = "position:fixed;inset:0;background:rgba(15,23,42,0.8);backdrop-filter:blur(4px);z-index:999999;display:flex;align-items:center;justify-content:center;padding:16px;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;";
+
+      var html = '<div style="background:#ffffff;border-radius:24px;border:2px solid #e2e8f0;max-width:380px;width:100%;padding:24px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.35);text-align:center;">'
+        + '<div style="width:50px;height:50px;border-radius:16px;background:#ecfdf5;border:1px solid #a7f3d0;color:#047857;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:26px;">🔐</div>'
+        + '<h3 style="margin:0 0 6px;font-size:16px;font-weight:900;color:#0f172a;">' + (opciones.titulo || 'Autorización Docente') + '</h3>'
+        + '<p style="margin:0 0 16px;font-size:12px;color:#64748b;line-height:1.4;">' + (opciones.mensaje || 'Ingrese la clave o PIN de 4 dígitos para habilitar la edición de datos:') + '</p>'
+        + '<div style="position:relative;margin-bottom:12px;">'
+        + '  <input type="password" id="inputModalPinDocenteSeguro" maxlength="10" placeholder="••••" autocomplete="off" style="width:100%;box-sizing:border-box;padding:12px;border:2px solid #cbd5e1;border-radius:14px;text-align:center;font-size:24px;font-family:monospace;letter-spacing:6px;font-weight:900;color:#0f172a;outline:none;background:#f8fafc;" />'
+        + '</div>'
+        + '<div id="modalPinDocenteErrorSeguro" style="display:none;color:#e11d48;font-size:11px;font-weight:800;margin-bottom:12px;">❌ Contraseña o PIN incorrecto</div>'
+        + '<div style="display:flex;gap:10px;">'
+        + '  <button id="btnModalPinCancelarSeguro" type="button" style="flex:1;padding:11px;border-radius:12px;border:1px solid #cbd5e1;background:#f1f5f9;color:#475569;font-weight:800;font-size:12px;cursor:pointer;">Cancelar</button>'
+        + '  <button id="btnModalPinAceptarSeguro" type="button" style="flex:1;padding:11px;border-radius:12px;border:none;background:#047857;color:#ffffff;font-weight:800;font-size:12px;cursor:pointer;box-shadow:0 4px 6px -1px rgba(4,120,87,0.3);">Autorizar</button>'
+        + '</div>'
+        + '</div>';
+
+      overlay.innerHTML = html;
+      document.body.appendChild(overlay);
+
+      var input = document.getElementById("inputModalPinDocenteSeguro");
+      var btnAceptar = document.getElementById("btnModalPinAceptarSeguro");
+      var btnCancelar = document.getElementById("btnModalPinCancelarSeguro");
+      var errorDiv = document.getElementById("modalPinDocenteErrorSeguro");
+
+      setTimeout(function() {
+        if (input) input.focus();
+      }, 50);
+
+      function cerrar() {
+        if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        if (opciones.onCancelar) opciones.onCancelar();
       }
+
+      function validar() {
+        var valor = input ? input.value.trim() : "";
+        if (!valor) return;
+        if (verificarContrasenaDocente(valor)) {
+          if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+          if (opciones.onExito) opciones.onExito(valor);
+        } else {
+          if (errorDiv) errorDiv.style.display = "block";
+          if (input) {
+            input.value = "";
+            input.focus();
+          }
+        }
+      }
+
+      btnAceptar.onclick = validar;
+      btnCancelar.onclick = cerrar;
+      input.onkeydown = function(e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          validar();
+        } else if (e.key === "Escape") {
+          e.preventDefault();
+          cerrar();
+        }
+      };
+    }
+
+    function desbloquearDatosIdentificacionDocente(callback) {
+      solicitarPinDocenteModal({
+        titulo: "Habilitar Edición de Datos",
+        mensaje: "Ingrese el PIN o clave docente para corregir el nombre u otros datos del estudiante:",
+        onExito: function() {
+          estado.datosBloqueados = false;
+          var elNom = document.getElementById("inputEstudianteNombre");
+          var elSec = document.getElementById("selectSeccion");
+          var elCed = document.getElementById("inputEstudianteCedula");
+          var elCor = document.getElementById("inputEstudianteCorreo");
+          var elCent = document.getElementById("inputCentroEducativo");
+          var elDoc = document.getElementById("inputDocente");
+          var btn = document.getElementById("btnIniciarDiagnostico");
+          var lbl1 = document.getElementById("tabSec1Label");
+          var sub1 = document.getElementById("tabSec1Sub");
+
+          if (elNom) elNom.disabled = false;
+          if (elSec) elSec.disabled = false;
+          if (elCed) elCed.disabled = false;
+          if (elCor) elCor.disabled = false;
+          if (elCent) elCent.disabled = false;
+          if (elDoc) elDoc.disabled = false;
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = "Comenzar Parte A (Conocimientos previos) ➔";
+            btn.style.background = "#0284c7";
+            btn.style.cursor = "pointer";
+          }
+          if (lbl1) lbl1.innerText = "1. Datos";
+          if (sub1) sub1.innerText = "Identificación";
+          var tab1 = document.getElementById("tabSec1");
+          if (tab1) {
+            tab1.style.opacity = "1";
+          }
+          guardarProgresoEnLocalStorage();
+          irASeccion(1);
+          if (typeof callback === "function") callback(true);
+        },
+        onCancelar: function() {
+          if (typeof callback === "function") callback(false);
+        }
+      });
     }
 
     function comenzarDiagnosticoValido() {
@@ -1884,17 +1936,16 @@
     }
 
     function desbloquearPorDocente() {
-      var pin = prompt("🔑 Ingrese la contraseña de la persona docente o asesora registrada para habilitar una aplicación extemporánea:");
-      if (!pin) return;
-      if (verificarContrasenaDocente(pin)) {
-        var motivo = prompt("Motivo del desbloqueo (ej: Corrección de datos / Aplicación extemporánea / Criterio docente):", "Criterio Docente");
-        localStorage.removeItem("diagnostico_9no_mep_bloqueo_entrega");
-        localStorage.removeItem("diagnostico_9no_sesion_activa");
-        alert("✅ Desbloqueo autorizado por docente (" + (motivo || "Autorizado") + ").");
-        window.location.reload();
-      } else {
-        alert("❌ Contraseña de docente o asesor incorrecta.");
-      }
+      solicitarPinDocenteModal({
+        titulo: "Habilitar Aplicación Extemporánea",
+        mensaje: "Ingrese el PIN o contraseña docente para desbloquear una nueva aplicación:",
+        onExito: function() {
+          localStorage.removeItem("diagnostico_9no_mep_bloqueo_entrega");
+          localStorage.removeItem("diagnostico_9no_sesion_activa");
+          alert("✅ Desbloqueo autorizado por la persona docente.");
+          window.location.reload();
+        }
+      });
     }
 
     function irASeccion(num) {
@@ -1902,16 +1953,12 @@
         if (estado.seccionActual === 5) {
           var deseaNuevo = confirm("📋 La prueba diagnóstica anterior ya fue completada y enviada.\n\n¿Deseas preparar este equipo para el siguiente estudiante?");
           if (deseaNuevo) {
-            prepararSiguienteEstudiante(true);
+            prepararSiguienteEstudiante(false);
             return;
           }
         }
-        var docenteDesea = confirm("🔒 Los datos de identificación ya fueron registrados y están bloqueados para evitar alteraciones.\n\n¿Eres la persona docente y necesitas modificar los datos del estudiante?");
-        if (docenteDesea) {
-          if (!desbloquearDatosIdentificacionDocente()) return;
-        } else {
-          return;
-        }
+        desbloquearDatosIdentificacionDocente();
+        return;
       }
 
       if (num > 1 && !estado.datosBloqueados && !validarDatosEstudiante()) {
@@ -2016,9 +2063,10 @@
         cog: cogVec,
         retosPracticos: {
           reto1Conexion: (Object.values(estado.cables || {}).filter(Boolean).length) + "/5 terminales validados",
-          reto2Actuador: estado.actuadorActual || "LED",
-          reto3Diagnostico: estado.reto3Diagnostico ? (estado.reto3Diagnostico.correcta ? "Correcto (Pin A0 analógico)" : "Revisado") : "Pendiente",
-          reto3Corregido: !!(estado.cables && estado.cables.ldr_sig)
+          reto1Actuador: "Lámpara LED",
+          reto2Diagnostico: estado.reto2Diagnostico ? (estado.reto2Diagnostico.correcta ? "Correcto (Señal en A3 en vez de D9)" : "Revisado") : "Pendiente",
+          reto2Corregido: !!(estado.cables && estado.cables.act_sig && !estado.cables.act_sig_erroneo_a3),
+          reto2Justificacion: estado.reto2Justificacion || ""
         },
         reflexionParteC: estado.reflexion || {}
       };
@@ -2158,7 +2206,15 @@
         });
 
         if (match) {
-          estado.cables[match.cableId] = true;
+          if (match.cableId === "act_sig") {
+            estado.cables.act_sig = true;
+            estado.cables.act_sig_erroneo_a3 = false;
+          } else if (match.cableId === "act_sig_erroneo_a3") {
+            estado.cables.act_sig_erroneo_a3 = true;
+            estado.cables.act_sig = false;
+          } else {
+            estado.cables[match.cableId] = true;
+          }
           playBeep(1000, "sine", 0.15);
           logSerial("✅ Conexión establecida: " + match.nombre, "ok");
         } else {
@@ -2182,8 +2238,15 @@
     function restaurarCircuitoValores() {
       for (var k in estado.cables) estado.cables[k] = false;
       estado.fallaInyectada = 0;
-      estado.luzActual = 180;
-      document.getElementById("sliderLuz").value = 180;
+      if (subRetoActual === 1) {
+        estado.luzActual = 180;
+        var sl = document.getElementById("sliderLuz");
+        if (sl) sl.value = 180;
+      } else {
+        estado.tempActual = 32;
+        var sl = document.getElementById("sliderLuz");
+        if (sl) sl.value = 32;
+      }
 
       playBeep(500, "sine", 0.15);
       verificarEstadoCircuito();
@@ -2200,28 +2263,30 @@
       var faltaLDR = !estado.cables.ldr_sig || !estado.cables.ldr_vcc || !estado.cables.ldr_gnd;
       var faltaAct = !estado.cables.act_sig || !estado.cables.act_gnd;
 
-      if (conectados === 5 && !faltaLDR && !faltaAct) {
+      if (conectados >= 5 && !faltaLDR && !faltaAct && !estado.cables.act_sig_erroneo_a3) {
         playBeep(1200, "sine", 0.25);
         logSerial("🎉 ¡VALIDACIÓN EXITOSA! Conexiones (E-P-S) y polaridades 100% correctas.", "ok");
-        alert("¡Excelente! Circuito 100% verificado y enlazado. Ahora continúa con la Parte C (Reflexión).");
+        alert("¡Excelente! Circuito 100% verificado y enlazado.");
       } else {
         playBeep(300, "sawtooth", 0.2);
         var detalle = [];
-        if (faltaLDR) detalle.push("Sensor LDR incompleto (revisa 5V, GND y Señal A0)");
-        if (faltaAct) detalle.push("Actuador incompleto (revisa Pin D9 y GND)");
-        logSerial("⚠️ Conexión Incompleta (" + conectados + "/5 cables).", "warn");
-        alert("Conexión incompleta (" + conectados + " de 5 conexiones realizadas).\n\n" + detalle.join("\n") + "\n\nRevisa el monitor serial para completar el reto.");
+        if (faltaLDR) detalle.push("Sensor incompleto (revisa 5V, GND y Señal A0)");
+        if (faltaAct) detalle.push("Actuador incompleto (revisa Señal a Pin Digital D9 y GND)");
+        if (estado.cables.act_sig_erroneo_a3) detalle.push("El terminal de señal del actuador sigue en A3 analógico (debe conectarse a D9 digital).");
+        logSerial("⚠️ Conexión Incompleta o Errónea.", "warn");
+        alert("Conexión incompleta o con errores:\n\n" + detalle.join("\n") + "\n\nRevisa el simulador para corregir.");
       }
     }
 
     function verificarEstadoCircuito() {
       var conectados = 0;
-      var total = Object.keys(estado.cables).length;
       for (var k in estado.cables) {
         if (estado.cables[k]) conectados++;
       }
 
-      document.getElementById("labelCablesConteo").innerText = "Cables: " + conectados + " / " + total;
+      var totalEsperado = 5;
+      var labelConteo = document.getElementById("labelCablesConteo");
+      if (labelConteo) labelConteo.innerText = "Cables: " + conectados + " / " + totalEsperado;
 
       var pinSensorVcc = document.getElementById("pin_sensor_vcc");
       if (pinSensorVcc) pinSensorVcc.className = "pin-terminal" + (estado.cables.ldr_vcc ? " connected" : "");
@@ -2241,35 +2306,52 @@
       var pinMcuA0 = document.getElementById("pin_mcu_a0");
       if (pinMcuA0) pinMcuA0.className = "pin-terminal" + (estado.cables.ldr_sig ? " connected" : "");
 
+      var pinMcuA3 = document.getElementById("pin_mcu_a3");
+      if (pinMcuA3) pinMcuA3.className = "pin-terminal" + (estado.cables.act_sig_erroneo_a3 ? " connected" : "");
+
       var pinMcuD9 = document.getElementById("pin_mcu_d9");
       if (pinMcuD9) pinMcuD9.className = "pin-terminal" + (estado.cables.act_sig ? " connected" : "");
 
       var pinActSig = document.getElementById("pin_act_sig");
-      if (pinActSig) pinActSig.className = "pin-terminal" + (estado.cables.act_sig ? " connected" : "");
+      if (pinActSig) pinActSig.className = "pin-terminal" + ((estado.cables.act_sig || estado.cables.act_sig_erroneo_a3) ? " connected" : "");
 
       var pinActGnd = document.getElementById("pin_act_gnd");
       if (pinActGnd) pinActGnd.className = "pin-terminal" + (estado.cables.act_gnd ? " connected" : "");
 
       var status = document.getElementById("mcuStatusBadge");
-      var circuitoCompleto = (conectados >= 5);
+      var circuitoValido = (estado.cables.ldr_sig && estado.cables.ldr_vcc && estado.cables.ldr_gnd && estado.cables.act_sig && estado.cables.act_gnd && !estado.cables.act_sig_erroneo_a3);
 
-      if (circuitoCompleto) {
-        status.innerText = "✅ Enlazado (5/5)";
-        status.style.color = "#15803d";
-      } else {
-        status.innerText = "Conexiones: " + conectados + "/" + total;
-        status.style.color = "#0369a1";
-      }
-
-      if (subRetoActual === 3 && estado.cables.ldr_sig) {
-        var status3 = document.getElementById("statusCorreccionReto3");
-        if (status3) {
-          status3.innerHTML = "✅ Conexión física actualizada en el simulador.";
-          status3.style.color = "#15803d";
+      if (status) {
+        if (circuitoValido) {
+          status.innerText = "✅ Enlazado (5/5)";
+          status.style.color = "#15803d";
+        } else if (estado.cables.act_sig_erroneo_a3) {
+          status.innerText = "⚠️ Error: Señal en A3";
+          status.style.color = "#ea580c";
+        } else {
+          status.innerText = "Conexiones: " + conectados + "/" + totalEsperado;
+          status.style.color = "#0369a1";
         }
       }
 
-      actualizarSimulador(document.getElementById("sliderLuz").value);
+      if (subRetoActual === 2) {
+        var status2 = document.getElementById("statusCorreccionReto2");
+        if (status2) {
+          if (estado.cables.act_sig && !estado.cables.act_sig_erroneo_a3) {
+            status2.innerHTML = "✅ Conexión física corregida: Ventilador enlazado a pin digital de salida D9.";
+            status2.style.color = "#15803d";
+          } else if (estado.cables.act_sig_erroneo_a3) {
+            status2.innerHTML = "⚠️ Falla detectada: Señal del Ventilador en entrada analógica A3. Desconecta de A3 y conecta a la salida digital D9.";
+            status2.style.color = "#ea580c";
+          } else {
+            status2.innerHTML = "⏳ Estado: Pendiente de corrección física en el simulador.";
+            status2.style.color = "#b45309";
+          }
+        }
+      }
+
+      var slider = document.getElementById("sliderLuz");
+      actualizarSimulador(slider ? slider.value : 180);
     }
 
     function redibujarCablesSVG() {
@@ -2285,14 +2367,15 @@
         { cId: "ldr_gnd", pA: "pin_sensor_gnd", pB: "pin_mcu_gnd", color: "#38bdf8" },
         { cId: "ldr_sig", pA: "pin_sensor_sig", pB: "pin_mcu_a0", color: "#10b981" },
         { cId: "act_sig", pA: "pin_mcu_d9", pB: "pin_act_sig", color: "#f59e0b" },
-        { cId: "act_gnd", pA: "pin_act_gnd", pB: "pin_mcu_gnd", color: "#38bdf8" }
+        { cId: "act_gnd", pA: "pin_act_gnd", pB: "pin_mcu_gnd", color: "#38bdf8" },
+        { cId: "act_sig_erroneo_a3", pA: "pin_mcu_a3", pB: "pin_act_sig", color: "#ea580c" }
       ];
 
       cablesADibujar.forEach(function(item) {
         if (estado.cables[item.cId]) {
           var elA = document.getElementById(item.pA);
           var elB = document.getElementById(item.pB);
-          if (elA && elB) {
+          if (elA && elB && elA.offsetParent !== null && elB.offsetParent !== null) {
             var rA = elA.getBoundingClientRect();
             var rB = elB.getBoundingClientRect();
 
@@ -2315,41 +2398,79 @@
 
     window.addEventListener("resize", redibujarCablesSVG);
 
-    function actualizarSimulador(luxVal) {
-      estado.luzActual = parseInt(luxVal, 10);
-      var umbral = CONFIG.umbralLux;
-      
-      var circuitoValido = (estado.cables.ldr_sig && estado.cables.ldr_vcc && estado.cables.ldr_gnd && estado.cables.act_sig && estado.cables.act_gnd);
+    function actualizarSimulador(val) {
+      var circuitoValido = (estado.cables.ldr_sig && estado.cables.ldr_vcc && estado.cables.ldr_gnd && estado.cables.act_sig && estado.cables.act_gnd && !estado.cables.act_sig_erroneo_a3);
       if (estado.fallaInyectada === 1) circuitoValido = false;
 
-      var condicionCumplida = false;
+      var salidaActiva = false;
       var estadoDetalle = "";
 
-      if (estado.actuadorActual === "VENTILADOR") {
-        // Reto 2: Inversión lógica para ventilador (se activa ante calor/intensidad alta > 500)
-        condicionCumplida = (estado.luzActual > 500);
-        estadoDetalle = condicionCumplida ? "Calor intenso (>500 Lux) • Ventilador activo" : "Temperatura moderada (<=500 Lux) • Ventilador apagado";
-      } else if (estado.actuadorActual === "ALARMA") {
-        // Reto 2: Inversión lógica para alarma sonora (> 700)
-        condicionCumplida = (estado.luzActual > 700);
-        estadoDetalle = condicionCumplida ? "¡Umbral crítico alcanzado (>700 Lux)! • Alarma sonando" : "Nivel normal (<=700 Lux) • Alarma en reposo";
-      } else {
-        // Reto 1: Lámpara LED por defecto (< 300)
-        condicionCumplida = (estado.luzActual < umbral);
+      if (subRetoActual === 1) {
+        estado.luzActual = parseInt(val, 10);
+        var umbral = CONFIG.umbralLux;
+        var condicionCumplida = (estado.luzActual < umbral);
         if (estado.fallaInyectada === 2) condicionCumplida = (estado.luzActual > umbral);
         estadoDetalle = condicionCumplida ? "Poca luz (<300 Lux) • Lámpara encendida" : "Luz suficiente (>=300 Lux) • Lámpara apagada";
+        salidaActiva = circuitoValido && condicionCumplida;
+
+        var voltA0 = ((estado.luzActual / 850) * 5).toFixed(2);
+        var dmm1 = document.getElementById("dmmLux");
+        if (dmm1) dmm1.innerText = estado.luzActual + " Lx";
+        var dmm2 = document.getElementById("dmmVoltA0");
+        if (dmm2) dmm2.innerText = (estado.cables.ldr_sig ? voltA0 : "0.00") + " V";
+        var dmm3 = document.getElementById("dmmSalidaD9");
+        if (dmm3) {
+          dmm3.innerText = salidaActiva ? "HIGH (5V)" : "LOW (0V)";
+          dmm3.style.color = salidaActiva ? "#15803d" : "#64748b";
+        }
+        var dmm4 = document.getElementById("dmmWatts");
+        if (dmm4) dmm4.innerText = salidaActiva ? "45 W" : "2 W";
+
+        var lblLux = document.getElementById("labelLuxAmbiental");
+        if (lblLux) lblLux.innerText = "Intensidad: " + estado.luzActual + " Lux (" + estadoDetalle + ")";
+
+        var txtAula = salidaActiva ? "💡 Lámpara encendida" : "💡 Lámpara apagada";
+        var lblAula = document.getElementById("labelEstadoAula");
+        if (lblAula) {
+          lblAula.innerText = txtAula;
+          lblAula.style.color = salidaActiva ? "#15803d" : "#64748b";
+        }
+
+      } else {
+        estado.tempActual = parseInt(val, 10);
+        var umbralTemp = 28;
+        var condicionCumplida = (estado.tempActual >= umbralTemp);
+        salidaActiva = circuitoValido && condicionCumplida;
+
+        if (condicionCumplida) {
+          estadoDetalle = circuitoValido ? "Calor intenso (≥28°C) • Ventilador ACTIVO" : "Calor intenso (≥28°C) • Ventilador BLOQUEADO por conexión en A3";
+        } else {
+          estadoDetalle = "Temperatura fresca (<28°C) • Ventilador inactivo";
+        }
+
+        var voltA0 = ((estado.tempActual / 50) * 5).toFixed(2);
+        var dmm1 = document.getElementById("dmmLux");
+        if (dmm1) dmm1.innerText = estado.tempActual + " °C";
+        var dmm2 = document.getElementById("dmmVoltA0");
+        if (dmm2) dmm2.innerText = (estado.cables.ldr_sig ? voltA0 : "0.00") + " V";
+        var dmm3 = document.getElementById("dmmSalidaD9");
+        if (dmm3) {
+          dmm3.innerText = salidaActiva ? "HIGH (5V)" : (estado.cables.act_sig_erroneo_a3 ? "ERR (A3)" : "LOW (0V)");
+          dmm3.style.color = salidaActiva ? "#15803d" : (estado.cables.act_sig_erroneo_a3 ? "#ea580c" : "#64748b");
+        }
+        var dmm4 = document.getElementById("dmmWatts");
+        if (dmm4) dmm4.innerText = salidaActiva ? "60 W (Ventilando)" : "0 W";
+
+        var lblLux = document.getElementById("labelLuxAmbiental");
+        if (lblLux) lblLux.innerText = "Temperatura: " + estado.tempActual + "°C (" + estadoDetalle + ")";
+
+        var txtAula = salidaActiva ? "🌀 Ventilador en giro" : "🌀 Ventilador apagado";
+        var lblAula = document.getElementById("labelEstadoAula");
+        if (lblAula) {
+          lblAula.innerText = txtAula;
+          lblAula.style.color = salidaActiva ? "#15803d" : "#64748b";
+        }
       }
-
-      var salidaActiva = circuitoValido && condicionCumplida;
-
-      var voltA0 = ((estado.luzActual / 850) * 5).toFixed(2);
-      document.getElementById("dmmLux").innerText = estado.luzActual + " Lx";
-      document.getElementById("dmmVoltA0").innerText = (circuitoValido ? voltA0 : "0.00") + " V";
-      document.getElementById("dmmSalidaD9").innerText = salidaActiva ? "HIGH (5V)" : "LOW (0V)";
-      document.getElementById("dmmSalidaD9").style.color = salidaActiva ? "#15803d" : "#64748b";
-      document.getElementById("dmmWatts").innerText = salidaActiva ? (estado.actuadorActual === "VENTILADOR" ? "28 W" : (estado.actuadorActual === "ALARMA" ? "8 W" : "45 W")) : "2 W";
-
-      document.getElementById("labelLuxAmbiental").innerText = "Intensidad: " + estado.luzActual + " Lux (" + estadoDetalle + ")";
 
       var epsE = document.getElementById("epsEntrada");
       var epsP = document.getElementById("epsProceso");
@@ -2358,57 +2479,25 @@
       if (epsE) epsE.className = "eps-stage" + (estado.cables.ldr_sig ? " active" : "");
       if (epsP) {
         epsP.className = "eps-stage" + (circuitoValido ? " active" : "");
-        if (estado.actuadorActual === "VENTILADOR") {
-          epsP.innerHTML = '<strong style="color: #15803d;">PROCESO</strong><br><span style="font-size: 8.5px; color: #1e293b;">MCU (&gt;500 Lux / Calor)</span>';
-        } else if (estado.actuadorActual === "ALARMA") {
-          epsP.innerHTML = '<strong style="color: #15803d;">PROCESO</strong><br><span style="font-size: 8.5px; color: #1e293b;">MCU (&gt;700 Lux / Alerta)</span>';
-        } else {
-          epsP.innerHTML = '<strong style="color: #15803d;">PROCESO</strong><br><span style="font-size: 8.5px; color: #1e293b;">MCU (&lt;300 Lux / Luz)</span>';
-        }
       }
       if (epsS) epsS.className = "eps-stage" + (salidaActiva ? " active" : "");
 
       var actBadge = document.getElementById("actuadorStatusBadge");
       var actIcon = document.getElementById("actuadorIcono");
       if (salidaActiva) {
-        if (estado.actuadorActual === "VENTILADOR") {
-          actBadge.innerText = "GIRANDO (100%)";
-          actBadge.style.color = "#0284c7";
-          actIcon.style.filter = "drop-shadow(0 0 10px #38bdf8)";
-        } else if (estado.actuadorActual === "ALARMA") {
-          actBadge.innerText = "SONANDO (100%)";
-          actBadge.style.color = "#ef4444";
-          actIcon.style.filter = "drop-shadow(0 0 10px #ef4444)";
-        } else {
-          actBadge.innerText = "ENCENDIDO (100%)";
-          actBadge.style.color = "#15803d";
-          actIcon.style.filter = "drop-shadow(0 0 12px #facc15)";
-        }
+        if (actBadge) { actBadge.innerText = (subRetoActual === 1 ? "ENCENDIDO (100%)" : "VENTILANDO (100%)"); actBadge.style.color = "#15803d"; }
+        if (actIcon) actIcon.style.filter = "drop-shadow(0 0 12px #38bdf8)";
       } else {
-        actBadge.innerText = "APAGADO (0%)";
-        actBadge.style.color = "#64748b";
-        actIcon.style.filter = "none";
+        if (actBadge) { actBadge.innerText = "APAGADO (0%)"; actBadge.style.color = "#64748b"; }
+        if (actIcon) actIcon.style.filter = "none";
       }
-
-      var txtAula = "💡 Lámpara apagada";
-      if (salidaActiva) {
-        if (estado.actuadorActual === "VENTILADOR") txtAula = "🌀 Ventilador en giro";
-        else if (estado.actuadorActual === "ALARMA") txtAula = "🔔 Alarma sonando";
-        else txtAula = "💡 Lámpara encendida";
-      } else {
-        if (estado.actuadorActual === "VENTILADOR") txtAula = "🌀 Ventilador apagado";
-        else if (estado.actuadorActual === "ALARMA") txtAula = "🔔 Alarma en silencio";
-        else txtAula = "💡 Lámpara apagada";
-      }
-      document.getElementById("labelEstadoAula").innerText = txtAula;
-      document.getElementById("labelEstadoAula").style.color = salidaActiva ? "#15803d" : "#64748b";
     }
 
-    // GESTIÓN DE LOS 3 SUB-RETOS
+    // GESTIÓN DE LOS 2 SUB-RETOS OFICIALES
     function cambiarSubReto(num) {
-      if (num < 1 || num > 3) return;
+      if (num < 1 || num > 2) return;
       subRetoActual = num;
-      for (var i = 1; i <= 3; i++) {
+      for (var i = 1; i <= 2; i++) {
         var tab = document.getElementById("btnTabSubReto" + i);
         var panel = document.getElementById("panelInstruccionReto" + i);
         if (tab) {
@@ -2419,127 +2508,130 @@
         if (panel) panel.style.display = (i === num ? "block" : "none");
       }
 
-      var panelPreguntas3 = document.getElementById("panelPreguntasReto3");
-      if (panelPreguntas3) panelPreguntas3.style.display = (num === 3 ? "block" : "none");
+      var panelPreguntas2 = document.getElementById("panelPreguntasReto2");
+      if (panelPreguntas2) panelPreguntas2.style.display = (num === 2 ? "block" : "none");
 
       var badge = document.getElementById("badgeSubRetoProgreso");
-      if (badge) badge.innerText = "Reto Práctico: " + num + " de 3";
+      if (badge) badge.innerText = "Reto Práctico: " + num + " de 2";
 
       var btnPrev = document.getElementById("btnSubRetoPrev");
       if (btnPrev) btnPrev.style.display = (num > 1 ? "inline-flex" : "none");
 
       var btnNext = document.getElementById("btnSubRetoNext");
       if (btnNext) {
-        if (num === 1) btnNext.innerHTML = "Validar Reto 1 y Pasar al Reto 2 ➔";
-        else if (num === 2) btnNext.innerHTML = "Validar Reto 2 y Pasar al Reto 3 ➔";
-        else if (num === 3) btnNext.innerHTML = "Continuar a Parte C: Reflexión ➔";
+        if (num === 1) btnNext.innerHTML = "Continuar al Reto 2: Depuración ➔";
+        else if (num === 2) btnNext.innerHTML = "💾 Guardar Retos y Continuar a Reflexión ➔";
       }
+
+      var pinA3 = document.getElementById("pin_mcu_a3");
+      var slider = document.getElementById("sliderLuz");
+      var lblSliderMin = document.getElementById("lblSliderMin");
+      var lblSliderMax = document.getElementById("lblSliderMax");
 
       if (num === 1) {
-        seleccionarActuadorDirecto("LED");
+        estado.actuadorActual = "LED";
+        if (pinA3) pinA3.style.display = "none";
+        
+        // Sensor LDR
+        var cardSensor = document.getElementById("cardSensor");
+        if (cardSensor) {
+          var icoEl = cardSensor.querySelector("div > div");
+          if (icoEl) icoEl.innerText = "☀️";
+          var titEl = cardSensor.querySelector("div > strong");
+          if (titEl) titEl.innerText = "Sensor LDR";
+        }
+        // Actuador LED
+        var actIco = document.getElementById("actuadorIcono");
+        if (actIco) actIco.innerText = "💡";
+        var actTit = document.getElementById("actuadorTitulo");
+        if (actTit) actTit.innerText = "Lámpara LED (Salida)";
+        var epsEnt = document.getElementById("epsEntrada");
+        if (epsEnt) epsEnt.innerHTML = '<strong style="color: #0369a1;">ENTRADA</strong><br><span style="font-size: 8.5px; color: #1e293b;">LDR (Pin A0)</span>';
+        var epsPro = document.getElementById("epsProceso");
+        if (epsPro) epsPro.innerHTML = '<strong style="color: #15803d;">PROCESO</strong><br><span style="font-size: 8.5px; color: #1e293b;">MCU (<300 Lux)</span>';
+        var epsSal = document.getElementById("epsSalidaLabel");
+        if (epsSal) epsSal.innerText = "LED (Pin D9)";
+
+        if (slider) {
+          slider.min = "0";
+          slider.max = "850";
+          slider.value = estado.luzActual || 180;
+        }
+        if (lblSliderMin) lblSliderMin.innerText = "🌙 Noche (0 Lux)";
+        if (lblSliderMax) lblSliderMax.innerText = "☀️ Sol (850 Lux)";
+
       } else if (num === 2) {
-        var actR2 = (estado.actuadorActual === "ALARMA") ? "ALARMA" : "VENTILADOR";
-        seleccionarActuadorReto2(actR2);
-      } else if (num === 3) {
-        if (!estado.reto3Iniciado) {
-          cargarCircuitoFallaReto3();
-          estado.reto3Iniciado = true;
+        estado.actuadorActual = "VENTILADOR";
+        if (pinA3) pinA3.style.display = "block";
+
+        // Sensor NTC Temperatura
+        var cardSensor = document.getElementById("cardSensor");
+        if (cardSensor) {
+          var icoEl = cardSensor.querySelector("div > div");
+          if (icoEl) icoEl.innerText = "🌡️";
+          var titEl = cardSensor.querySelector("div > strong");
+          if (titEl) titEl.innerText = "Sensor NTC (Temp)";
+        }
+        // Actuador Ventilador DC
+        var actIco = document.getElementById("actuadorIcono");
+        if (actIco) actIco.innerText = "🌀";
+        var actTit = document.getElementById("actuadorTitulo");
+        if (actTit) actTit.innerText = "Ventilador DC (Actuador)";
+        var epsEnt = document.getElementById("epsEntrada");
+        if (epsEnt) epsEnt.innerHTML = '<strong style="color: #0369a1;">ENTRADA</strong><br><span style="font-size: 8.5px; color: #1e293b;">NTC (Pin A0)</span>';
+        var epsPro = document.getElementById("epsProceso");
+        if (epsPro) epsPro.innerHTML = '<strong style="color: #15803d;">PROCESO</strong><br><span style="font-size: 8.5px; color: #1e293b;">MCU (≥28°C)</span>';
+        var epsSal = document.getElementById("epsSalidaLabel");
+        if (epsSal) epsSal.innerText = "Ventilador (Pin D9)";
+
+        if (slider) {
+          slider.min = "15";
+          slider.max = "45";
+          slider.value = estado.tempActual || 32;
+        }
+        if (lblSliderMin) lblSliderMin.innerText = "❄️ Fresco (15°C)";
+        if (lblSliderMax) lblSliderMax.innerText = "🔥 Calor Intenso (45°C)";
+
+        if (!estado.reto2Iniciado) {
+          cargarCircuitoFallaReto2();
+          estado.reto2Iniciado = true;
         }
       }
 
+      verificarEstadoCircuito();
       redibujarCablesSVG();
-      actualizarSimulador(document.getElementById("sliderLuz").value);
+      actualizarSimulador(slider ? slider.value : 180);
     }
 
-    function seleccionarActuadorDirecto(tipo) {
-      estado.actuadorActual = tipo;
-      var iconMap = {
-        LED: { ico: "💡", tit: "Lámpara LED (Salida)", eps: "LED (Pin D9)" },
-        VENTILADOR: { ico: "🌀", tit: "Ventilador DC", eps: "Ventilador (Pin D9)" },
-        ALARMA: { ico: "🔔", tit: "Alarma Sonora", eps: "Buzzer (Pin D9)" }
-      };
-      var meta = iconMap[tipo] || iconMap.LED;
-      var actIco = document.getElementById("actuadorIcono");
-      if (actIco) actIco.innerText = meta.ico;
-      var actTit = document.getElementById("actuadorTitulo");
-      if (actTit) actTit.innerText = meta.tit;
-      var epsSal = document.getElementById("epsSalidaLabel");
-      if (epsSal) epsSal.innerText = meta.eps;
-    }
-
-    function seleccionarActuadorReto2(tipo) {
-      if (tipo !== "VENTILADOR" && tipo !== "ALARMA") tipo = "VENTILADOR";
-      estado.actuadorActual = tipo;
-      var tipos = ["VENTILADOR", "ALARMA"];
-      tipos.forEach(function(t) {
-        var btn = document.getElementById("btnSelAct_" + t);
-        if (btn) {
-          if (t === tipo) {
-            btn.style.background = "#e0f2fe";
-            btn.style.borderColor = "#0284c7";
-            btn.style.color = "#0369a1";
-            btn.style.fontWeight = "800";
-          } else {
-            btn.style.background = "#ffffff";
-            btn.style.borderColor = "#cbd5e1";
-            btn.style.color = "#334155";
-            btn.style.fontWeight = "normal";
-          }
-        }
-      });
-
-      var iconMap = {
-        VENTILADOR: { ico: "🌀", tit: "Ventilador DC", eps: "Ventilador (Pin D9)" },
-        ALARMA: { ico: "🔔", tit: "Alarma Sonora", eps: "Buzzer (Pin D9)" }
-      };
-
-      var meta = iconMap[tipo] || iconMap.VENTILADOR;
-      var actIco = document.getElementById("actuadorIcono");
-      if (actIco) actIco.innerText = meta.ico;
-      var actTit = document.getElementById("actuadorTitulo");
-      if (actTit) actTit.innerText = meta.tit;
-      var epsSal = document.getElementById("epsSalidaLabel");
-      if (epsSal) epsSal.innerText = meta.eps;
-
-      logSerial("🔄 Reto 2: Actuador adaptado -> " + meta.tit, "info");
-      playBeep(650, "sine", 0.08);
-      actualizarSimulador(document.getElementById("sliderLuz").value);
-    }
-
-    function cambiarTipoActuador() {
-      if (estado.actuadorActual === "VENTILADOR") seleccionarActuadorReto2("ALARMA");
-      else seleccionarActuadorReto2("VENTILADOR");
-    }
-
-    function cargarCircuitoFallaReto3() {
+    function cargarCircuitoFallaReto2() {
       estado.cables.ldr_vcc = true;
       estado.cables.ldr_gnd = true;
-      estado.cables.ldr_sig = false;
-      estado.cables.act_sig = true;
-      estado.cables.act_gnd = true;
+      estado.cables.ldr_sig = true; // Sensor NTC signal to A0
+      estado.cables.act_gnd = true; // Ventilador GND to MCU GND
+      estado.cables.act_sig = false; // Not on D9
+      estado.cables.act_sig_erroneo_a3 = true; // Connected to A3 (Analog Input error from image)
       estado.fallaInyectada = 0;
 
       verificarEstadoCircuito();
       redibujarCablesSVG();
 
-      var status = document.getElementById("statusCorreccionReto3");
+      var status = document.getElementById("statusCorreccionReto2");
       if (status) {
-        status.innerHTML = "⚠️ Falla activa: El circuito presenta un error en sus conexiones. Diagnostica y realiza la corrección física en el banco interactivo.";
-        status.style.color = "#b45309";
+        status.innerHTML = "⚠️ Circuito con falla cargado: La señal del Ventilador DC está conectada erróneamente a la Entrada Analógica A3. Desconecta de A3 y reconecta a la Salida Digital D9.";
+        status.style.color = "#ea580c";
       }
-      logSerial("⚠️ Reto 3: Propuesta con falla cargada en el simulador. Identifica la causa técnica y efectúa la reconexión física.", "warn");
+      logSerial("⚠️ Reto 2: Circuito de Climatización cargado. Falla: Señal del Ventilador en pin analógico A3. Reconecta a pin digital D9.", "warn");
     }
 
-    function seleccionarDiagnosticoReto3(opc, esCorrecta, btnEl) {
-      estado.reto3Diagnostico = { opcion: opc, correcta: esCorrecta };
+    function seleccionarDiagnosticoReto2(opc, esCorrecta, btnEl) {
+      estado.reto2Diagnostico = { opcion: opc, correcta: esCorrecta };
       for (var i = 1; i <= 3; i++) {
-        var btn = document.getElementById("btnDiagReto3_" + i);
+        var btn = document.getElementById("btnDiagReto2_" + i);
         if (btn) btn.className = "opcion-btn";
       }
       if (btnEl) btnEl.className = "opcion-btn seleccionada";
 
-      // Sin retroalimentación inmediata durante el diagnóstico del estudiante
-      var retro = document.getElementById("retroDiagReto3");
+      var retro = document.getElementById("retroDiagReto2");
       if (retro) retro.style.display = "none";
 
       playBeep(650, "sine", 0.08);
@@ -2547,58 +2639,40 @@
       enviarProgresoEnTiempoReal();
     }
 
-    function seleccionarJustificacionReto3(opc, texto, btnEl) {
-      estado.reto3JustificacionOpc = opc;
-      estado.reto3Justificacion = texto;
+    function seleccionarJustificacionReto2(opc, texto, btnEl) {
+      estado.reto2JustificacionOpc = opc;
+      estado.reto2Justificacion = texto;
       for (var i = 1; i <= 2; i++) {
-        var btn = document.getElementById("btnJustReto3_" + i);
+        var btn = document.getElementById("btnJustReto2_" + i);
         if (btn) btn.className = "opcion-btn";
       }
       if (btnEl) btnEl.className = "opcion-btn seleccionada";
 
-      var txtArea = document.getElementById("inputExplicacionReto3");
+      var txtArea = document.getElementById("inputExplicacionReto2");
       if (txtArea && !txtArea.value.trim()) {
         txtArea.value = texto;
       }
-      actualizarTextoExplicacionReto3(txtArea ? txtArea.value : texto);
+      actualizarTextoExplicacionReto2(txtArea ? txtArea.value : texto);
       playBeep(650, "sine", 0.08);
       guardarProgresoEnLocalStorage();
       enviarProgresoEnTiempoReal();
     }
 
-    function actualizarTextoExplicacionReto3(val) {
-      estado.reto3Explicacion = (val || "").trim();
+    function actualizarTextoExplicacionReto2(val) {
+      estado.reto2Explicacion = (val || "").trim();
       guardarProgresoEnLocalStorage();
     }
 
     function avanzarSubReto() {
+      playBeep(850, "sine", 0.12);
+      guardarProgresoEnLocalStorage();
+      enviarProgresoEnTiempoReal();
+
       if (subRetoActual === 1) {
-        var conectados = 0;
-        for (var k in estado.cables) if (estado.cables[k]) conectados++;
-        if (conectados < 5) {
-          alert("⚠️ Falta un paso por completar en el Reto 1. Revisa las conexiones del circuito antes de continuar.");
-          return;
-        }
-        playBeep(1000, "sine", 0.15);
-        logSerial("🎉 Reto 1 completado exitosamente. Pasando al Reto 2...", "ok");
+        logSerial("📋 Registro Reto 1 guardado. Pasando al Reto 2: Depuración...", "ok");
         cambiarSubReto(2);
-        guardarProgresoEnLocalStorage();
-        enviarProgresoEnTiempoReal();
       } else if (subRetoActual === 2) {
-        playBeep(1000, "sine", 0.15);
-        logSerial("🎉 Reto 2 completado exitosamente. Pasando al Reto 3...", "ok");
-        cambiarSubReto(3);
-        guardarProgresoEnLocalStorage();
-        enviarProgresoEnTiempoReal();
-      } else if (subRetoActual === 3) {
-        if (!estado.cables.ldr_sig || !estado.reto3Diagnostico) {
-          alert("⚠️ Falta un paso por completar en el Reto 3. Revisa la corrección en el simulador y responde las preguntas antes de continuar.");
-          return;
-        }
-        playBeep(1100, "sine", 0.2);
-        logSerial("🎉 Reto 3 (Depuración y Justificación) completado. Avanzando a la Parte C...", "ok");
-        guardarProgresoEnLocalStorage();
-        enviarProgresoEnTiempoReal();
+        logSerial("💾 Retos prácticos completados y guardados con éxito. Avanzando a Parte C: Reflexión...", "ok");
         irASeccion(4);
       }
     }
@@ -2821,27 +2895,30 @@
         ctxOsc.beginPath(); ctxOsc.moveTo(0, y); ctxOsc.lineTo(w, y); ctxOsc.stroke();
       }
 
-      var circOk = (estado.cables.ldr_sig && estado.cables.ldr_vcc && estado.cables.ldr_gnd && estado.cables.act_sig && estado.cables.act_gnd && estado.fallaInyectada !== 1);
+      var circOk = (estado.cables.ldr_sig && estado.cables.ldr_vcc && estado.cables.ldr_gnd && estado.cables.act_sig && estado.cables.act_gnd && !estado.cables.act_sig_erroneo_a3 && estado.fallaInyectada !== 1);
       
       var d9State = 0;
       var umbralOsc = CONFIG.umbralLux; // 300
-      if (estado.actuadorActual === "VENTILADOR") {
-        umbralOsc = 500;
-        d9State = (circOk && estado.luzActual > 500) ? 1 : 0;
-      } else if (estado.actuadorActual === "ALARMA") {
-        umbralOsc = 700;
-        d9State = (circOk && estado.luzActual > 700) ? 1 : 0;
+      var currentSensorVal = estado.luzActual;
+      var maxSensorVal = 850;
+
+      if (subRetoActual === 2) {
+        umbralOsc = 28;
+        currentSensorVal = estado.tempActual;
+        maxSensorVal = 50;
+        d9State = (circOk && estado.tempActual >= 28) ? 1 : 0;
       } else {
         d9State = (circOk && estado.luzActual < CONFIG.umbralLux) ? 1 : 0;
       }
 
       oscHistory.push({
-        lux: estado.luzActual,
+        val: currentSensorVal,
+        maxVal: maxSensorVal,
         d9: d9State
       });
       if (oscHistory.length > w) oscHistory.shift();
 
-      var yUmbral = h - (umbralOsc / 850) * h;
+      var yUmbral = h - (umbralOsc / maxSensorVal) * (h - 8) - 4;
       ctxOsc.strokeStyle = "#f59e0b";
       ctxOsc.setLineDash([3, 3]);
       ctxOsc.beginPath();
@@ -2854,7 +2931,7 @@
       ctxOsc.lineWidth = 1.8;
       ctxOsc.beginPath();
       for (var i = 0; i < oscHistory.length; i++) {
-        var yVal = h - (oscHistory[i].lux / 850) * (h - 8) - 4;
+        var yVal = h - (oscHistory[i].val / oscHistory[i].maxVal) * (h - 8) - 4;
         if (i === 0) ctxOsc.moveTo(i, yVal);
         else ctxOsc.lineTo(i, yVal);
       }
@@ -2882,10 +2959,8 @@
 
       var aciertos = 0;
       for (var k in estado.respuestasCognoscitivas) {
-        if (estado.respuestasCognoscitivas[k].correcta) aciertos++;
+        if (estado.respuestasCognoscitivas[k] && estado.respuestasCognoscitivas[k].correcta) aciertos++;
       }
-
-      if (Object.keys(estado.respuestasCognoscitivas).length === 0) aciertos = CONFIG.totalItems;
 
       var porc = Math.round((aciertos / CONFIG.totalItems) * 100);
       var elCog = document.getElementById("resCognoscitiva");
@@ -2939,15 +3014,14 @@
         tokenAntiFraude: hashToken,
         dimensiones: {
           cognoscitiva: porc + "% (" + aciertos + "/10)",
-          psicomotora: "Reto 1: Conexión Básica OK (5/5) | Reto 2: Actuador " + (estado.actuadorActual || "LED") + " | Reto 3: Depuración y Justificación " + (estado.reto3Diagnostico && estado.reto3Diagnostico.correcta ? "Acertada" : "Completada"),
+          psicomotora: "Reto 1: Conexión Prototipo OK (5/5) | Reto 2: Depuración y Justificación " + (estado.reto2Diagnostico && estado.reto2Diagnostico.correcta ? "Acertada" : "Completada"),
           socioafectiva: "Sentimiento: " + (estado.reflexion.sentimiento || "Completado") + " | Reflexión Oficial Completada"
         },
         retosPracticos: {
           reto1Conexion: "5/5 terminales validados",
-          reto2Actuador: estado.actuadorActual || "LED",
-          reto3Diagnostico: estado.reto3Diagnostico ? (estado.reto3Diagnostico.correcta ? "Correcto (A0 desconectado/en 5V)" : "Revisado") : "Pendiente",
-          reto3Justificacion: estado.reto3Justificacion || estado.reto3Explicacion || "Pin A0 analógico proporcional a luz vs 5V fija",
-          reto3Corregido: !!estado.cables.ldr_sig
+          reto2Diagnostico: estado.reto2Diagnostico ? (estado.reto2Diagnostico.correcta ? "Correcto (A0 desconectado/en 5V)" : "Revisado") : "Pendiente",
+          reto2Justificacion: estado.reto2Justificacion || estado.reto2Explicacion || "Pin A0 analógico proporcional a luz vs 5V fija",
+          reto2Corregido: !!estado.cables.ldr_sig
         },
         reflexionParteC: estado.reflexion
       };
@@ -2976,11 +3050,18 @@
         localStorage.setItem("diagnosticos_mep_9no", JSON.stringify(registrosPrevios));
       } catch(e) {}
 
+      var horaLabel = document.getElementById("horaEntregaOnlineLabel");
+      if (horaLabel) horaLabel.innerText = horaStr + " (" + fechaStr + ")";
+      var hashFinalSpan = document.getElementById("tokenHashLabelFinal");
+      if (hashFinalSpan) {
+        hashFinalSpan.innerHTML = '<span style="color: #64748b; font-weight: 700;">🛡️ Hash de Verificación:</span> <span style="color: #15803d; font-family: monospace; font-weight: 800;">' + hashToken + '</span>';
+      }
+
       var estadoDiv = document.getElementById("estadoTelemetria");
       estadoDiv.innerHTML = "📡 Transmitiendo evidencias de <strong>" + nombreEst + "</strong> (" + horaStr + ") al Dashboard Docente...";
       estadoDiv.style.background = "rgba(37, 99, 235, 0.15)";
       estadoDiv.style.borderColor = "#2563eb";
-      estadoDiv.style.color = "#93c5fd";
+      estadoDiv.style.color = "#0369a1";
 
       fetch(CONFIG.urlTelemetria, {
         method: "POST",
@@ -2990,14 +3071,17 @@
       .then(function(r) { return r.json(); })
       .then(function(data) {
         if (data.ok || data.success) {
-          estadoDiv.innerHTML = "✅ EVIDENCIAS TRANSMITIDAS Y REGISTRADAS CON ÉXITO EN EL DASHBOARD DOCENTE.<br><span style='font-size: 11px; font-weight: normal; color: #a7f3d0;'>Comprobante Oficial: #" + hashToken + " • " + horaStr + "</span>";
-          estadoDiv.style.background = "rgba(16, 185, 129, 0.25)";
+          estadoDiv.innerHTML = "✅ EVIDENCIAS TRANSMITIDAS Y REGISTRADAS CON ÉXITO EN EL DASHBOARD DOCENTE.<br><span style='font-size: 11px; font-weight: normal; color: #15803d;'>Comprobante Oficial: #" + hashToken + " • " + horaStr + "</span>";
+          estadoDiv.style.background = "#f0fdf4";
           estadoDiv.style.borderColor = "#10b981";
-          estadoDiv.style.color = "#34d399";
+          estadoDiv.style.color = "#15803d";
         }
       })
       .catch(function() {
-        estadoDiv.innerHTML = "💾 Evidencia Guardada en Memoria Offline (" + horaStr + "). Muestra el Código QR al Docente.";
+        estadoDiv.innerHTML = "💾 Evidencias registradas en memoria local y sincronización en cola (" + horaStr + "). Hash: " + hashToken;
+        estadoDiv.style.background = "#eff6ff";
+        estadoDiv.style.borderColor = "#38bdf8";
+        estadoDiv.style.color = "#0369a1";
       });
 
       // Generar el código QR
@@ -3122,153 +3206,64 @@
 
     // REINICIAR Y PREPARAR EQUIPO PARA EL SIGUIENTE ESTUDIANTE
     function prepararSiguienteEstudiante(saltarConfirmacion) {
+      function ejecutarReset() {
+        try {
+          localStorage.removeItem("diagnostico_9no_mep_bloqueo_entrega");
+          localStorage.removeItem("diagnostico_9no_sesion_activa");
+        } catch(e) {}
+
+        // Mantener datos del docente e institución pero resetear estudiante
+        var docNombre = estado.docenteNombre;
+        var instNombre = estado.centroEducativo;
+        var secNombre = estado.seccionGrupo;
+
+        estado.estudianteNombre = "";
+        estado.estudianteCedula = "";
+        estado.estudianteCorreo = "";
+        estado.datosBloqueados = false;
+        estado.seccionActual = 1;
+        estado.respuestasCognoscitivas = {};
+        estado.reflexion = {
+          facilidad: "",
+          facilidadTexto: "",
+          dificultad: "",
+          dificultadTexto: "",
+          fallo: "",
+          falloTexto: "",
+          reforzar: "",
+          reforzarTexto: "",
+          sentimiento: "Muy cómodo/a"
+        };
+        estado.cables = {
+          ldr_vcc: false,
+          ldr_gnd: false,
+          ldr_sig: false,
+          act_sig: false,
+          act_gnd: false
+        };
+        subRetoActual = 1;
+        estado.subRetoActual = 1;
+        estado.reto3Iniciado = false;
+        estado.reto3Diagnostico = null;
+        estado.reto3Justificacion = "";
+        estado.reto3JustificacionOpc = 0;
+        estado.reto3Explicacion = "";
+        estado.finalizado = false;
+        estado.horaFin = null;
+
+        guardarProgresoEnLocalStorage();
+        window.location.reload();
+      }
+
       if (!saltarConfirmacion) {
-        var pin = prompt("🔑 Ingrese la contraseña de la persona docente o asesora registrada para preparar este equipo para el siguiente estudiante:");
-        if (!pin) return;
-        if (!verificarContrasenaDocente(pin)) {
-          alert("❌ Contraseña incorrecta. No se permite reiniciar el equipo.");
-          return;
-        }
+        solicitarPinDocenteModal({
+          titulo: "Preparar Siguiente Estudiante",
+          mensaje: "Ingrese el PIN o contraseña docente para limpiar y preparar este equipo:",
+          onExito: ejecutarReset
+        });
+      } else {
+        ejecutarReset();
       }
-
-      try {
-        localStorage.removeItem("diagnostico_9no_mep_bloqueo_entrega");
-        localStorage.removeItem("diagnostico_9no_sesion_activa");
-      } catch(e) {}
-
-      // Mantener datos del docente e institución pero resetear estudiante
-      var docNombre = estado.docenteNombre;
-      var instNombre = estado.centroEducativo;
-      var secNombre = estado.seccionGrupo;
-
-      estado.estudianteNombre = "";
-      estado.estudianteCedula = "";
-      estado.estudianteCorreo = "";
-      estado.datosBloqueados = false;
-      estado.seccionActual = 1;
-      estado.respuestasCognoscitivas = {};
-      estado.reflexion = {
-        facilidad: "",
-        facilidadTexto: "",
-        dificultad: "",
-        dificultadTexto: "",
-        fallo: "",
-        falloTexto: "",
-        reforzar: "",
-        reforzarTexto: "",
-        sentimiento: "Muy cómodo/a"
-      };
-      estado.cables = {
-        ldr_vcc: false,
-        ldr_gnd: false,
-        ldr_sig: false,
-        act_sig: false,
-        act_gnd: false
-      };
-      subRetoActual = 1;
-      estado.subRetoActual = 1;
-      estado.reto3Iniciado = false;
-      estado.reto3Diagnostico = null;
-      estado.reto3Justificacion = "";
-      estado.reto3JustificacionOpc = 0;
-      estado.reto3Explicacion = "";
-      estado.pinSeleccionado = null;
-      estado.actuadorActual = "LED";
-      estado.fallaInyectada = 0;
-      estado.luzActual = 180;
-      estado.tiempoInicio = Date.now();
-      estado.tiempoTotal = 0;
-
-      // Restaurar DOM de la página principal si estaba en pantalla de bloqueo
-      var main = document.querySelector(".main-container");
-      var nav = document.querySelector(".nav-tabs");
-      if (nav) nav.style.display = "flex";
-
-      // Desbloquear y limpiar inputs de identificación
-      var elNom = document.getElementById("inputEstudianteNombre");
-      var elCed = document.getElementById("inputEstudianteCedula");
-      var elCor = document.getElementById("inputEstudianteCorreo");
-      var elSec = document.getElementById("selectSeccion");
-      var elCent = document.getElementById("inputCentroEducativo");
-      var elDoc = document.getElementById("inputDocente");
-      var btn = document.getElementById("btnIniciarDiagnostico");
-      var lbl1 = document.getElementById("tabSec1Label");
-      var sub1 = document.getElementById("tabSec1Sub");
-      var msg = document.getElementById("msgValidacionDatos");
-
-      if (elNom) { elNom.value = ""; elNom.disabled = false; }
-      if (elCed) { elCed.value = ""; elCed.disabled = false; }
-      if (elCor) { elCor.value = ""; elCor.disabled = false; }
-      if (elSec && secNombre) { elSec.value = secNombre; elSec.disabled = false; }
-      if (elCent) {
-        elCent.value = instNombre || estado.centroEducativo || "Asesoría de Formación Tecnológica";
-        elCent.readOnly = true;
-        elCent.style.background = "#f1f5f9";
-        elCent.style.color = "#334155";
-        elCent.style.fontWeight = "700";
-      }
-      if (elDoc) {
-        elDoc.value = docNombre || estado.docenteNombre || "Alberto Bustos Ortega";
-        elDoc.readOnly = true;
-        elDoc.style.background = "#f1f5f9";
-        elDoc.style.color = "#334155";
-        elDoc.style.fontWeight = "700";
-      }
-
-      if (btn) {
-        btn.disabled = false;
-        btn.innerHTML = "Comenzar Parte A (Conocimientos previos) ➔";
-        btn.style.background = "#0284c7";
-        btn.style.cursor = "pointer";
-      }
-
-      if (lbl1) lbl1.innerText = "1. Datos";
-      if (sub1) sub1.innerText = "Identificación";
-      var tab1 = document.getElementById("tabSec1");
-      if (tab1) tab1.style.opacity = "1";
-
-      if (msg) {
-        msg.innerText = "✨ Equipo listo para el siguiente estudiante. Escribe tu Nombre y Apellidos completos.";
-        msg.style.color = "#059669";
-      }
-
-      // Resetear opciones de reactivos en la interfaz
-      for (var k = 1; k <= 10; k++) {
-        var cont = document.getElementById("optsItem" + k);
-        if (cont) {
-          var btns = cont.children;
-          for (var b = 0; b < btns.length; b++) {
-            btns[b].className = "opcion-btn";
-          }
-        }
-        var retroDiv = document.getElementById("retroItem" + k);
-        if (retroDiv) {
-          retroDiv.style.display = "none";
-          retroDiv.innerText = "";
-        }
-      }
-
-      // Resetear contador
-      var contResp = document.getElementById("contadorRespuestas");
-      if (contResp) contResp.innerText = "Respondidas: 0 / " + CONFIG.totalItems;
-      var badgeH = document.getElementById("badgeProgresoHeader");
-      if (badgeH) badgeH.innerText = "Progreso: 0%";
-
-      // Volver a la sección 1
-      for (var i = 1; i <= 5; i++) {
-        var sec = document.getElementById("seccion" + i);
-        var tab = document.getElementById("tabSec" + i);
-        if (sec) sec.style.display = (i === 1 ? "block" : "none");
-        if (tab) {
-          if (i === 1) tab.className = "nav-tab activa";
-          else tab.className = "nav-tab";
-        }
-      }
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      setTimeout(function() {
-        if (elNom) elNom.focus();
-      }, 150);
     }
 
     // REINICIAR DIAGNÓSTICO COMPLETO

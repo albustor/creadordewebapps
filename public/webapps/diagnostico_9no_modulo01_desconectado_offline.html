@@ -947,12 +947,13 @@
         <div class="item-header"><span class="item-num">6. Identificación de elementos</span></div>
         <p style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #0f172a;">
           Relacione cada elemento con su función:<br>
-          <span style="color: #475569; font-size: 11.5px; font-weight: 600;">a. Ejecuta una acción. &nbsp;|&nbsp; b. Procesa información y controla el sistema. &nbsp;|&nbsp; c. Captura información del entorno.</span>
+          <span style="color: #0f172a; font-size: 12px; font-weight: 800; display: block; margin: 4px 0;">1. Sensor &nbsp;|&nbsp; 2. Actuador &nbsp;|&nbsp; 3. Microcontrolador</span>
+          <span style="color: #475569; font-size: 11.5px; font-weight: 600; display: block;">a. Ejecuta una acción. &nbsp;|&nbsp; b. Procesa información y controla el sistema. &nbsp;|&nbsp; c. Captura información del entorno.</span>
         </p>
         <div id="optsItem6">
-          <button class="opcion-btn" onclick="responderItem(6, 0, true, '¡Correcto! Sensor = c (Captura), Actuador = a (Ejecuta acción), Microcontrolador = b (Procesa y controla).')">A. Sensor: c | Actuador: a | Microcontrolador: b</button>
-          <button class="opcion-btn" onclick="responderItem(6, 1, false, 'El sensor captura información, no ejecuta acciones.')">B. Sensor: a | Actuador: b | Microcontrolador: c</button>
-          <button class="opcion-btn" onclick="responderItem(6, 2, false, 'El microcontrolador procesa información, no es sensor directo.')">C. Sensor: b | Actuador: c | Microcontrolador: a</button>
+          <button class="opcion-btn" onclick="responderItem(6, 0, true, '¡Correcto! 1. Sensor = c (Captura), 2. Actuador = a (Ejecuta acción), 3. Microcontrolador = b (Procesa y controla).')">A. 1. Sensor: c | 2. Actuador: a | 3. Microcontrolador: b</button>
+          <button class="opcion-btn" onclick="responderItem(6, 1, false, 'El sensor (1) captura información del entorno (c), no ejecuta acciones.')">B. 1. Sensor: a | 2. Actuador: b | 3. Microcontrolador: c</button>
+          <button class="opcion-btn" onclick="responderItem(6, 2, false, 'El microcontrolador (3) procesa información (b), no ejecuta directamente la acción física.')">C. 1. Sensor: b | 2. Actuador: c | 3. Microcontrolador: a</button>
         </div>
         <div id="retroItem6" class="retro-box"></div>
       </div>
@@ -1829,46 +1830,117 @@
       return false;
     }
 
-    function desbloquearDatosIdentificacionDocente() {
-      var pin = prompt("🔑 Ingrese la contraseña de la persona docente o asesora registrada para habilitar la edición de datos:");
-      if (!pin) return false;
-      if (verificarContrasenaDocente(pin)) {
-        estado.datosBloqueados = false;
-        var elNom = document.getElementById("inputEstudianteNombre");
-        var elSec = document.getElementById("selectSeccion");
-        var elCed = document.getElementById("inputEstudianteCedula");
-        var elCor = document.getElementById("inputEstudianteCorreo");
-        var elCent = document.getElementById("inputCentroEducativo");
-        var elDoc = document.getElementById("inputDocente");
-        var btn = document.getElementById("btnIniciarDiagnostico");
-        var lbl1 = document.getElementById("tabSec1Label");
-        var sub1 = document.getElementById("tabSec1Sub");
+    // MODAL SEGURO DE AUTORIZACIÓN CON MÁSCARA DE CONTRASEÑA/PIN (TIPO PASSWORD ***)
+    function solicitarPinDocenteModal(opciones) {
+      opciones = opciones || {};
+      var modalExistente = document.getElementById("modalPinDocenteSeguro");
+      if (modalExistente) modalExistente.remove();
 
-        if (elNom) elNom.disabled = false;
-        if (elSec) elSec.disabled = false;
-        if (elCed) elCed.disabled = false;
-        if (elCor) elCor.disabled = false;
-        if (elCent) elCent.disabled = false;
-        if (elDoc) elDoc.disabled = false;
-        if (btn) {
-          btn.disabled = false;
-          btn.innerHTML = "Comenzar Parte A (Conocimientos previos) ➔";
-          btn.style.background = "#0284c7";
-          btn.style.cursor = "pointer";
-        }
-        if (lbl1) lbl1.innerText = "1. Datos";
-        if (sub1) sub1.innerText = "Identificación";
-        var tab1 = document.getElementById("tabSec1");
-        if (tab1) {
-          tab1.style.opacity = "1";
-        }
-        guardarProgresoEnLocalStorage();
-        alert("✅ Autorización confirmada. Modo de edición de datos habilitado por la persona docente.");
-        return true;
-      } else {
-        alert("❌ Contraseña de docente o asesor incorrecta. No se permite la edición de datos.");
-        return false;
+      var overlay = document.createElement("div");
+      overlay.id = "modalPinDocenteSeguro";
+      overlay.style.cssText = "position:fixed;inset:0;background:rgba(15,23,42,0.8);backdrop-filter:blur(4px);z-index:999999;display:flex;align-items:center;justify-content:center;padding:16px;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;";
+
+      var html = '<div style="background:#ffffff;border-radius:24px;border:2px solid #e2e8f0;max-width:380px;width:100%;padding:24px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.35);text-align:center;">'
+        + '<div style="width:50px;height:50px;border-radius:16px;background:#ecfdf5;border:1px solid #a7f3d0;color:#047857;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:26px;">🔐</div>'
+        + '<h3 style="margin:0 0 6px;font-size:16px;font-weight:900;color:#0f172a;">' + (opciones.titulo || 'Autorización Docente') + '</h3>'
+        + '<p style="margin:0 0 16px;font-size:12px;color:#64748b;line-height:1.4;">' + (opciones.mensaje || 'Ingrese la clave o PIN de 4 dígitos para habilitar la edición de datos:') + '</p>'
+        + '<div style="position:relative;margin-bottom:12px;">'
+        + '  <input type="password" id="inputModalPinDocenteSeguro" maxlength="10" placeholder="••••" autocomplete="off" style="width:100%;box-sizing:border-box;padding:12px;border:2px solid #cbd5e1;border-radius:14px;text-align:center;font-size:24px;font-family:monospace;letter-spacing:6px;font-weight:900;color:#0f172a;outline:none;background:#f8fafc;" />'
+        + '</div>'
+        + '<div id="modalPinDocenteErrorSeguro" style="display:none;color:#e11d48;font-size:11px;font-weight:800;margin-bottom:12px;">❌ Contraseña o PIN incorrecto</div>'
+        + '<div style="display:flex;gap:10px;">'
+        + '  <button id="btnModalPinCancelarSeguro" type="button" style="flex:1;padding:11px;border-radius:12px;border:1px solid #cbd5e1;background:#f1f5f9;color:#475569;font-weight:800;font-size:12px;cursor:pointer;">Cancelar</button>'
+        + '  <button id="btnModalPinAceptarSeguro" type="button" style="flex:1;padding:11px;border-radius:12px;border:none;background:#047857;color:#ffffff;font-weight:800;font-size:12px;cursor:pointer;box-shadow:0 4px 6px -1px rgba(4,120,87,0.3);">Autorizar</button>'
+        + '</div>'
+        + '</div>';
+
+      overlay.innerHTML = html;
+      document.body.appendChild(overlay);
+
+      var input = document.getElementById("inputModalPinDocenteSeguro");
+      var btnAceptar = document.getElementById("btnModalPinAceptarSeguro");
+      var btnCancelar = document.getElementById("btnModalPinCancelarSeguro");
+      var errorDiv = document.getElementById("modalPinDocenteErrorSeguro");
+
+      setTimeout(function() {
+        if (input) input.focus();
+      }, 50);
+
+      function cerrar() {
+        if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        if (opciones.onCancelar) opciones.onCancelar();
       }
+
+      function validar() {
+        var valor = input ? input.value.trim() : "";
+        if (!valor) return;
+        if (verificarContrasenaDocente(valor)) {
+          if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+          if (opciones.onExito) opciones.onExito(valor);
+        } else {
+          if (errorDiv) errorDiv.style.display = "block";
+          if (input) {
+            input.value = "";
+            input.focus();
+          }
+        }
+      }
+
+      btnAceptar.onclick = validar;
+      btnCancelar.onclick = cerrar;
+      input.onkeydown = function(e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          validar();
+        } else if (e.key === "Escape") {
+          e.preventDefault();
+          cerrar();
+        }
+      };
+    }
+
+    function desbloquearDatosIdentificacionDocente(callback) {
+      solicitarPinDocenteModal({
+        titulo: "Habilitar Edición de Datos",
+        mensaje: "Ingrese el PIN o clave docente para corregir el nombre u otros datos del estudiante:",
+        onExito: function() {
+          estado.datosBloqueados = false;
+          var elNom = document.getElementById("inputEstudianteNombre");
+          var elSec = document.getElementById("selectSeccion");
+          var elCed = document.getElementById("inputEstudianteCedula");
+          var elCor = document.getElementById("inputEstudianteCorreo");
+          var elCent = document.getElementById("inputCentroEducativo");
+          var elDoc = document.getElementById("inputDocente");
+          var btn = document.getElementById("btnIniciarDiagnostico");
+          var lbl1 = document.getElementById("tabSec1Label");
+          var sub1 = document.getElementById("tabSec1Sub");
+
+          if (elNom) elNom.disabled = false;
+          if (elSec) elSec.disabled = false;
+          if (elCed) elCed.disabled = false;
+          if (elCor) elCor.disabled = false;
+          if (elCent) elCent.disabled = false;
+          if (elDoc) elDoc.disabled = false;
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = "Comenzar Parte A (Conocimientos previos) ➔";
+            btn.style.background = "#0284c7";
+            btn.style.cursor = "pointer";
+          }
+          if (lbl1) lbl1.innerText = "1. Datos";
+          if (sub1) sub1.innerText = "Identificación";
+          var tab1 = document.getElementById("tabSec1");
+          if (tab1) {
+            tab1.style.opacity = "1";
+          }
+          guardarProgresoEnLocalStorage();
+          irASeccion(1);
+          if (typeof callback === "function") callback(true);
+        },
+        onCancelar: function() {
+          if (typeof callback === "function") callback(false);
+        }
+      });
     }
 
     function comenzarDiagnosticoValido() {
@@ -1884,17 +1956,16 @@
     }
 
     function desbloquearPorDocente() {
-      var pin = prompt("🔑 Ingrese la contraseña de la persona docente o asesora registrada para habilitar una aplicación extemporánea:");
-      if (!pin) return;
-      if (verificarContrasenaDocente(pin)) {
-        var motivo = prompt("Motivo del desbloqueo (ej: Corrección de datos / Aplicación extemporánea / Criterio docente):", "Criterio Docente");
-        localStorage.removeItem("diagnostico_9no_mep_bloqueo_entrega");
-        localStorage.removeItem("diagnostico_9no_sesion_activa");
-        alert("✅ Desbloqueo autorizado por docente (" + (motivo || "Autorizado") + ").");
-        window.location.reload();
-      } else {
-        alert("❌ Contraseña de docente o asesor incorrecta.");
-      }
+      solicitarPinDocenteModal({
+        titulo: "Habilitar Aplicación Extemporánea",
+        mensaje: "Ingrese el PIN o contraseña docente para desbloquear una nueva aplicación:",
+        onExito: function() {
+          localStorage.removeItem("diagnostico_9no_mep_bloqueo_entrega");
+          localStorage.removeItem("diagnostico_9no_sesion_activa");
+          alert("✅ Desbloqueo autorizado por la persona docente.");
+          window.location.reload();
+        }
+      });
     }
 
     function irASeccion(num) {
@@ -1902,16 +1973,12 @@
         if (estado.seccionActual === 5) {
           var deseaNuevo = confirm("📋 La prueba diagnóstica anterior ya fue completada y enviada.\n\n¿Deseas preparar este equipo para el siguiente estudiante?");
           if (deseaNuevo) {
-            prepararSiguienteEstudiante(true);
+            prepararSiguienteEstudiante(false);
             return;
           }
         }
-        var docenteDesea = confirm("🔒 Los datos de identificación ya fueron registrados y están bloqueados para evitar alteraciones.\n\n¿Eres la persona docente y necesitas modificar los datos del estudiante?");
-        if (docenteDesea) {
-          if (!desbloquearDatosIdentificacionDocente()) return;
-        } else {
-          return;
-        }
+        desbloquearDatosIdentificacionDocente();
+        return;
       }
 
       if (num > 1 && !estado.datosBloqueados && !validarDatosEstudiante()) {
@@ -3128,56 +3195,65 @@
 
     // REINICIAR Y PREPARAR EQUIPO PARA EL SIGUIENTE ESTUDIANTE
     function prepararSiguienteEstudiante(saltarConfirmacion) {
-      if (!saltarConfirmacion) {
-        var pin = prompt("🔑 Ingrese la contraseña de la persona docente o asesora registrada para preparar este equipo para el siguiente estudiante:");
-        if (!pin) return;
-        if (!verificarContrasenaDocente(pin)) {
-          alert("❌ Contraseña incorrecta. No se permite reiniciar el equipo.");
-          return;
-        }
+      function ejecutarReset() {
+        try {
+          localStorage.removeItem("diagnostico_9no_mep_bloqueo_entrega");
+          localStorage.removeItem("diagnostico_9no_sesion_activa");
+        } catch(e) {}
+
+        // Mantener datos del docente e institución pero resetear estudiante
+        var docNombre = estado.docenteNombre;
+        var instNombre = estado.centroEducativo;
+        var secNombre = estado.seccionGrupo;
+
+        estado.estudianteNombre = "";
+        estado.estudianteCedula = "";
+        estado.estudianteCorreo = "";
+        estado.datosBloqueados = false;
+        estado.seccionActual = 1;
+        estado.respuestasCognoscitivas = {};
+        estado.reflexion = {
+          facilidad: "",
+          facilidadTexto: "",
+          dificultad: "",
+          dificultadTexto: "",
+          fallo: "",
+          falloTexto: "",
+          reforzar: "",
+          reforzarTexto: "",
+          sentimiento: "Muy cómodo/a"
+        };
+        estado.cables = {
+          ldr_vcc: false,
+          ldr_gnd: false,
+          ldr_sig: false,
+          act_sig: false,
+          act_gnd: false
+        };
+        subRetoActual = 1;
+        estado.subRetoActual = 1;
+        estado.reto3Iniciado = false;
+        estado.reto3Diagnostico = null;
+        estado.reto3Justificacion = "";
+        estado.reto3JustificacionOpc = 0;
+        estado.reto3Explicacion = "";
+        estado.finalizado = false;
+        estado.horaFin = null;
+
+        guardarProgresoEnLocalStorage();
+        window.location.reload();
       }
 
-      try {
-        localStorage.removeItem("diagnostico_9no_mep_bloqueo_entrega");
-        localStorage.removeItem("diagnostico_9no_sesion_activa");
-      } catch(e) {}
-
-      // Mantener datos del docente e institución pero resetear estudiante
-      var docNombre = estado.docenteNombre;
-      var instNombre = estado.centroEducativo;
-      var secNombre = estado.seccionGrupo;
-
-      estado.estudianteNombre = "";
-      estado.estudianteCedula = "";
-      estado.estudianteCorreo = "";
-      estado.datosBloqueados = false;
-      estado.seccionActual = 1;
-      estado.respuestasCognoscitivas = {};
-      estado.reflexion = {
-        facilidad: "",
-        facilidadTexto: "",
-        dificultad: "",
-        dificultadTexto: "",
-        fallo: "",
-        falloTexto: "",
-        reforzar: "",
-        reforzarTexto: "",
-        sentimiento: "Muy cómodo/a"
-      };
-      estado.cables = {
-        ldr_vcc: false,
-        ldr_gnd: false,
-        ldr_sig: false,
-        act_sig: false,
-        act_gnd: false
-      };
-      subRetoActual = 1;
-      estado.subRetoActual = 1;
-      estado.reto3Iniciado = false;
-      estado.reto3Diagnostico = null;
-      estado.reto3Justificacion = "";
-      estado.reto3JustificacionOpc = 0;
-      estado.reto3Explicacion = "";
+      if (!saltarConfirmacion) {
+        solicitarPinDocenteModal({
+          titulo: "Preparar Siguiente Estudiante",
+          mensaje: "Ingrese el PIN o contraseña docente para limpiar y preparar este equipo:",
+          onExito: ejecutarReset
+        });
+      } else {
+        ejecutarReset();
+      }
+    }
       estado.pinSeleccionado = null;
       estado.actuadorActual = "LED";
       estado.fallaInyectada = 0;

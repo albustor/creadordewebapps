@@ -10,18 +10,37 @@ import {
   obtenerProduccionConHTML,
 } from "@/lib/comunidadData";
 
+export interface DesgloseNivelSecciones {
+  nivel: string; // "7°", "8°", "9°", "10°", "11°", "12°"
+  activo: boolean;
+  totalSeccionesColegio: number; // Ej: 10 secciones en la institución
+  seccionesAtendidasDocente: string[]; // Ej: ["9-1", "9-2", "9-3", "9-4", "9-5"]
+}
+
+export interface CentroEducativoDocente {
+  id: string;
+  nombre: string;
+  dreCodigo: string;
+  dreNombre: string;
+  circuito: string;
+  codigoPresupuestario?: string;
+  desgloseNiveles: DesgloseNivelSecciones[];
+}
+
 export interface DocenteData {
   idDocente: string;
   nombreCompleto: string;
   correoInstitucional: string;
   cedula: string;
   telefono: string;
+  tipoRol?: "Asesor Nacional" | "Asesor Regional" | "Docente";
+  rol: string;
+  centrosEducativos?: CentroEducativoDocente[];
   dreCodigo: string;
   dreNombre: string;
   circuito: string;
   codigoPresupuestario: string;
   institucionNombre: string;
-  rol: string;
   asignaturas: string[];
   fechaRegistro: string;
   contrasena?: string;
@@ -80,6 +99,7 @@ export const DOCENTE_DEFAULT: DocenteData = {
   contrasena: "2617",
   cedula: "5-0305-0179",
   telefono: "+506 8888-9999",
+  tipoRol: "Asesor Nacional",
   dreCodigo: "DRE-NACIONAL",
   dreNombre: "Asesoría de Formación Tecnológica",
   circuito: "Nivel Nacional / Ámbito General",
@@ -98,6 +118,7 @@ export const DOCENTE_PRUEBA_REGIONAL: DocenteData = {
   contrasena: "5821",
   cedula: "5-0345-0891",
   telefono: "+506 8765-4321",
+  tipoRol: "Docente",
   dreCodigo: "DRE-07",
   dreNombre: "Liberia",
   circuito: "Circuito 01",
@@ -105,6 +126,36 @@ export const DOCENTE_PRUEBA_REGIONAL: DocenteData = {
   institucionNombre: "Liceo Laboratorio de Liberia",
   rol: "Docente de Formación Tecnológica",
   asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
+  centrosEducativos: [
+    {
+      id: "CENTRO-01",
+      nombre: "Liceo Laboratorio de Liberia",
+      dreCodigo: "DRE-07",
+      dreNombre: "Liberia",
+      circuito: "Circuito 01",
+      codigoPresupuestario: "SABER-LIBERIA-2026",
+      desgloseNiveles: [
+        {
+          nivel: "7°",
+          activo: true,
+          totalSeccionesColegio: 6,
+          seccionesAtendidasDocente: ["7-1", "7-2", "7-3"],
+        },
+        {
+          nivel: "8°",
+          activo: true,
+          totalSeccionesColegio: 6,
+          seccionesAtendidasDocente: ["8-1", "8-2", "8-3"],
+        },
+        {
+          nivel: "9°",
+          activo: true,
+          totalSeccionesColegio: 8,
+          seccionesAtendidasDocente: ["9-1", "9-2", "9-3", "9-4", "9-5"],
+        },
+      ],
+    },
+  ],
   fechaRegistro: new Date().toISOString(),
 };
 

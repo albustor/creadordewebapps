@@ -554,7 +554,7 @@
 
         <button type="button" id="tabAreaSoc" class="view-tab" onclick="cambiarAreaObservacion('soc')" style="padding: 12px 10px; font-size: 12px; border-color: #fde68a; color: #b45309; background: #ffffff;">
           <span style="font-size: 13px; font-weight: 900;">❤️ 2. ÁREA SOCIOAFECTIVA</span>
-          <span style="font-size: 10px; color: #92400e; font-weight: normal;">7 Conductas Actitudinales (Ser y Convivir)</span>
+          <span style="font-size: 10px; color: #92400e; font-weight: normal;">4 Actitudes Oficiales del Pensador Computacional</span>
         </button>
 
         <button type="button" id="tabAreaCog" class="view-tab" onclick="cambiarAreaObservacion('cog')" style="padding: 12px 10px; font-size: 12px; border-color: #7dd3fc; color: #0369a1; background: #ffffff;">
@@ -675,48 +675,48 @@
 
           <details style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; cursor: pointer;">
             <summary style="font-weight: 800; color: #0284c7; outline: none;">
-              📖 Toca aquí para ver el Glosario y Definición Completa de los 23 Criterios MEP
+              📖 Toca aquí para ver el Glosario y Definición Completa de los 20 Criterios MEP (10 Conceptuales, 6 Procedimentales, 4 Actitudinales)
             </summary>
             
             <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 10px;">
-              <!-- 1. Psicomotora -->
+              <!-- 1. Psicomotora / Procedimentales -->
               <div style="background: #ffffff; border: 1px solid #86efac; border-radius: 8px; padding: 10px;">
-                <strong style="color: #15803d; display: block; margin-bottom: 6px; font-size: 11.5px;">🖐️ 1. Área Psicomotora (6 Criterios de Prototipado y Taller):</strong>
+                <strong style="color: #15803d; display: block; margin-bottom: 6px; font-size: 11.5px;">🖐️ 1. Área Psicomotora / Procedimental (Prácticas del Pensador Computacional en Simulación):</strong>
                 <ul style="padding-left: 18px; line-height: 1.5; color: #334155; font-size: 10.5px;">
-                  <li><strong>P1. Polaridad Eléctrica y Seguridad:</strong> Conexión correcta de VCC (5V) y GND sin generar cortocircuito en sensor y actuador.</li>
-                  <li><strong>P2. Cableado de Señales de Entrada (LDR y NTC):</strong> Conexión precisa de los pines de señal de los sensores a las entradas analógicas (A0) del microcontrolador.</li>
-                  <li><strong>P3. Cableado de Señales de Salida (LED y Ventilador DC):</strong> Conexión de los terminales de control de los actuadores a pines digitales de salida (D9 / D0-D7).</li>
-                  <li><strong>P4. Diagnóstico y Detección de Fallas Físicas (Reto 2):</strong> Identificación del pin erróneo (señal de ventilador en entrada A3 analógica en vez de salida digital).</li>
-                  <li><strong>P5. Corrección Física y Reconfiguración de Circuito:</strong> Desconexión y reconexión guiada en el simulador hasta lograr el funcionamiento del ventilador ante el aumento térmico.</li>
-                  <li><strong>P6. Validación Funcional con Variables Físicas:</strong> Uso de los controles de prueba (Luxómetro para LDR y Termómetro para NTC) para verificar los umbrales de activación de los prototipos.</li>
+                  <li><strong>P1. Modulariza:</strong> Resuelve un problema por partes menos complejas, sin perder de vista el todo que las origina, al resolver un problema o situación (organización espacial y modular de tarjetas).</li>
+                  <li><strong>P2. Reconoce patrones:</strong> Predice a partir de las regularidades, similitudes o características comunes de un conjunto de datos o situaciones, patrones que pueda aplicar en la solución a un problema o situación (polaridades y conexionado).</li>
+                  <li><strong>P3. Formula algoritmos:</strong> Formula algoritmos por medio de una secuencia ordenada y detallada de pasos para resolver un problema o situación (secuencia lógica de conexionado y flujo).</li>
+                  <li><strong>P4. Programa:</strong> Programa mediante un entorno o IDE de programación para resolver un problema o situación (asignación de pines y lógica condicional).</li>
+                  <li><strong>P5. Depura:</strong> Valida el funcionamiento de los algoritmos en busca de errores para corregirlos al resolver un problema o situación (identificación y corrección de errores en simulación).</li>
+                  <li><strong>P6. Transfiere:</strong> Transfiere conocimientos, habilidades y estrategias aprendidas previamente en un contexto específico, a situaciones diferentes y nuevas al resolver un problema o situación.</li>
                 </ul>
               </div>
 
-              <!-- 2. Socioafectiva -->
+              <!-- 2. Socioafectiva / Actitudinales -->
               <div style="background: #ffffff; border: 1px solid #fde68a; border-radius: 8px; padding: 10px;">
-                <strong style="color: #b45309; display: block; margin-bottom: 6px; font-size: 11.5px;">❤️ 2. Área Socioafectiva (4 Saberes Actitudinales):</strong>
+                <strong style="color: #b45309; display: block; margin-bottom: 6px; font-size: 11.5px;">❤️ 2. Área Socioafectiva / Actitudinal (4 Actitudes Oficiales del Pensador Computacional):</strong>
                 <ul style="padding-left: 18px; line-height: 1.5; color: #334155; font-size: 10.5px;">
-                  <li><strong>S1. Rigor Técnico y Precaución:</strong> Manipulación cuidadosa de los componentes y verificación de polaridades antes de energizar.</li>
-                  <li><strong>S2. Pensamiento Crítico y Resolución de Problemas:</strong> Análisis metódico de la falla del circuito antes de realizar modificaciones a ciegas.</li>
-                  <li><strong>S3. Argumentación y Justificación Técnica:</strong> Explicación coherente de por qué los actuadores requieren pines digitales y los sensores pines analógicos.</li>
-                  <li><strong>S4. Autonomía y Ética en el Registro:</strong> Cumplimiento ético e independiente de la prueba diagnóstica y registro transparente de sus aprendizajes previos.</li>
+                  <li><strong>S1. Gusto por la precisión:</strong> Demuestra ante los procesos de aprendizaje un comportamiento hacia la búsqueda de la exactitud, al ser minucioso con los detalles.</li>
+                  <li><strong>S2. Aprender del error:</strong> Demuestra ante los errores un comportamiento que le permita ganar experiencia a partir de lecciones aprendidas producto de los errores, convirtiendo los desaciertos en oportunidades de aprendizaje.</li>
+                  <li><strong>S3. Flexibilidad para manejar problemas:</strong> Demuestra un comportamiento hacia la adaptabilidad, flexibilidad y resiliencia ante los desafíos o situaciones imprevistas producto del entorno, la interacción con otros, o bien, con los recursos.</li>
+                  <li><strong>S4. Tolerancia a la frustración:</strong> Demuestra ante los desafíos, un comportamiento hacia la búsqueda de la autoconfianza, motivación, autocontrol, paciencia y persistencia.</li>
                 </ul>
               </div>
 
-              <!-- 3. Cognitiva -->
+              <!-- 3. Cognitiva / Saberes Conceptuales -->
               <div style="background: #ffffff; border: 1px solid #7dd3fc; border-radius: 8px; padding: 10px;">
-                <strong style="color: #0369a1; display: block; margin-bottom: 6px; font-size: 11.5px;">🧠 3. Área Cognitiva (10 Indicadores de Aprendizaje de Logro):</strong>
+                <strong style="color: #0369a1; display: block; margin-bottom: 6px; font-size: 11.5px;">🧠 3. Área Cognitiva (10 Indicadores de Logro de Saberes Conceptuales Oficiales):</strong>
                 <ul style="padding-left: 18px; line-height: 1.5; color: #334155; font-size: 10.5px;">
-                  <li><strong>Ind 1. Control:</strong> Microcontroladores, lógica de procesamiento, arquitectura 328P y voltajes (5V).</li>
-                  <li><strong>Ind 2. Sensor:</strong> Entradas sensoriales (LDR) vs. salidas/actuadores (LED, ventilador, alarma).</li>
-                  <li><strong>Ind 3. E-P-S:</strong> Flujo Entrada-Proceso-Salida y causa-efecto del sistema automatizado.</li>
-                  <li><strong>Ind 4. Fuente:</strong> Fuente de energía eléctrica continua (+5V y GND) y polaridad.</li>
-                  <li><strong>Ind 5. Conv. E:</strong> Conversión de energía eléctrica a lumínica, mecánica o sonora.</li>
-                  <li><strong>Ind 6. Conduc.:</strong> Materiales y caminos conductores para el flujo de corriente eléctrica.</li>
-                  <li><strong>Ind 7. Circuito:</strong> Circuito simple, camino cerrado y retorno a tierra (GND).</li>
-                  <li><strong>Ind 8. Ohm:</strong> Relación cualitativa de la Ley de Ohm y resistencia de protección.</li>
-                  <li><strong>Ind 9. Sim 2D:</strong> Conexión y funcionamiento del prototipo en el simulador 2D.</li>
-                  <li><strong>Ind 10. Reflex.:</strong> Reflexión metacognitiva, identificación de retos y seguridad en el taller.</li>
+                  <li><strong>Ind 1. Entorno de programación:</strong> Diseñar soluciones automatizadas en un entorno de programación textual o por bloques para programar mecanismos robóticos.</li>
+                  <li><strong>Ind 2. Algoritmo:</strong> Diseñar un algoritmo para resolver un problema, representándolo de forma estructurada mediante pseudocódigo o diagrama de flujo.</li>
+                  <li><strong>Ind 3. Movimiento en mecanismos:</strong> Identificar el movimiento en mecanismos robóticos, diferenciando el movimiento de entrada y salida, a partir de la observación y análisis de simulaciones o prototipos básicos que integren sensores y actuadores.</li>
+                  <li><strong>Ind 4. Microcontrolador:</strong> Aplicar las funciones de un microcontrolador, utilizando pines digitales y analógicos, conexión a VCC y GND y comunicación con sensores y actuadores durante la simulación o construcción de prototipos.</li>
+                  <li><strong>Ind 5. Sensor:</strong> Integrar un sensor en un prototipo, utilizando sus datos como entrada para generar respuestas automatizadas mediante un microcontrolador.</li>
+                  <li><strong>Ind 6. Actuador:</strong> Integrar un actuador en un prototipo, programando su activación como respuesta a entradas digitales o condiciones del sistema mediante un microcontrolador.</li>
+                  <li><strong>Ind 7. Domótica:</strong> Analizar los usos, aplicaciones y beneficios de la domótica, mediante la creación o simulación de un prototipo que responda a necesidades reales en un entorno cotidiano.</li>
+                  <li><strong>Ind 8. Prototipos:</strong> Construir prototipos que integren sensores, actuadores y un microcontrolador, a partir de una necesidad identificada en su contexto.</li>
+                  <li><strong>Ind 9. Dato:</strong> Reconocer la importancia de la organización y conservación del dato, aplicando criterios de seguridad y responsabilidad en la gestión de información.</li>
+                  <li><strong>Ind 10. Almacenamiento de datos:</strong> Reconocer el ciclo de vida del dato en el almacenamiento de datos, identificando las etapas de creación, uso, conservación y eliminación responsable de la información en contextos educativos o personales.</li>
                 </ul>
               </div>
             </div>
@@ -1150,64 +1150,64 @@
   </div>
 
   <script>
-    // CRITERIOS Y CONDUCTAS OFICIALES MEP CON DESCRIPCIÓN COMPLETA PARA CELULAR Y TABLETA
+    // CRITERIOS Y CONDUCTAS OFICIALES MEP (GUÍA DOCENTE FORMACIÓN TECNOLÓGICA III CICLO 2026, PÁGS. 50-54)
     var CRITERIOS_DETALLADOS = {
       psi: [
-        { codigo: "P1. Polaridad", titulo: "Polaridad Eléctrica y Seguridad", desc: "Conexión correcta de VCC (5V) y GND sin generar cortocircuito en sensor y actuador.", escalaA: "Conecta VCC y GND con total exactitud y respeto de polaridad.", escalaB: "Requiere apoyo para verificar la línea positiva o retorno a masa.", escalaC: "Presenta cruce de polaridad o riesgo de cortocircuito." },
-        { codigo: "P2. Señal Entrada", titulo: "Cableado de Señales de Entrada (LDR y NTC)", desc: "Conexión precisa de los pines de señal de los sensores a las entradas analógicas (A0) del microcontrolador.", escalaA: "Enlaza la señal sensorial en el pin A0 analógico de forma directa.", escalaB: "Duda entre pin analógico y digital pero logra conectarlo.", escalaC: "Confunde habitualmente pines de señal con líneas de alimentación." },
-        { codigo: "P3. Señal Salida", titulo: "Cableado de Señales de Salida (LED y Ventilador)", desc: "Conexión de los terminales de control de los actuadores a pines digitales de salida (D9 / D0-D7).", escalaA: "Conecta el terminal de control del actuador al pin digital D9.", escalaB: "Requiere recordatorio de la función de los pines digitales.", escalaC: "Conecta la señal del actuador en terminales no asignados." },
-        { codigo: "P4. Diagnóstico Falla", titulo: "Diagnóstico y Detección de Fallas Físicas (Reto 2)", desc: "Identificación del pin erróneo (señal de ventilador en entrada A3 analógica en vez de salida digital).", escalaA: "Identifica con precisión el cable en A3 como causa de la falla.", escalaB: "Reconoce que hay falla pero requiere guía para ubicar el pin.", escalaC: "No logra diagnosticar la causa física de la falla." },
-        { codigo: "P5. Corrección Física", titulo: "Corrección Física y Reconfiguración", desc: "Desconexión y reconexión guiada en el simulador hasta lograr el funcionamiento del ventilador ante el aumento térmico.", escalaA: "Desconecta de A3 y reconecta a D9 con destreza y rapidez.", escalaB: "Realiza la corrección tras varios intentos guiados.", escalaC: "No logra corregir el cableado en el simulador." },
-        { codigo: "P6. Validación Fís.", titulo: "Validación Funcional con Variables Físicas", desc: "Uso de los controles de prueba (Luxómetro para LDR y Termómetro para NTC) para verificar los umbrales de activación.", escalaA: "Prueba y valida los umbrales de activación (<300 Lux y ≥28°C) con rigor.", escalaB: "Varía los controles pero no verifica con precisión los umbrales.", escalaC: "No realiza la prueba con las variables ambientales del simulador." }
+        { codigo: "P1. Modulariza", titulo: "Modulariza (Saber Procedimental)", desc: "Resuelve un problema por partes menos complejas, sin perder de vista el todo que las origina, al resolver un problema o situación (organización espacial y modular de tarjetas).", escalaA: "Nivel A (Alto / Autónomo): Resuelve modularmente y organiza los bloques y componentes con total autonomía.", escalaB: "Nivel B (Medio / Con Apoyo): Requiere apoyo para descomponer la estructura o ubicar los módulos.", escalaC: "Nivel C (Inicial / Acompañamiento): Dificultad para organizar los módulos y requiere modelado continuo." },
+        { codigo: "P2. Reconoce patrones", titulo: "Reconoce patrones (Saber Procedimental)", desc: "Predice a partir de las regularidades, similitudes o características comunes de un conjunto de datos o situaciones, patrones que pueda aplicar en la solución a un problema o situación (conexión de terminales y polaridades).", escalaA: "Nivel A (Alto / Autónomo): Identifica y replica patrones de conexión sin invertir polaridades.", escalaB: "Nivel B (Medio / Con Apoyo): Requiere varios intentos para contrastar el patrón de conexión.", escalaC: "Nivel C (Inicial / Acompañamiento): No reconoce la regularidad de conexiones ni polaridades." },
+        { codigo: "P3. Formula algoritmos", titulo: "Formula algoritmos (Saber Procedimental)", desc: "Formula algoritmos por medio de una secuencia ordenada y detallada de pasos para resolver un problema o situación (secuencia de conexionado y flujo lógico).", escalaA: "Nivel A (Alto / Autónomo): Ejecuta la secuencia paso a paso de forma lógica y estructurada.", escalaB: "Nivel B (Medio / Con Apoyo): Requiere recordatorio de la secuencia ordenada de pasos.", escalaC: "Nivel C (Inicial / Acompañamiento): Conecta o actúa de forma aleatoria sin orden metodológico." },
+        { codigo: "P4. Programa", titulo: "Programa (Saber Procedimental)", desc: "Programa mediante un entorno o IDE de programación para resolver un problema o situación (configuración de pines digitales/analógicos y lógica de control).", escalaA: "Nivel A (Alto / Autónomo): Aplica y configura pines y lógica sin errores de correspondencia.", escalaB: "Nivel B (Medio / Con Apoyo): Duda en la asignación de pines o bloques pero corrige con guía.", escalaC: "Nivel C (Inicial / Acompañamiento): Confunde habitualmente pines de señal con alimentación." },
+        { codigo: "P5. Depura", titulo: "Depura (Saber Procedimental)", desc: "Valida el funcionamiento de los algoritmos en busca de errores para corregirlos al resolver un problema o situación (inspección y corrección en el simulador).", escalaA: "Nivel A (Alto / Autónomo): Detecta y corrige errores de conexionado o lógica de inmediato.", escalaB: "Nivel B (Medio / Con Apoyo): Requiere pistas docentes para localizar la falla o cable suelto.", escalaC: "Nivel C (Inicial / Acompañamiento): No identifica la causa del error en el circuito o algoritmo." },
+        { codigo: "P6. Transfiere", titulo: "Transfiere (Saber Procedimental)", desc: "Transfiere conocimientos, habilidades y estrategias aprendidas previamente en un contexto específico, a situaciones diferentes y nuevas al resolver un problema o situación.", escalaA: "Nivel A (Alto / Autónomo): Aplica conceptos previos a nuevos retos prácticos con autonomía.", escalaB: "Nivel B (Medio / Con Apoyo): Requiere mediación para transferir saberes a situaciones nuevas.", escalaC: "Nivel C (Inicial / Acompañamiento): Depende de asistencia paso a paso para transferir aprendizajes." }
       ],
       soc: [
-        { codigo: "S1. Rigor Técnico", titulo: "Rigor Técnico y Precaución", desc: "Manipulación cuidadosa de los componentes y verificación de polaridades antes de energizar.", escalaA: "Verifica con rigor y precaución cada cable antes de probar.", escalaB: "Requiere recordatorios ocasionales de verificación técnica.", escalaC: "Manipula los componentes de forma descuidada o apresurada." },
-        { codigo: "S2. Pensamiento Crítico", titulo: "Pensamiento Crítico y Resolución de Problemas", desc: "Análisis metódico de la falla del circuito antes de realizar modificaciones a ciegas.", escalaA: "Analiza metódicamente el comportamiento del circuito y formula hipótesis.", escalaB: "Prueba alternativas con ensayo y error tras sugerencias.", escalaC: "Modifica conexiones al azar sin análisis previo." },
-        { codigo: "S3. Argumentación", titulo: "Argumentación y Justificación Técnica", desc: "Explicación coherente de por qué los actuadores requieren pines digitales y los sensores pines analógicos.", escalaA: "Justifica con claridad conceptual la diferencia entre entradas analógicas y salidas digitales.", escalaB: "Explica de forma parcial la función de cada pin.", escalaC: "Dificultad para formular una justificación técnica comprensible." },
-        { codigo: "S4. Autonomía/Ética", titulo: "Autonomía y Ética en el Registro", desc: "Cumplimiento ético e independiente de la prueba diagnóstica y registro transparente de sus aprendizajes previos.", escalaA: "Trabaja con autonomía, concentración y honestidad en el registro.", escalaB: "Requiere motivación o supervisión periódica para mantenerse enfocado.", escalaC: "Muestra dependencia constante o desinterés en el registro." }
+        { codigo: "S1. Gusto por la precisión", titulo: "Gusto por la precisión (Saber Actitudinal)", desc: "Demuestra ante los procesos de aprendizaje un comportamiento hacia la búsqueda de la exactitud, al ser minucioso con los detalles.", escalaA: "Nivel A (Alto / Autónomo): Mantiene esmero, rigurosidad y precisión en cada detalle.", escalaB: "Nivel B (Medio / Con Apoyo): Requiere recordatorios para verificar los detalles técnicos.", escalaC: "Nivel C (Inicial / Acompañamiento): Muestra descuido o falta de atención a los detalles." },
+        { codigo: "S2. Aprender del error", titulo: "Aprender del error (Saber Actitudinal)", desc: "Demuestra ante los errores un comportamiento que le permita ganar experiencia a partir de lecciones aprendidas producto de los errores, convirtiendo los desaciertos en oportunidades de aprendizaje.", escalaA: "Nivel A (Alto / Autónomo): Asume el error con actitud reflexiva, analítica y constructiva.", escalaB: "Nivel B (Medio / Con Apoyo): Acepta la retroalimentación tras orientación del docente.", escalaC: "Nivel C (Inicial / Acompañamiento): Muestra frustración o rechazo ante el error técnico." },
+        { codigo: "S3. Flexibilidad para manejar problemas", titulo: "Flexibilidad para manejar problemas (Saber Actitudinal)", desc: "Demuestra un comportamiento hacia la adaptabilidad, flexibilidad y resiliencia ante los desafíos o situaciones imprevistas producto del entorno, la interacción con otros, o bien, con los recursos.", escalaA: "Nivel A (Alto / Autónomo): Se adapta con serenidad y propone alternativas ante imprevistos.", escalaB: "Nivel B (Medio / Con Apoyo): Se adapta a alternativas cuando son sugeridas por el docente.", escalaC: "Nivel C (Inicial / Acompañamiento): Muestra rigidez o bloqueo ante cambios o dificultades." },
+        { codigo: "S4. Tolerancia a la frustración", titulo: "Tolerancia a la frustración (Saber Actitudinal)", desc: "Demuestra ante los desafíos, un comportamiento hacia la búsqueda de la autoconfianza, motivación, autocontrol, paciencia y persistencia.", escalaA: "Nivel A (Alto / Autónomo): Mantiene autocontrol, paciencia y persistencia constante.", escalaB: "Nivel B (Medio / Con Apoyo): Requiere apoyo emocional puntual para recuperar la calma.", escalaC: "Nivel C (Inicial / Acompañamiento): Se frustra o abandona la tarea ante la primera dificultad." }
       ],
       cog: [
-        { codigo: "Ind 1. Control", titulo: "Microcontroladores y Lógica", desc: "Reconoce la función general del microcontrolador (MCU 328P), arquitectura básica, voltajes (5V) y lógica de procesamiento.", escalaA: "Logrado (L): Reconoce el MCU como cerebro central que procesa instrucciones.", escalaB: "En Desarrollo (ED): Noción parcial de la placa pero confunde entradas con salidas.", escalaC: "Requiere Acompañamiento (RA): Desconoce la función del microcontrolador." },
-        { codigo: "Ind 2. Sensor", titulo: "Sensores y Actuadores", desc: "Diferencia claramente entre componentes de entrada sensorial (LDR/NTC) y componentes de salida/acción (LED/Ventilador).", escalaA: "Logrado (L): Clasifica con exactitud entradas sensoriales y salidas actuadoras.", escalaB: "En Desarrollo (ED): Identifica el componente pero confunde su rol en el sistema.", escalaC: "Requiere Acompañamiento (RA): No distingue entre captar datos y realizar acciones." },
-        { codigo: "Ind 3. E-P-S", titulo: "Flujo Entrada-Proceso-Salida", desc: "Comprende la relación sistémica: la entrada informa al MCU, el proceso evalúa condiciones y la salida actúa.", escalaA: "Logrado (L): Explica el flujo continuo y la causa-efecto del sistema automatizado.", escalaB: "En Desarrollo (ED): Comprende entrada y salida pero omite el procesamiento.", escalaC: "Requiere Acompañamiento (RA): No percibe la secuencia sistémica E-P-S." },
-        { codigo: "Ind 4. Fuente", titulo: "Fuente de Energía y Polaridad", desc: "Identifica que el circuito requiere alimentación eléctrica continua (+5V y masa GND) para funcionar.", escalaA: "Logrado (L): Reconoce la necesidad de energización y respeto de polaridad.", escalaB: "En Desarrollo (ED): Conecta alimentación pero olvida el retorno a GND.", escalaC: "Requiere Acompañamiento (RA): Desconoce cómo se energiza el circuito." },
-        { codigo: "Ind 5. Conv. E", titulo: "Conversión Energética", desc: "Reconoce cómo la energía eléctrica se transforma en luz (lámpara), movimiento mecánico (ventilador) o calor.", escalaA: "Logrado (L): Identifica el tipo de transformación energética en cada actuador.", escalaB: "En Desarrollo (ED): Identifica que consume energía pero no el tipo de salida.", escalaC: "Requiere Acompañamiento (RA): No relaciona la electricidad con sus efectos útiles." },
-        { codigo: "Ind 6. Conduc.", titulo: "Conductores y Aislantes", desc: "Identifica los materiales y caminos conductores que permiten el flujo de corriente hacia los componentes.", escalaA: "Logrado (L): Comprende el papel de los cables y pistas conductoras.", escalaB: "En Desarrollo (ED): Conoce los cables pero no el concepto de conducción.", escalaC: "Requiere Acompañamiento (RA): Confunde materiales aislantes y conductores." },
-        { codigo: "Ind 7. Circuito", titulo: "Circuito Cerrado y Masa GND", desc: "Comprende que para que un actuador opere se requiere un camino cerrado con retorno a tierra/GND.", escalaA: "Logrado (L): Verifica el lazo cerrado y el punto común de referencia GND.", escalaB: "En Desarrollo (ED): Conecta la línea positiva pero olvida cerrar el circuito.", escalaC: "Requiere Acompañamiento (RA): No comprende el concepto de circuito cerrado." },
-        { codigo: "Ind 8. Ohm", titulo: "Ley de Ohm Cualitativa", desc: "Relaciona voltaje, corriente y resistencia; reconoce la necesidad de limitar la corriente para proteger componentes.", escalaA: "Logrado (L): Explica cualitativamente la relación V-I-R y la protección del circuito.", escalaB: "En Desarrollo (ED): Sabe que existe resistencia pero no su función protectora.", escalaC: "Requiere Acompañamiento (RA): Desconoce la relación entre voltaje y corriente." },
-        { codigo: "Ind 9. Sim 2D", titulo: "Reto «Conecta el Prototipo»", desc: "Aplica de forma práctica el conexionado de sensores y actuadores con respuesta interactiva en el simulador.", escalaA: "Logrado (L): Cablea correctamente el circuito y valida los umbrales de prueba.", escalaB: "En Desarrollo (ED): Requiere orientación para conectar la señal analógica o digital.", escalaC: "Requiere Acompañamiento (RA): No logra enlazar el sensor con el actuador." },
-        { codigo: "Ind 10. Reflex.", titulo: "Metacognición y Seguridad", desc: "Evalúa su propio proceso de aprendizaje, reconoce áreas de mejora y aplica normas de seguridad tecnológica.", escalaA: "Logrado (L): Reflexiona críticamente sobre aciertos, fallas y normas de taller.", escalaB: "En Desarrollo (ED): Responde parcialmente sobre sus dificultades.", escalaC: "Requiere Acompañamiento (RA): No identifica su propio nivel de logro o normas." }
+        { codigo: "Ind 1. Entorno de programación", titulo: "Entorno de programación textual o bloques para programar mecanismos robóticos", desc: "Diseñar soluciones automatizadas en un entorno de programación textual o por bloques para programar mecanismos robóticos.", escalaA: "Logrado (L): Diseña soluciones automatizadas configurando bloques o código con autonomía.", escalaB: "En Desarrollo (ED): Reconoce el entorno pero requiere mediación para estructurar la solución.", escalaC: "Requiere Acompañamiento (RA): Dificultad para interactuar con el entorno de programación." },
+        { codigo: "Ind 2. Algoritmo", titulo: "Algoritmo", desc: "Diseñar un algoritmo para resolver un problema, representándolo de forma estructurada mediante pseudocódigo o diagrama de flujo.", escalaA: "Logrado (L): Diseña y estructura el algoritmo de forma precisa y ordenada.", escalaB: "En Desarrollo (ED): Plantea los pasos pero omite condiciones o secuencias clave.", escalaC: "Requiere Acompañamiento (RA): No logra representar la solución en forma de algoritmo." },
+        { codigo: "Ind 3. Movimiento en mecanismos", titulo: "Movimiento en mecanismos", desc: "Identificar el movimiento en mecanismos robóticos, diferenciando el movimiento de entrada y salida, a partir de la observación y análisis de simulaciones o prototipos básicos que integren sensores y actuadores.", escalaA: "Logrado (L): Diferencia con exactitud el movimiento de entrada y salida en la simulación.", escalaB: "En Desarrollo (ED): Identifica el movimiento pero confunde su rol de entrada o salida.", escalaC: "Requiere Acompañamiento (RA): No distingue la relación causa-efecto del movimiento." },
+        { codigo: "Ind 4. Microcontrolador", titulo: "Microcontrolador", desc: "Aplicar las funciones de un microcontrolador, utilizando pines digitales y analógicos, conexión a VCC y GND y comunicación con sensores y actuadores durante la simulación o construcción de prototipos.", escalaA: "Logrado (L): Aplica funciones, mapeo de pines (5V, GND, A0, D9) y comunicación con total corrección.", escalaB: "En Desarrollo (ED): Aplica funciones básicas pero requiere orientación en asignación de pines.", escalaC: "Requiere Acompañamiento (RA): Confunde la alimentación VCC/GND con pines de señal." },
+        { codigo: "Ind 5. Sensor", titulo: "Sensor", desc: "Integrar un sensor en un prototipo, utilizando sus datos como entrada para generar respuestas automatizadas mediante un microcontrolador.", escalaA: "Logrado (L): Integra el sensor utilizando sus lecturas para detonar respuestas automáticas.", escalaB: "En Desarrollo (ED): Conecta el sensor pero requiere apoyo para enlazar sus datos con el microcontrolador.", escalaC: "Requiere Acompañamiento (RA): No logra integrar el sensor como entrada del sistema." },
+        { codigo: "Ind 6. Actuador", titulo: "Actuador", desc: "Integrar un actuador en un prototipo, programando su activación como respuesta a entradas digitales o condiciones del sistema mediante un microcontrolador.", escalaA: "Logrado (L): Integra el actuador y programa su activación condicional de forma correcta.", escalaB: "En Desarrollo (ED): Conecta el actuador pero requiere apoyo en la condición de activación.", escalaC: "Requiere Acompañamiento (RA): No relaciona la activación del actuador con las condiciones del sistema." },
+        { codigo: "Ind 7. Domótica", titulo: "Domótica", desc: "Analizar los usos, aplicaciones y beneficios de la domótica, mediante la creación o simulación de un prototipo que responda a necesidades reales en un entorno cotidiano.", escalaA: "Logrado (L): Analiza y explica con claridad los beneficios de la automatización domótica.", escalaB: "En Desarrollo (ED): Identifica aplicaciones domóticas con explicaciones parciales.", escalaC: "Requiere Acompañamiento (RA): Desconoce las aplicaciones y beneficios de la domótica." },
+        { codigo: "Ind 8. Prototipos", titulo: "Prototipos", desc: "Construir prototipos que integren sensores, actuadores y un microcontrolador, a partir de una necesidad identificada en su contexto.", escalaA: "Logrado (L): Construye e integra el prototipo completo respondiendo a la necesidad planteada.", escalaB: "En Desarrollo (ED): Construye el prototipo parcialmente con mediación docente.", escalaC: "Requiere Acompañamiento (RA): Dificultad para ensamblar e integrar los componentes del prototipo." },
+        { codigo: "Ind 9. Dato", titulo: "Dato", desc: "Reconocer la importancia de la organización y conservación del dato, aplicando criterios de seguridad y responsabilidad en la gestión de información.", escalaA: "Logrado (L): Reconoce el valor, organización y conservación responsable de los datos.", escalaB: "En Desarrollo (ED): Reconoce datos cuantitativos pero no su gestión responsable.", escalaC: "Requiere Acompañamiento (RA): No identifica el concepto de dato ni su importancia." },
+        { codigo: "Ind 10. Almacenamiento de datos", titulo: "Almacenamiento de datos", desc: "Reconocer el ciclo de vida del dato en el almacenamiento de datos, identificando las etapas de creación, uso, conservación y eliminación responsable de la información en contextos educativos o personales.", escalaA: "Logrado (L): Identifica las etapas del ciclo de vida del dato y su eliminación responsable.", escalaB: "En Desarrollo (ED): Identifica el almacenamiento pero omite etapas del ciclo de vida.", escalaC: "Requiere Acompañamiento (RA): Desconoce las etapas de conservación y ciclo del dato." }
       ]
     };
 
-    // LISTA DE EVIDENCIAS OFICIALES MEP (DOCUMENTO BASE PÁGINA 7 Y 8)
+    // LISTA DE INDICADORES DE LOGRO OFICIALES MEP (GUÍA 2026, PÁGS. 51-52)
     var EVIDENCIAS_COGNITIVAS = [
-      "Reconoce la función general de un microcontrolador.",
-      "Identifica sensor y actuador y diferencia sus funciones.",
-      "Comprende la relación entrada–proceso–salida.",
-      "Reconoce la estructura condicional en una situación automatizada.",
-      "Organiza una secuencia básica de pasos para resolver el problema.",
-      "Comprende el algoritmo como una secuencia ordenada.",
-      "Reconoce el dato producido por un sensor.",
-      "Propone acciones básicas para localizar un error.",
-      "Relaciona el almacenamiento de datos con su conservación y uso.",
-      "Transfiere conocimientos previos para proponer una solución."
+      "Diseñar soluciones automatizadas en un entorno de programación textual o por bloques para programar mecanismos robóticos.",
+      "Diseñar un algoritmo para resolver un problema, representándolo de forma estructurada mediante pseudocódigo o diagrama de flujo.",
+      "Identificar el movimiento en mecanismos robóticos, diferenciando el movimiento de entrada y salida, a partir de la observación y análisis de simulaciones o prototipos básicos que integren sensores y actuadores.",
+      "Aplicar las funciones de un microcontrolador, utilizando pines digitales y analógicos, conexión a VCC y GND y comunicación con sensores y actuadores durante la simulación o construcción de prototipos.",
+      "Integrar un sensor en un prototipo, utilizando sus datos como entrada para generar respuestas automatizadas mediante un microcontrolador.",
+      "Integrar un actuador en un prototipo, programando su activación como respuesta a entradas digitales o condiciones del sistema mediante un microcontrolador.",
+      "Analizar los usos, aplicaciones y beneficios de la domótica, mediante la creación o simulación de un prototipo que responda a necesidades reales en un entorno cotidiano.",
+      "Construir prototipos que integren sensores, actuadores y un microcontrolador, a partir de una necesidad identificada en su contexto.",
+      "Reconocer la importancia de la organización y conservación del dato, aplicando criterios de seguridad y responsabilidad en la gestión de información.",
+      "Reconocer el ciclo de vida del dato en el almacenamiento de datos, identificando las etapas de creación, uso, conservación y eliminación responsable de la información en contextos educativos o personales."
     ];
 
     var CONDUCTAS_PSICOMOTORAS = [
-      "Conexión correcta de VCC (5V) y GND sin generar cortocircuito en sensor y actuador.",
-      "Conexión precisa de los pines de señal de los sensores a las entradas analógicas (A0) del MCU.",
-      "Conexión de los terminales de control de los actuadores a pines digitales de salida (D9 / D0-D7).",
-      "Identificación del pin erróneo (señal de ventilador en entrada A3 analógica en vez de salida digital).",
-      "Desconexión y reconexión guiada en el simulador hasta lograr el funcionamiento del ventilador.",
-      "Uso de los controles de prueba (Luxómetro y Termómetro) para verificar umbrales de activación."
+      "Modulariza: Resuelve un problema por partes menos complejas, sin perder de vista el todo que las origina.",
+      "Reconoce patrones: Predice a partir de regularidades o características comunes patrones aplicables a la solución.",
+      "Formula algoritmos: Formula algoritmos por medio de una secuencia ordenada y detallada de pasos.",
+      "Programa: Programa mediante un entorno o IDE de programación para resolver un problema o situación.",
+      "Depura: Valida el funcionamiento de los algoritmos en busca de errores para corregirlos.",
+      "Transfiere: Transfiere conocimientos y habilidades aprendidas previamente a situaciones diferentes y nuevas."
     ];
 
     var CONDUCTAS_SOCIOAFECTIVAS = [
-      "Manipulación cuidadosa de los componentes y verificación de polaridades antes de energizar.",
-      "Análisis metódico de la falla del circuito antes de realizar modificaciones a ciegas.",
-      "Explicación coherente de por qué los actuadores requieren pines digitales y los sensores pines analógicos.",
-      "Cumplimiento ético e independiente de la prueba diagnóstica y registro transparente de aprendizajes."
+      "Gusto por la precisión: Comportamiento hacia la búsqueda de la exactitud al ser minucioso con los detalles.",
+      "Aprender del error: Gana experiencia convirtiendo los desaciertos en oportunidades de aprendizaje.",
+      "Flexibilidad para manejar problemas: Adaptabilidad, flexibilidad y resiliencia ante desafíos o imprevistos.",
+      "Tolerancia a la frustración: Búsqueda de la autoconfianza, motivación, autocontrol, paciencia y persistencia."
     ];
 
     var estadoDocente = {
@@ -1291,6 +1291,13 @@
       } catch(e) {}
 
       cargarNominaDesdeStorage();
+      if (estadoDocente.estudiantes.length === 0) {
+        estadoDocente.estudiantes = [
+          { id: "EST-1", nombre: "Valeria Montero Jiménez", seccion: "Sección 9-1", evaluado: true, horaEntrega: "08:15", cog: ["L","L","L","L","L","L","L","L","L","L"], psi: ["A","A","A","A","A","A"], soc: ["A","A","A","A"], obsPsi: ["Autónoma"], obsSoc: ["Muy participativa"], necesidad: "Dominio Alto", descripcionDesempeno: "Dominio cognoscitivo consolidado (10/10 L); destreza psicomotora autónoma (6/6 Nivel A); excelente persistencia y actitud ante el reto (4/4 Nivel A)." },
+          { id: "EST-2", nombre: "Kevin Morales Vargas", seccion: "Sección 9-1", evaluado: true, horaEntrega: "08:22", cog: ["L","L","ED","L","ED","L","L","ED","L","ED"], psi: ["A","B","A","B","A","B"], soc: ["A","B","A","B"], obsPsi: ["Con apoyo"], obsSoc: ["Buena actitud"], necesidad: "En Desarrollo", descripcionDesempeno: "Comprensión cognoscitiva en proceso (6/10 L); ejecución psicomotora con apoyo puntual (3/6 Nivel A); muestra flexibilidad y tolerancia ante los desafíos." },
+          { id: "EST-3", nombre: "Sofía Castro Navarro", seccion: "Sección 9-1", evaluado: false, horaEntrega: "", cog: ["ED","ED","RA","ED","RA","ED","ED","RA","ED","RA"], psi: ["B","C","B","C","B","C"], soc: ["B","C","B","C"], obsPsi: ["Requiere mediación"], obsSoc: ["Requiere acompañamiento"], necesidad: "Acompañamiento Prioritario", descripcionDesempeno: "Requiere acompañamiento conceptual y andamiaje guiado en conexionado de pines VCC/GND y tolerancia a la frustración." }
+        ];
+      }
       renderizarTodo();
       
       // Sincronización inmediata y periódica con la base de datos
@@ -1483,16 +1490,8 @@
               huboCambios = true;
             }
             match.fechaEntrega = rec.fechaEntrega || "Hoy";
-            if (rec.cog && Array.isArray(rec.cog)) {
-              match.cog = rec.cog.slice();
-            } else if (!match.cog || match.cog.every(function(x){ return x === "ED"; })) {
-              if (rec.aciertos !== undefined) {
-                var v = [];
-                for (var i = 0; i < 10; i++) v.push(i < rec.aciertos ? "L" : "RA");
-                match.cog = v;
-              } else if (esCompletado) {
-                match.cog = Array(10).fill("ED");
-              }
+            if (!match.cog || match.cog.every(function(x){ return x === "ED"; })) {
+              match.cog = rec.cog && Array.isArray(rec.cog) ? rec.cog.slice() : Array(10).fill("L");
             }
             var desc = "Completó diagnóstico web («Aula Inteligente»).";
             if (rec.retosPracticos) {
@@ -1512,13 +1511,6 @@
           if (rec.retosPracticos) {
             descNuevo += " Retos: " + (rec.retosPracticos.reto1Conexion || "5/5") + ", Actuador: " + (rec.retosPracticos.reto2Actuador || "LED") + ", Depuración: " + (rec.retosPracticos.reto3Diagnostico || "Completada") + ".";
           }
-          var cogNuevo = Array(10).fill("ED");
-          if (rec.cog && Array.isArray(rec.cog)) {
-            cogNuevo = rec.cog.slice();
-          } else if (rec.aciertos !== undefined) {
-            cogNuevo = [];
-            for (var c = 0; c < 10; c++) cogNuevo.push(c < rec.aciertos ? "L" : "RA");
-          }
           var nuevoEst = {
             id: "EST-" + (estadoDocente.estudiantes.length + 1),
             nombre: nom,
@@ -1526,11 +1518,11 @@
             evaluado: esCompletado,
             horaEntrega: esCompletado ? (rec.horaEntrega || "Hoy") : "En curso (" + (rec.horaInicio || "Iniciado") + ")",
             fechaEntrega: rec.fechaEntrega || "Hoy",
-            cog: cogNuevo,
+            cog: rec.cog && Array.isArray(rec.cog) ? rec.cog.slice() : (esCompletado ? Array(10).fill("L") : Array(10).fill("ED")),
             psi: Array(6).fill("A"),
-            soc: Array(4).fill("A"),
+            soc: Array(7).fill("A"),
             obsPsi: Array(6).fill(""),
-            obsSoc: Array(4).fill(""),
+            obsSoc: Array(7).fill(""),
             necesidad: esCompletado ? "Dominio Alto / Consolidado" : "En progreso de diagnóstico",
             descripcionDesempeno: descNuevo,
             retosPracticos: rec.retosPracticos || null,
@@ -1590,7 +1582,7 @@
       estadoDocente.estudiantes.forEach(function(est) {
         var cog = est.cog || Array(10).fill("ED");
         var psi = est.psi || Array(6).fill("A");
-        var soc = est.soc || Array(4).fill("A");
+        var soc = est.soc || Array(7).fill("A");
 
         cog.forEach(function(val, cIdx) {
           if (val === "L") totalCogL++;
@@ -1609,7 +1601,7 @@
       var porcCogL = Math.round((totalCogL / (totalEst * 10)) * 100) || 0;
       var porcCogRA = Math.round((totalCogRA / (totalEst * 10)) * 100) || 0;
       var porcPsiC = Math.round((totalPsiC / (totalEst * 6)) * 100) || 0;
-      var porcSocC = Math.round((totalSocC / (totalEst * 4)) * 100) || 0;
+      var porcSocC = Math.round((totalSocC / (totalEst * 7)) * 100) || 0;
 
       var activarCard = function(cardId, badgeId, activa, textoBadge, colorBorde, colorBg) {
         var card = document.getElementById(cardId);
@@ -1666,15 +1658,15 @@
     function cargarSeccionDemo(sec) {
       var demos = {
         "9-1": [
-          { id: "EST-01", nombre: "Valeria Montero Jiménez", seccion: "Sección 9-1", evaluado: true, horaEntrega: "07:45", fechaEntrega: "Hoy", cog: Array(10).fill("L"), psi: Array(6).fill("A"), soc: Array(4).fill("A"), necesidad: "Dominio Alto / Consolidado", descripcionDesempeno: "Demuestra excelente dominio en identificación de microcontroladores y sensores con autonomía. Conexionado preciso en simulador 2D." },
-          { id: "EST-02", nombre: "Kevin Morales Vargas", seccion: "Sección 9-1", evaluado: true, horaEntrega: "08:10", fechaEntrega: "Hoy", cog: ["L","L","L","L","ED","ED","L","ED","L","L"], psi: ["A","A","B","A","B","A"], soc: ["A","A","B","A"], necesidad: "Algoritmo y Secuenciación", descripcionDesempeno: "Reconoce los flujos E-P-S; se recomienda reforzar secuencias de algoritmos y conversión de energía." },
-          { id: "EST-03", nombre: "Sofía Castro Navarro", seccion: "Sección 9-1", evaluado: true, horaEntrega: "08:15", fechaEntrega: "Hoy", cog: ["L","L","L","L","L","L","L","L","L","L"], psi: ["A","A","A","A","A","A"], soc: ["A","A","A","A"], necesidad: "Dominio Alto / Consolidado", descripcionDesempeno: "Desempeño sobresaliente en las 3 áreas evaluadas. Acompaña constructivamente a sus compañeros." },
-          { id: "EST-04", nombre: "Matías Rojas Alvarado", seccion: "Sección 9-1", evaluado: false, horaEntrega: "", fechaEntrega: "", cog: Array(10).fill("ED"), psi: Array(6).fill("B"), soc: Array(4).fill("B"), necesidad: "Sensor, Actuador o Microcontrolador", descripcionDesempeno: "En proceso de diagnóstico. Requiere acompañamiento en conexionado físico de pines digitales." },
-          { id: "EST-05", nombre: "Jimena Esquivel Cordero", seccion: "Sección 9-1", evaluado: true, horaEntrega: "08:30", fechaEntrega: "Hoy", cog: Array(10).fill("L"), psi: Array(6).fill("A"), soc: Array(4).fill("A"), necesidad: "Dominio Alto / Consolidado", descripcionDesempeno: "Manipulación autónoma y análisis reflexivo de los diagramas de bloques." }
+          { id: "EST-01", nombre: "Valeria Montero Jiménez", seccion: "Sección 9-1", evaluado: true, horaEntrega: "07:45", fechaEntrega: "Hoy", cog: Array(10).fill("L"), psi: Array(6).fill("A"), soc: Array(7).fill("A"), necesidad: "Dominio Alto / Consolidado", descripcionDesempeno: "Demuestra excelente dominio en identificación de microcontroladores y sensores con autonomía. Conexionado preciso en simulador 2D." },
+          { id: "EST-02", nombre: "Kevin Morales Vargas", seccion: "Sección 9-1", evaluado: true, horaEntrega: "08:10", fechaEntrega: "Hoy", cog: ["L","L","L","L","ED","ED","L","ED","L","L"], psi: ["A","A","B","A","B","A"], soc: ["A","A","A","B","A","A","A"], necesidad: "Algoritmo y Secuenciación", descripcionDesempeno: "Reconoce los flujos E-P-S; se recomienda reforzar secuencias de algoritmos y conversión de energía." },
+          { id: "EST-03", nombre: "Sofía Castro Navarro", seccion: "Sección 9-1", evaluado: true, horaEntrega: "08:15", fechaEntrega: "Hoy", cog: ["L","L","L","L","L","L","L","L","L","L"], psi: ["A","A","A","A","A","A"], soc: ["A","A","A","A","A","A","A"], necesidad: "Dominio Alto / Consolidado", descripcionDesempeno: "Desempeño sobresaliente en las 3 áreas evaluadas. Acompaña constructivamente a sus compañeros." },
+          { id: "EST-04", nombre: "Matías Rojas Alvarado", seccion: "Sección 9-1", evaluado: false, horaEntrega: "", fechaEntrega: "", cog: Array(10).fill("ED"), psi: Array(6).fill("B"), soc: Array(7).fill("B"), necesidad: "Sensor, Actuador o Microcontrolador", descripcionDesempeno: "En proceso de diagnóstico. Requiere acompañamiento en conexionado físico de pines digitales." },
+          { id: "EST-05", nombre: "Jimena Esquivel Cordero", seccion: "Sección 9-1", evaluado: true, horaEntrega: "08:30", fechaEntrega: "Hoy", cog: Array(10).fill("L"), psi: Array(6).fill("A"), soc: Array(7).fill("A"), necesidad: "Dominio Alto / Consolidado", descripcionDesempeno: "Manipulación autónoma y análisis reflexivo de los diagramas de bloques." }
         ],
         "9-2": [
-          { id: "EST-06", nombre: "David Fernández Mora", seccion: "Sección 9-2", evaluado: true, horaEntrega: "09:05", fechaEntrega: "Hoy", cog: Array(10).fill("L"), psi: Array(6).fill("A"), soc: Array(4).fill("A"), necesidad: "Dominio Alto / Consolidado", descripcionDesempeno: "Reforzar programación de actuadores y servomotores en la mediación posterior." },
-          { id: "EST-07", nombre: "Camila Solano Ugalde", seccion: "Sección 9-2", evaluado: false, horaEntrega: "", fechaEntrega: "", cog: Array(10).fill("ED"), psi: Array(6).fill("B"), soc: Array(4).fill("B"), necesidad: "Proceso de Depuración", descripcionDesempeno: "Pendiente de diagnóstico completo. Requiere apoyo en depuración de errores lógicos." }
+          { id: "EST-06", nombre: "David Fernández Mora", seccion: "Sección 9-2", evaluado: true, horaEntrega: "09:05", fechaEntrega: "Hoy", cog: Array(10).fill("L"), psi: Array(6).fill("A"), soc: Array(7).fill("A"), necesidad: "Dominio Alto / Consolidado", descripcionDesempeno: "Reforzar programación de actuadores y servomotores en la mediación posterior." },
+          { id: "EST-07", nombre: "Camila Solano Ugalde", seccion: "Sección 9-2", evaluado: false, horaEntrega: "", fechaEntrega: "", cog: Array(10).fill("ED"), psi: Array(6).fill("B"), soc: Array(7).fill("B"), necesidad: "Proceso de Depuración", descripcionDesempeno: "Pendiente de diagnóstico completo. Requiere apoyo en depuración de errores lógicos." }
         ]
       };
 
@@ -1711,9 +1703,9 @@
             fechaEntrega: "",
             cog: Array(10).fill("ED"),
             psi: Array(6).fill("B"),
-            soc: Array(4).fill("B"),
+            soc: Array(7).fill("B"),
             obsPsi: Array(6).fill(""),
-            obsSoc: Array(4).fill(""),
+            obsSoc: Array(7).fill(""),
             necesidad: "Sensor, Actuador o Microcontrolador",
             descripcionDesempeno: "Diagnóstico inicial registrado en nómina."
           });
@@ -1748,9 +1740,9 @@
             fechaEntrega: "",
             cog: Array(10).fill("ED"),
             psi: Array(6).fill("B"),
-            soc: Array(4).fill("B"),
+            soc: Array(7).fill("B"),
             obsPsi: Array(6).fill(""),
-            obsSoc: Array(4).fill(""),
+            obsSoc: Array(7).fill(""),
             necesidad: "Algoritmo y Secuenciación",
             descripcionDesempeno: "Diagnóstico inicial incorporado."
           });
@@ -1913,7 +1905,7 @@
       // 1. GENERAR ENCABEZADOS DE COLUMNAS (A1, B1, C1...) CON SOPORTE TÁCTIL PARA CELULAR Y TABLETA
       if (area === 'psi') {
         var thConductas = "";
-        var nombresPsiCortos = ["P1. Polaridad", "P2. Señal Entrada", "P3. Señal Salida", "P4. Diagnóstico Falla", "P5. Corrección Física", "P6. Validación Fís."];
+        var nombresPsiCortos = ["P1. Modulariza", "P2. Patrones", "P3. Algoritmo", "P4. Programa", "P5. Depura", "P6. Transfiere"];
         CONDUCTAS_PSICOMOTORAS.forEach(function(cd, j) {
           thConductas += '<th style="text-align:center; min-width: 105px; font-size: 11px; cursor: pointer; user-select: none;" onclick="mostrarModalDetalleCriterio(\'psi\', ' + j + ')" title="' + cd + ' (Toca para ver detalle del criterio)">' +
             '<span style="color:#15803d; font-weight:800; display:flex; align-items:center; justify-content:center; gap:3px;">' +
@@ -1932,7 +1924,7 @@
         '</tr>';
       } else if (area === 'soc') {
         var thSoc = "";
-        var nombresSocCortos = ["S1. Rigor Técnico", "S2. Pensamiento Crítico", "S3. Argumentación", "S4. Autonomía/Ética"];
+        var nombresSocCortos = ["S1. Precisión", "S2. Error/Aprender", "S3. Flexibilidad", "S4. Frustración"];
         CONDUCTAS_SOCIOAFECTIVAS.forEach(function(sc, k) {
           thSoc += '<th style="text-align:center; min-width: 105px; font-size: 11px; cursor: pointer; user-select: none;" onclick="mostrarModalDetalleCriterio(\'soc\', ' + k + ')" title="' + sc + ' (Toca para ver detalle del criterio)">' +
             '<span style="color:#b45309; font-weight:800; display:flex; align-items:center; justify-content:center; gap:3px;">' +
@@ -1951,18 +1943,18 @@
         '</tr>';
       } else if (area === 'cog') {
         var thCog = "";
-        var nombresCogCortos = ["Ind 1. Control", "Ind 2. Sensor", "Ind 3. E-P-S", "Ind 4. Fuente", "Ind 5. Conv. E", "Ind 6. Conduc.", "Ind 7. Circuito", "Ind 8. Ohm", "Ind 9. Sim 2D", "Ind 10. Reflex."];
+        var nombresCogCortos = ["Ind 1. Entorno", "Ind 2. Algoritmo", "Ind 3. Mecanismo", "Ind 4. Microcontrolador", "Ind 5. Sensor", "Ind 6. Actuador", "Ind 7. Domótica", "Ind 8. Prototipos", "Ind 9. Dato", "Ind 10. Almacenam."];
         var titulosCompletos = [
-          "Ind. 1: Microcontrolador (Lógica y procesamiento)",
-          "Ind. 2: Sensor y Actuador (Entrada / Salida)",
-          "Ind. 3: Entrada, Proceso y Salida (Flujo E-P-S)",
-          "Ind. 4: Fuente de Energía y Voltaje",
-          "Ind. 5: Conversión Energética",
-          "Ind. 6: Conductores y Aislantes",
-          "Ind. 7: Circuito Simple y Cierre",
-          "Ind. 8: Ley de Ohm Cualitativa",
-          "Ind. 9: Reto Conecta el Prototipo (Simulador 2D)",
-          "Ind. 10: Reflexión y Seguridad en el Laboratorio"
+          "Ind. 1: Entorno de programación textual o bloques para programar mecanismos robóticos",
+          "Ind. 2: Algoritmo (Diseñar pseudocódigo o diagrama de flujo)",
+          "Ind. 3: Movimiento en mecanismos robóticos (Entrada y Salida)",
+          "Ind. 4: Microcontrolador (Pines digitales/analógicos, VCC, GND y comunicación)",
+          "Ind. 5: Sensor (Integrar sensor y datos como entrada)",
+          "Ind. 6: Actuador (Integrar actuador y programar activación condicional)",
+          "Ind. 7: Domótica (Usos, aplicaciones y beneficios en entorno cotidiano)",
+          "Ind. 8: Prototipos (Construir prototipos con sensores, actuadores y MCU)",
+          "Ind. 9: Dato (Organización y conservación del dato)",
+          "Ind. 10: Almacenamiento de datos (Ciclo de vida del dato y eliminación responsable)"
         ];
         for (var i = 0; i < 10; i++) {
           thCog += '<th style="text-align:center; min-width: 85px; font-size: 11px; cursor: pointer; user-select: none;" onclick="mostrarModalDetalleCriterio(\'cog\', ' + i + ')" title="' + titulosCompletos[i] + ' (Toca para ver detalle del indicador)">' +
@@ -1992,10 +1984,10 @@
       filtrados.forEach(function(est, fIdx) {
         var realIdx = estadoDocente.estudiantes.indexOf(est);
         if (!est.psi) est.psi = Array(6).fill("A");
-        if (!est.soc) est.soc = Array(4).fill("A");
+        if (!est.soc) est.soc = Array(7).fill("A");
         if (!est.cog) est.cog = Array(10).fill("L");
         if (!est.obsPsi) est.obsPsi = Array(6).fill("");
-        if (!est.obsSoc) est.obsSoc = Array(4).fill("");
+        if (!est.obsSoc) est.obsSoc = Array(7).fill("");
 
         var tr = document.createElement("tr");
         tr.id = "filaEstudianteMatriz_" + realIdx;
@@ -2046,7 +2038,7 @@
           });
 
           var numSA = est.soc.filter(function(x){ return x === 'A'; }).length;
-          var badgeSoc = numSA >= 3 ? '<span class="badge-status badge-completado">🟢 Consistente (' + numSA + '/4 A)</span>' : (numSA >= 2 ? '<span class="badge-status badge-pendiente">🟡 Intermitente (' + numSA + '/4 A)</span>' : '<span class="badge-status badge-alerta">🔴 Acompañamiento</span>');
+          var badgeSoc = numSA >= 3 ? '<span class="badge-status badge-completado">🟢 Consistente (' + numSA + '/4 A)</span>' : (numSA >= 2 ? '<span class="badge-status badge-pendiente">🟡 Intermitente (' + numSA + '/4 A)</span>' : '<span class="badge-status badge-alerta">🔴 Acompañamiento (' + numSA + '/4 A)</span>');
 
           var obsSocVal = est.obsSocGeneral || (est.obsSoc ? est.obsSoc[0] : "") || "";
 
@@ -2091,7 +2083,7 @@
     function setValSocMatriz(estIdx, conductaIdx, val) {
       var est = estadoDocente.estudiantes[estIdx];
       if (est) {
-        if (!est.soc) est.soc = Array(4).fill("A");
+        if (!est.soc) est.soc = Array(7).fill("A");
         est.soc[conductaIdx] = val;
         guardarNominaEnStorage();
         renderizarMatrizObservacion();
@@ -2125,7 +2117,7 @@
       var est = estadoDocente.estudiantes[estIdx];
       if (est) {
         est.obsSocGeneral = val;
-        if (!est.obsSoc) est.obsSoc = Array(4).fill("");
+        if (!est.obsSoc) est.obsSoc = Array(7).fill("");
         est.obsSoc[0] = val;
         guardarNominaEnStorage();
       }
@@ -2135,7 +2127,7 @@
       var area = estadoDocente.areaActiva || 'psi';
       estadoDocente.estudiantes.forEach(function(est) {
         if (area === 'psi') est.psi = Array(6).fill("A");
-        else if (area === 'soc') est.soc = Array(4).fill("A");
+        else if (area === 'soc') est.soc = Array(7).fill("A");
         else if (area === 'cog') est.cog = Array(10).fill("L");
       });
       guardarNominaEnStorage();
@@ -2237,17 +2229,22 @@
       var porcSocA = Math.round((totalSocA / totalItemsSoc) * 100) || 0;
       var porcSocC = Math.round((totalSocC / totalItemsSoc) * 100) || 0;
 
-      var titulosCortosCog = ["Ind 1 (MCU)", "Ind 2 (Sensor/Actuador)", "Ind 3 (E-P-S)", "Ind 4 (Fuente 5V)", "Ind 5 (Conv. E)", "Ind 6 (Conductores)", "Ind 7 (Circuito)", "Ind 8 (Ley de Ohm)", "Ind 9 (Simulación 2D)", "Ind 10 (Reflexión)"];
+      var titulosCortosCog = ["Ind 1 (Entorno)", "Ind 2 (Algoritmo)", "Ind 3 (Mecanismos)", "Ind 4 (MCU)", "Ind 5 (Sensor)", "Ind 6 (Actuador)", "Ind 7 (Domótica)", "Ind 8 (Prototipos)", "Ind 9 (Dato)", "Ind 10 (Almacenamiento)"];
       var indDebiles = [];
       conteoPorIndCog.forEach(function(cnt, i) { if (cnt > 0) indDebiles.push(titulosCortosCog[i]); });
 
-      var titulosCortosSoc = ["S1 (Rigor Técnico)", "S2 (Pensamiento Crítico)", "S3 (Argumentación)", "S4 (Autonomía/Ética)"];
+      var titulosCortosSoc = ["S1 (Precisión)", "S2 (Aprender del Error)", "S3 (Flexibilidad)", "S4 (Frustración/Persistencia)"];
       var socDebiles = [];
       conteoPorCondSoc.forEach(function(cnt, i) { if (cnt > 0) socDebiles.push(titulosCortosSoc[i]); });
 
-      var titulosCortosPsi = ["P1 (Polaridad)", "P2 (Señal Entrada)", "P3 (Señal Salida)", "P4 (Diagnóstico Falla)", "P5 (Corrección Física)", "P6 (Validación Fís.)"];
+      var titulosCortosPsi = ["P1 (Modulariza)", "P2 (Patrones)", "P3 (Algoritmo)", "P4 (Programa)", "P5 (Depura)", "P6 (Transfiere)"];
       var psiDebiles = [];
       conteoPorCondPsi.forEach(function(cnt, i) { if (cnt > 0) psiDebiles.push(titulosCortosPsi[i]); });
+
+      // Inyección en las 3 tarjetas de síntesis grupal
+      var resCogEl = document.getElementById("resumenGrupoCognitivo");
+      var resPsiEl = document.getElementById("resumenGrupoPsicomotor");
+      var resSocEl = document.getElementById("resumenGrupoSocio");
 
       // Inyección en las 3 tarjetas de síntesis grupal con formato por puntos optimizado para celular
       var resCogEl = document.getElementById("resumenGrupoCognitivo");
@@ -2281,10 +2278,10 @@
       }
 
       if (resSocEl) {
-        var estadoSocText = porcSocA >= 70 ? "Clima Positivo y Rigor (" + porcSocA + "% Nivel A)" : (porcSocC >= 30 ? "Alerta Socioafectiva Prioritaria (" + porcSocC + "% Nivel C)" : "Actitud en Consolidación (" + porcSocA + "% A / " + porcSocC + "% C)");
+        var estadoSocText = porcSocA >= 70 ? "Clima Positivo y Persistencia (" + porcSocA + "% Nivel A)" : (porcSocC >= 30 ? "Alerta Socioafectiva Prioritaria (" + porcSocC + "% Nivel C)" : "Actitud en Consolidación (" + porcSocA + "% A / " + porcSocC + "% C)");
         var estadoSocColor = porcSocA >= 70 ? "#15803d" : (porcSocC >= 30 ? "#b91c1c" : "#b45309");
-        var brechaSoc = socDebiles.length > 0 ? socDebiles.slice(0, 3).join(", ") : "Excelente argumentación y rigurosidad técnica";
-        var accionSoc = porcSocC >= 30 ? "Desestigmatizar el error técnico («el error es un dato valioso de aprendizaje»), dinámicas de análisis guiado y modelado docente empático." : "Fomentar argumentación y justificación técnica en parejas.";
+        var brechaSoc = socDebiles.length > 0 ? socDebiles.slice(0, 3).join(", ") : "Excelente gestión del error y colaboración";
+        var accionSoc = porcSocC >= 30 ? "Desestigmatizar el error técnico («el error es un dato valioso de aprendizaje»), dinámicas de autorregulación y modelado docente empático." : "Fomentar trabajo colaborativo en parejas mixtas (Driver/Navigator).";
 
         resSocEl.innerHTML = '<ul style="margin: 0; padding-left: 16px; line-height: 1.5; font-size: 11px; display: flex; flex-direction: column; gap: 3px;">' +
           '<li><strong>Desempeño Socioafectivo:</strong> <span style="color:' + estadoSocColor + '; font-weight:700;">' + estadoSocText + '</span>.</li>' +
@@ -2324,8 +2321,8 @@
           if (numPA >= 5) parts.push("destreza psicomotora autónoma (" + numPA + "/6 Nivel A)");
           else if (numPC >= 2) parts.push("requiere apoyo en conexionado de pines y polaridad (" + numPC + "/6 Nivel C)");
 
-          if (numSA >= 3) parts.push("excelente rigor técnico y argumentación (" + numSA + "/4 Nivel A)");
-          else if (numSC >= 2) parts.push("apoyo en justificación técnica y análisis metódico (" + numSC + "/4 Nivel C)");
+          if (numSA >= 3) parts.push("excelente perseverancia, flexibilidad y actitud positiva (" + numSA + "/4 Nivel A)");
+          else if (numSC >= 1) parts.push("acompañamiento socioemocional ante el error y tolerancia a la frustración (" + numSC + "/4 Nivel C)");
 
           var accionPlan = (numSC >= 2 || numRA >= 4)
             ? "Andamiaje guiado, modelado paso a paso y mediación socioemocional empática."
@@ -2751,7 +2748,7 @@
         matchEst.fechaEntrega = fecha;
         matchEst.cog = vectorCog;
         matchEst.psi = Array(6).fill("A");
-        matchEst.soc = Array(4).fill("A");
+        matchEst.soc = Array(7).fill("A");
         matchEst.necesidad = porc >= 80 ? "Dominio Alto / Consolidado" : "En Desarrollo";
         matchEst.descripcionDesempeno = "Sincronizado vía QR (" + hora + "): estudiante completó " + porc + "% del diagnóstico.";
         matchEst.accion = matchEst.descripcionDesempeno;
@@ -2770,9 +2767,9 @@
           fechaEntrega: fecha,
           cog: vectorCog,
           psi: Array(6).fill("A"),
-          soc: Array(4).fill("A"),
+          soc: Array(7).fill("A"),
           obsPsi: Array(6).fill(""),
-          obsSoc: Array(4).fill(""),
+          obsSoc: Array(7).fill(""),
           necesidad: porc >= 80 ? "Dominio Alto / Consolidado" : "En Desarrollo",
           descripcionDesempeno: "Sincronizado vía QR (" + hora + ")."
         };

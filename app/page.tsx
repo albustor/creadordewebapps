@@ -2,9 +2,10 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useDocente } from "@/context/DocenteContext";
+import { useDocente, CentroEducativoDocente } from "@/context/DocenteContext";
 import { LISTA_DRE_MEP, LISTA_DRE_REGIONALES } from "@/lib/dreCircuitos";
 import { formatearCedulaCR } from "@/lib/cedulaUtils";
+import SelectorCentrosYSecciones, { CREAR_CENTRO_DEFAULT } from "@/components/SelectorCentrosYSecciones";
 import {
   Lightning,
   ChartBar,
@@ -41,14 +42,15 @@ export default function HomePage() {
   const [mostrarLoginPin, setMostrarLoginPin] = useState(false);
   const [loginMensaje, setLoginMensaje] = useState<{ tipo: "exito" | "error"; texto: string } | null>(null);
 
-  // Formulario Registro con PIN y Checkbox de Asesoría
+  // Formulario Registro con PIN y Selector de Rol
+  const [tipoRol, setTipoRol] = useState<"Docente" | "Asesor Regional" | "Asesor Nacional">("Docente");
   const [regNombre, setRegNombre] = useState("");
   const [regCorreo, setRegCorreo] = useState("");
   const [regCedula, setRegCedula] = useState("");
   const [regTelefono, setRegTelefono] = useState("");
-  const [esAsesorNacional, setEsAsesorNacional] = useState(false);
   const [regDRE, setRegDRE] = useState("DRE-01");
   const [regInstitucion, setRegInstitucion] = useState("");
+  const [regCentros, setRegCentros] = useState<CentroEducativoDocente[]>([CREAR_CENTRO_DEFAULT(1)]);
   const [regPin, setRegPin] = useState("");
   const [regPinConfirmar, setRegPinConfirmar] = useState("");
   const [mostrarRegPin, setMostrarRegPin] = useState(false);
@@ -109,7 +111,7 @@ export default function HomePage() {
         const ultimos4 = soloNumeros.slice(-4);
         const primeros4 = soloNumeros.slice(0, 4);
         if (valorPin === ultimos4 || valorPin === primeros4) {
-          return "⚠️ Sugerencia: Evita usar los mismos dígitos iniciales o finales de tu cédula.";
+          return "⚠️ PIN vulnerable: Evita usar los primeros o últimos dígitos de tu cédula.";
         }
       }
     }
@@ -118,25 +120,29 @@ export default function HomePage() {
 
   const advertenciaPin = evaluarPIN(regPin, regCedula);
 
-  // Manejador de Registro con PIN
+  // Manejador de Registro Completo con PIN y Rol
   const handleRegistro = (e: React.FormEvent) => {
     e.preventDefault();
     setRegMensaje(null);
 
-    // 1. Validar nombre
-    if (!regNombre.trim()) {
+    // 1. Validar nombre completo
+    if (!regNombre.trim() || regNombre.trim().split(/\s+/).length < 2) {
       setRegMensaje({ tipo: "error", texto: "Por favor ingrese su nombre y apellidos completos." });
       return;
     }
 
-    // 2. Validar correo institucional MEP
+    // 2. Validar correo institucional oficial
     const correoLimpio = regCorreo.trim().toLowerCase();
-    if (!correoLimpio.endsWith("@mep.go.cr")) {
-      setRegMensaje({ tipo: "error", texto: "El correo debe ser estrictamente institucional del MEP (@mep.go.cr)." });
+    const regexMepStrict = /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+@mep\.go\.cr$/i;
+    if (!regexMepStrict.test(correoLimpio)) {
+      setRegMensaje({
+        tipo: "error",
+        texto: "Debe ingresar una cuenta de correo oficial del MEP (ejemplo: nombre.apellido.apellido@mep.go.cr).",
+      });
       return;
     }
 
-    // 3. Validar y normalizar cédula en formato oficial de 9 dígitos (con ceros)
+    // 3. Validar cédula costarricense
     const cedulaLimpia = formatearCedulaCR(regCedula.trim());
     if (!cedulaLimpia) {
       setRegMensaje({ tipo: "error", texto: "Por favor ingrese su número de cédula o identificación." });
@@ -155,17 +161,17 @@ export default function HomePage() {
       return;
     }
 
-    // 5. Configurar asignación territorial o Asesoría Nacional
     let dreCodigoFinal = regDRE;
     let dreNombreFinal = "";
     let circuitoFinal = "Circuito 01";
     let institucionFinal = regInstitucion.trim() || "Liceo / Colegio de Secundaria";
     let rolFinal = "Docente de Formación Tecnológica";
     let codigoPresupuestarioFinal = "SABER-2026";
+    let centrosFinales = regCentros;
 
     const esSuperAdminAlberto = correoLimpio === "alberto.bustos.ortega@mep.go.cr";
 
-    if (esAsesorNacional || esSuperAdminAlberto) {
+    if (tipoRol === "Asesor Nacional" || esSuperAdminAlberto) {
       dreCodigoFinal = "DRE-NACIONAL";
       dreNombreFinal = "Asesoría de Formación Tecnológica";
       circuitoFinal = "Nivel Nacional / Ámbito General";
@@ -174,19 +180,30 @@ export default function HomePage() {
         ? "Super Administrador & Asesor Nacional"
         : "Asesor de Formación Tecnológica";
       codigoPresupuestarioFinal = "FT-NACIONAL-2026";
-    } else {
+    } else if (tipoRol === "Asesor Regional") {
       const dreEncontrada = LISTA_DRE_REGIONALES.find((d) => d.codigo === regDRE) || LISTA_DRE_REGIONALES[0];
+      dreCodigoFinal = dreEncontrada.codigo;
       dreNombreFinal = dreEncontrada.nombre;
       circuitoFinal = dreEncontrada.circuitos[0] || "Circuito 01";
-      if (!institucionFinal) {
-        setRegMensaje({ tipo: "error", texto: "Por favor indique el nombre de su Centro Educativo o Liceo." });
+      institucionFinal = `Asesoría Regional de Educación - ${dreEncontrada.nombre}`;
+      rolFinal = "Asesor Regional de Educación";
+      codigoPresupuestarioFinal = `REG-${dreEncontrada.codigo}-2026`;
+    } else {
+      const centrosConNombre = regCentros.filter((c) => c.nombre && c.nombre.trim().length > 0);
+      if (centrosConNombre.length === 0) {
+        setRegMensaje({ tipo: "error", texto: "Por favor indique el nombre de al menos un Centro Educativo o Liceo." });
         return;
       }
+      dreCodigoFinal = centrosConNombre[0].dreCodigo;
+      dreNombreFinal = centrosConNombre[0].dreNombre;
+      circuitoFinal = centrosConNombre[0].circuito;
+      institucionFinal = centrosConNombre.map((c) => c.nombre.trim()).join(" / ");
+      centrosFinales = centrosConNombre;
     }
 
     const randomId = esSuperAdminAlberto
       ? "ASESOR-FT-7729"
-      : (esAsesorNacional
+      : (tipoRol === "Asesor Nacional"
           ? `ASESOR-FT-${Math.floor(1000 + Math.random() * 9000)}`
           : `DOC-${dreCodigoFinal.replace(/[^a-zA-Z0-9]/g, "")}-${Math.floor(1000 + Math.random() * 9000)}`);
 
@@ -198,6 +215,8 @@ export default function HomePage() {
       contrasena: pinLimpio,
       cedula: cedulaLimpia,
       telefono: regTelefono.trim(),
+      tipoRol: tipoRol,
+      centrosEducativos: tipoRol === "Docente" ? centrosFinales : undefined,
       dreCodigo: dreCodigoFinal,
       dreNombre: dreNombreFinal,
       circuito: circuitoFinal,
@@ -480,75 +499,87 @@ export default function HomePage() {
                     </p>
                   </div>
 
-                  {/* Checkbox: Asignación a Asesoría de Formación Tecnológica */}
-                  <div className="p-3 bg-stone-50 border border-stone-200 rounded-xl">
-                    <label className="flex items-start gap-2.5 cursor-pointer select-none">
-                      <input
-                        type="checkbox"
-                        checked={esAsesorNacional}
-                        onChange={(e) => setEsAsesorNacional(e.target.checked)}
-                        className="mt-0.5 w-4 h-4 rounded text-emerald-700 focus:ring-emerald-600 border-stone-300 bg-white cursor-pointer"
-                      />
-                      <div className="space-y-0.5">
-                        <span className="text-xs font-bold text-slate-800">
-                          Asignación a Asesoría de Formación Tecnológica
-                        </span>
-                        <p className="text-[11px] text-stone-500 font-medium">
-                          Desactiva la selección de DRE y Centro Educativo al ser de ámbito nacional.
-                        </p>
-                      </div>
+                  {/* Selector de Rol Profesional MEP */}
+                  <div className="space-y-2">
+                    <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
+                      Rol Profesional en el MEP <span className="text-rose-600">*</span>:
                     </label>
+                    <div className="grid grid-cols-3 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setTipoRol("Docente")}
+                        className={`p-2.5 rounded-xl border-2 text-center transition-all flex flex-col items-center gap-1 ${
+                          tipoRol === "Docente"
+                            ? "bg-emerald-50 border-emerald-600 text-emerald-950 shadow-xs"
+                            : "bg-stone-50 border-stone-200 text-stone-600 hover:bg-stone-100"
+                        }`}
+                      >
+                        <UserCircle size={20} weight={tipoRol === "Docente" ? "fill" : "regular"} className={tipoRol === "Docente" ? "text-emerald-700" : "text-stone-500"} />
+                        <span className="text-[11px] font-black leading-tight">Profesor / Docente</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setTipoRol("Asesor Regional")}
+                        className={`p-2.5 rounded-xl border-2 text-center transition-all flex flex-col items-center gap-1 ${
+                          tipoRol === "Asesor Regional"
+                            ? "bg-indigo-50 border-indigo-600 text-indigo-950 shadow-xs"
+                            : "bg-stone-50 border-stone-200 text-stone-600 hover:bg-stone-100"
+                        }`}
+                      >
+                        <Buildings size={20} weight={tipoRol === "Asesor Regional" ? "fill" : "regular"} className={tipoRol === "Asesor Regional" ? "text-indigo-700" : "text-stone-500"} />
+                        <span className="text-[11px] font-black leading-tight">Asesor Regional</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setTipoRol("Asesor Nacional")}
+                        className={`p-2.5 rounded-xl border-2 text-center transition-all flex flex-col items-center gap-1 ${
+                          tipoRol === "Asesor Nacional"
+                            ? "bg-purple-50 border-purple-600 text-purple-950 shadow-xs"
+                            : "bg-stone-50 border-stone-200 text-stone-600 hover:bg-stone-100"
+                        }`}
+                      >
+                        <Sparkle size={20} weight={tipoRol === "Asesor Nacional" ? "fill" : "regular"} className={tipoRol === "Asesor Nacional" ? "text-purple-700" : "text-stone-500"} />
+                        <span className="text-[11px] font-black leading-tight">Asesor Nacional</span>
+                      </button>
+                    </div>
                   </div>
 
-                  {/* DRE y Centro Educativo (se desactivan si esAsesorNacional está marcado) */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">
-                        Dirección Regional (DRE):
-                      </label>
-                      {esAsesorNacional ? (
-                        <div className="px-3 py-2.5 bg-stone-100 border border-stone-200 rounded-xl text-xs font-semibold text-stone-500 flex items-center gap-2 cursor-not-allowed">
-                          <span>Asesoría de Formación Tecnológica</span>
-                        </div>
-                      ) : (
-                        <select
-                          value={regDRE}
-                          onChange={(e) => setRegDRE(e.target.value)}
-                          className="w-full px-3 py-2.5 bg-[#FCFBF9] border border-stone-300 rounded-xl text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-emerald-600 font-semibold"
-                        >
-                          {LISTA_DRE_REGIONALES.map((d) => (
-                            <option key={d.codigo} value={d.codigo}>
-                              {d.codigo} - {d.nombre} ({d.provincia})
-                            </option>
-                          ))}
-                        </select>
-                      )}
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">
-                        Centro Educativo:
-                      </label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
-                          <Buildings size={18} />
-                        </div>
-                        <input
-                          type="text"
-                          value={esAsesorNacional ? "Asesoría Nacional (Dimensión 1 y 2)" : regInstitucion}
-                          onChange={(e) => setRegInstitucion(e.target.value)}
-                          disabled={esAsesorNacional}
-                          placeholder={esAsesorNacional ? "Asignado automáticamente" : "Ej: Liceo de Costa Rica"}
-                          required={!esAsesorNacional}
-                          className={`w-full pl-10 pr-3.5 py-2.5 border rounded-xl text-xs sm:text-sm font-semibold transition-all ${
-                            esAsesorNacional
-                              ? "bg-stone-100 border-stone-200 text-stone-500 cursor-not-allowed"
-                              : "bg-[#FCFBF9] border-stone-300 text-slate-900 placeholder-stone-400 focus:outline-none focus:border-emerald-600 focus:bg-white"
-                          }`}
-                        />
+                  {/* Campos dependientes del rol */}
+                  {tipoRol === "Asesor Nacional" ? (
+                    <div className="p-3.5 bg-purple-50 border border-purple-200 rounded-2xl text-xs text-purple-950 space-y-1">
+                      <div className="font-extrabold flex items-center gap-1.5 text-purple-900">
+                        <CheckCircle size={16} weight="fill" className="text-purple-700" />
+                        <span>Ámbito General y Cobertura Nacional</span>
                       </div>
+                      <p className="text-[11px] text-purple-900 leading-relaxed">
+                        Acceso global a las 27 Direcciones Regionales de Educación (DRE) y observatorio macro del país.
+                      </p>
                     </div>
-                  </div>
+                  ) : tipoRol === "Asesor Regional" ? (
+                    <div className="space-y-1.5">
+                      <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
+                        Dirección Regional (DRE) a Cargo <span className="text-rose-600">*</span>:
+                      </label>
+                      <select
+                        value={regDRE}
+                        onChange={(e) => setRegDRE(e.target.value)}
+                        className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-indigo-600 outline-none"
+                      >
+                        {LISTA_DRE_REGIONALES.map((dre) => (
+                          <option key={dre.codigo} value={dre.codigo}>
+                            {dre.codigo} - {dre.nombre} ({dre.provincia})
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  ) : (
+                    <SelectorCentrosYSecciones
+                      centros={regCentros}
+                      onChangeCentros={setRegCentros}
+                    />
+                  )}
 
                   {/* PIN de 4 Dígitos */}
                   <div className="p-3.5 bg-indigo-50/70 border border-indigo-200 rounded-2xl space-y-3">

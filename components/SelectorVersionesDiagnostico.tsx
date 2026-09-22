@@ -135,6 +135,9 @@ export default function SelectorVersionesDiagnostico({
             </div>
 
             <div>
+              <div className="text-[11px] font-black text-emerald-800 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                <span>Diagnóstico para el estudiante</span>
+              </div>
               <h3 className="text-xl font-black text-slate-900 flex items-center gap-2">
                 <GlobeHemisphereWest size={24} className="text-emerald-700" weight="bold" />
                 <span>Versión en línea</span>
@@ -200,9 +203,12 @@ export default function SelectorVersionesDiagnostico({
             </div>
 
             <div>
+              <div className="text-[11px] font-black text-amber-800 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                <span>Diagnóstico para el estudiante</span>
+              </div>
               <h3 className="text-xl font-black text-slate-900 flex items-center gap-2">
                 <HardDrive size={24} className="text-amber-700" weight="bold" />
-                <span>Versión desconectada (offline)</span>
+                <span>Diagnóstico para el estudiante - Versión desconectada</span>
               </h3>
               <p className="text-xs text-slate-600 mt-1.5 leading-relaxed font-medium">
                 Archivo <code>.html</code> empaquetado y autosuficiente. Se ejecuta en las computadoras del laboratorio sin depender de conexión a internet. Al finalizar genera el código QR y archivo <code>.json</code>.
