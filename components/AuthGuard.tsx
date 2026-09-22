@@ -20,7 +20,7 @@ import {
   Key,
   Eye,
   EyeSlash,
-  WhatsappLogo,
+  Phone,
   Info,
 } from "@phosphor-icons/react";
 
@@ -401,7 +401,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 
                   <div>
                     <label className="block text-xs font-black text-slate-800 uppercase tracking-wider mb-1">
-                      WhatsApp (Opcional):
+                      Teléfono de Contacto (Opcional):
                     </label>
                     <input
                       type="tel"

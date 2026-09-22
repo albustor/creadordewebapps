@@ -19,7 +19,7 @@ import {
   Key,
   WarningCircle,
   Info,
-  WhatsappLogo,
+  Phone,
   Eye,
   EyeSlash,
   ArrowClockwise,
@@ -655,26 +655,26 @@ export default function RegistroDocentePage() {
                 </div>
               </div>
 
-              {/* Teléfono Móvil / WhatsApp */}
+              {/* Teléfono de Contacto */}
               <div className="space-y-1.5 md:col-span-2">
                 <label className="block text-xs font-black text-slate-800 uppercase tracking-wider flex items-center justify-between">
-                  <span>Teléfono Móvil / WhatsApp (Opcional)</span>
-                  <span className="text-[11px] font-bold text-slate-500 lowercase">para recuperación instantánea</span>
+                  <span>Teléfono de Contacto (Opcional)</span>
+                  <span className="text-[11px] font-bold text-slate-500 lowercase">para avisos o asistencia complementaria</span>
                 </label>
                 <div className="relative">
                   <input
                     type="tel"
                     value={telefono}
                     onChange={(e) => setTelefono(e.target.value)}
-                    placeholder="Ej: +506 8888-9999"
+                    placeholder="Ej: 8888-9999"
                     className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 outline-hidden transition-all"
                   />
-                  <WhatsappLogo size={18} className="absolute right-4 top-3.5 text-emerald-600" />
+                  <Phone size={18} className="absolute right-4 top-3.5 text-slate-400" />
                 </div>
-                <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-[11.5px] text-emerald-950 font-medium flex items-start gap-2 mt-2">
-                  <WhatsappLogo size={18} className="text-emerald-700 shrink-0 mt-0.5" weight="fill" />
+                <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-[11.5px] text-slate-700 font-medium flex items-start gap-2 mt-2">
+                  <Info size={16} className="text-slate-500 shrink-0 mt-0.5" weight="bold" />
                   <span>
-                    <strong>Uso Exclusivo de Recuperación:</strong> Al registrar tu número, se utilizará única y exclusivamente para enviarte el PIN de recuperación por WhatsApp o para asistencia técnica directa cuando sea requerido.
+                    <strong>Canal Opcional:</strong> Se utilizará como medio complementario para avisos de gestión, soporte técnico o asistencia pedagógica. Toda la comunicación formal y oficial se mantendrá siempre por Correo Institucional MEP (@mep.go.cr).
                   </span>
                 </div>
               </div>
@@ -1042,7 +1042,7 @@ export default function RegistroDocentePage() {
                     }`}
                   >
                     <EnvelopeSimple size={18} className="text-blue-600" weight="bold" />
-                    <span>Correo MEP</span>
+                    <span>Correo MEP (@mep.go.cr)</span>
                   </button>
 
                   <button
@@ -1054,8 +1054,8 @@ export default function RegistroDocentePage() {
                         : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100"
                     }`}
                   >
-                    <WhatsappLogo size={18} className="text-emerald-600" weight="fill" />
-                    <span>WhatsApp</span>
+                    <Phone size={18} className="text-emerald-600" />
+                    <span>Mensajería Móvil</span>
                   </button>
                 </div>
               </div>

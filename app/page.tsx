@@ -24,7 +24,7 @@ import {
   Sparkle,
   Eye,
   EyeSlash,
-  WhatsappLogo,
+  Phone,
   Info,
 } from "@phosphor-icons/react";
 
@@ -435,11 +435,11 @@ export default function HomePage() {
 
                     <div>
                       <label className="block text-xs font-bold text-slate-300 mb-1 flex items-center justify-between">
-                        <span>WhatsApp (Opcional):</span>
+                        <span>Teléfono de Contacto (Opcional):</span>
                       </label>
                       <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-emerald-500">
-                          <WhatsappLogo size={18} />
+                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                          <Phone size={18} />
                         </div>
                         <input
                           type="tel"
@@ -451,6 +451,10 @@ export default function HomePage() {
                       </div>
                     </div>
                   </div>
+
+                  <p className="text-[11px] text-slate-400 font-medium">
+                    📌 <strong>Contacto Opcional:</strong> Canal complementario para avisos de gestión o asistencia técnica. Toda la comunicación oficial se mantendrá siempre por Correo Institucional MEP (@mep.go.cr).
+                  </p>
 
                   {/* Correo Oficial MEP */}
                   <div>
