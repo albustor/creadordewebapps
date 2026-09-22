@@ -135,14 +135,14 @@ export default function SelectorVersionesDiagnostico({
             </div>
 
             <div>
-              <div className="text-[11px] font-black text-emerald-800 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                <span>Diagnóstico para el estudiante</span>
-              </div>
-              <h3 className="text-xl font-black text-slate-900 flex items-center gap-2">
-                <GlobeHemisphereWest size={24} className="text-emerald-700" weight="bold" />
-                <span>Versión en línea</span>
+              <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
+                DIAGNÓSTICO PARA EL ESTUDIANTE
               </h3>
-              <p className="text-xs text-slate-600 mt-1.5 leading-relaxed font-medium">
+              <div className="text-xs font-black text-emerald-800 uppercase tracking-wider mt-1 flex items-center gap-1.5">
+                <GlobeHemisphereWest size={16} className="text-emerald-700" weight="bold" />
+                <span>Enlace en Línea</span>
+              </div>
+              <p className="text-xs text-slate-600 mt-2 leading-relaxed font-medium">
                 Ejecución directa desde el navegador con conexión a internet. Almacena las respuestas y los 10 indicadores cognitivos directamente en la base de datos y en tu dashboard.
               </p>
             </div>
@@ -203,14 +203,14 @@ export default function SelectorVersionesDiagnostico({
             </div>
 
             <div>
-              <div className="text-[11px] font-black text-amber-800 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                <span>Diagnóstico para el estudiante</span>
-              </div>
-              <h3 className="text-xl font-black text-slate-900 flex items-center gap-2">
-                <HardDrive size={24} className="text-amber-700" weight="bold" />
-                <span>Diagnóstico para el estudiante - Versión desconectada</span>
+              <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
+                DIAGNÓSTICO PARA EL ESTUDIANTE
               </h3>
-              <p className="text-xs text-slate-600 mt-1.5 leading-relaxed font-medium">
+              <div className="text-xs font-black text-amber-800 uppercase tracking-wider mt-1 flex items-center gap-1.5">
+                <HardDrive size={16} className="text-amber-700" weight="bold" />
+                <span>Archivo de uso local</span>
+              </div>
+              <p className="text-xs text-slate-600 mt-2 leading-relaxed font-medium">
                 Archivo <code>.html</code> empaquetado y autosuficiente. Se ejecuta en las computadoras del laboratorio sin depender de conexión a internet. Al finalizar genera el código QR y archivo <code>.json</code>.
               </p>
             </div>
