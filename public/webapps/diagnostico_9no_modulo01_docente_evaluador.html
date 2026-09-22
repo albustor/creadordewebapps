@@ -548,13 +548,13 @@
       <!-- PESTAÑAS DE ÁREA SUPERIORES (ENCABEZADOS DE COLUMNA A1, B1, C1) -->
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px;">
         <button type="button" id="tabAreaPsi" class="view-tab activa" onclick="cambiarAreaObservacion('psi')" style="padding: 12px 10px; font-size: 12px; border-color: #86efac; color: #15803d; background: #dcfce7;">
-          <span style="font-size: 13px; font-weight: 900;">🖐️ 1. ÁREA PSICOMOTORA</span>
-          <span style="font-size: 10px; color: #166534; font-weight: normal;">6 Saberes Procedimentales (Prácticas Taller)</span>
+          <span style="font-size: 13px; font-weight: 900;">🖐️ 1. ÁREA PSICOMOTRIZ / PROCEDIMENTAL</span>
+          <span style="font-size: 10px; color: #166534; font-weight: normal;">6 Prácticas del Pensador Computacional en Simulación</span>
         </button>
 
         <button type="button" id="tabAreaSoc" class="view-tab" onclick="cambiarAreaObservacion('soc')" style="padding: 12px 10px; font-size: 12px; border-color: #fde68a; color: #b45309; background: #ffffff;">
-          <span style="font-size: 13px; font-weight: 900;">❤️ 2. ÁREA SOCIOAFECTIVA</span>
-          <span style="font-size: 10px; color: #92400e; font-weight: normal;">4 Saberes Actitudinales (Actitudes MEP)</span>
+          <span style="font-size: 13px; font-weight: 900;">❤️ 2. ÁREA SOCIOAFECTIVA / ACTITUDINAL</span>
+          <span style="font-size: 10px; color: #92400e; font-weight: normal;">4 Actitudes del Pensador Computacional y Autopercepción</span>
         </button>
 
         <button type="button" id="tabAreaCog" class="view-tab" onclick="cambiarAreaObservacion('cog')" style="padding: 12px 10px; font-size: 12px; border-color: #7dd3fc; color: #0369a1; background: #ffffff;">
@@ -646,20 +646,20 @@
           <!-- 2. Áreas Psicomotora y Socioafectiva (Escala A / B / C) -->
           <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px;">
             <strong style="color: #15803d; display: block; margin-bottom: 4px; font-size: 11px;">
-              🖐️ Psicomotora & ❤️ Socioafectiva (Escala A / B / C):
+              🖐️ Psicomotriz & ❤️ Socioafectiva (Escala A / B / C):
             </strong>
             <div style="display: flex; flex-direction: column; gap: 4px;">
               <div style="display: flex; align-items: center; gap: 6px;">
                 <span style="background: #dcfce7; color: #15803d; border: 1px solid #86efac; font-weight: 900; font-size: 10.5px; padding: 1px 7px; border-radius: 4px;">A</span>
-                <span style="color: #334155;"><strong>Nivel Alto / Autónomo / Consistente:</strong> Ejecuta sin apoyo</span>
+                <span style="color: #334155;"><strong>Nivel A (Alto / Autónomo / Consistente):</strong> Ejecuta con rigor y autonomía</span>
               </div>
               <div style="display: flex; align-items: center; gap: 6px;">
                 <span style="background: #fef3c7; color: #b45309; border: 1px solid #fde68a; font-weight: 900; font-size: 10.5px; padding: 1px 7px; border-radius: 4px;">B</span>
-                <span style="color: #334155;"><strong>Nivel Medio / Con Apoyo / Intermitente:</strong> Requiere guía puntual</span>
+                <span style="color: #334155;"><strong>Nivel B (Medio / Con Apoyo Ocasional):</strong> Requiere guía puntual o pista</span>
               </div>
               <div style="display: flex; align-items: center; gap: 6px;">
                 <span style="background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; font-weight: 900; font-size: 10.5px; padding: 1px 7px; border-radius: 4px;">C</span>
-                <span style="color: #334155;"><strong>Nivel Inicial / Acompañamiento:</strong> Demanda modelado paso a paso</span>
+                <span style="color: #334155;"><strong>Nivel C (Inicial / Acompañamiento):</strong> Demanda modelado paso a paso</span>
               </div>
             </div>
           </div>
@@ -679,33 +679,33 @@
             </summary>
             
             <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 10px;">
-              <!-- 1. Psicomotora / Procedimental -->
+              <!-- 1. Psicomotriz / Procedimental -->
               <div style="background: #ffffff; border: 1px solid #86efac; border-radius: 8px; padding: 10px;">
-                <strong style="color: #15803d; display: block; margin-bottom: 6px; font-size: 11.5px;">🖐️ 1. Área Psicomotora (Saberes Procedimentales - 6 Prácticas del Pensador Computacional):</strong>
-                <ul style="padding-left: 18px; line-height: 1.5; color: #334155; font-size: 10.5px;">
-                  <li><strong>P1. Polaridad y Seguridad Eléctrica (Manejo Ético y Seguro / Modulariza):</strong> Conexión correcta de VCC (+5V) y retorno a masa (GND) sin generar cortocircuito ni cruces de polaridad.</li>
-                  <li><strong>P2. Cableado de Señales Sensoriales (Abstrae / Modulariza):</strong> Conexión precisa de los pines de señal analógica de sensores (LDR y Termistor NTC) a la entrada analógica A0 del microcontrolador.</li>
-                  <li><strong>P3. Cableado de Control de Actuadores (Generaliza / Reconoce Patrones):</strong> Conexión de terminales de control de actuadores (Lámpara LED y Ventilador DC) a salidas digitales (D9 / D0-D7).</li>
-                  <li><strong>P4. Diagnóstico Analítico de Fallas (Depura / Abstrae):</strong> Identificación del pin erróneo donde la señal del ventilador fue conectada a la entrada analógica A3 en lugar de la salida digital D9.</li>
-                  <li><strong>P5. Corrección Física y Reconfiguración (Depura / Transfiere):</strong> Desconexión del terminal de A3 y reconexión a D9 en el simulador hasta lograr el encendido del ventilador ante calor (≥28°C).</li>
-                  <li><strong>P6. Validación Funcional con Variables Físicas (Formula Algoritmos / Valida):</strong> Uso de los controles de prueba (Luxómetro y Termómetro) para verificar experimentalmente los umbrales de activación (&lt;300 Lux y ≥28°C).</li>
+                <strong style="color: #15803d; display: block; margin-bottom: 6px; font-size: 11.5px;">🖐️ 1. ÁREA PSICOMOTRIZ / PROCEDIMENTAL (Prácticas del Pensador Computacional en la Simulación Interactiva):</strong>
+                <ul style="padding-left: 18px; line-height: 1.6; color: #334155; font-size: 10.5px;">
+                  <li><strong>P1. Modulariza:</strong> Resuelve la conexión por partes independientes: identifica y organiza espacialmente las 3 tarjetas de hardware (Sensor LDR, Microcontrolador MCU y Lámpara LED).<br><span style="color:#64748b;"><em>Escala: Nivel A: Autónomo / Consistente | Nivel B: Con apoyo ocasional | Nivel C: Requiere modelado paso a paso</em></span></li>
+                  <li><strong>P2. Reconoce Patrones:</strong> Identifica las regularidades de polaridad y correspondencia de terminales (VCC 5V 🔴, GND ⚫, Pin A0 🟢, Pin D9 🟡).<br><span style="color:#64748b;"><em>Escala: Nivel A: Sin errores de polaridad | Nivel B: Corrige polaridad con guía | Nivel C: Confunde alimentación con señal</em></span></li>
+                  <li><strong>P3. Formula Algoritmos:</strong> Establece el flujo lógico secuencial del sistema (Entrada ➔ Proceso ➔ Salida) cerrando el circuito eléctrico ordenadamente.<br><span style="color:#64748b;"><em>Escala: Nivel A: Secuencia lógica inmediata | Nivel B: Ensayo y error guiado | Nivel C: Desorden en el conexionado</em></span></li>
+                  <li><strong>P4. Programa:</strong> Valida la estructura condicional y asignación de pines: comprueba que al bajar la luz (&lt;300 Lux) el microcontrolador activa la salida digital D9.<br><span style="color:#64748b;"><em>Escala: Nivel A: Verifica umbral y estados DMM | Nivel B: Comprende tras aclaración | Nivel C: No asocia el umbral a la salida</em></span></li>
+                  <li><strong>P5. Depura (Reto 2):</strong> Detecta la falla técnica inyectada en el simulador (señal conectada a 5V en vez de A0) y ejecuta la reconexión física del cable en el banco interactivo.<br><span style="color:#64748b;"><em>Escala: Nivel A: Detecta y reconecta con autonomía | Nivel B: Reconecta con pista docente | Nivel C: No logra corregir el cable</em></span></li>
+                  <li><strong>P6. Transfiere (Reto 2):</strong> Transfiere el concepto a la justificación escrita: explica por qué la entrada analógica A0 lee voltajes variables según la luz mientras que 5V es fija.<br><span style="color:#64748b;"><em>Escala: Nivel A: Justificación técnica precisa | Nivel B: Justificación empírica parcial | Nivel C: No fundamenta la corrección</em></span></li>
                 </ul>
               </div>
 
               <!-- 2. Socioafectiva / Actitudinal -->
               <div style="background: #ffffff; border: 1px solid #fde68a; border-radius: 8px; padding: 10px;">
-                <strong style="color: #b45309; display: block; margin-bottom: 6px; font-size: 11.5px;">❤️ 2. Área Socioafectiva (Saberes Actitudinales - 4 Actitudes del Pensador Computacional):</strong>
-                <ul style="padding-left: 18px; line-height: 1.5; color: #334155; font-size: 10.5px;">
-                  <li><strong>S1. Gusto por la Precisión y Rigor Técnico:</strong> Demuestra ante los procesos de aprendizaje un comportamiento hacia la búsqueda de la exactitud, verificando con minuciosidad las conexiones antes de energizar.</li>
-                  <li><strong>S2. Aprender del Error:</strong> Demuestra ante los errores un comportamiento que le permite ganar experiencia a partir de desaciertos, analizando la falla del circuito antes de modificar a ciegas.</li>
-                  <li><strong>S3. Flexibilidad y Argumentación Técnica:</strong> Demuestra adaptabilidad y argumenta con rigor conceptual por qué los actuadores requieren señales de salida digital y los sensores entradas analógicas.</li>
-                  <li><strong>S4. Tolerancia a la Frustración y Autonomía:</strong> Demuestra persistencia, autoconfianza, concentración y honestidad en el registro diagnóstico formativo.</li>
+                <strong style="color: #b45309; display: block; margin-bottom: 6px; font-size: 11.5px;">❤️ 2. ÁREA SOCIOAFECTIVA / ACTITUDINAL (4 Actitudes Oficiales del Pensador Computacional y Autopercepción):</strong>
+                <ul style="padding-left: 18px; line-height: 1.6; color: #334155; font-size: 10.5px;">
+                  <li><strong>S1. Gusto por la Precisión:</strong> Demuestra esmero y minuciosidad al verificar los cables, los valores del multímetro (1.05V, 45W) y el monitor serial UART antes de avanzar.<br><span style="color:#64748b;"><em>Escala: Nivel A: Alto rigor y minuciosidad | Nivel B: Precisión moderada | Nivel C: Precipitación / descuido</em></span></li>
+                  <li><strong>S2. Aprender del Error:</strong> Convierte los desaciertos en oportunidades de aprendizaje: analiza con calma por qué la lámpara no encendía en lugar de rendirse o probar al azar.<br><span style="color:#64748b;"><em>Escala: Nivel A: Análisis reflexivo ante el fallo | Nivel B: Corrige tras orientación | Nivel C: Frustración ante el error</em></span></li>
+                  <li><strong>S3. Flexibilidad ante Problemas:</strong> Demuestra adaptabilidad y resiliencia para replantear su hipótesis cuando la propuesta con falla no responde como esperaba.<br><span style="color:#64748b;"><em>Escala: Nivel A: Adaptable y proactivo/a | Nivel B: Flexible con acompañamiento | Nivel C: Rigidez ante el problema</em></span></li>
+                  <li><strong>S4. Tolerancia a la Frustración y Confort:</strong> Autocontrol, paciencia y persistencia. Se vincula al selector emocional (Muy cómodo/a, Cómodo/a, Con alguna dificultad, Necesité bastante apoyo).<br><span style="color:#64748b;"><em>Escala: Nivel A: Alta perseverancia y confort | Nivel B: Persistencia media | Nivel C: Requiere soporte emocional constante</em></span></li>
                 </ul>
               </div>
 
               <!-- 3. Cognitiva / Conceptual -->
               <div style="background: #ffffff; border: 1px solid #7dd3fc; border-radius: 8px; padding: 10px;">
-                <strong style="color: #0369a1; display: block; margin-bottom: 6px; font-size: 11.5px;">🧠 3. Área Cognitiva (Saberes Conceptuales - 10 Indicadores de Logro MEP):</strong>
+                <strong style="color: #0369a1; display: block; margin-bottom: 6px; font-size: 11.5px;">🧠 3. ÁREA COGNITIVA (10 Saberes Conceptuales - Indicadores de Logro MEP):</strong>
                 <ul style="padding-left: 18px; line-height: 1.5; color: #334155; font-size: 10.5px;">
                   <li><strong>Ind 1. Control (Microcontrolador):</strong> Reconoce la lógica de procesamiento, arquitectura básica 328P y voltajes (5V).</li>
                   <li><strong>Ind 2. Sensor (Sensor y Actuador):</strong> Diferencia entre componentes de entrada sensorial (LDR/NTC) y de salida (LED/Ventilador).</li>
@@ -717,6 +717,20 @@
                   <li><strong>Ind 8. Ohm (Ley de Ohm Cualitativa):</strong> Relaciona voltaje, corriente y resistencia protectora de componentes.</li>
                   <li><strong>Ind 9. Sim 2D (Reto de Ensamble):</strong> Aplica el conexionado interactivo de sensores y actuadores en el simulador 2D.</li>
                   <li><strong>Ind 10. Reflex. (Metacognición y Seguridad):</strong> Autoevalúa aprendizajes previos y normas de seguridad en el laboratorio tecnológico.</li>
+                </ul>
+              </div>
+
+              <!-- 4. Matriz de Sistematización y Vinculación -->
+              <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px;">
+                <strong style="color: #0f172a; display: block; margin-bottom: 6px; font-size: 11.5px;">📊 3. MATRIZ DE SISTEMATIZACIÓN Y VINCULACIÓN (Pág. 15):</strong>
+                <p style="color: #334155; font-size: 10.5px; line-height: 1.5; margin-bottom: 6px;">
+                  En la Vista 3 (Sistematización) del Instrumento Docente, el sistema cruza los 10 Saberes Conceptuales (Área Cognitiva) con los desempeños Procedimentales (P1-P6) y Actitudinales (S1-S4):
+                </p>
+                <ul style="padding-left: 18px; line-height: 1.5; color: #334155; font-size: 10.5px;">
+                  <li><strong>🟢 L / Nivel A (Logrado / Autónomo):</strong> Demuestra dominio conceptual, destreza psicomotriz en el cableado y actitud perseverante.</li>
+                  <li><strong>🟡 ED / Nivel B (En Desarrollo / Con Apoyo):</strong> Comprensión intermedia, requiere mediación ocasional en conexiones o depuración.</li>
+                  <li><strong>🔴 RA / Nivel C (Requiere Acompañamiento):</strong> Demanda modelado paso a paso en circuitos y refuerzo en conceptos base.</li>
+                  <li><strong>✨ Generador de Diagnóstico Individual:</strong> Cada estudiante cuenta con un campo editable de Descripción del Desempeño y Acciones de Acompañamiento, autocompletable con el botón de Análisis con IA (360° Formativo) o editable manualmente por el docente.</li>
                 </ul>
               </div>
             </div>
@@ -1153,18 +1167,18 @@
     // CRITERIOS Y CONDUCTAS OFICIALES MEP CON DESCRIPCIÓN COMPLETA PARA CELULAR Y TABLETA
     var CRITERIOS_DETALLADOS = {
       psi: [
-        { codigo: "P1. Polaridad", titulo: "Polaridad y Seguridad Eléctrica (Manejo Ético y Seguro / Modulariza)", desc: "Conexión correcta de VCC (+5V) y retorno a masa (GND) sin generar cortocircuito ni cruces de polaridad.", escalaA: "Nivel A (Alto / Autónomo): Conecta VCC y GND con total exactitud y respeto estricto de polaridad sin apoyo.", escalaB: "Nivel B (Medio / Con Apoyo): Requiere recordatorio puntual para verificar la línea positiva o retorno a masa.", escalaC: "Nivel C (Inicial / Acompañamiento): Presenta cruce de polaridad o riesgo de cortocircuito y requiere modelado paso a paso." },
-        { codigo: "P2. Señal Entrada", titulo: "Cableado de Señales Sensoriales (Abstrae / Modulariza)", desc: "Conexión precisa de los pines de señal analógica de sensores (LDR y Termistor NTC) a la entrada analógica A0 del microcontrolador.", escalaA: "Nivel A (Alto / Autónomo): Enlaza la señal sensorial en el pin A0 analógico de forma directa y autónoma.", escalaB: "Nivel B (Medio / Con Apoyo): Duda entre pin analógico y digital pero logra conectarlo tras orientación breve.", escalaC: "Nivel C (Inicial / Acompañamiento): Confunde habitualmente pines de señal analógica con líneas de alimentación o salidas." },
-        { codigo: "P3. Señal Salida", titulo: "Cableado de Control de Actuadores (Generaliza / Reconoce Patrones)", desc: "Conexión de terminales de control de actuadores (Lámpara LED y Ventilador DC) a salidas digitales (D9 / D0-D7).", escalaA: "Nivel A (Alto / Autónomo): Conecta con total precisión el terminal de control del actuador al pin digital D9.", escalaB: "Nivel B (Medio / Con Apoyo): Requiere recordatorio puntual de la función y mapeo de los pines digitales de salida.", escalaC: "Nivel C (Inicial / Acompañamiento): Conecta la señal del actuador en terminales analógicos o no asignados." },
-        { codigo: "P4. Diagnóstico Falla", titulo: "Diagnóstico Analítico de Fallas (Depura / Abstrae)", desc: "Identificación del pin erróneo donde la señal del ventilador fue conectada a la entrada analógica A3 en lugar de la salida digital D9.", escalaA: "Nivel A (Alto / Autónomo): Identifica con rapidez y precisión analítica el cable en A3 como causa raíz de la falla.", escalaB: "Nivel B (Medio / Con Apoyo): Reconoce que hay una falla en el circuito pero requiere guía para ubicar el pin incorrecto.", escalaC: "Nivel C (Inicial / Acompañamiento): No logra diagnosticar la causa física de la falla en el circuito." },
-        { codigo: "P5. Corrección Física", titulo: "Corrección Física y Reconfiguración (Depura / Transfiere)", desc: "Desconexión del terminal de A3 y reconexión a D9 en el simulador hasta lograr el encendido del ventilador ante calor (≥28°C).", escalaA: "Nivel A (Alto / Autónomo): Desconecta de A3 y reconecta a D9 con destreza, rapidez y total autonomía.", escalaB: "Nivel B (Medio / Con Apoyo): Realiza la corrección física tras varios intentos o sugerencias puntuales.", escalaC: "Nivel C (Inicial / Acompañamiento): No logra reconfigurar el cableado en el simulador sin supervisión continua." },
-        { codigo: "P6. Validación Fís.", titulo: "Validación Funcional con Variables Físicas (Formula Algoritmos / Valida)", desc: "Uso de los controles de prueba (Luxómetro y Termómetro) para verificar experimentalmente los umbrales de activación (<300 Lux y ≥28°C).", escalaA: "Nivel A (Alto / Autónomo): Prueba y valida los umbrales de activación (<300 Lux y ≥28°C) con rigor y metodología experimental.", escalaB: "Nivel B (Medio / Con Apoyo): Varía los controles ambientales pero requiere apoyo para verificar con precisión los umbrales exactos.", escalaC: "Nivel C (Inicial / Acompañamiento): Omite la prueba con las variables ambientales o no interpreta las lecturas de los instrumentos." }
+        { codigo: "P1. Modulariza", titulo: "Modulariza (Práctica del Pensador Computacional)", desc: "Resuelve la conexión por partes independientes: identifica y organiza espacialmente las 3 tarjetas de hardware (Sensor LDR, Microcontrolador MCU y Lámpara LED).", escalaA: "Nivel A: Autónomo / Consistente", escalaB: "Nivel B: Con apoyo ocasional", escalaC: "Nivel C: Requiere modelado paso a paso" },
+        { codigo: "P2. Reconoce Patrones", titulo: "Reconoce Patrones (Práctica del Pensador Computacional)", desc: "Identifica las regularidades de polaridad y correspondencia de terminales (VCC 5V 🔴, GND ⚫, Pin A0 🟢, Pin D9 🟡).", escalaA: "Nivel A: Sin errores de polaridad", escalaB: "Nivel B: Corrige polaridad con guía", escalaC: "Nivel C: Confunde alimentación con señal" },
+        { codigo: "P3. Formula Algoritmos", titulo: "Formula Algoritmos (Práctica del Pensador Computacional)", desc: "Establece el flujo lógico secuencial del sistema (Entrada ➔ Proceso ➔ Salida) cerrando el circuito eléctrico ordenadamente.", escalaA: "Nivel A: Secuencia lógica inmediata", escalaB: "Nivel B: Ensayo y error guiado", escalaC: "Nivel C: Desorden en el conexionado" },
+        { codigo: "P4. Programa", titulo: "Programa (Práctica del Pensador Computacional)", desc: "Valida la estructura condicional y asignación de pines: comprueba que al bajar la luz (<300 Lux) el microcontrolador activa la salida digital D9.", escalaA: "Nivel A: Verifica umbral y estados DMM", escalaB: "Nivel B: Comprende tras aclaración", escalaC: "Nivel C: No asocia el umbral a la salida" },
+        { codigo: "P5. Depura (Reto 2)", titulo: "Depura - Reto 2 (Práctica del Pensador Computacional)", desc: "Detecta la falla técnica inyectada en el simulador (señal conectada a 5V en vez de A0) y ejecuta la reconexión física del cable en el banco interactivo.", escalaA: "Nivel A: Detecta y reconecta con autonomía", escalaB: "Nivel B: Reconecta con pista docente", escalaC: "Nivel C: No logra corregir el cable" },
+        { codigo: "P6. Transfiere (Reto 2)", titulo: "Transfiere - Reto 2 (Práctica del Pensador Computacional)", desc: "Transfiere el concepto a la justificación escrita: explica por qué la entrada analógica A0 lee voltajes variables según la luz mientras que 5V es fija.", escalaA: "Nivel A: Justificación técnica precisa", escalaB: "Nivel B: Justificación empírica parcial", escalaC: "Nivel C: No fundamenta la corrección" }
       ],
       soc: [
-        { codigo: "S1. Rigor Técnico", titulo: "Gusto por la Precisión y Rigor Técnico", desc: "Demuestra ante los procesos de aprendizaje un comportamiento hacia la búsqueda de la exactitud, verificando minuciosamente conexiones y polaridades antes de energizar.", escalaA: "Nivel A (Alto / Autónomo): Verifica con rigor, minuciosidad y precaución cada conexión y polaridad antes de energizar.", escalaB: "Nivel B (Medio / Con Apoyo): Requiere recordatorios ocasionales de verificación técnica y orden en el espacio de trabajo.", escalaC: "Nivel C (Inicial / Acompañamiento): Manipula los componentes de forma descuidada o apresurada sin verificar polaridades." },
-        { codigo: "S2. Aprender del Error", titulo: "Aprender del Error", desc: "Demuestra ante los errores un comportamiento que le permita ganar experiencia a partir de desaciertos, analizando la causa física antes de modificar a ciegas.", escalaA: "Nivel A (Alto / Autónomo): Analiza metódicamente el comportamiento del circuito ante fallas y formula hipótesis constructivas.", escalaB: "Nivel B (Medio / Con Apoyo): Prueba alternativas con ensayo y error constructivo tras recibir orientaciones del docente.", escalaC: "Nivel C (Inicial / Acompañamiento): Modifica conexiones al azar sin análisis reflexivo previo ante un error." },
-        { codigo: "S3. Argumentación", titulo: "Flexibilidad y Argumentación Técnica", desc: "Demuestra adaptabilidad y argumenta con claridad conceptual por qué los actuadores requieren salidas digitales y los sensores entradas analógicas.", escalaA: "Nivel A (Alto / Autónomo): Justifica con claridad y rigor conceptual la diferencia entre entradas analógicas y salidas digitales.", escalaB: "Nivel B (Medio / Con Apoyo): Explica de forma parcial la función de cada pin o requiere preguntas guía para argumentar.", escalaC: "Nivel C (Inicial / Acompañamiento): Presenta dificultad para formular una justificación técnica comprensible." },
-        { codigo: "S4. Autonomía/Ética", titulo: "Tolerancia a la Frustración y Autonomía", desc: "Demuestra ante los desafíos autoconfianza, persistencia, autocontrol, concentración y honestidad en el registro diagnóstico formativo.", escalaA: "Nivel A (Alto / Autónomo): Trabaja con autonomía, concentración, persistencia y honestidad total en el registro de datos.", escalaB: "Nivel B (Medio / Con Apoyo): Requiere motivación o supervisión periódica para mantener la concentración ante desafíos.", escalaC: "Nivel C (Inicial / Acompañamiento): Muestra frustración inmediata, dependencia constante o desinterés en el registro." }
+        { codigo: "S1. Gusto por la Precisión", titulo: "Gusto por la Precisión (Actitud del Pensador Computacional)", desc: "Demuestra esmero y minuciosidad al verificar los cables, los valores del multímetro (1.05V, 45W) y el monitor serial UART antes de avanzar.", escalaA: "Nivel A: Alto rigor y minuciosidad", escalaB: "Nivel B: Precisión moderada", escalaC: "Nivel C: Precipitación / descuido" },
+        { codigo: "S2. Aprender del Error", titulo: "Aprender del Error (Actitud del Pensador Computacional)", desc: "Convierte los desaciertos en oportunidades de aprendizaje: analiza con calma por qué la lámpara no encendía en lugar de rendirse o probar al azar.", escalaA: "Nivel A: Análisis reflexivo ante el fallo", escalaB: "Nivel B: Corrige tras orientación", escalaC: "Nivel C: Frustración ante el error" },
+        { codigo: "S3. Flexibilidad", titulo: "Flexibilidad ante Problemas (Actitud del Pensador Computacional)", desc: "Demuestra adaptabilidad y resiliencia para replantear su hipótesis cuando la propuesta con falla no responde como esperaba.", escalaA: "Nivel A: Adaptable y proactivo/a", escalaB: "Nivel B: Flexible con acompañamiento", escalaC: "Nivel C: Rigidez ante el problema" },
+        { codigo: "S4. Tolerancia/Confort", titulo: "Tolerancia a la Frustración y Confort (Actitud del Pensador Computacional)", desc: "Autocontrol, paciencia y persistencia. Se vincula al selector emocional (Muy cómodo/a, Cómodo/a, Con alguna dificultad, Necesité bastante apoyo).", escalaA: "Nivel A: Alta perseverancia y confort", escalaB: "Nivel B: Persistencia media", escalaC: "Nivel C: Requiere soporte emocional constante" }
       ],
       cog: [
         { codigo: "Ind 1. Control", titulo: "Microcontroladores y Lógica", desc: "Reconoce la función general del microcontrolador (MCU 328P), arquitectura básica, voltajes (5V) y lógica de procesamiento.", escalaA: "Logrado (L): Reconoce el MCU como cerebro central que procesa instrucciones.", escalaB: "En Desarrollo (ED): Noción parcial de la placa pero confunde entradas con salidas.", escalaC: "Requiere Acompañamiento (RA): Desconoce la función del microcontrolador." },
@@ -1195,19 +1209,19 @@
     ];
 
     var CONDUCTAS_PSICOMOTORAS = [
-      "P1. Polaridad y Seguridad Eléctrica: Conexión correcta de VCC (+5V) y retorno a masa (GND) sin generar cortocircuito ni cruces de polaridad.",
-      "P2. Cableado de Señales Sensoriales: Conexión precisa de los pines de señal analógica de sensores (LDR y Termistor NTC) a la entrada analógica A0 del microcontrolador.",
-      "P3. Cableado de Control de Actuadores: Conexión de terminales de control de actuadores (Lámpara LED y Ventilador DC) a salidas digitales (D9 / D0-D7).",
-      "P4. Diagnóstico Analítico de Fallas: Identificación del pin erróneo donde la señal del ventilador fue conectada a la entrada analógica A3 en lugar de la salida digital D9.",
-      "P5. Corrección Física y Reconfiguración: Desconexión del terminal de A3 y reconexión a D9 en el simulador hasta lograr el encendido del ventilador ante calor (≥28°C).",
-      "P6. Validación Funcional con Variables Físicas: Uso de los controles de prueba (Luxómetro y Termómetro) para verificar experimentalmente los umbrales de activación (<300 Lux y ≥28°C)."
+      "P1. Modulariza: Resuelve la conexión por partes independientes: identifica y organiza espacialmente las 3 tarjetas de hardware (Sensor LDR, Microcontrolador MCU y Lámpara LED).",
+      "P2. Reconoce Patrones: Identifica las regularidades de polaridad y correspondencia de terminales (VCC 5V 🔴, GND ⚫, Pin A0 🟢, Pin D9 🟡).",
+      "P3. Formula Algoritmos: Establece el flujo lógico secuencial del sistema (Entrada ➔ Proceso ➔ Salida) cerrando el circuito eléctrico ordenadamente.",
+      "P4. Programa: Valida la estructura condicional y asignación de pines: comprueba que al bajar la luz (<300 Lux) el microcontrolador activa la salida digital D9.",
+      "P5. Depura (Reto 2): Detecta la falla técnica inyectada en el simulador (señal conectada a 5V en vez de A0) y ejecuta la reconexión física del cable en el banco interactivo.",
+      "P6. Transfiere (Reto 2): Transfiere el concepto a la justificación escrita: explica por qué la entrada analógica A0 lee voltajes variables según la luz mientras que 5V es fija."
     ];
 
     var CONDUCTAS_SOCIOAFECTIVAS = [
-      "S1. Gusto por la Precisión y Rigor Técnico: Demuestra ante los procesos de aprendizaje un comportamiento hacia la búsqueda de la exactitud, verificando minuciosamente conexiones y polaridades antes de energizar.",
-      "S2. Aprender del Error: Demuestra ante los errores un comportamiento que le permita ganar experiencia a partir de desaciertos, analizando la causa física antes de modificar a ciegas.",
-      "S3. Flexibilidad y Argumentación Técnica: Demuestra adaptabilidad y argumenta con claridad conceptual por qué los actuadores requieren salidas digitales y los sensores entradas analógicas.",
-      "S4. Tolerancia a la Frustración y Autonomía: Demuestra ante los desafíos autoconfianza, persistencia, autocontrol, concentración y honestidad en el registro diagnóstico formativo."
+      "S1. Gusto por la Precisión: Demuestra esmero y minuciosidad al verificar los cables, los valores del multímetro (1.05V, 45W) y el monitor serial UART antes de avanzar.",
+      "S2. Aprender del Error: Convierte los desaciertos en oportunidades de aprendizaje: analiza con calma por qué la lámpara no encendía en lugar de rendirse o probar al azar.",
+      "S3. Flexibilidad ante Problemas: Demuestra adaptabilidad y resiliencia para replantear su hipótesis cuando la propuesta con falla no responde como esperaba.",
+      "S4. Tolerancia a la Frustración y Confort: Autocontrol, paciencia y persistencia. Se vincula al selector emocional (Muy cómodo/a, Cómodo/a, Con alguna dificultad, Necesité bastante apoyo)."
     ];
 
     var estadoDocente = {
@@ -1913,7 +1927,7 @@
       // 1. GENERAR ENCABEZADOS DE COLUMNAS (A1, B1, C1...) CON SOPORTE TÁCTIL PARA CELULAR Y TABLETA
       if (area === 'psi') {
         var thConductas = "";
-        var nombresPsiCortos = ["P1. Polaridad", "P2. Señal Entrada", "P3. Señal Salida", "P4. Diagnóstico Falla", "P5. Corrección Física", "P6. Validación Fís."];
+        var nombresPsiCortos = ["P1. Modulariza", "P2. Rec. Patrones", "P3. Form. Algoritmos", "P4. Programa", "P5. Depura (R2)", "P6. Transfiere (R2)"];
         CONDUCTAS_PSICOMOTORAS.forEach(function(cd, j) {
           thConductas += '<th style="text-align:center; min-width: 105px; font-size: 11px; cursor: pointer; user-select: none;" onclick="mostrarModalDetalleCriterio(\'psi\', ' + j + ')" title="' + cd + ' (Toca para ver detalle del criterio)">' +
             '<span style="color:#15803d; font-weight:800; display:flex; align-items:center; justify-content:center; gap:3px;">' +
@@ -1932,7 +1946,7 @@
         '</tr>';
       } else if (area === 'soc') {
         var thSoc = "";
-        var nombresSocCortos = ["S1. Rigor Técnico", "S2. Pensamiento Crítico", "S3. Argumentación", "S4. Autonomía/Ética"];
+        var nombresSocCortos = ["S1. Precisión", "S2. Aprender Error", "S3. Flexibilidad", "S4. Tolerancia/Confort"];
         CONDUCTAS_SOCIOAFECTIVAS.forEach(function(sc, k) {
           thSoc += '<th style="text-align:center; min-width: 105px; font-size: 11px; cursor: pointer; user-select: none;" onclick="mostrarModalDetalleCriterio(\'soc\', ' + k + ')" title="' + sc + ' (Toca para ver detalle del criterio)">' +
             '<span style="color:#b45309; font-weight:800; display:flex; align-items:center; justify-content:center; gap:3px;">' +

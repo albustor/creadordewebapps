@@ -29,8 +29,8 @@ console.log(`  Resultado: ${okEst}/${checksEst.length} verificaciones conformes.
 // 2. Docente Evaluador
 const fDoc = fs.readFileSync('public/webapps/diagnostico_9no_modulo01_docente_evaluador.html', 'utf8');
 const checksDoc = [
-  ['Criterios Psicomotores P1 a P6 en Glosario y Criterios', fDoc.includes('P1. Polaridad') && fDoc.includes('P6. Validación Fís.')],
-  ['Criterios Socioafectivos S1 a S4 en Glosario y Criterios', fDoc.includes('S1. Rigor Técnico') && fDoc.includes('S4. Autonomía/Ética')],
+  ['Criterios Psicomotores P1 a P6 en Glosario y Criterios', fDoc.includes('P1. Modulariza') && fDoc.includes('P6. Transfiere')],
+  ['Criterios Socioafectivos S1 a S4 en Glosario y Criterios', fDoc.includes('S1. Gusto por la Precisión') && fDoc.includes('S4. Tolerancia')],
   ['Array de conductas psicomotoras calibrado a 6 ítems', fDoc.includes('CONDUCTAS_PSICOMOTORAS') && (fDoc.match(/P1\./g) || []).length > 0],
   ['Array de conductas socioafectivas calibrado a 4 ítems', fDoc.includes('CONDUCTAS_SOCIOAFECTIVAS') && (fDoc.match(/S1\./g) || []).length > 0],
   ['Matriz de Observación Formativa en Vivo (A / B / C)', fDoc.includes('renderizarMatrizObservacion') && fDoc.includes('setValSocMatriz')],
