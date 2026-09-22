@@ -75,7 +75,8 @@ export const DOCENTE_DEFAULT: DocenteData = {
   idDocente: "ASESOR-FT-7729",
   nombreCompleto: "Prof. Alberto Bustos Ortega",
   correoInstitucional: "alberto.bustos.ortega@mep.go.cr",
-  contrasena: "EdcRfvTgb1726**",
+  pin: "1726",
+  contrasena: "1726",
   cedula: "1-1122-3344",
   telefono: "+506 8888-9999",
   dreCodigo: "DRE-NACIONAL",
@@ -84,11 +85,32 @@ export const DOCENTE_DEFAULT: DocenteData = {
   codigoPresupuestario: "FT-NACIONAL-2026",
   institucionNombre: "Asesoría Nacional de Formación Tecnológica (Dimensión 1 y 2)",
   rol: "Asesor de Formación Tecnológica & Administrador General (Dimensión 1 y 2)",
-  asignaturas: [
-    "Formación Tecnológica",
-  ],
+  asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
   fechaRegistro: new Date().toISOString(),
 };
+
+export const DOCENTE_PRUEBA_REGIONAL: DocenteData = {
+  idDocente: "DOC-DRE07-5821",
+  nombreCompleto: "Prof. Esteban Gómez Chinchilla",
+  correoInstitucional: "esteban.gomez.chinchilla@mep.go.cr",
+  pin: "5821",
+  contrasena: "5821",
+  cedula: "5-0345-0891",
+  telefono: "+506 8765-4321",
+  dreCodigo: "DRE-07",
+  dreNombre: "Liberia",
+  circuito: "Circuito 01",
+  codigoPresupuestario: "SABER-LIBERIA-2026",
+  institucionNombre: "Liceo Laboratorio de Liberia",
+  rol: "Docente de Formación Tecnológica",
+  asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
+  fechaRegistro: new Date().toISOString(),
+};
+
+export const LISTA_DOCENTES_INICIALES: DocenteData[] = [
+  DOCENTE_DEFAULT,
+  DOCENTE_PRUEBA_REGIONAL,
+];
 
 export const DOCENTE_MEP_OFICIAL = DOCENTE_DEFAULT;
 
@@ -368,21 +390,37 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
   const registrarDocente = (data: DocenteData): { exito: boolean; mensaje: string } => {
     try {
       const usuariosGuardadosRaw = SafeStorage.getItem("usuarios_registrados_locales");
-      let listaUsuarios: DocenteData[] = [];
+      let listaUsuarios: DocenteData[] = [...LISTA_DOCENTES_INICIALES];
       if (usuariosGuardadosRaw) {
         try {
-          listaUsuarios = JSON.parse(usuariosGuardadosRaw);
+          const parsed = JSON.parse(usuariosGuardadosRaw);
+          if (Array.isArray(parsed)) {
+            listaUsuarios = parsed;
+          }
         } catch {}
       }
 
-      const indexExistente = listaUsuarios.findIndex(
-        (u) => u.correoInstitucional.toLowerCase() === data.correoInstitucional.toLowerCase()
-      );
-      if (indexExistente >= 0) {
-        listaUsuarios[indexExistente] = data;
-      } else {
-        listaUsuarios.push(data);
+      const cedLimpia = (data.cedula || "").replace(/[^0-9]/g, "");
+      const correoLimpio = data.correoInstitucional.toLowerCase().trim();
+
+      // Verificar si ya existe el correo o cédula registrada
+      const usuarioDuplicado = listaUsuarios.find((u) => {
+        const uCedLimpia = (u.cedula || "").replace(/[^0-9]/g, "");
+        const uCorreoLimpio = u.correoInstitucional.toLowerCase().trim();
+        return (
+          uCorreoLimpio === correoLimpio ||
+          (cedLimpia && uCedLimpia && cedLimpia === uCedLimpia)
+        );
+      });
+
+      if (usuarioDuplicado) {
+        return {
+          exito: false,
+          mensaje: `⚠️ Ya existe una cuenta registrada con este correo o cédula (${usuarioDuplicado.nombreCompleto}). Por favor inicie sesión con su PIN o solicite recuperación si lo ha olvidado.`,
+        };
       }
+
+      listaUsuarios.push(data);
       SafeStorage.setItem("usuarios_registrados_locales", JSON.stringify(listaUsuarios));
       guardarDocente(data);
 
@@ -445,7 +483,7 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
     }
 
     // Función auxiliar para registrar intento fallido
-    const registrarFallo = (): { exito: boolean; mensaje: string; intentosRestantes?: number; bloqueado?: boolean } => {
+    const registrarFallo = (mensajePersonalizado?: string): { exito: boolean; mensaje: string; intentosRestantes?: number; bloqueado?: boolean } => {
       const intentosActuales = parseInt(SafeStorage.getItem(attemptsKey) || "0", 10) + 1;
       SafeStorage.setItem(attemptsKey, intentosActuales.toString());
       if (intentosActuales >= 3) {
@@ -462,7 +500,7 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       return {
         exito: false,
         intentosRestantes: restantes,
-        mensaje: `PIN o credencial incorrecta. Te quedan ${restantes} intento(s) antes del bloqueo.`,
+        mensaje: mensajePersonalizado || `PIN incorrecto. Te quedan ${restantes} intento(s) antes del bloqueo.`,
       };
     };
 
@@ -486,72 +524,61 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       return { exito: true, mensaje: "Sesión iniciada correctamente como Asesor Principal de Formación Tecnológica." };
     }
 
-    // 2. Búsqueda en usuarios registrados localmente (por Cédula, Correo o Usuario)
+    // 2. Acceso Docente de Prueba Regional (Esteban Gómez Chinchilla)
+    if (
+      (credencialLimpia === "esteban.gomez.chinchilla@mep.go.cr" ||
+        credencialLimpia === "esteban.gomez" ||
+        credencialLimpia === "5-0345-0891" ||
+        credencialLimpia === "503450891") &&
+      (pinOPassLimpia === "5821" || pinOPassLimpia === "1726")
+    ) {
+      limpiarFallos();
+      guardarDocente(DOCENTE_PRUEBA_REGIONAL);
+      return { exito: true, mensaje: `Bienvenido(a), ${DOCENTE_PRUEBA_REGIONAL.nombreCompleto}.` };
+    }
+
+    // 3. Búsqueda en usuarios registrados localmente (por Cédula, Correo o Usuario)
     const usuariosGuardadosRaw = SafeStorage.getItem("usuarios_registrados_locales");
+    let listaUsuarios: DocenteData[] = [...LISTA_DOCENTES_INICIALES];
     if (usuariosGuardadosRaw) {
       try {
-        const listaUsuarios: DocenteData[] = JSON.parse(usuariosGuardadosRaw);
-        const match = listaUsuarios.find((u) => {
-          const cedLimpia = (u.cedula || "").replace(/[^0-9]/g, "");
-          const busqLimpia = credencialLimpia.replace(/[^0-9]/g, "");
-          return (
-            u.correoInstitucional.toLowerCase() === credencialLimpia ||
-            u.correoInstitucional.toLowerCase().split("@")[0] === credencialLimpia ||
-            (u.cedula && u.cedula.toLowerCase() === credencialLimpia) ||
-            (cedLimpia && busqLimpia && cedLimpia === busqLimpia) ||
-            u.nombreCompleto.toLowerCase() === credencialLimpia
-          );
-        });
-
-        if (match) {
-          const pinValido = match.pin ? match.pin === pinOPassLimpia : false;
-          const passValido = match.contrasena ? match.contrasena === pinOPassLimpia : false;
-
-          if (pinValido || passValido) {
-            limpiarFallos();
-            guardarDocente(match);
-            return { exito: true, mensaje: `Bienvenido(a), ${match.nombreCompleto}.` };
-          } else {
-            return registrarFallo();
-          }
+        const parsed = JSON.parse(usuariosGuardadosRaw);
+        if (Array.isArray(parsed)) {
+          listaUsuarios = parsed;
         }
       } catch {}
     }
 
-    // 3. Si el PIN tiene 4 dígitos o la contraseña >= 6 y es un correo MEP válido
-    const esEmailMEP = /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+@mep\.go\.cr$/i.test(credencialLimpia);
-    if (esEmailMEP && (pinOPassLimpia.length === 4 || pinOPassLimpia.length >= 6)) {
-      limpiarFallos();
-      const nombreFormateado = credencialLimpia
-        .split("@")[0]
-        .split(".")
-        .map((p) => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase())
-        .join(" ");
+    const match = listaUsuarios.find((u) => {
+      const cedLimpia = (u.cedula || "").replace(/[^0-9]/g, "");
+      const busqLimpia = credencialLimpia.replace(/[^0-9]/g, "");
+      return (
+        u.correoInstitucional.toLowerCase() === credencialLimpia ||
+        u.correoInstitucional.toLowerCase().split("@")[0] === credencialLimpia ||
+        (u.cedula && u.cedula.toLowerCase() === credencialLimpia) ||
+        (cedLimpia && busqLimpia && cedLimpia === busqLimpia) ||
+        u.nombreCompleto.toLowerCase() === credencialLimpia
+      );
+    });
 
-      const randomId = `DOC-${Math.floor(1000 + Math.random() * 9000)}`;
+    if (match) {
+      const pinValido = match.pin ? match.pin === pinOPassLimpia : false;
+      const passValido = match.contrasena ? match.contrasena === pinOPassLimpia : false;
 
-      const docenteNuevo: DocenteData = {
-        idDocente: randomId,
-        nombreCompleto: `Prof. ${nombreFormateado}`,
-        correoInstitucional: credencialLimpia,
-        pin: pinOPassLimpia.length === 4 ? pinOPassLimpia : undefined,
-        contrasena: pinOPassLimpia,
-        cedula: "",
-        telefono: "",
-        dreCodigo: "DRE-01",
-        dreNombre: "San José Central",
-        circuito: "Circuito 01",
-        codigoPresupuestario: "",
-        institucionNombre: "Liceo / Colegio de Secundaria",
-        rol: "Docente de Formación Tecnológica",
-        asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
-        fechaRegistro: new Date().toISOString(),
-      };
-      registrarDocente(docenteNuevo);
-      return { exito: true, mensaje: "Cuenta creada e inicio de sesión completado." };
+      if (pinValido || passValido) {
+        limpiarFallos();
+        guardarDocente(match);
+        return { exito: true, mensaje: `Bienvenido(a), ${match.nombreCompleto}.` };
+      } else {
+        return registrarFallo("PIN incorrecto. Verifique los 4 dígitos numéricos.");
+      }
     }
 
-    return registrarFallo();
+    // 4. Si la cuenta no existe en el sistema, indicar que debe registrarse
+    return {
+      exito: false,
+      mensaje: "⚠️ Esta cuenta no se encuentra registrada en el sistema. Por favor pulse en 'Registrarse' para crear su perfil con su PIN de 4 dígitos.",
+    };
   };
 
   const iniciarSesionConPIN = (
@@ -578,30 +605,65 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       })
     );
 
-    // Intentar despacho
+    // Buscar información del docente (correo y teléfono)
+    const usuariosGuardadosRaw = SafeStorage.getItem("usuarios_registrados_locales");
+    let listaUsuarios: DocenteData[] = [...LISTA_DOCENTES_INICIALES];
+    if (usuariosGuardadosRaw) {
+      try {
+        const parsed = JSON.parse(usuariosGuardadosRaw);
+        if (Array.isArray(parsed)) {
+          listaUsuarios = parsed;
+        }
+      } catch {}
+    }
+
+    const docenteEncontrado = listaUsuarios.find(
+      (u) =>
+        u.correoInstitucional.toLowerCase() === credLimpia ||
+        u.cedula.replace(/[^0-9]/g, "") === credLimpia.replace(/[^0-9]/g, "")
+    );
+
+    const correoDestino = docenteEncontrado?.correoInstitucional || (credLimpia.includes("@") ? credLimpia : undefined);
+    const telefonoDestino = docenteEncontrado?.telefono || undefined;
+    const nombreDestino = docenteEncontrado?.nombreCompleto || "Docente MEP";
+
+    // Intentar despacho en el servidor
     try {
-      if (canal === "correo") {
-        // Enviar por correo oficial MEP
+      const res = await fetch("/api/auth/recuperar-pin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          cedulaOCorreo: correoDestino || credLimpia,
+          canal,
+          telefono: telefonoDestino,
+          codigoOTP,
+          nombreDocente: nombreDestino,
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
         return {
           exito: true,
-          mensaje: `Se ha enviado un código de recuperación de 4 dígitos a tu correo oficial ${credLimpia}. (Válido por 10 minutos).`,
-          codigoSimulado: codigoOTP,
-        };
-      } else {
-        // Enviar por WhatsApp
-        return {
-          exito: true,
-          mensaje: `Se ha despachado el código de recuperación de 4 dígitos a tu WhatsApp registrado. (Válido por 10 minutos).`,
+          mensaje: data.mensaje || `Código de 4 dígitos despachado exitosamente.`,
           codigoSimulado: codigoOTP,
         };
       }
-    } catch {
+    } catch {}
+
+    if (canal === "whatsapp") {
       return {
         exito: true,
-        mensaje: `Código de recuperación generado: ${codigoOTP}`,
+        mensaje: `Se ha despachado el código de recuperación de 4 dígitos a tu teléfono registrado. (Válido por 10 minutos).`,
         codigoSimulado: codigoOTP,
       };
     }
+
+    return {
+      exito: true,
+      mensaje: `Se ha enviado el código de recuperación de 4 dígitos a tu correo oficial ${correoDestino || credLimpia}. (Válido por 10 minutos).`,
+      codigoSimulado: codigoOTP,
+    };
   };
 
   const verificarOTP = (
