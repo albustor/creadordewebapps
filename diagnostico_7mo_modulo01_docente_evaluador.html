@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tablero de Control y Rúbrica Evaluadora MEP 7° 2026 | Informática Educativa</title>
+  <script src="/vendor/html5-qrcode.min.js"></script>
+  
+  <style>
+    :root {
+      --bg-main: #f8fafc;
+      --bg-card: #ffffff;
+      --border-color: #e2e8f0;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --mep-blue: #0284c7;
+      --mep-dark-blue: #0369a1;
+      --mep-accent: #10b981;
+      --mep-warning: #f59e0b;
+      --mep-danger: #ef4444;
+      --mep-purple: #8b5cf6;
+      --font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-stack);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER INSTITUCIONAL */
+    header.mep-header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #fff;
+      padding: 16px 24px;
+      border-bottom: 3px solid #38bdf8;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .mep-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .mep-shield {
+      background: #0284c7;
+      color: #fff;
+      font-weight: 900;
+      font-size: 14px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.3);
+      letter-spacing: 0.5px;
+    }
+
+    .mep-titles h1 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+
+    .mep-titles p {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* BUTTONS */
+    .btn {
+      background: var(--mep-blue);
+      color: white;
+      border: 1px solid var(--mep-dark-blue);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: var(--mep-dark-blue);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary { background: #334155; border-color: #475569; color: #f8fafc; }
+    .btn-secondary:hover { background: #475569; }
+
+    .btn-accent { background: #10b981; border-color: #059669; }
+    .btn-accent:hover { background: #059669; }
+
+    .btn-outline { background: transparent; border: 1px solid #cbd5e1; color: #334155; }
+    .btn-outline:hover { background: #f1f5f9; color: #0f172a; }
+
+    /* MAIN CONTAINER */
+    main.docente-container {
+      flex: 1;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* METRIC CARDS ROW */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .metric-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .metric-value {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--text-dark);
+    }
+
+    .metric-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    /* DROPZONE & UPLOAD */
+    .dropzone-box {
+      background: #f0f9ff;
+      border: 2px dashed #38bdf8;
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dropzone-box:hover, .dropzone-box.dragover {
+      background: #e0f2fe;
+      border-color: #0284c7;
+      transform: scale(1.005);
+    }
+
+    /* CONTROLS & FILTER BAR */
+    .filter-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 14px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .filter-input, .filter-select {
+      border: 1px solid var(--border-color);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      outline: none;
+      background: #f8fafc;
+    }
+
+    .filter-input:focus, .filter-select:focus {
+      border-color: var(--mep-blue);
+      background: #fff;
+    }
+
+    /* TABLE */
+    .table-responsive {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      overflow-x: auto;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+
+    table.mep-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    table.mep-table th {
+      background: #f1f5f9;
+      color: #475569;
+      font-weight: 800;
+      padding: 12px 14px;
+      border-bottom: 2px solid var(--border-color);
+      white-space: nowrap;
+    }
+
+    table.mep-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-dark);
+      vertical-align: middle;
+    }
+
+    table.mep-table tr:hover td {
+      background: #f8fafc;
+    }
+
+    /* BADGES */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .badge-a { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+    .badge-b { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+    .badge-c { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+
+    /* DETAIL MODAL */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 3000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .modal-overlay.open { opacity: 1; pointer-events: auto; }
+
+    .modal-box {
+      background: #fff;
+      border-radius: 16px;
+      max-width: 920px;
+      width: 100%;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    }
+
+    .modal-header {
+      padding: 16px 22px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-body {
+      padding: 22px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .modal-footer {
+      padding: 14px 22px;
+      background: #f8fafc;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .rubric-card {
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 14px;
+    }
+
+    .rubric-dimension-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+
+    .rubric-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #e2e8f0;
+      font-size: 12.5px;
+    }
+
+    .rubric-item:last-child { border-bottom: none; }
+
+    .level-selector-btn {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 800;
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .level-selector-btn.active-a { background: #10b981; color: #fff; border-color: #059669; }
+    .level-selector-btn.active-b { background: #f59e0b; color: #fff; border-color: #d97706; }
+    .level-selector-btn.active-c { background: #ef4444; color: #fff; border-color: #dc2626; }
+
+    /* PRINT LAYOUT */
+    @media print {
+      body { background: #fff; color: #000; }
+      header.mep-header, .dropzone-box, .filter-bar, .top-actions, .modal-overlay, footer { display: none !important; }
+      main.docente-container { padding: 0; max-width: 100%; }
+      .table-responsive { border: none; box-shadow: none; }
+      .print-only-header { display: block !important; margin-bottom: 20px; }
+    }
+
+    .print-only-header {
+      display: none;
+      border-bottom: 2px solid #000;
+      padding-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER INSTITUCIONAL -->
+  <header class="mep-header">
+    <div class="header-content">
+      <div class="mep-brand">
+        <span class="mep-shield">MEP 2026</span>
+        <div class="mep-titles">
+          <h1>Rúbrica y Consolidado Diagnóstico 7.° Año (Parejas)</h1>
+          <p>Dirección de Informática Educativa &bull; Evaluación Diagnóstica Curricular III Ciclo</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="btn btn-accent" style="background:#0284c7; border-color:#0369a1;" onclick="openQrScannerModal()">📷 Escanear QR Parejas</button>
+        <button class="btn btn-secondary" onclick="configureWebhookUrl()">⚙️ Webhook Central</button>
+        <button class="btn btn-secondary" onclick="loadSampleCadets()">🧪 Muestra Demo</button>
+        <button class="btn btn-accent" onclick="exportToExcel()">📊 Exportar Excel</button>
+        <button class="btn" onclick="window.print()">🖨️ Imprimir Acta</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="docente-container">
+    
+    <!-- PRINT ONLY HEADER -->
+    <div class="print-only-header">
+      <h2 style="font-size: 16px; font-weight: 800; text-transform: uppercase;">Ministerio de Educación Pública de Costa Rica</h2>
+      <h3 style="font-size: 14px; font-weight: 700;">Acta Oficial de Evaluación Diagnóstica en Parejas - Informática Educativa 7.° Año (2026)</h3>
+      <p style="font-size: 12px; color: #444; margin-top: 4px;">Generado automáticamente desde la Suite de Diagnóstico CyberQuest 7°</p>
+    </div>
+
+    <!-- METRICS ROW -->
+    <section class="metrics-row">
+      <div class="metric-card">
+        <span class="metric-title">Parejas Evaluadas</span>
+        <span class="metric-value" id="valTotalStudents">0</span>
+        <span class="metric-sub" id="valTotalIndiv">0 estudiantes en total</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-title">Nivel A (Autónomo)</span>
+        <span class="metric-value" style="color: #10b981;" id="valLevelA">0 (0%)</span>
+        <span class="metric-sub">Dominio pleno de competencias</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-title">Nivel B (Con Apoyo)</span>
+        <span class="metric-value" style="color: #f59e0b;" id="valLevelB">0 (0%)</span>
+        <span class="metric-sub">Requiere mediación intermedia</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-title">Nivel C (Inicial)</span>
+        <span class="metric-value" style="color: #ef4444;" id="valLevelC">0 (0%)</span>
+        <span class="metric-sub">Prioridad en plan de nivelación</span>
+      </div>
+    </section>
+
+    <!-- DROPZONE IMPORT -->
+    <section class="dropzone-box" id="dropzoneBox" onclick="document.getElementById('fileInputJson').click()">
+      <input type="file" id="fileInputJson" multiple accept=".json" style="display: none;">
+      <span style="font-size: 32px;">📥</span>
+      <h3 style="font-size: 15px; font-weight: 800; color: #0284c7;">Importar Registros de Telemetría (Opcional)</h3>
+      <p style="font-size: 12.5px; color: var(--text-muted); max-width: 540px;">
+        Haz clic aquí o arrastra archivos de telemetría de las parejas evaluadas si deseas procesar respaldos locales.
+      </p>
+    </section>
+
+    <!-- FILTER BAR -->
+    <section class="filter-bar">
+      <div class="filter-group">
+        <input type="text" id="searchName" class="filter-input" placeholder="🔍 Buscar por estudiante o pareja..." oninput="filterAndRender()">
+        <select id="filterSection" class="filter-select" onchange="filterAndRender()">
+          <option value="ALL">Todas las Secciones</option>
+          ${['7-1','7-2','7-3','7-4','7-5','7-6','7-7','7-8','7-9','7-10','7-11','7-12'].map(s => `<option value="${s}">Sección ${s}</option>`).join('')}
+        </select>
+        <select id="filterLevel" class="filter-select" onchange="filterAndRender()">
+          <option value="ALL">Todos los Niveles</option>
+          <option value="A">Nivel A (Autónomo)</option>
+          <option value="B">Nivel B (Con Apoyo)</option>
+          <option value="C">Nivel C (Inicial)</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <span style="font-size: 12px; color: var(--text-muted);" id="tableCountLabel">Mostrando 0 registros</span>
+        <button class="btn btn-outline" style="padding: 6px 10px; font-size: 12px;" onclick="clearAllData()">🗑️ Limpiar Tabla</button>
+      </div>
+    </section>
+
+    <!-- TABLE -->
+    <div class="table-responsive">
+      <table class="mep-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Estudiante 1 (Líder)</th>
+            <th>Estudiante 2 (Co-piloto)</th>
+            <th>Sección</th>
+            <th>Dim. Psicomotriz</th>
+            <th>Dim. Cognitiva</th>
+            <th>Dim. Socioafectiva</th>
+            <th>Nivel Global</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="cadetsTableBody">
+          <tr>
+            <td colspan="9" style="text-align: center; color: var(--text-muted); padding: 30px;">
+              No hay evaluaciones cargadas. Carga archivos JSON o presiona <strong>«Cargar Muestra Demo»</strong> arriba.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <!-- MODAL DE DETALLE INDIVIDUAL Y RÚBRICA MEP -->
+  <div class="modal-overlay" id="studentDetailModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <h2 id="modalStudentName" style="font-size: 16px; font-weight: 800; color: #0f172a;">Juan Viales y María Gómez</h2>
+          <span id="modalStudentMeta" style="font-size: 12px; color: #64748b;">Sección 7-1 &bull; Modalidad Pareja</span>
+        </div>
+        <button class="btn btn-outline" style="padding: 4px 8px;" onclick="closeModal()">✕</button>
+      </div>
+      
+      <div class="modal-body" id="modalStudentBody">
+        <!-- Renderizado dinámico -->
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal()">Cerrar</button>
+        <button class="btn btn-accent" onclick="saveModalChanges()">💾 Guardar Ajustes de Rúbrica</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL ESCÁNER CÁMARA QR -->
+  <div class="modal-overlay" id="qrScannerModal">
+    <div class="modal-box" style="max-width: 500px; text-align: center;">
+      <div class="modal-header">
+        <div>
+          <h2 style="font-size: 16px; font-weight: 800; color: #0f172a;">📷 Escáner de Códigos QR de Estudiantes</h2>
+          <span style="font-size: 12px; color: #64748b;">Compatible con Android, iOS, Huawei y Cámaras Web</span>
+        </div>
+        <button class="btn btn-outline" style="padding: 4px 8px;" onclick="closeQrScannerModal()">✕</button>
+      </div>
+      
+      <!-- TABS DEL ESCÁNER -->
+      <div style="display: flex; gap: 8px; justify-content: center; margin: 12px 0;">
+        <button class="btn btn-accent" id="tabBtnCamera" style="padding: 6px 12px; font-size: 12px;" onclick="switchQrTab('camara')">📷 Usar Cámara</button>
+        <button class="btn btn-secondary" id="tabBtnManual" style="padding: 6px 12px; font-size: 12px;" onclick="switchQrTab('manual')">📋 Pegar Código</button>
+      </div>
+
+      <div class="modal-body" style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+        
+        <!-- VISTA CÁMARA -->
+        <div id="qrCameraView" style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+          <div id="qrCameraScanner" style="width: 100%; max-width: 360px; min-height: 250px; background: #000; border-radius: 12px; overflow: hidden;"></div>
+          <div id="qrScannerFeedback" style="font-size: 13px; font-weight: 700; color: #0284c7; min-height: 24px;">
+            Iniciando escaneo...
+          </div>
+        </div>
+
+        <!-- VISTA MANUAL -->
+        <div id="qrManualView" style="width: 100%; display: none; flex-direction: column; gap: 10px; text-align: left;">
+          <label style="font-size: 12.5px; font-weight: 700; color: #334155;">Pega el contenido del Código QR generado:</label>
+          <textarea id="manualQrInput" rows="4" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; font-family: monospace; font-size: 12px;" placeholder='{"t":"MEP7","sec":"7-1","c1":"Juan","c2":"María",...}'></textarea>
+          <div style="display: flex; gap: 8px; justify-content: flex-end;">
+            <button class="btn btn-secondary" style="font-size: 12px;" onclick="insertTestQrPayload()">🧪 Pegar Ejemplo de Prueba</button>
+            <button class="btn btn-accent" style="font-size: 12px;" onclick="processManualQrInput()">📥 Procesar Registro</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer" style="justify-content: space-between;">
+        <button class="btn btn-outline" style="font-size: 11.5px;" onclick="insertTestQrPayload()">🧪 Probar con Pareja Demo</button>
+        <button class="btn btn-secondary" onclick="closeQrScannerModal()">Finalizar Escaneo</button>
+      </div>
+    </div>
+  </div>
+
+  <footer style="background: #f1f5f9; border-top: 1px solid #e2e8f0; padding: 14px; text-align: center; font-size: 12px; color: #64748b; margin-top: auto;">
+    Ministerio de Educación Pública (MEP) &bull; Suite de Evaluación Diagnóstica 7.° Año 2026 &bull; Formación Tecnológica
+  </footer>
+
+  <!-- ENGINE EVALUADOR DOCENTE -->
+  <script>
+    let evaluatedCadets = [];
+    let currentEditingIndex = null;
+    let html5QrScannerInstance = null;
+
+    function loadDocenteState() {
+      try {
+        const saved = localStorage.getItem('MEP_DOCENTE_7MO_EVALUATIONS');
+        if (saved) {
+          evaluatedCadets = JSON.parse(saved);
+        }
+      } catch (e) {
+        console.warn('Error al cargar datos docentes:', e);
+      }
+      filterAndRender();
+    }
+
+    function saveDocenteState() {
+      try {
+        localStorage.setItem('MEP_DOCENTE_7MO_EVALUATIONS', JSON.stringify(evaluatedCadets));
+      } catch (e) {
+        console.warn('Error al guardar datos docentes:', e);
+      }
+      updateGlobalMetrics();
+    }
+
+    function processCadetJson(data) {
+      // Compatibilidad universal: Soporta formato completo y formato compacto QR
+      let name1 = data.cadet1 || data.c1 || data.name1 || (data.cadet1 && data.cadet1.name) || (data.cadet && data.cadet.name) || '';
+      let name2 = data.cadet2 || data.c2 || data.name2 || (data.cadet2 && data.cadet2.name) || 'Individual';
+      let avatar1 = data.avatar1 || data.a1 || (data.cadet1 && data.cadet1.avatar) || (data.cadet && data.cadet.avatar) || '🤖';
+      let avatar2 = data.avatar2 || data.a2 || (data.cadet2 && data.cadet2.avatar) || '⚡';
+      let section = data.seccion || data.sec || data.section || (data.cadet && data.cadet.section) || '7-1';
+
+      if (!name1) {
+        alert('Los datos no contienen nombres válidos de estudiantes.');
+        return;
+      }
+
+      let psicoScore = 0;
+      let cogScore = 0;
+      let socioScore = 0;
+      let globalAvg = 0;
+      let globalLevel = 'A';
+
+      if (data.t === 'MEP7' || data.tipo === 'MEP_7MO_CYBERQUEST') {
+        // Viene directo del QR o Webhook ya calculado
+        psicoScore = Number(data.p !== undefined ? data.p : (data.psicoScore || 0));
+        cogScore = Number(data.c !== undefined ? data.c : (data.cogScore || 0));
+        socioScore = Number(data.s !== undefined ? data.s : (data.socioScore || 0));
+        globalAvg = Number(data.g !== undefined ? data.g : (data.globalAvg || Math.round((psicoScore * 0.35) + (cogScore * 0.45) + (socioScore * 0.20))));
+        globalLevel = data.lvl || data.globalLevel || (globalAvg >= 80 ? 'A' : globalAvg >= 60 ? 'B' : 'C');
+      } else {
+        // Cálculo granular desde estado crudo
+        const cogCorrect = Object.values(data.cognitivo?.answers || {}).filter(a => a.isCorrect).length;
+        cogScore = Math.round((cogCorrect / 10) * 100);
+
+        const p1 = data.psicomotriz?.p1_lateralidad?.score || 0;
+        const p2 = data.psicomotriz?.p2_ritmo?.score || 0;
+        const p3 = data.psicomotriz?.p3_pulso?.score || 0;
+        const p4 = data.psicomotriz?.p4_dibujo?.score || 0;
+        psicoScore = Math.round((p1 + p2 + p3 + p4) / 4);
+
+        const s1 = data.socioafectivo?.s1_precision || 3;
+        const s2 = data.socioafectivo?.s2_resiliencia || 3;
+        const s3 = data.socioafectivo?.s3_colaboracion || 3;
+        const s4 = data.socioafectivo?.s4_frustracion || 3;
+        socioScore = Math.round(((s1 + s2 + s3 + s4) / 12) * 100);
+
+        globalAvg = Math.round((psicoScore * 0.35) + (cogScore * 0.45) + (socioScore * 0.20));
+        if (globalAvg < 60) globalLevel = 'C';
+        else if (globalAvg < 80) globalLevel = 'B';
+      }
+
+      const record = {
+        id: data.hash || data.h || data.sessionHash || 'HASH-' + Math.random().toString(36).substring(2, 9).toUpperCase(),
+        name1,
+        name2,
+        avatar1,
+        avatar2,
+        section,
+        psicoScore,
+        cogScore,
+        socioScore,
+        globalAvg,
+        globalLevel,
+        raw: data
+      };
+
+      const existingIdx = evaluatedCadets.findIndex(c => c.name1 === record.name1 && c.name2 === record.name2 && c.section === record.section);
+      if (existingIdx >= 0) {
+        evaluatedCadets[existingIdx] = record;
+      } else {
+        evaluatedCadets.push(record);
+      }
+
+      saveDocenteState();
+      filterAndRender();
+    }
+
+    // CONTROL DE ESCÁNER CÁMARA QR
+    function openQrScannerModal() {
+      document.getElementById('qrScannerModal').classList.add('open');
+      document.getElementById('qrScannerFeedback').innerHTML = 'Iniciando cámara...';
+      setTimeout(startQrCameraScanner, 300);
+    }
+
+    function closeQrScannerModal() {
+      if (html5QrScannerInstance) {
+        html5QrScannerInstance.stop().catch(() => {}).then(() => {
+          html5QrScannerInstance = null;
+          document.getElementById('qrScannerModal').classList.remove('open');
+        });
+      } else {
+        document.getElementById('qrScannerModal').classList.remove('open');
+      }
+    }
+
+    function startQrCameraScanner() {
+      if (typeof Html5Qrcode === 'undefined') {
+        document.getElementById('qrScannerFeedback').innerHTML = '⚠️ Librería de escáner no disponible.';
+        return;
+      }
+      if (html5QrScannerInstance) return;
+
+      html5QrScannerInstance = new Html5Qrcode("qrCameraScanner");
+      html5QrScannerInstance.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: { width: 240, height: 240 } },
+        (decodedText) => {
+          handleScannedQrPayload(decodedText);
+        },
+        () => {}
+      ).catch(err => {
+        console.warn('Error al activar cámara:', err);
+        document.getElementById('qrScannerFeedback').innerHTML = '⚠️ Permiso de cámara requerido o dispositivo no compatible.';
+      });
+    }
+
+    function handleScannedQrPayload(text) {
+      try {
+        let parsed = null;
+        if (text.startsWith('{')) {
+          parsed = JSON.parse(text);
+        }
+        if (parsed) {
+          processCadetJson(parsed);
+          try {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = audioCtx.createOscillator();
+            osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+            osc.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.12);
+          } catch(e) {}
+          
+          const cadName1 = parsed.c1 || parsed.cadet1 || 'Cadete';
+          const cadName2 = parsed.c2 || parsed.cadet2 || '';
+          document.getElementById('qrScannerFeedback').innerHTML = `<span style="color:#10b981; font-weight:800;">✅ ¡Pareja ${cadName1} & ${cadName2} registrada!</span>`;
+        }
+      } catch (e) {
+        console.warn('Error al procesar payload QR:', e);
+      }
+    }
+
+    function switchQrTab(tab) {
+      const cameraView = document.getElementById('qrCameraView');
+      const manualView = document.getElementById('qrManualView');
+      const tabBtnCamera = document.getElementById('tabBtnCamera');
+      const tabBtnManual = document.getElementById('tabBtnManual');
+
+      if (tab === 'camara') {
+        cameraView.style.display = 'flex';
+        manualView.style.display = 'none';
+        tabBtnCamera.className = 'btn btn-accent';
+        tabBtnManual.className = 'btn btn-secondary';
+        startQrCameraScanner();
+      } else {
+        cameraView.style.display = 'none';
+        manualView.style.display = 'flex';
+        tabBtnManual.className = 'btn btn-accent';
+        tabBtnCamera.className = 'btn btn-secondary';
+        if (html5QrScannerInstance) {
+          html5QrScannerInstance.stop().catch(() => {}).then(() => {
+            html5QrScannerInstance = null;
+          });
+        }
+      }
+    }
+
+    function insertTestQrPayload() {
+      const demoNames = [
+        ['Carlos Quesada', '🤖', 'Valeria Mora', '⚡', '7-1'],
+        ['Andrés Brenes', '🛰️', 'Elena Solís', '👾', '7-2'],
+        ['Gabriel Castro', '🛡️', 'Natalia Vargas', '🚀', '7-3'],
+        ['Fabián Montero', '🔥', 'Jimena Rojas', '⭐', '7-4']
+      ];
+      const selected = demoNames[Math.floor(Math.random() * demoNames.length)];
+      const p = Math.floor(Math.random() * 21) + 80;
+      const c = Math.floor(Math.random() * 21) + 80;
+      const s = Math.floor(Math.random() * 16) + 85;
+      const g = Math.round((p * 0.35) + (c * 0.45) + (s * 0.20));
+      const lvl = g >= 80 ? 'A' : g >= 60 ? 'B' : 'C';
+      const hash = 'HASH-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+
+      const testPayload = {
+        t: "MEP7",
+        sec: selected[4],
+        c1: selected[0],
+        a1: selected[1],
+        c2: selected[2],
+        a2: selected[3],
+        p: p,
+        c: c,
+        s: s,
+        g: g,
+        lvl: lvl,
+        h: hash
+      };
+
+      const jsonStr = JSON.stringify(testPayload);
+      const inputEl = document.getElementById('manualQrInput');
+      if (inputEl) {
+        inputEl.value = jsonStr;
+      }
+      switchQrTab('manual');
+    }
+
+    function processManualQrInput() {
+      const inputEl = document.getElementById('manualQrInput');
+      if (!inputEl) return;
+      const val = inputEl.value.trim();
+      if (!val) {
+        alert('Por favor pega el contenido del código QR primero.');
+        return;
+      }
+      try {
+        const parsed = JSON.parse(val);
+        processCadetJson(parsed);
+        alert(`✅ ¡Registro de ${parsed.c1 || parsed.cadet1 || 'Pareja'} procesado e integrado a la tabla!`);
+        inputEl.value = '';
+        closeQrScannerModal();
+      } catch (err) {
+        alert('⚠️ El texto ingresado no es un formato JSON/QR válido.');
+      }
+    }
+
+    function configureWebhookUrl() {
+      const current = localStorage.getItem('APP_WEBHOOK_URL') || '';
+      const url = prompt('Ingresa la URL del Webhook Central de Telemetría:', current);
+      if (url !== null) {
+        localStorage.setItem('APP_WEBHOOK_URL', url.trim());
+        alert('URL de Webhook Central guardada correctamente.');
+      }
+    }
+
+    // Drag & Drop
+    const dropzone = document.getElementById('dropzoneBox');
+    const fileInput = document.getElementById('fileInputJson');
+
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.classList.add('dragover');
+    });
+
+    dropzone.addEventListener('dragleave', () => {
+      dropzone.classList.remove('dragover');
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('dragover');
+      const files = Array.from(e.dataTransfer.files);
+      handleFiles(files);
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      const files = Array.from(e.target.files);
+      handleFiles(files);
+    });
+
+    function handleFiles(files) {
+      files.forEach(file => {
+        if (file.name.endsWith('.json')) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            try {
+              const data = JSON.parse(event.target.result);
+              processCadetJson(data);
+            } catch (err) {
+              console.error('Error al procesar JSON:', err);
+            }
+          };
+          reader.readAsText(file);
+        }
+      });
+    }
+
+    function updateGlobalMetrics() {
+      const totalPairs = evaluatedCadets.length;
+      document.getElementById('valTotalStudents').textContent = totalPairs;
+      document.getElementById('valTotalIndiv').textContent = `${totalPairs * 2} estudiantes evaluados`;
+
+      if (totalPairs === 0) {
+        document.getElementById('valLevelA').textContent = '0 (0%)';
+        document.getElementById('valLevelB').textContent = '0 (0%)';
+        document.getElementById('valLevelC').textContent = '0 (0%)';
+        return;
+      }
+
+      const countA = evaluatedCadets.filter(c => c.globalLevel === 'A').length;
+      const countB = evaluatedCadets.filter(c => c.globalLevel === 'B').length;
+      const countC = evaluatedCadets.filter(c => c.globalLevel === 'C').length;
+
+      document.getElementById('valLevelA').textContent = `${countA} (${Math.round((countA/totalPairs)*100)}%)`;
+      document.getElementById('valLevelB').textContent = `${countB} (${Math.round((countB/totalPairs)*100)}%)`;
+      document.getElementById('valLevelC').textContent = `${countC} (${Math.round((countC/totalPairs)*100)}%)`;
+    }
+
+    function filterAndRender() {
+      const search = (document.getElementById('searchName').value || '').toLowerCase();
+      const section = document.getElementById('filterSection').value;
+      const level = document.getElementById('filterLevel').value;
+
+      const filtered = evaluatedCadets.filter(c => {
+        const matchesName = c.name1.toLowerCase().includes(search) || c.name2.toLowerCase().includes(search);
+        const matchesSec = section === 'ALL' || c.section === section;
+        const matchesLvl = level === 'ALL' || c.globalLevel === level;
+        return matchesName && matchesSec && matchesLvl;
+      });
+
+      document.getElementById('tableCountLabel').textContent = `Mostrando ${filtered.length} de ${evaluatedCadets.length} parejas`;
+
+      const tbody = document.getElementById('cadetsTableBody');
+      tbody.innerHTML = '';
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="9" style="text-align: center; color: var(--text-muted); padding: 30px;">
+              No se encontraron coincidencias con los filtros seleccionados.
+            </td>
+          </tr>
+        `;
+        updateGlobalMetrics();
+        return;
+      }
+
+      filtered.forEach((c, idx) => {
+        const tr = document.createElement('tr');
+        
+        const getBadge = (lvl) => {
+          if (lvl === 'A') return '<span class="badge badge-a">Nivel A (Autónomo)</span>';
+          if (lvl === 'B') return '<span class="badge badge-b">Nivel B (Con Apoyo)</span>';
+          return '<span class="badge badge-c">Nivel C (Inicial)</span>';
+        };
+
+        tr.innerHTML = `
+          <td><strong>${idx + 1}</strong></td>
+          <td>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span>${c.avatar1}</span>
+              <strong>${c.name1}</strong>
+            </div>
+          </td>
+          <td>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span>${c.avatar2}</span>
+              <strong>${c.name2}</strong>
+            </div>
+          </td>
+          <td><span class="badge" style="background:#e0f2fe; color:#0369a1;">${c.section}</span></td>
+          <td><strong>${c.psicoScore}%</strong></td>
+          <td><strong>${c.cogScore}%</strong></td>
+          <td><strong>${c.socioScore}%</strong></td>
+          <td>${getBadge(c.globalLevel)}</td>
+          <td>
+            <button class="btn btn-outline" style="padding: 4px 8px; font-size: 11.5px;" onclick="openStudentDetail('${c.id}')">
+              👁️ Ver Rúbrica
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      updateGlobalMetrics();
+    }
+
+    function openStudentDetail(id) {
+      const cadet = evaluatedCadets.find(c => c.id === id);
+      if (!cadet) return;
+      currentEditingIndex = evaluatedCadets.indexOf(cadet);
+
+      document.getElementById('modalStudentName').textContent = `Pareja: ${cadet.avatar1} ${cadet.name1} (Líder) & ${cadet.avatar2} ${cadet.name2} (Co-piloto)`;
+      document.getElementById('modalStudentMeta').textContent = `Sección: ${cadet.section} | Hash de Telemetría: ${cadet.id}`;
+
+      const raw = cadet.raw || {};
+      const answers = raw.cognitivo?.answers || {};
+
+      const modalBody = document.getElementById('modalStudentBody');
+      modalBody.innerHTML = `
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px;">
+          <!-- Resumen de Indicadores Psicomotrices -->
+          <div class="rubric-card">
+            <h3 class="rubric-dimension-title">🖐️ 1. Dimensión Psicomotriz en Pareja</h3>
+            <div class="rubric-item">
+              <span>P1. Orientación Espacial (4x4):</span>
+              <strong>${raw.psicomotriz?.p1_lateralidad?.score || 0}% (${raw.psicomotriz?.p1_lateralidad?.moves || 0} movs)</strong>
+            </div>
+            <div class="rubric-item">
+              <span>P2. Ritmo e Inhibición (Semáforo):</span>
+              <strong>${raw.psicomotriz?.p2_ritmo?.score || 0}% (${raw.psicomotriz?.p2_ritmo?.successes || 0}/6)</strong>
+            </div>
+            <div class="rubric-item">
+              <span>P3. Pulso y Canal Digital:</span>
+              <strong>${raw.psicomotriz?.p3_pulso?.score || 0}% (${raw.psicomotriz?.p3_pulso?.borderCollisions || 0} desvíos)</strong>
+            </div>
+            <div class="rubric-item">
+              <span>P4. Motricidad Fina (Trazo):</span>
+              <strong>${raw.psicomotriz?.p4_dibujo?.score || 0}%</strong>
+            </div>
+          </div>
+
+          <!-- Resumen de Dimensión Cognitiva -->
+          <div class="rubric-card">
+            <h3 class="rubric-dimension-title">🧠 2. Pensamiento Computacional</h3>
+            <div class="rubric-item"><span>Ind 1. Hardware y Dispositivos:</span> <strong>${answers.ind1?.isCorrect ? '✅ Logrado' : '❌ Inicial'}</strong></div>
+            <div class="rubric-item"><span>Ind 2. Software y Programas:</span> <strong>${answers.ind2?.isCorrect ? '✅ Logrado' : '❌ Inicial'}</strong></div>
+            <div class="rubric-item"><span>Ind 3. Sistemas Operativos:</span> <strong>${answers.ind3?.isCorrect ? '✅ Logrado' : '❌ Inicial'}</strong></div>
+            <div class="rubric-item"><span>Ind 4. Redes y Conectividad:</span> <strong>${answers.ind4?.isCorrect ? '✅ Logrado' : '❌ Inicial'}</strong></div>
+            <div class="rubric-item"><span>Ind 5. Formatos de Archivo:</span> <strong>${answers.ind5?.isCorrect ? '✅ Logrado' : '❌ Inicial'}</strong></div>
+            <div class="rubric-item"><span>Ind 6. Edición Gráfica:</span> <strong>${answers.ind6?.isCorrect ? '✅ Logrado' : '❌ Inicial'}</strong></div>
+            <div class="rubric-item"><span>Ind 7. Algoritmos y Eventos:</span> <strong>${answers.ind7?.isCorrect ? '✅ Logrado' : '❌ Inicial'}</strong></div>
+            <div class="rubric-item"><span>Ind 8. Variables y Bucles:</span> <strong>${answers.ind8?.isCorrect ? '✅ Logrado' : '❌ Inicial'}</strong></div>
+            <div class="rubric-item"><span>Ind 9. Condicionales Lógicos:</span> <strong>${answers.ind9?.isCorrect ? '✅ Logrado' : '❌ Inicial'}</strong></div>
+            <div class="rubric-item"><span>Ind 10. Operadores Lógicos:</span> <strong>${answers.ind10?.isCorrect ? '✅ Logrado' : '❌ Inicial'}</strong></div>
+          </div>
+        </div>
+
+        <!-- Plano P4 -->
+        ${raw.psicomotriz?.p4_dibujo?.dataUrl ? `
+          <div class="rubric-card" style="text-align: center;">
+            <h3 class="rubric-dimension-title">🎨 Evidencia Digital P4 (Diseño de la Pareja)</h3>
+            <img src="${raw.psicomotriz.p4_dibujo.dataUrl}" style="max-width: 320px; border-radius: 8px; border: 1px solid #cbd5e1; margin-top: 6px;" alt="Plano P4">
+          </div>
+        ` : ''}
+
+        <!-- Ajuste Manual Docente de Calificación -->
+        <div class="rubric-card" style="background: #f0fdf4; border-color: #86efac;">
+          <h3 class="rubric-dimension-title" style="color: #15803d;">📋 Dictamen Oficial del Docente (Escala MEP 2026)</h3>
+          <div style="display: flex; gap: 10px; align-items: center; margin-top: 8px; flex-wrap: wrap;">
+            <label style="font-size: 13px; font-weight: 700;">Nivel Asignado:</label>
+            <button class="level-selector-btn ${cadet.globalLevel === 'A' ? 'active-a' : ''}" onclick="setCadetLevel('A')">Nivel A (Autónomo)</button>
+            <button class="level-selector-btn ${cadet.globalLevel === 'B' ? 'active-b' : ''}" onclick="setCadetLevel('B')">Nivel B (Con Apoyo)</button>
+            <button class="level-selector-btn ${cadet.globalLevel === 'C' ? 'active-c' : ''}" onclick="setCadetLevel('C')">Nivel C (Inicial)</button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('studentDetailModal').classList.add('open');
+    }
+
+    function setCadetLevel(lvl) {
+      if (currentEditingIndex !== null && evaluatedCadets[currentEditingIndex]) {
+        evaluatedCadets[currentEditingIndex].globalLevel = lvl;
+        openStudentDetail(evaluatedCadets[currentEditingIndex].id);
+      }
+    }
+
+    function saveModalChanges() {
+      saveDocenteState();
+      filterAndRender();
+      closeModal();
+    }
+
+    function closeModal() {
+      document.getElementById('studentDetailModal').classList.remove('open');
+      currentEditingIndex = null;
+    }
+
+    function clearAllData() {
+      if (confirm('¿Deseas vaciar todos los registros del tablero evaluador?')) {
+        evaluatedCadets = [];
+        saveDocenteState();
+        filterAndRender();
+      }
+    }
+
+    function loadSampleCadets() {
+      const samples = [
+        {
+          cadet1: { name: 'Juan Viales Calderón', avatar: '🤖', role: 'Líder' },
+          cadet2: { name: 'María Gómez Porras', avatar: '⚡', role: 'Co-piloto' },
+          section: '7-1',
+          psicomotriz: {
+            p1_lateralidad: { score: 100, moves: 7 },
+            p2_ritmo: { score: 95, successes: 6 },
+            p3_pulso: { score: 90, borderCollisions: 2 },
+            p4_dibujo: { score: 100 }
+          },
+          cognitivo: {
+            answers: {
+              ind1: { isCorrect: true }, ind2: { isCorrect: true }, ind3: { isCorrect: true },
+              ind4: { isCorrect: true }, ind5: { isCorrect: true }, ind6: { isCorrect: true },
+              ind7: { isCorrect: true }, ind8: { isCorrect: true }, ind9: { isCorrect: true }, ind10: { isCorrect: true }
+            }
+          },
+          socioafectivo: { s1_precision: 3, s2_resiliencia: 3, s3_colaboracion: 3, s4_frustracion: 3 }
+        },
+        {
+          cadet1: { name: 'Sofía Jiménez Calvo', avatar: '🛰️', role: 'Líder' },
+          cadet2: { name: 'David Arguedas Solano', avatar: '👾', role: 'Co-piloto' },
+          section: '7-1',
+          psicomotriz: {
+            p1_lateralidad: { score: 80, moves: 10 },
+            p2_ritmo: { score: 75, successes: 4 },
+            p3_pulso: { score: 85, borderCollisions: 3 },
+            p4_dibujo: { score: 100 }
+          },
+          cognitivo: {
+            answers: {
+              ind1: { isCorrect: true }, ind2: { isCorrect: true }, ind3: { isCorrect: false },
+              ind4: { isCorrect: true }, ind5: { isCorrect: true }, ind6: { isCorrect: false },
+              ind7: { isCorrect: true }, ind8: { isCorrect: true }, ind9: { isCorrect: true }, ind10: { isCorrect: false }
+            }
+          },
+          socioafectivo: { s1_precision: 2, s2_resiliencia: 2, s3_colaboracion: 3, s4_frustracion: 2 }
+        },
+        {
+          cadet1: { name: 'Carlos Morales Vega', avatar: '🛡️', role: 'Líder' },
+          cadet2: { name: 'Ana Lucía Campos', avatar: '🚀', role: 'Co-piloto' },
+          section: '7-2',
+          psicomotriz: {
+            p1_lateralidad: { score: 60, moves: 14 },
+            p2_ritmo: { score: 50, successes: 3 },
+            p3_pulso: { score: 55, borderCollisions: 8 },
+            p4_dibujo: { score: 100 }
+          },
+          cognitivo: {
+            answers: {
+              ind1: { isCorrect: true }, ind2: { isCorrect: false }, ind3: { isCorrect: false },
+              ind4: { isCorrect: false }, ind5: { isCorrect: true }, ind6: { isCorrect: false },
+              ind7: { isCorrect: false }, ind8: { isCorrect: false }, ind9: { isCorrect: true }, ind10: { isCorrect: false }
+            }
+          },
+          socioafectivo: { s1_precision: 1, s2_resiliencia: 2, s3_colaboracion: 2, s4_frustracion: 1 }
+        }
+      ];
+
+      samples.forEach(s => processCadetJson(s));
+    }
+
+    function exportToExcel() {
+      if (evaluatedCadets.length === 0) {
+        alert('No hay datos para exportar.');
+        return;
+      }
+
+      let csv = 'Estudiante1_Lider,Estudiante2_Copiloto,Seccion,Psicomotriz_Score,Cognitivo_Score,Socioafectivo_Score,Promedio_Global,Nivel_Oficial_MEP,Hash_Sesion\n';
+      evaluatedCadets.forEach(c => {
+        csv += `"${c.name1}","${c.name2}","${c.section}",${c.psicoScore},${c.cogScore},${c.socioScore},${c.globalAvg},"${c.globalLevel}","${c.id}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const dl = document.createElement('a');
+      dl.setAttribute('href', url);
+      dl.setAttribute('download', `MEP_Acta_Diagnostico_7mo_Parejas_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(dl);
+      dl.click();
+      dl.remove();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadDocenteState();
+    });
+  </script>
+</body>
+</html>

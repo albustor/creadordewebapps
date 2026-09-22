@@ -7,6 +7,7 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: false,
   },
+  transpilePackages: ['@phosphor-icons/react'],
 };
 
 export default nextConfig;

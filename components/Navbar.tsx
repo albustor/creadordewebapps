@@ -22,25 +22,25 @@ export default function Navbar() {
   const { docente, cerrarSesion } = useDocente();
   const [menuAbierto, setMenuAbierto] = useState(false);
 
-  // Navegación: Inicio, Diagnóstico, Dashboard
+  // Navegación: Inicio, Dashboard (Docentes), Diagnóstico (Asesoría & Recursos)
   const enlaces = [
     {
       href: "/",
       label: "Inicio",
       icon: <House size={18} weight="bold" />,
-      titulo: "Página de inicio y acceso",
-    },
-    {
-      href: "/diagnostico",
-      label: "Diagnóstico",
-      icon: <Lightning size={18} weight="fill" className="text-amber-600" />,
-      titulo: "Diagnóstico integrado de 9° año",
+      titulo: "Página de inicio y autenticación",
     },
     {
       href: "/dashboard",
-      label: "Dashboard",
+      label: "Dashboard Docente",
       icon: <ChartBar size={18} weight="duotone" />,
-      titulo: "Dashboard analítico y telemetría de resultados",
+      titulo: "Panel de control del docente, enlaces seguros y telemetría de 7°, 8° y 9°",
+    },
+    {
+      href: "/diagnostico",
+      label: "Asesoría & Recursos",
+      icon: <Lightning size={18} weight="fill" className="text-amber-600" />,
+      titulo: "Módulo para asesores nacionales, regionales y exploración curricular por nivel",
     },
   ];
 
@@ -54,20 +54,20 @@ export default function Navbar() {
           
           {/* Logo & Marca */}
           <Link
-            href={docente ? "/diagnostico" : "/"}
+            href={docente ? "/dashboard" : "/"}
             className="flex items-center gap-3 shrink-0 group py-1 focus:outline-none"
-            title="Diagnóstico & Dashboard - 9° Año"
+            title="Diagnóstico Secundaria - Plataforma Oficial MEP"
           >
             <div className="w-11 h-11 rounded-2xl bg-emerald-100/90 border border-emerald-300/80 flex items-center justify-center text-emerald-800 shadow-xs group-hover:scale-105 transition-all">
               <Lightning size={24} weight="fill" className="text-amber-600" />
             </div>
             <div className="flex flex-col justify-center">
               <span className="font-black text-base sm:text-lg tracking-tight text-slate-900 leading-none whitespace-nowrap">
-                Diagnóstico & Dashboard
+                Diagnóstico Secundaria
               </span>
               <span className="text-[11px] font-extrabold text-emerald-700 tracking-wider uppercase leading-none mt-1.5 whitespace-nowrap flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
-                Formación tecnológica • 9° año
+                Evaluación Diagnóstica MEP • 7°, 8° y 9°
               </span>
             </div>
           </Link>

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Propuesta Técnica y Pedagógica — Diagnóstico 8° Año y Arquitectura Multinivel (7°, 8°, 9°)</title>
+  <style>
+    @page {
+      size: letter;
+      margin: 18mm 16mm 18mm 16mm;
+    }
+
+    :root {
+      --mep-blue: #003366;
+      --mep-dark-blue: #002244;
+      --mep-gold: #c98a0c;
+      --mep-gold-light: #fef8ec;
+      --text-dark: #1e293b;
+      --text-muted: #64748b;
+      --bg-light: #f8fafc;
+      --border-color: #e2e8f0;
+      --success-green: #0d9488;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text-dark);
+      background-color: #ffffff;
+      line-height: 1.5;
+      font-size: 10.5pt;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .header-mep {
+      border-bottom: 3px solid var(--mep-blue);
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-titles h1 {
+      font-size: 14pt;
+      color: var(--mep-blue);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 3px;
+    }
+
+    .header-titles h2 {
+      font-size: 10.5pt;
+      color: var(--mep-gold);
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .header-titles p {
+      font-size: 8.5pt;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .badge-doc {
+      background-color: var(--mep-blue);
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 8.5pt;
+      font-weight: 700;
+      text-align: right;
+      line-height: 1.3;
+    }
+
+    .section-title {
+      font-size: 11.5pt;
+      color: var(--mep-blue);
+      font-weight: 700;
+      border-left: 4px solid var(--mep-gold);
+      padding-left: 8px;
+      margin-top: 18px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-light);
+      padding-top: 4px;
+      padding-bottom: 4px;
+    }
+
+    p {
+      margin-bottom: 8px;
+      text-align: justify;
+    }
+
+    .highlight-box {
+      background-color: var(--mep-gold-light);
+      border: 1px solid #fbd38d;
+      border-left: 4px solid var(--mep-gold);
+      padding: 10px 14px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      font-size: 9.5pt;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-top: 3px solid var(--mep-blue);
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 9pt;
+    }
+
+    .card h3 {
+      font-size: 9.5pt;
+      color: var(--mep-blue);
+      margin-bottom: 5px;
+      font-weight: 700;
+    }
+
+    .card ul {
+      padding-left: 14px;
+      color: #334155;
+    }
+
+    .card li {
+      margin-bottom: 3px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      margin-bottom: 14px;
+      font-size: 8.5pt;
+    }
+
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 6px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background-color: var(--mep-blue);
+      color: #ffffff;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 8pt;
+      letter-spacing: 0.3px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    .badge-tag {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 7.5pt;
+      font-weight: 700;
+    }
+
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-blue { background: #e0f2fe; color: #0369a1; }
+    .tag-amber { background: #fef3c7; color: #92400e; }
+
+    .phase-block {
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      margin-bottom: 8px;
+      padding: 8px 12px;
+      background: #ffffff;
+    }
+
+    .phase-header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+      color: var(--mep-blue);
+      font-size: 9.5pt;
+      margin-bottom: 4px;
+    }
+
+    .phase-body {
+      font-size: 8.8pt;
+      color: #475569;
+    }
+
+    .footer-doc {
+      margin-top: 20px;
+      border-top: 1px solid var(--border-color);
+      padding-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 8pt;
+      color: var(--text-muted);
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ENCABEZADO OFICIAL -->
+  <div class="header-mep">
+    <div class="header-titles">
+      <h1>Ministerio de Educación Pública — Costa Rica</h1>
+      <h2>Programa Nacional de Formación Tecnológica (PNFT) — III Ciclo</h2>
+      <p>Asesoría Nacional y Regional de Formación Tecnológica | Ecosistema Antigravity</p>
+    </div>
+    <div class="badge-doc">
+      <div>DOCUMENTO TÉCNICO</div>
+      <div style="font-size: 7.5pt; opacity: 0.9;">Setiembre, 2026</div>
+    </div>
+  </div>
+
+  <!-- RESUMEN EJECUTIVO -->
+  <div class="highlight-box">
+    <strong>Propósito del Documento:</strong> Establecer el análisis curricular, pedagógico y técnico del instrumento de Evaluación Diagnóstica de <strong>Octavo Año (8°)</strong> y definir el <strong>Plan Estratégico de Implementación</strong> para transformar la plataforma web en un entorno integral multinivel que gestione simultáneamente <strong>Séptimo (7°), Octavo (8°) y Noveno (9°) Año</strong>, con telemetría en tiempo real, modo desconectado (QR) y módulos de evaluación docente.
+  </div>
+
+  <!-- SECCIÓN 1: ANÁLISIS DEL RECURSO DE 8° AÑO -->
+  <div class="section-title">
+    <span>1. Análisis Pedagógico y Curricular — Diagnóstico de Octavo Año</span>
+    <span style="font-size: 8pt; font-weight: normal; color: var(--text-muted);">14 Indicadores de Logro</span>
+  </div>
+
+  <p>El instrumento oficial desarrollado por los asesores para Octavo Año articula las 3 áreas del saber tecnológico mediante un enfoque situado, accesible y formativo:</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>Subárea 1: Apropiación y Hardware/Software</h3>
+      <p style="font-size:8pt; color:var(--text-muted); margin-bottom:4px;">5 Ítems exploratorios</p>
+      <ul>
+        <li><strong>Ítem 1:</strong> Asociación de periféricos (Teclado, Monitor, Mouse, USB, Parlantes, Cámara).</li>
+        <li><strong>Ítem 2:</strong> Clasificación de software (Sistema, Aplicación, Programación, Diseño).</li>
+        <li><strong>Ítem 3:</strong> Redes de comunicación y dispositivos (Módem / Router).</li>
+        <li><strong>Ítem 4:</strong> Gestión del SO y recuperación de archivos (Papelera de reciclaje).</li>
+        <li><strong>Ítem 5:</strong> Unidades de almacenamiento y tamaño de archivos (MB).</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Subárea 2: Pensamiento Computacional y Algoritmos</h3>
+      <p style="font-size:8pt; color:var(--text-muted); margin-bottom:4px;">7 Ítems exploratorios</p>
+      <ul>
+        <li><strong>Ítem 6:</strong> Estructura E-P-S aplicada a un ejemplo analógico (Jugo de frutas).</li>
+        <li><strong>Ítem 7:</strong> Tipos de datos primitivos (Booleano / Lógico).</li>
+        <li><strong>Ítem 8:</strong> Gestión y actualización de variables (<code>puntos = puntos + 10</code>).</li>
+        <li><strong>Ítem 9:</strong> Condicionales simples y dobles (Sensor de temperatura).</li>
+        <li><strong>Ítem 10:</strong> Estructuras repetitivas (Bucles/Ciclos para optimización).</li>
+        <li><strong>Ítem 11:</strong> Operadores aritméticos (Cálculo de precio y descuento).</li>
+        <li><strong>Ítem 12:</strong> Operadores relacionales (Comparaciones lógicas).</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Subárea 3: Robótica y Computación Física</h3>
+      <p style="font-size:8pt; color:var(--text-muted); margin-bottom:4px;">2 Ítems + Dimensiones</p>
+      <ul>
+        <li><strong>Ítem 13:</strong> Detección y aplicación de Eventos (Causa y Efecto).</li>
+        <li><strong>Ítem 14:</strong> Definición de Robot: Cuerpo, Sensores y Control vs aparatos comunes.</li>
+        <li><strong>Socioafectiva:</strong> Mini-reto colaborativo <em>"Cuidemos nuestro equipo"</em> y lista de cotejo (respeto, tolerancia, trabajo en equipo).</li>
+        <li><strong>Psicomotora:</strong> Coordinación viso-manual, postura/ergonomía y mecanografía.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 2: BRECHA TÉCNICA Y SOLUCIÓN -->
+  <div class="section-title">
+    <span>2. Diagnóstico del Recurso Original vs. Integración Requerida</span>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">Dimensión / Función</th>
+        <th style="width: 37%;">Estado Actual en HTML Original</th>
+        <th style="width: 38%;">Integración al Ecosistema Antigravity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Persistencia de Datos</strong></td>
+        <td>Evaluación cerrada en el cliente. Al cerrar el navegador los datos se eliminan.</td>
+        <td><span class="badge-tag tag-green">Telemetría Dual</span> Envío inmediato al backend docente y respaldo en almacenamiento local seguro.</td>
+      </tr>
+      <tr>
+        <td><strong>Entornos Sin Internet</strong></td>
+        <td>Requiere que el estudiante imprima su informe de forma individual.</td>
+        <td><span class="badge-tag tag-amber">Código QR Offline</span> Generación de payload cifrado/comprimido para escaneo masivo por el docente en 1 segundo.</td>
+      </tr>
+      <tr>
+        <td><strong>Módulo Evaluador Docente</strong></td>
+        <td>Inexistente. El docente debe tabular a mano cada estudiante.</td>
+        <td><span class="badge-tag tag-blue">Módulo Docente 8°</span> Scanner QR en vivo, semaforización de 15 secciones (8-1 a 8-15) y exportación oficial a Excel MEP.</td>
+      </tr>
+      <tr>
+        <td><strong>Dimensiones Socioafectiva y Psicomotora</strong></td>
+        <td>Solo están descritas en un documento DOCX separado.</td>
+        <td><span class="badge-tag tag-green">Integración Total</span> Lista de observación interactiva dentro del módulo docente y reporte pedagógico unificado.</td>
+      </tr>
+      <tr>
+        <td><strong>Accesibilidad (DUA)</strong></td>
+        <td>Posee botones de alto contraste y síntesis de voz básica.</td>
+        <td><span class="badge-tag tag-green">Preservada y Mejorada</span> Integración con estándar DUA completo, atajos de teclado y voz en español costarricense (<code>es-CR</code>).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <!-- SECCIÓN 3: ARQUITECTURA MULTINIVEL -->
+  <div class="section-title">
+    <span>3. Reestructuración de la Plataforma Web a Nivel de III Ciclo Completo</span>
+  </div>
+
+  <p>Para brindar soporte al profesorado que atiende múltiples niveles simultáneamente, la plataforma web se reestructura bajo una arquitectura modular multinivel:</p>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+    <div style="border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; background: #fafafa;">
+      <h4 style="color: var(--mep-blue); font-size: 9.5pt; margin-bottom: 6px;">Estructura de Navegación por Pestañas (/diagnostico)</h4>
+      <ul style="font-size: 8.5pt; padding-left: 16px; color: #334155; line-height: 1.6;">
+        <li><strong>Pestaña 7° Año:</strong> <em>CyberQuest 7° — Misión Tecnológica MEP</em> (WebApps en línea, offline, rúbrica docente y juego interactivo).</li>
+        <li><strong>Pestaña 8° Año:</strong> <em>Diagnóstico Integral 8° — Hardware, Algoritmos y Robótica</em> (WebApps en línea, offline y módulo evaluador).</li>
+        <li><strong>Pestaña 9° Año:</strong> <em>Aula Inteligente 9° — Sistemas Automatizados e IoT</em> (WebApps en línea, offline, simulador y módulo evaluador).</li>
+      </ul>
+    </div>
+
+    <div style="border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; background: #fafafa;">
+      <h4 style="color: var(--mep-blue); font-size: 9.5pt; margin-bottom: 6px;">Gestión de Datos y Secciones del Docente (DocenteContext)</h4>
+      <ul style="font-size: 8.5pt; padding-left: 16px; color: #334155; line-height: 1.6;">
+        <li><strong>Perfil Docente Multinivel:</strong> Configuración de niveles impartidos (ej. docente con grupos de 7°, 8° y 9° en el mismo centro).</li>
+        <li><strong>Secciones Dinámicas:</strong> Catálogo segmentado (7-1 a 7-15, 8-1 a 8-15, 9-1 a 9-15).</li>
+        <li><strong>Consolidación Inteligente:</strong> Telemetría y dashboards filtrados automáticamente por nivel y sección.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 4: PLAN DE TRABAJO ESTRATÉGICO -->
+  <div class="section-title">
+    <span>4. Plan Estratégico de Trabajo y Entregables</span>
+  </div>
+
+  <div class="phase-block">
+    <div class="phase-header">
+      <span>FASE 1: Generación y Despliegue de Recursos de Octavo Año (8°)</span>
+      <span class="badge-tag tag-blue">En Desarrollo</span>
+    </div>
+    <div class="phase-body">
+      • <code>diagnostico_8vo_modulo01_en_linea.html</code>: Versión interactiva para laboratorios con Internet y telemetría en vivo.<br>
+      • <code>diagnostico_8vo_modulo01_desconectado_offline.html</code>: Versión portable para llave USB con generador de QR condensado.<br>
+      • <code>diagnostico_8vo_modulo01_docente_evaluador.html</code>: Módulo docente con escáner QR, rúbrica socioafectiva/psicomotriz y exportación a Excel MEP.
+    </div>
+  </div>
+
+  <div class="phase-block">
+    <div class="phase-header">
+      <span>FASE 2: Reestructuración de la Interfaz Web y Navegación Multinivel</span>
+      <span class="badge-tag tag-blue">Programado</span>
+    </div>
+    <div class="phase-body">
+      • Actualización de la página principal (<code>/</code>) y el módulo de diagnóstico (<code>/diagnostico</code>) con selector de pestañas (7°, 8° y 9°).<br>
+      • Adaptación de componentes de proyección QR, guías metodológicas y tarjetas de recursos específicos por nivel.
+    </div>
+  </div>
+
+  <div class="phase-block">
+    <div class="phase-header">
+      <span>FASE 3: Sincronización y Configuración de Secciones por Nivel</span>
+      <span class="badge-tag tag-blue">Programado</span>
+    </div>
+    <div class="phase-body">
+      • Extensión del estado global (<code>DocenteContext</code>) para permitir la selección de múltiples niveles y centros educativos.<br>
+      • Validación de almacenamiento local y sincronización con endpoints de telemetría institucional.
+    </div>
+  </div>
+
+  <div class="phase-block">
+    <div class="phase-header">
+      <span>FASE 4: Auditoría de Calidad, Compilación y Validación Local</span>
+      <span class="badge-tag tag-blue">Cierre y Verificación</span>
+    </div>
+    <div class="phase-body">
+      • Verificación exhaustiva de accesibilidad DUA, tiempos de respuesta y cero marcadores de posición.<br>
+      • Ejecución de <code>npm run build</code> local para certificar la estabilidad de la aplicación previo a despliegue.
+    </div>
+  </div>
+
+  <!-- PIE DE PÁGINA -->
+  <div class="footer-doc">
+    <div>Programa Nacional de Formación Tecnológica — III Ciclo de la Educación General Básica</div>
+    <div>Ministerio de Educación Pública — Costa Rica</div>
+  </div>
+
+</body>
+</html>

@@ -822,7 +822,7 @@ export default function RegistroDocentePage() {
                   required
                   value={cedula}
                   onChange={(e) => setCedula(e.target.value)}
-                  placeholder="Ej: 1-1234-0567"
+                  placeholder="Ej: X-XXXX-XXXX"
                   className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 outline-hidden transition-all"
                 />
               </div>
@@ -1469,7 +1469,7 @@ export default function RegistroDocentePage() {
                 required
                 value={loginCredencial}
                 onChange={(e) => setLoginCredencial(e.target.value)}
-                placeholder="Ej: 1-1234-0567 o nombre.apellido@mep.go.cr"
+                placeholder="Ej: X-XXXX-XXXX o nombre.apellido@mep.go.cr"
                 className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-indigo-600 outline-hidden transition-all"
               />
             </div>
@@ -1561,7 +1561,7 @@ export default function RegistroDocentePage() {
                   required
                   value={recuperarCredencial}
                   onChange={(e) => setRecuperarCredencial(e.target.value)}
-                  placeholder="Ej: 1-1234-0567 o nombre.apellido@mep.go.cr"
+                  placeholder="Ej: X-XXXX-XXXX o nombre.apellido@mep.go.cr"
                   className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 outline-hidden transition-all"
                 />
               </div>

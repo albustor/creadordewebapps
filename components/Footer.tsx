@@ -15,10 +15,10 @@ export default function Footer() {
               <div className="w-8 h-8 rounded-lg bg-emerald-100 border border-emerald-300 text-emerald-800 flex items-center justify-center">
                 <Lightning size={18} weight="fill" className="text-amber-600" />
               </div>
-              <span className="font-extrabold text-base sm:text-lg">Diagnóstico & Dashboard</span>
+              <span className="font-extrabold text-base sm:text-lg">Diagnóstico Secundaria</span>
             </div>
             <p className="text-xs text-stone-500 leading-relaxed font-medium">
-              Entorno pedagógico para la aplicación del diagnóstico integrado de 9° año y la consolidación analítica de evidencias en tiempo real.
+              Plataforma oficial para la aplicación del diagnóstico formativo de 7°, 8° y 9° año y la consolidación analítica institucional del Ministerio de Educación Pública (MEP).
             </p>
           </div>
 
@@ -28,17 +28,17 @@ export default function Footer() {
             <ul className="space-y-2 text-xs">
               <li>
                 <Link href="/" className="hover:text-emerald-800 transition-colors">
-                  Inicio y acceso docente
+                  Inicio y autenticación docente
                 </Link>
               </li>
               <li>
-                <Link href="/diagnostico" className="hover:text-emerald-800 transition-colors font-semibold text-emerald-800">
-                  Diagnóstico (9° año)
+                <Link href="/dashboard" className="hover:text-emerald-800 transition-colors font-semibold text-emerald-800">
+                  Dashboard Docente (7°, 8° y 9°)
                 </Link>
               </li>
               <li>
-                <Link href="/dashboard" className="hover:text-emerald-800 transition-colors">
-                  Dashboard analítico y telemetría
+                <Link href="/diagnostico" className="hover:text-emerald-800 transition-colors">
+                  Módulo de Asesoría & Recursos
                 </Link>
               </li>
             </ul>

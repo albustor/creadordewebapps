@@ -246,15 +246,15 @@ export default function HomePage() {
             <div className="text-center space-y-3">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100/90 border border-emerald-300/80 text-emerald-900 text-xs font-extrabold shadow-xs">
                 <Lightning size={16} weight="fill" className="text-amber-600" />
-                <span>Formación Tecnológica • Programa Nacional MEP</span>
+                <span>Formación Tecnológica • Ministerio de Educación Pública</span>
               </div>
 
               <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-                Diagnóstico & Dashboard
+                Diagnóstico Secundaria
               </h1>
 
               <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto font-medium leading-relaxed">
-                Ingreso con <strong>Cédula / Correo MEP</strong> y <strong>PIN de 4 dígitos</strong> para aplicación de diagnósticos y telemetría analítica.
+                Plataforma oficial de evaluación diagnóstica para <strong>7.°, 8.° y 9.° Año</strong> con ingreso mediante Cédula / Correo MEP y PIN de 4 dígitos.
               </p>
             </div>
 
@@ -328,7 +328,7 @@ export default function HomePage() {
                         type="text"
                         value={loginCredencial}
                         onChange={(e) => setLoginCredencial(e.target.value)}
-                        placeholder="Ej: 5-0305-0179 o nombre.apellido.apellido@mep.go.cr"
+                        placeholder="Ej: X-XXXX-XXXX o nombre.apellido.apellido@mep.go.cr"
                         required
                         className="w-full pl-10 pr-3.5 py-2.5 bg-[#FCFBF9] border border-stone-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-stone-400 focus:outline-none focus:border-emerald-600 focus:bg-white font-semibold"
                       />
@@ -358,45 +358,46 @@ export default function HomePage() {
                         onChange={(e) => setLoginPin(e.target.value.replace(/[^0-9]/g, ""))}
                         placeholder="••••"
                         required
-                        className="w-full pl-10 pr-10 py-2.5 bg-[#FCFBF9] border border-stone-300 rounded-xl text-center text-lg font-mono font-black tracking-widest text-slate-900 placeholder-stone-400 focus:outline-none focus:border-emerald-600 focus:bg-white"
+                        className="w-full pl-10 pr-10 py-2.5 bg-[#FCFBF9] border border-stone-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-stone-400 focus:outline-none focus:border-emerald-600 focus:bg-white font-semibold tracking-widest text-center"
                       />
                       <button
                         type="button"
                         onClick={() => setMostrarLoginPin(!mostrarLoginPin)}
                         className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-stone-400 hover:text-stone-700"
+                        title={mostrarLoginPin ? "Ocultar PIN" : "Mostrar PIN"}
                       >
                         {mostrarLoginPin ? <EyeSlash size={18} /> : <Eye size={18} />}
                       </button>
                     </div>
                   </div>
 
-                  <div className="pt-2">
-                    <button
-                      type="submit"
-                      className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition-all"
-                    >
-                      <SignIn size={16} weight="bold" />
-                      <span>Ingresar con PIN</span>
-                    </button>
-                  </div>
+                  <button
+                    type="submit"
+                    className="w-full py-3 px-4 bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs sm:text-sm rounded-xl shadow-xs transition-all flex items-center justify-center gap-2"
+                  >
+                    <SignIn size={18} weight="bold" />
+                    <span>Ingresar con PIN</span>
+                  </button>
 
-                  <div className="pt-3 border-t border-stone-100 text-center">
-                    <span className="text-xs text-stone-500">¿No tienes cuenta registrada? </span>
+                  <div className="text-center pt-2">
                     <button
                       type="button"
-                      onClick={() => setTabAuth("registro")}
-                      className="text-xs font-extrabold text-emerald-800 hover:text-emerald-900 hover:underline"
+                      onClick={() => {
+                        setTabAuth("registro");
+                        setRegMensaje(null);
+                      }}
+                      className="text-xs font-semibold text-stone-500 hover:text-emerald-900"
                     >
-                      Regístrate aquí
+                      ¿No tienes cuenta registrada? <strong className="text-emerald-800 underline">Regístrate aquí</strong>
                     </button>
                   </div>
                 </form>
               ) : (
-                /* Formulario Registro con PIN y Checkbox de Asesoría */
+                /* Formulario Registro con PIN */
                 <form onSubmit={handleRegistro} className="space-y-4">
                   {regMensaje && (
                     <div
-                      className={`p-3.5 rounded-xl text-xs font-bold flex items-center gap-2.5 ${
+                      className={`p-3 rounded-xl text-xs flex items-center gap-2 font-bold ${
                         regMensaje.tipo === "exito"
                           ? "bg-emerald-50 border border-emerald-300 text-emerald-900"
                           : "bg-rose-50 border border-rose-300 text-rose-900"
@@ -445,7 +446,7 @@ export default function HomePage() {
                           type="text"
                           value={regCedula}
                           onChange={(e) => setRegCedula(e.target.value)}
-                          placeholder="5-0305-0179"
+                          placeholder="X-XXXX-XXXX"
                           required
                           className="w-full pl-10 pr-3.5 py-2.5 bg-[#FCFBF9] border border-stone-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-stone-400 focus:outline-none focus:border-emerald-600 focus:bg-white font-semibold"
                         />
@@ -711,74 +712,74 @@ export default function HomePage() {
             <div className="text-center space-y-3 pt-2">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100/90 border border-emerald-300/80 text-emerald-900 text-xs font-extrabold shadow-xs">
                 <Lightning size={16} weight="fill" className="text-amber-600" />
-                <span>Formación tecnológica • 9° año</span>
+                <span>Evaluación Diagnóstica MEP • 7.°, 8.° y 9.° Año</span>
               </div>
 
               <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
-                Diagnóstico & Dashboard
+                Diagnóstico Secundaria
               </h1>
 
               <p className="text-sm sm:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
-                Seleccione el módulo que desea utilizar para la evaluación diagnóstica de los estudiantes o la revisión analítica de los resultados.
+                Panel integral para la generación de enlaces de grupo, recepción de telemetría y consolidación analítica por nivel.
               </p>
             </div>
 
-            {/* Módulos Principales: Diagnóstico y Dashboard */}
+            {/* Módulos Principales: Dashboard Docente y Asesoría & Diagnóstico */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
               
-              {/* Tarjeta 1: Diagnóstico */}
-              <div className="bg-white text-slate-900 rounded-3xl border-2 border-emerald-300/80 p-6 sm:p-8 shadow-softPastel flex flex-col justify-between hover:border-emerald-500 transition-all group">
+              {/* Tarjeta 1: Dashboard Docente */}
+              <div className="bg-white text-slate-900 rounded-3xl border-2 border-emerald-400 p-6 sm:p-8 shadow-softPastel flex flex-col justify-between hover:border-emerald-600 transition-all group">
                 <div className="space-y-4">
                   <div className="w-12 h-12 rounded-2xl bg-emerald-100/90 text-emerald-800 border border-emerald-300/70 flex items-center justify-center group-hover:scale-105 transition-transform shadow-xs">
-                    <Lightning size={28} weight="fill" className="text-amber-600" />
-                  </div>
-                  <div>
-                    <span className="px-3 py-1 bg-emerald-50 text-emerald-900 border border-emerald-200 text-xs font-extrabold rounded-full">
-                      Módulo de Evaluación
-                    </span>
-                    <h3 className="text-xl font-black text-slate-900 mt-2">
-                      Diagnóstico
-                    </h3>
-                  </div>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Instrumento interactivo de diagnóstico para 9° año («Aula Inteligente»), con simulador de circuitos 2D, ítems formativos, reflexión individual y panel evaluador docente con nóminas.
-                  </p>
-                </div>
-                <div className="pt-6">
-                  <Link
-                    href="/diagnostico"
-                    className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition-all"
-                  >
-                    <span>Ingresar a Diagnóstico</span>
-                    <ArrowRight size={16} weight="bold" />
-                  </Link>
-                </div>
-              </div>
-
-              {/* Tarjeta 2: Dashboard */}
-              <div className="bg-white text-slate-900 rounded-3xl border-2 border-teal-300/80 p-6 sm:p-8 shadow-softPastel flex flex-col justify-between hover:border-teal-500 transition-all group">
-                <div className="space-y-4">
-                  <div className="w-12 h-12 rounded-2xl bg-teal-100/90 text-teal-800 border border-teal-300/70 flex items-center justify-center group-hover:scale-105 transition-transform shadow-xs">
                     <ChartBar size={28} weight="duotone" />
                   </div>
                   <div>
-                    <span className="px-3 py-1 bg-teal-50 text-teal-900 border border-teal-200 text-xs font-extrabold rounded-full">
-                      Telemetría & Analítica
+                    <span className="px-3 py-1 bg-emerald-50 text-emerald-900 border border-emerald-200 text-xs font-extrabold rounded-full">
+                      Herramienta del Docente
                     </span>
                     <h3 className="text-xl font-black text-slate-900 mt-2">
-                      Dashboard
+                      Dashboard Docente (7°, 8° y 9°)
                     </h3>
                   </div>
                   <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Visualización del rendimiento grupal e individual en tiempo real, lector de códigos QR con la cámara, analítica de reactivos y exportación de reportes a Excel y PDF.
+                    Generación de enlaces seguros por sección (sin QR), recepción de telemetría en tiempo real, rúbrica de saberes procedimentales y socioafectivos, y exportación oficial a Excel/PDF.
                   </p>
                 </div>
                 <div className="pt-6">
                   <Link
                     href="/dashboard"
-                    className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 bg-teal-700 hover:bg-teal-800 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition-all"
+                    className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition-all"
                   >
-                    <span>Ingresar a Dashboard</span>
+                    <span>Ingresar al Dashboard Docente</span>
+                    <ArrowRight size={16} weight="bold" />
+                  </Link>
+                </div>
+              </div>
+
+              {/* Tarjeta 2: Asesoría & Recursos */}
+              <div className="bg-white text-slate-900 rounded-3xl border-2 border-indigo-300/80 p-6 sm:p-8 shadow-softPastel flex flex-col justify-between hover:border-indigo-500 transition-all group">
+                <div className="space-y-4">
+                  <div className="w-12 h-12 rounded-2xl bg-indigo-100/90 text-indigo-800 border border-indigo-300/70 flex items-center justify-center group-hover:scale-105 transition-transform shadow-xs">
+                    <Lightning size={28} weight="fill" className="text-indigo-600" />
+                  </div>
+                  <div>
+                    <span className="px-3 py-1 bg-indigo-50 text-indigo-900 border border-indigo-200 text-xs font-extrabold rounded-full">
+                      Módulo para Asesores & Recursos
+                    </span>
+                    <h3 className="text-xl font-black text-slate-900 mt-2">
+                      Asesoría & Diagnóstico
+                    </h3>
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    Exploración curricular seccionada por niveles (7.°, 8.°, 9.°), descarga de dossiers técnicos en PDF, banco de instrumentos y dictamen de validación ministerial.
+                  </p>
+                </div>
+                <div className="pt-6">
+                  <Link
+                    href="/diagnostico"
+                    className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 bg-indigo-700 hover:bg-indigo-800 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition-all"
+                  >
+                    <span>Explorar Módulos y Dossiers</span>
                     <ArrowRight size={16} weight="bold" />
                   </Link>
                 </div>
@@ -788,18 +789,18 @@ export default function HomePage() {
             {/* Métricas Resumidas */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
               <div className="bg-white border border-stone-200/90 p-4 rounded-2xl text-center space-y-1 shadow-xs">
-                <div className="text-2xl font-black text-slate-900">10 Reactivos</div>
-                <div className="text-xs text-stone-500 font-semibold">Diagnóstico integrado de 9°</div>
+                <div className="text-2xl font-black text-slate-900">3 Niveles</div>
+                <div className="text-xs text-stone-500 font-semibold">7.°, 8.° y 9.° Año Integrados</div>
               </div>
 
               <div className="bg-white border border-stone-200/90 p-4 rounded-2xl text-center space-y-1 shadow-xs">
                 <div className="text-2xl font-black text-emerald-700">{telemetria.length}</div>
-                <div className="text-xs text-stone-500 font-semibold">Evaluaciones registradas</div>
+                <div className="text-xs text-stone-500 font-semibold">Evaluaciones Registradas</div>
               </div>
 
               <div className="bg-white border border-stone-200/90 p-4 rounded-2xl text-center space-y-1 shadow-xs">
-                <div className="text-2xl font-black text-amber-700">100% Offline</div>
-                <div className="text-xs text-stone-500 font-semibold">Sincronización QR docente</div>
+                <div className="text-2xl font-black text-indigo-700">100% Blindado</div>
+                <div className="text-xs text-stone-500 font-semibold">Enlaces con Token Seguro</div>
               </div>
             </div>
 

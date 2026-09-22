@@ -300,7 +300,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                         type="text"
                         value={loginCredencial}
                         onChange={(e) => setLoginCredencial(e.target.value)}
-                        placeholder="Ej: 5-0305-0179 o nombre.apellido.apellido@mep.go.cr"
+                        placeholder="Ej: X-XXXX-XXXX o nombre.apellido.apellido@mep.go.cr"
                         required
                         className="w-full pl-10 pr-3.5 py-3 bg-[#FCFBF9] border border-stone-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white font-medium transition-all"
                       />
@@ -330,7 +330,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                       onChange={(e) => setLoginPin(e.target.value.replace(/[^0-9]/g, ""))}
                       placeholder="••••"
                       required
-                      className="w-full pl-10 pr-10 py-3 bg-slate-50 border border-slate-300 rounded-xl text-center text-lg font-mono font-black tracking-widest text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all"
+                      className="w-full pl-10 pr-10 py-3 bg-[#FCFBF9] border border-stone-300 rounded-xl text-center text-lg font-mono font-black tracking-widest text-slate-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all"
                     />
                     <button
                       type="button"
@@ -345,21 +345,22 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                 <div className="pt-2">
                   <button
                     type="submit"
-                    className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all"
+                    className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all active:scale-[0.98]"
                   >
                     <SignIn size={18} weight="bold" />
                     <span>Ingresar con PIN</span>
                   </button>
                 </div>
 
-                <div className="pt-4 border-t border-slate-100 text-center">
-                  <span className="text-xs text-slate-600">¿Deseas gestionar tu cuenta completa? </span>
-                  <Link
-                    href="/registro"
-                    className="text-xs font-black text-emerald-800 hover:text-emerald-950 hover:underline"
+                <div className="pt-3 border-t border-slate-100 text-center">
+                  <span className="text-xs text-slate-500 font-medium">¿No tienes cuenta registrada? </span>
+                  <button
+                    type="button"
+                    onClick={() => setTab("registro")}
+                    className="text-xs font-black text-emerald-800 hover:text-emerald-900 hover:underline"
                   >
-                    Ir al panel de registro completo
-                  </Link>
+                    Regístrate aquí
+                  </button>
                 </div>
               </form>
             ) : (
@@ -367,10 +368,10 @@ export default function AuthGuard({ children }: AuthGuardProps) {
               <form onSubmit={handleRegistroSubmit} className="space-y-4">
                 {regMensaje && (
                   <div
-                    className={`p-3.5 rounded-2xl text-xs font-bold flex items-center gap-2.5 ${
+                    className={`p-3.5 rounded-xl text-xs font-bold flex items-center gap-2.5 ${
                       regMensaje.tipo === "exito"
-                        ? "bg-emerald-50 border border-emerald-300 text-emerald-950"
-                        : "bg-rose-50 border border-rose-300 text-rose-950"
+                        ? "bg-emerald-50 border border-emerald-300 text-emerald-900"
+                        : "bg-rose-50 border border-rose-300 text-rose-900"
                     }`}
                   >
                     {regMensaje.tipo === "exito" ? (
@@ -390,7 +391,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                     type="text"
                     value={regNombre}
                     onChange={(e) => setRegNombre(e.target.value)}
-                    placeholder="Prof. Juan Pérez Gómez"
+                    placeholder="Nombre y Apellidos (ej. Juan Pérez Gómez)"
                     required
                     className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 outline-none"
                   />
@@ -405,7 +406,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                       type="text"
                       value={regCedula}
                       onChange={(e) => setRegCedula(e.target.value)}
-                      placeholder="5-0305-0179"
+                      placeholder="X-XXXX-XXXX"
                       required
                       className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 outline-none"
                     />
