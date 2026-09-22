@@ -220,12 +220,7 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
     if (savedDocente) {
       try {
         const parsed = JSON.parse(savedDocente);
-        const nomDoc = (parsed?.nombreCompleto || "").toLowerCase();
-        const corDoc = (parsed?.correoInstitucional || "").toLowerCase();
-        if (nomDoc.includes("allan morera") || corDoc.includes("allan.morera") || (nomDoc.includes("allan") && nomDoc.includes("morera"))) {
-          SafeStorage.removeItem("docente_activo");
-          setDocente(null);
-        } else if (parsed && parsed.correoInstitucional) {
+        if (parsed && parsed.correoInstitucional) {
           if (parsed.correoInstitucional.includes("@educacion.cr")) {
             parsed.correoInstitucional = parsed.correoInstitucional.replace("@educacion.cr", "@mep.go.cr");
             SafeStorage.setItem("docente_activo", JSON.stringify(parsed));
@@ -240,28 +235,6 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
     } else {
       setDocente(null);
     }
-
-    // Purgar usuario Allan Morera Araya de la lista local para permitir su nuevo registro
-    try {
-      const rawLocales = SafeStorage.getItem("usuarios_registrados_locales");
-      if (rawLocales) {
-        const parsedLocales = JSON.parse(rawLocales);
-        if (Array.isArray(parsedLocales)) {
-          const filtrados = parsedLocales.filter((u: any) => {
-            const nom = (u?.nombreCompleto || "").toLowerCase();
-            const cor = (u?.correoInstitucional || "").toLowerCase();
-            return !(nom.includes("allan morera") || cor.includes("allan.morera") || (nom.includes("allan") && nom.includes("morera")));
-          });
-          SafeStorage.setItem("usuarios_registrados_locales", JSON.stringify(filtrados));
-        }
-      }
-      // Limpiar posibles claves de bloqueo
-      Object.keys(localStorage || {}).forEach((key) => {
-        if (key.toLowerCase().includes("allan") || key.toLowerCase().includes("morera")) {
-          localStorage.removeItem(key);
-        }
-      });
-    } catch {}
 
     if (savedWebapps) {
       try {
