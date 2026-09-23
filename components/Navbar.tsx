@@ -22,15 +22,12 @@ export default function Navbar() {
   const { docente, cerrarSesion } = useDocente();
   const [menuAbierto, setMenuAbierto] = useState(false);
 
-  const esSuperAdmin =
-    docente?.correoInstitucional?.toLowerCase().trim() === "alberto.bustos.ortega@mep.go.cr" ||
-    docente?.correoInstitucional?.toLowerCase().trim() === "allan.morera.araya@mep.go.cr";
-
+  const correoLimpio = docente?.correoInstitucional?.toLowerCase().trim() || "";
+  const esSuperAdmin = correoLimpio === "alberto.bustos.ortega@mep.go.cr";
   const esAsesor =
     esSuperAdmin ||
-    docente?.tipoRol === "Asesor Nacional" ||
-    docente?.tipoRol === "Asesor Regional" ||
-    docente?.dreCodigo === "DRE-NACIONAL";
+    correoLimpio === "allan.morera.araya@mep.go.cr" ||
+    (docente?.tipoRol === "Asesor Nacional" || docente?.tipoRol === "Asesor Regional");
 
   // Navegación: Inicio, Dashboard (Docentes), Diagnóstico (Asesoría & Recursos solo para asesores)
   const enlaces = [

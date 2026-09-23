@@ -719,14 +719,12 @@ export default function HomePage() {
 
             {/* Módulos Principales: Dashboard Docente (y Asesoría solo para Asesores/Admins) */}
             {(() => {
-              const esSuperAdmin =
-                docente?.correoInstitucional?.toLowerCase().trim() === "alberto.bustos.ortega@mep.go.cr" ||
-                docente?.correoInstitucional?.toLowerCase().trim() === "allan.morera.araya@mep.go.cr";
+              const correoLimpio = docente?.correoInstitucional?.toLowerCase().trim() || "";
+              const esSuperAdmin = correoLimpio === "alberto.bustos.ortega@mep.go.cr";
               const esAsesor =
                 esSuperAdmin ||
-                docente?.tipoRol === "Asesor Nacional" ||
-                docente?.tipoRol === "Asesor Regional" ||
-                docente?.dreCodigo === "DRE-NACIONAL";
+                correoLimpio === "allan.morera.araya@mep.go.cr" ||
+                (docente?.tipoRol === "Asesor Nacional" || docente?.tipoRol === "Asesor Regional");
 
               return (
                 <div className={`grid grid-cols-1 ${esAsesor ? "md:grid-cols-2" : "max-w-2xl mx-auto"} gap-6 pt-4`}>
