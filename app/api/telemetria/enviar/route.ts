@@ -374,15 +374,35 @@ export async function DELETE(req: NextRequest) {
     const timestampStr = searchParams.get("timestamp");
     const idResultado = searchParams.get("idResultado");
     const docenteId = searchParams.get("docenteId");
+    const correo = searchParams.get("correo");
+    const docenteNombre = searchParams.get("docenteNombre");
     const estudianteNombre = searchParams.get("estudianteNombre");
     const vaciarTodo = searchParams.get("all") === "true";
 
     if (vaciarTodo) {
-      if (docenteId) {
-        // Vaciar solo los registros del docente indicado
-        registrosTelemetriaMemoria = registrosTelemetriaMemoria.filter(
-          (r) => r.docenteId !== docenteId
-        );
+      if (docenteId || correo || docenteNombre) {
+        const idLow = (docenteId || "").trim().toLowerCase();
+        const corLow = (correo || "").trim().toLowerCase();
+        const nomLow = (docenteNombre || "").trim().toLowerCase();
+        const idClean = idLow.replace(/\D/g, "");
+
+        registrosTelemetriaMemoria = registrosTelemetriaMemoria.filter((r) => {
+          const rDocId = (r.docenteId || "").trim().toLowerCase();
+          const rDocCed = ((r as any).docenteCedula || "").trim().toLowerCase();
+          const rDocEmail = ((r as any).docenteEmail || "").trim().toLowerCase();
+          const rDocNom = ((r as any).docenteNombre || "").trim().toLowerCase();
+
+          const rDocIdClean = rDocId.replace(/\D/g, "");
+          const rDocCedClean = rDocCed.replace(/\D/g, "");
+
+          const matchId = idLow && (rDocId === idLow || rDocId.includes(idLow));
+          const matchClean = idClean && (rDocIdClean === idClean || rDocCedClean === idClean);
+          const matchCor = corLow && (rDocEmail === corLow || rDocEmail.includes(corLow));
+          const matchNom = nomLow && (rDocNom === nomLow || rDocNom.includes(nomLow));
+
+          // Si coincide con el docente que está vaciando, se elimina (retorna false)
+          return !(matchId || matchClean || matchCor || matchNom);
+        });
       } else {
         // Vaciar todos los registros del servidor
         registrosTelemetriaMemoria = [];
@@ -399,11 +419,12 @@ export async function DELETE(req: NextRequest) {
     }
 
     if (estudianteNombre) {
-      const nomLimpio = estudianteNombre.trim().toLowerCase();
+      const nomLimpio = decodeURIComponent(estudianteNombre).trim().toLowerCase();
       const prevLength = registrosTelemetriaMemoria.length;
-      registrosTelemetriaMemoria = registrosTelemetriaMemoria.filter(
-        (r) => (r.estudianteNombre || "").trim().toLowerCase() !== nomLimpio
-      );
+      registrosTelemetriaMemoria = registrosTelemetriaMemoria.filter((r) => {
+        const rNom = (r.estudianteNombre || r.nombre || "").trim().toLowerCase();
+        return rNom !== nomLimpio && !rNom.includes(nomLimpio) && !nomLimpio.includes(rNom);
+      });
       guardarRegistrosServidor();
       return NextResponse.json(
         {

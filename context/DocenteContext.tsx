@@ -424,7 +424,7 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
           return `${nom}::${sec}`;
         };
 
-        // 1. Cargar evaluaciones locales de 7mo si existen
+        // 1. Cargar evaluaciones locales de 7mo si existen y pertenecen al docente
         const evaluacionesLocales7mo: PayloadTelemetria[] = [];
         try {
           const cedClean = cedulaDoc.replace(/[^a-zA-Z0-9]/g, "");
@@ -435,6 +435,20 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
             const list7mo = JSON.parse(raw7mo);
             if (Array.isArray(list7mo)) {
               list7mo.forEach((ev: any) => {
+                // Verificar pertenencia al docente
+                const evDocId = (ev.docenteId || ev.raw?.docenteId || "").trim().toLowerCase();
+                const evDocCed = (ev.docenteCedula || ev.raw?.docenteCedula || "").trim().toLowerCase();
+                const evDocNom = (ev.docenteNombre || ev.raw?.docenteNombre || "").trim().toLowerCase();
+                
+                const pertenece =
+                  !docenteId ||
+                  evDocId === docenteId.toLowerCase() ||
+                  (cedClean && evDocCed.replace(/\D/g, "") === cedClean) ||
+                  (nombreDoc && evDocNom === nombreDoc) ||
+                  Boolean(cedClean && SafeStorage.getItem(`MEP_DOCENTE_7MO_EVALUATIONS_${cedClean}`));
+
+                if (!pertenece) return;
+
                 const n1 = typeof ev.name1 === "object" ? ev.name1?.name || "Estudiante 1" : ev.name1 || "Estudiante 1";
                 const n2 = typeof ev.name2 === "object" ? ev.name2?.name || "" : ev.name2 || "";
                 const isIndiv = !n2 || n2 === "Individual" || n2 === "N/A" || n2 === "Sin Pareja";
@@ -445,8 +459,8 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
                   idResultado: ev.id || `eval-7mo-${Date.now()}`,
                   webAppId: "diagnostico_7mo_modulo01_cyberquest",
                   webAppTitulo: "CyberQuest 7°: Diagnóstico de Fundamentos Digitales",
-                  docenteId: docenteId || "5-0305-0179",
-                  docenteNombre: docenteActivoObj?.nombreCompleto || "Docente Evaluador",
+                  docenteId: ev.docenteId || docenteId || "5-0305-0179",
+                  docenteNombre: ev.docenteNombre || docenteActivoObj?.nombreCompleto || "Docente Evaluador",
                   institucionNombre: ev.raw?.institucionNombre || docenteActivoObj?.institucionNombre || "Centro Educativo MEP",
                   dreCodigo: ev.raw?.dreCodigo || docenteActivoObj?.dreCodigo || "DRE-01",
                   estudianteNombre: estNombre,
@@ -470,7 +484,7 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
           }
         } catch (e) {}
 
-        // 2. Cargar evaluaciones locales de 8vo si existen
+        // 2. Cargar evaluaciones locales de 8vo si existen y pertenecen al docente
         const evaluacionesLocales8vo: PayloadTelemetria[] = [];
         try {
           const cedClean = cedulaDoc.replace(/[^a-zA-Z0-9]/g, "");
@@ -482,6 +496,19 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
             const list8vo = JSON.parse(raw8vo);
             if (Array.isArray(list8vo)) {
               list8vo.forEach((ev: any) => {
+                const evDocId = (ev.docenteId || "").trim().toLowerCase();
+                const evDocCed = (ev.docenteCedula || "").trim().toLowerCase();
+                const evDocNom = (ev.docenteNombre || "").trim().toLowerCase();
+
+                const pertenece =
+                  !docenteId ||
+                  evDocId === docenteId.toLowerCase() ||
+                  (cedClean && evDocCed.replace(/\D/g, "") === cedClean) ||
+                  (nombreDoc && evDocNom === nombreDoc) ||
+                  Boolean(cedClean && SafeStorage.getItem(`MEP_DOCENTE_8VO_EVALUATIONS_${cedClean}`));
+
+                if (!pertenece) return;
+
                 const estNombre = ev.nombre || ev.estudianteNombre || "Estudiante 8°";
                 const sec = normalizarSeccion(ev.seccion || ev.seccionOGrupo || "8-1");
                 const puntos = ev.puntaje !== undefined && ev.puntaje <= 14 ? ev.puntaje : (ev.totalPuntos !== undefined && ev.totalPuntos <= 14 ? ev.totalPuntos : Math.round(((ev.porcentaje || 80) / 100) * 14));
@@ -495,10 +522,10 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
                   idResultado: ev.id || `eval-8vo-${Date.now()}`,
                   webAppId: "diagnostico_8vo_modulo01_docente_evaluador",
                   webAppTitulo: "Evaluación Diagnóstica — 8° Año (PNFT)",
-                  docenteId: docenteId || "5-0305-0179",
-                  docenteNombre: docenteActivoObj?.nombreCompleto || "Docente Evaluador",
-                  docenteCedula: cedulaDoc || docenteId || "5-0305-0179",
-                  docenteEmail: correoDoc || "",
+                  docenteId: ev.docenteId || docenteId || "5-0305-0179",
+                  docenteNombre: ev.docenteNombre || docenteActivoObj?.nombreCompleto || "Docente Evaluador",
+                  docenteCedula: ev.docenteCedula || cedulaDoc || docenteId || "5-0305-0179",
+                  docenteEmail: ev.docenteEmail || correoDoc || "",
                   institucionNombre: ev.institucionNombre || docenteActivoObj?.institucionNombre || "Centro Educativo MEP",
                   dreCodigo: ev.dreCodigo || docenteActivoObj?.dreCodigo || "DRE-01",
                   estudianteNombre: estNombre,
@@ -1293,6 +1320,9 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
 
   const eliminarResultado = (identificador: number | string) => {
     let estudianteNombreAEliminar = "";
+    if (typeof identificador === "string") {
+      estudianteNombreAEliminar = identificador;
+    }
     setTelemetria((prev) => {
       const match = prev.find((r) => r.timestamp === identificador || r.estudianteNombre === identificador || r.idResultado === identificador);
       if (match?.estudianteNombre) {
@@ -1314,19 +1344,41 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       return updated;
     });
 
-    // Limpiar también en localStorage auxiliar
+    // Limpiar en TODOS los almacenes locales y específicos de nivel
     try {
-      if (typeof window !== "undefined" && estudianteNombreAEliminar) {
-        const nomLow = estudianteNombreAEliminar.toLowerCase().trim();
-        ["diagnosticos_mep_9no", "evaluacion_docente_8vo", "telemetria_registros"].forEach((key) => {
+      if (typeof window !== "undefined") {
+        const nomLow = (estudianteNombreAEliminar || String(identificador)).toLowerCase().trim();
+        const cedClean = (docente?.cedula || "").replace(/[^a-zA-Z0-9]/g, "");
+
+        // Claves conocidas
+        const claves = [
+          "diagnosticos_mep_9no",
+          "nomina_docente_9no_mep",
+          "evaluacion_docente_8vo",
+          "telemetria_8vo_local",
+          "MEP_DOCENTE_8VO_EVALUATIONS",
+          "MEP_DOCENTE_7MO_EVALUATIONS",
+          "telemetria_registros",
+        ];
+        if (cedClean) {
+          claves.push(`MEP_DOCENTE_7MO_EVALUATIONS_${cedClean}`);
+          claves.push(`MEP_DOCENTE_8VO_EVALUATIONS_${cedClean}`);
+          claves.push(`telemetria_registros_${cedClean}`);
+        }
+
+        claves.forEach((key) => {
           const raw = localStorage.getItem(key);
           if (raw) {
             try {
               const arr = JSON.parse(raw);
               if (Array.isArray(arr)) {
                 const filtrados = arr.filter((item: any) => {
-                  const itemNom = (item.estudianteNombre || item.nombre || "").toLowerCase().trim();
-                  return itemNom !== nomLow;
+                  const itemNom = (item.estudianteNombre || item.nombre || item.name1 || "").toLowerCase().trim();
+                  const itemNom2 = (item.name2 || "").toLowerCase().trim();
+                  const match1 = itemNom && (itemNom === nomLow || nomLow.includes(itemNom) || itemNom.includes(nomLow));
+                  const match2 = itemNom2 && (itemNom2 === nomLow || nomLow.includes(itemNom2) || itemNom2.includes(nomLow));
+                  const matchTs = typeof identificador === "number" && item.timestamp === identificador;
+                  return !(match1 || match2 || matchTs);
                 });
                 localStorage.setItem(key, JSON.stringify(filtrados));
               }
@@ -1338,27 +1390,56 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
 
     // Notificar al servidor para eliminar definitivamente
     try {
-      const param = estudianteNombreAEliminar
-        ? `estudianteNombre=${encodeURIComponent(estudianteNombreAEliminar)}`
-        : `timestamp=${identificador}`;
-      fetch(`/api/telemetria/enviar?${param}`, { method: "DELETE" }).catch(() => {});
+      const params = new URLSearchParams();
+      if (estudianteNombreAEliminar) params.set("estudianteNombre", estudianteNombreAEliminar);
+      if (typeof identificador === "number") params.set("timestamp", String(identificador));
+      if (docente?.idDocente) params.set("docenteId", docente.idDocente);
+      if (docente?.cedula) params.set("cedula", docente.cedula);
+
+      fetch(`/api/telemetria/enviar?${params.toString()}`, { method: "DELETE" }).catch(() => {});
     } catch(e) {}
   };
 
   const limpiarTelemetria = () => {
     setTelemetria([]);
     SafeStorage.setItem("telemetria_registros", JSON.stringify([]));
+
     try {
-      SafeStorage.removeItem("diagnosticos_mep_9no");
-      SafeStorage.removeItem("nomina_docente_9no_mep");
+      if (typeof window !== "undefined") {
+        const cedClean = (docente?.cedula || "").replace(/[^a-zA-Z0-9]/g, "");
+        const claves = [
+          "diagnosticos_mep_9no",
+          "nomina_docente_9no_mep",
+          "evaluacion_docente_8vo",
+          "telemetria_8vo_local",
+          "MEP_DOCENTE_8VO_EVALUATIONS",
+          "MEP_DOCENTE_7MO_EVALUATIONS",
+          "telemetria_registros",
+        ];
+        if (cedClean) {
+          claves.push(`MEP_DOCENTE_7MO_EVALUATIONS_${cedClean}`);
+          claves.push(`MEP_DOCENTE_8VO_EVALUATIONS_${cedClean}`);
+          claves.push(`telemetria_registros_${cedClean}`);
+        }
+        claves.forEach((k) => {
+          try {
+            localStorage.removeItem(k);
+            localStorage.setItem(k, JSON.stringify([]));
+          } catch {}
+        });
+      }
     } catch(e) {}
 
-    // Notificar al servidor para vaciar los registros
+    // Notificar al servidor para vaciar los registros del docente
     try {
-      const url = docente?.idDocente 
-        ? `/api/telemetria/enviar?all=true&docenteId=${encodeURIComponent(docente.idDocente)}`
-        : "/api/telemetria/enviar?all=true";
-      fetch(url, { method: "DELETE" }).catch(() => {});
+      const params = new URLSearchParams();
+      params.set("all", "true");
+      if (docente?.idDocente) params.set("docenteId", docente.idDocente);
+      if (docente?.cedula) params.set("cedula", docente.cedula);
+      if (docente?.correoInstitucional) params.set("correo", docente.correoInstitucional);
+      if (docente?.nombreCompleto) params.set("docenteNombre", docente.nombreCompleto);
+
+      fetch(`/api/telemetria/enviar?${params.toString()}`, { method: "DELETE" }).catch(() => {});
     } catch(e) {}
   };
 
