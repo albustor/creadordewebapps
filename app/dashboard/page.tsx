@@ -539,7 +539,7 @@ export default function DashboardAnaliticoPage() {
                 </div>
 
                 <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-snug">
-                  Instrumento de evaluación diagnóstico docente séptimo año
+                  Herramienta de evaluación diagnóstica docente: 7.° Año
                 </h3>
 
                 <p className="text-xs sm:text-sm text-indigo-100/90 leading-relaxed">
@@ -603,7 +603,7 @@ export default function DashboardAnaliticoPage() {
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-2.5 px-6 py-4 bg-indigo-500 hover:bg-indigo-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-indigo-500/30 hover:scale-[1.02] cursor-pointer text-center"
                   >
-                    <span>Abrir Instrumento 7.° Año</span>
+                    <span>Abrir Herramienta 7.° Año</span>
                     <ArrowSquareOut size={20} weight="bold" />
                   </a>
                 ) : (
@@ -637,7 +637,7 @@ export default function DashboardAnaliticoPage() {
                 </div>
 
                 <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-snug">
-                  Instrumento de evaluación diagnóstico docente octavo año
+                  Herramienta de evaluación diagnóstica docente: 8.° Año
                 </h3>
 
                 <p className="text-xs sm:text-sm text-teal-100/90 leading-relaxed">
@@ -701,7 +701,7 @@ export default function DashboardAnaliticoPage() {
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-2.5 px-6 py-4 bg-teal-500 hover:bg-teal-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-teal-500/30 hover:scale-[1.02] cursor-pointer text-center"
                   >
-                    <span>Abrir Instrumento 8.° Año</span>
+                    <span>Abrir Herramienta 8.° Año</span>
                     <ArrowSquareOut size={20} weight="bold" />
                   </a>
                 ) : (
@@ -735,7 +735,7 @@ export default function DashboardAnaliticoPage() {
                 </div>
 
                 <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-snug">
-                  Instrumento de evaluación diagnóstico docente noveno año
+                  Herramienta de evaluación diagnóstica docente: 9.° Año
                 </h3>
 
                 <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed">
@@ -799,7 +799,7 @@ export default function DashboardAnaliticoPage() {
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-2.5 px-6 py-4 bg-emerald-500 hover:bg-emerald-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-emerald-500/30 hover:scale-[1.02] cursor-pointer text-center"
                   >
-                    <span>Abrir Instrumento 9.° Año</span>
+                    <span>Abrir Herramienta 9.° Año</span>
                     <ArrowSquareOut size={20} weight="bold" />
                   </a>
                 ) : (
