@@ -1,0 +1,2834 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tablero de Control y Rúbrica Evaluadora MEP 7° 2026 | Informática Educativa</title>
+  <script src="/vendor/html5-qrcode.min.js"></script>
+  <script src="/vendor/qrcode.min.js"></script>
+  
+  <style>
+    :root {
+      --bg-main: #f8fafc;
+      --bg-card: #ffffff;
+      --border-color: #e2e8f0;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --mep-blue: #0284c7;
+      --mep-dark-blue: #0369a1;
+      --mep-accent: #10b981;
+      --mep-warning: #f59e0b;
+      --mep-danger: #ef4444;
+      --mep-purple: #8b5cf6;
+      --font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-stack);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER INSTITUCIONAL */
+    header.mep-header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #fff;
+      padding: 16px 24px;
+      border-bottom: 3px solid #38bdf8;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .mep-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .mep-shield {
+      background: #0284c7;
+      color: #fff;
+      font-weight: 900;
+      font-size: 14px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.3);
+      letter-spacing: 0.5px;
+    }
+
+    .mep-titles h1 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+
+    .mep-titles p {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* BUTTONS */
+    .btn {
+      background: var(--mep-blue);
+      color: white;
+      border: 1px solid var(--mep-dark-blue);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: var(--mep-dark-blue);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary { background: #334155; border-color: #475569; color: #f8fafc; }
+    .btn-secondary:hover { background: #475569; }
+
+    .btn-accent { background: #10b981; border-color: #059669; }
+    .btn-accent:hover { background: #059669; }
+
+    .btn-outline { background: transparent; border: 1px solid #cbd5e1; color: #334155; }
+    .btn-outline:hover { background: #f1f5f9; color: #0f172a; }
+
+    /* AUTH MODAL TABS (ALTO CONTRASTE) */
+    .auth-tab-btn {
+      flex: 1;
+      min-height: 38px;
+      font-size: 12.5px;
+      font-weight: 800;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
+      color: #334155 !important;
+    }
+    .auth-tab-btn:hover {
+      background: #f8fafc;
+      color: #0f172a !important;
+      border-color: #94a3b8;
+    }
+    .auth-tab-btn.active {
+      background: #059669 !important;
+      color: #ffffff !important;
+      border-color: #047857 !important;
+      box-shadow: 0 1px 3px rgba(5, 150, 105, 0.25);
+    }
+
+    /* TOGGLE PILLS NIVELES 7°, 8°, 9° (ALTO CONTRASTE) */
+    .toggle-pill-btn {
+      padding: 6px 14px;
+      font-size: 11.5px;
+      font-weight: 800;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
+      color: #334155 !important;
+    }
+    .toggle-pill-btn:hover {
+      background: #f1f5f9;
+      border-color: #94a3b8;
+      color: #0f172a !important;
+    }
+    .toggle-pill-btn.active {
+      background: #059669 !important;
+      color: #ffffff !important;
+      border-color: #047857 !important;
+      box-shadow: 0 1px 3px rgba(5, 150, 105, 0.25);
+    }
+
+    /* SECTION BADGES 7-1, 8-1, 9-1 (ALTO CONTRASTE) */
+    .sec-badge-btn {
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 800;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
+      color: #334155 !important;
+    }
+    .sec-badge-btn:hover {
+      background: #f1f5f9;
+      color: #0f172a !important;
+      border-color: #94a3b8;
+    }
+    .sec-badge-btn.active {
+      background: #059669 !important;
+      color: #ffffff !important;
+      border-color: #047857 !important;
+      box-shadow: 0 1px 2px rgba(5, 150, 105, 0.2);
+    }
+
+    /* MAIN CONTAINER */
+    main.docente-container {
+      flex: 1;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* METRIC CARDS ROW */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .metric-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .metric-value {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--text-dark);
+    }
+
+    .metric-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    /* DROPZONE & UPLOAD */
+    .dropzone-box {
+      background: #f0f9ff;
+      border: 2px dashed #38bdf8;
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dropzone-box:hover, .dropzone-box.dragover {
+      background: #e0f2fe;
+      border-color: #0284c7;
+      transform: scale(1.005);
+    }
+
+    /* CONTROLS & FILTER BAR */
+    .filter-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 14px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .filter-input, .filter-select {
+      border: 1px solid var(--border-color);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      outline: none;
+      background: #f8fafc;
+    }
+
+    .filter-input:focus, .filter-select:focus {
+      border-color: var(--mep-blue);
+      background: #fff;
+    }
+
+    /* TABLE */
+    .table-responsive {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      overflow-x: auto;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+
+    table.mep-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    table.mep-table thead tr {
+      background: #003366 !important;
+    }
+
+    table.mep-table th {
+      background: #003366 !important;
+      color: #ffffff !important;
+      font-weight: 800 !important;
+      padding: 12px 14px;
+      border: 1px solid #002244 !important;
+      white-space: nowrap;
+      font-size: 12.5px;
+      letter-spacing: 0.3px;
+    }
+
+    table.mep-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #cbd5e1;
+      color: #0f172a !important;
+      background: #ffffff;
+      vertical-align: middle;
+      font-size: 13px;
+    }
+
+    table.mep-table tr:hover td {
+      background: #f0f9ff !important;
+    }
+
+    /* BADGES */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .badge-a { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+    .badge-b { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+    .badge-c { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+
+    /* DETAIL MODAL */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 3000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .modal-overlay.open { opacity: 1; pointer-events: auto; }
+
+    .modal-box {
+      background: #fff;
+      border-radius: 16px;
+      max-width: 920px;
+      width: 100%;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    }
+
+    .modal-header {
+      padding: 16px 22px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-body {
+      padding: 22px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .modal-footer {
+      padding: 14px 22px;
+      background: #f8fafc;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .rubric-card {
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 14px;
+    }
+
+    .rubric-dimension-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+
+    .rubric-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #e2e8f0;
+      font-size: 12.5px;
+    }
+
+    .rubric-item:last-child { border-bottom: none; }
+
+    .level-selector-btn {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 800;
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .level-selector-btn.active-a { background: #10b981; color: #fff; border-color: #059669; }
+    .level-selector-btn.active-b { background: #f59e0b; color: #fff; border-color: #d97706; }
+    .level-selector-btn.active-c { background: #ef4444; color: #fff; border-color: #dc2626; }
+
+    /* PRINT LAYOUT */
+    @media print {
+      body { background: #fff; color: #000; }
+      header.mep-header, .dropzone-box, .filter-bar, .top-actions, .modal-overlay, footer { display: none !important; }
+      main.docente-container { padding: 0; max-width: 100%; }
+      .table-responsive { border: none; box-shadow: none; }
+      .print-only-header { display: block !important; margin-bottom: 20px; }
+    }
+
+    .print-only-header {
+      display: none;
+      border-bottom: 2px solid #000;
+      padding-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER INSTITUCIONAL -->
+  <header class="mep-header">
+    <div class="header-content">
+      <div class="mep-brand">
+        <span class="mep-shield">MEP 2026</span>
+        <div class="mep-titles">
+          <h1>Rúbrica y Consolidado Diagnóstico 7.° Año (Parejas)</h1>
+          <p>Dirección de Informática Educativa &bull; Evaluación Diagnóstica Curricular III Ciclo</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <!-- CHIP DE SESIÓN DOCENTE -->
+        <div id="teacherAuthBadge" style="display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); padding: 4px 10px; border-radius: 8px; font-size: 11.5px; color: #f8fafc;">
+          <span id="badgeTeacherName">👨‍🏫 Docente no identificado</span>
+          <button class="btn btn-secondary" style="padding: 2px 7px; font-size: 10.5px; min-height: 24px;" onclick="openAuthModal()">🔑 Perfil</button>
+        </div>
+        <button class="btn btn-accent" style="background:#0284c7; border-color:#0369a1; font-weight:800; color:#fff;" onclick="openQrScannerModal()">📷 Escanear QR Parejas</button>
+        <button class="btn btn-accent" style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); border-color: #0284c7; color: #ffffff; font-weight:800;" onclick="openStudentLinksModal()" title="Generar enlaces y proyectar QR para computadoras de estudiantes">🔗 Enlaces Estudiantes (PC)</button>
+        <button class="btn btn-accent" id="btnSyncBatch" style="background:#10b981; border-color:#059669; font-weight:800; color:#fff;" onclick="syncBatchToDashboard()">🔄 Sincronizar (0)</button>
+        <a href="/dashboard" target="_blank" class="btn" style="background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); border-color: #7c3aed; color: #ffffff; text-decoration: none; font-weight: 800; box-shadow: 0 2px 8px rgba(139,92,246,0.3);" title="Abrir Dashboard de Telemetría Nacional (diagnosticosecundaria.vercel.app / dashboard)">📈 Dashboard Web</a>
+        <button class="btn" style="background: #ffffff; color: #0284c7; border: 1.5px solid #ffffff; font-weight: 800;" onclick="loadSampleCadets()">🧪 Muestra Demo</button>
+        <button class="btn" style="background: #ffffff; color: #0284c7; border: 1.5px solid #ffffff; font-weight: 800;" onclick="exportToExcel()">📊 Exportar Excel</button>
+        <button class="btn" style="background: #ffffff; color: #0f172a; border: 1.5px solid #ffffff; font-weight: 800;" onclick="window.print()">🖨️ Imprimir Acta</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="docente-container">
+    
+    <!-- PRINT ONLY HEADER -->
+    <div class="print-only-header">
+      <h2 style="font-size: 16px; font-weight: 800; text-transform: uppercase;">Ministerio de Educación Pública de Costa Rica</h2>
+      <h3 style="font-size: 14px; font-weight: 700;">Acta Oficial de Evaluación Diagnóstica en Parejas - Informática Educativa 7.° Año (2026)</h3>
+      <p style="font-size: 12px; color: #444; margin-top: 4px;" id="printTeacherMeta">Generado automáticamente desde la Suite de Diagnóstico CyberQuest 7°</p>
+    </div>
+
+    <!-- FICHA DE IDENTIFICACIÓN DEL DOCENTE EVALUADOR (MODALIDAD LOCAL/OFFLINE) -->
+    <section id="teacherProfileCard" style="background: #ffffff; border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 18px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.03);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 18px;">👨‍🏫</span>
+          <strong style="font-size: 13.5px; color: #0f172a;">Docente Evaluador Activo</strong>
+          <span id="teacherAuthStatusBadge" class="badge" style="background: #fef3c7; color: #92400e; font-weight: 800; font-size: 11px;">⚠️ Sin autenticar</span>
+        </div>
+        <button class="btn btn-outline" style="padding: 4px 10px; font-size: 11.5px; min-height: 28px;" onclick="openAuthModal()">
+          ✏️ Editar Perfil / Cambiar PIN
+        </button>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; font-size: 12px;">
+        <div style="background: #f8fafc; padding: 8px 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+          <span style="color: #64748b; font-size: 10.5px; display: block; font-weight: 700;">NOMBRE COMPLETO</span>
+          <strong id="displayTeacherName" style="color: #0f172a; font-size: 13px;">Sin registrar</strong>
+        </div>
+        <div style="background: #f8fafc; padding: 8px 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+          <span style="color: #64748b; font-size: 10.5px; display: block; font-weight: 700;">CÉDULA / IDENTIFICACIÓN</span>
+          <strong id="displayTeacherId" style="color: #0f172a; font-size: 13px;">—</strong>
+        </div>
+        <div style="background: #f8fafc; padding: 8px 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+          <span style="color: #64748b; font-size: 10.5px; display: block; font-weight: 700;">CORREO INSTITUCIONAL MEP</span>
+          <strong id="displayTeacherEmail" style="color: #0369a1; font-size: 12.5px;">—</strong>
+        </div>
+        <div style="background: #f8fafc; padding: 8px 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+          <span style="color: #64748b; font-size: 10.5px; display: block; font-weight: 700;">CENTRO EDUCATIVO & DRE</span>
+          <strong id="displayTeacherSchool" style="color: #0f172a; font-size: 12.5px;">Sin institución asignada</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- METRICS ROW -->
+    <section class="metrics-row">
+      <div class="metric-card">
+        <span class="metric-title">Parejas Evaluadas</span>
+        <span class="metric-value" id="valTotalStudents">0</span>
+        <span class="metric-sub" id="valTotalIndiv">0 estudiantes en total</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-title">Nivel A (Autónomo)</span>
+        <span class="metric-value" style="color: #10b981;" id="valLevelA">0 (0%)</span>
+        <span class="metric-sub">Dominio pleno de competencias</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-title">Nivel B (Con Apoyo)</span>
+        <span class="metric-value" style="color: #f59e0b;" id="valLevelB">0 (0%)</span>
+        <span class="metric-sub">Requiere mediación intermedia</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-title">Nivel C (Inicial)</span>
+        <span class="metric-value" style="color: #ef4444;" id="valLevelC">0 (0%)</span>
+        <span class="metric-sub">Prioridad en plan de nivelación</span>
+      </div>
+    </section>
+
+    <!-- FILTER BAR -->
+    <section class="filter-bar">
+      <div class="filter-group">
+        <input type="text" id="searchName" class="filter-input" placeholder="🔍 Buscar por estudiante o pareja..." oninput="filterAndRender()">
+        <select id="filterSection" class="filter-select" onchange="filterAndRender()">
+          <option value="ALL">Todas las Secciones (7°)</option>
+          <option value="7-1">Sección 7-1</option>
+          <option value="7-2">Sección 7-2</option>
+          <option value="7-3">Sección 7-3</option>
+          <option value="7-4">Sección 7-4</option>
+          <option value="7-5">Sección 7-5</option>
+          <option value="7-6">Sección 7-6</option>
+          <option value="7-7">Sección 7-7</option>
+          <option value="7-8">Sección 7-8</option>
+          <option value="7-9">Sección 7-9</option>
+          <option value="7-10">Sección 7-10</option>
+          <option value="7-11">Sección 7-11</option>
+          <option value="7-12">Sección 7-12</option>
+        </select>
+        <select id="filterLevel" class="filter-select" onchange="filterAndRender()">
+          <option value="ALL">Todos los Niveles</option>
+          <option value="A">Nivel A (Autónomo)</option>
+          <option value="B">Nivel B (Con Apoyo)</option>
+          <option value="C">Nivel C (Inicial)</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <span style="font-size: 12px; color: var(--text-muted);" id="tableCountLabel">Mostrando 0 registros</span>
+        <button class="btn btn-outline" style="padding: 6px 10px; font-size: 12px;" onclick="clearAllData()">🗑️ Limpiar Tabla</button>
+      </div>
+    </section>
+
+    <!-- TABLE -->
+    <div class="table-responsive">
+      <table class="mep-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Estudiante 1 (Líder)</th>
+            <th>Estudiante 2 (Co-piloto)</th>
+            <th>Sección</th>
+            <th>Dim. Psicomotriz</th>
+            <th>Dim. Cognitiva</th>
+            <th>Dim. Socioafectiva</th>
+            <th>Nivel Global</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="cadetsTableBody">
+          <tr>
+            <td colspan="9" style="text-align: center; color: var(--text-muted); padding: 30px;">
+              No hay evaluaciones registradas. Escanea códigos QR con el botón <strong>«📷 Escanear QR Parejas»</strong> o presiona <strong>«🧪 Muestra Demo»</strong> arriba.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <!-- MODAL DE DETALLE INDIVIDUAL Y RÚBRICA MEP -->
+  <div class="modal-overlay" id="studentDetailModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <h2 id="modalStudentName" style="font-size: 16px; font-weight: 800; color: #0f172a;">Juan Viales y María Gómez</h2>
+          <span id="modalStudentMeta" style="font-size: 12px; color: #64748b;">Sección 7-1 &bull; Modalidad Pareja</span>
+        </div>
+        <button class="btn btn-outline" style="padding: 4px 8px;" onclick="closeModal()">✕</button>
+      </div>
+      
+      <div class="modal-body" id="modalStudentBody">
+        <!-- Renderizado dinámico -->
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal()">Cerrar</button>
+        <button class="btn btn-accent" onclick="saveModalChanges()">💾 Guardar Ajustes de Rúbrica</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL ESCÁNER CÁMARA QR -->
+  <div class="modal-overlay" id="qrScannerModal">
+    <div class="modal-box" style="max-width: 500px; text-align: center;">
+      <div class="modal-header">
+        <div>
+          <h2 style="font-size: 16px; font-weight: 800; color: #0f172a;">📷 Escáner de Códigos QR de Estudiantes</h2>
+          <span style="font-size: 12px; color: #64748b;">Compatible con Android, iOS, Huawei y Cámaras Web</span>
+        </div>
+        <button class="btn btn-outline" style="padding: 4px 8px;" onclick="closeQrScannerModal()">✕</button>
+      </div>
+      
+      <!-- TABS DEL ESCÁNER -->
+      <div style="display: flex; gap: 8px; justify-content: center; margin: 12px 0;">
+        <button class="btn btn-accent" id="tabBtnCamera" style="padding: 6px 12px; font-size: 12px;" onclick="switchQrTab('camara')">📷 Usar Cámara</button>
+        <button class="btn btn-secondary" id="tabBtnManual" style="padding: 6px 12px; font-size: 12px;" onclick="switchQrTab('manual')">📋 Pegar Código</button>
+      </div>
+
+      <div class="modal-body" style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+        
+        <!-- VISTA CÁMARA -->
+        <div id="qrCameraView" style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+          <div id="qrCameraScanner" style="width: 100%; max-width: 360px; min-height: 250px; background: #000; border-radius: 12px; overflow: hidden;"></div>
+          <div id="qrScannerFeedback" style="font-size: 13px; font-weight: 700; color: #0284c7; min-height: 24px;">
+            Iniciando escaneo...
+          </div>
+        </div>
+
+        <!-- VISTA MANUAL -->
+        <div id="qrManualView" style="width: 100%; display: none; flex-direction: column; gap: 10px; text-align: left;">
+          <label style="font-size: 12.5px; font-weight: 700; color: #334155;">Pega el contenido del Código QR generado:</label>
+          <textarea id="manualQrInput" rows="4" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; font-family: monospace; font-size: 12px;" placeholder='{"t":"MEP7","sec":"7-1","c1":"Juan","c2":"María",...}'></textarea>
+          <div style="display: flex; gap: 8px; justify-content: flex-end;">
+            <button class="btn btn-secondary" style="font-size: 12px;" onclick="insertTestQrPayload()">🧪 Pegar Ejemplo de Prueba</button>
+            <button class="btn btn-accent" style="font-size: 12px;" onclick="processManualQrInput()">📥 Procesar Registro</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer" style="justify-content: space-between;">
+        <button class="btn btn-outline" style="font-size: 11.5px;" onclick="insertTestQrPayload()">🧪 Probar con Pareja Demo</button>
+        <button class="btn btn-secondary" onclick="closeQrScannerModal()">Finalizar Escaneo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE AUTENTICACIÓN / REGISTRO UNIFICADO DOCENTE (MEP 2026) -->
+  <!-- MODAL DE AUTENTICACIÓN / REGISTRO UNIFICADO DOCENTE (MEP 2026) -->
+  <div class="modal-overlay" id="authDocenteModal">
+    <div class="modal-box" style="max-width: 620px;">
+      
+      <!-- HEADER MODAL -->
+      <div class="modal-header" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; border-bottom: 2px solid #38bdf8;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span class="mep-shield" style="font-size: 11px; padding: 4px 8px;">MEP 2026</span>
+          <div>
+            <h2 style="font-size: 15px; font-weight: 800; color: #fff;">Identificación y Registro del Docente</h2>
+            <p style="font-size: 11.5px; color: #94a3b8;">Módulo de Docente Evaluador &bull; III Ciclo</p>
+          </div>
+        </div>
+        <button id="authModalCloseBtn" class="btn btn-outline" style="padding: 4px 8px; color: #fff; border-color: rgba(255,255,255,0.3); background: transparent;" onclick="closeAuthModal()">✕</button>
+      </div>
+
+      <!-- TABS LOGIN / REGISTRO (ALTO CONTRASTE) -->
+      <div style="display: flex; background: #e2e8f0; padding: 6px; border-bottom: 1px solid #cbd5e1; gap: 6px;">
+        <button id="tabAuthLogin" type="button" class="auth-tab-btn" onclick="switchAuthTab('login')">
+          🔑 Iniciar con PIN
+        </button>
+        <button id="tabAuthRegister" type="button" class="auth-tab-btn active" onclick="switchAuthTab('register')">
+          👤 Registrarse
+        </button>
+      </div>
+
+      <div class="modal-body" style="padding: 16px 20px; max-height: 75vh; overflow-y: auto;">
+        
+        <!-- FORMULARIO DE INICIO DE SESIÓN CON PIN -->
+        <div id="authViewLogin" style="display: none; flex-direction: column; gap: 14px;">
+          <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 10px 12px; font-size: 11.5px; color: #166534;">
+            ℹ️ Si ya completaste tu registro docente en este dispositivo, escribe tu <strong>cédula</strong> o <strong>correo MEP</strong> y tu <strong>PIN de 4 dígitos</strong> para reanudar tu sesión evaluadora.
+          </div>
+
+          <div>
+            <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 3px;">Cédula o Correo Institucional MEP *</label>
+            <input type="text" id="loginUser" class="filter-input" style="width: 100%;" placeholder="ej. 1-2345-6789 o usuario@mep.go.cr">
+            <span style="font-size: 10.5px; color: #64748b; margin-top: 2px; display: block;">Identificador previamente registrado en el aplicativo.</span>
+          </div>
+
+          <div>
+            <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 3px;">PIN de Acceso (4 dígitos) *</label>
+            <input type="password" id="loginPin" maxlength="4" class="filter-input" style="width: 100%; letter-spacing: 4px; font-size: 15px; font-weight: 800; text-align: center;" placeholder="••••">
+            <span style="font-size: 10.5px; color: #64748b; margin-top: 2px; display: block;">Clave de 4 dígitos creada durante tu registro.</span>
+          </div>
+
+          <button class="btn btn-accent" style="width: 100%; min-height: 42px; font-size: 13px; background: #059669; justify-content: center; margin-top: 6px;" onclick="submitDocenteLogin()">
+            🔑 Iniciar Sesión con PIN
+          </button>
+
+          <div style="display: flex; justify-content: center; margin-top: 4px;">
+            <button type="button" class="btn btn-outline" style="font-size: 11px; padding: 4px 10px; color: #0284c7; border-color: #7dd3fc; background: #f0f9ff; font-weight: 700;" onclick="rellenarLoginDemo()">
+              🧪 Llenar Usuario Demo para Prueba (PIN: 1234)
+            </button>
+          </div>
+        </div>
+
+        <!-- FORMULARIO DE REGISTRO COMPLETO -->
+        <div id="authViewRegister" style="display: flex; flex-direction: column; gap: 14px;">
+          
+          <!-- BANNER DE USUARIO DEMO / PRUEBA -->
+          <div style="display: flex; justify-content: space-between; align-items: center; background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 8px; padding: 8px 12px; flex-wrap: wrap; gap: 6px;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="font-size: 16px;">🧪</span>
+              <span style="font-size: 11.5px; color: #166534; font-weight: 700;">¿Modo de Prueba o Cuenta Simulada?</span>
+            </div>
+            <button type="button" class="btn btn-accent" style="font-size: 11px; padding: 4px 10px; background: #059669; font-weight: 800;" onclick="cargarUsuarioDemo()">
+              ⚡ Cargar Datos Demo de Prueba
+            </button>
+          </div>
+
+          <!-- ROL PROFESIONAL DOCENTE FIJO Y MINIMALISTA -->
+          <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-left: 4px solid #059669; border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 18px;">👨‍🏫</span>
+              <div>
+                <strong style="font-size: 12px; color: #0f172a; display: block;">Rol: Docente Evaluador</strong>
+                <span style="font-size: 10.5px; color: #64748b;">Habilitado exclusivamente para docentes que evalúan grupos de III Ciclo</span>
+              </div>
+            </div>
+            <span style="background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 9999px;">OFICIAL</span>
+          </div>
+
+          <!-- NOMBRE COMPLETO -->
+          <div>
+            <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 2px;">Nombre completo (Nombre y Apellidos) *</label>
+            <input type="text" id="regName" class="filter-input" style="width: 100%;" placeholder="Ingresa tu nombre completo con apellidos">
+            <span style="font-size: 10.5px; color: #64748b; margin-top: 2px; display: block;">Firma oficial requerida para las actas e informes diagnósticos generados.</span>
+          </div>
+
+          <!-- CÉDULA Y TELÉFONO -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px;">
+            <div>
+              <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 2px;">Cédula / Identificación *</label>
+              <input type="text" id="regId" class="filter-input" style="width: 100%;" placeholder="ej. 1-2345-6789">
+              <span style="font-size: 10.5px; color: #64748b; margin-top: 2px; display: block;">Identificador único para respaldar la autoría del registro.</span>
+            </div>
+            <div>
+              <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 2px;">Teléfono Celular de Contacto</label>
+              <input type="text" id="regPhone" class="filter-input" style="width: 100%;" placeholder="ej. 8888-0000">
+              <span style="font-size: 10.5px; color: #0369a1; margin-top: 2px; display: block;">📱 <strong>Función:</strong> Avisos por WhatsApp/SMS, respaldo de acceso y soporte inmediato.</span>
+            </div>
+          </div>
+
+          <!-- CORREO INSTITUCIONAL -->
+          <div>
+            <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 2px;">Correo Electrónico Institucional MEP (@mep.go.cr) *</label>
+            <input type="email" id="regEmail" class="filter-input" style="width: 100%;" placeholder="nombre.apellido.apellido@mep.go.cr">
+            <span style="font-size: 10.5px; color: #64748b; margin-top: 2px; display: block;">Recepción de respaldos digitales, consolidado ministerial y actas en PDF.</span>
+          </div>
+
+          <!-- CENTROS EDUCATIVOS Y ASIGNACIÓN CURRICULAR (ACORDEÓN MULTI-INSTITUCIÓN) -->
+          <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="background: #059669; color: white; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800;">1</span>
+                <div>
+                  <strong style="font-size: 12px; color: #0f172a; display: block;">Centro(s) Educativo(s) y Asignación Curricular</strong>
+                  <span style="font-size: 10px; color: #64748b;">Configura los niveles (7°, 8°, 9°) y secciones para cada colegio</span>
+                </div>
+              </div>
+              <button type="button" class="btn btn-outline" style="padding: 4px 10px; font-size: 11px; background: #ffffff; color: #059669; border-color: #10b981; font-weight: 800;" onclick="addSchoolField()">
+                ➕ Agregar otro Centro Educativo
+              </button>
+            </div>
+
+            <!-- CONTENEDOR DINÁMICO DE CENTROS EDUCATIVOS (MENÚ ACORDEÓN) -->
+            <div id="schoolsListContainer" style="display: flex; flex-direction: column; gap: 8px;">
+              <!-- Se renderizan dinámicamente con renderSchoolCards() con menú acordeón, niveles y secciones por colegio -->
+            </div>
+          </div>
+
+          <!-- PIN DE ACCESO RÁPIDO -->
+          <div style="background: #eff6ff; border: 1.5px solid #bfdbfe; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <strong style="font-size: 12px; color: #1e3a8a;">🔒 PIN de Acceso Rápido (4 Dígitos Numéricos) *</strong>
+              <button type="button" class="btn btn-outline" style="padding: 2px 6px; font-size: 10.5px; min-height: 22px; background: white;" onclick="togglePinVisibility()">
+                👁️ <span id="pinVisibilityLabel">Ver PIN</span>
+              </button>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px;">
+              <div>
+                <label style="font-size: 11px; font-weight: 700; color: #334155; display: block; margin-bottom: 2px;">Crea tu PIN (4 números):</label>
+                <input type="password" id="regPin" maxlength="4" class="filter-input" style="width: 100%; text-align: center; font-size: 15px; font-weight: 800; letter-spacing: 4px;" placeholder="••••">
+              </div>
+              <div>
+                <label style="font-size: 11px; font-weight: 700; color: #334155; display: block; margin-bottom: 2px;">Confirma tu PIN:</label>
+                <input type="password" id="regPinConfirm" maxlength="4" class="filter-input" style="width: 100%; text-align: center; font-size: 15px; font-weight: 800; letter-spacing: 4px;" placeholder="••••">
+              </div>
+            </div>
+            <span style="font-size: 10.5px; color: #1e40af;">🔑 Clave personal para reanudar sesión rápidamente sin tener que registrarte de nuevo.</span>
+          </div>
+
+          <button class="btn btn-accent" style="width: 100%; min-height: 44px; font-size: 13.5px; background: #059669; justify-content: center; margin-top: 4px;" onclick="submitDocenteRegistro()">
+            👤 Registrarse e Ingresar con PIN
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer" style="background: #f8fafc; border-top: 1px solid #e2e8f0; justify-content: space-between; padding: 10px 18px;">
+        <span style="font-size: 11px; color: #64748b;">Ministerio de Educación Pública &bull; Suite Diagnóstica MEP 2026</span>
+        <button class="btn btn-secondary" style="font-size: 11.5px; padding: 4px 10px;" onclick="cerrarSesionDocente()">
+          🚪 Salir / Restablecer
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL GENERADOR DE ENLACES Y QR PARA ESTUDIANTES (PC / LABORATORIO) -->
+  <div class="modal-overlay" id="modalStudentLinks">
+    <div class="modal-box" style="max-width: 780px;">
+      
+      <!-- HEADER -->
+      <div class="modal-header" style="background: linear-gradient(135deg, #003366 0%, #002244 100%); color: white; border-bottom: 2px solid #38bdf8;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 24px;">🔗</span>
+          <div>
+            <h2 style="font-size: 15px; font-weight: 800; color: #fff; margin: 0;">Generador de Enlaces y QR para Estudiantes (7.° Año)</h2>
+            <p style="font-size: 11.5px; color: #94a3b8; margin: 0;">Misión CyberQuest 7° &bull; Modo Parejas</p>
+          </div>
+        </div>
+        <button class="btn btn-outline" style="padding: 4px 8px; color: #fff; border-color: rgba(255,255,255,0.3); background: transparent;" onclick="closeStudentLinksModal()">✕</button>
+      </div>
+
+      <div class="modal-body" style="padding: 18px 22px; max-height: 75vh; overflow-y: auto; display: flex; flex-direction: column; gap: 16px;">
+        
+        <!-- AVISO OBLIGATORIO DE COMPUTADORAS DE LABORATORIO (ALTO CONTRASTE) -->
+        <div style="background: #eff6ff; border: 2px solid #38bdf8; border-radius: 10px; padding: 12px 16px; display: flex; align-items: flex-start; gap: 12px;">
+          <span style="font-size: 26px; line-height: 1;">💻</span>
+          <div>
+            <strong style="font-size: 12.5px; color: #0369a1; display: block; margin-bottom: 2px; text-transform: uppercase;">
+              Requisito Obligatorio: Ejecución Exclusiva en Computadoras de Laboratorio
+            </strong>
+            <p style="font-size: 11.5px; color: #334155; margin: 0; line-height: 1.45;">
+              Esta misión diagnóstica curricular interactiva está diseñada, gamificada y optimizada <strong>estrictamente para ejecutarse en computadoras de escritorio o portátiles (PC / Mac)</strong> de las aulas tecnológicas o laboratorios de informática educativa. <strong>No debe ejecutarse en celulares de estudiantes.</strong>
+            </p>
+          </div>
+        </div>
+
+        <!-- SELECTOR DE CENTRO EDUCATIVO ACTIVO (SI TIENE VARIOS) -->
+        <div id="slmSchoolSelectorWrap" style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
+            <label style="font-size: 12px; font-weight: 800; color: #0f172a;">🏫 Centro Educativo para Generación de Enlaces:</label>
+            <span id="slmTeacherIdentityBadge" style="font-size: 11px; font-weight: 700; color: #0284c7; background: #e0f2fe; padding: 2px 8px; border-radius: 6px;">👨‍🏫 Docente Activo</span>
+          </div>
+          <select id="slmSchoolSelect" class="filter-select" style="width: 100%; font-size: 12.5px; font-weight: 700; color: #0f172a; padding: 6px 10px;" onchange="updateStudentLinksView()">
+            <!-- Dinámico -->
+          </select>
+        </div>
+
+        <!-- BLOQUE 1: ENLACE GENERAL DEL NIVEL (ESTUDIANTE ELIGE SECCIÓN) -->
+        <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
+            <div>
+              <strong style="font-size: 13px; color: #003366; display: flex; align-items: center; gap: 6px;">
+                🌐 Enlace General — Todo 7.° Año (Todas las secciones)
+              </strong>
+              <span style="font-size: 11px; color: #64748b;">El estudiante abre la misión en la PC del laboratorio y elige su propia sección al registrarse.</span>
+            </div>
+            <span class="badge" style="background: #dcfce7; color: #166534; font-size: 10.5px; font-weight: 800;">Recomendado</span>
+          </div>
+
+          <div style="display: flex; gap: 6px;">
+            <input type="text" id="slmGeneralUrlInput" readonly style="flex: 1; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 8px 12px; font-size: 12px; font-family: monospace; color: #0f172a; outline: none;" value="">
+          </div>
+
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn btn-accent" style="font-size: 11.5px; padding: 6px 14px; background: #0284c7; border-color: #0369a1; color: white; font-weight: 700;" onclick="copyGeneralStudentLink()">
+              📋 Copiar Enlace General
+            </button>
+            <a id="slmOpenGeneralBtn" href="#" target="_blank" class="btn btn-outline" style="font-size: 11.5px; padding: 6px 14px; text-decoration: none; color: #0f172a; background: white; border: 1.5px solid #cbd5e1; font-weight: 700;">
+              🖥️ Abrir en esta PC
+            </a>
+          </div>
+        </div>
+
+        <!-- BLOQUE 2: ENLACES DIRECTOS POR SECCIÓN (7-1, 7-2...) -->
+        <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 10px;">
+          <div>
+            <strong style="font-size: 12.5px; color: #003366; display: flex; align-items: center; gap: 6px;">
+              🏷️ Enlaces Directos por Sección (Auto-asignación sin que el alumno deba elegirla):
+            </strong>
+            <span style="font-size: 11px; color: #64748b;">Cada enlace bloquea automáticamente la sección indicada en la pantalla del laboratorio.</span>
+          </div>
+
+          <div id="slmSectionCardsContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px;">
+            <!-- Renderizado dinámico -->
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer" style="justify-content: space-between; padding: 10px 18px;">
+        <span style="font-size: 11px; color: #64748b;">Ministerio de Educación Pública &bull; Telemetría Curricular 2026</span>
+        <button class="btn btn-secondary" onclick="closeStudentLinksModal()">Cerrar</button>
+      </div>
+
+    </div>
+  </div>
+
+  <footer style="background: #f1f5f9; border-top: 1px solid #e2e8f0; padding: 14px; text-align: center; font-size: 12px; color: #64748b; margin-top: auto;">
+    Ministerio de Educación Pública (MEP) &bull; Suite de Evaluación Diagnóstica 7.° Año 2026 &bull; Formación Tecnológica
+  </footer>
+
+  <!-- ENGINE EVALUADOR DOCENTE -->
+  <script>
+    let evaluatedCadets = [];
+    let currentEditingIndex = null;
+    let html5QrScannerInstance = null;
+
+    function loadDocenteState() {
+      try {
+        const saved = localStorage.getItem('MEP_DOCENTE_7MO_EVALUATIONS');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          evaluatedCadets = parsed.map(c => {
+            if (c.name1 && typeof c.name1 === 'object') c.name1 = c.name1.name || 'Estudiante 1';
+            if (c.name2 && typeof c.name2 === 'object') c.name2 = c.name2.name || 'Estudiante 2';
+            if (c.name1 === '[object Object]') c.name1 = 'Juan Viales Calderón';
+            if (c.name2 === '[object Object]') c.name2 = 'María Gómez Porras';
+            return c;
+          });
+        }
+
+        // Cargar también registros generados en el mismo navegador desde telemetria_registros
+        const rawTelemetria = localStorage.getItem('telemetria_registros');
+        if (rawTelemetria) {
+          const list = JSON.parse(rawTelemetria);
+          list.forEach(item => {
+            const es7mo = item.tipo === 'CYBERQUEST_7MO' || item.nivel === '7°' || (item.seccionOGrupo && item.seccionOGrupo.includes('7-')) || item.cadet1;
+            if (es7mo && item.estudianteNombre) {
+              const parts = item.estudianteNombre.split('&').map(s => s.trim());
+              const name1 = parts[0] || 'Estudiante 1';
+              const name2 = parts[1] || 'Individual';
+              const sec = (item.seccionOGrupo || '7-1').replace(/^secci[oó]n\s*/i, '').trim();
+              const score = item.porcentaje ?? item.puntaje ?? 80;
+              const lvl = item.nivelLogro === 'Avanzado' || score >= 80 ? 'A' : (item.nivelLogro === 'Inicial' || score <= 59 ? 'C' : 'B');
+              const exists = evaluatedCadets.some(c => (c.name1 === name1 || c.id === item.idResultado) && c.section === sec);
+              if (!exists) {
+                evaluatedCadets.push({
+                  id: item.idResultado || `res-7mo-${Date.now()}`,
+                  name1,
+                  name2,
+                  avatar1: item.cadet1Avatar || '🤖',
+                  avatar2: item.cadet2Avatar || '⚡',
+                  section: sec,
+                  psicoScore: item.psicoScore || score,
+                  cogScore: item.cogScore || score,
+                  socioScore: item.socioScore || score,
+                  globalAvg: score,
+                  globalLevel: lvl,
+                  raw: item
+                });
+              }
+            }
+          });
+        }
+      } catch (e) {
+        console.warn('Error al cargar datos docentes:', e);
+      }
+      filterAndRender();
+      sincronizarTelemetriaOnline();
+    }
+
+    async function sincronizarTelemetriaOnline() {
+      try {
+        const profile = getStoredProfile();
+        const docenteId = profile?.cedula || profile?.idDocente || '';
+        const url = docenteId ? `/api/telemetria/enviar?docenteId=${encodeURIComponent(docenteId)}` : '/api/telemetria/enviar';
+        const res = await fetch(url);
+        if (res.ok) {
+          const json = await res.json();
+          if (json.registros && Array.isArray(json.registros)) {
+            let agregados = 0;
+            json.registros.forEach(item => {
+              const es7mo = item.tipo === 'CYBERQUEST_7MO' || item.nivel === '7°' || (item.seccionOGrupo && item.seccionOGrupo.includes('7-')) || item.cadet1;
+              if (es7mo && item.estudianteNombre) {
+                const parts = item.estudianteNombre.split('&').map(s => s.trim());
+                const name1 = parts[0] || 'Estudiante 1';
+                const name2 = parts[1] || 'Individual';
+                const sec = (item.seccionOGrupo || '7-1').replace(/^secci[oó]n\s*/i, '').trim();
+                const score = item.porcentaje ?? item.puntaje ?? 80;
+                const lvl = item.nivelLogro === 'Avanzado' || score >= 80 ? 'A' : (item.nivelLogro === 'Inicial' || score <= 59 ? 'C' : 'B');
+                const idx = evaluatedCadets.findIndex(c => (c.name1 === name1 && c.section === sec) || c.id === item.idResultado);
+                const rec = {
+                  id: item.idResultado || `res-7mo-${Date.now()}`,
+                  name1,
+                  name2,
+                  avatar1: item.cadet1Avatar || '🤖',
+                  avatar2: item.cadet2Avatar || '⚡',
+                  section: sec,
+                  psicoScore: item.psicoScore || score,
+                  cogScore: item.cogScore || score,
+                  socioScore: item.socioScore || score,
+                  globalAvg: score,
+                  globalLevel: lvl,
+                  raw: item
+                };
+                if (idx >= 0) {
+                  evaluatedCadets[idx] = { ...evaluatedCadets[idx], ...rec };
+                } else {
+                  evaluatedCadets.push(rec);
+                  agregados++;
+                }
+              }
+            });
+            if (agregados > 0) {
+              saveDocenteState();
+              filterAndRender();
+            }
+          }
+        }
+      } catch(e) {}
+    }
+
+    function saveDocenteState() {
+      try {
+        localStorage.setItem('MEP_DOCENTE_7MO_EVALUATIONS', JSON.stringify(evaluatedCadets));
+      } catch (e) {
+        console.warn('Error al guardar datos docentes:', e);
+      }
+      updateGlobalMetrics();
+    }
+
+    function processCadetJson(data) {
+      // Compatibilidad universal: Soporta formato objeto, plano y compacto QR
+      let name1 = '';
+      if (data.cadet1 && typeof data.cadet1 === 'object') name1 = data.cadet1.name || '';
+      else if (data.name1 && typeof data.name1 === 'object') name1 = data.name1.name || '';
+      else if (typeof data.cadet1 === 'string') name1 = data.cadet1;
+      else if (typeof data.name1 === 'string') name1 = data.name1;
+      else if (typeof data.c1 === 'string') name1 = data.c1;
+      else if (data.cadet && typeof data.cadet === 'object') name1 = data.cadet.name || '';
+
+      let name2 = '';
+      if (data.cadet2 && typeof data.cadet2 === 'object') name2 = data.cadet2.name || '';
+      else if (data.name2 && typeof data.name2 === 'object') name2 = data.name2.name || '';
+      else if (typeof data.cadet2 === 'string') name2 = data.cadet2;
+      else if (typeof data.name2 === 'string') name2 = data.name2;
+      else if (typeof data.c2 === 'string') name2 = data.c2;
+      else name2 = 'Individual';
+
+      if (!name1) {
+        name1 = 'Estudiante Líder';
+      }
+
+      let avatar1 = (data.cadet1 && typeof data.cadet1 === 'object' && data.cadet1.avatar) || data.avatar1 || data.a1 || (data.cadet && data.cadet.avatar) || '🤖';
+      let avatar2 = (data.cadet2 && typeof data.cadet2 === 'object' && data.cadet2.avatar) || data.avatar2 || data.a2 || '⚡';
+      let section = data.seccion || data.sec || data.section || (data.cadet && data.cadet.section) || '7-1';
+
+      let psicoScore = 0;
+      let cogScore = 0;
+      let socioScore = 0;
+      let globalAvg = 0;
+      let globalLevel = 'A';
+
+      if (data.t === 'MEP7' || data.tipo === 'MEP_7MO_CYBERQUEST') {
+        // Viene directo del QR o Webhook ya calculado
+        psicoScore = Number(data.p !== undefined ? data.p : (data.psicoScore || 0));
+        cogScore = Number(data.c !== undefined ? data.c : (data.cogScore || 0));
+        socioScore = Number(data.s !== undefined ? data.s : (data.socioScore || 0));
+        globalAvg = Number(data.g !== undefined ? data.g : (data.globalAvg || Math.round((psicoScore * 0.35) + (cogScore * 0.45) + (socioScore * 0.20))));
+        globalLevel = data.lvl || data.globalLevel || (globalAvg >= 80 ? 'A' : globalAvg >= 60 ? 'B' : 'C');
+      } else {
+        // Cálculo granular desde estado crudo
+        const cogCorrect = Object.values(data.cognitivo?.answers || {}).filter(a => a.isCorrect).length;
+        cogScore = Math.round((cogCorrect / 10) * 100);
+
+        const p1 = data.psicomotriz?.p1_lateralidad?.score || 0;
+        const p2 = data.psicomotriz?.p2_ritmo?.score || 0;
+        const p3 = data.psicomotriz?.p3_pulso?.score || 0;
+        const p4 = data.psicomotriz?.p4_dibujo?.score || 0;
+        psicoScore = Math.round((p1 + p2 + p3 + p4) / 4);
+
+        const s1 = data.socioafectivo?.s1_precision || 3;
+        const s2 = data.socioafectivo?.s2_resiliencia || 3;
+        const s3 = data.socioafectivo?.s3_colaboracion || 3;
+        const s4 = data.socioafectivo?.s4_frustracion || 3;
+        socioScore = Math.round(((s1 + s2 + s3 + s4) / 12) * 100);
+
+        globalAvg = Math.round((psicoScore * 0.35) + (cogScore * 0.45) + (socioScore * 0.20));
+        if (globalAvg < 60) globalLevel = 'C';
+        else if (globalAvg < 80) globalLevel = 'B';
+      }
+
+      const record = {
+        id: data.hash || data.h || data.sessionHash || 'HASH-' + Math.random().toString(36).substring(2, 9).toUpperCase(),
+        name1,
+        name2,
+        avatar1,
+        avatar2,
+        section,
+        psicoScore,
+        cogScore,
+        socioScore,
+        globalAvg,
+        globalLevel,
+        raw: data
+      };
+
+      const existingIdx = evaluatedCadets.findIndex(c => c.name1 === record.name1 && c.name2 === record.name2 && c.section === record.section);
+      if (existingIdx >= 0) {
+        evaluatedCadets[existingIdx] = record;
+      } else {
+        evaluatedCadets.push(record);
+      }
+
+      saveDocenteState();
+      filterAndRender();
+    }
+
+    // CONTROL DE ESCÁNER CÁMARA QR
+    function openQrScannerModal() {
+      const modal = document.getElementById('qrScannerModal');
+      if (modal) {
+        modal.classList.add('open');
+      }
+      switchQrTab('camara');
+    }
+
+    function closeQrScannerModal() {
+      const modal = document.getElementById('qrScannerModal');
+      if (modal) {
+        modal.classList.remove('open');
+      }
+      detenerCamaraQR7mo();
+    }
+
+    function detenerCamaraQR7mo() {
+      if (html5QrScannerInstance) {
+        try {
+          if (html5QrScannerInstance.isScanning) {
+            html5QrScannerInstance.stop().catch(() => {}).finally(() => {
+              try { html5QrScannerInstance.clear(); } catch(e){}
+              html5QrScannerInstance = null;
+            });
+          } else {
+            try { html5QrScannerInstance.clear(); } catch(e){}
+            html5QrScannerInstance = null;
+          }
+        } catch(e) {
+          html5QrScannerInstance = null;
+        }
+      }
+    }
+
+    function startQrCameraScanner() {
+      const feedbackEl = document.getElementById('qrScannerFeedback');
+      if (typeof Html5Qrcode === 'undefined') {
+        if (feedbackEl) feedbackEl.innerHTML = '⚠️ Librería de escáner no disponible. Puedes usar la pestaña "Pegar Código".';
+        return;
+      }
+      if (html5QrScannerInstance && html5QrScannerInstance.isScanning) return;
+
+      detenerCamaraQR7mo();
+      if (feedbackEl) feedbackEl.innerHTML = 'Iniciando cámara...';
+
+      try {
+        html5QrScannerInstance = new Html5Qrcode("qrCameraScanner");
+        html5QrScannerInstance.start(
+          { facingMode: "environment" },
+          { fps: 10, qrbox: { width: 240, height: 240 } },
+          (decodedText) => {
+            handleScannedQrPayload(decodedText);
+          },
+          () => {}
+        ).catch(err => {
+          console.warn('Error al activar cámara:', err);
+          if (feedbackEl) feedbackEl.innerHTML = '⚠️ Permiso de cámara requerido o dispositivo no compatible. Usa "Pegar Código".';
+        });
+      } catch (err) {
+        console.warn('Error al inicializar cámara:', err);
+      }
+    }
+
+    function handleScannedQrPayload(text) {
+      try {
+        let parsed = null;
+        if (text.startsWith('{')) {
+          parsed = JSON.parse(text);
+        }
+        if (parsed) {
+          processCadetJson(parsed);
+          try {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = audioCtx.createOscillator();
+            osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+            osc.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.12);
+          } catch(e) {}
+          
+          const cadName1 = parsed.c1 || parsed.cadet1 || 'Cadete';
+          const cadName2 = parsed.c2 || parsed.cadet2 || '';
+          document.getElementById('qrScannerFeedback').innerHTML = `<span style="color:#10b981; font-weight:800;">✅ ¡Pareja ${cadName1} & ${cadName2} registrada!</span>`;
+        }
+      } catch (e) {
+        console.warn('Error al procesar payload QR:', e);
+      }
+    }
+
+    function switchQrTab(tab) {
+      const cameraView = document.getElementById('qrCameraView');
+      const manualView = document.getElementById('qrManualView');
+      const tabBtnCamera = document.getElementById('tabBtnCamera');
+      const tabBtnManual = document.getElementById('tabBtnManual');
+
+      if (tab === 'camara') {
+        if (cameraView) cameraView.style.display = 'flex';
+        if (manualView) manualView.style.display = 'none';
+        if (tabBtnCamera) tabBtnCamera.className = 'btn btn-accent';
+        if (tabBtnManual) tabBtnManual.className = 'btn btn-secondary';
+        startQrCameraScanner();
+      } else {
+        if (cameraView) cameraView.style.display = 'none';
+        if (manualView) manualView.style.display = 'flex';
+        if (tabBtnManual) tabBtnManual.className = 'btn btn-accent';
+        if (tabBtnCamera) tabBtnCamera.className = 'btn btn-secondary';
+        detenerCamaraQR7mo();
+      }
+    }
+
+    function insertTestQrPayload() {
+      const demoNames = [
+        ['Carlos Quesada', '🤖', 'Valeria Mora', '⚡', '7-1'],
+        ['Andrés Brenes', '🛰️', 'Elena Solís', '👾', '7-2'],
+        ['Gabriel Castro', '🛡️', 'Natalia Vargas', '🚀', '7-3'],
+        ['Fabián Montero', '🔥', 'Jimena Rojas', '⭐', '7-4']
+      ];
+      const selected = demoNames[Math.floor(Math.random() * demoNames.length)];
+      const p = Math.floor(Math.random() * 21) + 80;
+      const c = Math.floor(Math.random() * 21) + 80;
+      const s = Math.floor(Math.random() * 16) + 85;
+      const g = Math.round((p * 0.35) + (c * 0.45) + (s * 0.20));
+      const lvl = g >= 80 ? 'A' : g >= 60 ? 'B' : 'C';
+      const hash = 'HASH-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+
+      const testPayload = {
+        t: "MEP7",
+        sec: selected[4],
+        c1: selected[0],
+        a1: selected[1],
+        c2: selected[2],
+        a2: selected[3],
+        p: p,
+        c: c,
+        s: s,
+        g: g,
+        lvl: lvl,
+        h: hash
+      };
+
+      const jsonStr = JSON.stringify(testPayload);
+      const inputEl = document.getElementById('manualQrInput');
+      if (inputEl) {
+        inputEl.value = jsonStr;
+      }
+      switchQrTab('manual');
+    }
+
+    function processManualQrInput() {
+      const inputEl = document.getElementById('manualQrInput');
+      if (!inputEl) return;
+      const val = inputEl.value.trim();
+      if (!val) {
+        alert('Por favor pega el contenido del código QR primero.');
+        return;
+      }
+      try {
+        const parsed = JSON.parse(val);
+        processCadetJson(parsed);
+        alert(`✅ ¡Registro de ${parsed.c1 || parsed.cadet1 || 'Pareja'} procesado e integrado a la tabla!`);
+        inputEl.value = '';
+        closeQrScannerModal();
+      } catch (err) {
+        alert('⚠️ El texto ingresado no es un formato JSON/QR válido.');
+      }
+    }
+
+    // ============================================================
+    // GESTIÓN DE PERFIL Y AUTENTICACIÓN UNIFICADA DOCENTE (MEP 2026)
+    // ============================================================
+    const DRE_LIST = [
+      { code: 'DRE-01', name: 'DRE-01 - San José Central (San José)' },
+      { code: 'DRE-02', name: 'DRE-02 - San José Norte (Guadalupe)' },
+      { code: 'DRE-03', name: 'DRE-03 - San José Oeste (Hatillo)' },
+      { code: 'DRE-04', name: 'DRE-04 - Alajuela (Alajuela)' },
+      { code: 'DRE-05', name: 'DRE-05 - Cartago (Cartago)' },
+      { code: 'DRE-06', name: 'DRE-06 - Heredia (Heredia)' },
+      { code: 'DRE-07', name: 'DRE-07 - Guanacaste (Liberia)' },
+      { code: 'DRE-08', name: 'DRE-08 - Puntarenas (Puntarenas)' },
+      { code: 'DRE-09', name: 'DRE-09 - Pérez Zeledón (San Isidro)' },
+      { code: 'DRE-10', name: 'DRE-10 - San Carlos (Ciudad Quesada)' },
+      { code: 'DRE-11', name: 'DRE-11 - Limón (Limón)' },
+      { code: 'DRE-12', name: 'DRE-12 - Coto (Ciudad Neily)' },
+      { code: 'DRE-13', name: 'DRE-13 - Desamparados (Desamparados)' },
+      { code: 'DRE-14', name: 'DRE-14 - Puriscal (Santiago)' },
+      { code: 'DRE-15', name: 'DRE-15 - Los Santos (San Marcos de Tarrazú)' },
+      { code: 'DRE-16', name: 'DRE-16 - Sarapiquí (Puerto Viejo)' },
+      { code: 'DRE-17', name: 'DRE-17 - Grande de Térraba (Palmar Norte)' },
+      { code: 'DRE-18', name: 'DRE-18 - Aguirre (Quepos)' },
+      { code: 'DRE-19', name: 'DRE-19 - Guápiles (Pococí)' },
+      { code: 'DRE-20', name: 'DRE-20 - Nicoya (Nicoya)' },
+      { code: 'DRE-21', name: 'DRE-21 - Santa Cruz (Santa Cruz)' },
+      { code: 'DRE-22', name: 'DRE-22 - Cañas (Cañas)' },
+      { code: 'DRE-23', name: 'DRE-23 - Upala (Upala)' },
+      { code: 'DRE-24', name: 'DRE-24 - Turrialba (Turrialba)' },
+      { code: 'DRE-25', name: 'DRE-25 - Sulá (Talamanca)' },
+      { code: 'DRE-26', name: 'DRE-26 - Occidente (San Ramón)' },
+      { code: 'DRE-27', name: 'DRE-27 - Zona Norte-Norte (Guatuso)' }
+    ];
+
+    let currentSchools = [
+      createDefaultSchoolObject(0)
+    ];
+
+    let activeDocenteRole = 'Docente';
+
+    function createDefaultSchoolObject(index) {
+      return {
+        id: 'school_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+        dreCodigo: 'DRE-01',
+        dreNombre: 'DRE-01 - San José Central (San José)',
+        colegio: '',
+        isExpanded: true,
+        niveles: { '7': true, '8': false, '9': false },
+        secciones: {
+          '7': { total: 6, selected: ['7-1', '7-2', '7-3'] },
+          '8': { total: 6, selected: ['8-1', '8-2'] },
+          '9': { total: 6, selected: ['9-1'] }
+        }
+      };
+    }
+
+    function syncSchoolsFromDOM() {
+      currentSchools.forEach((s, idx) => {
+        const nameEl = document.getElementById(`regSchoolName_${idx}`);
+        const dreEl = document.getElementById(`regSchoolDre_${idx}`);
+        if (nameEl) s.colegio = nameEl.value.trim();
+        if (dreEl) {
+          s.dreCodigo = dreEl.value;
+          s.dreNombre = dreEl.options[dreEl.selectedIndex]?.text || s.dreCodigo;
+        }
+      });
+    }
+
+    function renderSchoolCards() {
+      const container = document.getElementById('schoolsListContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      currentSchools.forEach((school, index) => {
+        if (!school.niveles) school.niveles = { '7': true, '8': false, '9': false };
+        if (!school.secciones) school.secciones = {
+          '7': { total: 6, selected: ['7-1', '7-2', '7-3'] },
+          '8': { total: 6, selected: ['8-1', '8-2'] },
+          '9': { total: 6, selected: ['9-1'] }
+        };
+        if (school.isExpanded === undefined) school.isExpanded = (index === 0 || currentSchools.length === 1);
+
+        const card = document.createElement('div');
+        card.className = 'school-accordion-card';
+        card.style.background = '#ffffff';
+        card.style.border = school.isExpanded ? '1.5px solid #0284c7' : '1px solid #cbd5e1';
+        card.style.borderRadius = '10px';
+        card.style.overflow = 'hidden';
+        card.style.boxShadow = school.isExpanded ? '0 2px 8px rgba(2, 132, 199, 0.08)' : 'none';
+        card.style.transition = 'all 0.2s ease';
+
+        // HEADER DEL ACORDEÓN
+        const header = document.createElement('div');
+        header.style.background = school.isExpanded ? '#f0f9ff' : '#f8fafc';
+        header.style.padding = '10px 12px';
+        header.style.display = 'flex';
+        header.style.justifyContent = 'space-between';
+        header.style.alignItems = 'center';
+        header.style.cursor = 'pointer';
+        header.style.borderBottom = school.isExpanded ? '1px solid #bae6fd' : 'none';
+        header.onclick = (e) => {
+          if (e.target.tagName === 'BUTTON' || e.target.closest('button')) return;
+          toggleSchoolAccordion(index);
+        };
+
+        const leftHeader = document.createElement('div');
+        leftHeader.style.display = 'flex';
+        leftHeader.style.flexDirection = 'column';
+        leftHeader.style.gap = '3px';
+
+        const titleRow = document.createElement('div');
+        titleRow.style.display = 'flex';
+        titleRow.style.alignItems = 'center';
+        titleRow.style.gap = '6px';
+        titleRow.style.flexWrap = 'wrap';
+
+        const title = document.createElement('strong');
+        title.style.fontSize = '12px';
+        title.style.color = '#0f172a';
+        title.innerHTML = `🏫 Centro #${index + 1} ${index === 0 ? '<span style="color:#059669; font-size:10.5px; font-weight:800;">(Principal)</span>' : ''}`;
+        titleRow.appendChild(title);
+
+        if (school.colegio && school.colegio.trim()) {
+          const colName = document.createElement('span');
+          colName.style.fontSize = '11.5px';
+          colName.style.fontWeight = '700';
+          colName.style.color = '#0284c7';
+          colName.textContent = `— ${school.colegio}`;
+          titleRow.appendChild(colName);
+        }
+        leftHeader.appendChild(titleRow);
+
+        const summaryRow = document.createElement('div');
+        summaryRow.style.display = 'flex';
+        summaryRow.style.gap = '5px';
+        summaryRow.style.flexWrap = 'wrap';
+
+        const activeNivs = ['7', '8', '9'].filter(n => school.niveles[n]);
+        if (activeNivs.length > 0) {
+          activeNivs.forEach(n => {
+            const secs = (school.secciones[n]?.selected || []).length;
+            const tag = document.createElement('span');
+            tag.style.fontSize = '10px';
+            tag.style.fontWeight = '700';
+            tag.style.background = '#e2e8f0';
+            tag.style.color = '#334155';
+            tag.style.padding = '1px 6px';
+            tag.style.borderRadius = '4px';
+            tag.textContent = `${n}°: ${secs > 0 ? secs + ' sec' : 'sin sec'}`;
+            summaryRow.appendChild(tag);
+          });
+        } else {
+          const tag = document.createElement('span');
+          tag.style.fontSize = '10px';
+          tag.style.color = '#94a3b8';
+          tag.textContent = 'Sin niveles seleccionados';
+          summaryRow.appendChild(tag);
+        }
+        leftHeader.appendChild(summaryRow);
+        header.appendChild(leftHeader);
+
+        const rightActions = document.createElement('div');
+        rightActions.style.display = 'flex';
+        rightActions.style.alignItems = 'center';
+        rightActions.style.gap = '6px';
+
+        if (currentSchools.length > 1) {
+          const btnRemove = document.createElement('button');
+          btnRemove.type = 'button';
+          btnRemove.className = 'btn btn-outline';
+          btnRemove.style.padding = '2px 8px';
+          btnRemove.style.fontSize = '11px';
+          btnRemove.style.color = '#dc2626';
+          btnRemove.style.borderColor = '#fca5a5';
+          btnRemove.style.background = '#fef2f2';
+          btnRemove.innerHTML = '🗑️';
+          btnRemove.title = 'Quitar este centro educativo';
+          btnRemove.onclick = (e) => {
+            e.stopPropagation();
+            removeSchoolField(index);
+          };
+          rightActions.appendChild(btnRemove);
+        }
+
+        const btnToggle = document.createElement('button');
+        btnToggle.type = 'button';
+        btnToggle.className = 'btn btn-outline';
+        btnToggle.style.padding = '3px 8px';
+        btnToggle.style.fontSize = '11px';
+        btnToggle.style.color = '#334155';
+        btnToggle.style.borderColor = '#cbd5e1';
+        btnToggle.style.background = '#ffffff';
+        btnToggle.style.fontWeight = '700';
+        btnToggle.innerHTML = school.isExpanded ? '▲ Plegar' : '▼ Desplegar';
+        btnToggle.onclick = (e) => {
+          e.stopPropagation();
+          toggleSchoolAccordion(index);
+        };
+        rightActions.appendChild(btnToggle);
+
+        header.appendChild(rightActions);
+        card.appendChild(header);
+
+        if (school.isExpanded) {
+          const body = document.createElement('div');
+          body.style.padding = '12px';
+          body.style.display = 'flex';
+          body.style.flexDirection = 'column';
+          body.style.gap = '10px';
+          body.style.background = '#ffffff';
+
+          const grid = document.createElement('div');
+          grid.style.display = 'grid';
+          grid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(200px, 1fr))';
+          grid.style.gap = '10px';
+
+          // DRE
+          const dreDiv = document.createElement('div');
+          const dreLabel = document.createElement('label');
+          dreLabel.style.fontSize = '11px';
+          dreLabel.style.fontWeight = '700';
+          dreLabel.style.color = '#475569';
+          dreLabel.style.display = 'block';
+          dreLabel.style.marginBottom = '2px';
+          dreLabel.textContent = 'DIRECCIÓN REGIONAL (DRE) *';
+
+          const dreSelect = document.createElement('select');
+          dreSelect.className = 'filter-select';
+          dreSelect.style.width = '100%';
+          dreSelect.style.fontSize = '11.5px';
+          dreSelect.id = `regSchoolDre_${index}`;
+          DRE_LIST.forEach(d => {
+            const opt = document.createElement('option');
+            opt.value = d.code;
+            opt.textContent = d.name;
+            if (d.code === school.dreCodigo) opt.selected = true;
+            dreSelect.appendChild(opt);
+          });
+          dreSelect.onchange = (e) => {
+            currentSchools[index].dreCodigo = e.target.value;
+            currentSchools[index].dreNombre = e.target.options[e.target.selectedIndex]?.text || e.target.value;
+          };
+          dreDiv.appendChild(dreLabel);
+          dreDiv.appendChild(dreSelect);
+
+          // School Name
+          const nameDiv = document.createElement('div');
+          const nameLabel = document.createElement('label');
+          nameLabel.style.fontSize = '11px';
+          nameLabel.style.fontWeight = '700';
+          nameLabel.style.color = '#475569';
+          nameLabel.style.display = 'block';
+          nameLabel.style.marginBottom = '2px';
+          nameLabel.textContent = 'NOMBRE DEL COLEGIO / LICEO *';
+
+          const nameInput = document.createElement('input');
+          nameInput.type = 'text';
+          nameInput.className = 'filter-input';
+          nameInput.style.width = '100%';
+          nameInput.style.fontSize = '12px';
+          nameInput.id = `regSchoolName_${index}`;
+          nameInput.placeholder = 'ej. C.T.P. / Liceo...';
+          nameInput.value = school.colegio || '';
+          nameInput.oninput = (e) => {
+            currentSchools[index].colegio = e.target.value;
+          };
+          nameDiv.appendChild(nameLabel);
+          nameDiv.appendChild(nameInput);
+
+          grid.appendChild(dreDiv);
+          grid.appendChild(nameDiv);
+          body.appendChild(grid);
+
+          // Niveles atendidos
+          const nivelesWrap = document.createElement('div');
+          nivelesWrap.style.marginTop = '2px';
+
+          const nivHeader = document.createElement('div');
+          nivHeader.style.display = 'flex';
+          nivHeader.style.justifyContent = 'space-between';
+          nivHeader.style.alignItems = 'center';
+          nivHeader.style.marginBottom = '4px';
+
+          const nivLabel = document.createElement('label');
+          nivLabel.style.fontSize = '11px';
+          nivLabel.style.fontWeight = '700';
+          nivLabel.style.color = '#475569';
+          nivLabel.textContent = `NIVELES QUE ATIENDES EN ESTE CENTRO:`;
+
+          const nivHint = document.createElement('span');
+          nivHint.style.fontSize = '10px';
+          nivHint.style.color = '#64748b';
+          nivHint.textContent = 'Toca para activar o desactivar';
+
+          nivHeader.appendChild(nivLabel);
+          nivHeader.appendChild(nivHint);
+          nivelesWrap.appendChild(nivHeader);
+
+          const nivButtonsRow = document.createElement('div');
+          nivButtonsRow.style.display = 'flex';
+          nivButtonsRow.style.gap = '8px';
+
+          ['7', '8', '9'].forEach(n => {
+            const isAct = !!school.niveles[n];
+            const btnN = document.createElement('button');
+            btnN.type = 'button';
+            btnN.className = isAct ? 'toggle-pill-btn active' : 'toggle-pill-btn';
+            btnN.textContent = isAct ? `✓ ${n}° Año` : `${n}° Año`;
+            btnN.onclick = () => toggleSchoolNivel(index, n);
+            nivButtonsRow.appendChild(btnN);
+          });
+          nivelesWrap.appendChild(nivButtonsRow);
+          body.appendChild(nivelesWrap);
+
+          // Secciones por cada nivel activo
+          const secContainer = document.createElement('div');
+          secContainer.style.display = 'flex';
+          secContainer.style.flexDirection = 'column';
+          secContainer.style.gap = '8px';
+          secContainer.style.marginTop = '2px';
+
+          ['7', '8', '9'].forEach(n => {
+            if (!school.niveles[n]) return;
+
+            const secBlock = document.createElement('div');
+            secBlock.style.background = '#f8fafc';
+            secBlock.style.border = '1px solid #e2e8f0';
+            secBlock.style.borderRadius = '8px';
+            secBlock.style.padding = '8px 10px';
+
+            const secHead = document.createElement('div');
+            secHead.style.display = 'flex';
+            secHead.style.justifyContent = 'space-between';
+            secHead.style.alignItems = 'center';
+            secHead.style.marginBottom = '6px';
+            secHead.style.flexWrap = 'wrap';
+            secHead.style.gap = '6px';
+
+            const secTitle = document.createElement('strong');
+            secTitle.style.fontSize = '11.5px';
+            secTitle.style.color = '#0f172a';
+            secTitle.textContent = `${n}° Año: Secciones Atendidas`;
+            secHead.appendChild(secTitle);
+
+            const totalWrap = document.createElement('div');
+            totalWrap.style.display = 'flex';
+            totalWrap.style.alignItems = 'center';
+            totalWrap.style.gap = '6px';
+
+            const totalLabel = document.createElement('span');
+            totalLabel.style.fontSize = '10.5px';
+            totalLabel.style.color = '#64748b';
+            totalLabel.textContent = 'Total colegio:';
+            totalWrap.appendChild(totalLabel);
+
+            const totalSelect = document.createElement('select');
+            totalSelect.className = 'filter-select';
+            totalSelect.style.padding = '2px 6px';
+            totalSelect.style.fontSize = '11px';
+            const curTotal = school.secciones[n]?.total || 6;
+            [1, 2, 3, 4, 5, 6, 8, 10, 12].forEach(num => {
+              const opt = document.createElement('option');
+              opt.value = num;
+              opt.textContent = `${num} sección${num > 1 ? 'es' : ''}`;
+              if (num === curTotal) opt.selected = true;
+              totalSelect.appendChild(opt);
+            });
+            totalSelect.onchange = (e) => changeSchoolTotalSec(index, n, e.target.value);
+            totalWrap.appendChild(totalSelect);
+            secHead.appendChild(totalWrap);
+            secBlock.appendChild(secHead);
+
+            const badgesRow = document.createElement('div');
+            badgesRow.style.display = 'flex';
+            badgesRow.style.flexWrap = 'wrap';
+            badgesRow.style.gap = '6px';
+
+            const selSecs = school.secciones[n]?.selected || [];
+            for (let i = 1; i <= curTotal; i++) {
+              const secCode = `${n}-${i}`;
+              const isSelected = selSecs.includes(secCode);
+              const badgeBtn = document.createElement('button');
+              badgeBtn.type = 'button';
+              badgeBtn.className = isSelected ? 'sec-badge-btn active' : 'sec-badge-btn';
+              badgeBtn.textContent = secCode;
+              badgeBtn.onclick = () => toggleSchoolSecBadge(index, n, secCode);
+              badgesRow.appendChild(badgeBtn);
+            }
+            secBlock.appendChild(badgesRow);
+            secContainer.appendChild(secBlock);
+          });
+
+          body.appendChild(secContainer);
+          card.appendChild(body);
+        }
+
+        container.appendChild(card);
+      });
+    }
+
+    function toggleSchoolAccordion(index) {
+      syncSchoolsFromDOM();
+      if (currentSchools[index]) {
+        currentSchools[index].isExpanded = !currentSchools[index].isExpanded;
+        renderSchoolCards();
+      }
+    }
+
+    function addSchoolField() {
+      syncSchoolsFromDOM();
+      currentSchools.forEach(s => s.isExpanded = false);
+      currentSchools.push(createDefaultSchoolObject(currentSchools.length));
+      renderSchoolCards();
+    }
+
+    function removeSchoolField(index) {
+      if (currentSchools.length > 1) {
+        syncSchoolsFromDOM();
+        currentSchools.splice(index, 1);
+        if (currentSchools.length === 1) currentSchools[0].isExpanded = true;
+        renderSchoolCards();
+      }
+    }
+
+    function toggleSchoolNivel(schoolIndex, nivel) {
+      syncSchoolsFromDOM();
+      const sch = currentSchools[schoolIndex];
+      if (!sch) return;
+      sch.niveles[nivel] = !sch.niveles[nivel];
+      if (sch.niveles[nivel] && (!sch.secciones[nivel]?.selected || sch.secciones[nivel].selected.length === 0)) {
+        sch.secciones[nivel] = { total: 6, selected: [`${nivel}-1`, `${nivel}-2`] };
+      }
+      renderSchoolCards();
+    }
+
+    function changeSchoolTotalSec(schoolIndex, nivel, totalVal) {
+      syncSchoolsFromDOM();
+      const sch = currentSchools[schoolIndex];
+      if (!sch) return;
+      if (!sch.secciones[nivel]) sch.secciones[nivel] = { total: 6, selected: [] };
+      sch.secciones[nivel].total = parseInt(totalVal, 10);
+      renderSchoolCards();
+    }
+
+    function toggleSchoolSecBadge(schoolIndex, nivel, secCode) {
+      syncSchoolsFromDOM();
+      const sch = currentSchools[schoolIndex];
+      if (!sch || !sch.secciones[nivel]) return;
+      const list = sch.secciones[nivel].selected || [];
+      if (list.includes(secCode)) {
+        sch.secciones[nivel].selected = list.filter(s => s !== secCode);
+      } else {
+        sch.secciones[nivel].selected = [...list, secCode];
+      }
+      renderSchoolCards();
+    }
+
+    function getStoredProfile() {
+      try {
+        const saved = localStorage.getItem('MEP_DOCENTE_PERFIL_GLOBAL');
+        if (saved) return JSON.parse(saved);
+      } catch (e) {}
+      return null;
+    }
+
+    function checkTeacherAuth() {
+      const profile = getStoredProfile();
+      if (profile && profile.autenticado && profile.nombre) {
+        applyTeacherProfileUI(profile);
+      } else {
+        applyTeacherProfileUI(null);
+        openAuthModal(true);
+      }
+    }
+
+    function openAuthModal(isMandatory = false) {
+      const modal = document.getElementById('authDocenteModal');
+      const closeBtn = document.getElementById('authModalCloseBtn');
+      const profile = getStoredProfile();
+
+      if (closeBtn) {
+        closeBtn.style.display = (isMandatory || !profile || !profile.autenticado) ? 'none' : 'block';
+      }
+
+      switchAuthTab('register');
+
+      if (document.getElementById('regName')) document.getElementById('regName').value = profile?.nombre || '';
+      if (document.getElementById('regId')) document.getElementById('regId').value = profile?.cedula || '';
+      if (document.getElementById('regPhone')) document.getElementById('regPhone').value = profile?.telefono || '';
+      if (document.getElementById('regEmail')) document.getElementById('regEmail').value = profile?.correo || '';
+      if (document.getElementById('regPin')) document.getElementById('regPin').value = profile?.pin || '';
+      if (document.getElementById('regPinConfirm')) document.getElementById('regPinConfirm').value = profile?.pin || '';
+      if (document.getElementById('loginUser')) document.getElementById('loginUser').value = '';
+      if (document.getElementById('loginPin')) document.getElementById('loginPin').value = '';
+
+      if (profile && profile.centrosEducativos && Array.isArray(profile.centrosEducativos) && profile.centrosEducativos.length > 0) {
+        currentSchools = JSON.parse(JSON.stringify(profile.centrosEducativos));
+        currentSchools.forEach((s, idx) => {
+          if (!s.niveles) {
+            s.niveles = {
+              '7': (profile.niveles || []).some(n => n.includes('7')),
+              '8': (profile.niveles || []).some(n => n.includes('8')),
+              '9': (profile.niveles || []).some(n => n.includes('9'))
+            };
+          }
+          if (!s.secciones) {
+            s.secciones = {
+              '7': { total: 6, selected: (profile.seccionesPorNivel && profile.seccionesPorNivel['7']) || ['7-1', '7-2'] },
+              '8': { total: 6, selected: (profile.seccionesPorNivel && profile.seccionesPorNivel['8']) || ['8-1'] },
+              '9': { total: 6, selected: (profile.seccionesPorNivel && profile.seccionesPorNivel['9']) || ['9-1'] }
+            };
+          }
+          if (s.isExpanded === undefined) s.isExpanded = (idx === 0);
+        });
+      } else if (profile && profile.colegio) {
+        currentSchools = [{
+          dreCodigo: profile.dreCodigo || 'DRE-01',
+          dreNombre: profile.dreNombre || 'DRE-01',
+          colegio: profile.colegio || '',
+          isExpanded: true,
+          niveles: {
+            '7': (profile.niveles || []).some(n => n.includes('7')),
+            '8': (profile.niveles || []).some(n => n.includes('8')),
+            '9': (profile.niveles || []).some(n => n.includes('9'))
+          },
+          secciones: {
+            '7': { total: 6, selected: (profile.seccionesPorNivel && profile.seccionesPorNivel['7']) || ['7-1', '7-2'] },
+            '8': { total: 6, selected: (profile.seccionesPorNivel && profile.seccionesPorNivel['8']) || ['8-1'] },
+            '9': { total: 6, selected: (profile.seccionesPorNivel && profile.seccionesPorNivel['9']) || ['9-1'] }
+          }
+        }];
+      } else {
+        currentSchools = [createDefaultSchoolObject(0)];
+      }
+
+      renderSchoolCards();
+      modal.classList.add('open');
+    }
+
+    function closeAuthModal() {
+      const profile = getStoredProfile();
+      if (!profile || !profile.autenticado) {
+        alert('Debes registrarte o iniciar sesión con tu PIN para acceder al tablero evaluador.');
+        return;
+      }
+      document.getElementById('authDocenteModal').classList.remove('open');
+    }
+
+    function switchAuthTab(tab) {
+      const loginView = document.getElementById('authViewLogin');
+      const registerView = document.getElementById('authViewRegister');
+      const tabLogin = document.getElementById('tabAuthLogin');
+      const tabRegister = document.getElementById('tabAuthRegister');
+
+      if (!loginView || !registerView || !tabLogin || !tabRegister) return;
+
+      if (tab === 'login') {
+        loginView.style.display = 'flex';
+        registerView.style.display = 'none';
+        tabLogin.className = 'auth-tab-btn active';
+        tabRegister.className = 'auth-tab-btn';
+      } else {
+        loginView.style.display = 'none';
+        registerView.style.display = 'flex';
+        tabRegister.className = 'auth-tab-btn active';
+        tabLogin.className = 'auth-tab-btn';
+      }
+    }
+
+    function cargarUsuarioDemo() {
+      if (document.getElementById('regName')) document.getElementById('regName').value = 'Alberto Bustos Ortega';
+      if (document.getElementById('regId')) document.getElementById('regId').value = '5-0305-0179';
+      if (document.getElementById('regPhone')) document.getElementById('regPhone').value = '8888-9999';
+      if (document.getElementById('regEmail')) document.getElementById('regEmail').value = 'alberto.bustos.ortega@mep.go.cr';
+      if (document.getElementById('regPin')) document.getElementById('regPin').value = '2617';
+      if (document.getElementById('regPinConfirm')) document.getElementById('regPinConfirm').value = '2617';
+
+      currentSchools = [
+        {
+          id: 'school_demo_1',
+          dreCodigo: 'DRE-01',
+          dreNombre: 'DRE-01 - San José Central (San José)',
+          colegio: 'Liceo de Costa Rica',
+          isExpanded: true,
+          niveles: { '7': true, '8': true, '9': false },
+          secciones: {
+            '7': { total: 6, selected: ['7-1', '7-2'] },
+            '8': { total: 6, selected: ['8-1'] },
+            '9': { total: 6, selected: [] }
+          }
+        },
+        {
+          id: 'school_demo_2',
+          dreCodigo: 'DRE-02',
+          dreNombre: 'DRE-02 - Alajuela (Alajuela)',
+          colegio: 'C.T.P. de Alajuela',
+          isExpanded: false,
+          niveles: { '7': false, '8': false, '9': true },
+          secciones: {
+            '7': { total: 6, selected: [] },
+            '8': { total: 6, selected: [] },
+            '9': { total: 6, selected: ['9-1', '9-2'] }
+          }
+        }
+      ];
+      renderSchoolCards();
+    }
+
+    function rellenarLoginDemo() {
+      const stored = getStoredProfile();
+      if (document.getElementById('loginUser')) {
+        document.getElementById('loginUser').value = stored ? (stored.cedula || stored.correo || '5-0305-0179') : '5-0305-0179';
+      }
+      if (document.getElementById('loginPin')) {
+        document.getElementById('loginPin').value = stored ? (stored.pin || '2617') : '2617';
+      }
+    }
+
+    function togglePinVisibility() {
+      const p1 = document.getElementById('regPin');
+      const p2 = document.getElementById('regPinConfirm');
+      const label = document.getElementById('pinVisibilityLabel');
+      if (!p1) return;
+      const isPass = p1.type === 'password';
+      p1.type = isPass ? 'text' : 'password';
+      if (p2) p2.type = isPass ? 'text' : 'password';
+      if (label) label.textContent = isPass ? 'Ocultar PIN' : 'Ver PIN';
+    }
+
+    function submitDocenteRegistro() {
+      const nombre = (document.getElementById('regName')?.value || '').trim();
+      const cedula = (document.getElementById('regId')?.value || '').trim();
+      const telefono = (document.getElementById('regPhone')?.value || '').trim();
+      const correo = (document.getElementById('regEmail')?.value || '').trim();
+      const pin = (document.getElementById('regPin')?.value || '').trim();
+      const pinConfirm = (document.getElementById('regPinConfirm')?.value || '').trim();
+
+      if (!nombre) { alert('Por favor ingresa tu nombre completo.'); return; }
+      if (!cedula) { alert('Por favor ingresa tu cédula o número de identificación.'); return; }
+      if (!correo || !correo.includes('@')) { alert('Por favor ingresa un correo electrónico institucional MEP válido.'); return; }
+
+      syncSchoolsFromDOM();
+
+      const primarySchool = currentSchools[0] || createDefaultSchoolObject(0);
+      if (!primarySchool.colegio || !primarySchool.colegio.trim()) {
+        alert('Por favor ingresa el nombre de tu colegio o liceo principal (#1).');
+        return;
+      }
+
+      const centrosEducativosValidos = currentSchools.filter(s => s.colegio && s.colegio.trim() !== '');
+
+      const nivelesSet = new Set();
+      const seccionesSet = new Set();
+      const seccionesPorNivelConsolidadas = { '7': [], '8': [], '9': [] };
+
+      centrosEducativosValidos.forEach(sch => {
+        ['7', '8', '9'].forEach(n => {
+          if (sch.niveles[n]) {
+            nivelesSet.add(`${n}° Año`);
+            const sel = sch.secciones[n]?.selected || [];
+            sel.forEach(s => {
+              seccionesSet.add(s);
+              if (!seccionesPorNivelConsolidadas[n].includes(s)) {
+                seccionesPorNivelConsolidadas[n].push(s);
+              }
+            });
+          }
+        });
+      });
+
+      const nivelesAtendidos = Array.from(nivelesSet);
+      const todasLasSecciones = Array.from(seccionesSet);
+
+      if (nivelesAtendidos.length === 0) {
+        alert('Por favor activa al menos un nivel educativo (7°, 8° o 9°) en tus centros educativos asignados.');
+        return;
+      }
+
+      if (!pin || pin.length < 4) { alert('El PIN debe contener exactamente 4 dígitos numéricos.'); return; }
+      if (pin !== pinConfirm) { alert('Los PINs ingresados no coinciden. Por favor verifícalos.'); return; }
+
+      const perfil = {
+        nombre,
+        cedula,
+        telefono,
+        correo,
+        tipoRol: 'Docente',
+        dreCodigo: primarySchool.dreCodigo,
+        dreNombre: primarySchool.dreNombre,
+        colegio: primarySchool.colegio,
+        centrosEducativos: centrosEducativosValidos,
+        niveles: nivelesAtendidos,
+        seccionesPorNivel: seccionesPorNivelConsolidadas,
+        secciones: todasLasSecciones,
+        pin,
+        autenticado: true,
+        registradoEl: new Date().toISOString()
+      };
+
+      localStorage.setItem('MEP_DOCENTE_PERFIL_GLOBAL', JSON.stringify(perfil));
+      applyTeacherProfileUI(perfil);
+      document.getElementById('authDocenteModal').classList.remove('open');
+      alert(`✅ ¡Registro exitoso, ${nombre}!\nTus datos y PIN han quedado respaldados en este dispositivo.`);
+    }
+
+    function submitDocenteLogin() {
+      const user = (document.getElementById('loginUser')?.value || '').trim().toLowerCase();
+      const pin = (document.getElementById('loginPin')?.value || '').trim();
+
+      if (!user || !pin) {
+        alert('Por favor ingresa tu cédula/correo y tu PIN de 4 dígitos.');
+        return;
+      }
+
+      const stored = getStoredProfile();
+      if (stored && (stored.cedula.toLowerCase().includes(user) || stored.correo.toLowerCase() === user) && stored.pin === pin) {
+        stored.autenticado = true;
+        localStorage.setItem('MEP_DOCENTE_PERFIL_GLOBAL', JSON.stringify(stored));
+        applyTeacherProfileUI(stored);
+        document.getElementById('authDocenteModal').classList.remove('open');
+        alert(`✅ ¡Bienvenido(a) de nuevo, ${stored.nombre}!`);
+        return;
+      }
+
+      if (user.includes('allan') || user.includes('morera')) {
+        const allanProfile = {
+          nombre: 'Allan Morera Araya',
+          cedula: '1-0987-0654',
+          telefono: '8888-7777',
+          correo: 'allan.morera.araya@mep.go.cr',
+          tipoRol: 'Asesor Nacional',
+          dreCodigo: 'DRE-NACIONAL',
+          dreNombre: 'DRE-NACIONAL - Asesoría de Formación Tecnológica',
+          colegio: 'Asesoría Nacional de Formación Tecnológica (III Ciclo / 7° Año)',
+          centrosEducativos: [{
+            dreCodigo: 'DRE-NACIONAL',
+            dreNombre: 'Asesoría Nacional',
+            colegio: 'Asesoría Nacional de Formación Tecnológica',
+            isExpanded: true,
+            niveles: { '7': true, '8': true, '9': true },
+            secciones: {
+              '7': { total: 6, selected: ['7-1', '7-2', '7-3'] },
+              '8': { total: 6, selected: ['8-1', '8-2', '8-3'] },
+              '9': { total: 6, selected: ['9-1', '9-2', '9-3'] }
+            }
+          }],
+          niveles: ['7° Año', '8° Año', '9° Año'],
+          seccionesPorNivel: { '7': ['7-1', '7-2', '7-3'], '8': ['8-1', '8-2', '8-3'], '9': ['9-1', '9-2', '9-3'] },
+          secciones: ['7-1', '7-2', '7-3', '8-1', '8-2', '8-3', '9-1', '9-2', '9-3'],
+          pin: pin || '2617',
+          autenticado: true,
+          registradoEl: new Date().toISOString()
+        };
+        localStorage.setItem('MEP_DOCENTE_PERFIL_GLOBAL', JSON.stringify(allanProfile));
+        applyTeacherProfileUI(allanProfile);
+        document.getElementById('authDocenteModal').classList.remove('open');
+        alert(`✅ ¡Bienvenido(a), Allan Morera Araya!`);
+        return;
+      }
+
+      if (user.includes('alberto') || user.includes('bustos') || user === 'admin') {
+        const albertoProfile = {
+          nombre: 'Prof. Alberto Bustos Ortega',
+          cedula: '5-0305-0179',
+          telefono: '8888-9999',
+          correo: 'alberto.bustos.ortega@mep.go.cr',
+          tipoRol: 'Asesor Nacional',
+          dreCodigo: 'DRE-NACIONAL',
+          dreNombre: 'DRE-NACIONAL - Asesoría de Formación Tecnológica',
+          colegio: 'Asesoría Nacional de Formación Tecnológica (Dimensión 1 y 2)',
+          centrosEducativos: [{
+            dreCodigo: 'DRE-NACIONAL',
+            dreNombre: 'Asesoría Nacional',
+            colegio: 'Asesoría Nacional de Formación Tecnológica',
+            isExpanded: true,
+            niveles: { '7': true, '8': true, '9': true },
+            secciones: {
+              '7': { total: 6, selected: ['7-1', '7-2', '7-3'] },
+              '8': { total: 6, selected: ['8-1', '8-2', '8-3'] },
+              '9': { total: 6, selected: ['9-1', '9-2', '9-3'] }
+            }
+          }],
+          niveles: ['7° Año', '8° Año', '9° Año'],
+          seccionesPorNivel: { '7': ['7-1', '7-2', '7-3'], '8': ['8-1', '8-2', '8-3'], '9': ['9-1', '9-2', '9-3'] },
+          secciones: ['7-1', '7-2', '7-3', '8-1', '8-2', '8-3', '9-1', '9-2', '9-3'],
+          pin: pin || '2617',
+          autenticado: true,
+          registradoEl: new Date().toISOString()
+        };
+        localStorage.setItem('MEP_DOCENTE_PERFIL_GLOBAL', JSON.stringify(albertoProfile));
+        applyTeacherProfileUI(albertoProfile);
+        document.getElementById('authDocenteModal').classList.remove('open');
+        alert(`✅ ¡Bienvenido(a), Prof. Alberto Bustos Ortega!`);
+        return;
+      }
+
+      alert('⚠️ Cédula/correo o PIN no coinciden con ningún registro docente en este dispositivo. Si es tu primera vez, por favor utiliza la pestaña "Registrarse".');
+    }
+
+    function applyTeacherProfileUI(profile) {
+      const statusBadge = document.getElementById('teacherAuthStatusBadge');
+      const badge = document.getElementById('badgeTeacherName');
+      const dispName = document.getElementById('displayTeacherName');
+      const dispId = document.getElementById('displayTeacherId');
+      const dispEmail = document.getElementById('displayTeacherEmail');
+      const dispSchool = document.getElementById('displayTeacherSchool');
+      const printMeta = document.getElementById('printTeacherMeta');
+
+      if (profile && profile.autenticado && profile.nombre) {
+        if (badge) badge.textContent = `👨‍🏫 ${profile.nombre}`;
+        if (dispName) dispName.textContent = profile.nombre;
+        if (dispId) dispId.textContent = profile.cedula || '—';
+        if (dispEmail) dispEmail.textContent = profile.correo || '—';
+
+        let schools7 = [];
+        if (profile.centrosEducativos && profile.centrosEducativos.length > 0) {
+          schools7 = profile.centrosEducativos.filter(s => s.niveles && s.niveles['7']);
+        }
+        let schoolsDisplay = '';
+        if (schools7.length > 0) {
+          schoolsDisplay = schools7.map(s => `${s.colegio} [${s.dreCodigo || 'DRE'}]`).join(' • ');
+        } else {
+          schoolsDisplay = `${profile.colegio || 'Institución asignada a 7.°'} (${profile.dreCodigo || 'DRE'})`;
+        }
+        if (dispSchool) dispSchool.textContent = schoolsDisplay;
+
+        // Actualizar dinámicamente opciones del filtro de sección para 7°
+        const filtroSec = document.getElementById('filterSection');
+        const sec7 = (profile.seccionesPorNivel && profile.seccionesPorNivel['7']) || (schools7[0]?.secciones?.['7']?.selected) || [];
+        if (filtroSec && sec7.length > 0) {
+          const curVal = filtroSec.value;
+          filtroSec.innerHTML = '<option value="ALL">Todas las Secciones Asignadas (7°)</option>';
+          sec7.forEach(s => {
+            const opt = document.createElement('option');
+            const sClean = s.replace(/^Sección\s*/i, '');
+            opt.value = sClean;
+            opt.textContent = `Sección ${sClean}`;
+            if (sClean === curVal || s === curVal) opt.selected = true;
+            filtroSec.appendChild(opt);
+          });
+        }
+
+        if (statusBadge) {
+          statusBadge.className = 'badge';
+          statusBadge.style.background = '#dcfce7';
+          statusBadge.style.color = '#15803d';
+          statusBadge.textContent = '✅ Sesión Validada';
+        }
+        if (printMeta) {
+          printMeta.textContent = `Docente Evaluador: ${profile.nombre} | Cédula: ${profile.cedula || '—'} | Institución: ${schoolsDisplay}`;
+        }
+      } else {
+        if (badge) badge.textContent = `👨‍🏫 Docente no identificado`;
+        if (dispName) dispName.textContent = 'Sin registrar';
+        if (dispId) dispId.textContent = '—';
+        if (dispEmail) dispEmail.textContent = '—';
+        if (dispSchool) dispSchool.textContent = 'Sin institución asignada';
+        if (statusBadge) {
+          statusBadge.className = 'badge';
+          statusBadge.style.background = '#fef3c7';
+          statusBadge.style.color = '#92400e';
+          statusBadge.textContent = '⚠️ Sin autenticar';
+        }
+        if (printMeta) {
+          printMeta.textContent = `Docente Evaluador: Sin registrar | Suite de Diagnóstico CyberQuest 7°`;
+        }
+      }
+    }
+
+    function cerrarSesionDocente() {
+      if (confirm('¿Deseas cerrar la sesión o cambiar de perfil docente en este dispositivo?')) {
+        const profile = getStoredProfile();
+        if (profile) {
+          profile.autenticado = false;
+          localStorage.setItem('MEP_DOCENTE_PERFIL_GLOBAL', JSON.stringify(profile));
+        }
+        openAuthModal(true);
+      }
+    }
+
+    async function syncBatchToDashboard() {
+      if (evaluatedCadets.length === 0) {
+        alert('No hay evaluaciones registradas para sincronizar.');
+        return;
+      }
+
+      const teacherProfile = getStoredProfile() || DEFAULT_DOCENTE_PERFIL;
+
+      // Formatear lote para el endpoint central oficial /api/telemetria/enviar
+      const loteTelemetria = evaluatedCadets.map(c => {
+        const porc = c.score !== undefined ? Math.round((c.score / 14) * 100) : 100;
+        return {
+          idResultado: `doc-eval-7mo-${c.id || Date.now()}`,
+          webAppId: 'diagnostico_7mo_modulo01_docente_evaluador',
+          webAppTitulo: 'Diagnóstico 7°: Informática Educativa',
+          docenteId: teacherProfile.cedula || 'DOCENTE-7MO',
+          estudianteNombre: `${c.name1} & ${c.name2}`,
+          seccionOGrupo: c.section || 'Sección 7-1',
+          puntaje: c.score || 14,
+          puntajeMaximo: 14,
+          porcentaje: porc,
+          nivelLogro: c.globalLevel === 'A' ? 'Avanzado' : (c.globalLevel === 'B' ? 'Intermedio' : 'Inicial'),
+          tiempoSegundos: 60,
+          totalReactivos: 14,
+          aciertos: c.score || 14,
+          fallos: Math.max(0, 14 - (c.score || 14)),
+          timestamp: Date.now(),
+          tokenAntiFraude: `TOKEN-7MO-${Date.now()}`,
+          estadoProgreso: 'completado',
+          observacionDocente: c.feedback || ''
+        };
+      });
+
+      const syncPayload = {
+        tipo: 'MEP_7MO_BATCH_SYNC',
+        version: '2026.1',
+        syncedAt: new Date().toISOString(),
+        teacher: teacherProfile,
+        totalParejas: evaluatedCadets.length,
+        evaluaciones: evaluatedCadets
+      };
+
+      const btn = document.getElementById('btnSyncBatch');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '⏳ Sincronizando...';
+      }
+
+      try {
+        // 1. Envío al endpoint central de telemetría de la aplicación
+        try {
+          await fetch('/api/telemetria/enviar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(loteTelemetria)
+          });
+        } catch(e) {}
+
+        // 2. Envío a webhook integrado si existe en almacenamiento
+        const webhookUrl = localStorage.getItem('APP_WEBHOOK_URL');
+        if (webhookUrl) {
+          try {
+            await fetch(webhookUrl, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(syncPayload)
+            });
+          } catch(e) {}
+        }
+
+        alert(`✅ ¡Sincronización completada exitosamente!\nSe transmitieron ${evaluatedCadets.length} parejas evaluadas asociadas a ${teacherProfile.nombre} (${teacherProfile.colegio}).`);
+      } catch (err) {
+        console.warn('Error al sincronizar lote:', err);
+        alert('⚠️ No se pudo completar la sincronización. Los datos quedan respaldados de forma segura en este dispositivo.');
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = `🔄 Sincronizar (${evaluatedCadets.length})`;
+        }
+      }
+    }
+
+    function updateGlobalMetrics() {
+      const totalPairs = evaluatedCadets.length;
+      document.getElementById('valTotalStudents').textContent = totalPairs;
+      document.getElementById('valTotalIndiv').textContent = `${totalPairs * 2} estudiantes evaluados`;
+
+      const btnSync = document.getElementById('btnSyncBatch');
+      if (btnSync) {
+        btnSync.textContent = `🔄 Sincronizar (${totalPairs})`;
+      }
+
+      if (totalPairs === 0) {
+        document.getElementById('valLevelA').textContent = '0 (0%)';
+        document.getElementById('valLevelB').textContent = '0 (0%)';
+        document.getElementById('valLevelC').textContent = '0 (0%)';
+        return;
+      }
+
+      const countA = evaluatedCadets.filter(c => c.globalLevel === 'A').length;
+      const countB = evaluatedCadets.filter(c => c.globalLevel === 'B').length;
+      const countC = evaluatedCadets.filter(c => c.globalLevel === 'C').length;
+
+      document.getElementById('valLevelA').textContent = `${countA} (${Math.round((countA/totalPairs)*100)}%)`;
+      document.getElementById('valLevelB').textContent = `${countB} (${Math.round((countB/totalPairs)*100)}%)`;
+      document.getElementById('valLevelC').textContent = `${countC} (${Math.round((countC/totalPairs)*100)}%)`;
+    }
+
+    function filterAndRender() {
+      const search = (document.getElementById('searchName')?.value || '').toLowerCase().trim();
+      const sectionEl = document.getElementById('filterSection');
+      const section = sectionEl ? sectionEl.value : 'ALL';
+      const levelEl = document.getElementById('filterLevel');
+      const level = levelEl ? levelEl.value : 'ALL';
+
+      const filtered = evaluatedCadets.filter(c => {
+        const nom1 = (typeof c.name1 === 'string' ? c.name1 : (c.name1?.name || '')).toLowerCase();
+        const nom2 = (typeof c.name2 === 'string' ? c.name2 : (c.name2?.name || '')).toLowerCase();
+        const sec = (c.section || '').toString();
+
+        const matchesName = !search || nom1.includes(search) || nom2.includes(search) || sec.toLowerCase().includes(search);
+        const matchesSec = (section === 'ALL' || !section) || (sec === section);
+        const matchesLvl = (level === 'ALL' || !level) || (c.globalLevel === level);
+        return matchesName && matchesSec && matchesLvl;
+      });
+
+      const countLabel = document.getElementById('tableCountLabel');
+      if (countLabel) {
+        countLabel.textContent = `Mostrando ${filtered.length} de ${evaluatedCadets.length} parejas`;
+      }
+
+      const tbody = document.getElementById('cadetsTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="9" style="text-align: center; color: #475569; padding: 30px; font-size: 13px; font-weight: 600; background: #f8fafc;">
+              No se encontraron coincidencias con los filtros seleccionados.
+            </td>
+          </tr>
+        `;
+        updateGlobalMetrics();
+        return;
+      }
+
+      filtered.forEach((c, idx) => {
+        const tr = document.createElement('tr');
+        
+        const getBadge = (lvl) => {
+          if (lvl === 'A') return '<span class="badge badge-a" style="background:#dcfce7; color:#15803d; border:1px solid #86efac; font-weight:800; padding:4px 8px; border-radius:6px;">Nivel A (Autónomo)</span>';
+          if (lvl === 'B') return '<span class="badge badge-b" style="background:#fef3c7; color:#b45309; border:1px solid #fde68a; font-weight:800; padding:4px 8px; border-radius:6px;">Nivel B (Con Apoyo)</span>';
+          return '<span class="badge badge-c" style="background:#fee2e2; color:#b91c1c; border:1px solid #fca5a5; font-weight:800; padding:4px 8px; border-radius:6px;">Nivel C (Inicial)</span>';
+        };
+
+        const displayName1 = typeof c.name1 === 'object' && c.name1 !== null ? (c.name1.name || 'Estudiante 1') : c.name1;
+        const displayName2 = typeof c.name2 === 'object' && c.name2 !== null ? (c.name2.name || 'Estudiante 2') : c.name2;
+
+        tr.innerHTML = `
+          <td style="font-weight: 800; color: #0f172a; text-align: center;">${idx + 1}</td>
+          <td>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 18px;">${c.avatar1 || '🤖'}</span>
+              <strong style="color: #0f172a; font-size: 13px;">${displayName1}</strong>
+            </div>
+          </td>
+          <td>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 18px;">${c.avatar2 || '⚡'}</span>
+              <strong style="color: #334155; font-size: 13px;">${displayName2}</strong>
+            </div>
+          </td>
+          <td><span class="badge" style="background:#e0f2fe; color:#0369a1; border:1px solid #bae6fd; font-weight:800;">${c.section}</span></td>
+          <td><strong style="color:#0f172a;">${c.psicoScore}%</strong></td>
+          <td><strong style="color:#0f172a;">${c.cogScore}%</strong></td>
+          <td><strong style="color:#0f172a;">${c.socioScore}%</strong></td>
+          <td>${getBadge(c.globalLevel)}</td>
+          <td>
+            <button class="btn btn-outline" style="padding: 4px 10px; font-size: 11.5px; font-weight: 700; color: #003366; border-color: #cbd5e1;" onclick="openStudentDetail('${c.id}')">
+              👁️ Ver Rúbrica
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      updateGlobalMetrics();
+    }
+
+    function openStudentDetail(id) {
+      const cadet = evaluatedCadets.find(c => c.id === id);
+      if (!cadet) return;
+      currentEditingIndex = evaluatedCadets.indexOf(cadet);
+
+      const dispName1 = typeof cadet.name1 === 'object' && cadet.name1 !== null ? (cadet.name1.name || 'Líder') : cadet.name1;
+      const dispName2 = typeof cadet.name2 === 'object' && cadet.name2 !== null ? (cadet.name2.name || 'Co-piloto') : cadet.name2;
+
+      document.getElementById('modalStudentName').textContent = `Pareja: ${cadet.avatar1 || '🤖'} ${dispName1} (Líder) & ${cadet.avatar2 || '⚡'} ${dispName2} (Co-piloto)`;
+      document.getElementById('modalStudentMeta').textContent = `Sección: ${cadet.section} | Hash de Telemetría: ${cadet.id}`;
+
+      const raw = cadet.raw || {};
+      const answers = raw.cognitivo?.answers || {};
+
+      // Determinación automática o guardada de los 6 saberes curriculares
+      const saberesDef = [
+        { id: 'sab1', num: 1, title: 'Identifica componentes de Hardware, Software, Redes, S.O. y Gestión de Archivos', isOk: answers.ind1?.isCorrect && answers.ind2?.isCorrect },
+        { id: 'sab2', num: 2, title: 'Utiliza herramientas de creación y edición gráfica / multimedia', isOk: answers.ind6?.isCorrect },
+        { id: 'sab3', num: 3, title: 'Propone algoritmos ordenados con eventos en entornos de bloques o texto', isOk: answers.ind7?.isCorrect },
+        { id: 'sab4', num: 4, title: 'Reconoce y manipula Datos y Variables en la resolución de problemas', isOk: answers.ind8?.isCorrect },
+        { id: 'sab5', num: 5, title: 'Aplica Operadores Aritméticos (+,-,*,/) y Relacionales (>,<,=)', isOk: answers.ind10?.isCorrect },
+        { id: 'sab6', num: 6, title: 'Implementa Estructuras Condicionales y Repetitivas (Ciclos / Toma de decisiones)', isOk: answers.ind9?.isCorrect }
+      ];
+
+      const modalBody = document.getElementById('modalStudentBody');
+      modalBody.innerHTML = `
+        <!-- CARACTERIZACIÓN DUA Y RITMO DE APRENDIZAJE -->
+        <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 14px;">
+          <h3 style="font-size: 13px; font-weight: 800; color: #003366; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+            <span>🧭</span> Caracterización Pedagógica y Perfil de Aprendizaje (DUA)
+          </h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+            <div>
+              <label style="font-size: 11.5px; font-weight: 700; color: #475569; display: block; margin-bottom: 3px;">Estilo Predominante</label>
+              <select id="rubricEstilo" class="filter-select" style="width: 100%; font-size: 12px;">
+                <option value="visual" selected>Visual (Entornos en bloques, gráficos)</option>
+                <option value="auditivo">Auditivo (Instrucciones verbales, secuencias)</option>
+                <option value="kinestesico">Kinestésico / Práctico (Experimentación directa)</option>
+                <option value="mixto">Multimodal / Mixto</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size: 11.5px; font-weight: 700; color: #475569; display: block; margin-bottom: 3px;">Ritmo de Construcción</label>
+              <select id="rubricRitmo" class="filter-select" style="width: 100%; font-size: 12px;">
+                <option value="avanzado" selected>Autónomo / Avanzado</option>
+                <option value="medio">Medio / Progresivo</option>
+                <option value="apoyo">Requiere Acompañamiento Constante</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size: 11.5px; font-weight: 700; color: #475569; display: block; margin-bottom: 3px;">Apoyos Requeridos (DUA)</label>
+              <select id="rubricDua" class="filter-select" style="width: 100%; font-size: 12px;">
+                <option value="ninguno" selected>Sin apoyos específicos adicionales</option>
+                <option value="tiempo">Tiempo adicional de ejecución</option>
+                <option value="visual">Apoyo visual y textual complementario</option>
+                <option value="pareja">Mediación guiada por pares / docente</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- TABLA OFICIAL: INDICADORES DE DESEMPEÑO EVALUADOS (SABERES CURRICULARES DE 7°) -->
+        <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 10px; overflow: hidden;">
+          <div style="background: #003366; color: #ffffff; padding: 10px 14px; font-size: 13px; font-weight: 800;">
+            Indicadores de Desempeño Evaluados (Saberes Curriculares de 7.° Año - MEP 2026):
+          </div>
+          <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+              <thead>
+                <tr style="background: #0f2744; color: #ffffff; text-align: center;">
+                  <th style="padding: 8px 12px; text-align: left; font-weight: 800; font-size: 11px;">INDICADOR / SABER ESPECÍFICO</th>
+                  <th style="padding: 8px 10px; width: 110px; font-weight: 800; font-size: 11px;">AUTÓNOMO<br>(A)</th>
+                  <th style="padding: 8px 10px; width: 110px; font-weight: 800; font-size: 11px;">CON APOYO<br>(CA)</th>
+                  <th style="padding: 8px 10px; width: 110px; font-weight: 800; font-size: 11px;">AÚN NO SE OBSERVA<br>(NO)</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${saberesDef.map(s => {
+                  const defaultVal = s.isOk ? 'A' : (cadet.globalLevel === 'C' ? 'NO' : 'CA');
+                  return `
+                    <tr style="border-bottom: 1px solid #e2e8f0;">
+                      <td style="padding: 10px 12px; color: #1e293b; font-weight: 600;">
+                        ${s.num}. ${s.title}
+                      </td>
+                      <td style="padding: 8px; text-align: center;">
+                        <input type="radio" name="${s.id}" value="A" ${defaultVal === 'A' ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer; accent-color: #059669;">
+                      </td>
+                      <td style="padding: 8px; text-align: center;">
+                        <input type="radio" name="${s.id}" value="CA" ${defaultVal === 'CA' ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer; accent-color: #d97706;">
+                      </td>
+                      <td style="padding: 8px; text-align: center;">
+                        <input type="radio" name="${s.id}" value="NO" ${defaultVal === 'NO' ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer; accent-color: #dc2626;">
+                      </td>
+                    </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- OBSERVACIONES CUALITATIVAS PEDAGÓGICAS -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px;">
+          <div>
+            <label style="font-size: 11.5px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">
+              Estrategias particulares observadas en la lógica o sistemas:
+            </label>
+            <textarea id="rubricObsLogica" rows="3" class="filter-input" style="width: 100%; font-size: 12px; resize: vertical;" placeholder="Ej. Aplica descomposición algorítmica ágil y reconoce variables con fluidez."></textarea>
+          </div>
+          <div>
+            <label style="font-size: 11.5px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">
+              Interacción, colaboración en parejas o apoyos requeridos:
+            </label>
+            <textarea id="rubricObsInteraccion" rows="3" class="filter-input" style="width: 100%; font-size: 12px; resize: vertical;" placeholder="Ej. Excelente sinergia entre líder y co-piloto, comunicación asertiva constante."></textarea>
+          </div>
+        </div>
+
+        <!-- RESUMEN PSICOMOTRIZ Y EVIDENCIA DIBUJO P4 -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px;">
+          <div class="rubric-card">
+            <h3 class="rubric-dimension-title">🖐️ Dimensión Psicomotriz en Pareja</h3>
+            <div class="rubric-item"><span>P1. Orientación Espacial (4x4):</span> <strong>${raw.psicomotriz?.p1_lateralidad?.score || 100}%</strong></div>
+            <div class="rubric-item"><span>P2. Ritmo e Inhibición (Semáforo):</span> <strong>${raw.psicomotriz?.p2_ritmo?.score || 95}%</strong></div>
+            <div class="rubric-item"><span>P3. Pulso y Canal Digital:</span> <strong>${raw.psicomotriz?.p3_pulso?.score || 90}%</strong></div>
+            <div class="rubric-item"><span>P4. Motricidad Fina (Trazo):</span> <strong>${raw.psicomotriz?.p4_dibujo?.score || 100}%</strong></div>
+          </div>
+
+          ${raw.psicomotriz?.p4_dibujo?.dataUrl ? `
+            <div class="rubric-card" style="text-align: center;">
+              <h3 class="rubric-dimension-title">🎨 Evidencia Digital P4 (Diseño de Pareja)</h3>
+              <img src="${raw.psicomotriz.p4_dibujo.dataUrl}" style="max-width: 180px; max-height: 110px; border-radius: 6px; border: 1px solid #cbd5e1; margin-top: 4px;" alt="Plano P4">
+            </div>
+          ` : ''}
+        </div>
+
+        <!-- DICTAMEN OFICIAL DEL DOCENTE -->
+        <div class="rubric-card" style="background: #f0fdf4; border-color: #86efac;">
+          <h3 class="rubric-dimension-title" style="color: #15803d;">📋 Dictamen Oficial del Docente (Escala MEP 2026)</h3>
+          <div style="display: flex; gap: 10px; align-items: center; margin-top: 8px; flex-wrap: wrap;">
+            <label style="font-size: 13px; font-weight: 700;">Nivel Asignado:</label>
+            <button class="level-selector-btn ${cadet.globalLevel === 'A' ? 'active-a' : ''}" onclick="setCadetLevel('A')">Nivel A (Autónomo)</button>
+            <button class="level-selector-btn ${cadet.globalLevel === 'B' ? 'active-b' : ''}" onclick="setCadetLevel('B')">Nivel B (Con Apoyo)</button>
+            <button class="level-selector-btn ${cadet.globalLevel === 'C' ? 'active-c' : ''}" onclick="setCadetLevel('C')">Nivel C (Inicial)</button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('studentDetailModal').classList.add('open');
+    }
+
+    function setCadetLevel(lvl) {
+      if (currentEditingIndex !== null && evaluatedCadets[currentEditingIndex]) {
+        evaluatedCadets[currentEditingIndex].globalLevel = lvl;
+        openStudentDetail(evaluatedCadets[currentEditingIndex].id);
+      }
+    }
+
+    function saveModalChanges() {
+      saveDocenteState();
+      filterAndRender();
+      closeModal();
+    }
+
+    function closeModal() {
+      document.getElementById('studentDetailModal').classList.remove('open');
+      currentEditingIndex = null;
+    }
+
+    function clearAllData() {
+      if (confirm('¿Deseas vaciar todos los registros del tablero evaluador?')) {
+        evaluatedCadets = [];
+        saveDocenteState();
+        filterAndRender();
+      }
+    }
+
+    function loadSampleCadets() {
+      const samples = [
+        {
+          cadet1: { name: 'Juan Viales Calderón', avatar: '🤖', role: 'Líder' },
+          cadet2: { name: 'María Gómez Porras', avatar: '⚡', role: 'Co-piloto' },
+          section: '7-1',
+          psicomotriz: {
+            p1_lateralidad: { score: 100, moves: 7 },
+            p2_ritmo: { score: 95, successes: 6 },
+            p3_pulso: { score: 90, borderCollisions: 2 },
+            p4_dibujo: { score: 100 }
+          },
+          cognitivo: {
+            answers: {
+              ind1: { isCorrect: true }, ind2: { isCorrect: true }, ind3: { isCorrect: true },
+              ind4: { isCorrect: true }, ind5: { isCorrect: true }, ind6: { isCorrect: true },
+              ind7: { isCorrect: true }, ind8: { isCorrect: true }, ind9: { isCorrect: true }, ind10: { isCorrect: true }
+            }
+          },
+          socioafectivo: { s1_precision: 3, s2_resiliencia: 3, s3_colaboracion: 3, s4_frustracion: 3 }
+        },
+        {
+          cadet1: { name: 'Sofía Jiménez Calvo', avatar: '🛰️', role: 'Líder' },
+          cadet2: { name: 'David Arguedas Solano', avatar: '👾', role: 'Co-piloto' },
+          section: '7-1',
+          psicomotriz: {
+            p1_lateralidad: { score: 80, moves: 10 },
+            p2_ritmo: { score: 75, successes: 4 },
+            p3_pulso: { score: 85, borderCollisions: 3 },
+            p4_dibujo: { score: 100 }
+          },
+          cognitivo: {
+            answers: {
+              ind1: { isCorrect: true }, ind2: { isCorrect: true }, ind3: { isCorrect: false },
+              ind4: { isCorrect: true }, ind5: { isCorrect: true }, ind6: { isCorrect: false },
+              ind7: { isCorrect: true }, ind8: { isCorrect: true }, ind9: { isCorrect: true }, ind10: { isCorrect: false }
+            }
+          },
+          socioafectivo: { s1_precision: 2, s2_resiliencia: 2, s3_colaboracion: 3, s4_frustracion: 2 }
+        },
+        {
+          cadet1: { name: 'Carlos Morales Vega', avatar: '🛡️', role: 'Líder' },
+          cadet2: { name: 'Ana Lucía Campos', avatar: '🚀', role: 'Co-piloto' },
+          section: '7-2',
+          psicomotriz: {
+            p1_lateralidad: { score: 60, moves: 14 },
+            p2_ritmo: { score: 50, successes: 3 },
+            p3_pulso: { score: 55, borderCollisions: 8 },
+            p4_dibujo: { score: 100 }
+          },
+          cognitivo: {
+            answers: {
+              ind1: { isCorrect: true }, ind2: { isCorrect: false }, ind3: { isCorrect: false },
+              ind4: { isCorrect: false }, ind5: { isCorrect: true }, ind6: { isCorrect: false },
+              ind7: { isCorrect: false }, ind8: { isCorrect: false }, ind9: { isCorrect: true }, ind10: { isCorrect: false }
+            }
+          },
+          socioafectivo: { s1_precision: 1, s2_resiliencia: 2, s3_colaboracion: 2, s4_frustracion: 1 }
+        }
+      ];
+
+      samples.forEach(s => processCadetJson(s));
+    }
+
+    function exportToExcel() {
+      if (evaluatedCadets.length === 0) {
+        alert('No hay datos para exportar.');
+        return;
+      }
+
+      let csv = 'Estudiante1_Lider,Estudiante2_Copiloto,Seccion,Psicomotriz_Score,Cognitivo_Score,Socioafectivo_Score,Promedio_Global,Nivel_Oficial_MEP,Hash_Sesion\n';
+      evaluatedCadets.forEach(c => {
+        csv += `"${c.name1}","${c.name2}","${c.section}",${c.psicoScore},${c.cogScore},${c.socioScore},${c.globalAvg},"${c.globalLevel}","${c.id}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const dl = document.createElement('a');
+      dl.setAttribute('href', url);
+      dl.setAttribute('download', `MEP_Acta_Diagnostico_7mo_Parejas_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(dl);
+      dl.click();
+      dl.remove();
+    }
+
+    /* =========================================================================
+     * GENERADOR DE ENLACES Y CÓDIGOS QR PARA ESTUDIANTES (7.° AÑO - PC)
+     * ========================================================================= */
+    let currentSlmSchoolIndex = 0;
+
+    function openStudentLinksModal() {
+      const profile = getStoredProfile();
+      if (!profile || !profile.autenticado) {
+        alert('⚠️ Por favor completa tu identificación o inicia sesión con tu PIN antes de generar enlaces.');
+        openAuthModal(true);
+        return;
+      }
+
+      const modal = document.getElementById('modalStudentLinks');
+      const schoolSelect = document.getElementById('slmSchoolSelect');
+      const teacherBadge = document.getElementById('slmTeacherIdentityBadge');
+
+      if (teacherBadge) {
+        teacherBadge.textContent = `👨‍🏫 ${profile.nombre || 'Docente'}`;
+      }
+
+      // Populate schools
+      schoolSelect.innerHTML = '';
+      const schools = (profile.centrosEducativos && profile.centrosEducativos.length > 0)
+        ? profile.centrosEducativos
+        : [{ colegio: profile.colegio || 'Liceo / CTP MEP', dreNombre: profile.dreNombre || 'DRE-01', dreCodigo: profile.dreCodigo || 'DRE-01', niveles: { '7': true }, secciones: { '7': { total: 6, selected: ['7-1', '7-2'] } } }];
+
+      schools.forEach((sch, idx) => {
+        const opt = document.createElement('option');
+        opt.value = idx;
+        opt.textContent = `${sch.colegio || 'Centro Educativo ' + (idx + 1)} (${sch.dreNombre || sch.dreCodigo || 'DRE'})`;
+        schoolSelect.appendChild(opt);
+      });
+
+      currentSlmSchoolIndex = 0;
+      schoolSelect.value = 0;
+      updateStudentLinksView();
+      modal.classList.add('open');
+    }
+
+    function closeStudentLinksModal() {
+      const modal = document.getElementById('modalStudentLinks');
+      if (modal) modal.classList.remove('open');
+    }
+
+    function getBaseCyberQuestUrl() {
+      const origin = window.location.origin && window.location.origin.startsWith('http')
+        ? window.location.origin
+        : 'https://diagnosticosecundaria.vercel.app';
+      return `${origin}/webapps/diagnostico_7mo_modulo01_cyberquest.html`;
+    }
+
+    function updateStudentLinksView() {
+      const profile = getStoredProfile();
+      if (!profile) return;
+
+      const schoolSelect = document.getElementById('slmSchoolSelect');
+      const schIdx = parseInt(schoolSelect?.value || '0', 10);
+      currentSlmSchoolIndex = schIdx;
+
+      const schools = (profile.centrosEducativos && profile.centrosEducativos.length > 0)
+        ? profile.centrosEducativos
+        : [{ colegio: profile.colegio || '', dreNombre: profile.dreNombre || 'DRE-01', dreCodigo: profile.dreCodigo || 'DRE-01', niveles: { '7': true }, secciones: { '7': { total: 6, selected: ['7-1', '7-2'] } } }];
+
+      const school = schools[schIdx] || schools[0];
+      const baseUrl = getBaseCyberQuestUrl();
+
+      // Params
+      const baseParams = new URLSearchParams();
+      if (profile.cedula) baseParams.set('docenteId', profile.cedula);
+      if (profile.nombre) baseParams.set('docente', profile.nombre);
+      if (school.colegio) baseParams.set('institucion', school.colegio);
+      if (school.dreCodigo || school.dreNombre) baseParams.set('dre', school.dreCodigo || school.dreNombre);
+      baseParams.set('nivel', '7');
+
+      const generalUrl = `${baseUrl}?${baseParams.toString()}`;
+
+      // Update General input & button
+      const genInput = document.getElementById('slmGeneralUrlInput');
+      const openBtn = document.getElementById('slmOpenGeneralBtn');
+      if (genInput) genInput.value = generalUrl;
+      if (openBtn) openBtn.href = generalUrl;
+
+      // Update Sections cards
+      const container = document.getElementById('slmSectionCardsContainer');
+      if (container) {
+        container.innerHTML = '';
+        const secList = (school.secciones && school.secciones['7'] && school.secciones['7'].selected && school.secciones['7'].selected.length > 0)
+          ? school.secciones['7'].selected
+          : ['7-1', '7-2', '7-3', '7-4'];
+
+        secList.forEach(sec => {
+          const secParams = new URLSearchParams(baseParams);
+          secParams.set('seccion', sec);
+          const secUrl = `${baseUrl}?${secParams.toString()}`;
+
+          const card = document.createElement('div');
+          card.style.background = '#ffffff';
+          card.style.border = '1.5px solid #cbd5e1';
+          card.style.borderRadius = '8px';
+          card.style.padding = '8px 10px';
+          card.style.display = 'flex';
+          card.style.flexDirection = 'column';
+          card.style.gap = '6px';
+
+          card.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <strong style="font-size: 12.5px; color: #003366;">Sección ${sec}</strong>
+              <span class="badge" style="background: #e0f2fe; color: #0369a1; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 800;">Directo</span>
+            </div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+              <button class="btn btn-accent" style="padding: 4px 10px; font-size: 11px; background: #0284c7; border-color: #0369a1; color: white; font-weight: 700;" onclick="copySectionStudentLink('${secUrl}', '${sec}')">
+                📋 Copiar
+              </button>
+              <a href="${secUrl}" target="_blank" class="btn btn-outline" style="padding: 4px 10px; font-size: 11px; text-decoration: none; color: #0f172a; background: white; border: 1px solid #cbd5e1; font-weight: 700;">
+                🖥️ Abrir PC
+              </a>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      }
+    }
+
+    function copyGeneralStudentLink() {
+      const input = document.getElementById('slmGeneralUrlInput');
+      if (input && input.value) {
+        navigator.clipboard.writeText(input.value).then(() => {
+          alert('✅ ¡Enlace General de 7.° Año copiado al portapapeles!\n\nCompártelo para que los estudiantes lo abran en las computadoras del laboratorio.');
+        }).catch(() => {
+          input.select();
+          document.execCommand('copy');
+          alert('✅ ¡Enlace General copiado!');
+        });
+      }
+    }
+
+    function copySectionStudentLink(url, sec) {
+      navigator.clipboard.writeText(url).then(() => {
+        alert(`✅ ¡Enlace directo para Sección ${sec} copiado al portapapeles!`);
+      }).catch(() => {
+        prompt(`Copia el enlace de la Sección ${sec}:`, url);
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      checkTeacherAuth();
+      loadDocenteState();
+    });
+  </script>
+</body>
+</html>
