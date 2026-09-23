@@ -45,7 +45,8 @@ export default function Navbar() {
   ];
 
   const esSuperAdmin =
-    docente?.correoInstitucional?.toLowerCase().trim() === "alberto.bustos.ortega@mep.go.cr";
+    docente?.correoInstitucional?.toLowerCase().trim() === "alberto.bustos.ortega@mep.go.cr" ||
+    docente?.correoInstitucional?.toLowerCase().trim() === "allan.morera.araya@mep.go.cr";
 
   return (
     <header className="sticky top-0 z-50 bg-[#FCFBF9]/95 backdrop-blur-md border-b border-stone-200/90 shadow-xs transition-all duration-300">

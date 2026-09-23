@@ -110,28 +110,68 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const items: PayloadTelemetria[] = Array.isArray(rawBody)
-      ? rawBody
-      : rawBody.lote && Array.isArray(rawBody.lote)
-      ? rawBody.lote
-      : [rawBody];
+    let items: any[] = [];
+    if (Array.isArray(rawBody)) {
+      items = rawBody;
+    } else if (rawBody.lote && Array.isArray(rawBody.lote)) {
+      items = rawBody.lote;
+    } else if (rawBody.datos) {
+      items = Array.isArray(rawBody.datos) ? rawBody.datos : [rawBody.datos];
+    } else if (rawBody.evaluaciones && Array.isArray(rawBody.evaluaciones)) {
+      items = rawBody.evaluaciones;
+    } else {
+      items = [rawBody];
+    }
 
     cargarRegistrosServidor();
 
     const procesados: any[] = [];
 
     for (const rawItem of items) {
-      const body: any = { ...rawItem };
+      let body: any = { ...rawItem };
+      if (body.datos && typeof body.datos === 'object') {
+        body = { ...body, ...body.datos };
+      }
 
       // Normalizar registros provenientes de CyberQuest 7.° Año (en parejas o individual)
-      if (body.tipo === 'CYBERQUEST_7MO' || body.cadet1) {
-        const c1 = body.cadet1 || "Cadete 1";
-        const c2 = body.cadet2;
-        const nombreEstudiante = c2 && c2.trim().length > 0 ? `${c1} & ${c2}` : c1;
+      if (
+        body.tipo === 'CYBERQUEST_7MO' ||
+        body.tipo === 'MEP_7MO_CYBERQUEST' ||
+        body.cadet1 ||
+        body.c1 ||
+        body.name1 ||
+        body.webAppId?.includes('7mo')
+      ) {
+        const c1 =
+          typeof body.cadet1 === 'object'
+            ? body.cadet1?.name || "Cadete 1"
+            : typeof body.name1 === 'object'
+            ? body.name1?.name || "Cadete 1"
+            : body.cadet1 || body.c1 || body.name1 || "Cadete 1";
+        const c2 =
+          typeof body.cadet2 === 'object'
+            ? body.cadet2?.name || ""
+            : typeof body.name2 === 'object'
+            ? body.name2?.name || ""
+            : body.cadet2 || body.c2 || body.name2 || "";
+        const nombreEstudiante =
+          c2 && c2.trim().length > 0 && c2 !== "Individual" ? `${c1} & ${c2}` : c1;
+
         body.estudianteNombre = body.estudianteNombre || nombreEstudiante;
         body.docenteId = body.docenteId || "DOC-MEP-7MO";
-        body.seccionOGrupo = body.seccionOGrupo || body.seccion || "Sección 7-1";
-        body.porcentaje = body.porcentaje !== undefined ? body.porcentaje : (body.globalAvg !== undefined ? body.globalAvg : (body.cogScore !== undefined ? body.cogScore : 80));
+        body.seccionOGrupo = body.seccionOGrupo || body.seccion || body.sec || "Sección 7-1";
+        body.porcentaje =
+          body.porcentaje !== undefined
+            ? body.porcentaje
+            : body.globalAvg !== undefined
+            ? body.globalAvg
+            : body.g !== undefined
+            ? body.g
+            : body.cogScore !== undefined
+            ? body.cogScore
+            : body.c !== undefined
+            ? body.c
+            : 80;
         body.puntaje = body.puntaje !== undefined ? body.puntaje : body.porcentaje;
         body.nivel = body.nivel || "7°";
         body.webAppId = body.webAppId || "diag-7mo-cyberquest-2026";
@@ -243,9 +283,20 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const docenteId = searchParams.get("docenteId");
 
-  const datos = docenteId
-    ? registrosTelemetriaMemoria.filter((r) => r.docenteId === docenteId)
-    : registrosTelemetriaMemoria;
+  let datos = registrosTelemetriaMemoria;
+  if (docenteId && docenteId !== "ASESOR-FT-7729" && docenteId !== "5-0305-0179") {
+    datos = registrosTelemetriaMemoria.filter((r) => 
+      !r.docenteId ||
+      r.docenteId === docenteId ||
+      r.docenteId === "DOC-MEP-AUTONOMO" ||
+      r.docenteId === "DOC-MEP-7MO" ||
+      r.docenteId === "DOC-MEP-8VO" ||
+      r.docenteId === "DOC-MEP-2026" ||
+      r.docenteId === "5-0305-0179" ||
+      r.docenteId === "ASESOR-FT-7729" ||
+      (docenteId && r.docenteId && (r.docenteId.includes(docenteId) || docenteId.includes(r.docenteId)))
+    );
+  }
 
   return NextResponse.json(
     {

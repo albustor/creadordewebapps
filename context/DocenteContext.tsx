@@ -159,8 +159,28 @@ export const DOCENTE_PRUEBA_REGIONAL: DocenteData = {
   fechaRegistro: new Date().toISOString(),
 };
 
+export const DOCENTE_ASESOR_ALLAN: DocenteData = {
+  idDocente: "ASESOR-FT-8841",
+  nombreCompleto: "Allan Morera Araya",
+  correoInstitucional: "allan.morera.araya@mep.go.cr",
+  pin: "2617",
+  contrasena: "2617",
+  cedula: "1-0987-0654",
+  telefono: "+506 8888-7777",
+  tipoRol: "Asesor Nacional",
+  dreCodigo: "DRE-NACIONAL",
+  dreNombre: "Asesoría de Formación Tecnológica",
+  circuito: "Nivel Nacional / Ámbito General",
+  codigoPresupuestario: "FT-NACIONAL-2026",
+  institucionNombre: "Asesoría Nacional de Formación Tecnológica (III Ciclo)",
+  rol: "Asesor de Formación Tecnológica (III Ciclo)",
+  asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
+  fechaRegistro: new Date().toISOString(),
+};
+
 export const LISTA_DOCENTES_INICIALES: DocenteData[] = [
   DOCENTE_DEFAULT,
+  DOCENTE_ASESOR_ALLAN,
   DOCENTE_PRUEBA_REGIONAL,
 ];
 
@@ -323,9 +343,12 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
         const correoDoc = docenteActivoObj?.correoInstitucional?.toLowerCase()?.trim() || "";
 
         const normalizarSeccion = (sec?: string): string => {
-          if (!sec) return "Sección 9-1";
+          if (!sec) return "Sección 7-1";
           const limpia = sec.replace(/^secci[oó]n\s*/i, "").trim();
-          return limpia.startsWith("9-") ? `Sección ${limpia}` : `Sección 9-${limpia}`;
+          if (/^[789]-/i.test(limpia)) {
+            return `Sección ${limpia}`;
+          }
+          return `Sección ${limpia}`;
         };
 
         const normalizarClave = (item: PayloadTelemetria): string => {
@@ -570,7 +593,29 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       return { exito: true, mensaje: "Sesión iniciada correctamente como Asesor Principal de Formación Tecnológica." };
     }
 
-    // 2. Verificación Inmediata: Docente de Prueba Regional (Esteban Gómez Chinchilla)
+    // 2. Verificación Inmediata: Asesor de Formación Tecnológica (Allan Morera Araya)
+    const esAsesorAllan =
+      credencialLimpia === "allan.morera.araya@mep.go.cr" ||
+      credencialLimpia === "allan.morera" ||
+      credencialLimpia === "allan" ||
+      credencialLimpia === "1-0987-0654" ||
+      credencialLimpia === "109870654";
+
+    const esPinValidoAllan =
+      pinOPassLimpia === "2617" ||
+      pinOPassLimpia === "1726" ||
+      pinOPassLimpia === "2026" ||
+      pinOPassLimpia === "8841" ||
+      pinOPassLimpia === "EdcRfvTgb2617**" ||
+      pinOPassLimpia === "1234";
+
+    if (esAsesorAllan && esPinValidoAllan) {
+      limpiarFallos();
+      guardarDocente(DOCENTE_ASESOR_ALLAN);
+      return { exito: true, mensaje: "Bienvenido(a), Allan Morera Araya (Asesoría de Formación Tecnológica)." };
+    }
+
+    // 3. Verificación Inmediata: Docente de Prueba Regional (Esteban Gómez Chinchilla)
     const esDocenteEsteban =
       credencialLimpia === "esteban.gomez.chinchilla@mep.go.cr" ||
       credencialLimpia === "esteban.gomez" ||
@@ -860,9 +905,12 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
   };
 
   const normalizarSeccionTexto = (sec?: string): string => {
-    if (!sec) return "Sección 9-1";
+    if (!sec) return "Sección 7-1";
     const limpia = sec.replace(/^secci[oó]n\s*/i, "").trim();
-    return limpia.startsWith("9-") ? `Sección ${limpia}` : `Sección 9-${limpia}`;
+    if (/^[789]-/i.test(limpia)) {
+      return `Sección ${limpia}`;
+    }
+    return `Sección ${limpia}`;
   };
 
   const normalizarClaveItem = (item: PayloadTelemetria): string => {

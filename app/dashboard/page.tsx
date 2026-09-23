@@ -194,7 +194,14 @@ export default function DashboardAnaliticoPage() {
         r.nivelLogro.toLowerCase().includes(filtroNivelLogro.toLowerCase());
 
       const coincideDocente =
-        !filtroSoloMios || (docente?.idDocente && (r.docenteId === docente.idDocente || r.docenteId === "DOC-DRE01-7729"));
+        !filtroSoloMios ||
+        (docente &&
+          (r.docenteId === docente.idDocente ||
+            r.docenteId === docente.cedula ||
+            r.docenteId === "ASESOR-FT-7729" ||
+            r.docenteId === "5-0305-0179" ||
+            r.docenteId === "DOC-MEP-7MO" ||
+            r.docenteId === "DOC-MEP-AUTONOMO"));
 
       return coincideTexto && coincideGrupo && coincideNivel && coincideDocente;
     });

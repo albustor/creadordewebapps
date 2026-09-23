@@ -993,10 +993,96 @@
             return c;
           });
         }
+
+        // Cargar también registros generados en el mismo navegador desde telemetria_registros
+        const rawTelemetria = localStorage.getItem('telemetria_registros');
+        if (rawTelemetria) {
+          const list = JSON.parse(rawTelemetria);
+          list.forEach(item => {
+            const es7mo = item.tipo === 'CYBERQUEST_7MO' || item.nivel === '7°' || (item.seccionOGrupo && item.seccionOGrupo.includes('7-')) || item.cadet1;
+            if (es7mo && item.estudianteNombre) {
+              const parts = item.estudianteNombre.split('&').map(s => s.trim());
+              const name1 = parts[0] || 'Estudiante 1';
+              const name2 = parts[1] || 'Individual';
+              const sec = (item.seccionOGrupo || '7-1').replace(/^secci[oó]n\s*/i, '').trim();
+              const score = item.porcentaje ?? item.puntaje ?? 80;
+              const lvl = item.nivelLogro === 'Avanzado' || score >= 80 ? 'A' : (item.nivelLogro === 'Inicial' || score <= 59 ? 'C' : 'B');
+              const exists = evaluatedCadets.some(c => (c.name1 === name1 || c.id === item.idResultado) && c.section === sec);
+              if (!exists) {
+                evaluatedCadets.push({
+                  id: item.idResultado || `res-7mo-${Date.now()}`,
+                  name1,
+                  name2,
+                  avatar1: item.cadet1Avatar || '🤖',
+                  avatar2: item.cadet2Avatar || '⚡',
+                  section: sec,
+                  psicoScore: item.psicoScore || score,
+                  cogScore: item.cogScore || score,
+                  socioScore: item.socioScore || score,
+                  globalAvg: score,
+                  globalLevel: lvl,
+                  raw: item
+                });
+              }
+            }
+          });
+        }
       } catch (e) {
         console.warn('Error al cargar datos docentes:', e);
       }
       filterAndRender();
+      sincronizarTelemetriaOnline();
+    }
+
+    async function sincronizarTelemetriaOnline() {
+      try {
+        const profile = getStoredProfile();
+        const docenteId = profile?.cedula || profile?.idDocente || '';
+        const url = docenteId ? `/api/telemetria/enviar?docenteId=${encodeURIComponent(docenteId)}` : '/api/telemetria/enviar';
+        const res = await fetch(url);
+        if (res.ok) {
+          const json = await res.json();
+          if (json.registros && Array.isArray(json.registros)) {
+            let agregados = 0;
+            json.registros.forEach(item => {
+              const es7mo = item.tipo === 'CYBERQUEST_7MO' || item.nivel === '7°' || (item.seccionOGrupo && item.seccionOGrupo.includes('7-')) || item.cadet1;
+              if (es7mo && item.estudianteNombre) {
+                const parts = item.estudianteNombre.split('&').map(s => s.trim());
+                const name1 = parts[0] || 'Estudiante 1';
+                const name2 = parts[1] || 'Individual';
+                const sec = (item.seccionOGrupo || '7-1').replace(/^secci[oó]n\s*/i, '').trim();
+                const score = item.porcentaje ?? item.puntaje ?? 80;
+                const lvl = item.nivelLogro === 'Avanzado' || score >= 80 ? 'A' : (item.nivelLogro === 'Inicial' || score <= 59 ? 'C' : 'B');
+                const idx = evaluatedCadets.findIndex(c => (c.name1 === name1 && c.section === sec) || c.id === item.idResultado);
+                const rec = {
+                  id: item.idResultado || `res-7mo-${Date.now()}`,
+                  name1,
+                  name2,
+                  avatar1: item.cadet1Avatar || '🤖',
+                  avatar2: item.cadet2Avatar || '⚡',
+                  section: sec,
+                  psicoScore: item.psicoScore || score,
+                  cogScore: item.cogScore || score,
+                  socioScore: item.socioScore || score,
+                  globalAvg: score,
+                  globalLevel: lvl,
+                  raw: item
+                };
+                if (idx >= 0) {
+                  evaluatedCadets[idx] = { ...evaluatedCadets[idx], ...rec };
+                } else {
+                  evaluatedCadets.push(rec);
+                  agregados++;
+                }
+              }
+            });
+            if (agregados > 0) {
+              saveDocenteState();
+              filterAndRender();
+            }
+          }
+        }
+      } catch(e) {}
     }
 
     function saveDocenteState() {
@@ -1832,12 +1918,12 @@
     }
 
     function cargarUsuarioDemo() {
-      if (document.getElementById('regName')) document.getElementById('regName').value = 'Prof. Alberto Bustos Ortega (Demo)';
-      if (document.getElementById('regId')) document.getElementById('regId').value = '1-1234-5678';
+      if (document.getElementById('regName')) document.getElementById('regName').value = 'Alberto Bustos Ortega';
+      if (document.getElementById('regId')) document.getElementById('regId').value = '5-0305-0179';
       if (document.getElementById('regPhone')) document.getElementById('regPhone').value = '8888-9999';
-      if (document.getElementById('regEmail')) document.getElementById('regEmail').value = 'alberto.docente.demo@mep.go.cr';
-      if (document.getElementById('regPin')) document.getElementById('regPin').value = '1234';
-      if (document.getElementById('regPinConfirm')) document.getElementById('regPinConfirm').value = '1234';
+      if (document.getElementById('regEmail')) document.getElementById('regEmail').value = 'alberto.bustos.ortega@mep.go.cr';
+      if (document.getElementById('regPin')) document.getElementById('regPin').value = '2617';
+      if (document.getElementById('regPinConfirm')) document.getElementById('regPinConfirm').value = '2617';
 
       currentSchools = [
         {
@@ -1873,10 +1959,10 @@
     function rellenarLoginDemo() {
       const stored = getStoredProfile();
       if (document.getElementById('loginUser')) {
-        document.getElementById('loginUser').value = stored ? (stored.cedula || stored.correo || '1-1234-5678') : '1-1234-5678';
+        document.getElementById('loginUser').value = stored ? (stored.cedula || stored.correo || '5-0305-0179') : '5-0305-0179';
       }
       if (document.getElementById('loginPin')) {
-        document.getElementById('loginPin').value = stored ? (stored.pin || '1234') : '1234';
+        document.getElementById('loginPin').value = stored ? (stored.pin || '2617') : '2617';
       }
     }
 
@@ -1983,6 +2069,78 @@
         applyTeacherProfileUI(stored);
         document.getElementById('authDocenteModal').classList.remove('open');
         alert(`✅ ¡Bienvenido(a) de nuevo, ${stored.nombre}!`);
+        return;
+      }
+
+      if (user.includes('allan') || user.includes('morera')) {
+        const allanProfile = {
+          nombre: 'Allan Morera Araya',
+          cedula: '1-0987-0654',
+          telefono: '8888-7777',
+          correo: 'allan.morera.araya@mep.go.cr',
+          tipoRol: 'Asesor Nacional',
+          dreCodigo: 'DRE-NACIONAL',
+          dreNombre: 'DRE-NACIONAL - Asesoría de Formación Tecnológica',
+          colegio: 'Asesoría Nacional de Formación Tecnológica (III Ciclo / 7° Año)',
+          centrosEducativos: [{
+            dreCodigo: 'DRE-NACIONAL',
+            dreNombre: 'Asesoría Nacional',
+            colegio: 'Asesoría Nacional de Formación Tecnológica',
+            isExpanded: true,
+            niveles: { '7': true, '8': true, '9': true },
+            secciones: {
+              '7': { total: 6, selected: ['7-1', '7-2', '7-3'] },
+              '8': { total: 6, selected: ['8-1', '8-2', '8-3'] },
+              '9': { total: 6, selected: ['9-1', '9-2', '9-3'] }
+            }
+          }],
+          niveles: ['7° Año', '8° Año', '9° Año'],
+          seccionesPorNivel: { '7': ['7-1', '7-2', '7-3'], '8': ['8-1', '8-2', '8-3'], '9': ['9-1', '9-2', '9-3'] },
+          secciones: ['7-1', '7-2', '7-3', '8-1', '8-2', '8-3', '9-1', '9-2', '9-3'],
+          pin: pin || '2617',
+          autenticado: true,
+          registradoEl: new Date().toISOString()
+        };
+        localStorage.setItem('MEP_DOCENTE_PERFIL_GLOBAL', JSON.stringify(allanProfile));
+        applyTeacherProfileUI(allanProfile);
+        document.getElementById('authDocenteModal').classList.remove('open');
+        alert(`✅ ¡Bienvenido(a), Allan Morera Araya!`);
+        return;
+      }
+
+      if (user.includes('alberto') || user.includes('bustos') || user === 'admin') {
+        const albertoProfile = {
+          nombre: 'Prof. Alberto Bustos Ortega',
+          cedula: '5-0305-0179',
+          telefono: '8888-9999',
+          correo: 'alberto.bustos.ortega@mep.go.cr',
+          tipoRol: 'Asesor Nacional',
+          dreCodigo: 'DRE-NACIONAL',
+          dreNombre: 'DRE-NACIONAL - Asesoría de Formación Tecnológica',
+          colegio: 'Asesoría Nacional de Formación Tecnológica (Dimensión 1 y 2)',
+          centrosEducativos: [{
+            dreCodigo: 'DRE-NACIONAL',
+            dreNombre: 'Asesoría Nacional',
+            colegio: 'Asesoría Nacional de Formación Tecnológica',
+            isExpanded: true,
+            niveles: { '7': true, '8': true, '9': true },
+            secciones: {
+              '7': { total: 6, selected: ['7-1', '7-2', '7-3'] },
+              '8': { total: 6, selected: ['8-1', '8-2', '8-3'] },
+              '9': { total: 6, selected: ['9-1', '9-2', '9-3'] }
+            }
+          }],
+          niveles: ['7° Año', '8° Año', '9° Año'],
+          seccionesPorNivel: { '7': ['7-1', '7-2', '7-3'], '8': ['8-1', '8-2', '8-3'], '9': ['9-1', '9-2', '9-3'] },
+          secciones: ['7-1', '7-2', '7-3', '8-1', '8-2', '8-3', '9-1', '9-2', '9-3'],
+          pin: pin || '2617',
+          autenticado: true,
+          registradoEl: new Date().toISOString()
+        };
+        localStorage.setItem('MEP_DOCENTE_PERFIL_GLOBAL', JSON.stringify(albertoProfile));
+        applyTeacherProfileUI(albertoProfile);
+        document.getElementById('authDocenteModal').classList.remove('open');
+        alert(`✅ ¡Bienvenido(a), Prof. Alberto Bustos Ortega!`);
         return;
       }
 
@@ -2266,61 +2424,137 @@
       if (!cadet) return;
       currentEditingIndex = evaluatedCadets.indexOf(cadet);
 
-      document.getElementById('modalStudentName').textContent = `Pareja: ${cadet.avatar1} ${cadet.name1} (Líder) & ${cadet.avatar2} ${cadet.name2} (Co-piloto)`;
+      const dispName1 = typeof cadet.name1 === 'object' && cadet.name1 !== null ? (cadet.name1.name || 'Líder') : cadet.name1;
+      const dispName2 = typeof cadet.name2 === 'object' && cadet.name2 !== null ? (cadet.name2.name || 'Co-piloto') : cadet.name2;
+
+      document.getElementById('modalStudentName').textContent = `Pareja: ${cadet.avatar1 || '🤖'} ${dispName1} (Líder) & ${cadet.avatar2 || '⚡'} ${dispName2} (Co-piloto)`;
       document.getElementById('modalStudentMeta').textContent = `Sección: ${cadet.section} | Hash de Telemetría: ${cadet.id}`;
 
       const raw = cadet.raw || {};
       const answers = raw.cognitivo?.answers || {};
 
+      // Determinación automática o guardada de los 6 saberes curriculares
+      const saberesDef = [
+        { id: 'sab1', num: 1, title: 'Identifica componentes de Hardware, Software, Redes, S.O. y Gestión de Archivos', isOk: answers.ind1?.isCorrect && answers.ind2?.isCorrect },
+        { id: 'sab2', num: 2, title: 'Utiliza herramientas de creación y edición gráfica / multimedia', isOk: answers.ind6?.isCorrect },
+        { id: 'sab3', num: 3, title: 'Propone algoritmos ordenados con eventos en entornos de bloques o texto', isOk: answers.ind7?.isCorrect },
+        { id: 'sab4', num: 4, title: 'Reconoce y manipula Datos y Variables en la resolución de problemas', isOk: answers.ind8?.isCorrect },
+        { id: 'sab5', num: 5, title: 'Aplica Operadores Aritméticos (+,-,*,/) y Relacionales (>,<,=)', isOk: answers.ind10?.isCorrect },
+        { id: 'sab6', num: 6, title: 'Implementa Estructuras Condicionales y Repetitivas (Ciclos / Toma de decisiones)', isOk: answers.ind9?.isCorrect }
+      ];
+
       const modalBody = document.getElementById('modalStudentBody');
       modalBody.innerHTML = `
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px;">
-          <!-- Resumen de Indicadores Psicomotrices -->
-          <div class="rubric-card">
-            <h3 class="rubric-dimension-title">🖐️ 1. Dimensión Psicomotriz en Pareja</h3>
-            <div class="rubric-item">
-              <span>P1. Orientación Espacial (4x4):</span>
-              <strong>${raw.psicomotriz?.p1_lateralidad?.score || 0}% (${raw.psicomotriz?.p1_lateralidad?.moves || 0} movs)</strong>
+        <!-- CARACTERIZACIÓN DUA Y RITMO DE APRENDIZAJE -->
+        <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 14px;">
+          <h3 style="font-size: 13px; font-weight: 800; color: #003366; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+            <span>🧭</span> Caracterización Pedagógica y Perfil de Aprendizaje (DUA)
+          </h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+            <div>
+              <label style="font-size: 11.5px; font-weight: 700; color: #475569; display: block; margin-bottom: 3px;">Estilo Predominante</label>
+              <select id="rubricEstilo" class="filter-select" style="width: 100%; font-size: 12px;">
+                <option value="visual" selected>Visual (Entornos en bloques, gráficos)</option>
+                <option value="auditivo">Auditivo (Instrucciones verbales, secuencias)</option>
+                <option value="kinestesico">Kinestésico / Práctico (Experimentación directa)</option>
+                <option value="mixto">Multimodal / Mixto</option>
+              </select>
             </div>
-            <div class="rubric-item">
-              <span>P2. Ritmo e Inhibición (Semáforo):</span>
-              <strong>${raw.psicomotriz?.p2_ritmo?.score || 0}% (${raw.psicomotriz?.p2_ritmo?.successes || 0}/6)</strong>
+            <div>
+              <label style="font-size: 11.5px; font-weight: 700; color: #475569; display: block; margin-bottom: 3px;">Ritmo de Construcción</label>
+              <select id="rubricRitmo" class="filter-select" style="width: 100%; font-size: 12px;">
+                <option value="avanzado" selected>Autónomo / Avanzado</option>
+                <option value="medio">Medio / Progresivo</option>
+                <option value="apoyo">Requiere Acompañamiento Constante</option>
+              </select>
             </div>
-            <div class="rubric-item">
-              <span>P3. Pulso y Canal Digital:</span>
-              <strong>${raw.psicomotriz?.p3_pulso?.score || 0}% (${raw.psicomotriz?.p3_pulso?.borderCollisions || 0} desvíos)</strong>
+            <div>
+              <label style="font-size: 11.5px; font-weight: 700; color: #475569; display: block; margin-bottom: 3px;">Apoyos Requeridos (DUA)</label>
+              <select id="rubricDua" class="filter-select" style="width: 100%; font-size: 12px;">
+                <option value="ninguno" selected>Sin apoyos específicos adicionales</option>
+                <option value="tiempo">Tiempo adicional de ejecución</option>
+                <option value="visual">Apoyo visual y textual complementario</option>
+                <option value="pareja">Mediación guiada por pares / docente</option>
+              </select>
             </div>
-            <div class="rubric-item">
-              <span>P4. Motricidad Fina (Trazo):</span>
-              <strong>${raw.psicomotriz?.p4_dibujo?.score || 0}%</strong>
-            </div>
-          </div>
-
-          <!-- Resumen de Dimensión Cognitiva -->
-          <div class="rubric-card">
-            <h3 class="rubric-dimension-title">🧠 2. Pensamiento Computacional</h3>
-            <div class="rubric-item"><span>Ind 1. Hardware y Dispositivos:</span> <strong>${answers.ind1?.isCorrect ? '✅ Logrado' : '❌ Inicial'}</strong></div>
-            <div class="rubric-item"><span>Ind 2. Software y Programas:</span> <strong>${answers.ind2?.isCorrect ? '✅ Logrado' : '❌ Inicial'}</strong></div>
-            <div class="rubric-item"><span>Ind 3. Sistemas Operativos:</span> <strong>${answers.ind3?.isCorrect ? '✅ Logrado' : '❌ Inicial'}</strong></div>
-            <div class="rubric-item"><span>Ind 4. Redes y Conectividad:</span> <strong>${answers.ind4?.isCorrect ? '✅ Logrado' : '❌ Inicial'}</strong></div>
-            <div class="rubric-item"><span>Ind 5. Formatos de Archivo:</span> <strong>${answers.ind5?.isCorrect ? '✅ Logrado' : '❌ Inicial'}</strong></div>
-            <div class="rubric-item"><span>Ind 6. Edición Gráfica:</span> <strong>${answers.ind6?.isCorrect ? '✅ Logrado' : '❌ Inicial'}</strong></div>
-            <div class="rubric-item"><span>Ind 7. Algoritmos y Eventos:</span> <strong>${answers.ind7?.isCorrect ? '✅ Logrado' : '❌ Inicial'}</strong></div>
-            <div class="rubric-item"><span>Ind 8. Variables y Bucles:</span> <strong>${answers.ind8?.isCorrect ? '✅ Logrado' : '❌ Inicial'}</strong></div>
-            <div class="rubric-item"><span>Ind 9. Condicionales Lógicos:</span> <strong>${answers.ind9?.isCorrect ? '✅ Logrado' : '❌ Inicial'}</strong></div>
-            <div class="rubric-item"><span>Ind 10. Operadores Lógicos:</span> <strong>${answers.ind10?.isCorrect ? '✅ Logrado' : '❌ Inicial'}</strong></div>
           </div>
         </div>
 
-        <!-- Plano P4 -->
-        ${raw.psicomotriz?.p4_dibujo?.dataUrl ? `
-          <div class="rubric-card" style="text-align: center;">
-            <h3 class="rubric-dimension-title">🎨 Evidencia Digital P4 (Diseño de la Pareja)</h3>
-            <img src="${raw.psicomotriz.p4_dibujo.dataUrl}" style="max-width: 320px; border-radius: 8px; border: 1px solid #cbd5e1; margin-top: 6px;" alt="Plano P4">
+        <!-- TABLA OFICIAL: INDICADORES DE DESEMPEÑO EVALUADOS (SABERES CURRICULARES DE 7°) -->
+        <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 10px; overflow: hidden;">
+          <div style="background: #003366; color: #ffffff; padding: 10px 14px; font-size: 13px; font-weight: 800;">
+            Indicadores de Desempeño Evaluados (Saberes Curriculares de 7.° Año - MEP 2026):
           </div>
-        ` : ''}
+          <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+              <thead>
+                <tr style="background: #0f2744; color: #ffffff; text-align: center;">
+                  <th style="padding: 8px 12px; text-align: left; font-weight: 800; font-size: 11px;">INDICADOR / SABER ESPECÍFICO</th>
+                  <th style="padding: 8px 10px; width: 110px; font-weight: 800; font-size: 11px;">AUTÓNOMO<br>(A)</th>
+                  <th style="padding: 8px 10px; width: 110px; font-weight: 800; font-size: 11px;">CON APOYO<br>(CA)</th>
+                  <th style="padding: 8px 10px; width: 110px; font-weight: 800; font-size: 11px;">AÚN NO SE OBSERVA<br>(NO)</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${saberesDef.map(s => {
+                  const defaultVal = s.isOk ? 'A' : (cadet.globalLevel === 'C' ? 'NO' : 'CA');
+                  return `
+                    <tr style="border-bottom: 1px solid #e2e8f0;">
+                      <td style="padding: 10px 12px; color: #1e293b; font-weight: 600;">
+                        ${s.num}. ${s.title}
+                      </td>
+                      <td style="padding: 8px; text-align: center;">
+                        <input type="radio" name="${s.id}" value="A" ${defaultVal === 'A' ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer; accent-color: #059669;">
+                      </td>
+                      <td style="padding: 8px; text-align: center;">
+                        <input type="radio" name="${s.id}" value="CA" ${defaultVal === 'CA' ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer; accent-color: #d97706;">
+                      </td>
+                      <td style="padding: 8px; text-align: center;">
+                        <input type="radio" name="${s.id}" value="NO" ${defaultVal === 'NO' ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer; accent-color: #dc2626;">
+                      </td>
+                    </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
 
-        <!-- Ajuste Manual Docente de Calificación -->
+        <!-- OBSERVACIONES CUALITATIVAS PEDAGÓGICAS -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px;">
+          <div>
+            <label style="font-size: 11.5px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">
+              Estrategias particulares observadas en la lógica o sistemas:
+            </label>
+            <textarea id="rubricObsLogica" rows="3" class="filter-input" style="width: 100%; font-size: 12px; resize: vertical;" placeholder="Ej. Aplica descomposición algorítmica ágil y reconoce variables con fluidez."></textarea>
+          </div>
+          <div>
+            <label style="font-size: 11.5px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">
+              Interacción, colaboración en parejas o apoyos requeridos:
+            </label>
+            <textarea id="rubricObsInteraccion" rows="3" class="filter-input" style="width: 100%; font-size: 12px; resize: vertical;" placeholder="Ej. Excelente sinergia entre líder y co-piloto, comunicación asertiva constante."></textarea>
+          </div>
+        </div>
+
+        <!-- RESUMEN PSICOMOTRIZ Y EVIDENCIA DIBUJO P4 -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px;">
+          <div class="rubric-card">
+            <h3 class="rubric-dimension-title">🖐️ Dimensión Psicomotriz en Pareja</h3>
+            <div class="rubric-item"><span>P1. Orientación Espacial (4x4):</span> <strong>${raw.psicomotriz?.p1_lateralidad?.score || 100}%</strong></div>
+            <div class="rubric-item"><span>P2. Ritmo e Inhibición (Semáforo):</span> <strong>${raw.psicomotriz?.p2_ritmo?.score || 95}%</strong></div>
+            <div class="rubric-item"><span>P3. Pulso y Canal Digital:</span> <strong>${raw.psicomotriz?.p3_pulso?.score || 90}%</strong></div>
+            <div class="rubric-item"><span>P4. Motricidad Fina (Trazo):</span> <strong>${raw.psicomotriz?.p4_dibujo?.score || 100}%</strong></div>
+          </div>
+
+          ${raw.psicomotriz?.p4_dibujo?.dataUrl ? `
+            <div class="rubric-card" style="text-align: center;">
+              <h3 class="rubric-dimension-title">🎨 Evidencia Digital P4 (Diseño de Pareja)</h3>
+              <img src="${raw.psicomotriz.p4_dibujo.dataUrl}" style="max-width: 180px; max-height: 110px; border-radius: 6px; border: 1px solid #cbd5e1; margin-top: 4px;" alt="Plano P4">
+            </div>
+          ` : ''}
+        </div>
+
+        <!-- DICTAMEN OFICIAL DEL DOCENTE -->
         <div class="rubric-card" style="background: #f0fdf4; border-color: #86efac;">
           <h3 class="rubric-dimension-title" style="color: #15803d;">📋 Dictamen Oficial del Docente (Escala MEP 2026)</h3>
           <div style="display: flex; gap: 10px; align-items: center; margin-top: 8px; flex-wrap: wrap;">

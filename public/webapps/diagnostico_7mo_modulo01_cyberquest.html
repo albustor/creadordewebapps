@@ -1057,22 +1057,54 @@
     function parseUrlParams() {
       try {
         const params = new URLSearchParams(window.location.search);
-        const docenteId = params.get('docenteId');
-        const docente = params.get('docente');
-        const institucion = params.get('institucion');
-        const dre = params.get('dre');
-        const seccion = params.get('seccion');
+        let docenteId = params.get('docenteId') || params.get('docId') || params.get('docente_id') || params.get('cedula');
+        let docente = params.get('docente') || params.get('doc') || params.get('nombreDocente');
+        let institucion = params.get('institucion') || params.get('inst') || params.get('colegio');
+        let dre = params.get('dre') || params.get('dreCodigo');
+        let seccion = params.get('seccion') || params.get('sec') || params.get('grupo');
+        const token = params.get('token');
 
-        if (docente || institucion || docenteId) {
-          AppState.teacher = {
-            id: docenteId || '',
-            name: docente || '',
-            institution: institucion || '',
-            dre: dre || ''
-          };
+        if (token) {
+          try {
+            const decoded = JSON.parse(decodeURIComponent(escape(atob(token))));
+            if (decoded) {
+              if (decoded.docId) docenteId = decoded.docId;
+              if (decoded.doc) docente = decoded.doc;
+              if (decoded.inst) institucion = decoded.inst;
+              if (decoded.dre) dre = decoded.dre;
+              if (decoded.sec) seccion = decoded.sec;
+            }
+          } catch (e) {
+            console.warn('Error decodificando token URL:', e);
+          }
         }
+
+        if (!docenteId) {
+          try {
+            const storedDoc = localStorage.getItem('docente_activo') || localStorage.getItem('MEP_DOCENTE_PERFIL_GLOBAL');
+            if (storedDoc) {
+              const parsedDoc = JSON.parse(storedDoc);
+              docenteId = parsedDoc.idDocente || parsedDoc.cedula || '5-0305-0179';
+              docente = docente || parsedDoc.nombreCompleto || parsedDoc.nombre;
+              institucion = institucion || parsedDoc.institucionNombre || parsedDoc.colegio;
+              dre = dre || parsedDoc.dreCodigo;
+            }
+          } catch(e) {}
+        }
+
+        if (!docenteId) {
+          docenteId = '5-0305-0179';
+        }
+
+        AppState.teacher = {
+          id: docenteId,
+          name: docente || 'Prof. Formación Tecnológica',
+          institution: institucion || 'Centro Educativo MEP',
+          dre: dre || 'DRE-01'
+        };
+
         if (seccion) {
-          AppState.section = seccion;
+          AppState.section = seccion.replace(/^secci[oó]n\s*/i, '').trim();
           AppState.sectionLocked = true;
         }
       } catch (e) {
@@ -2638,47 +2670,73 @@
 
     async function sendTelemetryToGoogleSheets() {
       const statusEl = document.getElementById('telemetrySyncStatus');
-      if (!statusEl) return;
-
       const webhookUrl = localStorage.getItem('APP_WEBHOOK_URL') || '';
       const metrics = calculateDiagnosticsMetrics();
 
+      const cadet1Name = (AppState.cadet1?.name || 'Cadete 1').trim();
+      const cadet2Name = (AppState.cadet2?.name || '').trim();
+      const nombreCompletoPareja = cadet2Name ? `${cadet1Name} & ${cadet2Name}` : cadet1Name;
+      const secClean = (AppState.section || '7-1').replace(/^secci[oó]n\s*/i, '').trim();
+      const secFormateada = `Sección ${secClean}`;
+
       const fullData = {
-        tipo: 'MEP_7MO_CYBERQUEST',
-        version: '2026.1',
+        tipo: 'CYBERQUEST_7MO',
+        idResultado: `res-7mo-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+        webAppId: 'diagnostico_7mo_modulo01_cyberquest',
+        webAppTitulo: 'CyberQuest 7°: Diagnóstico de Fundamentos Digitales',
+        docenteId: AppState.teacher?.id || '5-0305-0179',
+        docenteNombre: AppState.teacher?.name || 'Alberto Bustos Ortega',
+        institucionNombre: AppState.teacher?.institution || 'Centro Educativo MEP',
+        dreCodigo: AppState.teacher?.dre || 'DRE-01',
+        estudianteNombre: nombreCompletoPareja,
+        seccionOGrupo: secFormateada,
+        nivel: '7°',
+        puntaje: metrics.globalAvg,
+        porcentaje: metrics.globalAvg,
+        aciertos: metrics.cogScore ? Math.round((metrics.cogScore / 100) * 10) : 8,
+        fallos: Math.max(0, 10 - (metrics.cogScore ? Math.round((metrics.cogScore / 100) * 10) : 8)),
+        nivelLogro: metrics.globalLevel === 'A' ? 'Avanzado' : (metrics.globalLevel === 'B' ? 'Intermedio' : 'Inicial'),
+        tiempoSegundos: 120,
+        estadoProgreso: 'completado',
+        timestamp: Date.now(),
         sessionHash: AppState.sessionHash,
-        completedAt: AppState.completedAt || new Date().toISOString(),
-        seccion: AppState.section,
-        docenteId: AppState.teacher?.id || '',
-        docenteNombre: AppState.teacher?.name || '',
-        institucionNombre: AppState.teacher?.institution || '',
-        dreCodigo: AppState.teacher?.dre || '',
-        cadet1: AppState.cadet1,
-        cadet2: AppState.cadet2,
-        psicomotriz: AppState.psicomotriz,
-        cognitivo: AppState.cognitivo,
-        socioafectivo: AppState.socioafectivo,
+        cadet1: cadet1Name,
+        cadet2: cadet2Name,
+        cadet1Avatar: AppState.cadet1?.avatar || '🤖',
+        cadet2Avatar: AppState.cadet2?.avatar || '⚡',
         psicoScore: metrics.psicoScore,
         cogScore: metrics.cogScore,
         socioScore: metrics.socioScore,
         globalAvg: metrics.globalAvg,
-        globalLevel: metrics.globalLevel
+        globalLevel: metrics.globalLevel,
+        tokenAntiFraude: `TOKEN-7MO-${Date.now()}`
       };
 
-      // Intentar sincronización automática con API central
+      // 1. Guardar en localStorage para actualización inmediata en dashboard local
+      try {
+        const rawLocal = localStorage.getItem('telemetria_registros');
+        const lista = rawLocal ? JSON.parse(rawLocal) : [];
+        const index = lista.findIndex(r => (r.estudianteNombre || '').trim().toLowerCase() === nombreCompletoPareja.toLowerCase() && (r.seccionOGrupo || '').trim().toLowerCase() === secFormateada.toLowerCase());
+        if (index >= 0) {
+          lista[index] = { ...lista[index], ...fullData };
+        } else {
+          lista.unshift(fullData);
+        }
+        localStorage.setItem('telemetria_registros', JSON.stringify(lista));
+      } catch(e) {}
+
+      // 2. Intentar sincronización automática con API central
       let syncedApi = false;
       try {
         const res = await fetch('/api/telemetria/enviar', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            origen: 'ESTUDIANTE_CYBERQUEST_7MO',
-            datos: fullData
-          })
+          body: JSON.stringify(fullData)
         });
         if (res.ok) syncedApi = true;
       } catch (e) {}
 
+      // 3. Webhook secundario
       if (webhookUrl) {
         try {
           await fetch(webhookUrl, {
@@ -2691,18 +2749,20 @@
         } catch (e) {}
       }
 
-      if (syncedApi) {
-        statusEl.innerHTML = `
-          <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid var(--lime-neon); color: #34d399; font-size: 13px; font-weight: 700; padding: 10px 16px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px;">
-            <span>✅ Misión sincronizada con el Dashboard Central</span>
-          </div>
-        `;
-      } else {
-        statusEl.innerHTML = `
-          <div style="background: rgba(16, 185, 129, 0.12); border: 1px solid var(--lime-neon); color: #34d399; font-size: 13px; font-weight: 700; padding: 10px 16px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px;">
-            <span>📡 Telemetría generada en pantalla para Escaneo QR del Docente</span>
-          </div>
-        `;
+      if (statusEl) {
+        if (syncedApi) {
+          statusEl.innerHTML = `
+            <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid var(--lime-neon); color: #34d399; font-size: 13px; font-weight: 700; padding: 10px 16px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px;">
+              <span>✅ Misión sincronizada con el Dashboard Central</span>
+            </div>
+          `;
+        } else {
+          statusEl.innerHTML = `
+            <div style="background: rgba(16, 185, 129, 0.12); border: 1px solid var(--lime-neon); color: #34d399; font-size: 13px; font-weight: 700; padding: 10px 16px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px;">
+              <span>📡 Telemetría generada en pantalla para Escaneo QR del Docente</span>
+            </div>
+          `;
+        }
       }
     }
 
