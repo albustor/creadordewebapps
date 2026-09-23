@@ -18,29 +18,21 @@ import {
   ChartBar,
   FileXls,
   FilePdf,
-  UploadSimple,
   MagnifyingGlass,
   Trash,
   CheckCircle,
-  WarningCircle,
-  Clock,
   User,
   ShieldCheck,
   NotePencil,
-  Broom,
-  ArrowsClockwise,
-  Check,
-  X,
-  Lightning,
-  LinkSimple,
-  Copy,
   ArrowSquareOut,
-  FolderOpen,
-  UserCheck,
-  GameController,
-  Cpu,
   GraduationCap,
   Sparkle,
+  Cpu,
+  GameController,
+  Lightbulb,
+  Buildings,
+  IdentificationCard,
+  ChalkboardTeacher,
 } from "@phosphor-icons/react";
 
 export default function DashboardAnaliticoPage() {
@@ -50,88 +42,15 @@ export default function DashboardAnaliticoPage() {
     actualizarResultadoTelemetria,
     eliminarResultado,
     limpiarTelemetria,
-    restablecerDatosDemostracion,
   } = useDocente();
 
-  // Filtros de telemetría
-  const [filtroNivelTab, setFiltroNivelTab] = useState<"todos" | "7mo" | "8vo" | "9no">("todos");
+  // Nivel activo seleccionado por pestañas (7mo, 8vo, 9no)
+  const [nivelActivo, setNivelActivo] = useState<"7mo" | "8vo" | "9no">("7mo");
+
+  // Filtros de búsqueda secundarios dentro del nivel
   const [filtroTexto, setFiltroTexto] = useState("");
   const [filtroGrupo, setFiltroGrupo] = useState("Todos");
   const [filtroNivelLogro, setFiltroNivelLogro] = useState("Todos");
-  const [filtroSoloMios, setFiltroSoloMios] = useState(false);
-
-  // Generador de Enlace Blindado por Nivel y Centro Educativo
-  const [nivelesCentros, setNivelesCentros] = useState<Record<string, "7mo" | "8vo" | "9no">>({});
-  const [copiadoCentro, setCopiadoCentro] = useState<Record<string, boolean>>({});
-
-  // Lista de centros educativos registrados del docente
-  const listaCentrosDocente = useMemo(() => {
-    if (docente?.centrosEducativos && docente.centrosEducativos.length > 0) {
-      return docente.centrosEducativos;
-    }
-    return [
-      {
-        id: "centro-principal",
-        nombre: docente?.institucionNombre || "Centro Educativo MEP",
-        dreCodigo: docente?.dreCodigo || "DRE-01",
-        dreNombre: docente?.dreNombre || "Dirección Regional",
-        circuito: docente?.circuito || "Circuito 01",
-        desgloseNiveles: [],
-      },
-    ];
-  }, [docente]);
-
-  const getNivelCentro = (centroId: string): "7mo" | "8vo" | "9no" => {
-    return nivelesCentros[centroId] || "9no";
-  };
-
-  const setNivelCentro = (centroId: string, nivel: "7mo" | "8vo" | "9no") => {
-    setNivelesCentros((prev) => ({ ...prev, [centroId]: nivel }));
-  };
-
-  const generarUrlParaEstudiante = (
-    centro: { nombre: string; dreCodigo: string; dreNombre: string; circuito?: string },
-    nivel: "7mo" | "8vo" | "9no"
-  ): string => {
-    const payload = {
-      docId: docente?.idDocente || "DOC-MEP-2026",
-      doc: docente?.nombreCompleto || "Docente Evaluador",
-      inst: centro.nombre || "Centro Educativo MEP",
-      dre: centro.dreCodigo || centro.dreNombre || "DRE-01",
-      nivel: nivel === "7mo" ? 7 : nivel === "8vo" ? 8 : 9,
-      ts: Date.now(),
-    };
-
-    let tokenB64 = "";
-    try {
-      tokenB64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
-    } catch {
-      tokenB64 = "token_mep_diagnostico";
-    }
-
-    const archivoWebapp =
-      nivel === "7mo"
-        ? "diagnostico_7mo_modulo01_cyberquest.html"
-        : nivel === "8vo"
-        ? "diagnostico_8vo_modulo01_en_linea.html"
-        : "diagnostico_9no_modulo01_en_linea.html";
-
-    const origin =
-      typeof window !== "undefined" ? window.location.origin : "https://diagnosticosecundaria.vercel.app";
-    return `${origin}/webapps/${archivoWebapp}?token=${tokenB64}&docenteId=${encodeURIComponent(
-      docente?.idDocente || ""
-    )}&docente=${encodeURIComponent(docente?.nombreCompleto || "")}&institucion=${encodeURIComponent(
-      centro.nombre
-    )}&dre=${encodeURIComponent(centro.dreCodigo || centro.dreNombre || "")}`;
-  };
-
-  const copiarEnlaceCentro = (centroId: string, url: string) => {
-    navigator.clipboard.writeText(url);
-    setCopiadoCentro((prev) => ({ ...prev, [centroId]: true }));
-    setTimeout(() => {
-      setCopiadoCentro((prev) => ({ ...prev, [centroId]: false }));
-    }, 2500);
-  };
 
   // Modal Edición de Registro
   const [registroEditando, setRegistroEditando] = useState<PayloadTelemetria | null>(null);
@@ -151,26 +70,34 @@ export default function DashboardAnaliticoPage() {
     }
   }, []);
 
-  // Lista completa de secciones estándar por nivel
+  // Reiniciar filtro de grupo al cambiar de nivel para evitar secciones huérfanas
+  const cambiarNivel = (nuevoNivel: "7mo" | "8vo" | "9no") => {
+    setNivelActivo(nuevoNivel);
+    setFiltroGrupo("Todos");
+  };
+
+  // Lista de secciones disponibles filtradas dinámicamente según el nivel seleccionado
   const gruposDisponibles = useMemo(() => {
     const seccionesSet = new Set<string>();
+    const prefix = nivelActivo === "7mo" ? "7-" : nivelActivo === "8vo" ? "8-" : "9-";
 
-    for (let i = 1; i <= 15; i++) {
-      seccionesSet.add(`Sección 7-${i}`);
-      seccionesSet.add(`Sección 8-${i}`);
-      seccionesSet.add(`Sección 9-${i}`);
+    for (let i = 1; i <= 20; i++) {
+      seccionesSet.add(`Sección ${prefix}${i}`);
     }
 
     telemetria.forEach((t) => {
       if (t.seccionOGrupo && t.seccionOGrupo.trim()) {
-        seccionesSet.add(t.seccionOGrupo.trim());
+        const sec = t.seccionOGrupo.trim();
+        if (sec.includes(prefix)) {
+          seccionesSet.add(sec);
+        }
       }
     });
 
     return Array.from(seccionesSet).sort((a, b) =>
       a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" })
     );
-  }, [telemetria]);
+  }, [telemetria, nivelActivo]);
 
   // Nivel de logro dinámico según umbrales oficiales
   const obtenerNivelDinamico = (puntaje: number): string => {
@@ -183,11 +110,12 @@ export default function DashboardAnaliticoPage() {
     return "En Desarrollo";
   };
 
-  // Filtrado reactivo de telemetría con aislamiento estricto por cuenta docente
+  // Filtrado reactivo de telemetría con aislamiento estricto por cuenta docente y nivel activo
   const telemetriaFiltrada = useMemo(() => {
     const correoDocenteLimpio = docente?.correoInstitucional?.toLowerCase()?.trim() || "";
     const esSuperAdmin = correoDocenteLimpio === "alberto.bustos.ortega@mep.go.cr";
-    const esAsesorNacional = correoDocenteLimpio === "allan.morera.araya@mep.go.cr" || docente?.tipoRol === "Asesor Nacional";
+    const esAsesorNacional =
+      correoDocenteLimpio === "allan.morera.araya@mep.go.cr" || docente?.tipoRol === "Asesor Nacional";
 
     const idDoc = docente?.idDocente?.trim().toLowerCase() || "";
     const cedDoc = docente?.cedula?.trim().toLowerCase() || "";
@@ -195,7 +123,7 @@ export default function DashboardAnaliticoPage() {
     return telemetria.filter((r) => {
       const estNom = r.estudianteNombre?.toLowerCase()?.trim() || "";
       const estCor = r.estudianteCorreo?.toLowerCase()?.trim() || "";
-      
+
       // Excluir si el registro coincide con el nombre o correo del propio docente
       if (docente?.nombreCompleto && estNom === docente.nombreCompleto.toLowerCase().trim()) {
         return false;
@@ -220,14 +148,14 @@ export default function DashboardAnaliticoPage() {
         }
       }
 
-      // Filtro por Nivel Tab
-      if (filtroNivelTab === "7mo") {
+      // Filtro por Nivel Activo (Pestaña)
+      if (nivelActivo === "7mo") {
         const es7mo = (r.seccionOGrupo && r.seccionOGrupo.includes("7-")) || r.webAppTitulo?.includes("7");
         if (!es7mo) return false;
-      } else if (filtroNivelTab === "8vo") {
+      } else if (nivelActivo === "8vo") {
         const es8vo = (r.seccionOGrupo && r.seccionOGrupo.includes("8-")) || r.webAppTitulo?.includes("8");
         if (!es8vo) return false;
-      } else if (filtroNivelTab === "9no") {
+      } else if (nivelActivo === "9no") {
         const es9no = (r.seccionOGrupo && r.seccionOGrupo.includes("9-")) || r.webAppTitulo?.includes("9");
         if (!es9no) return false;
       }
@@ -236,12 +164,12 @@ export default function DashboardAnaliticoPage() {
         !filtroTexto.trim() ||
         r.estudianteNombre.toLowerCase().includes(filtroTexto.toLowerCase()) ||
         r.webAppTitulo.toLowerCase().includes(filtroTexto.toLowerCase());
-      
+
       const coincideGrupo =
         filtroGrupo === "Todos" ||
         r.seccionOGrupo === filtroGrupo ||
         r.seccionOGrupo.replace("Sección ", "") === filtroGrupo.replace("Sección ", "");
-      
+
       const nivelDinamico = obtenerNivelDinamico(r.porcentaje ?? r.puntaje);
       const coincideNivel =
         filtroNivelLogro === "Todos" ||
@@ -250,12 +178,35 @@ export default function DashboardAnaliticoPage() {
 
       return coincideTexto && coincideGrupo && coincideNivel;
     });
-  }, [telemetria, filtroNivelTab, filtroTexto, filtroGrupo, filtroNivelLogro, docente, configuracion]);
+  }, [telemetria, nivelActivo, filtroTexto, filtroGrupo, filtroNivelLogro, docente, configuracion]);
+
+  // Construcción de la URL al Instrumento Evaluador del Nivel Activo
+  const urlEvaluadorActivo = useMemo(() => {
+    const baseWebapp =
+      nivelActivo === "7mo"
+        ? "diagnostico_7mo_modulo01_docente_evaluador.html"
+        : nivelActivo === "8vo"
+        ? "diagnostico_8vo_modulo01_docente_evaluador.html"
+        : "diagnostico_9no_modulo01_docente_evaluador.html";
+
+    const params = new URLSearchParams();
+    if (docente?.idDocente || docente?.cedula) {
+      params.set("docenteId", docente.idDocente || docente.cedula || "");
+    }
+    if (docente?.cedula) params.set("cedula", docente.cedula);
+    if (docente?.nombreCompleto) params.set("docente", docente.nombreCompleto);
+    if (docente?.institucionNombre) params.set("institucion", docente.institucionNombre);
+    if (docente?.dreCodigo || docente?.dreNombre) params.set("dre", docente.dreCodigo || docente.dreNombre || "");
+    if (docente?.circuito) params.set("circuito", docente.circuito);
+
+    return `/webapps/${baseWebapp}?${params.toString()}`;
+  }, [nivelActivo, docente]);
 
   const abrirEditar = (item: PayloadTelemetria) => {
+    const defSec = nivelActivo === "7mo" ? "Sección 7-1" : nivelActivo === "8vo" ? "Sección 8-1" : "Sección 9-1";
     setRegistroEditando(item);
     setEditNombre(item.estudianteNombre);
-    setEditGrupo(item.seccionOGrupo || "Sección 9-1");
+    setEditGrupo(item.seccionOGrupo || defSec);
     setEditPuntaje(item.porcentaje ?? item.puntaje ?? 100);
   };
 
@@ -293,14 +244,14 @@ export default function DashboardAnaliticoPage() {
                 Panel Central del Docente Evaluador
               </span>
               <span className="text-xs font-bold text-stone-500">
-                MEP • Diagnóstico Secundaria
+                MEP • Diagnóstico Secundaria 2026
               </span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mt-2">
               Dashboard Analítico y Telemetría
             </h1>
             <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-3xl leading-relaxed">
-              Consolidación en tiempo real de los resultados de <strong>7.°, 8.° y 9.° Año</strong>, control de asistencia por sección y exportación oficial de actas a Excel y PDF.
+              Consolidación en tiempo real de los resultados por nivel curricular, acceso a los instrumentos de evaluación docente y exportación oficial de actas a Excel y PDF.
             </p>
           </div>
 
@@ -308,261 +259,274 @@ export default function DashboardAnaliticoPage() {
           <div className="flex flex-wrap items-center gap-2.5 shrink-0">
             <button
               onClick={() => exportarAExcel(telemetriaFiltrada)}
-              className="flex items-center gap-1.5 px-4 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs rounded-xl transition-all shadow-xs"
-              title="Descargar Acta Oficial en Excel"
+              className="flex items-center gap-1.5 px-4 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs rounded-xl transition-all shadow-xs cursor-pointer"
+              title="Descargar Acta Oficial en Excel del Nivel Seleccionado"
             >
               <FileXls size={18} weight="bold" />
-              <span>Exportar Excel</span>
+              <span>Exportar Excel ({nivelActivo === "7mo" ? "7.°" : nivelActivo === "8vo" ? "8.°" : "9.°"})</span>
             </button>
 
             <button
               onClick={() => exportarAPDF(telemetriaFiltrada)}
-              className="flex items-center gap-1.5 px-4 py-2.5 bg-rose-700 hover:bg-rose-800 text-white font-black text-xs rounded-xl transition-all shadow-xs"
-              title="Descargar Informe Institucional en PDF"
+              className="flex items-center gap-1.5 px-4 py-2.5 bg-rose-700 hover:bg-rose-800 text-white font-black text-xs rounded-xl transition-all shadow-xs cursor-pointer"
+              title="Descargar Informe Institucional en PDF del Nivel Seleccionado"
             >
               <FilePdf size={18} weight="bold" />
-              <span>Informe PDF</span>
+              <span>Informe PDF ({nivelActivo === "7mo" ? "7.°" : nivelActivo === "8vo" ? "8.°" : "9.°"})</span>
             </button>
           </div>
         </div>
 
-        {/* 1. GENERADOR DE ENLACES BLINDADOS POR NIVEL (REPLICADO POR CADA CENTRO EDUCATIVO REGISTRADO) */}
-        <div className="space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center justify-center shrink-0">
-                <LinkSimple size={20} weight="bold" />
-              </div>
-              <div>
-                <h3 className="font-black text-slate-900 text-base sm:text-lg">
-                  Generador de Enlaces Únicos por Nivel para Laboratorio
-                </h3>
-                <p className="text-xs text-slate-500">
-                  Un único enlace oficial por nivel (sin selector de sección manual). Cada institución registrada genera su propia URL blindada con telemetría integrada.
-                </p>
-              </div>
+        {/* ========================================================================= */}
+        {/* PESTAÑAS / SELECTOR DE NIVELES (7MO, 8VO, 9NO)                            */}
+        {/* ========================================================================= */}
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <GraduationCap size={22} className="text-slate-800" weight="duotone" />
+              <h2 className="text-base sm:text-lg font-black text-slate-900">
+                Seleccione el Nivel Educativo para Evaluación y Analítica:
+              </h2>
             </div>
-            {listaCentrosDocente.length > 1 && (
-              <span className="px-3 py-1 rounded-full bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-black">
-                {listaCentrosDocente.length} Centros Educativos Registrados
-              </span>
-            )}
+            <span className="text-xs font-bold text-slate-500">
+              Visualizando actualmente: <strong className="text-slate-900 uppercase">{nivelActivo === "7mo" ? "Séptimo Año (7.°)" : nivelActivo === "8vo" ? "Octavo Año (8.°)" : "Noveno Año (9.°)"}</strong>
+            </span>
           </div>
 
-          <div className="grid grid-cols-1 gap-6">
-            {listaCentrosDocente.map((centro, cIdx) => {
-              const centroId = centro.id || `centro-${cIdx}`;
-              const nivelSeleccionado = getNivelCentro(centroId);
-              const urlGenerada = generarUrlParaEstudiante(centro, nivelSeleccionado);
-              const estaCopiado = !!copiadoCentro[centroId];
+          {/* Selector de Pestañas de Nivel */}
+          <div className="grid grid-cols-3 gap-2 sm:gap-3 p-1.5 bg-stone-100/90 rounded-2xl border border-stone-200">
+            
+            {/* Pestaña 7mo */}
+            <button
+              type="button"
+              onClick={() => cambiarNivel("7mo")}
+              className={`flex items-center justify-center gap-2 py-3 px-3 sm:px-5 rounded-xl font-black text-xs sm:text-sm transition-all cursor-pointer ${
+                nivelActivo === "7mo"
+                  ? "bg-indigo-700 text-white shadow-md shadow-indigo-700/20 border border-indigo-800 scale-[1.01]"
+                  : "bg-white/70 hover:bg-white text-slate-700 hover:text-indigo-900 border border-transparent"
+              }`}
+            >
+              <GameController size={20} weight={nivelActivo === "7mo" ? "fill" : "bold"} />
+              <span>7.° Séptimo</span>
+            </button>
 
-              return (
-                <div
-                  key={centroId}
-                  className="bg-white border-2 border-emerald-400 rounded-3xl p-6 sm:p-7 shadow-softPastel space-y-5"
-                >
-                  {/* Cabecera del Centro Educativo */}
-                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-stone-100 pb-4">
-                    <div className="flex items-start sm:items-center gap-3">
-                      <div className="w-10 h-10 rounded-2xl bg-slate-900 text-emerald-400 flex items-center justify-center shrink-0 font-black text-sm shadow-xs">
-                        {cIdx + 1}
-                      </div>
-                      <div>
-                        <div className="flex flex-wrap items-center gap-2">
-                          <h4 className="font-black text-slate-900 text-base sm:text-lg">
-                            {centro.nombre || "Centro Educativo MEP"}
-                          </h4>
-                          <span className="px-2 py-0.5 rounded-md bg-stone-100 text-stone-700 border border-stone-300 text-[10px] font-bold">
-                            {centro.dreCodigo || centro.dreNombre || "DRE"}
-                          </span>
-                          {centro.circuito && (
-                            <span className="px-2 py-0.5 rounded-md bg-stone-100 text-stone-700 border border-stone-300 text-[10px] font-bold">
-                              {centro.circuito}
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-xs text-slate-500 mt-0.5">
-                          Enlace inmutable con credenciales y telemetría vinculada a esta institución.
-                        </p>
-                      </div>
-                    </div>
+            {/* Pestaña 8vo */}
+            <button
+              type="button"
+              onClick={() => cambiarNivel("8vo")}
+              className={`flex items-center justify-center gap-2 py-3 px-3 sm:px-5 rounded-xl font-black text-xs sm:text-sm transition-all cursor-pointer ${
+                nivelActivo === "8vo"
+                  ? "bg-teal-700 text-white shadow-md shadow-teal-700/20 border border-teal-800 scale-[1.01]"
+                  : "bg-white/70 hover:bg-white text-slate-700 hover:text-teal-900 border border-transparent"
+              }`}
+            >
+              <Cpu size={20} weight={nivelActivo === "8vo" ? "fill" : "bold"} />
+              <span>8.° Octavo</span>
+            </button>
 
-                    {/* Selector de Nivel para este Centro */}
-                    <div className="flex items-center gap-1.5 self-start lg:self-auto bg-stone-100 p-1.5 rounded-2xl border border-stone-200">
-                      <button
-                        type="button"
-                        onClick={() => setNivelCentro(centroId, "7mo")}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
-                          nivelSeleccionado === "7mo"
-                            ? "bg-indigo-700 text-white shadow-xs"
-                            : "text-stone-700 hover:bg-stone-200"
-                        }`}
-                      >
-                        7.° Año
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setNivelCentro(centroId, "8vo")}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
-                          nivelSeleccionado === "8vo"
-                            ? "bg-teal-700 text-white shadow-xs"
-                            : "text-stone-700 hover:bg-stone-200"
-                        }`}
-                      >
-                        8.° Año
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setNivelCentro(centroId, "9no")}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
-                          nivelSeleccionado === "9no"
-                            ? "bg-emerald-700 text-white shadow-xs"
-                            : "text-stone-700 hover:bg-stone-200"
-                        }`}
-                      >
-                        9.° Año
-                      </button>
-                    </div>
+            {/* Pestaña 9no */}
+            <button
+              type="button"
+              onClick={() => cambiarNivel("9no")}
+              className={`flex items-center justify-center gap-2 py-3 px-3 sm:px-5 rounded-xl font-black text-xs sm:text-sm transition-all cursor-pointer ${
+                nivelActivo === "9no"
+                  ? "bg-emerald-700 text-white shadow-md shadow-emerald-700/20 border border-emerald-800 scale-[1.01]"
+                  : "bg-white/70 hover:bg-white text-slate-700 hover:text-emerald-900 border border-transparent"
+              }`}
+            >
+              <Lightbulb size={20} weight={nivelActivo === "9no" ? "fill" : "bold"} />
+              <span>9.° Noveno</span>
+            </button>
+
+          </div>
+        </div>
+
+        {/* ========================================================================= */}
+        {/* TARJETA GRANDE VISUAL DEL INSTRUMENTO EVALUADOR DEL NIVEL SELECCIONADO     */}
+        {/* ========================================================================= */}
+        {nivelActivo === "7mo" && (
+          <div className="bg-gradient-to-br from-indigo-900 via-indigo-950 to-slate-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-indigo-400 relative overflow-hidden space-y-6">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
+            
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+              
+              <div className="space-y-3 max-w-3xl">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="px-3 py-1 rounded-full bg-indigo-500/30 text-indigo-200 border border-indigo-400/50 text-[11px] font-black uppercase tracking-wider">
+                    🎮 Herramienta Oficial • 7.° Año
+                  </span>
+                  <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-stone-200 text-[10px] font-bold">
+                    Módulo 1: CyberQuest
+                  </span>
+                  <span className="px-2.5 py-0.5 rounded-full bg-indigo-400/20 text-indigo-200 text-[10px] font-bold">
+                    III Ciclo MEP 2026
+                  </span>
+                </div>
+
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-snug">
+                  Instrumento de evaluación diagnóstico docente séptimo año
+                </h3>
+
+                <p className="text-xs sm:text-sm text-indigo-100/90 leading-relaxed">
+                  Aplicativo central para la valoración y registro de criterios de logro, observación docente en tiempo real, gestión del enlace para estudiantes del nivel y generación automática de actas pedagógicas.
+                </p>
+
+                {/* Metadatos del Docente en el Instrumento */}
+                <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-indigo-200">
+                  <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
+                    <ChalkboardTeacher size={16} className="text-indigo-300" weight="bold" />
+                    <span>Docente: <strong>{docente?.nombreCompleto || "Docente MEP"}</strong></span>
                   </div>
-
-                  {/* Input con URL y Botones de Acción */}
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-end">
-                    
-                    {/* Campo de URL */}
-                    <div className="lg:col-span-8">
-                      <label className="block text-xs font-black text-slate-800 uppercase tracking-wider mb-1.5 flex items-center justify-between">
-                        <span>
-                          Enlace Oficial •{" "}
-                          {nivelSeleccionado === "7mo"
-                            ? "Séptimo Año"
-                            : nivelSeleccionado === "8vo"
-                            ? "Octavo Año"
-                            : "Noveno Año"}
-                          :
-                        </span>
-                        <span className="text-[11px] text-emerald-700 font-bold lowercase">
-                          1 único link para todas las secciones de este nivel
-                        </span>
-                      </label>
-                      <div className="relative">
-                        <input
-                          type="text"
-                          readOnly
-                          value={urlGenerada}
-                          className="w-full pl-3.5 pr-4 py-2.5 bg-stone-100 border border-stone-300 rounded-xl text-xs font-mono text-slate-700 select-all focus:outline-none focus:border-emerald-600 font-semibold"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Botón Copiar Enlace */}
-                    <div className="lg:col-span-3">
-                      <button
-                        type="button"
-                        onClick={() => copiarEnlaceCentro(centroId, urlGenerada)}
-                        className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-black transition-all shadow-xs cursor-pointer ${
-                          estaCopiado
-                            ? "bg-emerald-800 text-white"
-                            : "bg-emerald-700 hover:bg-emerald-800 text-white"
-                        }`}
-                      >
-                        {estaCopiado ? <Check size={16} weight="bold" /> : <Copy size={16} weight="bold" />}
-                        <span>{estaCopiado ? "¡Enlace Copiado!" : "Copiar Enlace para Lab"}</span>
-                      </button>
-                    </div>
-
-                    {/* Botón Probar Enlace Estudiante */}
-                    <div className="lg:col-span-1">
-                      <a
-                        href={urlGenerada}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full flex items-center justify-center p-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 border border-stone-300 transition-all shadow-xs cursor-pointer"
-                        title="Probar enlace de estudiante en nueva pestaña"
-                      >
-                        <ArrowSquareOut size={18} weight="bold" />
-                      </a>
-                    </div>
-
-                  </div>
-
-                  <div className="p-3 bg-emerald-50/70 border border-emerald-200 rounded-2xl text-[11.5px] text-emerald-950 leading-relaxed font-medium flex items-center gap-2.5">
-                    <ShieldCheck size={18} className="text-emerald-700 shrink-0" weight="fill" />
-                    <span>
-                      <strong>Uso en Laboratorio:</strong> Proyecte o entregue este enlace a sus grupos de {nivelSeleccionado === "7mo" ? "7.°" : nivelSeleccionado === "8vo" ? "8.°" : "9.°"} Año en {centro.nombre || "la institución"}. Al abrir la herramienta, los estudiantes de cualquier sección ingresan y sus respuestas se consolidan de inmediato en este dashboard.
-                    </span>
+                  <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
+                    <Buildings size={16} className="text-indigo-300" weight="bold" />
+                    <span>Institución: <strong>{docente?.institucionNombre || "Centro Educativo MEP"}</strong></span>
                   </div>
                 </div>
-              );
-            })}
-          </div>
-        </div>
+              </div>
 
-        {/* 2. ACCESO DIRECTO A LAS HERRAMIENTAS DE EVALUACIÓN DIAGNÓSTICA (DOCENTE) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          
-          <div className="p-5 bg-indigo-50/80 border border-indigo-200 rounded-2xl flex items-center justify-between gap-4">
-            <div className="space-y-1">
-              <span className="text-[10px] font-black text-indigo-900 uppercase">Herramienta 7.° Año</span>
-              <h4 className="text-xs sm:text-sm font-black text-slate-900">Instrumento de evaluación diagnóstico docente séptimo año</h4>
+              {/* Botón de Apertura de la Tarjeta */}
+              <div className="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3">
+                <a
+                  href={urlEvaluadorActivo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2.5 px-6 py-4 bg-indigo-500 hover:bg-indigo-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-indigo-500/30 hover:scale-[1.02] cursor-pointer"
+                >
+                  <span>Abrir Instrumento 7.° Año</span>
+                  <ArrowSquareOut size={20} weight="bold" />
+                </a>
+                <span className="text-[11px] text-center text-indigo-300/80 font-medium">
+                  Se abre en una ventana independiente
+                </span>
+              </div>
+
             </div>
-            <a
-              href={`/webapps/diagnostico_7mo_modulo01_docente_evaluador.html?docenteId=${encodeURIComponent(
-                docente?.idDocente || docente?.cedula || ""
-              )}&docente=${encodeURIComponent(docente?.nombreCompleto || "")}&institucion=${encodeURIComponent(
-                docente?.institucionNombre || ""
-              )}&dre=${encodeURIComponent(docente?.dreCodigo || "")}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2.5 bg-indigo-700 hover:bg-indigo-800 text-white rounded-xl text-xs font-bold shrink-0 transition-all shadow-xs"
-              title="Abrir instrumento de evaluación diagnóstico docente séptimo año"
-            >
-              <ArrowSquareOut size={16} weight="bold" />
-            </a>
           </div>
+        )}
 
-          <div className="p-5 bg-teal-50/80 border border-teal-200 rounded-2xl flex items-center justify-between gap-4">
-            <div className="space-y-1">
-              <span className="text-[10px] font-black text-teal-900 uppercase">Herramienta 8.° Año</span>
-              <h4 className="text-xs sm:text-sm font-black text-slate-900">Instrumento de evaluación diagnóstico docente octavo año</h4>
+        {nivelActivo === "8vo" && (
+          <div className="bg-gradient-to-br from-teal-900 via-teal-950 to-slate-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-teal-400 relative overflow-hidden space-y-6">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
+            
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+              
+              <div className="space-y-3 max-w-3xl">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="px-3 py-1 rounded-full bg-teal-500/30 text-teal-200 border border-teal-400/50 text-[11px] font-black uppercase tracking-wider">
+                    🤖 Herramienta Oficial • 8.° Año
+                  </span>
+                  <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-stone-200 text-[10px] font-bold">
+                    Módulo 1: Robótica y Automatización
+                  </span>
+                  <span className="px-2.5 py-0.5 rounded-full bg-teal-400/20 text-teal-200 text-[10px] font-bold">
+                    III Ciclo MEP 2026
+                  </span>
+                </div>
+
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-snug">
+                  Instrumento de evaluación diagnóstico docente octavo año
+                </h3>
+
+                <p className="text-xs sm:text-sm text-teal-100/90 leading-relaxed">
+                  Aplicativo central para la valoración y registro de criterios de logro, observación docente en tiempo real, gestión del enlace para estudiantes del nivel y generación automática de actas pedagógicas.
+                </p>
+
+                {/* Metadatos del Docente en el Instrumento */}
+                <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-teal-200">
+                  <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
+                    <ChalkboardTeacher size={16} className="text-teal-300" weight="bold" />
+                    <span>Docente: <strong>{docente?.nombreCompleto || "Docente MEP"}</strong></span>
+                  </div>
+                  <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
+                    <Buildings size={16} className="text-teal-300" weight="bold" />
+                    <span>Institución: <strong>{docente?.institucionNombre || "Centro Educativo MEP"}</strong></span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Botón de Apertura de la Tarjeta */}
+              <div className="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3">
+                <a
+                  href={urlEvaluadorActivo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2.5 px-6 py-4 bg-teal-500 hover:bg-teal-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-teal-500/30 hover:scale-[1.02] cursor-pointer"
+                >
+                  <span>Abrir Instrumento 8.° Año</span>
+                  <ArrowSquareOut size={20} weight="bold" />
+                </a>
+                <span className="text-[11px] text-center text-teal-300/80 font-medium">
+                  Se abre en una ventana independiente
+                </span>
+              </div>
+
             </div>
-            <a
-              href={`/webapps/diagnostico_8vo_modulo01_docente_evaluador.html?docenteId=${encodeURIComponent(
-                docente?.idDocente || docente?.cedula || ""
-              )}&docente=${encodeURIComponent(docente?.nombreCompleto || "")}&institucion=${encodeURIComponent(
-                docente?.institucionNombre || ""
-              )}&dre=${encodeURIComponent(docente?.dreCodigo || "")}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2.5 bg-teal-700 hover:bg-teal-800 text-white rounded-xl text-xs font-bold shrink-0 transition-all shadow-xs"
-              title="Abrir instrumento de evaluación diagnóstico docente octavo año"
-            >
-              <ArrowSquareOut size={16} weight="bold" />
-            </a>
           </div>
+        )}
 
-          <div className="p-5 bg-emerald-50/80 border border-emerald-200 rounded-2xl flex items-center justify-between gap-4">
-            <div className="space-y-1">
-              <span className="text-[10px] font-black text-emerald-900 uppercase">Herramienta 9.° Año</span>
-              <h4 className="text-xs sm:text-sm font-black text-slate-900">Instrumento de evaluación diagnóstico docente noveno año</h4>
+        {nivelActivo === "9no" && (
+          <div className="bg-gradient-to-br from-emerald-900 via-emerald-950 to-slate-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-emerald-400 relative overflow-hidden space-y-6">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
+            
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+              
+              <div className="space-y-3 max-w-3xl">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="px-3 py-1 rounded-full bg-emerald-500/30 text-emerald-200 border border-emerald-400/50 text-[11px] font-black uppercase tracking-wider">
+                    💡 Herramienta Oficial • 9.° Año
+                  </span>
+                  <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-stone-200 text-[10px] font-bold">
+                    Módulo 1: Aula Inteligente (IoT)
+                  </span>
+                  <span className="px-2.5 py-0.5 rounded-full bg-emerald-400/20 text-emerald-200 text-[10px] font-bold">
+                    III Ciclo MEP 2026
+                  </span>
+                </div>
+
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-snug">
+                  Instrumento de evaluación diagnóstico docente noveno año
+                </h3>
+
+                <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed">
+                  Aplicativo central para la valoración y registro de criterios de logro, observación docente en tiempo real, gestión del enlace único para estudiantes del nivel y telemetría curricular consolidada.
+                </p>
+
+                {/* Metadatos del Docente en el Instrumento */}
+                <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-emerald-200">
+                  <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
+                    <ChalkboardTeacher size={16} className="text-emerald-300" weight="bold" />
+                    <span>Docente: <strong>{docente?.nombreCompleto || "Docente MEP"}</strong></span>
+                  </div>
+                  <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
+                    <Buildings size={16} className="text-emerald-300" weight="bold" />
+                    <span>Institución: <strong>{docente?.institucionNombre || "Centro Educativo MEP"}</strong></span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Botón de Apertura de la Tarjeta */}
+              <div className="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3">
+                <a
+                  href={urlEvaluadorActivo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2.5 px-6 py-4 bg-emerald-500 hover:bg-emerald-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-emerald-500/30 hover:scale-[1.02] cursor-pointer"
+                >
+                  <span>Abrir Instrumento 9.° Año</span>
+                  <ArrowSquareOut size={20} weight="bold" />
+                </a>
+                <span className="text-[11px] text-center text-emerald-300/80 font-medium">
+                  Se abre en una ventana independiente
+                </span>
+              </div>
+
             </div>
-            <a
-              href={`/webapps/diagnostico_9no_modulo01_docente_evaluador.html?docenteId=${encodeURIComponent(
-                docente?.idDocente || docente?.cedula || ""
-              )}&docente=${encodeURIComponent(docente?.nombreCompleto || "")}&institucion=${encodeURIComponent(
-                docente?.institucionNombre || ""
-              )}&dre=${encodeURIComponent(docente?.dreCodigo || "")}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shrink-0 transition-all shadow-xs"
-              title="Abrir instrumento de evaluación diagnóstico docente noveno año"
-            >
-              <ArrowSquareOut size={16} weight="bold" />
-            </a>
           </div>
+        )}
 
-        </div>
-
-        {/* 3. TABLA DE REGISTROS DE TELEMETRÍA CON PESTAÑAS POR NIVEL */}
+        {/* ========================================================================= */}
+        {/* TABLA DE REGISTROS DE TELEMETRÍA SECCIONADA POR EL NIVEL ACTIVO           */}
+        {/* ========================================================================= */}
         <div className="bg-white rounded-3xl border border-stone-200 shadow-softPastel p-6 sm:p-8 space-y-6">
           
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-stone-100 pb-4">
@@ -570,60 +534,18 @@ export default function DashboardAnaliticoPage() {
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
                 <h3 className="font-black text-lg text-slate-900">
-                  Registros Consolidados de Telemetría ({telemetriaFiltrada.length})
+                  Registros Consolidados de Telemetría • {nivelActivo === "7mo" ? "7.° Séptimo Año" : nivelActivo === "8vo" ? "8.° Octavo Año" : "9.° Noveno Año"} ({telemetriaFiltrada.length})
                 </h3>
               </div>
               <p className="text-xs text-slate-500 mt-0.5">
-                Seguimiento de entregas en vivo categorizadas por sección y nivel
+                Seguimiento de entregas en vivo categorizadas para las secciones de {nivelActivo === "7mo" ? "7.°" : nivelActivo === "8vo" ? "8.°" : "9.°"} Año.
               </p>
             </div>
 
-            {/* Pestañas de Nivel para Filtrar la Tabla */}
-            <div className="flex items-center gap-1.5 p-1 bg-stone-100 rounded-xl border border-stone-200">
-              <button
-                type="button"
-                onClick={() => setFiltroNivelTab("todos")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                  filtroNivelTab === "todos"
-                    ? "bg-white text-slate-900 shadow-xs"
-                    : "text-stone-600 hover:text-slate-900"
-                }`}
-              >
-                Todos
-              </button>
-              <button
-                type="button"
-                onClick={() => setFiltroNivelTab("7mo")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                  filtroNivelTab === "7mo"
-                    ? "bg-indigo-700 text-white shadow-xs"
-                    : "text-stone-600 hover:text-slate-900"
-                }`}
-              >
-                7.° Año
-              </button>
-              <button
-                type="button"
-                onClick={() => setFiltroNivelTab("8vo")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                  filtroNivelTab === "8vo"
-                    ? "bg-teal-700 text-white shadow-xs"
-                    : "text-stone-600 hover:text-slate-900"
-                }`}
-              >
-                8.° Año
-              </button>
-              <button
-                type="button"
-                onClick={() => setFiltroNivelTab("9no")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                  filtroNivelTab === "9no"
-                    ? "bg-emerald-700 text-white shadow-xs"
-                    : "text-stone-600 hover:text-slate-900"
-                }`}
-              >
-                9.° Año
-              </button>
+            <div className="flex items-center gap-2">
+              <span className="px-3 py-1 rounded-xl bg-stone-100 text-stone-700 font-bold text-xs border border-stone-200">
+                {telemetriaFiltrada.length} entregas registradas
+              </span>
             </div>
           </div>
 
@@ -648,7 +570,7 @@ export default function DashboardAnaliticoPage() {
               onChange={(e) => setFiltroGrupo(e.target.value)}
               className="px-3 py-2 bg-stone-50 border border-stone-300 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:border-emerald-600"
             >
-              <option value="Todos">Todas las secciones</option>
+              <option value="Todos">Todas las secciones de {nivelActivo === "7mo" ? "7.°" : nivelActivo === "8vo" ? "8.°" : "9.°"}</option>
               {gruposDisponibles.map((g) => (
                 <option key={g} value={g}>
                   {g}
@@ -669,11 +591,11 @@ export default function DashboardAnaliticoPage() {
 
             <button
               onClick={() => {
-                if (confirm("⚠️ ¿Deseas vaciar la telemetría para iniciar de cero con tus grupos reales?")) {
+                if (confirm(`⚠️ ¿Deseas vaciar la telemetría de ${nivelActivo === "7mo" ? "7.°" : nivelActivo === "8vo" ? "8.°" : "9.°"} Año para iniciar de cero con tus grupos reales?`)) {
                   limpiarTelemetria();
                 }
               }}
-              className="px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl font-bold text-xs flex items-center gap-1.5 transition-all"
+              className="px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer"
               title="Vaciar telemetría"
             >
               <Trash size={15} weight="bold" />
@@ -704,10 +626,10 @@ export default function DashboardAnaliticoPage() {
                           <CheckCircle size={24} weight="duotone" />
                         </div>
                         <div className="font-extrabold text-slate-800 text-sm">
-                          Sin registros de telemetría activos
+                          Sin registros de telemetría en {nivelActivo === "7mo" ? "7.° Séptimo" : nivelActivo === "8vo" ? "8.° Octavo" : "9.° Noveno"} Año
                         </div>
                         <p className="text-xs text-slate-500 leading-relaxed">
-                          Este espacio se encuentra completamente limpio y listo. Al compartir el enlace oficial de su nivel con sus estudiantes, las entregas y evaluaciones aparecerán aquí en tiempo real.
+                          Este espacio se encuentra completamente listo. Al aplicar el diagnóstico con sus estudiantes de este nivel, sus entregas y evaluaciones aparecerán aquí en tiempo real.
                         </p>
                       </div>
                     </td>
@@ -751,14 +673,14 @@ export default function DashboardAnaliticoPage() {
                           <div className="flex items-center justify-center gap-1.5">
                             <button
                               onClick={() => abrirEditar(item)}
-                              className="p-1.5 text-stone-500 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition-colors"
+                              className="p-1.5 text-stone-500 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition-colors cursor-pointer"
                               title="Editar registro"
                             >
                               <NotePencil size={15} weight="bold" />
                             </button>
                             <button
                               onClick={() => eliminarResultado(item.timestamp)}
-                              className="p-1.5 text-stone-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition-colors"
+                              className="p-1.5 text-stone-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
                               title="Eliminar registro"
                             >
                               <Trash size={15} weight="bold" />
@@ -775,25 +697,27 @@ export default function DashboardAnaliticoPage() {
 
         </div>
 
-        {/* 4. GRÁFICAS DE SECCIONES Y SEMÁFORO DE LOGRO INSTITUCIONAL */}
+        {/* ========================================================================= */}
+        {/* GRÁFICAS Y ANÁLISIS PEDAGÓGICO DEL NIVEL ACTIVO                           */}
+        {/* ========================================================================= */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <SemaforoLogro
             registros={telemetriaFiltrada}
             configuracion={configuracion}
-            nivel={filtroNivelTab}
+            nivel={nivelActivo}
           />
           <GraficasSecciones
             registros={telemetriaFiltrada}
             configuracion={configuracion}
-            nivel={filtroNivelTab}
+            nivel={nivelActivo}
           />
         </div>
 
-        {/* 5. RECOMENDACIONES PEDAGÓGICAS DUA */}
+        {/* RECOMENDACIONES PEDAGÓGICAS DUA DEL NIVEL ACTIVO */}
         <RecomendacionesDUA
           registros={telemetriaFiltrada}
           configuracion={configuracion}
-          nivel={filtroNivelTab}
+          nivel={nivelActivo}
         />
 
         {/* MODAL EDITAR REGISTRO */}
@@ -804,7 +728,7 @@ export default function DashboardAnaliticoPage() {
                 <h3 className="font-black text-slate-900 text-sm">Editar Registro de Estudiante</h3>
                 <button
                   onClick={() => setRegistroEditando(null)}
-                  className="text-stone-400 hover:text-slate-700 font-bold text-xs"
+                  className="text-stone-400 hover:text-slate-700 font-bold text-xs cursor-pointer"
                 >
                   ✕ Cerrar
                 </button>
@@ -850,13 +774,13 @@ export default function DashboardAnaliticoPage() {
                   <button
                     type="button"
                     onClick={() => setRegistroEditando(null)}
-                    className="px-4 py-2 bg-stone-100 hover:bg-stone-200 text-slate-700 text-xs font-bold rounded-xl"
+                    className="px-4 py-2 bg-stone-100 hover:bg-stone-200 text-slate-700 text-xs font-bold rounded-xl cursor-pointer"
                   >
                     Cancelar
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-xl shadow-xs"
+                    className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-xl shadow-xs cursor-pointer"
                   >
                     Guardar Cambios
                   </button>
