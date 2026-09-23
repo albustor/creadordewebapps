@@ -545,11 +545,11 @@
         </div>
       </div>
 
-      <!-- PESTAÑAS DE ÁREA SUPERIORES REORDENADAS OFICIAL MEP (SOCIOAFECTIVA -> PSICOMOTRIZ -> COGNITIVA) -->
+      <!-- PESTAÑAS DE ÁREA SUPERIORES REORDENADAS OFICIAL MEP (COGNITIVA -> PSICOMOTRIZ -> SOCIOAFECTIVA) -->
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px;">
-        <button type="button" id="tabAreaSoc" class="view-tab activa" onclick="cambiarAreaObservacion('soc')" style="padding: 12px 10px; font-size: 12px; border-color: #fde68a; color: #b45309; background: #fef3c7;">
-          <span style="font-size: 13px; font-weight: 900;">❤️ 1. ÁREA SOCIOAFECTIVA / ACTITUDINAL</span>
-          <span style="font-size: 10px; color: #92400e; font-weight: normal;">4 Actitudes del Pensador Computacional y Autopercepción</span>
+        <button type="button" id="tabAreaCog" class="view-tab activa" onclick="cambiarAreaObservacion('cog')" style="padding: 12px 10px; font-size: 12px; border-color: #7dd3fc; color: #0369a1; background: #e0f2fe;">
+          <span style="font-size: 13px; font-weight: 900;">🧠 1. ÁREA COGNITIVA</span>
+          <span style="font-size: 10px; color: #0284c7; font-weight: normal;">10 Saberes Conceptuales (Indicadores WebApp)</span>
         </button>
 
         <button type="button" id="tabAreaPsi" class="view-tab" onclick="cambiarAreaObservacion('psi')" style="padding: 12px 10px; font-size: 12px; border-color: #86efac; color: #15803d; background: #ffffff;">
@@ -557,9 +557,9 @@
           <span style="font-size: 10px; color: #166534; font-weight: normal;">6 Prácticas del Pensador Computacional en Simulación</span>
         </button>
 
-        <button type="button" id="tabAreaCog" class="view-tab" onclick="cambiarAreaObservacion('cog')" style="padding: 12px 10px; font-size: 12px; border-color: #7dd3fc; color: #0369a1; background: #ffffff;">
-          <span style="font-size: 13px; font-weight: 900;">🧠 3. ÁREA COGNITIVA</span>
-          <span style="font-size: 10px; color: #0284c7; font-weight: normal;">10 Saberes Conceptuales (Indicadores WebApp)</span>
+        <button type="button" id="tabAreaSoc" class="view-tab" onclick="cambiarAreaObservacion('soc')" style="padding: 12px 10px; font-size: 12px; border-color: #fde68a; color: #b45309; background: #ffffff;">
+          <span style="font-size: 13px; font-weight: 900;">❤️ 3. ÁREA SOCIOAFECTIVA / ACTITUDINAL</span>
+          <span style="font-size: 10px; color: #92400e; font-weight: normal;">4 Actitudes del Pensador Computacional y Autopercepción</span>
         </button>
       </div>
 
@@ -598,7 +598,7 @@
             ✨ Analizar Sección con IA
           </button>
           <button type="button" class="btn btn-outline" style="font-size: 11px; padding: 4px 10px; min-height: 28px;" id="btnMarcarTodoNivelA" onclick="marcarTodoGrupoNivelA()">
-            ⚡ Marcar Toda la Sección Socioafectiva en Nivel A
+            ⚡ Marcar Todo el Grupo Cognitivo en Logrado (L)
           </button>
           <div style="font-size: 11.5px; color: #475569; margin-left: 4px;">
             Total: <strong style="color: #0284c7;" id="cntTotalObs">0</strong> • Evaluados: <strong style="color: #15803d;" id="cntEvaluadosObs">0</strong>
@@ -626,31 +626,10 @@
         <div style="margin-top: 12px; pt-3; border-top: 1px dashed #cbd5e1;">
           <!-- Simbología para las 3 Áreas -->
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; font-size: 11.5px; margin-bottom: 10px;">
-            <!-- 1. Área Socioafectiva y Psicomotora (Escala A / B / C) -->
-            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px;">
-              <strong style="color: #b45309; display: block; margin-bottom: 4px; font-size: 11px;">
-                ❤️ Socioafectiva & 🖐️ Psicomotriz (Escala A / B / C):
-              </strong>
-              <div style="display: flex; flex-direction: column; gap: 4px;">
-                <div style="display: flex; align-items: center; gap: 6px;">
-                  <span style="background: #dcfce7; color: #15803d; border: 1px solid #86efac; font-weight: 900; font-size: 10.5px; padding: 1px 7px; border-radius: 4px;">A</span>
-                  <span style="color: #334155;"><strong>Nivel A (Alto / Autónomo / Consistente):</strong> Ejecuta con rigor y autonomía</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 6px;">
-                  <span style="background: #fef3c7; color: #b45309; border: 1px solid #fde68a; font-weight: 900; font-size: 10.5px; padding: 1px 7px; border-radius: 4px;">B</span>
-                  <span style="color: #334155;"><strong>Nivel B (Medio / Con Apoyo Ocasional):</strong> Requiere guía puntual o pista</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 6px;">
-                  <span style="background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; font-weight: 900; font-size: 10.5px; padding: 1px 7px; border-radius: 4px;">C</span>
-                  <span style="color: #334155;"><strong>Nivel C (Inicial / Acompañamiento):</strong> Demanda modelado paso a paso</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- 2. Área Cognitiva (L / ED / RA) -->
+            <!-- 1. Área Cognitiva (L / ED / RA) -->
             <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px;">
               <strong style="color: #0369a1; display: block; margin-bottom: 4px; font-size: 11px;">
-                🧠 Área Cognitiva (Saberes Conceptuales):
+                🧠 1. Área Cognitiva (Saberes Conceptuales):
               </strong>
               <div style="display: flex; flex-direction: column; gap: 4px;">
                 <div style="display: flex; align-items: center; gap: 6px;">
@@ -667,25 +646,52 @@
                 </div>
               </div>
             </div>
+
+            <!-- 2. Área Psicomotora y Socioafectiva (Escala A / B / C) -->
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px;">
+              <strong style="color: #15803d; display: block; margin-bottom: 4px; font-size: 11px;">
+                🖐️ 2. Psicomotriz & ❤️ 3. Socioafectiva (Escala A / B / C):
+              </strong>
+              <div style="display: flex; flex-direction: column; gap: 4px;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span style="background: #dcfce7; color: #15803d; border: 1px solid #86efac; font-weight: 900; font-size: 10.5px; padding: 1px 7px; border-radius: 4px;">A</span>
+                  <span style="color: #334155;"><strong>Nivel A (Alto / Autónomo / Consistente):</strong> Ejecuta con rigor y autonomía</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span style="background: #fef3c7; color: #b45309; border: 1px solid #fde68a; font-weight: 900; font-size: 10.5px; padding: 1px 7px; border-radius: 4px;">B</span>
+                  <span style="color: #334155;"><strong>Nivel B (Medio / Con Apoyo Ocasional):</strong> Requiere guía puntual o pista</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span style="background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; font-weight: 900; font-size: 10.5px; padding: 1px 7px; border-radius: 4px;">C</span>
+                  <span style="color: #334155;"><strong>Nivel C (Inicial / Acompañamiento):</strong> Demanda modelado paso a paso</span>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- Glosario y Desglose Completo de Criterios (Optimizado para Celular / Tableta) -->
+          <!-- Glosario y Desglose Completo de Criterios (Optimizado para Computadora / Tableta / Celular) -->
           <div style="font-size: 11px;">
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; margin-bottom: 8px;">
               <span style="color: #0369a1; font-weight: 700; display: flex; align-items: center; gap: 4px;">
-                💡 <span>En computadora o tableta: <strong>Haz clic en cualquier encabezado (ej. ℹ️ S1, P1, Ind 1)</strong> en la tabla para ver su rúbrica y descripción completa.</span>
+                💡 <span>En computadora o tableta: <strong>Haz clic en cualquier encabezado (ej. ℹ️ Ind 1, P1, S1)</strong> en la tabla para ver su rúbrica y descripción completa.</span>
               </span>
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 10px;">
-              <!-- 1. Socioafectiva / Actitudinal -->
-              <div style="background: #ffffff; border: 1px solid #fde68a; border-radius: 8px; padding: 10px;">
-                <strong style="color: #b45309; display: block; margin-bottom: 6px; font-size: 11.5px;">❤️ 1. ÁREA SOCIOAFECTIVA / ACTITUDINAL (4 Actitudes Oficiales del Pensador Computacional y Autopercepción):</strong>
-                <ul style="padding-left: 18px; line-height: 1.6; color: #334155; font-size: 10.5px;">
-                  <li><strong>S1. Gusto por la Precisión:</strong> Demuestra esmero y minuciosidad al verificar los cables, los valores del multímetro (1.05V, 45W) y el monitor serial UART antes de avanzar.<br><span style="color:#64748b;"><em>Escala: Nivel A: Alto rigor y minuciosidad | Nivel B: Precisión moderada | Nivel C: Precipitación / descuido</em></span></li>
-                  <li><strong>S2. Aprender del Error:</strong> Convierte los desaciertos en oportunidades de aprendizaje: analiza con calma por qué la lámpara no encendía en lugar de rendirse o probar al azar.<br><span style="color:#64748b;"><em>Escala: Nivel A: Análisis reflexivo ante el fallo | Nivel B: Corrige tras orientación | Nivel C: Frustración ante el error</em></span></li>
-                  <li><strong>S3. Flexibilidad ante Problemas:</strong> Demuestra adaptabilidad y resiliencia para replantear su hipótesis cuando la propuesta con falla no responde como esperaba.<br><span style="color:#64748b;"><em>Escala: Nivel A: Adaptable y proactivo/a | Nivel B: Flexible con acompañamiento | Nivel C: Rigidez ante el problema</em></span></li>
-                  <li><strong>S4. Tolerancia a la Frustración y Confort:</strong> Autocontrol, paciencia y persistencia. Se vincula al selector emocional (Muy cómodo/a, Cómodo/a, Con alguna dificultad, Necesité bastante apoyo).<br><span style="color:#64748b;"><em>Escala: Nivel A: Alta perseverancia y confort | Nivel B: Persistencia media | Nivel C: Requiere soporte emocional constante</em></span></li>
+              <!-- 1. Cognitiva / Conceptual -->
+              <div style="background: #ffffff; border: 1px solid #7dd3fc; border-radius: 8px; padding: 10px;">
+                <strong style="color: #0369a1; display: block; margin-bottom: 6px; font-size: 11.5px;">🧠 1. ÁREA COGNITIVA (10 Saberes Conceptuales - Indicadores de Logro MEP):</strong>
+                <ul style="padding-left: 18px; line-height: 1.5; color: #334155; font-size: 10.5px;">
+                  <li><strong>Ind 1. Control (Microcontrolador):</strong> Reconoce la lógica de procesamiento, arquitectura básica 328P y voltajes (5V).</li>
+                  <li><strong>Ind 2. Sensor (Sensor y Actuador):</strong> Diferencia entre componentes de entrada sensorial (LDR/NTC) y de salida (LED/Ventilador).</li>
+                  <li><strong>Ind 3. E-P-S (Flujo Sistémico):</strong> Comprende el ciclo sistémico Entrada ➔ Proceso ➔ Salida y relación causa-efecto.</li>
+                  <li><strong>Ind 4. Fuente (Energía y Polaridad):</strong> Identifica el suministro de energía continua (+5V y GND) y respeto de polaridad.</li>
+                  <li><strong>Ind 5. Conv. E (Transformación Energética):</strong> Reconoce la transformación de energía eléctrica a luz, movimiento o calor.</li>
+                  <li><strong>Ind 6. Conduc. (Conductores y Aislantes):</strong> Identifica materiales y caminos conductores para el flujo de corriente.</li>
+                  <li><strong>Ind 7. Circuito (Circuito Cerrado):</strong> Comprende el lazo cerrado y retorno a tierra común (GND) para energizar cargas.</li>
+                  <li><strong>Ind 8. Ohm (Ley de Ohm Cualitativa):</strong> Relaciona voltaje, corriente y resistencia protectora de componentes.</li>
+                  <li><strong>Ind 9. Sim 2D (Reto de Ensamble):</strong> Aplica el conexionado interactivo de sensores y actuadores en el simulador 2D.</li>
+                  <li><strong>Ind 10. Reflex. (Metacognición y Seguridad):</strong> Autoevalúa aprendizajes previos y normas de seguridad en el laboratorio tecnológico.</li>
                 </ul>
               </div>
 
@@ -702,20 +708,14 @@
                 </ul>
               </div>
 
-              <!-- 3. Cognitiva / Conceptual -->
-              <div style="background: #ffffff; border: 1px solid #7dd3fc; border-radius: 8px; padding: 10px;">
-                <strong style="color: #0369a1; display: block; margin-bottom: 6px; font-size: 11.5px;">🧠 3. ÁREA COGNITIVA (10 Saberes Conceptuales - Indicadores de Logro MEP):</strong>
-                <ul style="padding-left: 18px; line-height: 1.5; color: #334155; font-size: 10.5px;">
-                  <li><strong>Ind 1. Control (Microcontrolador):</strong> Reconoce la lógica de procesamiento, arquitectura básica 328P y voltajes (5V).</li>
-                  <li><strong>Ind 2. Sensor (Sensor y Actuador):</strong> Diferencia entre componentes de entrada sensorial (LDR/NTC) y de salida (LED/Ventilador).</li>
-                  <li><strong>Ind 3. E-P-S (Flujo Sistémico):</strong> Comprende el ciclo sistémico Entrada ➔ Proceso ➔ Salida y relación causa-efecto.</li>
-                  <li><strong>Ind 4. Fuente (Energía y Polaridad):</strong> Identifica el suministro de energía continua (+5V y GND) y respeto de polaridad.</li>
-                  <li><strong>Ind 5. Conv. E (Transformación Energética):</strong> Reconoce la transformación de energía eléctrica a luz, movimiento o calor.</li>
-                  <li><strong>Ind 6. Conduc. (Conductores y Aislantes):</strong> Identifica materiales y caminos conductores para el flujo de corriente.</li>
-                  <li><strong>Ind 7. Circuito (Circuito Cerrado):</strong> Comprende el lazo cerrado y retorno a tierra común (GND) para energizar cargas.</li>
-                  <li><strong>Ind 8. Ohm (Ley de Ohm Cualitativa):</strong> Relaciona voltaje, corriente y resistencia protectora de componentes.</li>
-                  <li><strong>Ind 9. Sim 2D (Reto de Ensamble):</strong> Aplica el conexionado interactivo de sensores y actuadores en el simulador 2D.</li>
-                  <li><strong>Ind 10. Reflex. (Metacognición y Seguridad):</strong> Autoevalúa aprendizajes previos y normas de seguridad en el laboratorio tecnológico.</li>
+              <!-- 3. Socioafectiva / Actitudinal -->
+              <div style="background: #ffffff; border: 1px solid #fde68a; border-radius: 8px; padding: 10px;">
+                <strong style="color: #b45309; display: block; margin-bottom: 6px; font-size: 11.5px;">❤️ 3. ÁREA SOCIOAFECTIVA / ACTITUDINAL (4 Actitudes Oficiales del Pensador Computacional y Autopercepción):</strong>
+                <ul style="padding-left: 18px; line-height: 1.6; color: #334155; font-size: 10.5px;">
+                  <li><strong>S1. Gusto por la Precisión:</strong> Demuestra esmero y minuciosidad al verificar los cables, los valores del multímetro (1.05V, 45W) y el monitor serial UART antes de avanzar.<br><span style="color:#64748b;"><em>Escala: Nivel A: Alto rigor y minuciosidad | Nivel B: Precisión moderada | Nivel C: Precipitación / descuido</em></span></li>
+                  <li><strong>S2. Aprender del Error:</strong> Convierte los desaciertos en oportunidades de aprendizaje: analiza con calma por qué la lámpara no encendía en lugar de rendirse o probar al azar.<br><span style="color:#64748b;"><em>Escala: Nivel A: Análisis reflexivo ante el fallo | Nivel B: Corrige tras orientación | Nivel C: Frustración ante el error</em></span></li>
+                  <li><strong>S3. Flexibilidad ante Problemas:</strong> Demuestra adaptabilidad y resiliencia para replantear su hipótesis cuando la propuesta con falla no responde como esperaba.<br><span style="color:#64748b;"><em>Escala: Nivel A: Adaptable y proactivo/a | Nivel B: Flexible con acompañamiento | Nivel C: Rigidez ante el problema</em></span></li>
+                  <li><strong>S4. Tolerancia a la Frustración y Confort:</strong> Autocontrol, paciencia y persistencia. Se vincula al selector emocional (Muy cómodo/a, Cómodo/a, Con alguna dificultad, Necesité bastante apoyo).<br><span style="color:#64748b;"><em>Escala: Nivel A: Alta perseverancia y confort | Nivel B: Persistencia media | Nivel C: Requiere soporte emocional constante</em></span></li>
                 </ul>
               </div>
             </div>
@@ -1213,7 +1213,7 @@
 
     var estadoDocente = {
       vistaActual: 1,
-      areaActiva: 'soc', // 'soc' (1. Socioafectiva), 'psi' (2. Psicomotriz), 'cog' (3. Cognitiva)
+      areaActiva: 'cog', // 'cog' (1. Cognitiva), 'psi' (2. Psicomotriz), 'soc' (3. Socioafectiva)
       estudiantes: [],
       estudianteActivoIdx: 0,
       seccionFiltro: "TODAS"
@@ -1232,9 +1232,9 @@
       var descEl = document.getElementById("modalCriterioTexto");
       var escalaEl = document.getElementById("modalCriterioEscala");
 
-      var areaNombre = area === 'soc' ? "❤️ 1. Área Socioafectiva" : (area === 'psi' ? "🖐️ 2. Área Psicomotriz" : "🧠 3. Área Cognitiva");
-      var areaColor = area === 'soc' ? "#b45309" : (area === 'psi' ? "#15803d" : "#0369a1");
-      var areaBg = area === 'soc' ? "#fef3c7" : (area === 'psi' ? "#dcfce7" : "#e0f2fe");
+      var areaNombre = area === 'cog' ? "🧠 1. Área Cognitiva" : (area === 'psi' ? "🖐️ 2. Área Psicomotriz" : "❤️ 3. Área Socioafectiva");
+      var areaColor = area === 'cog' ? "#0369a1" : (area === 'psi' ? "#15803d" : "#b45309");
+      var areaBg = area === 'cog' ? "#e0f2fe" : (area === 'psi' ? "#dcfce7" : "#fef3c7");
 
       if (areaBadgeEl) {
         areaBadgeEl.innerText = areaNombre;

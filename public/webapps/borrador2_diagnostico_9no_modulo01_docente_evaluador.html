@@ -547,19 +547,19 @@
 
       <!-- PESTAÑAS DE ÁREA SUPERIORES (ENCABEZADOS DE COLUMNA A1, B1, C1) -->
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px;">
-        <button type="button" id="tabAreaPsi" class="view-tab activa" onclick="cambiarAreaObservacion('psi')" style="padding: 12px 10px; font-size: 12px; border-color: #86efac; color: #15803d; background: #dcfce7;">
-          <span style="font-size: 13px; font-weight: 900;">🖐️ 1. ÁREA PSICOMOTORA</span>
+        <button type="button" id="tabAreaCog" class="view-tab activa" onclick="cambiarAreaObservacion('cog')" style="padding: 12px 10px; font-size: 12px; border-color: #7dd3fc; color: #0369a1; background: #e0f2fe;">
+          <span style="font-size: 13px; font-weight: 900;">🧠 1. ÁREA COGNITIVA</span>
+          <span style="font-size: 10px; color: #0284c7; font-weight: normal;">10 Indicadores de Logro (Sincronizado WebApp)</span>
+        </button>
+
+        <button type="button" id="tabAreaPsi" class="view-tab" onclick="cambiarAreaObservacion('psi')" style="padding: 12px 10px; font-size: 12px; border-color: #86efac; color: #15803d; background: #ffffff;">
+          <span style="font-size: 13px; font-weight: 900;">🖐️ 2. ÁREA PSICOMOTORA</span>
           <span style="font-size: 10px; color: #166534; font-weight: normal;">6 Conductas Reto «Conecta el Prototipo»</span>
         </button>
 
         <button type="button" id="tabAreaSoc" class="view-tab" onclick="cambiarAreaObservacion('soc')" style="padding: 12px 10px; font-size: 12px; border-color: #fde68a; color: #b45309; background: #ffffff;">
-          <span style="font-size: 13px; font-weight: 900;">❤️ 2. ÁREA SOCIOAFECTIVA</span>
+          <span style="font-size: 13px; font-weight: 900;">❤️ 3. ÁREA SOCIOAFECTIVA</span>
           <span style="font-size: 10px; color: #92400e; font-weight: normal;">4 Actitudes Oficiales del Pensador Computacional</span>
-        </button>
-
-        <button type="button" id="tabAreaCog" class="view-tab" onclick="cambiarAreaObservacion('cog')" style="padding: 12px 10px; font-size: 12px; border-color: #7dd3fc; color: #0369a1; background: #ffffff;">
-          <span style="font-size: 13px; font-weight: 900;">🧠 3. ÁREA COGNITIVA</span>
-          <span style="font-size: 10px; color: #0284c7; font-weight: normal;">10 Indicadores de Logro (Sincronizado WebApp)</span>
         </button>
       </div>
 
@@ -1212,7 +1212,7 @@
 
     var estadoDocente = {
       vistaActual: 1,
-      areaActiva: 'psi', // 'psi' (Psicomotora), 'soc' (Socioafectiva), 'cog' (Cognitiva)
+      areaActiva: 'cog', // 'cog' (1. Cognitiva), 'psi' (2. Psicomotora), 'soc' (3. Socioafectiva)
       estudiantes: [],
       estudianteActivoIdx: 0,
       seccionFiltro: "TODAS"
@@ -1231,9 +1231,9 @@
       var descEl = document.getElementById("modalCriterioTexto");
       var escalaEl = document.getElementById("modalCriterioEscala");
 
-      var areaNombre = area === 'psi' ? "🖐️ 1. Área Psicomotora" : (area === 'soc' ? "❤️ 2. Área Socioafectiva" : "🧠 3. Área Cognitiva");
-      var areaColor = area === 'psi' ? "#15803d" : (area === 'soc' ? "#b45309" : "#0369a1");
-      var areaBg = area === 'psi' ? "#dcfce7" : (area === 'soc' ? "#fef3c7" : "#e0f2fe");
+      var areaNombre = area === 'cog' ? "🧠 1. Área Cognitiva" : (area === 'psi' ? "🖐️ 2. Área Psicomotora" : "❤️ 3. Área Socioafectiva");
+      var areaColor = area === 'cog' ? "#0369a1" : (area === 'psi' ? "#15803d" : "#b45309");
+      var areaBg = area === 'cog' ? "#e0f2fe" : (area === 'psi' ? "#dcfce7" : "#fef3c7");
 
       if (areaBadgeEl) {
         areaBadgeEl.innerText = areaNombre;
