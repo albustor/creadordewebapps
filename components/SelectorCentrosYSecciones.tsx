@@ -70,7 +70,7 @@ export default function SelectorCentrosYSecciones({
         const numNivel = dn.nivel.replace(/[^0-9]/g, "");
         const secs = nuevoActivo && dn.seccionesAtendidasDocente.length === 0
           ? Array.from({ length: dn.totalSeccionesColegio }, (_, i) => `${numNivel}-${i + 1}`)
-          : dn.seccionesAtendidasDocente;
+          : (!nuevoActivo ? [] : dn.seccionesAtendidasDocente);
         return { ...dn, activo: nuevoActivo, seccionesAtendidasDocente: secs };
       }
       return dn;

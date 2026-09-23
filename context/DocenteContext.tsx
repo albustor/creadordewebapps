@@ -798,14 +798,23 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
                 dreNombre: c.dreNombre,
                 circuito: c.circuito,
                 niveles: {
-                  '7': (c.desgloseNiveles || []).some((dn) => dn.nivel.includes("7") && dn.activo),
-                  '8': (c.desgloseNiveles || []).some((dn) => dn.nivel.includes("8") && dn.activo),
-                  '9': (c.desgloseNiveles || []).some((dn) => dn.nivel.includes("9") && dn.activo),
+                  '7': (c.desgloseNiveles || []).some((dn) => dn.nivel.includes("7") && dn.activo && (dn.seccionesAtendidasDocente || []).length > 0),
+                  '8': (c.desgloseNiveles || []).some((dn) => dn.nivel.includes("8") && dn.activo && (dn.seccionesAtendidasDocente || []).length > 0),
+                  '9': (c.desgloseNiveles || []).some((dn) => dn.nivel.includes("9") && dn.activo && (dn.seccionesAtendidasDocente || []).length > 0),
                 },
                 secciones: {
-                  '7': { total: 6, selected: (c.desgloseNiveles?.find((dn) => dn.nivel.includes("7"))?.seccionesAtendidasDocente) || ["7-1"] },
-                  '8': { total: 6, selected: (c.desgloseNiveles?.find((dn) => dn.nivel.includes("8"))?.seccionesAtendidasDocente) || ["8-1"] },
-                  '9': { total: 6, selected: (c.desgloseNiveles?.find((dn) => dn.nivel.includes("9"))?.seccionesAtendidasDocente) || ["9-1"] },
+                  '7': {
+                    total: (c.desgloseNiveles?.find((dn) => dn.nivel.includes("7"))?.totalSeccionesColegio) || 6,
+                    selected: (c.desgloseNiveles?.find((dn) => dn.nivel.includes("7") && dn.activo)?.seccionesAtendidasDocente) || [],
+                  },
+                  '8': {
+                    total: (c.desgloseNiveles?.find((dn) => dn.nivel.includes("8"))?.totalSeccionesColegio) || 6,
+                    selected: (c.desgloseNiveles?.find((dn) => dn.nivel.includes("8") && dn.activo)?.seccionesAtendidasDocente) || [],
+                  },
+                  '9': {
+                    total: (c.desgloseNiveles?.find((dn) => dn.nivel.includes("9"))?.totalSeccionesColegio) || 8,
+                    selected: (c.desgloseNiveles?.find((dn) => dn.nivel.includes("9") && dn.activo)?.seccionesAtendidasDocente) || [],
+                  },
                 },
               }))
             : [{

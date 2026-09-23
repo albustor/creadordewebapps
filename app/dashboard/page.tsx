@@ -79,33 +79,21 @@ export default function DashboardAnaliticoPage() {
   const listaCentrosDocente = useMemo(() => {
     const nivelKey = nivelActivo === "7mo" ? "7" : nivelActivo === "8vo" ? "8" : "9";
     if (docente?.centrosEducativos && Array.isArray(docente.centrosEducativos) && docente.centrosEducativos.length > 0) {
-      // Filtrar únicamente los colegios que tengan activo el nivel seleccionado
+      // Filtrar únicamente los colegios que tengan activo el nivel seleccionado y que tengan secciones atendidas
       const centrosConNivel = docente.centrosEducativos.filter((c) => {
         if (!c) return false;
         if (c.desgloseNiveles && Array.isArray(c.desgloseNiveles) && c.desgloseNiveles.length > 0) {
           const dn = c.desgloseNiveles.find((d) => d && typeof d.nivel === "string" && d.nivel.includes(nivelKey));
-          return dn ? dn.activo !== false : false;
+          return Boolean(dn && dn.activo === true && Array.isArray(dn.seccionesAtendidasDocente) && dn.seccionesAtendidasDocente.length > 0);
         }
         if ((c as any).niveles) {
           if (Array.isArray((c as any).niveles)) return (c as any).niveles.some((n: any) => typeof n === "string" && n.includes(nivelKey));
           if (typeof (c as any).niveles === "object") return Boolean((c as any).niveles[nivelKey]);
         }
-        return true;
+        return false;
       });
 
-      const centrosAProcesar = centrosConNivel.length > 0 ? centrosConNivel : docente.centrosEducativos;
-
-      return centrosAProcesar.map((c, idx) => {
-        if (!c) {
-          return {
-            id: `centro-${idx}`,
-            nombre: `Institución ${idx + 1}`,
-            dreCodigo: "DRE-01",
-            dreNombre: "San José Central",
-            circuito: "Circuito 01",
-            seccionesAtendidas: [`${nivelKey}-1`],
-          };
-        }
+      return centrosConNivel.map((c, idx) => {
         const dn = c.desgloseNiveles?.find((d) => d && typeof d.nivel === "string" && d.nivel.includes(nivelKey));
         let seccionesDoc: string[] = [];
         if (dn?.seccionesAtendidasDocente && Array.isArray(dn.seccionesAtendidasDocente) && dn.seccionesAtendidasDocente.length > 0) {
@@ -566,48 +554,63 @@ export default function DashboardAnaliticoPage() {
                   </div>
                 </div>
 
-                {/* SELECTOR DE COLEGIOS REGISTRADOS (SI TIENE MÁS DE 1) */}
+                {/* SELECTOR DE COLEGIOS REGISTRADOS */}
                 <div className="space-y-2 pt-1">
                   <label className="text-[11px] font-black uppercase text-indigo-300 tracking-wider flex items-center gap-1.5">
                     <Buildings size={15} weight="bold" />
-                    <span>Centros Educativos Registrados ({listaCentrosDocente.length}):</span>
+                    <span>Centros Educativos Asignados ({listaCentrosDocente.length}):</span>
                   </label>
-                  <div className="flex flex-wrap gap-2">
-                    {listaCentrosDocente.map((c, idx) => (
-                      <button
-                        key={c.id || idx}
-                        type="button"
-                        onClick={() => setCentroActivoIdx(idx)}
-                        className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs transition-all cursor-pointer border ${
-                          centroActivoIdx === idx
-                            ? "bg-white text-slate-900 border-white shadow-md font-black scale-[1.02]"
-                            : "bg-white/10 hover:bg-white/20 text-white border-white/20 font-semibold"
-                        }`}
-                      >
-                        <span>🏫 {c.nombre}</span>
-                        <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
-                          centroActivoIdx === idx ? "bg-slate-200 text-slate-800" : "bg-black/30 text-stone-200"
-                        }`}>
-                          {c.dreCodigo || c.dreNombre}
-                        </span>
-                      </button>
-                    ))}
-                  </div>
+                  {listaCentrosDocente.length > 0 ? (
+                    <div className="flex flex-wrap gap-2">
+                      {listaCentrosDocente.map((c, idx) => (
+                        <button
+                          key={c.id || idx}
+                          type="button"
+                          onClick={() => setCentroActivoIdx(idx)}
+                          className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs transition-all cursor-pointer border ${
+                            centroActivoIdx === idx
+                              ? "bg-white text-slate-900 border-white shadow-md font-black scale-[1.02]"
+                              : "bg-white/10 hover:bg-white/20 text-white border-white/20 font-semibold"
+                          }`}
+                        >
+                          <span>🏫 {c.nombre}</span>
+                          <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
+                            centroActivoIdx === idx ? "bg-slate-200 text-slate-800" : "bg-black/30 text-stone-200"
+                          }`}>
+                            {c.dreCodigo || c.dreNombre}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="p-3 bg-white/10 border border-white/20 rounded-xl text-xs text-indigo-200 flex items-center justify-between gap-3">
+                      <span>No tienes secciones asignadas para 7.° Año en tu perfil.</span>
+                      <Link href="/registro" className="px-2.5 py-1 bg-white text-slate-900 font-bold rounded-lg text-[11px] hover:bg-slate-100">
+                        Editar en Mi Perfil
+                      </Link>
+                    </div>
+                  )}
                 </div>
 
               </div>
 
               {/* Botones de Apertura de la Tarjeta */}
               <div className="shrink-0 flex flex-col gap-2.5">
-                <a
-                  href={getUrlEvaluador(centroActivo)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2.5 px-6 py-4 bg-indigo-500 hover:bg-indigo-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-indigo-500/30 hover:scale-[1.02] cursor-pointer text-center"
-                >
-                  <span>Abrir Instrumento 7.° Año</span>
-                  <ArrowSquareOut size={20} weight="bold" />
-                </a>
+                {listaCentrosDocente.length > 0 && centroActivo ? (
+                  <a
+                    href={getUrlEvaluador(centroActivo)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2.5 px-6 py-4 bg-indigo-500 hover:bg-indigo-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-indigo-500/30 hover:scale-[1.02] cursor-pointer text-center"
+                  >
+                    <span>Abrir Instrumento 7.° Año</span>
+                    <ArrowSquareOut size={20} weight="bold" />
+                  </a>
+                ) : (
+                  <div className="flex items-center justify-center px-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-xs text-indigo-200/70 font-medium text-center">
+                    Nivel no asignado
+                  </div>
+                )}
               </div>
 
             </div>
@@ -649,48 +652,63 @@ export default function DashboardAnaliticoPage() {
                   </div>
                 </div>
 
-                {/* SELECTOR DE COLEGIOS REGISTRADOS (SI TIENE MÁS DE 1) */}
+                {/* SELECTOR DE COLEGIOS REGISTRADOS */}
                 <div className="space-y-2 pt-1">
                   <label className="text-[11px] font-black uppercase text-teal-300 tracking-wider flex items-center gap-1.5">
                     <Buildings size={15} weight="bold" />
-                    <span>Centros Educativos Registrados ({listaCentrosDocente.length}):</span>
+                    <span>Centros Educativos Asignados ({listaCentrosDocente.length}):</span>
                   </label>
-                  <div className="flex flex-wrap gap-2">
-                    {listaCentrosDocente.map((c, idx) => (
-                      <button
-                        key={c.id || idx}
-                        type="button"
-                        onClick={() => setCentroActivoIdx(idx)}
-                        className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs transition-all cursor-pointer border ${
-                          centroActivoIdx === idx
-                            ? "bg-white text-slate-900 border-white shadow-md font-black scale-[1.02]"
-                            : "bg-white/10 hover:bg-white/20 text-white border-white/20 font-semibold"
-                        }`}
-                      >
-                        <span>🏫 {c.nombre}</span>
-                        <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
-                          centroActivoIdx === idx ? "bg-slate-200 text-slate-800" : "bg-black/30 text-stone-200"
-                        }`}>
-                          {c.dreCodigo || c.dreNombre}
-                        </span>
-                      </button>
-                    ))}
-                  </div>
+                  {listaCentrosDocente.length > 0 ? (
+                    <div className="flex flex-wrap gap-2">
+                      {listaCentrosDocente.map((c, idx) => (
+                        <button
+                          key={c.id || idx}
+                          type="button"
+                          onClick={() => setCentroActivoIdx(idx)}
+                          className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs transition-all cursor-pointer border ${
+                            centroActivoIdx === idx
+                              ? "bg-white text-slate-900 border-white shadow-md font-black scale-[1.02]"
+                              : "bg-white/10 hover:bg-white/20 text-white border-white/20 font-semibold"
+                          }`}
+                        >
+                          <span>🏫 {c.nombre}</span>
+                          <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
+                            centroActivoIdx === idx ? "bg-slate-200 text-slate-800" : "bg-black/30 text-stone-200"
+                          }`}>
+                            {c.dreCodigo || c.dreNombre}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="p-3 bg-white/10 border border-white/20 rounded-xl text-xs text-teal-200 flex items-center justify-between gap-3">
+                      <span>No tienes secciones asignadas para 8.° Año en tu perfil.</span>
+                      <Link href="/registro" className="px-2.5 py-1 bg-white text-slate-900 font-bold rounded-lg text-[11px] hover:bg-slate-100">
+                        Editar en Mi Perfil
+                      </Link>
+                    </div>
+                  )}
                 </div>
 
               </div>
 
               {/* Botones de Apertura de la Tarjeta */}
               <div className="shrink-0 flex flex-col gap-2.5">
-                <a
-                  href={getUrlEvaluador(centroActivo)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2.5 px-6 py-4 bg-teal-500 hover:bg-teal-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-teal-500/30 hover:scale-[1.02] cursor-pointer text-center"
-                >
-                  <span>Abrir Instrumento 8.° Año</span>
-                  <ArrowSquareOut size={20} weight="bold" />
-                </a>
+                {listaCentrosDocente.length > 0 && centroActivo ? (
+                  <a
+                    href={getUrlEvaluador(centroActivo)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2.5 px-6 py-4 bg-teal-500 hover:bg-teal-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-teal-500/30 hover:scale-[1.02] cursor-pointer text-center"
+                  >
+                    <span>Abrir Instrumento 8.° Año</span>
+                    <ArrowSquareOut size={20} weight="bold" />
+                  </a>
+                ) : (
+                  <div className="flex items-center justify-center px-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-xs text-teal-200/70 font-medium text-center">
+                    Nivel no asignado
+                  </div>
+                )}
               </div>
 
             </div>
@@ -732,48 +750,63 @@ export default function DashboardAnaliticoPage() {
                   </div>
                 </div>
 
-                {/* SELECTOR DE COLEGIOS REGISTRADOS (SI TIENE MÁS DE 1) */}
+                {/* SELECTOR DE COLEGIOS REGISTRADOS */}
                 <div className="space-y-2 pt-1">
                   <label className="text-[11px] font-black uppercase text-emerald-300 tracking-wider flex items-center gap-1.5">
                     <Buildings size={15} weight="bold" />
-                    <span>Centros Educativos Registrados ({listaCentrosDocente.length}):</span>
+                    <span>Centros Educativos Asignados ({listaCentrosDocente.length}):</span>
                   </label>
-                  <div className="flex flex-wrap gap-2">
-                    {listaCentrosDocente.map((c, idx) => (
-                      <button
-                        key={c.id || idx}
-                        type="button"
-                        onClick={() => setCentroActivoIdx(idx)}
-                        className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs transition-all cursor-pointer border ${
-                          centroActivoIdx === idx
-                            ? "bg-white text-slate-900 border-white shadow-md font-black scale-[1.02]"
-                            : "bg-white/10 hover:bg-white/20 text-white border-white/20 font-semibold"
-                        }`}
-                      >
-                        <span>🏫 {c.nombre}</span>
-                        <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
-                          centroActivoIdx === idx ? "bg-slate-200 text-slate-800" : "bg-black/30 text-stone-200"
-                        }`}>
-                          {c.dreCodigo || c.dreNombre}
-                        </span>
-                      </button>
-                    ))}
-                  </div>
+                  {listaCentrosDocente.length > 0 ? (
+                    <div className="flex flex-wrap gap-2">
+                      {listaCentrosDocente.map((c, idx) => (
+                        <button
+                          key={c.id || idx}
+                          type="button"
+                          onClick={() => setCentroActivoIdx(idx)}
+                          className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs transition-all cursor-pointer border ${
+                            centroActivoIdx === idx
+                              ? "bg-white text-slate-900 border-white shadow-md font-black scale-[1.02]"
+                              : "bg-white/10 hover:bg-white/20 text-white border-white/20 font-semibold"
+                          }`}
+                        >
+                          <span>🏫 {c.nombre}</span>
+                          <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
+                            centroActivoIdx === idx ? "bg-slate-200 text-slate-800" : "bg-black/30 text-stone-200"
+                          }`}>
+                            {c.dreCodigo || c.dreNombre}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="p-3 bg-white/10 border border-white/20 rounded-xl text-xs text-emerald-200 flex items-center justify-between gap-3">
+                      <span>No tienes secciones asignadas para 9.° Año en tu perfil.</span>
+                      <Link href="/registro" className="px-2.5 py-1 bg-white text-slate-900 font-bold rounded-lg text-[11px] hover:bg-slate-100">
+                        Editar en Mi Perfil
+                      </Link>
+                    </div>
+                  )}
                 </div>
 
               </div>
 
               {/* Botones de Apertura de la Tarjeta */}
               <div className="shrink-0 flex flex-col gap-2.5">
-                <a
-                  href={getUrlEvaluador(centroActivo)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2.5 px-6 py-4 bg-emerald-500 hover:bg-emerald-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-emerald-500/30 hover:scale-[1.02] cursor-pointer text-center"
-                >
-                  <span>Abrir Instrumento 9.° Año</span>
-                  <ArrowSquareOut size={20} weight="bold" />
-                </a>
+                {listaCentrosDocente.length > 0 && centroActivo ? (
+                  <a
+                    href={getUrlEvaluador(centroActivo)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2.5 px-6 py-4 bg-emerald-500 hover:bg-emerald-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-emerald-500/30 hover:scale-[1.02] cursor-pointer text-center"
+                  >
+                    <span>Abrir Instrumento 9.° Año</span>
+                    <ArrowSquareOut size={20} weight="bold" />
+                  </a>
+                ) : (
+                  <div className="flex items-center justify-center px-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-xs text-emerald-200/70 font-medium text-center">
+                    Nivel no asignado
+                  </div>
+                )}
               </div>
 
             </div>
