@@ -47,9 +47,13 @@ export default function DashboardAnaliticoPage() {
   // Nivel activo seleccionado por pestañas (7mo, 8vo, 9no)
   const [nivelActivo, setNivelActivo] = useState<"7mo" | "8vo" | "9no">("7mo");
 
+  // Centro educativo activo seleccionado para el docente (en caso de tener varios)
+  const [centroActivoIdx, setCentroActivoIdx] = useState<number>(0);
+
   // Filtros de búsqueda secundarios dentro del nivel
   const [filtroTexto, setFiltroTexto] = useState("");
   const [filtroGrupo, setFiltroGrupo] = useState("Todos");
+  const [filtroInstitucion, setFiltroInstitucion] = useState("Todas");
   const [filtroNivelLogro, setFiltroNivelLogro] = useState("Todos");
 
   // Modal Edición de Registro
@@ -69,6 +73,75 @@ export default function DashboardAnaliticoPage() {
       } catch {}
     }
   }, []);
+
+  // Lista normalizada de todos los centros educativos registrados del docente
+  const listaCentrosDocente = useMemo(() => {
+    if (docente?.centrosEducativos && docente.centrosEducativos.length > 0) {
+      return docente.centrosEducativos.map((c, idx) => ({
+        id: c.id || `centro-${idx}`,
+        nombre: c.nombre || `Institución ${idx + 1}`,
+        dreCodigo: c.dreCodigo || "DRE-01",
+        dreNombre: c.dreNombre || "San José Central",
+        circuito: c.circuito || "Circuito 01",
+      }));
+    }
+    if (docente?.institucionNombre) {
+      if (docente.institucionNombre.includes("/")) {
+        const parts = docente.institucionNombre.split("/").map((p) => p.trim()).filter(Boolean);
+        return parts.map((p, idx) => ({
+          id: `centro-${idx}`,
+          nombre: p,
+          dreCodigo: idx === 0 ? (docente.dreCodigo || "DRE-01") : "DRE-17",
+          dreNombre: idx === 0 ? (docente.dreNombre || "San José Central") : "Grande de Térraba",
+          circuito: docente.circuito || "Circuito 01",
+        }));
+      }
+      return [
+        {
+          id: "centro-principal",
+          nombre: docente.institucionNombre,
+          dreCodigo: docente.dreCodigo || "DRE-01",
+          dreNombre: docente.dreNombre || "San José Central",
+          circuito: docente.circuito || "Circuito 01",
+        },
+      ];
+    }
+    return [
+      {
+        id: "centro-principal",
+        nombre: "LICEO PRUEBA 1",
+        dreCodigo: "DRE-01",
+        dreNombre: "San José Central",
+        circuito: "Circuito 01",
+      },
+    ];
+  }, [docente]);
+
+  // Centro educativo actualmente seleccionado
+  const centroActivo = listaCentrosDocente[centroActivoIdx] || listaCentrosDocente[0];
+
+  // Helper para generar URL al evaluador de un colegio específico
+  const getUrlEvaluador = (centro?: typeof listaCentrosDocente[0]) => {
+    const c = centro || centroActivo;
+    const baseWebapp =
+      nivelActivo === "7mo"
+        ? "diagnostico_7mo_modulo01_docente_evaluador.html"
+        : nivelActivo === "8vo"
+        ? "diagnostico_8vo_modulo01_docente_evaluador.html"
+        : "diagnostico_9no_modulo01_docente_evaluador.html";
+
+    const params = new URLSearchParams();
+    if (docente?.idDocente || docente?.cedula) {
+      params.set("docenteId", docente.idDocente || docente.cedula || "");
+    }
+    if (docente?.cedula) params.set("cedula", docente.cedula);
+    if (docente?.nombreCompleto) params.set("docente", docente.nombreCompleto);
+    if (c?.nombre) params.set("institucion", c.nombre);
+    if (c?.dreCodigo || c?.dreNombre) params.set("dre", c.dreCodigo || c.dreNombre || "");
+    if (c?.circuito) params.set("circuito", c.circuito);
+
+    return `/webapps/${baseWebapp}?${params.toString()}`;
+  };
 
   // Reiniciar filtro de grupo al cambiar de nivel para evitar secciones huérfanas
   const cambiarNivel = (nuevoNivel: "7mo" | "8vo" | "9no") => {
@@ -160,6 +233,14 @@ export default function DashboardAnaliticoPage() {
         if (!es9no) return false;
       }
 
+      // Filtro por Institución seleccionada
+      if (filtroInstitucion !== "Todas") {
+        const rInst = ((r as any).institucion || (r as any).colegio || "").toLowerCase();
+        if (rInst && !rInst.includes(filtroInstitucion.toLowerCase())) {
+          return false;
+        }
+      }
+
       const coincideTexto =
         !filtroTexto.trim() ||
         r.estudianteNombre.toLowerCase().includes(filtroTexto.toLowerCase()) ||
@@ -178,29 +259,7 @@ export default function DashboardAnaliticoPage() {
 
       return coincideTexto && coincideGrupo && coincideNivel;
     });
-  }, [telemetria, nivelActivo, filtroTexto, filtroGrupo, filtroNivelLogro, docente, configuracion]);
-
-  // Construcción de la URL al Instrumento Evaluador del Nivel Activo
-  const urlEvaluadorActivo = useMemo(() => {
-    const baseWebapp =
-      nivelActivo === "7mo"
-        ? "diagnostico_7mo_modulo01_docente_evaluador.html"
-        : nivelActivo === "8vo"
-        ? "diagnostico_8vo_modulo01_docente_evaluador.html"
-        : "diagnostico_9no_modulo01_docente_evaluador.html";
-
-    const params = new URLSearchParams();
-    if (docente?.idDocente || docente?.cedula) {
-      params.set("docenteId", docente.idDocente || docente.cedula || "");
-    }
-    if (docente?.cedula) params.set("cedula", docente.cedula);
-    if (docente?.nombreCompleto) params.set("docente", docente.nombreCompleto);
-    if (docente?.institucionNombre) params.set("institucion", docente.institucionNombre);
-    if (docente?.dreCodigo || docente?.dreNombre) params.set("dre", docente.dreCodigo || docente.dreNombre || "");
-    if (docente?.circuito) params.set("circuito", docente.circuito);
-
-    return `/webapps/${baseWebapp}?${params.toString()}`;
-  }, [nivelActivo, docente]);
+  }, [telemetria, nivelActivo, filtroTexto, filtroGrupo, filtroInstitucion, filtroNivelLogro, docente, configuracion]);
 
   const abrirEditar = (item: PayloadTelemetria) => {
     const defSec = nivelActivo === "7mo" ? "Sección 7-1" : nivelActivo === "8vo" ? "Sección 8-1" : "Sección 9-1";
@@ -350,7 +409,7 @@ export default function DashboardAnaliticoPage() {
             
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
               
-              <div className="space-y-3 max-w-3xl">
+              <div className="space-y-4 max-w-3xl">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="px-3 py-1 rounded-full bg-indigo-500/30 text-indigo-200 border border-indigo-400/50 text-[11px] font-black uppercase tracking-wider">
                     🎮 Herramienta Oficial • 7.° Año
@@ -371,33 +430,81 @@ export default function DashboardAnaliticoPage() {
                   Aplicativo central para la valoración y registro de criterios de logro, observación docente en tiempo real, gestión del enlace para estudiantes del nivel y generación automática de actas pedagógicas.
                 </p>
 
-                {/* Metadatos del Docente en el Instrumento */}
-                <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-indigo-200">
+                {/* Metadatos del Docente */}
+                <div className="flex flex-wrap items-center gap-3 text-xs text-indigo-200">
                   <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
                     <ChalkboardTeacher size={16} className="text-indigo-300" weight="bold" />
                     <span>Docente: <strong>{docente?.nombreCompleto || "Docente MEP"}</strong></span>
                   </div>
-                  <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
-                    <Buildings size={16} className="text-indigo-300" weight="bold" />
-                    <span>Institución: <strong>{docente?.institucionNombre || "Centro Educativo MEP"}</strong></span>
+                </div>
+
+                {/* SELECTOR DE COLEGIOS REGISTRADOS (SI TIENE MÁS DE 1) */}
+                <div className="space-y-2 pt-1">
+                  <label className="text-[11px] font-black uppercase text-indigo-300 tracking-wider flex items-center gap-1.5">
+                    <Buildings size={15} weight="bold" />
+                    <span>Centros Educativos Registrados ({listaCentrosDocente.length}):</span>
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {listaCentrosDocente.map((c, idx) => (
+                      <button
+                        key={c.id || idx}
+                        type="button"
+                        onClick={() => setCentroActivoIdx(idx)}
+                        className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs transition-all cursor-pointer border ${
+                          centroActivoIdx === idx
+                            ? "bg-white text-slate-900 border-white shadow-md font-black scale-[1.02]"
+                            : "bg-white/10 hover:bg-white/20 text-white border-white/20 font-semibold"
+                        }`}
+                      >
+                        <span>🏫 {c.nombre}</span>
+                        <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
+                          centroActivoIdx === idx ? "bg-slate-200 text-slate-800" : "bg-black/30 text-stone-200"
+                        }`}>
+                          {c.dreCodigo || c.dreNombre}
+                        </span>
+                      </button>
+                    ))}
                   </div>
                 </div>
+
               </div>
 
-              {/* Botón de Apertura de la Tarjeta */}
-              <div className="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3">
+              {/* Botones de Apertura de la Tarjeta */}
+              <div className="shrink-0 flex flex-col gap-2.5">
                 <a
-                  href={urlEvaluadorActivo}
+                  href={getUrlEvaluador(centroActivo)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2.5 px-6 py-4 bg-indigo-500 hover:bg-indigo-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-indigo-500/30 hover:scale-[1.02] cursor-pointer"
+                  className="flex items-center justify-center gap-2.5 px-6 py-4 bg-indigo-500 hover:bg-indigo-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-indigo-500/30 hover:scale-[1.02] cursor-pointer text-center"
                 >
                   <span>Abrir Instrumento 7.° Año</span>
                   <ArrowSquareOut size={20} weight="bold" />
                 </a>
-                <span className="text-[11px] text-center text-indigo-300/80 font-medium">
-                  Se abre en una ventana independiente
-                </span>
+
+                {listaCentrosDocente.length > 1 && (
+                  <div className="flex flex-col gap-1.5 pt-1">
+                    <span className="text-[11px] text-center text-indigo-300/90 font-bold">
+                      Colegio activo: {centroActivo?.nombre}
+                    </span>
+                    <div className="flex flex-col gap-1">
+                      {listaCentrosDocente.map((c, idx) => {
+                        if (idx === centroActivoIdx) return null;
+                        return (
+                          <a
+                            key={c.id || idx}
+                            href={getUrlEvaluador(c)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center gap-1.5 px-3 py-2 bg-white/15 hover:bg-white/25 text-white font-bold text-xs rounded-xl transition-all border border-white/20 text-center"
+                          >
+                            <span>🏫 Abrir en {c.nombre}</span>
+                            <ArrowSquareOut size={14} weight="bold" />
+                          </a>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
 
             </div>
@@ -410,7 +517,7 @@ export default function DashboardAnaliticoPage() {
             
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
               
-              <div className="space-y-3 max-w-3xl">
+              <div className="space-y-4 max-w-3xl">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="px-3 py-1 rounded-full bg-teal-500/30 text-teal-200 border border-teal-400/50 text-[11px] font-black uppercase tracking-wider">
                     🤖 Herramienta Oficial • 8.° Año
@@ -431,33 +538,81 @@ export default function DashboardAnaliticoPage() {
                   Aplicativo central para la valoración y registro de criterios de logro, observación docente en tiempo real, gestión del enlace para estudiantes del nivel y generación automática de actas pedagógicas.
                 </p>
 
-                {/* Metadatos del Docente en el Instrumento */}
-                <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-teal-200">
+                {/* Metadatos del Docente */}
+                <div className="flex flex-wrap items-center gap-3 text-xs text-teal-200">
                   <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
                     <ChalkboardTeacher size={16} className="text-teal-300" weight="bold" />
                     <span>Docente: <strong>{docente?.nombreCompleto || "Docente MEP"}</strong></span>
                   </div>
-                  <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
-                    <Buildings size={16} className="text-teal-300" weight="bold" />
-                    <span>Institución: <strong>{docente?.institucionNombre || "Centro Educativo MEP"}</strong></span>
+                </div>
+
+                {/* SELECTOR DE COLEGIOS REGISTRADOS (SI TIENE MÁS DE 1) */}
+                <div className="space-y-2 pt-1">
+                  <label className="text-[11px] font-black uppercase text-teal-300 tracking-wider flex items-center gap-1.5">
+                    <Buildings size={15} weight="bold" />
+                    <span>Centros Educativos Registrados ({listaCentrosDocente.length}):</span>
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {listaCentrosDocente.map((c, idx) => (
+                      <button
+                        key={c.id || idx}
+                        type="button"
+                        onClick={() => setCentroActivoIdx(idx)}
+                        className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs transition-all cursor-pointer border ${
+                          centroActivoIdx === idx
+                            ? "bg-white text-slate-900 border-white shadow-md font-black scale-[1.02]"
+                            : "bg-white/10 hover:bg-white/20 text-white border-white/20 font-semibold"
+                        }`}
+                      >
+                        <span>🏫 {c.nombre}</span>
+                        <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
+                          centroActivoIdx === idx ? "bg-slate-200 text-slate-800" : "bg-black/30 text-stone-200"
+                        }`}>
+                          {c.dreCodigo || c.dreNombre}
+                        </span>
+                      </button>
+                    ))}
                   </div>
                 </div>
+
               </div>
 
-              {/* Botón de Apertura de la Tarjeta */}
-              <div className="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3">
+              {/* Botones de Apertura de la Tarjeta */}
+              <div className="shrink-0 flex flex-col gap-2.5">
                 <a
-                  href={urlEvaluadorActivo}
+                  href={getUrlEvaluador(centroActivo)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2.5 px-6 py-4 bg-teal-500 hover:bg-teal-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-teal-500/30 hover:scale-[1.02] cursor-pointer"
+                  className="flex items-center justify-center gap-2.5 px-6 py-4 bg-teal-500 hover:bg-teal-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-teal-500/30 hover:scale-[1.02] cursor-pointer text-center"
                 >
                   <span>Abrir Instrumento 8.° Año</span>
                   <ArrowSquareOut size={20} weight="bold" />
                 </a>
-                <span className="text-[11px] text-center text-teal-300/80 font-medium">
-                  Se abre en una ventana independiente
-                </span>
+
+                {listaCentrosDocente.length > 1 && (
+                  <div className="flex flex-col gap-1.5 pt-1">
+                    <span className="text-[11px] text-center text-teal-300/90 font-bold">
+                      Colegio activo: {centroActivo?.nombre}
+                    </span>
+                    <div className="flex flex-col gap-1">
+                      {listaCentrosDocente.map((c, idx) => {
+                        if (idx === centroActivoIdx) return null;
+                        return (
+                          <a
+                            key={c.id || idx}
+                            href={getUrlEvaluador(c)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center gap-1.5 px-3 py-2 bg-white/15 hover:bg-white/25 text-white font-bold text-xs rounded-xl transition-all border border-white/20 text-center"
+                          >
+                            <span>🏫 Abrir en {c.nombre}</span>
+                            <ArrowSquareOut size={14} weight="bold" />
+                          </a>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
 
             </div>
@@ -470,7 +625,7 @@ export default function DashboardAnaliticoPage() {
             
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
               
-              <div className="space-y-3 max-w-3xl">
+              <div className="space-y-4 max-w-3xl">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="px-3 py-1 rounded-full bg-emerald-500/30 text-emerald-200 border border-emerald-400/50 text-[11px] font-black uppercase tracking-wider">
                     💡 Herramienta Oficial • 9.° Año
@@ -491,33 +646,81 @@ export default function DashboardAnaliticoPage() {
                   Aplicativo central para la valoración y registro de criterios de logro, observación docente en tiempo real, gestión del enlace único para estudiantes del nivel y telemetría curricular consolidada.
                 </p>
 
-                {/* Metadatos del Docente en el Instrumento */}
-                <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-emerald-200">
+                {/* Metadatos del Docente */}
+                <div className="flex flex-wrap items-center gap-3 text-xs text-emerald-200">
                   <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
                     <ChalkboardTeacher size={16} className="text-emerald-300" weight="bold" />
                     <span>Docente: <strong>{docente?.nombreCompleto || "Docente MEP"}</strong></span>
                   </div>
-                  <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
-                    <Buildings size={16} className="text-emerald-300" weight="bold" />
-                    <span>Institución: <strong>{docente?.institucionNombre || "Centro Educativo MEP"}</strong></span>
+                </div>
+
+                {/* SELECTOR DE COLEGIOS REGISTRADOS (SI TIENE MÁS DE 1) */}
+                <div className="space-y-2 pt-1">
+                  <label className="text-[11px] font-black uppercase text-emerald-300 tracking-wider flex items-center gap-1.5">
+                    <Buildings size={15} weight="bold" />
+                    <span>Centros Educativos Registrados ({listaCentrosDocente.length}):</span>
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {listaCentrosDocente.map((c, idx) => (
+                      <button
+                        key={c.id || idx}
+                        type="button"
+                        onClick={() => setCentroActivoIdx(idx)}
+                        className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs transition-all cursor-pointer border ${
+                          centroActivoIdx === idx
+                            ? "bg-white text-slate-900 border-white shadow-md font-black scale-[1.02]"
+                            : "bg-white/10 hover:bg-white/20 text-white border-white/20 font-semibold"
+                        }`}
+                      >
+                        <span>🏫 {c.nombre}</span>
+                        <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
+                          centroActivoIdx === idx ? "bg-slate-200 text-slate-800" : "bg-black/30 text-stone-200"
+                        }`}>
+                          {c.dreCodigo || c.dreNombre}
+                        </span>
+                      </button>
+                    ))}
                   </div>
                 </div>
+
               </div>
 
-              {/* Botón de Apertura de la Tarjeta */}
-              <div className="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3">
+              {/* Botones de Apertura de la Tarjeta */}
+              <div className="shrink-0 flex flex-col gap-2.5">
                 <a
-                  href={urlEvaluadorActivo}
+                  href={getUrlEvaluador(centroActivo)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2.5 px-6 py-4 bg-emerald-500 hover:bg-emerald-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-emerald-500/30 hover:scale-[1.02] cursor-pointer"
+                  className="flex items-center justify-center gap-2.5 px-6 py-4 bg-emerald-500 hover:bg-emerald-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-emerald-500/30 hover:scale-[1.02] cursor-pointer text-center"
                 >
                   <span>Abrir Instrumento 9.° Año</span>
                   <ArrowSquareOut size={20} weight="bold" />
                 </a>
-                <span className="text-[11px] text-center text-emerald-300/80 font-medium">
-                  Se abre en una ventana independiente
-                </span>
+
+                {listaCentrosDocente.length > 1 && (
+                  <div className="flex flex-col gap-1.5 pt-1">
+                    <span className="text-[11px] text-center text-emerald-300/90 font-bold">
+                      Colegio activo: {centroActivo?.nombre}
+                    </span>
+                    <div className="flex flex-col gap-1">
+                      {listaCentrosDocente.map((c, idx) => {
+                        if (idx === centroActivoIdx) return null;
+                        return (
+                          <a
+                            key={c.id || idx}
+                            href={getUrlEvaluador(c)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center gap-1.5 px-3 py-2 bg-white/15 hover:bg-white/25 text-white font-bold text-xs rounded-xl transition-all border border-white/20 text-center"
+                          >
+                            <span>🏫 Abrir en {c.nombre}</span>
+                            <ArrowSquareOut size={14} weight="bold" />
+                          </a>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
 
             </div>
@@ -564,6 +767,22 @@ export default function DashboardAnaliticoPage() {
                 className="w-full pl-9 pr-3 py-2 bg-stone-50 border border-stone-300 rounded-xl text-xs focus:outline-none focus:border-emerald-600 font-medium"
               />
             </div>
+
+            {/* Filtro por Colegio si tiene varios */}
+            {listaCentrosDocente.length > 1 && (
+              <select
+                value={filtroInstitucion}
+                onChange={(e) => setFiltroInstitucion(e.target.value)}
+                className="px-3 py-2 bg-stone-50 border border-stone-300 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:border-emerald-600"
+              >
+                <option value="Todas">Todos los colegios</option>
+                {listaCentrosDocente.map((c) => (
+                  <option key={c.nombre} value={c.nombre}>
+                    🏫 {c.nombre}
+                  </option>
+                ))}
+              </select>
+            )}
 
             <select
               value={filtroGrupo}

@@ -2113,7 +2113,7 @@
                 <input type="text" id="regName1" class="form-input" placeholder="Ej: Juan Viales" value="${AppState.cadet1.name}">
               </div>
               <div class="form-group">
-                <label class="form-label">Avatar del Líder:</label>
+                <label class="form-label">Selecciona tu Avatar:</label>
                 <div class="avatar-grid" id="avatarGrid1">
                   ${avatars.map(a => `
                     <div class="avatar-card ${AppState.cadet1.avatar === a.icon ? 'selected' : ''}" data-target="1" data-icon="${a.icon}" data-name="${a.name}">
@@ -2134,7 +2134,7 @@
                 <input type="text" id="regName2" class="form-input" placeholder="Ej: María Gómez" value="${AppState.cadet2.name}">
               </div>
               <div class="form-group">
-                <label class="form-label">Avatar del Co-piloto:</label>
+                <label class="form-label">Selecciona tu Avatar:</label>
                 <div class="avatar-grid" id="avatarGrid2">
                   ${avatars.map(a => `
                     <div class="avatar-card ${AppState.cadet2.avatar === a.icon ? 'selected-purple' : ''}" data-target="2" data-icon="${a.icon}" data-name="${a.name}">

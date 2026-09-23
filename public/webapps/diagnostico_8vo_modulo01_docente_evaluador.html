@@ -389,6 +389,16 @@
       <button class="btn btn-outline" style="background: #ffffff; color: #0f172a; padding: 6px 12px; font-size: 11.5px; border-radius: 8px; font-weight: 800;" onclick="openAuthModal(false)">
         ⚙️ Perfil / PIN
       </button>
+      <!-- BOTÓN COMPACTO DE SINCRONIZACIÓN CON ESTADO DE LUZ VERDE/ROJO Y TEXTO FIJO -->
+      <div id="syncIndicatorWrapper" style="display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 88px; height: 32px; padding: 2px 6px; border-radius: 8px; background: #ffffff; border: 1.5px solid #cbd5e1; cursor: pointer; user-select: none; box-sizing: border-box;" onclick="sincronizarTelemetria8vo(true)" title="Sincronización en vivo con el Dashboard (Clic para sincronizar)">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 4px; line-height: 1;">
+          <span id="syncDotIndicator" style="width: 7.5px; height: 7.5px; border-radius: 50%; background: #10b981; display: inline-block; box-shadow: 0 0 6px rgba(16, 185, 129, 0.8); transition: background 0.3s ease;"></span>
+          <span id="syncIconSpin" style="font-size: 11px; display: inline-block; transition: transform 0.3s ease;">🔄</span>
+        </div>
+        <span style="font-size: 8.5px; font-weight: 800; color: #0369a1; text-transform: uppercase; letter-spacing: 0.3px; line-height: 1; margin-top: 2px;">
+          Sincronizando
+        </span>
+      </div>
       <button class="btn btn-accent" style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); border-color: #0284c7; color: #ffffff; font-size: 11.5px; padding: 6px 12px; border-radius: 8px; font-weight: 800;" onclick="openStudentLinksModal()" title="Generar enlaces y proyectar QR para computadoras de estudiantes">
         🔗 Enlaces Estudiantes (PC)
       </button>
@@ -780,43 +790,51 @@
         </select>
       </div>
 
-      <!-- BLOQUE 1: ENLACE GENERAL DEL NIVEL (ESTUDIANTE ELIGE SECCIÓN) -->
-      <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
+      <!-- ENLACE ÚNICO DEL NIVEL (8VO AÑO) CON CÓDIGO QR -->
+      <div style="background: #ffffff; border: 1.5px solid #0284c7; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 2px 8px rgba(2, 132, 199, 0.08);">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 6px;">
           <div>
-            <strong style="font-size: 13px; color: #003366; display: flex; align-items: center; gap: 6px;">
-              🌐 Enlace General — Todo 8.° Año (Todas las secciones)
+            <strong style="font-size: 13.5px; color: #003366; display: flex; align-items: center; gap: 6px;">
+              🌐 Enlace Único de 8.° Año (Para todas las secciones)
             </strong>
-            <span style="font-size: 11px; color: #64748b;">El estudiante abre el aplicativo en la PC del laboratorio y elige su sección al iniciar la prueba.</span>
+            <span style="font-size: 11.5px; color: #475569; display: block; margin-top: 2px;">
+              Enlace único para todo el nivel. Cada estudiante abrirá esta dirección en la computadora del laboratorio y seleccionará su sección al identificarse.
+            </span>
           </div>
-          <span class="badge" style="background: #dcfce7; color: #166534; font-size: 10.5px; font-weight: 800; padding: 3px 8px; border-radius: 4px;">Recomendado</span>
+          <span class="badge" style="background: #dcfce7; color: #166534; font-size: 10.5px; font-weight: 800; padding: 3px 8px; border-radius: 4px;">Enlace Único</span>
         </div>
 
         <div style="display: flex; gap: 6px;">
-          <input type="text" id="slmGeneralUrlInput" readonly style="flex: 1; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 8px 12px; font-size: 12px; font-family: monospace; color: #0f172a; outline: none;" value="">
+          <input type="text" id="slmGeneralUrlInput" readonly style="flex: 1; background: #f8fafc; border: 1.5px solid #94a3b8; border-radius: 8px; padding: 9px 12px; font-size: 12px; font-family: monospace; color: #0f172a; outline: none; font-weight: 600;" value="">
         </div>
 
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-          <button class="btn btn-accent" style="font-size: 11.5px; padding: 6px 14px; background: #0284c7; border-color: #0369a1; color: white; font-weight: 700;" onclick="copyGeneralStudentLink()">
-            📋 Copiar Enlace General
+          <button class="btn btn-accent" style="font-size: 12px; padding: 8px 16px; background: #0284c7; border-color: #0369a1; color: white; font-weight: 800;" onclick="copyGeneralStudentLink()">
+            📋 Copiar Enlace Único
           </button>
-          <a id="slmOpenGeneralBtn" href="#" target="_blank" class="btn btn-outline" style="font-size: 11.5px; padding: 6px 14px; text-decoration: none; color: #0f172a; background: white; border: 1.5px solid #cbd5e1; font-weight: 700;">
+          <a id="slmOpenGeneralBtn" href="#" target="_blank" class="btn btn-outline" style="font-size: 12px; padding: 8px 16px; text-decoration: none; color: #0f172a; background: white; border: 1.5px solid #cbd5e1; font-weight: 700;">
             🖥️ Abrir en esta PC
           </a>
         </div>
-      </div>
 
-      <!-- BLOQUE 2: ENLACES DIRECTOS POR SECCIÓN (8-1, 8-2...) -->
-      <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 10px;">
-        <div>
-          <strong style="font-size: 12.5px; color: #003366; display: flex; align-items: center; gap: 6px;">
-            🏷️ Enlaces Directos por Sección (Auto-asignación 8-1, 8-2, etc.):
-          </strong>
-          <span style="font-size: 11px; color: #64748b;">Cada enlace preselecciona automáticamente la sección correspondiente en la computadora.</span>
-        </div>
-
-        <div id="slmSectionCardsContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px;">
-          <!-- Renderizado dinámico -->
+        <!-- BLOQUE DE CÓDIGO QR VISUAL DEL ENLACE -->
+        <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 14px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+          <div id="slmQrWrapper" style="background: #ffffff; padding: 8px; border-radius: 10px; border: 1.5px solid #cbd5e1; box-shadow: 0 2px 6px rgba(0,0,0,0.06); display: flex; align-items: center; justify-content: center; min-width: 140px; min-height: 140px;">
+            <img id="slmQrImage" src="" alt="Código QR Enlace Estudiantes" style="width: 130px; height: 130px; object-fit: contain; display: block;" />
+          </div>
+          <div style="flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 6px;">
+            <strong style="font-size: 12.5px; color: #0f172a; display: flex; align-items: center; gap: 6px;">
+              📱 Código QR para Acceso Rápido
+            </strong>
+            <p style="font-size: 11.5px; color: #475569; margin: 0; line-height: 1.4;">
+              Proyecte este código en la pantalla del aula o imprímalo para que los estudiantes accedan directamente al instrumento de 8.° Año desde las computadoras del laboratorio.
+            </p>
+            <div style="display: flex; gap: 8px; margin-top: 4px;">
+              <button type="button" class="btn btn-secondary" style="font-size: 11.5px; padding: 6px 12px; font-weight: 700;" onclick="abrirQrPantallaCompleta()">
+                🔍 Proyectar QR en Grande
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -2120,44 +2138,40 @@
       if (genInput) genInput.value = generalUrl;
       if (openBtn) openBtn.href = generalUrl;
 
-      // Update Sections cards
-      const container = document.getElementById('slmSectionCardsContainer');
-      if (container) {
-        container.innerHTML = '';
-        const secList = (school.secciones && school.secciones['8'] && school.secciones['8'].selected && school.secciones['8'].selected.length > 0)
-          ? school.secciones['8'].selected
-          : ['8-1', '8-2', '8-3', '8-4'];
+      // Update QR Code Image
+      const qrImg = document.getElementById('slmQrImage');
+      if (qrImg) {
+        qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(generalUrl)}`;
+      }
+    }
 
-        secList.forEach(sec => {
-          const secParams = new URLSearchParams(baseParams);
-          secParams.set('seccion', sec);
-          const secUrl = `${baseUrl}?${secParams.toString()}`;
+    function abrirQrPantallaCompleta() {
+      const genInput = document.getElementById('slmGeneralUrlInput');
+      const url = genInput ? genInput.value : '';
+      if (!url) return;
 
-          const card = document.createElement('div');
-          card.style.background = '#ffffff';
-          card.style.border = '1.5px solid #cbd5e1';
-          card.style.borderRadius = '8px';
-          card.style.padding = '8px 10px';
-          card.style.display = 'flex';
-          card.style.flexDirection = 'column';
-          card.style.gap = '6px';
-
-            card.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <strong style="font-size: 12.5px; color: #003366;">Sección ${sec}</strong>
-              <span class="badge" style="background: #e0f2fe; color: #0369a1; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 800;">Directo</span>
-            </div>
-            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-              <button class="btn btn-accent" style="padding: 4px 10px; font-size: 11px; background: #0284c7; border-color: #0369a1; color: white; font-weight: 700;" onclick="copySectionStudentLink('${secUrl}', '${sec}')">
-                📋 Copiar
-              </button>
-              <a href="${secUrl}" target="_blank" class="btn btn-outline" style="padding: 4px 10px; font-size: 11px; text-decoration: none; color: #0f172a; background: white; border: 1px solid #cbd5e1; font-weight: 700;">
-                🖥️ Abrir PC
-              </a>
-            </div>
-          `;
-          container.appendChild(card);
-        });
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(url)}`;
+      const win = window.open('', '_blank');
+      if (win) {
+        win.document.write(`
+          <!DOCTYPE html>
+          <html lang="es">
+            <head>
+              <meta charset="UTF-8">
+              <title>Código QR - Diagnóstico 8.° Año</title>
+            </head>
+            <body style="margin:0; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#001e3d; font-family:system-ui,-apple-system,sans-serif; color:white; padding:24px; text-align:center;">
+              <h1 style="margin:0 0 6px 0; font-size:26px; font-weight:800; color:#38bdf8;">Diagnóstico 8.° Año • Informática Educativa</h1>
+              <p style="margin:0 0 24px 0; font-size:16px; color:#cbd5e1;">Escanee con la cámara o abra en la PC del laboratorio</p>
+              <div style="background:white; padding:22px; border-radius:20px; box-shadow:0 15px 35px rgba(0,0,0,0.6); display:inline-block;">
+                <img src="${qrUrl}" alt="Código QR 8.° Año" style="width:340px; height:340px; display:block;" />
+              </div>
+              <p style="margin-top:24px; font-family:monospace; font-size:13px; color:#7dd3fc; max-width:680px; word-break:break-all; background:rgba(0,0,0,0.3); padding:10px 16px; border-radius:10px; border:1px solid rgba(56,189,248,0.3);">
+                ${url}
+              </p>
+            </body>
+          </html>
+        `);
       }
     }
 
@@ -2182,7 +2196,18 @@
       });
     }
 
-  async function sincronizarTelemetria8vo() {
+  async function sincronizarTelemetria8vo(esManual) {
+    const dot = document.getElementById('syncDotIndicator');
+    const spin = document.getElementById('syncIconSpin');
+    if (dot) {
+      dot.style.background = '#f59e0b';
+      dot.style.boxShadow = '0 0 6px rgba(245, 158, 11, 0.8)';
+    }
+    if (spin) {
+      spin.style.animation = 'spin 0.8s linear infinite';
+    }
+
+    let syncExitosa = true;
     try {
       const profile = getStoredProfile();
       const docenteId = profile?.cedula || profile?.idDocente || '';
@@ -2193,8 +2218,12 @@
         if (res.ok) {
           const json = await res.json();
           if (json.registros && Array.isArray(json.registros)) remotos = json.registros;
+        } else {
+          syncExitosa = false;
         }
-      } catch(e) {}
+      } catch(e) {
+        syncExitosa = false;
+      }
 
       let locales = [];
       try {
@@ -2240,7 +2269,30 @@
         localStorage.setItem('evaluacion_docente_8vo', JSON.stringify(estudiantes));
         renderTabla();
       }
-    } catch(e) {}
+
+      if (dot) {
+        dot.style.background = syncExitosa ? '#10b981' : '#ef4444';
+        dot.style.boxShadow = syncExitosa ? '0 0 6px rgba(16, 185, 129, 0.8)' : '0 0 6px rgba(239, 68, 68, 0.8)';
+      }
+      if (spin) {
+        spin.style.animation = 'none';
+      }
+
+      if (esManual) {
+        alert('✅ Sincronización con Dashboard completada (' + estudiantes.length + ' estudiantes sincronizados).');
+      }
+    } catch(e) {
+      if (dot) {
+        dot.style.background = '#ef4444';
+        dot.style.boxShadow = '0 0 6px rgba(239, 68, 68, 0.8)';
+      }
+      if (spin) {
+        spin.style.animation = 'none';
+      }
+      if (esManual) {
+        alert('⚠️ Error durante la sincronización: ' + (e.message || 'Verifique la conexión.'));
+      }
+    }
   }
 
   // Inicializar al cargar con perfil docente real

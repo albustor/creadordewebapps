@@ -1,17 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import os from "os";
 import {
   PayloadTelemetria,
   validarTokenAntiFraude,
   validarCompletitudValoracion,
 } from "@/lib/antiFraude";
 
+export const dynamic = "force-dynamic";
+
 // Almacenamiento en memoria para telemetría
 let registrosTelemetriaMemoria: any[] = [];
 
-// Ruta del archivo de persistencia local
-const CACHE_TELEMETRIA_PATH = path.join(process.cwd(), ".next", "telemetria_docente_cache.json");
+// Ruta del archivo de persistencia local segura
+const CACHE_TELEMETRIA_PATH = path.join(os.tmpdir(), "telemetria_docente_cache.json");
 
 function normalizarSeccionServidor(sec?: string): string {
   if (!sec) return "Sección 9-1";
