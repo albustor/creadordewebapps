@@ -897,6 +897,7 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             accion: "solicitar_registro",
+            esActualizacionPropia: Boolean(esActualizacionDePerfilPropio),
             usuarioData: {
               nombreCompleto: data.nombreCompleto,
               correoInstitucional: data.correoInstitucional,
@@ -909,6 +910,7 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
               rol: data.rol,
               pin: data.pin || data.contrasena,
               contrasena: data.contrasena || data.pin,
+              centrosEducativos: data.centrosEducativos || undefined,
             },
           }),
         }).catch(() => {});

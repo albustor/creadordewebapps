@@ -17,6 +17,7 @@ export interface UsuarioDocente {
   aprobadoPor?: string;
   webAppsCreadas: number;
   pin?: string;
+  centrosEducativos?: any[];
 }
 
 // Base de datos en memoria para persistencia durante la sesión del servidor
@@ -256,6 +257,7 @@ export async function POST(req: NextRequest) {
         fechaSolicitud: yaExiste?.fechaSolicitud || new Date().toISOString(),
         webAppsCreadas: yaExiste?.webAppsCreadas || 0,
         pin: usuarioData.pin || usuarioData.contrasena || (esAlberto ? "2617" : esAllan ? "7319" : undefined),
+        centrosEducativos: usuarioData.centrosEducativos || yaExiste?.centrosEducativos || undefined,
       };
 
       USUARIOS_DB = [nuevo, ...USUARIOS_DB.filter((u) => u.correoInstitucional.toLowerCase().trim() !== correoLimpio)];
