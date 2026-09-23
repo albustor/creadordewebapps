@@ -205,16 +205,24 @@ export default function DashboardAnaliticoPage() {
         return false;
       }
 
-      // Aislamiento por Docente: Todo docente ve ÚNICAMENTE los registros vinculados a su ID, cédula o correo
+      // Aislamiento por Docente: Todo docente ve ÚNICAMENTE los registros vinculados a su ID, cédula, correo o nombre
       if (!esSuperAdmin && !esAsesorNacional) {
         const rDocId = (r.docenteId || "").trim().toLowerCase();
         const rDocCed = ((r as any).docenteCedula || "").trim().toLowerCase();
         const rDocEmail = ((r as any).docenteEmail || "").trim().toLowerCase();
+        const rDocNom = ((r as any).docenteNombre || "").trim().toLowerCase();
+        const docNom = (docente?.nombreCompleto || "").trim().toLowerCase();
 
-        const perteneceAlDocente =
-          (idDoc && (rDocId === idDoc || rDocId.includes(idDoc) || idDoc.includes(rDocId))) ||
-          (cedDoc && (rDocId === cedDoc || rDocCed === cedDoc)) ||
-          (correoDocenteLimpio && rDocEmail === correoDocenteLimpio);
+        const cedDocClean = cedDoc.replace(/\D/g, "");
+        const rDocIdClean = rDocId.replace(/\D/g, "");
+        const rDocCedClean = rDocCed.replace(/\D/g, "");
+
+        const matchId = idDoc && (rDocId === idDoc || rDocId.includes(idDoc) || idDoc.includes(rDocId));
+        const matchCed = cedDocClean && (rDocIdClean === cedDocClean || rDocCedClean === cedDocClean);
+        const matchEmail = correoDocenteLimpio && (rDocEmail === correoDocenteLimpio || rDocEmail.includes(correoDocenteLimpio));
+        const matchNom = docNom && rDocNom && (rDocNom === docNom || rDocNom.includes(docNom) || docNom.includes(rDocNom));
+
+        const perteneceAlDocente = matchId || matchCed || matchEmail || matchNom;
 
         if (!perteneceAlDocente) {
           return false;
@@ -235,7 +243,7 @@ export default function DashboardAnaliticoPage() {
 
       // Filtro por Institución seleccionada
       if (filtroInstitucion !== "Todas") {
-        const rInst = ((r as any).institucion || (r as any).colegio || "").toLowerCase();
+        const rInst = ((r as any).institucionNombre || (r as any).institucion || (r as any).colegio || "").toLowerCase();
         if (rInst && !rInst.includes(filtroInstitucion.toLowerCase())) {
           return false;
         }

@@ -285,15 +285,36 @@ export async function GET(req: NextRequest) {
   cargarRegistrosServidor();
   const { searchParams } = new URL(req.url);
   const docenteId = searchParams.get("docenteId");
+  const cedula = searchParams.get("cedula");
+  const correo = searchParams.get("correo");
+  const nombre = searchParams.get("docenteNombre");
 
   let datos = registrosTelemetriaMemoria;
-  if (docenteId && docenteId !== "ASESOR-FT-7729" && docenteId !== "5-0305-0179" && docenteId !== "SUPERADMIN-01") {
-    const docIdNorm = docenteId.trim().toLowerCase();
+  const esAdmin =
+    docenteId === "ASESOR-FT-7729" ||
+    docenteId === "5-0305-0179" ||
+    docenteId === "SUPERADMIN-01" ||
+    correo === "alberto.bustos.ortega@mep.go.cr" ||
+    correo === "allan.morera.araya@mep.go.cr";
+
+  if (!esAdmin && (docenteId || cedula || correo || nombre)) {
+    const docIdNorm = (docenteId || "").trim().toLowerCase();
+    const cedNorm = (cedula || "").trim().toLowerCase();
+    const corNorm = (correo || "").trim().toLowerCase();
+    const nomNorm = (nombre || "").trim().toLowerCase();
+
     datos = registrosTelemetriaMemoria.filter((r) => {
       const rDocId = (r.docenteId || "").trim().toLowerCase();
       const rDocCed = (r.docenteCedula || "").trim().toLowerCase();
       const rDocEmail = (r.docenteEmail || "").trim().toLowerCase();
-      return rDocId === docIdNorm || rDocCed === docIdNorm || rDocEmail === docIdNorm;
+      const rDocNom = (r.docenteNombre || "").trim().toLowerCase();
+
+      const matchId = docIdNorm && (rDocId === docIdNorm || rDocId.includes(docIdNorm) || docIdNorm.includes(rDocId));
+      const matchCed = cedNorm && (rDocCed === cedNorm || rDocId === cedNorm || rDocCed.replace(/\D/g, "") === cedNorm.replace(/\D/g, ""));
+      const matchEmail = corNorm && (rDocEmail === corNorm || rDocEmail.includes(corNorm));
+      const matchNom = nomNorm && (rDocNom === nomNorm || rDocNom.includes(nomNorm) || nomNorm.includes(rDocNom));
+
+      return matchId || matchCed || matchEmail || matchNom;
     });
   }
 

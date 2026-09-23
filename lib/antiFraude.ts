@@ -28,8 +28,16 @@ export interface PayloadTelemetria {
   }>;
   timestamp: number;
   tokenAntiFraude?: string;
-  estadoProgreso?: "iniciado" | "completado";
+  estadoProgreso?: "iniciado" | "completado" | "en_progreso";
   observacionDocente?: string;
+  docenteNombre?: string;
+  docenteCedula?: string;
+  docenteEmail?: string;
+  institucionNombre?: string;
+  institucion?: string;
+  colegio?: string;
+  dreCodigo?: string;
+  nivel?: string;
   horaInicio?: string;
   horaEntrega?: string;
   fechaEntrega?: string;

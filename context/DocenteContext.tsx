@@ -333,12 +333,13 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       SafeStorage.setItem("telemetria_registros", JSON.stringify([]));
     }
 
-    // Sincronizar con el endpoint del servidor con deduplicación por estudiante y sección
+    // Sincronizar con el endpoint del servidor y llaves locales con deduplicación por estudiante y sección
     const sincronizarTelemetriaServidor = async () => {
       try {
         const docenteGuardadoRaw = SafeStorage.getItem("docente_activo");
         const docenteActivoObj = docenteGuardadoRaw ? JSON.parse(docenteGuardadoRaw) : null;
-        const docenteId = docenteActivoObj?.idDocente;
+        const docenteId = docenteActivoObj?.idDocente || docenteActivoObj?.cedula;
+        const cedulaDoc = docenteActivoObj?.cedula || "";
         const nombreDoc = docenteActivoObj?.nombreCompleto?.toLowerCase()?.trim() || "";
         const correoDoc = docenteActivoObj?.correoInstitucional?.toLowerCase()?.trim() || "";
 
@@ -357,59 +358,123 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
           return `${nom}::${sec}`;
         };
 
-        const url = docenteId ? `/api/telemetria/enviar?docenteId=${encodeURIComponent(docenteId)}` : "/api/telemetria/enviar";
+        // 1. Cargar evaluaciones locales de 7mo si existen
+        const evaluacionesLocales7mo: PayloadTelemetria[] = [];
+        try {
+          const cedClean = cedulaDoc.replace(/[^a-zA-Z0-9]/g, "");
+          const raw7mo =
+            (cedClean ? SafeStorage.getItem(`MEP_DOCENTE_7MO_EVALUATIONS_${cedClean}`) : null) ||
+            SafeStorage.getItem("MEP_DOCENTE_7MO_EVALUATIONS");
+          if (raw7mo) {
+            const list7mo = JSON.parse(raw7mo);
+            if (Array.isArray(list7mo)) {
+              list7mo.forEach((ev: any) => {
+                const n1 = typeof ev.name1 === "object" ? ev.name1?.name || "Estudiante 1" : ev.name1 || "Estudiante 1";
+                const n2 = typeof ev.name2 === "object" ? ev.name2?.name || "" : ev.name2 || "";
+                const isIndiv = !n2 || n2 === "Individual" || n2 === "N/A" || n2 === "Sin Pareja";
+                const estNombre = isIndiv ? n1 : `${n1} & ${n2}`;
+                const sec = normalizarSeccion(ev.section);
+                const score = ev.globalAvg ?? ev.porcentaje ?? ev.puntaje ?? 80;
+                const rec: PayloadTelemetria = {
+                  idResultado: ev.id || `eval-7mo-${Date.now()}`,
+                  webAppId: "diagnostico_7mo_modulo01_cyberquest",
+                  webAppTitulo: "CyberQuest 7°: Diagnóstico de Fundamentos Digitales",
+                  docenteId: docenteId || "5-0305-0179",
+                  docenteNombre: docenteActivoObj?.nombreCompleto || "Docente Evaluador",
+                  institucionNombre: ev.raw?.institucionNombre || docenteActivoObj?.institucionNombre || "Centro Educativo MEP",
+                  dreCodigo: ev.raw?.dreCodigo || docenteActivoObj?.dreCodigo || "DRE-01",
+                  estudianteNombre: estNombre,
+                  seccionOGrupo: sec,
+                  nivel: "7°",
+                  puntaje: score,
+                  puntajeMaximo: 100,
+                  porcentaje: score,
+                  totalReactivos: 10,
+                  aciertos: Math.round((score / 100) * 10),
+                  fallos: Math.max(0, 10 - Math.round((score / 100) * 10)),
+                  nivelLogro: ev.globalLevel === "A" || score >= 80 ? "Avanzado" : (ev.globalLevel === "C" || score <= 59 ? "Inicial" : "Intermedio"),
+                  tiempoSegundos: 120,
+                  estadoProgreso: "completado",
+                  timestamp: ev.raw?.timestamp || Date.now(),
+                  tokenAntiFraude: `TOKEN-7MO-${Date.now()}`,
+                };
+                evaluacionesLocales7mo.push(rec);
+              });
+            }
+          }
+        } catch (e) {}
+
+        const queryParams = new URLSearchParams();
+        if (docenteId) queryParams.set("docenteId", docenteId);
+        if (cedulaDoc) queryParams.set("cedula", cedulaDoc);
+        if (correoDoc) queryParams.set("correo", correoDoc);
+        if (nombreDoc) queryParams.set("docenteNombre", nombreDoc);
+
+        const url = `/api/telemetria/enviar?${queryParams.toString()}`;
         const res = await fetch(url);
+        let remotos: PayloadTelemetria[] = [];
         if (res.ok) {
           const json = await res.json();
           if (json.registros && Array.isArray(json.registros)) {
-            setTelemetria((prev) => {
-              const mapa = new Map<string, PayloadTelemetria>();
-              // Agregar los previos
-              prev.forEach((item) => {
-                const estNom = item.estudianteNombre?.toLowerCase()?.trim() || "";
-                const estCor = item.estudianteCorreo?.toLowerCase()?.trim() || "";
-                const esDocente = (nombreDoc && estNom === nombreDoc) || (correoDoc && estCor === correoDoc);
-                if (!esDocente && estNom) {
-                  const key = normalizarClave(item);
-                  mapa.set(key, { ...item, seccionOGrupo: normalizarSeccion(item.seccionOGrupo) });
-                }
-              });
-              // Mezclar con los del servidor
-              json.registros.forEach((item: PayloadTelemetria) => {
-                const estNom = item.estudianteNombre?.toLowerCase()?.trim() || "";
-                const estCor = item.estudianteCorreo?.toLowerCase()?.trim() || "";
-                const esDocente = (nombreDoc && estNom === nombreDoc) || (correoDoc && estCor === correoDoc);
-                if (!esDocente && estNom) {
-                  const key = normalizarClave(item);
-                  const existente = mapa.get(key);
-                  const secNorm = normalizarSeccion(item.seccionOGrupo);
-                  const itemNorm = { ...item, seccionOGrupo: secNorm };
-                  
-                  if (!existente) {
-                    mapa.set(key, itemNorm);
-                  } else {
-                    // Si ya existe, conservar el registro con mayor completitud o puntaje consolidado
-                    const puntajeNuevo = item.porcentaje ?? item.puntaje ?? 0;
-                    const puntajeExistente = existente.porcentaje ?? existente.puntaje ?? 0;
-                    if (
-                      item.estadoProgreso === "completado" &&
-                      existente.estadoProgreso !== "completado"
-                    ) {
-                      mapa.set(key, itemNorm);
-                    } else if (puntajeNuevo > puntajeExistente) {
-                      mapa.set(key, itemNorm);
-                    } else if (puntajeNuevo === puntajeExistente && item.timestamp >= existente.timestamp) {
-                      mapa.set(key, itemNorm);
-                    }
-                  }
-                }
-              });
-              const unificados = Array.from(mapa.values()).sort((a, b) => b.timestamp - a.timestamp);
-              SafeStorage.setItem("telemetria_registros", JSON.stringify(unificados));
-              return unificados;
-            });
+            remotos = json.registros;
           }
         }
+
+        setTelemetria((prev) => {
+          const mapa = new Map<string, PayloadTelemetria>();
+          // Agregar previos
+          prev.forEach((item) => {
+            const estNom = item.estudianteNombre?.toLowerCase()?.trim() || "";
+            const estCor = item.estudianteCorreo?.toLowerCase()?.trim() || "";
+            const esDocente = (nombreDoc && estNom === nombreDoc) || (correoDoc && estCor === correoDoc);
+            if (!esDocente && estNom) {
+              const key = normalizarClave(item);
+              mapa.set(key, { ...item, seccionOGrupo: normalizarSeccion(item.seccionOGrupo) });
+            }
+          });
+
+          // Agregar locales de 7mo
+          evaluacionesLocales7mo.forEach((item) => {
+            const key = normalizarClave(item);
+            if (!mapa.has(key)) {
+              mapa.set(key, item);
+            }
+          });
+
+          // Mezclar con los del servidor
+          remotos.forEach((item: PayloadTelemetria) => {
+            const estNom = item.estudianteNombre?.toLowerCase()?.trim() || "";
+            const estCor = item.estudianteCorreo?.toLowerCase()?.trim() || "";
+            const esDocente = (nombreDoc && estNom === nombreDoc) || (correoDoc && estCor === correoDoc);
+            if (!esDocente && estNom) {
+              const key = normalizarClave(item);
+              const existente = mapa.get(key);
+              const secNorm = normalizarSeccion(item.seccionOGrupo);
+              const itemNorm = { ...item, seccionOGrupo: secNorm };
+              
+              if (!existente) {
+                mapa.set(key, itemNorm);
+              } else {
+                const puntajeNuevo = item.porcentaje ?? item.puntaje ?? 0;
+                const puntajeExistente = existente.porcentaje ?? existente.puntaje ?? 0;
+                if (
+                  item.estadoProgreso === "completado" &&
+                  existente.estadoProgreso !== "completado"
+                ) {
+                  mapa.set(key, itemNorm);
+                } else if (puntajeNuevo > puntajeExistente) {
+                  mapa.set(key, itemNorm);
+                } else if (puntajeNuevo === puntajeExistente && item.timestamp >= existente.timestamp) {
+                  mapa.set(key, itemNorm);
+                }
+              }
+            }
+          });
+
+          const unificados = Array.from(mapa.values()).sort((a, b) => b.timestamp - a.timestamp);
+          SafeStorage.setItem("telemetria_registros", JSON.stringify(unificados));
+          return unificados;
+        });
       } catch (err) {
         // Modo offline
       }

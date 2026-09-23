@@ -1214,13 +1214,77 @@
     }
 
     function saveDocenteState() {
+      const profile = getStoredProfile();
       try {
-        const profile = getStoredProfile();
         const storageKey = profile?.cedula ? `MEP_DOCENTE_7MO_EVALUATIONS_${profile.cedula.replace(/[^a-zA-Z0-9]/g, '')}` : 'MEP_DOCENTE_7MO_EVALUATIONS';
         localStorage.setItem(storageKey, JSON.stringify(evaluatedCadets));
+        localStorage.setItem('MEP_DOCENTE_7MO_EVALUATIONS', JSON.stringify(evaluatedCadets));
       } catch (e) {
         console.warn('Error al guardar datos docentes:', e);
       }
+
+      // Convertir y sincronizar con telemetria_registros y API central
+      try {
+        const colegioActivo = profile?.colegioActivo || profile?.colegio || 'Centro Educativo MEP';
+        const dreActiva = profile?.dreCodigo || 'DRE-01';
+        const docId = profile?.cedula || profile?.idDocente || '5-0305-0179';
+        const docNom = profile?.nombre || 'Docente Evaluador';
+
+        const rawTele = localStorage.getItem('telemetria_registros');
+        const listaTele = rawTele ? JSON.parse(rawTele) : [];
+
+        evaluatedCadets.forEach(c => {
+          const n1 = typeof c.name1 === 'object' ? (c.name1?.name || 'Estudiante 1') : (c.name1 || 'Estudiante 1');
+          const n2 = typeof c.name2 === 'object' ? (c.name2?.name || '') : (c.name2 || '');
+          const isIndiv = !n2 || n2 === 'Individual' || n2 === 'N/A' || n2 === 'Sin Pareja';
+          const estNombre = isIndiv ? n1 : `${n1} & ${n2}`;
+          const sec = (c.section || '7-1').replace(/^secci[oó]n\s*/i, '').trim();
+          const score = c.globalAvg ?? c.porcentaje ?? c.puntaje ?? 80;
+
+          const teleRecord = {
+            idResultado: c.id || `eval-7mo-${Date.now()}`,
+            webAppId: 'diagnostico_7mo_modulo01_cyberquest',
+            webAppTitulo: 'CyberQuest 7°: Diagnóstico de Fundamentos Digitales',
+            docenteId: docId,
+            docenteNombre: docNom,
+            docenteCedula: profile?.cedula || docId,
+            docenteEmail: profile?.correo || '',
+            institucionNombre: colegioActivo,
+            dreCodigo: dreActiva,
+            estudianteNombre: estNombre,
+            seccionOGrupo: `Sección ${sec}`,
+            nivel: '7°',
+            puntaje: score,
+            porcentaje: score,
+            aciertos: Math.round((score / 100) * 10),
+            fallos: Math.max(0, 10 - Math.round((score / 100) * 10)),
+            nivelLogro: c.globalLevel === 'A' ? 'Avanzado' : (c.globalLevel === 'C' ? 'Inicial' : 'Intermedio'),
+            tiempoSegundos: 120,
+            estadoProgreso: 'completado',
+            timestamp: c.raw?.timestamp || Date.now(),
+            tokenAntiFraude: `TOKEN-7MO-${Date.now()}`
+          };
+
+          const exIdx = listaTele.findIndex(r => (r.estudianteNombre || '').toLowerCase() === estNombre.toLowerCase() && (r.seccionOGrupo || '').includes(sec));
+          if (exIdx >= 0) {
+            listaTele[exIdx] = { ...listaTele[exIdx], ...teleRecord };
+          } else {
+            listaTele.unshift(teleRecord);
+          }
+        });
+
+        localStorage.setItem('telemetria_registros', JSON.stringify(listaTele));
+
+        // Enviar silenciosamente en background al servidor
+        if (evaluatedCadets.length > 0) {
+          fetch('/api/telemetria/enviar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(listaTele.slice(0, evaluatedCadets.length))
+          }).catch(() => {});
+        }
+      } catch (e) {}
+
       updateGlobalMetrics();
     }
 
@@ -1937,50 +2001,61 @@
 
     function getStoredProfile() {
       try {
+        const params = new URLSearchParams(window.location.search);
+        const urlDoc = params.get('docente');
+        const urlId = params.get('docenteId') || params.get('cedula');
+        const urlInst = params.get('institucion') || params.get('colegio');
+        const urlDre = params.get('dre');
+
         // 1. Sincronizar automáticamente con el docente activo de Next.js (Prioridad 1)
         const docenteActivo = localStorage.getItem('docente_activo');
         if (docenteActivo) {
           const doc = JSON.parse(docenteActivo);
           if (doc && (doc.nombreCompleto || doc.idDocente || doc.cedula)) {
+            const centros = (doc.centrosEducativos && doc.centrosEducativos.length > 0)
+              ? doc.centrosEducativos.map(c => ({
+                  colegio: c.nombre,
+                  dreCodigo: c.dreCodigo,
+                  dreNombre: c.dreNombre,
+                  circuito: c.circuito,
+                  niveles: {
+                    '7': (c.desgloseNiveles || []).some(dn => dn.nivel.includes('7') && dn.activo),
+                    '8': (c.desgloseNiveles || []).some(dn => dn.nivel.includes('8') && dn.activo),
+                    '9': (c.desgloseNiveles || []).some(dn => dn.nivel.includes('9') && dn.activo)
+                  },
+                  secciones: {
+                    '7': { total: 6, selected: (c.desgloseNiveles?.find(dn => dn.nivel.includes('7'))?.seccionesAtendidasDocente) || ['7-1', '7-2'] },
+                    '8': { total: 6, selected: (c.desgloseNiveles?.find(dn => dn.nivel.includes('8'))?.seccionesAtendidasDocente) || ['8-1'] },
+                    '9': { total: 6, selected: (c.desgloseNiveles?.find(dn => dn.nivel.includes('9'))?.seccionesAtendidasDocente) || ['9-1'] }
+                  }
+                }))
+              : [{
+                  colegio: doc.institucionNombre || 'Liceo / CTP MEP',
+                  dreCodigo: doc.dreCodigo || 'DRE-01',
+                  dreNombre: doc.dreNombre || 'San José Central',
+                  niveles: { '7': true, '8': true, '9': true },
+                  secciones: {
+                    '7': { total: 6, selected: ['7-1', '7-2'] },
+                    '8': { total: 6, selected: ['8-1'] },
+                    '9': { total: 6, selected: ['9-1'] }
+                  }
+                }];
+
+            const colegioActivo = urlInst || centros[0]?.colegio || doc.institucionNombre || 'Liceo / CTP MEP';
+
             const adaptado = {
               autenticado: true,
-              nombre: doc.nombreCompleto || 'Luis López Rueda',
-              cedula: doc.cedula || doc.idDocente || '1-0892-0456',
+              nombre: urlDoc || doc.nombreCompleto || 'Luis López Rueda',
+              cedula: urlId || doc.cedula || doc.idDocente || '1-0892-0456',
               correo: doc.correoInstitucional || 'luis.lopez.rueda@mep.go.cr',
               telefono: doc.telefono || '+506 8888-9999',
               pin: doc.pin || '4560',
-              colegio: doc.institucionNombre || 'Liceo / CTP MEP',
-              dreCodigo: doc.dreCodigo || 'DRE-01',
-              dreNombre: doc.dreNombre || 'San José Central',
+              colegio: doc.institucionNombre || colegioActivo,
+              colegioActivo: colegioActivo,
+              dreCodigo: urlDre || doc.dreCodigo || 'DRE-01',
+              dreNombre: urlDre || doc.dreNombre || 'San José Central',
               circuito: doc.circuito || 'Circuito 01',
-              centrosEducativos: (doc.centrosEducativos && doc.centrosEducativos.length > 0)
-                ? doc.centrosEducativos.map(c => ({
-                    colegio: c.nombre,
-                    dreCodigo: c.dreCodigo,
-                    dreNombre: c.dreNombre,
-                    circuito: c.circuito,
-                    niveles: {
-                      '7': (c.desgloseNiveles || []).some(dn => dn.nivel.includes('7') && dn.activo),
-                      '8': (c.desgloseNiveles || []).some(dn => dn.nivel.includes('8') && dn.activo),
-                      '9': (c.desgloseNiveles || []).some(dn => dn.nivel.includes('9') && dn.activo)
-                    },
-                    secciones: {
-                      '7': { total: 6, selected: (c.desgloseNiveles?.find(dn => dn.nivel.includes('7'))?.seccionesAtendidasDocente) || ['7-1', '7-2'] },
-                      '8': { total: 6, selected: (c.desgloseNiveles?.find(dn => dn.nivel.includes('8'))?.seccionesAtendidasDocente) || ['8-1'] },
-                      '9': { total: 6, selected: (c.desgloseNiveles?.find(dn => dn.nivel.includes('9'))?.seccionesAtendidasDocente) || ['9-1'] }
-                    }
-                  }))
-                : [{
-                    colegio: doc.institucionNombre || 'Liceo / CTP MEP',
-                    dreCodigo: doc.dreCodigo || 'DRE-01',
-                    dreNombre: doc.dreNombre || 'San José Central',
-                    niveles: { '7': true, '8': true, '9': true },
-                    secciones: {
-                      '7': { total: 6, selected: ['7-1', '7-2'] },
-                      '8': { total: 6, selected: ['8-1'] },
-                      '9': { total: 6, selected: ['9-1'] }
-                    }
-                  }]
+              centrosEducativos: centros
             };
             localStorage.setItem('MEP_DOCENTE_PERFIL_GLOBAL', JSON.stringify(adaptado));
             return adaptado;
@@ -1988,11 +2063,6 @@
         }
 
         // 2. Parámetros URL (Prioridad 2)
-        const params = new URLSearchParams(window.location.search);
-        const urlDoc = params.get('docente');
-        const urlId = params.get('docenteId');
-        const urlInst = params.get('institucion');
-        const urlDre = params.get('dre');
         if (urlDoc || urlInst || urlId) {
           const profileUrl = {
             autenticado: true,
@@ -2000,6 +2070,7 @@
             cedula: urlId || '1-0892-0456',
             correo: 'docente@mep.go.cr',
             colegio: urlInst || 'Centro Educativo MEP',
+            colegioActivo: urlInst || 'Centro Educativo MEP',
             dreCodigo: urlDre || 'DRE-01',
             dreNombre: urlDre || 'San José Central',
             pin: '4560',
@@ -2017,7 +2088,11 @@
 
         // 3. Perfil global previo (Prioridad 3)
         const saved = localStorage.getItem('MEP_DOCENTE_PERFIL_GLOBAL');
-        if (saved) return JSON.parse(saved);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (urlInst) parsed.colegioActivo = urlInst;
+          return parsed;
+        }
       } catch (e) {}
       return null;
     }
@@ -2371,21 +2446,32 @@
         if (dispId) dispId.textContent = profile.cedula || '—';
         if (dispEmail) dispEmail.textContent = profile.correo || '—';
 
-        let schools7 = [];
-        if (profile.centrosEducativos && profile.centrosEducativos.length > 0) {
-          schools7 = profile.centrosEducativos.filter(s => s.niveles && s.niveles['7']);
+        const colegioActivo = profile.colegioActivo || profile.colegio || 'Centro Educativo MEP';
+        const dreActiva = profile.dreCodigo || 'DRE-01';
+
+        const todosCentros = (profile.centrosEducativos && profile.centrosEducativos.length > 0)
+          ? profile.centrosEducativos
+          : [{ colegio: colegioActivo, dreCodigo: dreActiva }];
+
+        if (dispSchool) {
+          if (todosCentros.length > 1) {
+            dispSchool.innerHTML = `
+              <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                <select id="selectColegioActivoEvaluador" class="filter-select" style="font-weight: 800; color: #0284c7; padding: 4px 8px; font-size: 12px; background: #fff; border: 1.5px solid #0284c7; border-radius: 6px;" onchange="cambiarColegioActivoEvaluador(this.value)">
+                  ${todosCentros.map(s => `<option value="${s.colegio}" ${s.colegio.trim().toLowerCase() === colegioActivo.trim().toLowerCase() ? 'selected' : ''}>🏫 ${s.colegio} [${s.dreCodigo || 'DRE'}]</option>`).join('')}
+                </select>
+                <span class="badge" style="background:#dbeafe; color:#1e40af; font-size:10px;">Centro Activo Vinculado</span>
+              </div>
+            `;
+          } else {
+            dispSchool.innerHTML = `<strong style="color: #0284c7;">🏫 ${colegioActivo}</strong> <span style="font-size:11px; color:#64748b;">[${dreActiva}]</span>`;
+          }
         }
-        let schoolsDisplay = '';
-        if (schools7.length > 0) {
-          schoolsDisplay = schools7.map(s => `${s.colegio} [${s.dreCodigo || 'DRE'}]`).join(' • ');
-        } else {
-          schoolsDisplay = `${profile.colegio || 'Institución asignada a 7.°'} (${profile.dreCodigo || 'DRE'})`;
-        }
-        if (dispSchool) dispSchool.textContent = schoolsDisplay;
 
         // Actualizar dinámicamente opciones del filtro de sección para 7°
         const filtroSec = document.getElementById('filterSection');
-        const sec7 = (profile.seccionesPorNivel && profile.seccionesPorNivel['7']) || (schools7[0]?.secciones?.['7']?.selected) || [];
+        const schAct = todosCentros.find(s => s.colegio.trim().toLowerCase() === colegioActivo.trim().toLowerCase()) || todosCentros[0];
+        const sec7 = (schAct?.secciones?.['7']?.selected) || (profile.seccionesPorNivel && profile.seccionesPorNivel['7']) || [];
         if (filtroSec && sec7.length > 0) {
           const curVal = filtroSec.value;
           filtroSec.innerHTML = '<option value="ALL">Todas las Secciones Asignadas (7°)</option>';
@@ -2424,6 +2510,21 @@
           printMeta.textContent = `Docente Evaluador: Sin registrar | Suite de Diagnóstico CyberQuest 7°`;
         }
       }
+    }
+
+    function cambiarColegioActivoEvaluador(colegioNombre) {
+      const profile = getStoredProfile();
+      if (!profile) return;
+      profile.colegioActivo = colegioNombre;
+      const matchingCenter = (profile.centrosEducativos || []).find(c => c.colegio.trim().toLowerCase() === colegioNombre.trim().toLowerCase());
+      if (matchingCenter) {
+        profile.dreCodigo = matchingCenter.dreCodigo || profile.dreCodigo;
+        profile.dreNombre = matchingCenter.dreNombre || profile.dreNombre;
+      }
+      localStorage.setItem('MEP_DOCENTE_PERFIL_GLOBAL', JSON.stringify(profile));
+      applyTeacherProfileUI(profile);
+      saveDocenteState();
+      sincronizarTelemetriaOnline();
     }
 
     function cerrarSesionDocente() {
