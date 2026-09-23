@@ -2725,6 +2725,33 @@
         localStorage.setItem('telemetria_registros', JSON.stringify(lista));
       } catch(e) {}
 
+      // 1.b Guardar también en MEP_DOCENTE_7MO_EVALUATIONS para el evaluador local docente
+      try {
+        const rawEvaluations = localStorage.getItem('MEP_DOCENTE_7MO_EVALUATIONS');
+        const listEvaluations = rawEvaluations ? JSON.parse(rawEvaluations) : [];
+        const evalRecord = {
+          id: fullData.idResultado,
+          name1: cadet1Name,
+          name2: cadet2Name || 'Individual',
+          avatar1: fullData.cadet1Avatar,
+          avatar2: fullData.cadet2Avatar,
+          section: secClean,
+          psicoScore: metrics.psicoScore,
+          cogScore: metrics.cogScore,
+          socioScore: metrics.socioScore,
+          globalAvg: metrics.globalAvg,
+          globalLevel: metrics.globalLevel,
+          raw: fullData
+        };
+        const exIdx = listEvaluations.findIndex(e => e.name1 === cadet1Name && e.section === secClean);
+        if (exIdx >= 0) {
+          listEvaluations[exIdx] = { ...listEvaluations[exIdx], ...evalRecord };
+        } else {
+          listEvaluations.unshift(evalRecord);
+        }
+        localStorage.setItem('MEP_DOCENTE_7MO_EVALUATIONS', JSON.stringify(listEvaluations));
+      } catch(e) {}
+
       // 2. Intentar sincronización automática con API central
       let syncedApi = false;
       try {
