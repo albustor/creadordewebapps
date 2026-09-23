@@ -35,35 +35,6 @@ export default function DiagnosticoPage() {
     correoLimpio === "allan.morera.araya@mep.go.cr" ||
     (docente?.tipoRol === "Asesor Nacional" || docente?.tipoRol === "Asesor Regional");
 
-  if (docente && !esAsesor) {
-    return (
-      <AuthGuard>
-        <div className="max-w-2xl mx-auto px-4 py-16 text-center space-y-6">
-          <div className="w-16 h-16 rounded-3xl bg-amber-100 text-amber-800 border border-amber-300 mx-auto flex items-center justify-center shadow-xs">
-            <Lightning size={32} weight="fill" className="text-amber-600" />
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-2xl font-black text-slate-900">
-              Módulo Exclusivo para Asesoría & Recursos
-            </h2>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              Este apartado está reservado para la Asesoría Nacional y Regional de Formación Tecnológica. Como docente evaluador, todas sus herramientas de diagnóstico, enlaces por nivel y consolidación de resultados están disponibles en su panel central.
-            </p>
-          </div>
-          <div className="pt-2">
-            <Link
-              href="/dashboard"
-              className="inline-flex items-center gap-2 px-6 py-3.5 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-sm rounded-xl shadow-xs transition-all"
-            >
-              <span>Ir a mi Dashboard Docente</span>
-              <ArrowSquareOut size={18} weight="bold" />
-            </Link>
-          </div>
-        </div>
-      </AuthGuard>
-    );
-  }
-
   return (
     <AuthGuard>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">

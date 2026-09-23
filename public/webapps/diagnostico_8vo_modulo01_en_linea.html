@@ -954,23 +954,6 @@ FIN</div>
     updateProgress();
   }
 
-  function updateProgress() {
-    const totalItems = 14;
-    let answered = Object.keys(selectedAnswers).length;
-    
-    const match1 = document.querySelectorAll('.match-select');
-    let m1Complete = true;
-    match1.forEach(s => { if(!s.value) m1Complete = false; });
-    if(m1Complete) answered++;
-
-    const match2 = document.querySelectorAll('.match-select-algo');
-    let m2Complete = true;
-    match2.forEach(s => { if(!s.value) m2Complete = false; });
-    if(m2Complete) answered++;
-
-    let percentage = Math.min(Math.round((answered / totalItems) * 100), 100);
-    document.getElementById('progressBar').style.width = percentage + '%';
-
   // Variables globales del contexto docente e institucional recibidas por URL o Storage
   var urlDocenteId = '';
   var urlDocenteCedula = '';

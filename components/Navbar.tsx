@@ -29,7 +29,7 @@ export default function Navbar() {
     correoLimpio === "allan.morera.araya@mep.go.cr" ||
     (docente?.tipoRol === "Asesor Nacional" || docente?.tipoRol === "Asesor Regional");
 
-  // Navegación: Inicio, Dashboard (Docentes), Diagnóstico (Asesoría & Recursos solo para asesores)
+  // Navegación: Inicio, Dashboard (Docentes), Diagnóstico (7°, 8° y 9° / Asesoría)
   const enlaces = [
     {
       href: "/",
@@ -43,16 +43,12 @@ export default function Navbar() {
       icon: <ChartBar size={18} weight="duotone" />,
       titulo: "Panel de control del docente, enlaces seguros y telemetría de 7°, 8° y 9°",
     },
-    ...(esAsesor
-      ? [
-          {
-            href: "/diagnostico",
-            label: "Asesoría & Recursos",
-            icon: <Lightning size={18} weight="fill" className="text-amber-600" />,
-            titulo: "Módulo para asesores nacionales, regionales y exploración curricular por nivel",
-          },
-        ]
-      : []),
+    {
+      href: "/diagnostico",
+      label: esAsesor ? "Asesoría & Diagnóstico" : "Diagnóstico 7°, 8° y 9°",
+      icon: <Lightning size={18} weight="fill" className="text-amber-600" />,
+      titulo: "Portal interactivo de evaluación diagnóstica multinivel y recursos",
+    },
   ];
 
   return (

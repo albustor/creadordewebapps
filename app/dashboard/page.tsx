@@ -78,7 +78,23 @@ export default function DashboardAnaliticoPage() {
   const listaCentrosDocente = useMemo(() => {
     const nivelKey = nivelActivo === "7mo" ? "7" : nivelActivo === "8vo" ? "8" : "9";
     if (docente?.centrosEducativos && Array.isArray(docente.centrosEducativos) && docente.centrosEducativos.length > 0) {
-      return docente.centrosEducativos.map((c, idx) => {
+      // Filtrar únicamente los colegios que tengan activo el nivel seleccionado
+      const centrosConNivel = docente.centrosEducativos.filter((c) => {
+        if (!c) return false;
+        if (c.desgloseNiveles && Array.isArray(c.desgloseNiveles) && c.desgloseNiveles.length > 0) {
+          const dn = c.desgloseNiveles.find((d) => d && typeof d.nivel === "string" && d.nivel.includes(nivelKey));
+          return dn ? dn.activo !== false : false;
+        }
+        if ((c as any).niveles) {
+          if (Array.isArray((c as any).niveles)) return (c as any).niveles.some((n: any) => typeof n === "string" && n.includes(nivelKey));
+          if (typeof (c as any).niveles === "object") return Boolean((c as any).niveles[nivelKey]);
+        }
+        return true;
+      });
+
+      const centrosAProcesar = centrosConNivel.length > 0 ? centrosConNivel : docente.centrosEducativos;
+
+      return centrosAProcesar.map((c, idx) => {
         if (!c) {
           return {
             id: `centro-${idx}`,
@@ -552,31 +568,6 @@ export default function DashboardAnaliticoPage() {
                   <span>Abrir Instrumento 7.° Año</span>
                   <ArrowSquareOut size={20} weight="bold" />
                 </a>
-
-                {listaCentrosDocente.length > 1 && (
-                  <div className="flex flex-col gap-1.5 pt-1">
-                    <span className="text-[11px] text-center text-indigo-300/90 font-bold">
-                      Colegio activo: {centroActivo?.nombre}
-                    </span>
-                    <div className="flex flex-col gap-1">
-                      {listaCentrosDocente.map((c, idx) => {
-                        if (idx === centroActivoIdx) return null;
-                        return (
-                          <a
-                            key={c.id || idx}
-                            href={getUrlEvaluador(c)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center justify-center gap-1.5 px-3 py-2 bg-white/15 hover:bg-white/25 text-white font-bold text-xs rounded-xl transition-all border border-white/20 text-center"
-                          >
-                            <span>🏫 Abrir en {c.nombre}</span>
-                            <ArrowSquareOut size={14} weight="bold" />
-                          </a>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
               </div>
 
             </div>
@@ -660,31 +651,6 @@ export default function DashboardAnaliticoPage() {
                   <span>Abrir Instrumento 8.° Año</span>
                   <ArrowSquareOut size={20} weight="bold" />
                 </a>
-
-                {listaCentrosDocente.length > 1 && (
-                  <div className="flex flex-col gap-1.5 pt-1">
-                    <span className="text-[11px] text-center text-teal-300/90 font-bold">
-                      Colegio activo: {centroActivo?.nombre}
-                    </span>
-                    <div className="flex flex-col gap-1">
-                      {listaCentrosDocente.map((c, idx) => {
-                        if (idx === centroActivoIdx) return null;
-                        return (
-                          <a
-                            key={c.id || idx}
-                            href={getUrlEvaluador(c)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center justify-center gap-1.5 px-3 py-2 bg-white/15 hover:bg-white/25 text-white font-bold text-xs rounded-xl transition-all border border-white/20 text-center"
-                          >
-                            <span>🏫 Abrir en {c.nombre}</span>
-                            <ArrowSquareOut size={14} weight="bold" />
-                          </a>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
               </div>
 
             </div>
@@ -768,31 +734,6 @@ export default function DashboardAnaliticoPage() {
                   <span>Abrir Instrumento 9.° Año</span>
                   <ArrowSquareOut size={20} weight="bold" />
                 </a>
-
-                {listaCentrosDocente.length > 1 && (
-                  <div className="flex flex-col gap-1.5 pt-1">
-                    <span className="text-[11px] text-center text-emerald-300/90 font-bold">
-                      Colegio activo: {centroActivo?.nombre}
-                    </span>
-                    <div className="flex flex-col gap-1">
-                      {listaCentrosDocente.map((c, idx) => {
-                        if (idx === centroActivoIdx) return null;
-                        return (
-                          <a
-                            key={c.id || idx}
-                            href={getUrlEvaluador(c)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center justify-center gap-1.5 px-3 py-2 bg-white/15 hover:bg-white/25 text-white font-bold text-xs rounded-xl transition-all border border-white/20 text-center"
-                          >
-                            <span>🏫 Abrir en {c.nombre}</span>
-                            <ArrowSquareOut size={14} weight="bold" />
-                          </a>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
               </div>
 
             </div>
