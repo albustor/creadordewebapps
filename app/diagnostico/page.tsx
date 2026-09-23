@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useDocente } from "@/context/DocenteContext";
 import SelectorVersionesDiagnostico from "@/components/SelectorVersionesDiagnostico";
 import SelectorNivelDiagnosticoTabs from "@/components/SelectorNivelDiagnosticoTabs";
@@ -21,7 +22,8 @@ import {
 } from "@phosphor-icons/react";
 
 export default function DiagnosticoPage() {
-  const { docente } = useDocente();
+  const router = useRouter();
+  const { docente, isInitialized } = useDocente();
 
   // Nivel activo: 7°, 8° o 9°
   const [nivelActivo, setNivelActivo] = useState<NivelEducativo>("8°");
@@ -34,6 +36,36 @@ export default function DiagnosticoPage() {
     esSuperAdmin ||
     correoLimpio === "allan.morera.araya@mep.go.cr" ||
     (docente?.tipoRol === "Asesor Nacional" || docente?.tipoRol === "Asesor Regional");
+
+  useEffect(() => {
+    if (isInitialized && docente && !esAsesor) {
+      router.replace("/dashboard");
+    }
+  }, [isInitialized, docente, esAsesor, router]);
+
+  if (isInitialized && docente && !esAsesor) {
+    return (
+      <AuthGuard>
+        <div className="max-w-xl mx-auto my-16 p-8 bg-white border border-stone-200 rounded-2xl text-center space-y-4 shadow-sm">
+          <div className="w-12 h-12 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center mx-auto">
+            <Lightning size={24} weight="fill" />
+          </div>
+          <h2 className="text-xl font-bold text-slate-900">Módulo Exclusivo para Asesoría Curricular</h2>
+          <p className="text-xs sm:text-sm text-slate-600">
+            Este espacio de exploración y pilotaje está reservado exclusivamente para Asesorías Nacionales y Regionales. Redirigiendo a su Dashboard Docente...
+          </p>
+          <div className="pt-2">
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-700 text-white text-xs font-bold rounded-xl hover:bg-emerald-800"
+            >
+              <span>Ir al Dashboard Docente</span>
+            </Link>
+          </div>
+        </div>
+      </AuthGuard>
+    );
+  }
 
   return (
     <AuthGuard>

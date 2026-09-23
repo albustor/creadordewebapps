@@ -272,6 +272,8 @@ export async function POST(req: NextRequest) {
         ...HISTORICO_DB,
       ];
 
+      guardarUsuariosServidor();
+
       return NextResponse.json({
         success: true,
         mensaje: nuevo.estado === "Aprobado" 
@@ -322,6 +324,8 @@ export async function POST(req: NextRequest) {
         ...HISTORICO_DB,
       ];
 
+      guardarUsuariosServidor();
+
       return NextResponse.json({
         success: true,
         mensaje: `Solicitud ${accion === "aprobar" ? "aprobada" : "rechazada"} con éxito.`,
@@ -353,6 +357,8 @@ export async function POST(req: NextRequest) {
         },
         ...HISTORICO_DB,
       ];
+
+      guardarUsuariosServidor();
 
       return NextResponse.json({
         success: true,
@@ -388,6 +394,8 @@ export async function POST(req: NextRequest) {
         ...HISTORICO_DB,
       ];
 
+      guardarUsuariosServidor();
+
       return NextResponse.json({
         success: true,
         mensaje: `Usuario ${accion === "desactivar" ? "desactivado" : "reactivado"} con éxito.`,
@@ -421,6 +429,8 @@ export async function POST(req: NextRequest) {
         },
         ...HISTORICO_DB,
       ];
+
+      guardarUsuariosServidor();
 
       return NextResponse.json({
         success: true,
