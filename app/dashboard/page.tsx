@@ -267,11 +267,16 @@ export default function DashboardAnaliticoPage() {
     const idDoc = (docente?.idDocente || "").trim().toLowerCase();
     const cedDoc = (docente?.cedula || "").trim().toLowerCase();
 
-    return (telemetria || []).filter((r) => {
+    const filtrados = (telemetria || []).filter((r) => {
       if (!r) return false;
 
       const estNom = (r.estudianteNombre || "").toLowerCase().trim();
       const estCor = (r.estudianteCorreo || "").toLowerCase().trim();
+
+      // Bloquear registros de prueba inapropiados
+      if (estNom.includes("yo si jodo") || estNom.includes("yosijodo") || estNom.includes("augrey")) {
+        return false;
+      }
 
       // Excluir si el registro coincide con el nombre o correo del propio docente
       if (docente?.nombreCompleto && estNom && estNom === docente.nombreCompleto.toLowerCase().trim()) {
@@ -351,6 +356,26 @@ export default function DashboardAnaliticoPage() {
 
       return Boolean(coincideTexto && coincideGrupo && coincideNivel);
     });
+
+    // Deduplicación estricta: 1 única fila por estudiante y sección
+    const mapaUnicos = new Map<string, PayloadTelemetria>();
+    filtrados.forEach((item) => {
+      const nom = (item.estudianteNombre || "").toLowerCase().trim();
+      const sec = (item.seccionOGrupo || "").toLowerCase().trim();
+      const clave = `${nom}::${sec}`;
+      if (!mapaUnicos.has(clave)) {
+        mapaUnicos.set(clave, item);
+      } else {
+        const exist = mapaUnicos.get(clave)!;
+        if (item.estadoProgreso === "completado" && exist.estadoProgreso !== "completado") {
+          mapaUnicos.set(clave, item);
+        } else if ((item.timestamp || 0) >= (exist.timestamp || 0)) {
+          mapaUnicos.set(clave, item);
+        }
+      }
+    });
+
+    return Array.from(mapaUnicos.values()).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
   }, [telemetria, nivelActivo, filtroTexto, filtroGrupo, filtroInstitucion, filtroNivelLogro, docente, configuracion]);
 
   const abrirEditar = (item: PayloadTelemetria) => {
@@ -917,7 +942,7 @@ export default function DashboardAnaliticoPage() {
                               <NotePencil size={15} weight="bold" />
                             </button>
                             <button
-                              onClick={() => eliminarResultado(item.timestamp)}
+                              onClick={() => eliminarResultado(item.estudianteNombre || item.timestamp)}
                               className="p-1.5 text-stone-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
                               title="Eliminar registro"
                             >

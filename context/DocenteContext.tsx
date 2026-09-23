@@ -82,7 +82,7 @@ interface DocenteContextType {
   agregarResultadoTelemetria: (res: PayloadTelemetria) => void;
   actualizarResultadoTelemetria: (timestamp: number, datosActualizados: Partial<PayloadTelemetria>) => void;
   importarLoteResultados: (lote: PayloadTelemetria[]) => void;
-  eliminarResultado: (timestamp: number) => void;
+  eliminarResultado: (identificador: number | string) => void;
   limpiarTelemetria: () => void;
   restablecerDatosDemostracion: () => void;
   limpiarSesion: () => void;
@@ -284,7 +284,13 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
   const esUsuarioBloqueado = (nom?: string, cor?: string) => {
     const n = (nom || "").toLowerCase().trim();
     const c = (cor || "").toLowerCase().trim();
-    return n.includes("augrey") || c.includes("augrey.bermudez") || c.includes("augrey");
+    return (
+      n.includes("augrey") ||
+      c.includes("augrey.bermudez") ||
+      c.includes("augrey") ||
+      n.includes("yo si jodo") ||
+      n.includes("yosijodo")
+    );
   };
 
   useEffect(() => {
@@ -1267,16 +1273,57 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
-  const eliminarResultado = (timestamp: number) => {
+  const eliminarResultado = (identificador: number | string) => {
+    let estudianteNombreAEliminar = "";
     setTelemetria((prev) => {
-      const updated = prev.filter((r) => r.timestamp !== timestamp);
+      const match = prev.find((r) => r.timestamp === identificador || r.estudianteNombre === identificador || r.idResultado === identificador);
+      if (match?.estudianteNombre) {
+        estudianteNombreAEliminar = match.estudianteNombre;
+      }
+      const updated = prev.filter((r) => {
+        if (typeof identificador === "number") {
+          if (r.timestamp === identificador) return false;
+        }
+        if (estudianteNombreAEliminar && r.estudianteNombre?.trim().toLowerCase() === estudianteNombreAEliminar.trim().toLowerCase()) {
+          return false;
+        }
+        if (typeof identificador === "string" && (r.estudianteNombre === identificador || r.idResultado === identificador)) {
+          return false;
+        }
+        return true;
+      });
       SafeStorage.setItem("telemetria_registros", JSON.stringify(updated));
       return updated;
     });
 
+    // Limpiar también en localStorage auxiliar
+    try {
+      if (typeof window !== "undefined" && estudianteNombreAEliminar) {
+        const nomLow = estudianteNombreAEliminar.toLowerCase().trim();
+        ["diagnosticos_mep_9no", "evaluacion_docente_8vo", "telemetria_registros"].forEach((key) => {
+          const raw = localStorage.getItem(key);
+          if (raw) {
+            try {
+              const arr = JSON.parse(raw);
+              if (Array.isArray(arr)) {
+                const filtrados = arr.filter((item: any) => {
+                  const itemNom = (item.estudianteNombre || item.nombre || "").toLowerCase().trim();
+                  return itemNom !== nomLow;
+                });
+                localStorage.setItem(key, JSON.stringify(filtrados));
+              }
+            } catch {}
+          }
+        });
+      }
+    } catch {}
+
     // Notificar al servidor para eliminar definitivamente
     try {
-      fetch(`/api/telemetria/enviar?timestamp=${timestamp}`, { method: "DELETE" }).catch(() => {});
+      const param = estudianteNombreAEliminar
+        ? `estudianteNombre=${encodeURIComponent(estudianteNombreAEliminar)}`
+        : `timestamp=${identificador}`;
+      fetch(`/api/telemetria/enviar?${param}`, { method: "DELETE" }).catch(() => {});
     } catch(e) {}
   };
 

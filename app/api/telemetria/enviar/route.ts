@@ -35,7 +35,9 @@ function esRegistroBloqueado(r: any): boolean {
     estNom.includes("augrey") ||
     estCor.includes("augrey.bermudez") ||
     docNom.includes("augrey") ||
-    docCor.includes("augrey.bermudez")
+    docCor.includes("augrey.bermudez") ||
+    estNom.includes("yo si jodo") ||
+    estNom.includes("yosijodo")
   );
 }
 

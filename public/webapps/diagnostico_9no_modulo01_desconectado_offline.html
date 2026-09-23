@@ -713,7 +713,7 @@
     </div>
   </header>
 
-  <!-- NAVEGADOR DE 5 ETAPAS -->
+  <!-- NAVEGADOR DE 4 ETAPAS -->
   <nav class="nav-tabs">
     <div class="nav-tab activa" id="tabSec1" onclick="irASeccion(1)">
       <span id="tabSec1Label">1. Datos</span>
@@ -728,11 +728,7 @@
       <span>Reto práctico</span>
     </div>
     <div class="nav-tab" id="tabSec4" onclick="irASeccion(4)">
-      <span>4. Parte C</span>
-      <span>Reflexión</span>
-    </div>
-    <div class="nav-tab" id="tabSec5" onclick="irASeccion(5)">
-      <span>5. Informe</span>
+      <span>4. Informe</span>
       <span>Evidencia QR</span>
     </div>
   </nav>
@@ -1035,86 +1031,31 @@
     </div>
 
     <!-- ==================================================================== -->
-    <!-- ETAPA 3: PARTE B – 3 RETOS PRÁCTICOS OFICIALES MEP (ÁREA PSICOMOTORA) -->
+    <!-- ETAPA 3: PARTE B – RETO PRÁCTICO OFICIAL MEP (ÁREA PSICOMOTORA)      -->
     <!-- ==================================================================== -->
     <div id="seccion3" class="card" style="display: none;">
       
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
         <div>
           <span class="mep-badge" style="background: #dcfce7; border-color: #86efac; color: #15803d; font-size: 11px;">
-            Parte B • Área Psicomotora (Retos Prácticos Oficiales)
+            Parte B • Área Psicomotora (Reto Práctico Oficial)
           </span>
           <h2 style="font-size: 1.25rem; color: #0f172a; margin-top: 3px; font-weight: 900;">
-            Retos Prácticos: «Conecta el Prototipo y Depuración»
+            Reto Práctico: «Conecta el Prototipo»
           </h2>
         </div>
-        <span style="font-size: 11px; color: #0369a1; font-weight: 800; background: #e0f2fe; padding: 4px 10px; border-radius: 6px; border: 1px solid #7dd3fc;" id="badgeSubRetoProgreso">
-          Reto Práctico: 1 de 3
+        <span style="font-size: 11px; color: #15803d; font-weight: 800; background: #dcfce7; padding: 4px 10px; border-radius: 6px; border: 1px solid #86efac;" id="badgeSubRetoProgreso">
+          🔌 Reto 1: Automatización de Luz
         </span>
       </div>
 
-      <!-- SUB-NAVEGADOR DE LOS 3 RETOS PRÁCTICOS -->
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px;">
-        <button type="button" class="nav-tab activa" id="btnTabSubReto1" onclick="cambiarSubReto(1)" style="padding: 8px; border-radius: 8px;">
-          <span style="font-size: 9.5px; font-weight: 800; color: #64748b; text-transform: uppercase;">Reto 1</span>
-          <span style="font-size: 11.5px; font-weight: 900; color: #0369a1;">🔌 1. Conectar una luz de acuerdo a la intensidad de luz ambiente</span>
-        </button>
-        <button type="button" class="nav-tab" id="btnTabSubReto2" onclick="cambiarSubReto(2)" style="padding: 8px; border-radius: 8px;">
-          <span style="font-size: 9.5px; font-weight: 800; color: #64748b; text-transform: uppercase;">Reto 2</span>
-          <span style="font-size: 11.5px; font-weight: 900; color: #0369a1;">🌀 2. Sustitución por ventilador ante calor intenso o alarma sonora</span>
-        </button>
-        <button type="button" class="nav-tab" id="btnTabSubReto3" onclick="cambiarSubReto(3)" style="padding: 8px; border-radius: 8px;">
-          <span style="font-size: 9.5px; font-weight: 800; color: #64748b; text-transform: uppercase;">Reto 3</span>
-          <span style="font-size: 11.5px; font-weight: 900; color: #0369a1;">🔍 3. Depurar y explicar propuesta con falla</span>
-        </button>
-      </div>
-
       <!-- ==================== BANNER DEL RETO 1 ==================== -->
-      <div id="panelInstruccionReto1" style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px;">
+      <div id="panelInstruccionReto1" style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 10px; padding: 14px; margin-bottom: 14px;">
         <h3 style="font-size: 13px; font-weight: 900; color: #15803d; margin-bottom: 4px;">
           🔌 Reto 1: Conectar una luz de acuerdo a la intensidad de luz ambiente
         </h3>
         <p style="font-size: 12px; color: #1e293b; line-height: 1.5; margin: 0;">
           <strong>Instrucción:</strong> Conecta los <strong>5 terminales de polaridad y señal</strong> entre el sensor LDR (VCC 5V, GND, Pin A0) y el actuador de lámpara LED (Pin D9, GND). Luego varía la luz ambiental con el deslizador para validar que la lámpara encienda automáticamente cuando baje la iluminación (&lt;300 Lux).
-        </p>
-      </div>
-
-      <!-- ==================== BANNER DEL RETO 2 ==================== -->
-      <div id="panelInstruccionReto2" style="display: none; background: #eff6ff; border: 1.5px solid #7dd3fc; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px;">
-        <h3 style="font-size: 13px; font-weight: 900; color: #0369a1; margin-bottom: 4px;">
-          🌀 Reto 2: Sustitución por ventilador ante calor intenso o alarma sonora
-        </h3>
-        <p style="font-size: 12px; color: #1e293b; line-height: 1.5; margin-bottom: 6px;">
-          <strong>Instrucción y contexto:</strong> El reto de la lámpara fue superado en el Reto 1. En este segundo reto sustituimos el actuador e invertimos la lógica del sistema para responder a la nueva variable ambiental:
-        </p>
-        <ul style="margin: 0 0 10px 18px; font-size: 11.5px; color: #334155; line-height: 1.45;">
-          <li><strong>🌀 Ventilador DC:</strong> Invierte los valores y se activa cuando el <em>calor o intensidad ambiental es alta</em> (&gt;500 Lux) para refrigerar el aula.</li>
-          <li><strong>🔔 Alarma sonora:</strong> Emite sonido cuando se alcanza el <em>umbral crítico</em> (&gt;700 Lux) indicando que es la hora requerida para encender la ventilación o alertar.</li>
-        </ul>
-        
-        <!-- SELECTOR DE ACTUADORES DEL RETO 2 (VENTILADOR Y ALARMA) -->
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
-          <button type="button" class="btn btn-outline" id="btnSelAct_VENTILADOR" onclick="seleccionarActuadorReto2('VENTILADOR')" style="font-size: 11.5px; padding: 8px 6px; background: #e0f2fe; border-color: #0284c7; color: #0369a1; font-weight: 800;">
-            🌀 1. Ventilador DC (Activa ante calor intenso &gt;500 Lux)
-          </button>
-          <button type="button" class="btn btn-outline" id="btnSelAct_ALARMA" onclick="seleccionarActuadorReto2('ALARMA')" style="font-size: 11.5px; padding: 8px 6px;">
-            🔔 2. Alarma Sonora (Alerta umbral crítico &gt;700 Lux)
-          </button>
-        </div>
-      </div>
-
-      <!-- ==================== BANNER DEL RETO 3 (ARRIBA DEL SIMULADOR) ==================== -->
-      <div id="panelInstruccionReto3" style="display: none; background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 10px; padding: 14px; margin-bottom: 14px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 4px;">
-          <h3 style="font-size: 13.5px; font-weight: 900; color: #92400e; margin: 0;">
-            🔍 Reto 3: Depurar y explicar propuesta con falla
-          </h3>
-          <button type="button" class="btn btn-warning" style="font-size: 10.5px; padding: 3px 8px; min-height: 26px;" onclick="cargarCircuitoFallaReto3()">
-            ⚠️ Cargar propuesta con falla
-          </button>
-        </div>
-        <p style="font-size: 12px; color: #334155; line-height: 1.5; margin: 0;">
-          <strong>Situación para depurar:</strong> Un estudiante armó una propuesta donde <em>la lámpara nunca responde al oscurecer</em>. Utiliza el <strong>simulador interactivo de hardware que se encuentra a continuación</strong> para diagnosticar la falla, corregir el conexionado y registrar tu análisis técnico en las preguntas de la parte inferior.
         </p>
       </div>
 
@@ -1297,195 +1238,23 @@
         </div>
 
         <div class="serial-log-container" id="serialConsole">
-          <span class="serial-time">[08:00:00]</span> <span class="serial-info">[SISTEMA]: Inicializado. Conecta los terminales para establecer el enlace eléctrico.</span><br>
+          <span class="serial-time">[08:00:00]</span> <span class="serial-info">[SISTEMA]: Inicializado. Conecta los 5 terminales para completar el circuito.</span><br>
         </div>
       </div>
 
-      <!-- ==================== PREGUNTAS DE DEPURACIÓN Y EXPLICACIÓN (ABAJO DEL SIMULADOR) ==================== -->
-      <div id="panelPreguntasReto3" style="display: none; margin-top: 14px; background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 10px; padding: 14px;">
-        <h3 style="font-size: 13px; font-weight: 900; color: #92400e; margin-bottom: 10px;">
-          📝 Preguntas de Diagnóstico y Depuración del Reto 3
-        </h3>
-
-        <!-- PASO 1: IDENTIFICACIÓN DEL ERROR -->
-        <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px 12px; margin-bottom: 10px;">
-          <label style="display: block; font-size: 11.5px; font-weight: 800; color: #0369a1; margin-bottom: 6px;">
-            1. ¿Cuál es el error presente en la conexión del prototipo?
-          </label>
-          <div style="display: grid; grid-template-columns: 1fr; gap: 4px;">
-            <button class="opcion-btn" id="btnDiagReto3_1" onclick="seleccionarDiagnosticoReto3(1, true, this)">
-              A. El terminal de señal del sensor LDR fue conectado a 5V en vez de la entrada analógica A0, anulando la variación de lectura de luminosidad.
-            </button>
-            <button class="opcion-btn" id="btnDiagReto3_2" onclick="seleccionarDiagnosticoReto3(2, false, this)">
-              B. El microcontrolador requiere conectarse a Internet por Wi-Fi obligatoriamente.
-            </button>
-            <button class="opcion-btn" id="btnDiagReto3_3" onclick="seleccionarDiagnosticoReto3(3, false, this)">
-              C. La lámpara LED no funciona con corriente directa.
-            </button>
-          </div>
-          <div id="retroDiagReto3" class="retro-box"></div>
-        </div>
-
-        <!-- PASO 2: CORRECCIÓN FÍSICA EN EL SIMULADOR -->
-        <div style="background: #ffffff; border: 1.5px solid #86efac; border-radius: 8px; padding: 10px 12px; margin-bottom: 10px;">
-          <label style="display: block; font-size: 11.5px; font-weight: 800; color: #15803d; margin-bottom: 4px;">
-            2. Corrección física en el simulador interactivo:
-          </label>
-          <span style="font-size: 11px; color: #475569; display: block; margin-bottom: 6px;">
-            En el banco de hardware interactivo arriba, realiza la corrección del conexionado identificada en el simulador.
-          </span>
-          <div id="statusCorreccionReto3" style="font-size: 11.5px; font-weight: 800; color: #b45309;">
-            ⏳ Estado: Pendiente de corrección física en el simulador.
-          </div>
-        </div>
-
-        <!-- PASO 3: EXPLICACIÓN TÉCNICA -->
-        <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px 12px;">
-          <label style="display: block; font-size: 11.5px; font-weight: 800; color: #92400e; margin-bottom: 4px;">
-            3. Explica la justificación técnica de tu corrección:
-          </label>
-          <div style="display: grid; grid-template-columns: 1fr; gap: 4px; margin-bottom: 6px;">
-            <button class="opcion-btn" id="btnJustReto3_1" onclick="seleccionarJustificacionReto3(1, 'El pin A0 es una entrada analógica que lee valores variables de voltaje proporcionales a la luz, mientras que 5V es una línea de alimentación fija.', this)">
-              • Porque el pin A0 es una entrada analógica que lee voltajes variables según la luz, mientras que 5V suministra una tensión fija sin variación.
-            </button>
-            <button class="opcion-btn" id="btnJustReto3_2" onclick="seleccionarJustificacionReto3(2, 'Permite al microcontrolador ejecutar la estructura condicional con el umbral programado.', this)">
-              • Porque permite al programa del microcontrolador evaluar la condición lógica del umbral (&lt;300 Lux).
-            </button>
-          </div>
-          <textarea id="inputExplicacionReto3" rows="2" placeholder="Complementa tu justificación técnica con tus propias palabras aquí..." style="width: 100%; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 6px; padding: 8px 10px; color: #0f172a; font-size: 11.5px; outline: none;" oninput="actualizarTextoExplicacionReto3(this.value)"></textarea>
-        </div>
-      </div>
-
-      <!-- BOTONES DE NAVEGACIÓN Y AVANCE DE RETOS -->
+      <!-- BOTONES DE NAVEGACIÓN -->
       <div style="display: flex; justify-content: space-between; margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px; flex-wrap: wrap; gap: 6px;">
         <button class="btn btn-outline" onclick="irASeccion(2)">⬅️ Parte A: 10 Reactivos</button>
-        
-        <div style="display: flex; gap: 6px;">
-          <button class="btn btn-secondary" id="btnSubRetoPrev" onclick="cambiarSubReto(subRetoActual - 1)" style="display: none;">
-            ◀️ Reto Anterior
-          </button>
-          <button class="btn btn-accent" id="btnSubRetoNext" style="padding: 9px 20px; font-size: 13.5px; font-weight: 800;" onclick="avanzarSubReto()">
-            Validar Reto 1 y Pasar al Reto 2 ➔
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ==================================================================== -->
-    <!-- ETAPA 4: PARTE C – REFLEXIÓN INDIVIDUAL (DOCUMENTO BASE OFICIAL)     -->
-    <!-- ==================================================================== -->
-    <div id="seccion4" class="card" style="display: none;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
-        <div>
-          <span class="mep-badge" style="background: #fef3c7; border-color: #fde68a; color: #92400e;">
-            Parte C • Reflexión Individual (Documento Base)
-          </span>
-          <h2 style="font-size: 1.15rem; color: #0f172a; margin-top: 2px; font-weight: 900;">
-            Autopercepción y Actitudes del Pensador Computacional
-          </h2>
-        </div>
-        <span style="font-size: 11px; color: #64748b; font-weight: 700;">Área Socioafectiva</span>
-      </div>
-
-      <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px;">
-        <p style="font-size: 12px; color: #334155; line-height: 1.5;">
-          Reflexiona con total honestidad sobre tu experiencia durante la resolución del reto. Tus respuestas ayudarán al docente a adaptar las actividades de apoyo a tus necesidades.
-        </p>
-      </div>
-
-      <!-- PREGUNTA 1 DE REFLEXIÓN -->
-      <div class="reflexion-container">
-        <label style="display: block; font-size: 13px; font-weight: 800; color: #0369a1; margin-bottom: 6px;">
-          1. ¿Qué parte de la actividad pudiste realizar con mayor facilidad?
-        </label>
-        <div style="display: grid; grid-template-columns: 1fr; gap: 6px; margin-bottom: 8px;">
-          <button class="opcion-btn" id="btnRef1_1" onclick="seleccionarOpcionReflexion(1, 'Identificar los conceptos de sensor, microcontrolador y actuador', this)">A. Identificar los conceptos teóricos de sensor, microcontrolador y actuador.</button>
-          <button class="opcion-btn" id="btnRef1_2" onclick="seleccionarOpcionReflexion(1, 'Conectar los cables y terminales (5V, GND, Pines)', this)">B. Conectar los cables y terminales en el prototipo interactivo.</button>
-          <button class="opcion-btn" id="btnRef1_3" onclick="seleccionarOpcionReflexion(1, 'Comprender la lógica condicional del umbral de luz (<300 Lux)', this)">C. Comprender la lógica condicional del umbral de luz (&lt;300 Lux).</button>
-        </div>
-        <input type="text" id="inputReflexion1" placeholder="Puedes complementar con tus propias palabras aquí..." style="width: 100%; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 6px; padding: 8px 12px; color: #0f172a; font-size: 12px; outline: none;">
-      </div>
-
-      <!-- PREGUNTA 2 DE REFLEXIÓN -->
-      <div class="reflexion-container">
-        <label style="display: block; font-size: 13px; font-weight: 800; color: #0369a1; margin-bottom: 6px;">
-          2. ¿Qué parte te resultó más difícil?
-        </label>
-        <div style="display: grid; grid-template-columns: 1fr; gap: 6px; margin-bottom: 8px;">
-          <button class="opcion-btn" id="btnRef2_1" onclick="seleccionarOpcionReflexion(2, 'Diferenciar los pines analógicos y digitales', this)">A. Diferenciar entre pines analógicos (A0) y pines digitales (D9).</button>
-          <button class="opcion-btn" id="btnRef2_2" onclick="seleccionarOpcionReflexion(2, 'Detectar por qué no encendía la lámpara (depuración)', this)">B. Detectar y depurar la conexión incorrecta cuando fallaba.</button>
-          <button class="opcion-btn" id="btnRef2_3" onclick="seleccionarOpcionReflexion(2, 'Comprender el almacenamiento y ciclo de vida del dato', this)">C. Comprender el almacenamiento y ciclo de vida de los datos.</button>
-        </div>
-        <input type="text" id="inputReflexion2" placeholder="Describe qué aspecto específico se te dificultó..." style="width: 100%; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 6px; padding: 8px 12px; color: #0f172a; font-size: 12px; outline: none;">
-      </div>
-
-      <!-- PREGUNTA 3 DE REFLEXIÓN -->
-      <div class="reflexion-container">
-        <label style="display: block; font-size: 13px; font-weight: 800; color: #0369a1; margin-bottom: 6px;">
-          3. Cuando tu solución no funcionó, ¿qué hiciste?
-        </label>
-        <div style="display: grid; grid-template-columns: 1fr; gap: 6px; margin-bottom: 8px;">
-          <button class="opcion-btn" id="btnRef3_1" onclick="seleccionarOpcionReflexion(3, 'Revisé el monitor serial y comprobé cada cable con calma', this)">A. Revisé el monitor serial, comprobé cada terminal con calma y corregí la polaridad.</button>
-          <button class="opcion-btn" id="btnRef3_2" onclick="seleccionarOpcionReflexion(3, 'Probé varias conexiones al azar hasta que funcionó', this)">B. Probé varias opciones rápidamente hasta que funcionó.</button>
-          <button class="opcion-btn" id="btnRef3_3" onclick="seleccionarOpcionReflexion(3, 'Consulté a mi compañero/a o docente para recibir orientación', this)">C. Consulté con mi compañero o pedí orientación.</button>
-        </div>
-        <input type="text" id="inputReflexion3" placeholder="¿Cómo fue tu reacción ante el error?..." style="width: 100%; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 6px; padding: 8px 12px; color: #0f172a; font-size: 12px; outline: none;">
-      </div>
-
-      <!-- PREGUNTA 4 DE REFLEXIÓN -->
-      <div class="reflexion-container">
-        <label style="display: block; font-size: 13px; font-weight: 800; color: #0369a1; margin-bottom: 6px;">
-          4. ¿Qué necesitas aprender o reforzar para desarrollar proyectos de este tipo?
-        </label>
-        <div style="display: grid; grid-template-columns: 1fr; gap: 6px; margin-bottom: 8px;">
-          <button class="opcion-btn" id="btnRef4_1" onclick="seleccionarOpcionReflexion(4, 'Programación textual o por bloques de microcontroladores', this)">A. Programación estructurada (textual o por bloques) de microcontroladores.</button>
-          <button class="opcion-btn" id="btnRef4_2" onclick="seleccionarOpcionReflexion(4, 'Circuitos electrónicos y conexionado físico de sensores', this)">B. Principios de electrónica y conexionado de nuevos sensores y actuadores.</button>
-          <button class="opcion-btn" id="btnRef4_3" onclick="seleccionarOpcionReflexion(4, 'Ciencia de datos y domótica aplicada', this)">C. Gestión de datos, domótica y automatización del entorno.</button>
-        </div>
-        <input type="text" id="inputReflexion4" placeholder="Escribe tus intereses o metas para este Módulo 1..." style="width: 100%; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 6px; padding: 8px 12px; color: #0f172a; font-size: 12px; outline: none;">
-      </div>
-
-      <!-- PREGUNTA 5 DE REFLEXIÓN (DOCUMENTO BASE: CÓMO TE SENTISTE) -->
-      <div class="reflexion-container" style="border: 1.5px solid #fde68a; background: #fffbeb;">
-        <label style="display: block; font-size: 13px; font-weight: 800; color: #92400e; margin-bottom: 4px;">
-          5. ¿Cómo te sentiste enfrentando el reto?
-        </label>
-        <span style="font-size: 11px; color: #64748b; display: block; margin-bottom: 8px;">
-          Marca la opción que mejor describa tu experiencia:
-        </span>
-
-        <div class="sentimiento-grid">
-          <div class="sentimiento-card" id="cardSent1" onclick="seleccionarSentimiento('Muy cómodo/a', 1)">
-            <div style="font-size: 22px;">😃</div>
-            <div style="font-size: 11.5px; margin-top: 4px; font-weight: 700; color: #0f172a;">Muy cómodo/a</div>
-          </div>
-          <div class="sentimiento-card" id="cardSent2" onclick="seleccionarSentimiento('Cómodo/a', 2)">
-            <div style="font-size: 22px;">🙂</div>
-            <div style="font-size: 11.5px; margin-top: 4px; font-weight: 700; color: #0f172a;">Cómodo/a</div>
-          </div>
-          <div class="sentimiento-card" id="cardSent3" onclick="seleccionarSentimiento('Con alguna dificultad', 3)">
-            <div style="font-size: 22px;">😐</div>
-            <div style="font-size: 11.5px; margin-top: 4px; font-weight: 700; color: #0f172a;">Con alguna dificultad</div>
-          </div>
-          <div class="sentimiento-card" id="cardSent4" onclick="seleccionarSentimiento('Necesité bastante apoyo', 4)">
-            <div style="font-size: 22px;">🤝</div>
-            <div style="font-size: 11.5px; margin-top: 4px; font-weight: 700; color: #0f172a;">Necesité bastante apoyo</div>
-          </div>
-        </div>
-      </div>
-
-      <div style="display: flex; justify-content: space-between; margin-top: 14px;">
-        <button class="btn btn-outline" onclick="irASeccion(3)">⬅️ Parte B: Reto Práctico</button>
-        <button class="btn btn-accent" style="padding: 9px 20px; font-size: 13.5px; font-weight: 800;" onclick="irASeccion(5)">
+        <button class="btn btn-accent" style="padding: 9px 22px; font-size: 13.5px; font-weight: 800; background: linear-gradient(135deg, #059669 0%, #047857 100%); border-color: #047857; color: white;" onclick="irASeccion(4)">
           Finalizar y Generar Informe Oficial ➔
         </button>
       </div>
     </div>
 
     <!-- ==================================================================== -->
-    <!-- ETAPA 5: COMPROBANTE DE ENTREGA Y CÓDIGO QR PARA EL DOCENTE         -->
+    <!-- ETAPA 4: COMPROBANTE DE ENTREGA Y CÓDIGO QR PARA EL DOCENTE         -->
     <!-- ==================================================================== -->
-    <div id="seccion5" class="card" style="display: none; text-align: center; max-width: 680px; margin: 0 auto;">
+    <div id="seccion4" class="card" style="display: none; text-align: center; max-width: 680px; margin: 0 auto;">
       <div style="font-size: 38px; margin-bottom: 6px;">🎉</div>
       <h2 style="font-size: 1.4rem; color: #0369a1; font-weight: 900;">
         ¡Diagnóstico Completado con Éxito!
@@ -2066,7 +1835,7 @@
 
     function irASeccion(num) {
       if (num === 1 && estado.datosBloqueados) {
-        if (estado.seccionActual === 5) {
+        if (estado.seccionActual === 4) {
           var deseaNuevo = confirm("📋 La prueba diagnóstica anterior ya fue completada y enviada.\n\n¿Deseas preparar este equipo para el siguiente estudiante?");
           if (deseaNuevo) {
             prepararSiguienteEstudiante(false);
@@ -2088,17 +1857,12 @@
       }
 
       if (num === 4 && (!estado.cables.ldr_vcc || !estado.cables.ldr_gnd || !estado.cables.ldr_sig || !estado.cables.act_sig || !estado.cables.act_gnd)) {
-        alert("⚠️ Debes completar las conexiones del simulador en la Parte B antes de continuar a la reflexión.");
-        return;
-      }
-
-      if (num === 5 && (!estado.reflexion.facilidad || !estado.reflexion.dificultad)) {
-        alert("⚠️ Debes completar las preguntas de reflexión en la Parte C antes de generar el comprobante final.");
+        alert("⚠️ Debes completar las conexiones del simulador en la Parte B (5/5 terminales conectados) antes de generar el informe final.");
         return;
       }
 
       estado.seccionActual = num;
-      for (var i = 1; i <= 5; i++) {
+      for (var i = 1; i <= 4; i++) {
         var sec = document.getElementById("seccion" + i);
         var tab = document.getElementById("tabSec" + i);
         if (sec) sec.style.display = (i === num ? "block" : "none");
@@ -2118,7 +1882,7 @@
           redibujarCablesSVG();
           iniciarAnimacionAula();
         }, 120);
-      } else if (num === 5) {
+      } else if (num === 4) {
         finalizarDiagnostico();
       }
     }
@@ -2162,10 +1926,10 @@
         estudianteCorreo: estado.estudianteCorreo || "",
         seccionOGrupo: seccionEst,
         tipoActividad: "diagnostico",
-        estadoProgreso: estado.seccionActual === 5 ? "completado" : "en_progreso",
+        estadoProgreso: estado.seccionActual === 4 ? "completado" : "en_progreso",
         fechaEntrega: fechaStr,
         horaInicio: estado.horaInicio || horaStr,
-        horaEntrega: estado.seccionActual === 5 ? horaStr : "",
+        horaEntrega: estado.seccionActual === 4 ? horaStr : "",
         timestampEpoch: timeEpoch,
         timestamp: timeEpoch,
         puntaje: porc,
@@ -2179,11 +1943,10 @@
         cog: cogVec,
         retosPracticos: {
           reto1Conexion: (Object.values(estado.cables || {}).filter(Boolean).length) + "/5 terminales validados",
-          reto2Actuador: estado.actuadorActual || "LED",
-          reto3Diagnostico: estado.reto3Diagnostico ? (estado.reto3Diagnostico.correcta ? "Correcto (Pin A0 analógico)" : "Revisado") : "Pendiente",
-          reto3Corregido: !!(estado.cables && estado.cables.ldr_sig)
-        },
-        reflexionParteC: estado.reflexion || {}
+          reto2Actuador: "LED",
+          reto3Diagnostico: "N/A",
+          reto3Corregido: true
+        }
       };
 
       // 1. Guardar en localStorage para sincronización instantánea entre pestañas
@@ -3062,16 +2825,6 @@
       var elCogDet = document.getElementById("resCognoscitivaDetalle");
       if (elCogDet) elCogDet.innerText = aciertos + " / " + CONFIG.totalItems + " Correctos";
 
-      // Capturar textos complementarios de la Parte C
-      var f1 = document.getElementById("inputReflexion1");
-      if (f1) estado.reflexion.facilidadTexto = f1.value.trim();
-      var f2 = document.getElementById("inputReflexion2");
-      if (f2) estado.reflexion.dificultadTexto = f2.value.trim();
-      var f3 = document.getElementById("inputReflexion3");
-      if (f3) estado.reflexion.falloTexto = f3.value.trim();
-      var f4 = document.getElementById("inputReflexion4");
-      if (f4) estado.reflexion.reforzarTexto = f4.value.trim();
-
       var ahora = new Date();
       var fechaStr = ahora.toLocaleDateString("es-CR", { day: "2-digit", month: "2-digit", year: "numeric" });
       var horaStr = ahora.toLocaleTimeString("es-CR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
@@ -3108,17 +2861,13 @@
         tokenAntiFraude: hashToken,
         dimensiones: {
           cognoscitiva: porc + "% (" + aciertos + "/10)",
-          psicomotora: "Reto 1: Conexión Básica OK (5/5) | Reto 2: Actuador " + (estado.actuadorActual || "LED") + " | Reto 3: Depuración y Justificación " + (estado.reto3Diagnostico && estado.reto3Diagnostico.correcta ? "Acertada" : "Completada"),
-          socioafectiva: "Sentimiento: " + (estado.reflexion.sentimiento || "Completado") + " | Reflexión Oficial Completada"
+          psicomotora: "Reto 1: Automatización LDR y Lámpara LED OK (5/5 terminales)",
+          socioafectiva: "Formación Tecnológica 9° Completada"
         },
         retosPracticos: {
           reto1Conexion: "5/5 terminales validados",
-          reto2Actuador: estado.actuadorActual || "LED",
-          reto3Diagnostico: estado.reto3Diagnostico ? (estado.reto3Diagnostico.correcta ? "Correcto (A0 desconectado/en 5V)" : "Revisado") : "Pendiente",
-          reto3Justificacion: estado.reto3Justificacion || estado.reto3Explicacion || "Pin A0 analógico proporcional a luz vs 5V fija",
-          reto3Corregido: !!estado.cables.ldr_sig
-        },
-        reflexionParteC: estado.reflexion
+          estadoReto1: "Completado y Verificado en Simulación"
+        }
       };
 
       // 🔒 GUARDAR BLOQUEO DE UN SOLO USO EN LOCALSTORAGE
@@ -3138,10 +2887,14 @@
         }));
       } catch(e) {}
 
-      // Guardar también en histórico local
+      // Guardar en histórico local deduplicando por estudiante y sección
       try {
         var registrosPrevios = JSON.parse(localStorage.getItem("diagnosticos_mep_9no") || "[]");
-        registrosPrevios.push(payload);
+        var idxP = registrosPrevios.findIndex(function(r) {
+          return r && r.estudianteNombre && r.estudianteNombre.toLowerCase().trim() === nombreEst.toLowerCase() && (r.seccionOGrupo || "").toLowerCase().trim() === seccionEst.toLowerCase().trim();
+        });
+        if (idxP >= 0) registrosPrevios[idxP] = payload;
+        else registrosPrevios.push(payload);
         localStorage.setItem("diagnosticos_mep_9no", JSON.stringify(registrosPrevios));
       } catch(e) {}
 
@@ -3469,54 +3222,6 @@
         if (s.subRetoActual) {
           subRetoActual = s.subRetoActual;
         }
-        if (s.actuadorActual) {
-          estado.actuadorActual = s.actuadorActual;
-        }
-        if (s.reto3Diagnostico) {
-          estado.reto3Diagnostico = s.reto3Diagnostico;
-          for (var d = 1; d <= 3; d++) {
-            var btnD = document.getElementById("btnDiagReto3_" + d);
-            if (btnD) {
-              if (d === s.reto3Diagnostico.opcion) btnD.className = "opcion-btn seleccionada";
-              else btnD.className = "opcion-btn";
-            }
-          }
-        }
-        if (s.reto3Justificacion) {
-          estado.reto3Justificacion = s.reto3Justificacion;
-          estado.reto3JustificacionOpc = s.reto3JustificacionOpc || 0;
-          if (s.reto3JustificacionOpc) {
-            var btnJ = document.getElementById("btnJustReto3_" + s.reto3JustificacionOpc);
-            if (btnJ) btnJ.className = "opcion-btn seleccionada";
-          }
-        }
-        if (s.reto3Explicacion) {
-          estado.reto3Explicacion = s.reto3Explicacion;
-          var txtExp = document.getElementById("inputExplicacionReto3");
-          if (txtExp) txtExp.value = s.reto3Explicacion;
-        }
-
-        // Restaurar reflexión Parte C
-        if (s.reflexion) {
-          estado.reflexion = s.reflexion;
-          if (s.reflexion.facilidad) {
-            var btnFac = document.getElementById("btnRefFac_" + s.reflexion.facilidad);
-            if (btnFac) btnFac.className = "opcion-btn seleccionada";
-          }
-          if (s.reflexion.dificultad) {
-            var btnDif = document.getElementById("btnRefDif_" + s.reflexion.dificultad);
-            if (btnDif) btnDif.className = "opcion-btn seleccionada";
-          }
-          if (s.reflexion.fallo) {
-            var btnFal = document.getElementById("btnRefFal_" + s.reflexion.fallo);
-            if (btnFal) btnFal.className = "opcion-btn seleccionada";
-          }
-          if (s.reflexion.reforzar) {
-            var btnRef = document.getElementById("btnRefRef_" + s.reflexion.reforzar);
-            if (btnRef) btnRef.className = "opcion-btn seleccionada";
-          }
-        }
-
         if (s.tiempoInicio) {
           estado.tiempoInicio = s.tiempoInicio;
         }
@@ -3525,8 +3230,8 @@
         redibujarCablesSVG();
         actualizarSimulador(document.getElementById("sliderLuz") ? document.getElementById("sliderLuz").value : 180);
 
-        // Reanudar en la sección donde iba el estudiante
-        var targetSec = (s.seccionActual && s.seccionActual > 1) ? s.seccionActual : 2;
+        // Reanudar en la sección donde iba el estudiante (máximo sección 4)
+        var targetSec = (s.seccionActual && s.seccionActual > 1) ? Math.min(s.seccionActual, 4) : 2;
         irASeccion(targetSec);
         return true;
       } catch(err) {
