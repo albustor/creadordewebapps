@@ -18,7 +18,7 @@ export default function Footer() {
               <span className="font-extrabold text-base sm:text-lg">Diagnóstico Secundaria</span>
             </div>
             <p className="text-xs text-stone-500 leading-relaxed font-medium">
-              Recurso para el desarrollo del diagnóstico formativo de 7°, 8° y 9° año, diseñado con base en el Programa de Estudios de Tecnologías de la Información de la materia de Tecnología.
+              Recurso para desarrollar el diagnóstico basándose en la información relacionada con el Programa de Estudios de Tecnologías de la Información de la materia de Tecnología.
             </p>
           </div>
 

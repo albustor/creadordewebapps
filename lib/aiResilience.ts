@@ -60,28 +60,33 @@ export async function ejecutarCascadaIA(prompt: string, systemInstruction?: stri
     };
   }
 
-  // 2. NIVEL 1 (Principal - Google Gemini): gemini-3.6-flash, gemini-3.5-flash-lite, gemini-3.5-flash, gemini-flash-latest
+  // 2. NIVEL 1 (Principal - Google Gemini): gemini-2.5-flash, gemini-2.0-flash, gemini-1.5-flash, gemini-flash-latest
   const geminiApiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
   if (geminiApiKey) {
     const modelosGemini = [
-      "gemini-3.6-flash",
-      "gemini-3.5-flash-lite",
-      "gemini-3.5-flash",
+      "gemini-2.5-flash",
+      "gemini-2.0-flash",
+      "gemini-1.5-flash",
       "gemini-flash-latest",
     ];
     for (const mod of modelosGemini) {
       try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 4000);
+
         const response = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/${mod}:generateContent?key=${geminiApiKey}`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
+            signal: controller.signal,
             body: JSON.stringify({
               contents: [{ parts: [{ text: prompt }] }],
               systemInstruction: systemInstruction ? { parts: [{ text: systemInstruction }] } : undefined,
             }),
           }
         );
+        clearTimeout(timeoutId);
 
         if (response.ok) {
           const data = await response.json();
@@ -104,7 +109,7 @@ export async function ejecutarCascadaIA(prompt: string, systemInstruction?: stri
           }
         }
       } catch (err) {
-        console.warn(`Gemini (${mod}) falló. Pasando al siguiente modelo o proveedor Groq...`, err);
+        console.warn(`Gemini (${mod}) timeout o error. Pasando al siguiente modelo...`);
       }
     }
   }

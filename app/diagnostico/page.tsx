@@ -21,6 +21,8 @@ import {
   GameController,
   Lightning,
   ChalkboardTeacher,
+  Copy,
+  UserCircle,
 } from "@phosphor-icons/react";
 
 export default function DiagnosticoPage() {
@@ -28,11 +30,17 @@ export default function DiagnosticoPage() {
 
   // Nivel activo: 7°, 8° o 9°
   const [nivelActivo, setNivelActivo] = useState<NivelEducativo>("8°");
-
-  // Modales
   const [modalComparativaAbierto, setModalComparativaAbierto] = useState(false);
+  const [copiadoRegistro, setCopiadoRegistro] = useState(false);
 
   const configActual = obtenerDiagnosticoPorNivel(nivelActivo);
+
+  const copiarEnlaceRegistro = () => {
+    const url = typeof window !== "undefined" ? `${window.location.origin}/registro` : "/registro";
+    navigator.clipboard.writeText(url);
+    setCopiadoRegistro(true);
+    setTimeout(() => setCopiadoRegistro(false), 2500);
+  };
 
   return (
     <AuthGuard>
@@ -60,7 +68,7 @@ export default function DiagnosticoPage() {
           <div className="flex items-center gap-2 flex-wrap shrink-0">
             <button
               onClick={() => setModalComparativaAbierto(true)}
-              className="flex items-center gap-2 px-4 py-2.5 bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-300 rounded-xl text-xs font-bold shadow-xs transition-all"
+              className="flex items-center gap-2 px-4 py-2.5 bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-300 rounded-xl text-xs font-bold shadow-xs transition-all cursor-pointer"
             >
               <Scales size={16} weight="bold" className="text-purple-700" />
               <span>Dictamen de Validación MEP</span>
@@ -68,10 +76,53 @@ export default function DiagnosticoPage() {
 
             <Link
               href="/dashboard"
-              className="flex items-center gap-2 px-4 py-2.5 bg-sky-800 hover:bg-sky-900 text-white rounded-xl text-xs font-black shadow-xs transition-all"
+              className="flex items-center gap-2 px-4 py-2.5 bg-sky-800 hover:bg-sky-900 text-white rounded-xl text-xs font-black shadow-xs transition-all cursor-pointer"
             >
               <span>Ir al Dashboard Docente</span>
               <ArrowSquareOut size={16} weight="bold" />
+            </Link>
+          </div>
+        </div>
+
+        {/* ========================================================================= */}
+        {/* BANNER OFICIAL: ENLACE EXTERNO DE REGISTRO E INICIO DE SESIÓN PARA DOCENTES */}
+        {/* ========================================================================= */}
+        <div className="bg-gradient-to-r from-slate-900 via-sky-950 to-slate-900 text-white rounded-3xl p-6 shadow-md border border-sky-800/40 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+          <div className="space-y-1 max-w-2xl">
+            <div className="flex items-center gap-2">
+              <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-black uppercase tracking-wider">
+                Acceso y Registro Externo
+              </span>
+              <span className="text-xs text-sky-200 font-semibold">
+                Portal Oficial para Docentes y Asesorías
+              </span>
+            </div>
+            <h3 className="text-lg font-black text-white">
+              Enlace de Registro y Autenticación Docente
+            </h3>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              Comparte este enlace oficial con los docentes para que puedan registrarse con su Correo MEP, Cédula y PIN de 4 dígitos. Al registrarse, sus diagnósticos y evaluaciones quedarán vinculados a su nómina.
+            </p>
+            <div className="mt-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-black/40 border border-white/10 text-xs font-mono text-emerald-300">
+              <span>{typeof window !== "undefined" ? `${window.location.origin}/registro` : "/registro"}</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-2.5 w-full md:w-auto shrink-0">
+            <button
+              onClick={copiarEnlaceRegistro}
+              className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-black text-xs shadow-md transition-all cursor-pointer"
+            >
+              {copiadoRegistro ? <CheckCircle size={16} weight="bold" /> : <Copy size={16} weight="bold" />}
+              <span>{copiadoRegistro ? "¡Enlace Copiado!" : "Copiar Enlace para Docentes"}</span>
+            </button>
+
+            <Link
+              href="/registro"
+              className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-sky-700 hover:bg-sky-600 text-white font-bold text-xs border border-sky-500/50 shadow-xs transition-all"
+            >
+              <UserCircle size={16} weight="bold" />
+              <span>Abrir Portal de Registro</span>
             </Link>
           </div>
         </div>
@@ -194,41 +245,6 @@ export default function DiagnosticoPage() {
               docenteNombre={docente?.nombreCompleto}
               institucionNombre={docente?.institucionNombre}
             />
-
-            {/* Matriz Curricular de 8vo */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              
-              <div className="bg-white border border-stone-200 rounded-3xl p-6 shadow-softPastel space-y-3">
-                <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
-                  <Cpu size={18} className="text-teal-700" weight="fill" />
-                  <span>Subárea 1: HW / SW (5 Ítems)</span>
-                </h3>
-                <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                  Identificación de componentes de hardware, periféricos, tipos de software de sistema y gestión de almacenamiento en MB.
-                </p>
-              </div>
-
-              <div className="bg-white border border-stone-200 rounded-3xl p-6 shadow-softPastel space-y-3">
-                <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
-                  <Wrench size={18} className="text-sky-700" weight="fill" />
-                  <span>Subárea 2: Algoritmos (7 Ítems)</span>
-                </h3>
-                <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                  Estructura Entrada-Proceso-Salida, variables, tipos de datos booleanos, condicionales lógicas SI/SINO y bucles de repetición.
-                </p>
-              </div>
-
-              <div className="bg-white border border-stone-200 rounded-3xl p-6 shadow-softPastel space-y-3">
-                <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
-                  <Heart size={18} className="text-rose-700" weight="fill" />
-                  <span>Subárea 3 y Socioafectiva</span>
-                </h3>
-                <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                  Eventos, definición de robot autónomo, mini-reto <em>"Cuidemos nuestro equipo"</em> y rúbrica de ergonomía y motricidad.
-                </p>
-              </div>
-
-            </div>
 
           </div>
         )}
