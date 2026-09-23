@@ -249,12 +249,12 @@ export default function DashboardAnaliticoPage() {
   // Nivel de logro dinámico según umbrales oficiales
   const obtenerNivelDinamico = (puntaje: number): string => {
     if (puntaje >= configuracion.umbralAvanzadoMin) {
-      return "Consolidado";
+      return "Consolidado (Nivel A)";
     }
     if (puntaje <= configuracion.umbralInicialMax) {
-      return "Requiere Acompañamiento";
+      return "Requiere Acompañamiento (Nivel C)";
     }
-    return "En Desarrollo";
+    return "En Desarrollo (Nivel B)";
   };
 
   // Filtrado reactivo de telemetría con aislamiento estricto por cuenta docente y nivel activo
@@ -916,15 +916,16 @@ export default function DashboardAnaliticoPage() {
                         </td>
                         <td className="p-3 text-center">
                           <span
-                            className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase ${
-                              logroDinamico === "Consolidado"
+                            className={`px-3 py-1 rounded-full text-[10.5px] font-black uppercase inline-flex items-center gap-1.5 shadow-sm ${
+                              logroDinamico.includes("Consolidado")
                                 ? "bg-emerald-100 text-emerald-900 border border-emerald-300"
-                                : logroDinamico === "En Desarrollo"
+                                : logroDinamico.includes("Desarrollo")
                                 ? "bg-amber-100 text-amber-900 border border-amber-300"
                                 : "bg-rose-100 text-rose-900 border border-rose-300"
                             }`}
                           >
-                            {logroDinamico}
+                            <span className="text-[10px]">{logroDinamico.includes("Consolidado") ? "🟢" : logroDinamico.includes("Desarrollo") ? "🟡" : "🔴"}</span>
+                            <span>{logroDinamico}</span>
                           </span>
                         </td>
                         <td className="p-3 text-right text-stone-400 text-[11px] font-mono">
