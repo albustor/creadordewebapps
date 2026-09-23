@@ -406,7 +406,7 @@ export default function GraficasSecciones({
                       <span>Comparativa Visual de Rendimiento (%) por Sección</span>
                     </h4>
                     <p className="text-[11px] text-slate-500 mt-0.5">
-                      Evaluación formativa del porcentaje promedio de logro por cada grupo de 9° año
+                      Evaluación formativa del porcentaje promedio de logro por cada grupo de {nivelEtiqueta}
                     </p>
                   </div>
 

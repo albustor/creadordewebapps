@@ -242,45 +242,58 @@ export default function RecomendacionesDUA({
   // Selección de datos finales: IA si está disponible, o heurístico contextual
   const conceptualFinal = {
     titulo:
-      aiData?.ajustesSaberConceptual?.titulo || recomendacionesBase.ajustesSaberConceptual.titulo,
+      aiData?.ajustesSaberConceptual?.titulo || recomendacionesBase.ajustesSaberConceptual?.titulo || "Ajustes Conceptuales",
     descripcion:
       aiData?.ajustesSaberConceptual?.descripcion ||
-      recomendacionesBase.ajustesSaberConceptual.descripcion,
+      recomendacionesBase.ajustesSaberConceptual?.descripcion || "",
     acciones:
-      aiData?.ajustesSaberConceptual?.accionesConcretas ||
-      recomendacionesBase.ajustesSaberConceptual.accionesConcretas,
+      Array.isArray(aiData?.ajustesSaberConceptual?.accionesConcretas) && aiData.ajustesSaberConceptual.accionesConcretas.length > 0
+        ? aiData.ajustesSaberConceptual.accionesConcretas
+        : Array.isArray(recomendacionesBase.ajustesSaberConceptual?.accionesConcretas)
+        ? recomendacionesBase.ajustesSaberConceptual.accionesConcretas
+        : [],
   };
 
   const procedimentalFinal = {
     titulo:
       aiData?.ajustesSaberProcedimental?.titulo ||
-      recomendacionesBase.ajustesSaberProcedimental.titulo,
+      recomendacionesBase.ajustesSaberProcedimental?.titulo || "Ajustes Procedimentales",
     descripcion:
       aiData?.ajustesSaberProcedimental?.descripcion ||
-      recomendacionesBase.ajustesSaberProcedimental.descripcion,
+      recomendacionesBase.ajustesSaberProcedimental?.descripcion || "",
     acciones:
-      aiData?.ajustesSaberProcedimental?.accionesConcretas ||
-      recomendacionesBase.ajustesSaberProcedimental.accionesConcretas,
+      Array.isArray(aiData?.ajustesSaberProcedimental?.accionesConcretas) && aiData.ajustesSaberProcedimental.accionesConcretas.length > 0
+        ? aiData.ajustesSaberProcedimental.accionesConcretas
+        : Array.isArray(recomendacionesBase.ajustesSaberProcedimental?.accionesConcretas)
+        ? recomendacionesBase.ajustesSaberProcedimental.accionesConcretas
+        : [],
   };
 
   const actitudinalFinal = {
     titulo:
-      aiData?.ajustesSaberActitudinal?.titulo || recomendacionesBase.ajustesSaberActitudinal.titulo,
+      aiData?.ajustesSaberActitudinal?.titulo || recomendacionesBase.ajustesSaberActitudinal?.titulo || "Ajustes Actitudinales",
     descripcion:
       aiData?.ajustesSaberActitudinal?.descripcion ||
-      recomendacionesBase.ajustesSaberActitudinal.descripcion,
+      recomendacionesBase.ajustesSaberActitudinal?.descripcion || "",
     acciones:
-      aiData?.ajustesSaberActitudinal?.accionesConcretas ||
-      recomendacionesBase.ajustesSaberActitudinal.accionesConcretas,
+      Array.isArray(aiData?.ajustesSaberActitudinal?.accionesConcretas) && aiData.ajustesSaberActitudinal.accionesConcretas.length > 0
+        ? aiData.ajustesSaberActitudinal.accionesConcretas
+        : Array.isArray(recomendacionesBase.ajustesSaberActitudinal?.accionesConcretas)
+        ? recomendacionesBase.ajustesSaberActitudinal.accionesConcretas
+        : [],
   };
 
   const planeamientoFundamentacion =
     aiData?.orientacionPlaneamientoDidactico?.fundamentacion ||
-    recomendacionesBase.orientacionPlaneamientoDidactico.fundamentacion;
+    recomendacionesBase.orientacionPlaneamientoDidactico?.fundamentacion ||
+    "Integración en el planeamiento didáctico con base en los resultados del diagnóstico formativo.";
 
   const planeamientoPasos =
-    aiData?.orientacionPlaneamientoDidactico?.pasosIntegracionPlaneamiento ||
-    recomendacionesBase.orientacionPlaneamientoDidactico.pasosIntegracionPlaneamiento;
+    Array.isArray(aiData?.orientacionPlaneamientoDidactico?.pasosIntegracionPlaneamiento) && aiData.orientacionPlaneamientoDidactico.pasosIntegracionPlaneamiento.length > 0
+      ? aiData.orientacionPlaneamientoDidactico.pasosIntegracionPlaneamiento
+      : Array.isArray(recomendacionesBase.orientacionPlaneamientoDidactico?.pasosIntegracionPlaneamiento)
+      ? recomendacionesBase.orientacionPlaneamientoDidactico.pasosIntegracionPlaneamiento
+      : [];
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-6">
@@ -296,7 +309,7 @@ export default function RecomendacionesDUA({
                 Ajustes por diagnóstico
               </span>
               <span className="text-xs text-slate-500 font-semibold">
-                Formación tecnológica • 9° año
+                Formación tecnológica • {nivel === "7mo" ? "7.° año" : nivel === "8vo" ? "8.° año" : "9.° año"}
               </span>
               {metaIA && (
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-900 flex items-center gap-1 border border-blue-200">
@@ -498,7 +511,7 @@ export default function RecomendacionesDUA({
       <div className="p-4.5 rounded-2xl border border-emerald-300 bg-emerald-950/5 space-y-3">
         <div className="flex items-center gap-2 text-xs font-black text-emerald-950">
           <FileText size={18} className="text-emerald-800" weight="fill" />
-          <span>Integración en el Planeamiento Didáctico Oficial (Diagnóstico 9°)</span>
+          <span>Integración en el Planeamiento Didáctico Oficial (Diagnóstico {nivel === "7mo" ? "7.°" : nivel === "8vo" ? "8.°" : "9.°"})</span>
         </div>
 
         <p className="text-xs text-slate-700 leading-relaxed font-medium">

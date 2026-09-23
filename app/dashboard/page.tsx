@@ -14,6 +14,7 @@ import {
 import { exportarAExcel, exportarAPDF } from "@/lib/exportUtils";
 import { PayloadTelemetria } from "@/lib/antiFraude";
 import AuthGuard from "@/components/AuthGuard";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import {
   ChartBar,
   FileXls,
@@ -106,9 +107,19 @@ export default function DashboardAnaliticoPage() {
           };
         }
         const dn = c.desgloseNiveles?.find((d) => d && typeof d.nivel === "string" && d.nivel.includes(nivelKey));
-        const seccionesDoc = dn?.seccionesAtendidasDocente && Array.isArray(dn.seccionesAtendidasDocente) && dn.seccionesAtendidasDocente.length > 0
-          ? dn.seccionesAtendidasDocente.filter(Boolean)
-          : [`${nivelKey}-1`];
+        let seccionesDoc: string[] = [];
+        if (dn?.seccionesAtendidasDocente && Array.isArray(dn.seccionesAtendidasDocente) && dn.seccionesAtendidasDocente.length > 0) {
+          seccionesDoc = dn.seccionesAtendidasDocente.filter(Boolean);
+        } else if ((c as any).secciones && (c as any).secciones[nivelKey]?.selected && Array.isArray((c as any).secciones[nivelKey].selected)) {
+          seccionesDoc = (c as any).secciones[nivelKey].selected.filter(Boolean);
+        } else if (Array.isArray((c as any).seccionesAtendidas) && (c as any).seccionesAtendidas.length > 0) {
+          seccionesDoc = (c as any).seccionesAtendidas.filter((s: string) => typeof s === "string" && s.includes(nivelKey));
+        }
+
+        if (seccionesDoc.length === 0) {
+          seccionesDoc = [`${nivelKey}-1`];
+        }
+
         const nomFinal = c.nombre || (c as any).colegio || `Institución ${idx + 1}`;
         return {
           id: c.id || `centro-${idx}`,
@@ -116,7 +127,7 @@ export default function DashboardAnaliticoPage() {
           dreCodigo: c.dreCodigo || "DRE-01",
           dreNombre: c.dreNombre || "San José Central",
           circuito: c.circuito || "Circuito 01",
-          seccionesAtendidas: seccionesDoc.length > 0 ? seccionesDoc : [`${nivelKey}-1`],
+          seccionesAtendidas: seccionesDoc,
         };
       });
     }
@@ -965,24 +976,39 @@ export default function DashboardAnaliticoPage() {
         {/* GRÁFICAS Y ANÁLISIS PEDAGÓGICO DEL NIVEL ACTIVO                           */}
         {/* ========================================================================= */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <SemaforoLogro
-            registros={telemetriaFiltrada}
-            configuracion={configuracion}
-            nivel={nivelActivo}
-          />
-          <GraficasSecciones
-            registros={telemetriaFiltrada}
-            configuracion={configuracion}
-            nivel={nivelActivo}
-          />
+          <ErrorBoundary
+            fallbackTitle="Semáforo Diagnóstico"
+            fallbackMessage="No se pudo procesar la distribución visual del semáforo con los datos actuales. Puedes continuar usando la tabla y los instrumentos."
+          >
+            <SemaforoLogro
+              registros={telemetriaFiltrada}
+              configuracion={configuracion}
+              nivel={nivelActivo}
+            />
+          </ErrorBoundary>
+          <ErrorBoundary
+            fallbackTitle="Analítica Visual & Desglose de Indicadores"
+            fallbackMessage="No se pudo renderizar la comparativa gráfica por secciones. Los datos tabulares continúan completamente disponibles."
+          >
+            <GraficasSecciones
+              registros={telemetriaFiltrada}
+              configuracion={configuracion}
+              nivel={nivelActivo}
+            />
+          </ErrorBoundary>
         </div>
 
         {/* RECOMENDACIONES PEDAGÓGICAS DUA DEL NIVEL ACTIVO */}
-        <RecomendacionesDUA
-          registros={telemetriaFiltrada}
-          configuracion={configuracion}
-          nivel={nivelActivo}
-        />
+        <ErrorBoundary
+          fallbackTitle="Recomendaciones Pedagógicas DUA"
+          fallbackMessage="El generador de recomendaciones está calibrando los datos del grupo."
+        >
+          <RecomendacionesDUA
+            registros={telemetriaFiltrada}
+            configuracion={configuracion}
+            nivel={nivelActivo}
+          />
+        </ErrorBoundary>
 
         {/* MODAL EDITAR REGISTRO */}
         {registroEditando && (
