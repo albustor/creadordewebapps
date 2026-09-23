@@ -1381,20 +1381,36 @@ export default function RegistroDocentePage() {
                                   <div className="flex flex-wrap gap-2 pt-1">
                                     {listaCodigosColegio.map((secCodigo) => {
                                       const estaSeleccionada = asignadas.includes(secCodigo);
+                                      const mensajeTooltip = estaSeleccionada
+                                        ? `Sección ${secCodigo} seleccionada. Active la sección si usted la atiende.`
+                                        : `Active la sección ${secCodigo} si usted la atiende`;
                                       return (
-                                        <button
-                                          key={secCodigo}
-                                          type="button"
-                                          onClick={() => handleToggleSeccion(centroIdx, nivelIdx, secCodigo)}
-                                          className={`px-3 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 transition-all shadow-2xs ${
-                                            estaSeleccionada
-                                              ? "bg-emerald-700 text-white ring-2 ring-emerald-600/30 scale-102"
-                                              : "bg-white text-slate-600 border border-slate-300 hover:bg-slate-100"
-                                          }`}
-                                        >
-                                          {estaSeleccionada && <Check size={14} weight="bold" />}
-                                          <span>Sección {secCodigo}</span>
-                                        </button>
+                                        <div key={secCodigo} className="relative group inline-block">
+                                          <button
+                                            type="button"
+                                            onClick={() => handleToggleSeccion(centroIdx, nivelIdx, secCodigo)}
+                                            title={mensajeTooltip}
+                                            aria-label={mensajeTooltip}
+                                            className={`px-3 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer ${
+                                              estaSeleccionada
+                                                ? "bg-emerald-700 text-white ring-2 ring-emerald-600/30 scale-102 hover:bg-emerald-800"
+                                                : "bg-white text-slate-600 border border-slate-300 hover:bg-slate-100 hover:border-emerald-500 hover:text-emerald-700"
+                                            }`}
+                                          >
+                                            {estaSeleccionada && <Check size={14} weight="bold" />}
+                                            <span>Sección {secCodigo}</span>
+                                          </button>
+                                          {/* Tooltip flotante */}
+                                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:flex group-focus-within:flex flex-col items-center pointer-events-none z-30 whitespace-nowrap">
+                                            <div className="bg-slate-900/95 text-white text-[10.5px] font-bold px-2.5 py-1 rounded-lg shadow-lg border border-slate-700/80 flex items-center gap-1.5 animate-fadeIn">
+                                              <span className={estaSeleccionada ? "text-emerald-400 font-extrabold" : "text-amber-300 font-extrabold"}>
+                                                {estaSeleccionada ? "✓" : "👉"}
+                                              </span>
+                                              <span>Active la sección {secCodigo} si usted la atiende</span>
+                                            </div>
+                                            <div className="w-2 h-2 bg-slate-900 rotate-45 -mt-1" />
+                                          </div>
+                                        </div>
                                       );
                                     })}
                                   </div>

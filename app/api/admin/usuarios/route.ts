@@ -169,9 +169,19 @@ export async function POST(req: NextRequest) {
 
     // 1. Solicitud de registro
     if (accion === "solicitar_registro") {
+      const correoLimpio = (usuarioData.correoInstitucional || "").toLowerCase().trim();
+      const yaExiste = USUARIOS_DB.find((u) => u.correoInstitucional.toLowerCase().trim() === correoLimpio);
+
+      if (yaExiste && !body.esActualizacionPropia) {
+        return NextResponse.json({
+          success: false,
+          mensaje: `⚠️ El correo institucional ${correoLimpio} ya cuenta con un registro activo a nombre de ${yaExiste.nombreCompleto}. No se permite duplicar ni sobreescribir el usuario.`,
+        }, { status: 400 });
+      }
+
       // Bloqueo estricto: Nadie puede registrarse como Super Administrador
-      const esAlberto = usuarioData.correoInstitucional === "alberto.bustos.ortega@mep.go.cr";
-      const esAllan = usuarioData.correoInstitucional === "allan.morera.araya@mep.go.cr";
+      const esAlberto = correoLimpio === "alberto.bustos.ortega@mep.go.cr";
+      const esAllan = correoLimpio === "allan.morera.araya@mep.go.cr";
       const rolAsignado = esAlberto
         ? "Super Administrador"
         : esAllan
@@ -181,9 +191,9 @@ export async function POST(req: NextRequest) {
         : usuarioData.rol || "Docente";
 
       const nuevo: UsuarioDocente = {
-        id: esAllan ? "ASESOR-FT-8841" : esAlberto ? "SUPERADMIN-01" : `USR-${Math.floor(1000 + Math.random() * 9000)}`,
+        id: yaExiste?.id || (esAllan ? "ASESOR-FT-8841" : esAlberto ? "SUPERADMIN-01" : `USR-${Math.floor(1000 + Math.random() * 9000)}`),
         nombreCompleto: usuarioData.nombreCompleto || "Docente de Formación Tecnológica",
-        correoInstitucional: usuarioData.correoInstitucional,
+        correoInstitucional: correoLimpio,
         cedula: usuarioData.cedula || (esAllan ? "1-0987-0654" : "N/A"),
         telefono: usuarioData.telefono || (esAllan ? "+506 8888-7777" : "N/A"),
         dreCodigo: usuarioData.dreCodigo || "DRE-NACIONAL",
@@ -192,12 +202,12 @@ export async function POST(req: NextRequest) {
         institucionNombre: usuarioData.institucionNombre || "Asesoría Nacional de Formación Tecnológica",
         rol: rolAsignado,
         estado: (rolAsignado === "Docente" || esAlberto || esAllan) ? "Aprobado" : "Pendiente",
-        fechaSolicitud: new Date().toISOString(),
-        webAppsCreadas: 0,
+        fechaSolicitud: yaExiste?.fechaSolicitud || new Date().toISOString(),
+        webAppsCreadas: yaExiste?.webAppsCreadas || 0,
         pin: usuarioData.pin || usuarioData.contrasena || (esAlberto ? "2617" : undefined),
       };
 
-      USUARIOS_DB = [nuevo, ...USUARIOS_DB.filter((u) => u.correoInstitucional.toLowerCase() !== nuevo.correoInstitucional.toLowerCase())];
+      USUARIOS_DB = [nuevo, ...USUARIOS_DB.filter((u) => u.correoInstitucional.toLowerCase().trim() !== correoLimpio)];
 
       HISTORICO_DB = [
         {

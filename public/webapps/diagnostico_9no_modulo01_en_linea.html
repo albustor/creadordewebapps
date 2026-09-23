@@ -3050,6 +3050,16 @@
         localStorage.setItem("diagnosticos_mep_9no", JSON.stringify(registrosPrevios));
       } catch(e) {}
 
+      // Sincronizar inmediatamente con telemetría unificada de Next.js
+      try {
+        var teleGlobal = JSON.parse(localStorage.getItem("telemetria_registros") || "[]");
+        teleGlobal = teleGlobal.filter(function(x) {
+          return x.estudianteNombre !== payload.estudianteNombre || x.seccionOGrupo !== payload.seccionOGrupo;
+        });
+        teleGlobal.unshift(payload);
+        localStorage.setItem("telemetria_registros", JSON.stringify(teleGlobal));
+      } catch(e) {}
+
       var horaLabel = document.getElementById("horaEntregaOnlineLabel");
       if (horaLabel) horaLabel.innerText = horaStr + " (" + fechaStr + ")";
       var hashFinalSpan = document.getElementById("tokenHashLabelFinal");
@@ -3448,9 +3458,29 @@
     window.addEventListener("DOMContentLoaded", function() {
       try {
         var params = new URLSearchParams(window.location.search);
+        var token = params.get("token");
         var docParam = params.get("docente") || params.get("docenteNombre") || params.get("profesor");
         var instParam = params.get("institucion") || params.get("colegio") || params.get("centroEducativo");
         var secParam = params.get("seccion") || params.get("seccionGrupo");
+        var dreParam = params.get("dre") || params.get("dreNombre") || "";
+        var docIdParam = params.get("docenteId") || params.get("docId") || "";
+
+        if (token) {
+          try {
+            var decoded = JSON.parse(decodeURIComponent(escape(atob(token))));
+            if (decoded) {
+              if (decoded.doc) docParam = decoded.doc;
+              if (decoded.inst) instParam = decoded.inst;
+              if (decoded.dre) dreParam = decoded.dre;
+              if (decoded.docId) docIdParam = decoded.docId;
+              if (decoded.sec) secParam = decoded.sec;
+            }
+          } catch(e) {}
+        }
+
+        if (docIdParam) {
+          CONFIG.docenteId = docIdParam;
+        }
 
         var docNombre = docParam || "";
         var instNombre = instParam || "";

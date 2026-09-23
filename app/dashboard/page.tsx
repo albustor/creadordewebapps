@@ -60,9 +60,78 @@ export default function DashboardAnaliticoPage() {
   const [filtroNivelLogro, setFiltroNivelLogro] = useState("Todos");
   const [filtroSoloMios, setFiltroSoloMios] = useState(false);
 
-  // Generador de Enlace Blindado por Nivel
-  const [nivelGen, setNivelGen] = useState<"7mo" | "8vo" | "9no">("9no");
-  const [enlaceCopiado, setEnlaceCopiado] = useState(false);
+  // Generador de Enlace Blindado por Nivel y Centro Educativo
+  const [nivelesCentros, setNivelesCentros] = useState<Record<string, "7mo" | "8vo" | "9no">>({});
+  const [copiadoCentro, setCopiadoCentro] = useState<Record<string, boolean>>({});
+
+  // Lista de centros educativos registrados del docente
+  const listaCentrosDocente = useMemo(() => {
+    if (docente?.centrosEducativos && docente.centrosEducativos.length > 0) {
+      return docente.centrosEducativos;
+    }
+    return [
+      {
+        id: "centro-principal",
+        nombre: docente?.institucionNombre || "Centro Educativo MEP",
+        dreCodigo: docente?.dreCodigo || "DRE-01",
+        dreNombre: docente?.dreNombre || "Dirección Regional",
+        circuito: docente?.circuito || "Circuito 01",
+        desgloseNiveles: [],
+      },
+    ];
+  }, [docente]);
+
+  const getNivelCentro = (centroId: string): "7mo" | "8vo" | "9no" => {
+    return nivelesCentros[centroId] || "9no";
+  };
+
+  const setNivelCentro = (centroId: string, nivel: "7mo" | "8vo" | "9no") => {
+    setNivelesCentros((prev) => ({ ...prev, [centroId]: nivel }));
+  };
+
+  const generarUrlParaEstudiante = (
+    centro: { nombre: string; dreCodigo: string; dreNombre: string; circuito?: string },
+    nivel: "7mo" | "8vo" | "9no"
+  ): string => {
+    const payload = {
+      docId: docente?.idDocente || "DOC-MEP-2026",
+      doc: docente?.nombreCompleto || "Docente Evaluador",
+      inst: centro.nombre || "Centro Educativo MEP",
+      dre: centro.dreCodigo || centro.dreNombre || "DRE-01",
+      nivel: nivel === "7mo" ? 7 : nivel === "8vo" ? 8 : 9,
+      ts: Date.now(),
+    };
+
+    let tokenB64 = "";
+    try {
+      tokenB64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+    } catch {
+      tokenB64 = "token_mep_diagnostico";
+    }
+
+    const archivoWebapp =
+      nivel === "7mo"
+        ? "diagnostico_7mo_modulo01_cyberquest.html"
+        : nivel === "8vo"
+        ? "diagnostico_8vo_modulo01_en_linea.html"
+        : "diagnostico_9no_modulo01_en_linea.html";
+
+    const origin =
+      typeof window !== "undefined" ? window.location.origin : "https://diagnosticosecundaria.vercel.app";
+    return `${origin}/webapps/${archivoWebapp}?token=${tokenB64}&docenteId=${encodeURIComponent(
+      docente?.idDocente || ""
+    )}&docente=${encodeURIComponent(docente?.nombreCompleto || "")}&institucion=${encodeURIComponent(
+      centro.nombre
+    )}&dre=${encodeURIComponent(centro.dreCodigo || centro.dreNombre || "")}`;
+  };
+
+  const copiarEnlaceCentro = (centroId: string, url: string) => {
+    navigator.clipboard.writeText(url);
+    setCopiadoCentro((prev) => ({ ...prev, [centroId]: true }));
+    setTimeout(() => {
+      setCopiadoCentro((prev) => ({ ...prev, [centroId]: false }));
+    }, 2500);
+  };
 
   // Modal Edición de Registro
   const [registroEditando, setRegistroEditando] = useState<PayloadTelemetria | null>(null);
@@ -81,41 +150,6 @@ export default function DashboardAnaliticoPage() {
       } catch {}
     }
   }, []);
-
-  // Generar Token Encriptado y URL Blindada para el Estudiante por Nivel (Sin QR)
-  const enlaceGeneradoParaEstudiante = useMemo(() => {
-    const payload = {
-      docId: docente?.idDocente || "DOC-MEP-2026",
-      doc: docente?.nombreCompleto || "Alberto Bustos Ortega",
-      inst: docente?.institucionNombre || "Centro Educativo MEP",
-      dre: docente?.dreCodigo || "DRE-01",
-      nivel: nivelGen === "7mo" ? 7 : nivelGen === "8vo" ? 8 : 9,
-      ts: Date.now(),
-    };
-
-    let tokenB64 = "";
-    try {
-      tokenB64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
-    } catch {
-      tokenB64 = "token_mep_diagnostico";
-    }
-
-    const archivoWebapp =
-      nivelGen === "7mo"
-        ? "diagnostico_7mo_modulo01_cyberquest.html"
-        : nivelGen === "8vo"
-        ? "diagnostico_8vo_modulo01_en_linea.html"
-        : "diagnostico_9no_modulo01_en_linea.html";
-
-    const origin = typeof window !== "undefined" ? window.location.origin : "https://diagnosticosecundaria.vercel.app";
-    return `${origin}/webapps/${archivoWebapp}?token=${tokenB64}&docenteId=${encodeURIComponent(docente?.idDocente || "")}&docente=${encodeURIComponent(docente?.nombreCompleto || "")}&institucion=${encodeURIComponent(docente?.institucionNombre || "")}&dre=${encodeURIComponent(docente?.dreCodigo || "")}`;
-  }, [docente, nivelGen]);
-
-  const copiarEnlaceGenerado = () => {
-    navigator.clipboard.writeText(enlaceGeneradoParaEstudiante);
-    setEnlaceCopiado(true);
-    setTimeout(() => setEnlaceCopiado(false), 2500);
-  };
 
   // Lista completa de secciones estándar por nivel
   const gruposDisponibles = useMemo(() => {
@@ -279,105 +313,174 @@ export default function DashboardAnaliticoPage() {
           </div>
         </div>
 
-        {/* 1. GENERADOR DE ENLACE BLINDADO E INMUTABLE POR NIVEL (SIN QR) */}
-        <div className="bg-white border-2 border-emerald-400 rounded-3xl p-6 sm:p-8 shadow-softPastel space-y-5">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-stone-100 pb-4">
-            <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-2xl bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center justify-center shrink-0 shadow-xs">
-                <LinkSimple size={24} weight="bold" />
+        {/* 1. GENERADOR DE ENLACES BLINDADOS POR NIVEL (REPLICADO POR CADA CENTRO EDUCATIVO REGISTRADO) */}
+        <div className="space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center justify-center shrink-0">
+                <LinkSimple size={20} weight="bold" />
               </div>
               <div>
-                <h3 className="font-black text-slate-900 text-base sm:text-lg flex items-center gap-2">
-                  <span>Generador de Enlace Único por Nivel (Blindado con Token)</span>
-                  <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase">
-                    100% Computadoras
-                  </span>
+                <h3 className="font-black text-slate-900 text-base sm:text-lg">
+                  Generador de Enlaces Únicos por Nivel para Laboratorio
                 </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  El enlace es único y permanente por nivel. Contiene las credenciales seguras del docente para registrar la telemetría automáticamente.
+                <p className="text-xs text-slate-500">
+                  Un único enlace oficial por nivel (sin selector de sección manual). Cada institución registrada genera su propia URL blindada con telemetría integrada.
                 </p>
               </div>
             </div>
-
-            {/* Selector de Nivel para el Enlace */}
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setNivelGen("7mo")}
-                className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
-                  nivelGen === "7mo"
-                    ? "bg-indigo-700 text-white shadow-xs"
-                    : "bg-stone-100 text-stone-700 hover:bg-stone-200"
-                }`}
-              >
-                7.° Año
-              </button>
-              <button
-                type="button"
-                onClick={() => setNivelGen("8vo")}
-                className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
-                  nivelGen === "8vo"
-                    ? "bg-teal-700 text-white shadow-xs"
-                    : "bg-stone-100 text-stone-700 hover:bg-stone-200"
-                }`}
-              >
-                8.° Año
-              </button>
-              <button
-                type="button"
-                onClick={() => setNivelGen("9no")}
-                className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
-                  nivelGen === "9no"
-                    ? "bg-emerald-700 text-white shadow-xs"
-                    : "bg-stone-100 text-stone-700 hover:bg-stone-200"
-                }`}
-              >
-                9.° Año
-              </button>
-            </div>
+            {listaCentrosDocente.length > 1 && (
+              <span className="px-3 py-1 rounded-full bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-black">
+                {listaCentrosDocente.length} Centros Educativos Registrados
+              </span>
+            )}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-            
-            {/* Vista Previa del Enlace Encriptado por Nivel */}
-            <div className="md:col-span-3">
-              <label className="block text-xs font-black text-slate-800 uppercase tracking-wider mb-1.5 flex items-center justify-between">
-                <span>Enlace Oficial Blindado • {nivelGen === "7mo" ? "7.° Año (CyberQuest)" : nivelGen === "8vo" ? "8.° Año (PNFT)" : "9.° Año (Aula Inteligente)"}:</span>
-                <span className="text-[11px] text-emerald-700 font-bold lowercase">1 único link para todas las secciones de este nivel</span>
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  readOnly
-                  value={enlaceGeneradoParaEstudiante}
-                  className="w-full pl-3.5 pr-10 py-2.5 bg-stone-100 border border-stone-300 rounded-xl text-xs font-mono text-slate-700 select-all focus:outline-none focus:border-emerald-600 font-semibold"
-                />
-              </div>
-            </div>
+          <div className="grid grid-cols-1 gap-6">
+            {listaCentrosDocente.map((centro, cIdx) => {
+              const centroId = centro.id || `centro-${cIdx}`;
+              const nivelSeleccionado = getNivelCentro(centroId);
+              const urlGenerada = generarUrlParaEstudiante(centro, nivelSeleccionado);
+              const estaCopiado = !!copiadoCentro[centroId];
 
-            {/* Botón de Copiar Enlace */}
-            <div className="md:col-span-1">
-              <button
-                type="button"
-                onClick={copiarEnlaceGenerado}
-                className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-black transition-all shadow-xs cursor-pointer ${
-                  enlaceCopiado
-                    ? "bg-emerald-800 text-white"
-                    : "bg-emerald-700 hover:bg-emerald-800 text-white"
-                }`}
-              >
-                {enlaceCopiado ? <Check size={16} weight="bold" /> : <Copy size={16} weight="bold" />}
-                <span>{enlaceCopiado ? "¡Enlace Copiado!" : "Copiar Enlace para Lab"}</span>
-              </button>
-            </div>
+              return (
+                <div
+                  key={centroId}
+                  className="bg-white border-2 border-emerald-400 rounded-3xl p-6 sm:p-7 shadow-softPastel space-y-5"
+                >
+                  {/* Cabecera del Centro Educativo */}
+                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-stone-100 pb-4">
+                    <div className="flex items-start sm:items-center gap-3">
+                      <div className="w-10 h-10 rounded-2xl bg-slate-900 text-emerald-400 flex items-center justify-center shrink-0 font-black text-sm shadow-xs">
+                        {cIdx + 1}
+                      </div>
+                      <div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <h4 className="font-black text-slate-900 text-base sm:text-lg">
+                            {centro.nombre || "Centro Educativo MEP"}
+                          </h4>
+                          <span className="px-2 py-0.5 rounded-md bg-stone-100 text-stone-700 border border-stone-300 text-[10px] font-bold">
+                            {centro.dreCodigo || centro.dreNombre || "DRE"}
+                          </span>
+                          {centro.circuito && (
+                            <span className="px-2 py-0.5 rounded-md bg-stone-100 text-stone-700 border border-stone-300 text-[10px] font-bold">
+                              {centro.circuito}
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-slate-500 mt-0.5">
+                          Enlace inmutable con credenciales y telemetría vinculada a esta institución.
+                        </p>
+                      </div>
+                    </div>
 
-          </div>
+                    {/* Selector de Nivel para este Centro */}
+                    <div className="flex items-center gap-1.5 self-start lg:self-auto bg-stone-100 p-1.5 rounded-2xl border border-stone-200">
+                      <button
+                        type="button"
+                        onClick={() => setNivelCentro(centroId, "7mo")}
+                        className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
+                          nivelSeleccionado === "7mo"
+                            ? "bg-indigo-700 text-white shadow-xs"
+                            : "text-stone-700 hover:bg-stone-200"
+                        }`}
+                      >
+                        7.° Año
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setNivelCentro(centroId, "8vo")}
+                        className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
+                          nivelSeleccionado === "8vo"
+                            ? "bg-teal-700 text-white shadow-xs"
+                            : "text-stone-700 hover:bg-stone-200"
+                        }`}
+                      >
+                        8.° Año
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setNivelCentro(centroId, "9no")}
+                        className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
+                          nivelSeleccionado === "9no"
+                            ? "bg-emerald-700 text-white shadow-xs"
+                            : "text-stone-700 hover:bg-stone-200"
+                        }`}
+                      >
+                        9.° Año
+                      </button>
+                    </div>
+                  </div>
 
-          <div className="p-3.5 bg-emerald-50/70 border border-emerald-200 rounded-2xl text-[11.5px] text-emerald-950 leading-relaxed font-medium flex items-center gap-2.5">
-            <ShieldCheck size={20} className="text-emerald-700 shrink-0" weight="fill" />
-            <span>
-              <strong>Regla de Intento Único y Rezagados:</strong> Cada estudiante realiza la prueba una sola vez con este enlace. Si un estudiante falta a la clase de informática, el docente le entrega este mismo enlace en su siguiente lección; el estudiante ingresa de forma limpia y se anexa automáticamente al grupo sin sobreescribir nada.
-            </span>
+                  {/* Input con URL y Botones de Acción */}
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-end">
+                    
+                    {/* Campo de URL */}
+                    <div className="lg:col-span-8">
+                      <label className="block text-xs font-black text-slate-800 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                        <span>
+                          Enlace Oficial •{" "}
+                          {nivelSeleccionado === "7mo"
+                            ? "7.° Año (CyberQuest)"
+                            : nivelSeleccionado === "8vo"
+                            ? "8.° Año (PNFT)"
+                            : "9.° Año (Aula Inteligente)"}
+                          :
+                        </span>
+                        <span className="text-[11px] text-emerald-700 font-bold lowercase">
+                          1 único link para todas las secciones de este nivel
+                        </span>
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          readOnly
+                          value={urlGenerada}
+                          className="w-full pl-3.5 pr-4 py-2.5 bg-stone-100 border border-stone-300 rounded-xl text-xs font-mono text-slate-700 select-all focus:outline-none focus:border-emerald-600 font-semibold"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Botón Copiar Enlace */}
+                    <div className="lg:col-span-3">
+                      <button
+                        type="button"
+                        onClick={() => copiarEnlaceCentro(centroId, urlGenerada)}
+                        className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-black transition-all shadow-xs cursor-pointer ${
+                          estaCopiado
+                            ? "bg-emerald-800 text-white"
+                            : "bg-emerald-700 hover:bg-emerald-800 text-white"
+                        }`}
+                      >
+                        {estaCopiado ? <Check size={16} weight="bold" /> : <Copy size={16} weight="bold" />}
+                        <span>{estaCopiado ? "¡Enlace Copiado!" : "Copiar Enlace para Lab"}</span>
+                      </button>
+                    </div>
+
+                    {/* Botón Probar Enlace Estudiante */}
+                    <div className="lg:col-span-1">
+                      <a
+                        href={urlGenerada}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full flex items-center justify-center p-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 border border-stone-300 transition-all shadow-xs cursor-pointer"
+                        title="Probar enlace de estudiante en nueva pestaña"
+                      >
+                        <ArrowSquareOut size={18} weight="bold" />
+                      </a>
+                    </div>
+
+                  </div>
+
+                  <div className="p-3 bg-emerald-50/70 border border-emerald-200 rounded-2xl text-[11.5px] text-emerald-950 leading-relaxed font-medium flex items-center gap-2.5">
+                    <ShieldCheck size={18} className="text-emerald-700 shrink-0" weight="fill" />
+                    <span>
+                      <strong>Uso en Laboratorio:</strong> Proyecte o entregue este enlace a sus grupos de {nivelSeleccionado === "7mo" ? "7.°" : nivelSeleccionado === "8vo" ? "8.°" : "9.°"} Año en {centro.nombre || "la institución"}. Al abrir la herramienta, los estudiantes de cualquier sección ingresan y sus respuestas se consolidan de inmediato en este dashboard.
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
@@ -390,11 +493,15 @@ export default function DashboardAnaliticoPage() {
               <h4 className="text-xs sm:text-sm font-black text-slate-900">CyberQuest 7° (Docente)</h4>
             </div>
             <a
-              href="/webapps/diagnostico_7mo_modulo01_docente_evaluador.html"
+              href={`/webapps/diagnostico_7mo_modulo01_docente_evaluador.html?docenteId=${encodeURIComponent(
+                docente?.idDocente || docente?.cedula || ""
+              )}&docente=${encodeURIComponent(docente?.nombreCompleto || "")}&institucion=${encodeURIComponent(
+                docente?.institucionNombre || ""
+              )}&dre=${encodeURIComponent(docente?.dreCodigo || "")}`}
               target="_blank"
               rel="noopener noreferrer"
               className="p-2.5 bg-indigo-700 hover:bg-indigo-800 text-white rounded-xl text-xs font-bold shrink-0 transition-all shadow-xs"
-              title="Abrir evaluador de 7mo"
+              title="Abrir evaluador de 7mo con perfil docente activo"
             >
               <ArrowSquareOut size={16} weight="bold" />
             </a>
@@ -406,11 +513,15 @@ export default function DashboardAnaliticoPage() {
               <h4 className="text-xs sm:text-sm font-black text-slate-900">Módulo Evaluador 8° PNFT</h4>
             </div>
             <a
-              href="/webapps/diagnostico_8vo_modulo01_docente_evaluador.html"
+              href={`/webapps/diagnostico_8vo_modulo01_docente_evaluador.html?docenteId=${encodeURIComponent(
+                docente?.idDocente || docente?.cedula || ""
+              )}&docente=${encodeURIComponent(docente?.nombreCompleto || "")}&institucion=${encodeURIComponent(
+                docente?.institucionNombre || ""
+              )}&dre=${encodeURIComponent(docente?.dreCodigo || "")}`}
               target="_blank"
               rel="noopener noreferrer"
               className="p-2.5 bg-teal-700 hover:bg-teal-800 text-white rounded-xl text-xs font-bold shrink-0 transition-all shadow-xs"
-              title="Abrir evaluador de 8vo"
+              title="Abrir evaluador de 8vo con perfil docente activo"
             >
               <ArrowSquareOut size={16} weight="bold" />
             </a>
@@ -422,11 +533,15 @@ export default function DashboardAnaliticoPage() {
               <h4 className="text-xs sm:text-sm font-black text-slate-900">Aula Inteligente (Docente)</h4>
             </div>
             <a
-              href="/webapps/diagnostico_9no_modulo01_docente_evaluador.html"
+              href={`/webapps/diagnostico_9no_modulo01_docente_evaluador.html?docenteId=${encodeURIComponent(
+                docente?.idDocente || docente?.cedula || ""
+              )}&docente=${encodeURIComponent(docente?.nombreCompleto || "")}&institucion=${encodeURIComponent(
+                docente?.institucionNombre || ""
+              )}&dre=${encodeURIComponent(docente?.dreCodigo || "")}`}
               target="_blank"
               rel="noopener noreferrer"
               className="p-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shrink-0 transition-all shadow-xs"
-              title="Abrir evaluador de 9no"
+              title="Abrir evaluador de 9no con perfil docente activo"
             >
               <ArrowSquareOut size={16} weight="bold" />
             </a>

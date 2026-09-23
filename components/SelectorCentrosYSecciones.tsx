@@ -321,19 +321,35 @@ export default function SelectorCentrosYSecciones({
                             {Array.from({ length: dn.totalSeccionesColegio }, (_, i) => {
                               const secCodigo = `${numNivel}-${i + 1}`;
                               const asignada = dn.seccionesAtendidasDocente.includes(secCodigo);
+                              const mensajeTooltip = asignada
+                                ? `Sección ${secCodigo} seleccionada. Active la sección si usted la atiende.`
+                                : `Active la sección ${secCodigo} si usted la atiende`;
                               return (
-                                <button
-                                  key={secCodigo}
-                                  type="button"
-                                  onClick={() => handleToggleSeccion(centroIdx, dn.nivel, secCodigo)}
-                                  className={`px-2.5 py-1 rounded-lg text-xs font-black transition-all ${
-                                    asignada
-                                      ? "bg-emerald-600 text-white shadow-xs scale-102"
-                                      : "bg-white text-slate-500 border border-slate-300 hover:border-emerald-500 hover:text-emerald-700"
-                                  }`}
-                                >
-                                  {secCodigo}
-                                </button>
+                                <div key={secCodigo} className="relative group inline-block">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleToggleSeccion(centroIdx, dn.nivel, secCodigo)}
+                                    title={mensajeTooltip}
+                                    aria-label={mensajeTooltip}
+                                    className={`px-2.5 py-1 rounded-lg text-xs font-black transition-all cursor-pointer ${
+                                      asignada
+                                        ? "bg-emerald-600 text-white shadow-xs scale-102 hover:bg-emerald-700"
+                                        : "bg-white text-slate-500 border border-slate-300 hover:border-emerald-500 hover:text-emerald-700 hover:bg-emerald-50/50"
+                                    }`}
+                                  >
+                                    {secCodigo}
+                                  </button>
+                                  {/* Tooltip flotante al pasar el ratón, foco o toque */}
+                                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:flex group-focus-within:flex flex-col items-center pointer-events-none z-30 whitespace-nowrap">
+                                    <div className="bg-slate-900/95 text-white text-[10.5px] font-bold px-2.5 py-1 rounded-lg shadow-lg border border-slate-700/80 flex items-center gap-1.5 animate-fadeIn">
+                                      <span className={asignada ? "text-emerald-400 font-extrabold" : "text-amber-300 font-extrabold"}>
+                                        {asignada ? "✓" : "👉"}
+                                      </span>
+                                      <span>Active la sección {secCodigo} si usted la atiende</span>
+                                    </div>
+                                    <div className="w-2 h-2 bg-slate-900 rotate-45 -mt-1" />
+                                  </div>
+                                </div>
                               );
                             })}
                           </div>

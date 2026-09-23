@@ -511,6 +511,51 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
   const guardarDocente = (data: DocenteData) => {
     setDocente(data);
     SafeStorage.setItem("docente_activo", JSON.stringify(data));
+    try {
+      if (typeof window !== "undefined") {
+        const adaptado = {
+          autenticado: true,
+          nombre: data.nombreCompleto || "Alberto Bustos Ortega",
+          cedula: data.cedula || data.idDocente || "5-0305-0179",
+          correo: data.correoInstitucional || "alberto.bustos.ortega@mep.go.cr",
+          telefono: data.telefono || "+506 8888-9999",
+          pin: data.pin || "2617",
+          colegio: data.institucionNombre || "Liceo / CTP MEP",
+          dreCodigo: data.dreCodigo || "DRE-01",
+          dreNombre: data.dreNombre || "San José Central",
+          circuito: data.circuito || "Circuito 01",
+          centrosEducativos: (data.centrosEducativos && data.centrosEducativos.length > 0)
+            ? data.centrosEducativos.map((c) => ({
+                colegio: c.nombre,
+                dreCodigo: c.dreCodigo,
+                dreNombre: c.dreNombre,
+                circuito: c.circuito,
+                niveles: {
+                  '7': (c.desgloseNiveles || []).some((dn) => dn.nivel.includes("7") && dn.activo),
+                  '8': (c.desgloseNiveles || []).some((dn) => dn.nivel.includes("8") && dn.activo),
+                  '9': (c.desgloseNiveles || []).some((dn) => dn.nivel.includes("9") && dn.activo),
+                },
+                secciones: {
+                  '7': { total: 6, selected: (c.desgloseNiveles?.find((dn) => dn.nivel.includes("7"))?.seccionesAtendidasDocente) || ["7-1"] },
+                  '8': { total: 6, selected: (c.desgloseNiveles?.find((dn) => dn.nivel.includes("8"))?.seccionesAtendidasDocente) || ["8-1"] },
+                  '9': { total: 6, selected: (c.desgloseNiveles?.find((dn) => dn.nivel.includes("9"))?.seccionesAtendidasDocente) || ["9-1"] },
+                },
+              }))
+            : [{
+                colegio: data.institucionNombre || "Liceo / CTP MEP",
+                dreCodigo: data.dreCodigo || "DRE-01",
+                dreNombre: data.dreNombre || "San José Central",
+                niveles: { '7': true, '8': true, '9': true },
+                secciones: {
+                  '7': { total: 6, selected: ["7-1", "7-2"] },
+                  '8': { total: 6, selected: ["8-1", "8-2"] },
+                  '9': { total: 6, selected: ["9-1", "9-2"] },
+                },
+              }],
+        };
+        localStorage.setItem("MEP_DOCENTE_PERFIL_GLOBAL", JSON.stringify(adaptado));
+      }
+    } catch {}
   };
 
   const registrarDocente = (data: DocenteData): { exito: boolean; mensaje: string } => {
@@ -540,27 +585,18 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
         );
       });
 
-      const esMismoDocente =
-        (docente && (
-          docente.idDocente === data.idDocente ||
+      // Solo un usuario ya autenticado puede actualizar su propio perfil
+      const esActualizacionDePerfilPropio =
+        docente &&
+        (docente.idDocente === data.idDocente ||
           docente.correoInstitucional.toLowerCase().trim() === correoLimpio ||
-          (cedLimpia && normalizarCedulaParaComparar(docente.cedula || "") === cedLimpia)
-        )) ||
-        (indiceDuplicado !== -1 && (
-          listaUsuarios[indiceDuplicado].idDocente === data.idDocente ||
-          listaUsuarios[indiceDuplicado].correoInstitucional.toLowerCase().trim() === correoLimpio
-        ));
+          (cedLimpia && normalizarCedulaParaComparar(docente.cedula || "") === cedLimpia));
 
-      const esCuentaOficialPredeterminada =
-        correoLimpio === "allan.morera.araya@mep.go.cr" ||
-        correoLimpio === "alberto.bustos.ortega@mep.go.cr" ||
-        correoLimpio === "esteban.gomez.chinchilla@mep.go.cr";
-
-      if (indiceDuplicado !== -1 && !esMismoDocente && !esCuentaOficialPredeterminada) {
+      if (indiceDuplicado !== -1 && !esActualizacionDePerfilPropio) {
         const usuarioDuplicado = listaUsuarios[indiceDuplicado];
         return {
           exito: false,
-          mensaje: `⚠️ Ya existe una cuenta registrada con este correo o cédula (${usuarioDuplicado.nombreCompleto}). Por favor inicie sesión con su PIN o solicite recuperación si lo ha olvidado.`,
+          mensaje: `⚠️ Ya existe una cuenta registrada con este correo institucional o cédula (${usuarioDuplicado.nombreCompleto}). Por seguridad contra suplantación y fraude, no se permite duplicar ni sobreescribir registros. Inicie sesión con su PIN o utilice la opción de recuperar PIN.`,
         };
       }
 
@@ -569,7 +605,7 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
         cedula: cedFormateada,
       };
 
-      if (indiceDuplicado !== -1) {
+      if (indiceDuplicado !== -1 && esActualizacionDePerfilPropio) {
         listaUsuarios[indiceDuplicado] = docenteConCedulaFormateada;
       } else {
         listaUsuarios.push(docenteConCedulaFormateada);

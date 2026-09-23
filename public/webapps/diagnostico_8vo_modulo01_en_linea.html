@@ -1098,11 +1098,25 @@ FIN</div>
     function parseUrlParams8vo() {
       try {
         const params = new URLSearchParams(window.location.search);
-        urlDocenteId = params.get('docenteId') || '';
-        urlDocente = params.get('docente') || '';
-        urlInstitucion = params.get('institucion') || '';
+        const token = params.get('token');
+        urlDocenteId = params.get('docenteId') || params.get('docId') || '';
+        urlDocente = params.get('docente') || params.get('doc') || '';
+        urlInstitucion = params.get('institucion') || params.get('inst') || '';
         urlDre = params.get('dre') || '';
-        const seccion = params.get('seccion') || '';
+        let seccion = params.get('seccion') || params.get('sec') || '';
+
+        if (token) {
+          try {
+            const decoded = JSON.parse(decodeURIComponent(escape(atob(token))));
+            if (decoded) {
+              if (decoded.docId) urlDocenteId = decoded.docId;
+              if (decoded.doc) urlDocente = decoded.doc;
+              if (decoded.inst) urlInstitucion = decoded.inst;
+              if (decoded.dre) urlDre = decoded.dre;
+              if (decoded.sec) seccion = decoded.sec;
+            }
+          } catch(e) {}
+        }
 
         if (urlDocente || urlInstitucion || urlDocenteId) {
           const badge = document.getElementById('teacherInfoBadge8vo');
@@ -1164,6 +1178,11 @@ FIN</div>
       const historial = JSON.parse(localStorage.getItem('telemetria_8vo_local') || '[]');
       historial.push(payloadTelemetria);
       localStorage.setItem('telemetria_8vo_local', JSON.stringify(historial));
+
+      const teleGlobal = JSON.parse(localStorage.getItem('telemetria_registros') || '[]');
+      const filtered = teleGlobal.filter(x => x.estudianteNombre !== payloadTelemetria.estudianteNombre || x.seccionOGrupo !== payloadTelemetria.seccionOGrupo);
+      filtered.unshift(payloadTelemetria);
+      localStorage.setItem('telemetria_registros', JSON.stringify(filtered));
     } catch(e){}
 
     // Enviar a la API si está disponible
