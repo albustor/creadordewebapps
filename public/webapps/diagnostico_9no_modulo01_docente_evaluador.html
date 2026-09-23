@@ -1465,16 +1465,16 @@
     </div>
   </div>
 
-  <!-- MODAL GENERADOR DE ENLACES Y QR PARA ESTUDIANTES (PC / LABORATORIO - 9NO AÑO) -->
+  <!-- MODAL GENERADOR DE ENLACES PARA ESTUDIANTES (PC / LABORATORIO - 9NO AÑO) -->
   <div class="modal-overlay" id="modalStudentLinks" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(4px); justify-content: center; align-items: center; padding: 16px; z-index: 9999;">
-    <div class="modal-box" style="background: #ffffff; border: 2px solid #0284c7; border-radius: 14px; max-width: 780px; width: 100%; max-height: 90vh; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+    <div class="modal-box" style="background: #ffffff; border: 2px solid #0284c7; border-radius: 14px; max-width: 680px; width: 100%; max-height: 90vh; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
       
       <!-- HEADER -->
       <div style="background: linear-gradient(135deg, #003366 0%, #002244 100%); color: white; border-bottom: 2px solid #38bdf8; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center;">
         <div style="display: flex; align-items: center; gap: 10px;">
           <span style="font-size: 24px;">🔗</span>
           <div>
-            <h2 style="font-size: 15px; font-weight: 800; color: #fff; margin: 0;">Generador de Enlaces y QR para Estudiantes (9.° Año)</h2>
+            <h2 style="font-size: 15px; font-weight: 800; color: #fff; margin: 0;">Enlace de Acceso para Estudiantes (9.° Año)</h2>
             <p style="font-size: 11.5px; color: #94a3b8; margin: 0;">Diagnóstico Aula Inteligente 9° (Módulo 1)</p>
           </div>
         </div>
@@ -1499,7 +1499,7 @@
         <!-- SELECTOR DE CENTRO EDUCATIVO ACTIVO (SI TIENE VARIOS) -->
         <div id="slmSchoolSelectorWrap" style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px;">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
-            <label style="font-size: 12px; font-weight: 800; color: #0f172a;">🏫 Centro Educativo para Generación de Enlaces:</label>
+            <label style="font-size: 12px; font-weight: 800; color: #0f172a;">🏫 Centro Educativo:</label>
             <span id="slmTeacherIdentityBadge" style="font-size: 11px; font-weight: 700; color: #0284c7; background: #e0f2fe; padding: 2px 8px; border-radius: 6px;">👨‍🏫 Docente Activo</span>
           </div>
           <select id="slmSchoolSelect" class="filter-select" style="width: 100%; font-size: 12.5px; font-weight: 700; color: #0f172a; padding: 6px 10px; border-radius: 8px; border: 1.5px solid #cbd5e1;" onchange="updateStudentLinksView()">
@@ -1507,50 +1507,38 @@
           </select>
         </div>
 
-        <!-- BLOQUE 1: ENLACE GENERAL DEL NIVEL (ESTUDIANTE ELIGE SECCIÓN) -->
-        <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
-          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
+        <!-- ENLACE ÚNICO DEL NIVEL (9NO AÑO) -->
+        <div style="background: #ffffff; border: 1.5px solid #0284c7; border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 2px 8px rgba(2, 132, 199, 0.08);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 6px;">
             <div>
-              <strong style="font-size: 13px; color: #003366; display: flex; align-items: center; gap: 6px;">
-                🌐 Enlace General — Todo 9.° Año (Todas las secciones)
+              <strong style="font-size: 13.5px; color: #003366; display: flex; align-items: center; gap: 6px;">
+                🌐 Enlace Único de 9.° Año (Para todas las secciones)
               </strong>
-              <span style="font-size: 11px; color: #64748b;">El estudiante abre la prueba en la PC del laboratorio y elige su sección al identificarse.</span>
+              <span style="font-size: 11.5px; color: #475569; display: block; margin-top: 2px;">
+                Enlace único para todo el nivel. Cada estudiante abrirá esta dirección en la computadora del laboratorio y seleccionará su sección al identificarse.
+              </span>
             </div>
-            <span class="badge" style="background: #dcfce7; color: #166534; font-size: 10.5px; font-weight: 800; padding: 3px 8px; border-radius: 4px;">Recomendado</span>
+            <span class="badge" style="background: #dcfce7; color: #166534; font-size: 10.5px; font-weight: 800; padding: 3px 8px; border-radius: 4px;">Enlace Único</span>
           </div>
 
           <div style="display: flex; gap: 6px;">
-            <input type="text" id="slmGeneralUrlInput" readonly style="flex: 1; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 8px 12px; font-size: 12px; font-family: monospace; color: #0f172a; outline: none;" value="">
+            <input type="text" id="slmGeneralUrlInput" readonly style="flex: 1; background: #f8fafc; border: 1.5px solid #94a3b8; border-radius: 8px; padding: 9px 12px; font-size: 12.5px; font-family: monospace; color: #0f172a; outline: none; font-weight: 600;" value="">
           </div>
 
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button class="btn btn-accent" style="font-size: 11.5px; padding: 6px 14px; background: #0284c7; border-color: #0369a1; color: white; font-weight: 700;" onclick="copyGeneralStudentLink()">
-              📋 Copiar Enlace General
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="btn btn-accent" style="font-size: 12px; padding: 8px 16px; background: #0284c7; border-color: #0369a1; color: white; font-weight: 800;" onclick="copyGeneralStudentLink()">
+              📋 Copiar Enlace Único
             </button>
-            <a id="slmOpenGeneralBtn" href="#" target="_blank" class="btn btn-outline" style="font-size: 11.5px; padding: 6px 14px; text-decoration: none; color: #0f172a; background: white; border: 1.5px solid #cbd5e1; font-weight: 700;">
+            <a id="slmOpenGeneralBtn" href="#" target="_blank" class="btn btn-outline" style="font-size: 12px; padding: 8px 16px; text-decoration: none; color: #0f172a; background: white; border: 1.5px solid #cbd5e1; font-weight: 700;">
               🖥️ Abrir en esta PC
             </a>
           </div>
         </div>
 
-        <!-- BLOQUE 2: ENLACES DIRECTOS POR SECCIÓN (9-1, 9-2...) -->
-        <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 10px;">
-          <div>
-            <strong style="font-size: 12.5px; color: #003366; display: flex; align-items: center; gap: 6px;">
-              🏷️ Enlaces Directos por Sección (Auto-asignación 9-1, 9-2, etc.):
-            </strong>
-            <span style="font-size: 11px; color: #64748b;">Cada enlace preselecciona automáticamente la sección correspondiente en la computadora.</span>
-          </div>
-
-          <div id="slmSectionCardsContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px;">
-            <!-- Renderizado dinámico -->
-          </div>
-        </div>
-
       </div>
 
-      <div style="background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; padding: 10px 18px;">
-        <span style="font-size: 11px; color: #64748b;">Ministerio de Educación Pública &bull; Telemetría Curricular 2026</span>
+      <div style="background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; padding: 10px 18px;">
+        <span style="font-size: 11px; color: #64748b;">Ministerio de Educación Pública &bull; Suite Diagnóstica 2026</span>
         <button class="btn btn-secondary" onclick="closeStudentLinksModal()">Cerrar</button>
       </div>
 
@@ -4327,70 +4315,19 @@
       const openBtn = document.getElementById('slmOpenGeneralBtn');
       if (genInput) genInput.value = generalUrl;
       if (openBtn) openBtn.href = generalUrl;
-
-      // Update Sections cards
-      const container = document.getElementById('slmSectionCardsContainer');
-      if (container) {
-        container.innerHTML = '';
-        const secList = (school.secciones && school.secciones['9'] && school.secciones['9'].selected && school.secciones['9'].selected.length > 0)
-          ? school.secciones['9'].selected
-          : ['9-1', '9-2', '9-3', '9-4'];
-
-        secList.forEach(sec => {
-          const secParams = new URLSearchParams(baseParams);
-          secParams.set('seccion', sec);
-          const secUrl = `${baseUrl}?${secParams.toString()}`;
-
-          const card = document.createElement('div');
-          card.style.background = '#ffffff';
-          card.style.border = '1.5px solid #cbd5e1';
-          card.style.borderRadius = '8px';
-          card.style.padding = '8px 10px';
-          card.style.display = 'flex';
-          card.style.flexDirection = 'column';
-          card.style.gap = '6px';
-
-          card.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <strong style="font-size: 12.5px; color: #003366;">Sección ${sec}</strong>
-              <span class="badge" style="background: #e0f2fe; color: #0369a1; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 800;">Directo</span>
-            </div>
-            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-              <button class="btn btn-accent" style="padding: 4px 10px; font-size: 11px; background: #0284c7; border-color: #0369a1; color: white; font-weight: 700;" onclick="copySectionStudentLink('${secUrl}', '${sec}')">
-                📋 Copiar
-              </button>
-              <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px; font-weight: 700;" onclick="projectSectionQr('${secUrl}', '${sec}')">
-                📽️ QR
-              </button>
-              <a href="${secUrl}" target="_blank" class="btn btn-outline" style="padding: 4px 10px; font-size: 11px; text-decoration: none; color: #0f172a; background: white; border: 1px solid #cbd5e1; font-weight: 700;">
-                🖥️ Abrir PC
-              </a>
-            </div>
-          `;
-          container.appendChild(card);
-        });
-      }
     }
 
     function copyGeneralStudentLink() {
       const input = document.getElementById('slmGeneralUrlInput');
       if (input && input.value) {
         navigator.clipboard.writeText(input.value).then(() => {
-          alert('✅ ¡Enlace General de 9.° Año copiado al portapapeles!\n\nCompártelo para que los estudiantes lo abran en las computadoras del laboratorio.');
+          alert('✅ ¡Enlace Único de 9.° Año copiado al portapapeles!\n\nCompártelo para que los estudiantes lo abran en las computadoras del laboratorio e ingresen su sección.');
         }).catch(() => {
           input.select();
           document.execCommand('copy');
-          alert('✅ ¡Enlace General copiado!');
+          alert('✅ ¡Enlace Único de 9.° Año copiado!');
         });
       }
-    }
-
-    function copySectionStudentLink(url, sec) {
-      navigator.clipboard.writeText(url).then(() => {
-        alert(`✅ ¡Enlace directo para Sección ${sec} copiado al portapapeles!`);
-      }).catch(() => {
-        prompt(`Copia el enlace de la Sección ${sec}:`, url);
-      });
     }
 
     // Inicialización automática del perfil docente activo
