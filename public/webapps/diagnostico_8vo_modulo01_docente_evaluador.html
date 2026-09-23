@@ -2243,14 +2243,10 @@
     } catch(e) {}
   }
 
-  // Inicializar al cargar
+  // Inicializar al cargar con perfil docente real
   window.addEventListener('DOMContentLoaded', () => {
     checkTeacherAuth();
-    if(estudiantes.length === 0) {
-      simularEstudiante();
-    } else {
-      renderTabla();
-    }
+    renderTabla();
     sincronizarTelemetria8vo();
     setInterval(sincronizarTelemetria8vo, 3500);
   });

@@ -4370,6 +4370,7 @@
           container.appendChild(card);
         });
       }
+    }
 
     function copyGeneralStudentLink() {
       const input = document.getElementById('slmGeneralUrlInput');
@@ -4391,6 +4392,22 @@
         prompt(`Copia el enlace de la Sección ${sec}:`, url);
       });
     }
+
+    // Inicialización automática del perfil docente activo
+    window.addEventListener('DOMContentLoaded', () => {
+      try {
+        const prof = getStoredProfile();
+        applyTeacherProfileUI(prof);
+      } catch(e) {
+        console.warn('Error inicializando perfil docente en 9no:', e);
+      }
+    });
+
+    // Ejecución inmediata de respaldo
+    try {
+      const prof = getStoredProfile();
+      applyTeacherProfileUI(prof);
+    } catch(e) {}
   </script>
 </body>
 </html>
