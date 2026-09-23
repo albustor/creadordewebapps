@@ -59,23 +59,8 @@ const INDICADORES_CATALOGO = [
   { id: 10, codigo: "IND-10", nombre: "Depuración y Resolución de Errores", area: "Pensamiento Crítico", saberes: "Detección de errores sintácticos y lógicos, validación en simulador" },
 ];
 
-// Lista de instituciones de referencia nacional
-const INSTITUCIONES_MUESTRA = [
-  { institucion: "Liceo de Costa Rica", dre: "DRE-01", dreNombre: "San José Central", circuito: "Circuito 01", docente: "Prof. Laura González Vargas", totalEstudiantes: 112, promedio: 78.4, aplicado: true, ultimoReporte: "2026-09-20" },
-  { institucion: "Colegio Técnico Profesional de Heredia", dre: "DRE-04", dreNombre: "Heredia", circuito: "Circuito 03", docente: "Prof. Esteban Rojas Méndez", totalEstudiantes: 145, promedio: 82.1, aplicado: true, ultimoReporte: "2026-09-21" },
-  { institucion: "Colegio San Luis Gonzaga", dre: "DRE-03", dreNombre: "Cartago", circuito: "Circuito 01", docente: "Prof. Karla Brenes Quesada", totalEstudiantes: 128, promedio: 76.5, aplicado: true, ultimoReporte: "2026-09-19" },
-  { institucion: "Liceo Experimental Bilingüe de Alajuela", dre: "DRE-07", dreNombre: "Alajuela", circuito: "Circuito 04", docente: "Prof. Jorge Solís Mora", totalEstudiantes: 94, promedio: 84.6, aplicado: true, ultimoReporte: "2026-09-21" },
-  { institucion: "Liceo Nocturno de Pérez Zeledón", dre: "DRE-06", dreNombre: "Pérez Zeledón", circuito: "Circuito 02", docente: "Prof. Vanessa Cordero Campos", totalEstudiantes: 68, promedio: 69.2, aplicado: true, ultimoReporte: "2026-09-18" },
-  { institucion: "Liceo José Martí", dre: "DRE-05", dreNombre: "Puntarenas", circuito: "Circuito 01", docente: "Prof. Diego Morales Castro", totalEstudiantes: 85, promedio: 71.8, aplicado: true, ultimoReporte: "2026-09-20" },
-  { institucion: "Colegio Técnico Profesional de San Carlos", dre: "DRE-10", dreNombre: "San Carlos", circuito: "Circuito 02", docente: "Prof. Andrés Villalobos Cruz", totalEstudiantes: 130, promedio: 79.3, aplicado: true, ultimoReporte: "2026-09-21" },
-  { institucion: "Liceo Nuevo de Limón", dre: "DRE-12", dreNombre: "Limón", circuito: "Circuito 01", docente: "Prof. Cindy Campbell Brown", totalEstudiantes: 74, promedio: 68.9, aplicado: true, ultimoReporte: "2026-09-19" },
-  { institucion: "Liceo de Liberia", dre: "DRE-08", dreNombre: "Liberia", circuito: "Circuito 01", docente: "Prof. Marvin Guevara Díaz", totalEstudiantes: 92, promedio: 74.2, aplicado: true, ultimoReporte: "2026-09-20" },
-  { institucion: "Colegio Vocacional de Artes y Oficios (COVAO)", dre: "DRE-03", dreNombre: "Cartago", circuito: "Circuito 02", docente: "Prof. Rolando Ortiz Sánchez", totalEstudiantes: 160, promedio: 85.0, aplicado: true, ultimoReporte: "2026-09-21" },
-  { institucion: "Liceo de Puriscal", dre: "DRE-02", dreNombre: "Puriscal", circuito: "Circuito 01", docente: "Prof. Gerardo Retana Chacón", totalEstudiantes: 0, promedio: 0, aplicado: false, ultimoReporte: "Pendiente" },
-  { institucion: "Colegio Técnico Profesional de Osa", dre: "DRE-20", dreNombre: "Grande de Térraba", circuito: "Circuito 03", docente: "Prof. Elena Mora Vega", totalEstudiantes: 0, promedio: 0, aplicado: false, ultimoReporte: "Pendiente" },
-  { institucion: "Liceo Rural de Sarapiquí", dre: "DRE-17", dreNombre: "Sarapiquí", circuito: "Circuito 02", docente: "Prof. Kevin Sequeira Rojas", totalEstudiantes: 0, promedio: 0, aplicado: false, ultimoReporte: "Pendiente" },
-  { institucion: "Liceo Académico de Guatuso", dre: "DRE-25", dreNombre: "Norte Norte", circuito: "Circuito 01", docente: "Prof. Sonia Jiménez Arias", totalEstudiantes: 0, promedio: 0, aplicado: false, ultimoReporte: "Pendiente" },
-];
+// Lista de instituciones de referencia nacional (vía en tiempo real, inicia en 0)
+const INSTITUCIONES_MUESTRA: any[] = [];
 
 export default function ObservatorioMacroNacional({ usuariosDocentes }: ObservatorioMacroNacionalProps) {
   const [filtroDRE, setFiltroDRE] = useState("TODAS");
@@ -104,16 +89,11 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
     cargar();
   }, []);
 
-  // Consolidar instituciones combinando usuarios docentes aprobados y muestra
+  // Consolidar instituciones exclusivamente a partir de usuarios docentes registrados
   const institucionesConsolidadas = useMemo(() => {
     const mapa = new Map<string, any>();
 
-    // Agregar instituciones de muestra
-    INSTITUCIONES_MUESTRA.forEach((inst) => {
-      mapa.set(inst.institucion.toLowerCase().trim(), { ...inst });
-    });
-
-    // Enriquecer o agregar con usuarios docentes registrados
+    // Agregar exclusivamente usuarios docentes registrados
     usuariosDocentes.forEach((u) => {
       if (u.institucionNombre && u.institucionNombre.trim()) {
         const clave = u.institucionNombre.toLowerCase().trim();
@@ -134,14 +114,14 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
     });
 
     // Si hay telemetría viva registrada localmente, vincularla
-    if (telemetriaReal.length > 0) {
-      const liceoCR = mapa.get("liceo de costa rica") || Array.from(mapa.values())[0];
-      if (liceoCR) {
-        liceoCR.totalEstudiantes = Math.max(liceoCR.totalEstudiantes, telemetriaReal.length);
+    if (telemetriaReal.length > 0 && mapa.size > 0) {
+      const primeraInst = Array.from(mapa.values())[0];
+      if (primeraInst) {
+        primeraInst.totalEstudiantes = telemetriaReal.length;
         const sumPunt = telemetriaReal.reduce((acc, curr) => acc + (curr.porcentaje ?? curr.puntaje ?? 0), 0);
-        liceoCR.promedio = Math.round(sumPunt / telemetriaReal.length);
-        liceoCR.aplicado = true;
-        liceoCR.ultimoReporte = new Date().toISOString().split("T")[0];
+        primeraInst.promedio = Math.round(sumPunt / telemetriaReal.length);
+        primeraInst.aplicado = true;
+        primeraInst.ultimoReporte = new Date().toISOString().split("T")[0];
       }
     }
 
@@ -166,22 +146,21 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
     });
   }, [institucionesConsolidadas, filtroDRE, filtroEstado, busqueda]);
 
-  // Métricas Macro Nacionales
+  // Métricas Macro Nacionales (100% reales basadas en telemetría activa)
   const metricasMacro = useMemo(() => {
     const totalInst = institucionesConsolidadas.length;
-    const instAplicadas = institucionesConsolidadas.filter((i) => i.aplicado).length;
+    const instAplicadas = institucionesConsolidadas.filter((i) => i.aplicado && i.totalEstudiantes > 0).length;
     const instPendientes = totalInst - instAplicadas;
-    const totalEstudiantes = institucionesConsolidadas.reduce((acc, i) => acc + i.totalEstudiantes, 0);
+    const totalEstudiantes = telemetriaReal.length;
 
-    const instConPromedio = institucionesConsolidadas.filter((i) => i.aplicado && i.promedio > 0);
     const promedioNacional =
-      instConPromedio.length > 0
+      totalEstudiantes > 0
         ? Math.round(
-            (instConPromedio.reduce((acc, i) => acc + i.promedio * i.totalEstudiantes, 0) /
-              instConPromedio.reduce((acc, i) => acc + i.totalEstudiantes, 0)) *
+            (telemetriaReal.reduce((acc, curr) => acc + (curr.porcentaje ?? curr.puntaje ?? 0), 0) /
+              totalEstudiantes) *
               10
           ) / 10
-        : 76.8;
+        : 0;
 
     const tasaCobertura = totalInst > 0 ? Math.round((instAplicadas / totalInst) * 100) : 0;
 
@@ -193,40 +172,30 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
       promedioNacional,
       tasaCobertura,
     };
-  }, [institucionesConsolidadas]);
+  }, [institucionesConsolidadas, telemetriaReal]);
 
   // Análisis Macro Nacional de los 10 Indicadores Cognitivos
   const matrizIndicadoresNacional = useMemo(() => {
-    // Tasas de logro base estimadas a nivel nacional para la entrada al curso lectivo
-    const tasasBaseNacional = [
-      { id: 1, logro: 72 }, // Microcontroladores
-      { id: 2, logro: 68 }, // E/S Digitales
-      { id: 3, logro: 81 }, // Variables
-      { id: 4, logro: 79 }, // Condicionales
-      { id: 5, logro: 64 }, // Ciclos
-      { id: 6, logro: 85 }, // Algoritmos (Mayor fortaleza)
-      { id: 7, logro: 70 }, // Sensores/Actuadores
-      { id: 8, logro: 49 }, // Ley de Ohm (Mayor brecha)
-      { id: 9, logro: 58 }, // Redes / IoT
-      { id: 10, logro: 66 }, // Depuración
-    ];
+    const hayEvaluaciones = telemetriaReal.length > 0;
+    const promGeneral = metricasMacro.promedioNacional;
 
     return INDICADORES_CATALOGO.map((ind) => {
-      const base = tasasBaseNacional.find((b) => b.id === ind.id)?.logro || 70;
-      const estado =
-        base >= 75
-          ? "Consolidado Nacional"
-          : base >= 60
-          ? "En Nivelación"
-          : "Brecha Crítica Nacional";
+      const logro = hayEvaluaciones ? Math.round(promGeneral) : 0;
+      const estado = !hayEvaluaciones
+        ? "Pendiente de Diagnóstico"
+        : logro >= 75
+        ? "Consolidado Nacional"
+        : logro >= 60
+        ? "En Nivelación"
+        : "Brecha Crítica Nacional";
 
       return {
         ...ind,
-        pctLogro: base,
+        pctLogro: logro,
         estado,
       };
     }).sort((a, b) => a.id - b.id);
-  }, []);
+  }, [telemetriaReal, metricasMacro.promedioNacional]);
 
   // Exportar Consolidado Macro Nacional a Excel
   const exportarMacroExcel = () => {
@@ -337,11 +306,11 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
             <div className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">
               Brecha Crítica Detectada
             </div>
-            <div className="text-sm font-black text-rose-700 mt-1 line-clamp-1">
-              IND-08: Ley de Ohm (49%)
+            <div className={`text-sm font-black mt-1 line-clamp-1 ${metricasMacro.totalEstudiantes > 0 ? "text-rose-700" : "text-stone-700"}`}>
+              {metricasMacro.totalEstudiantes > 0 ? "IND-08: Ley de Ohm" : "Ninguna (Fase de Pruebas)"}
             </div>
-            <div className="text-[11px] text-rose-300/80 font-medium mt-2">
-              Prioridad pedagógica para nivelación
+            <div className="text-[11px] text-stone-500 font-medium mt-2">
+              {metricasMacro.totalEstudiantes > 0 ? "Prioridad pedagógica para nivelación" : "0 evaluaciones registradas"}
             </div>
           </div>
         </div>
@@ -368,14 +337,17 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
         {/* Gráfica de Barras Horizontales de los 10 Indicadores */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {matrizIndicadoresNacional.map((ind) => {
-            const esCritico = ind.pctLogro < 60;
-            const esConsolidado = ind.pctLogro >= 75;
+            const esCero = ind.pctLogro === 0;
+            const esCritico = !esCero && ind.pctLogro < 60;
+            const esConsolidado = !esCero && ind.pctLogro >= 75;
 
             return (
               <div
                 key={ind.id}
                 className={`p-4 rounded-2xl border transition-all ${
-                  esCritico
+                  esCero
+                    ? "bg-slate-50/70 border-slate-200"
+                    : esCritico
                     ? "bg-rose-50/40 border-rose-200"
                     : esConsolidado
                     ? "bg-emerald-50/40 border-emerald-200"
@@ -386,7 +358,9 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
                   <div className="flex items-center gap-2">
                     <span
                       className={`w-6 h-6 rounded-lg flex items-center justify-center text-xs font-black shrink-0 ${
-                        esCritico
+                        esCero
+                          ? "bg-slate-400 text-white"
+                          : esCritico
                           ? "bg-rose-600 text-white"
                           : esConsolidado
                           ? "bg-emerald-600 text-white"
@@ -403,14 +377,16 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
 
                   <span
                     className={`text-[10px] font-black px-2 py-0.5 rounded-full shrink-0 ${
-                      esConsolidado
+                      esCero
+                        ? "bg-slate-100 text-slate-600 border border-slate-200"
+                        : esConsolidado
                         ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
                         : esCritico
                         ? "bg-rose-100 text-rose-800 border border-rose-300"
                         : "bg-amber-100 text-amber-800 border border-amber-300"
                     }`}
                   >
-                    {ind.pctLogro}% Nacional
+                    {ind.pctLogro > 0 ? `${ind.pctLogro}% Nacional` : "0% (En Pruebas)"}
                   </span>
                 </div>
 
@@ -419,14 +395,14 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
                   <div
                     style={{ width: `${ind.pctLogro}%` }}
                     className={`h-full transition-all duration-500 ${
-                      esCritico ? "bg-rose-500" : esConsolidado ? "bg-emerald-500" : "bg-amber-400"
+                      esCero ? "bg-slate-300" : esCritico ? "bg-rose-500" : esConsolidado ? "bg-emerald-500" : "bg-amber-400"
                     }`}
                   />
                 </div>
 
                 <div className="flex items-center justify-between text-[10px] font-bold text-slate-500 mt-1.5">
                   <span>{ind.codigo}</span>
-                  <span className={esCritico ? "text-rose-700" : esConsolidado ? "text-emerald-700" : "text-amber-700"}>
+                  <span className={esCero ? "text-slate-500 font-medium" : esCritico ? "text-rose-700" : esConsolidado ? "text-emerald-700" : "text-amber-700"}>
                     {ind.estado}
                   </span>
                 </div>
