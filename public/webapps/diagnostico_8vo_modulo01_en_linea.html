@@ -971,14 +971,136 @@ FIN</div>
     let percentage = Math.min(Math.round((answered / totalItems) * 100), 100);
     document.getElementById('progressBar').style.width = percentage + '%';
 
+  // Variables globales del contexto docente e institucional recibidas por URL o Storage
+  var urlDocenteId = '';
+  var urlDocenteCedula = '';
+  var urlDocente = '';
+  var urlInstitucion = '';
+  var urlDre = '';
+  var urlCircuito = '';
+  var urlSeccionesPermitidas = [];
+  var urlSeccionFijada = '';
+
+  function parseUrlParams8vo() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var token = params.get('token');
+      urlDocenteId = params.get('docenteId') || params.get('docId') || '';
+      urlDocenteCedula = params.get('cedula') || '';
+      urlDocente = params.get('docente') || params.get('doc') || '';
+      urlInstitucion = params.get('institucion') || params.get('inst') || '';
+      urlDre = params.get('dre') || '';
+      urlCircuito = params.get('circuito') || '';
+      var seccion = params.get('seccion') || params.get('sec') || '';
+      var seccionesParam = params.get('secciones') || '';
+
+      if (token) {
+        try {
+          var decoded = JSON.parse(decodeURIComponent(escape(atob(token))));
+          if (decoded) {
+            if (decoded.docId) urlDocenteId = decoded.docId;
+            if (decoded.cedula) urlDocenteCedula = decoded.cedula;
+            if (decoded.doc) urlDocente = decoded.doc;
+            if (decoded.inst) urlInstitucion = decoded.inst;
+            if (decoded.dre) urlDre = decoded.dre;
+            if (decoded.circuito) urlCircuito = decoded.circuito;
+            if (decoded.sec) seccion = decoded.sec;
+            if (decoded.secciones) seccionesParam = decoded.secciones;
+          }
+        } catch(e) {}
+      }
+
+      if (seccionesParam) {
+        if (Array.isArray(seccionesParam)) {
+          urlSeccionesPermitidas = seccionesParam;
+        } else if (typeof seccionesParam === 'string') {
+          urlSeccionesPermitidas = seccionesParam.split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+        }
+      }
+
+      // Si no vienen por URL, intentar sincronizar con docente activo en el navegador
+      if (!urlDocenteId && !urlDocente) {
+        try {
+          var storedDoc = localStorage.getItem('docente_activo') || localStorage.getItem('MEP_DOCENTE_PERFIL_GLOBAL');
+          if (storedDoc) {
+            var parsedDoc = JSON.parse(storedDoc);
+            if (parsedDoc) {
+              urlDocenteId = parsedDoc.idDocente || parsedDoc.cedula || '';
+              urlDocenteCedula = parsedDoc.cedula || '';
+              urlDocente = parsedDoc.nombreCompleto || parsedDoc.nombre || '';
+              if (!urlInstitucion) urlInstitucion = parsedDoc.institucionNombre || parsedDoc.colegio || '';
+              if (!urlDre) urlDre = parsedDoc.dreCodigo || parsedDoc.dreNombre || '';
+              if (!urlCircuito) urlCircuito = parsedDoc.circuito || '';
+            }
+          }
+        } catch(e) {}
+      }
+
+      if (urlDocente || urlInstitucion || urlDocenteId) {
+        var badge = document.getElementById('teacherInfoBadge8vo');
+        var nameEl = document.getElementById('badgeTeacherName8vo');
+        var metaEl = document.getElementById('badgeTeacherMeta8vo');
+        if (badge) badge.style.display = 'block';
+        if (nameEl) nameEl.textContent = '👨‍🏫 Docente: Prof. ' + (urlDocente || 'Evaluador Asignado');
+        if (metaEl) metaEl.textContent = '🏫 ' + (urlInstitucion || 'Centro Educativo') + ' • 📍 ' + (urlDre || 'DRE');
+      }
+
+      var secSelect = document.getElementById('sectionGroup');
+      if (secSelect) {
+        // Si se especificaron secciones permitidas para este colegio, reconstruir el dropdown
+        if (urlSeccionesPermitidas && urlSeccionesPermitidas.length > 0) {
+          secSelect.innerHTML = '<option value="">-- Seleccione su sección --</option>';
+          urlSeccionesPermitidas.forEach(function(s) {
+            var sClean = s.replace(/^secci[oó]n\s*/i, '').trim();
+            var opt = document.createElement('option');
+            opt.value = 'Sección ' + sClean;
+            opt.textContent = 'Sección ' + sClean;
+            secSelect.appendChild(opt);
+          });
+        }
+
+        if (seccion) {
+          var targetSec = seccion.includes('Sección') ? seccion : ('Sección ' + seccion);
+          secSelect.value = targetSec;
+          secSelect.style.borderColor = '#0284c7';
+          secSelect.style.fontWeight = '800';
+          urlSeccionFijada = targetSec;
+        }
+      }
+    } catch (e) {
+      console.warn('Error al procesar parámetros URL:', e);
+    }
+  }
+
+  function updateProgress() {
+    var totalItems = 14;
+    var answered = Object.keys(selectedAnswers).length;
+    
+    var match1 = document.querySelectorAll('.match-select');
+    var m1Complete = true;
+    match1.forEach(function(s) { if(!s.value) m1Complete = false; });
+    if(m1Complete) answered++;
+
+    var match2 = document.querySelectorAll('.match-select-algo');
+    var m2Complete = true;
+    match2.forEach(function(s) { if(!s.value) m2Complete = false; });
+    if(m2Complete) answered++;
+
+    var percentage = Math.min(Math.round((answered / totalItems) * 100), 100);
+    document.getElementById('progressBar').style.width = percentage + '%';
+
     // Telemetría en tiempo real de avance
-    const name = document.getElementById('studentName')?.value?.trim();
-    const sec = document.getElementById('sectionGroup')?.value;
+    var name = document.getElementById('studentName')?.value?.trim();
+    var sec = document.getElementById('sectionGroup')?.value;
     if (name && sec && answered >= 1) {
-      const pingProgreso = {
+      var pingProgreso = {
         webAppId: "diag-8vo-hardware-algoritmos-2026",
         webAppTitulo: "Evaluación Diagnóstica — 8° Año (PNFT)",
-        docenteId: "ASESOR-FT-7729",
+        docenteId: urlDocenteId || urlDocenteCedula || "5-0305-0179",
+        docenteCedula: urlDocenteCedula || urlDocenteId || "",
+        docenteNombre: urlDocente || "",
+        institucionNombre: urlInstitucion || "",
+        dreCodigo: urlDre || "",
         nivel: "8°",
         estudianteNombre: name,
         seccionOGrupo: sec,
@@ -990,15 +1112,15 @@ FIN</div>
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(pingProgreso)
-      }).catch(() => {});
+      }).catch(function() {});
     }
   }
 
   async function processResults() {
-    const name = document.getElementById('studentName').value.trim();
-    const sec = document.getElementById('sectionGroup').value;
-    const cedula = document.getElementById('studentCedula').value.trim();
-    const rules = document.getElementById('studentRules').value.trim();
+    var name = document.getElementById('studentName').value.trim();
+    var sec = document.getElementById('sectionGroup').value;
+    var cedula = document.getElementById('studentCedula').value.trim();
+    var rules = document.getElementById('studentRules').value.trim();
 
     if(!name || !sec) {
       alert("Por favor complete su Nombre y Sección en la parte administrativa.");
@@ -1007,10 +1129,10 @@ FIN</div>
     }
 
     // Subárea 1: Ítems 1 al 5
-    let sub1Score = 0;
-    const match1 = document.querySelectorAll('.match-select');
-    let m1Correct = 0;
-    match1.forEach(s => { if(s.value === s.getAttribute('data-correct')) m1Correct++; });
+    var sub1Score = 0;
+    var match1 = document.querySelectorAll('.match-select');
+    var m1Correct = 0;
+    match1.forEach(function(s) { if(s.value === s.getAttribute('data-correct')) m1Correct++; });
     if(m1Correct === 6) sub1Score++;
 
     if(selectedAnswers['2'] === 'b') sub1Score++;
@@ -1019,10 +1141,10 @@ FIN</div>
     if(selectedAnswers['5'] === 'b') sub1Score++;
 
     // Subárea 2: Ítems 6 al 12
-    let sub2Score = 0;
-    const match2 = document.querySelectorAll('.match-select-algo');
-    let m2Correct = 0;
-    match2.forEach(s => { if(s.value === s.getAttribute('data-correct')) m2Correct++; });
+    var sub2Score = 0;
+    var match2 = document.querySelectorAll('.match-select-algo');
+    var m2Correct = 0;
+    match2.forEach(function(s) { if(s.value === s.getAttribute('data-correct')) m2Correct++; });
     if(m2Correct === 3) sub2Score++;
 
     if(selectedAnswers['7'] === 'c') sub2Score++;
@@ -1033,17 +1155,17 @@ FIN</div>
     if(selectedAnswers['12'] === 'b') sub2Score++;
 
     // Subárea 3: Ítems 13 y 14
-    let sub3Score = 0;
+    var sub3Score = 0;
     if(selectedAnswers['13'] === 'b') sub3Score++;
     if(selectedAnswers['14'] === 'b') sub3Score++;
 
-    const totalPuntaje = sub1Score + sub2Score + sub3Score;
-    const totalMaximo = 14;
-    const porcentaje = Math.round((totalPuntaje / totalMaximo) * 100);
-    const tiempoSegundos = Math.round((Date.now() - startTime) / 1000);
+    var totalPuntaje = sub1Score + sub2Score + sub3Score;
+    var totalMaximo = 14;
+    var porcentaje = Math.round((totalPuntaje / totalMaximo) * 100);
+    var tiempoSegundos = Math.round((Date.now() - startTime) / 1000);
 
     // Evidencia por indicador
-    const itemEvidence = [
+    var itemEvidence = [
       m1Correct === 6,
       selectedAnswers['2'] === 'b',
       selectedAnswers['3'] === 'a',
@@ -1079,75 +1201,27 @@ FIN</div>
       ? "<strong>Mayor evidencia en esta subárea:</strong> Identifica con claridad la causa-efecto (eventos) y la definición conceptual de un sistema robótico autónomo."
       : "<strong>Aspectos por fortalecer en esta subárea:</strong> Es conveniente repasar la diferencia entre un aparato electrónico convencional y un robot (sensores-control-actuadores).";
 
-    let reportHTML = '<table class="indicator-report"><thead><tr><th>Ítem</th><th>Indicador de logro explorado</th><th>Evidencia</th><th>Decisión pedagógica orientadora</th></tr></thead><tbody>';
-    itemEvidence.forEach((ok, i) => {
-      const evidence = ok ? 'Evidenciado' : 'Requiere fortalecimiento';
-      const decision = ok
+    var reportHTML = '<table class="indicator-report"><thead><tr><th>Ítem</th><th>Indicador de logro explorado</th><th>Evidencia</th><th>Decisión pedagógica orientadora</th></tr></thead><tbody>';
+    itemEvidence.forEach(function(ok, i) {
+      var evidence = ok ? 'Evidenciado' : 'Requiere fortalecimiento';
+      var decision = ok
         ? 'Continuar y articular este aprendizaje con los saberes de octavo.'
         : 'Incorporar una actividad breve de activación o fortalecimiento durante la mediación.';
-      reportHTML += `<tr><td>${i+1}</td><td>${diagnosticIndicators[i]}</td><td><strong>${evidence}</strong></td><td>${decision}</td></tr>`;
+      reportHTML += '<tr><td>' + (i+1) + '</td><td>' + diagnosticIndicators[i] + '</td><td><strong>' + evidence + '</strong></td><td>' + decision + '</td></tr>';
     });
     reportHTML += '</tbody></table>';
     document.getElementById('indicator-report').innerHTML = reportHTML;
 
-    let urlDocenteId = '';
-    let urlDocente = '';
-    let urlInstitucion = '';
-    let urlDre = '';
-
-    function parseUrlParams8vo() {
-      try {
-        const params = new URLSearchParams(window.location.search);
-        const token = params.get('token');
-        urlDocenteId = params.get('docenteId') || params.get('docId') || '';
-        urlDocente = params.get('docente') || params.get('doc') || '';
-        urlInstitucion = params.get('institucion') || params.get('inst') || '';
-        urlDre = params.get('dre') || '';
-        let seccion = params.get('seccion') || params.get('sec') || '';
-
-        if (token) {
-          try {
-            const decoded = JSON.parse(decodeURIComponent(escape(atob(token))));
-            if (decoded) {
-              if (decoded.docId) urlDocenteId = decoded.docId;
-              if (decoded.doc) urlDocente = decoded.doc;
-              if (decoded.inst) urlInstitucion = decoded.inst;
-              if (decoded.dre) urlDre = decoded.dre;
-              if (decoded.sec) seccion = decoded.sec;
-            }
-          } catch(e) {}
-        }
-
-        if (urlDocente || urlInstitucion || urlDocenteId) {
-          const badge = document.getElementById('teacherInfoBadge8vo');
-          const nameEl = document.getElementById('badgeTeacherName8vo');
-          const metaEl = document.getElementById('badgeTeacherMeta8vo');
-          if (badge) badge.style.display = 'block';
-          if (nameEl) nameEl.textContent = `👨‍🏫 Docente: Prof. ${urlDocente || 'Evaluador Asignado'}`;
-          if (metaEl) metaEl.textContent = `🏫 ${urlInstitucion || 'Centro Educativo'} • 📍 ${urlDre || 'DRE'}`;
-        }
-
-        if (seccion) {
-          const secSelect = document.getElementById('sectionGroup');
-          if (secSelect) {
-            secSelect.value = seccion;
-            secSelect.style.borderColor = '#0284c7';
-            secSelect.style.fontWeight = '800';
-          }
-        }
-      } catch (e) {
-        console.warn('Error al procesar parámetros URL:', e);
-      }
-    }
-
     // ENVÍO DE TELEMETRÍA AUTOMÁTICA
-    const payloadTelemetria = {
+    var payloadTelemetria = {
       webAppId: "diag-8vo-hardware-algoritmos-2026",
       webAppTitulo: "Evaluación Diagnóstica — 8° Año (PNFT)",
-      docenteId: urlDocenteId || "ASESOR-FT-7729",
+      docenteId: urlDocenteId || urlDocenteCedula || "5-0305-0179",
+      docenteCedula: urlDocenteCedula || urlDocenteId || "",
       docenteNombre: urlDocente || "",
       institucionNombre: urlInstitucion || "",
       dreCodigo: urlDre || "",
+      circuito: urlCircuito || "",
       nivel: "8°",
       estudianteNombre: name,
       estudianteCedula: cedula || "No indicada",
@@ -1165,29 +1239,43 @@ FIN</div>
         sub2_algoritmos: sub2Score,
         sub3_robotica: sub3Score
       },
-      indicadoresLogro: itemEvidence.map((ok, idx) => ({
-        indicadorId: idx + 1,
-        evidenciado: ok
-      })),
+      indicadoresLogro: itemEvidence.map(function(ok, idx) {
+        return {
+          indicadorId: idx + 1,
+          evidenciado: ok
+        };
+      }),
       reflexionSocioafectiva: rules,
       timestamp: Date.now()
     };
 
     // Guardar en localStorage de contingencia
     try {
-      const historial = JSON.parse(localStorage.getItem('telemetria_8vo_local') || '[]');
+      var historial = JSON.parse(localStorage.getItem('telemetria_8vo_local') || '[]');
       historial.push(payloadTelemetria);
       localStorage.setItem('telemetria_8vo_local', JSON.stringify(historial));
 
-      const teleGlobal = JSON.parse(localStorage.getItem('telemetria_registros') || '[]');
-      const filtered = teleGlobal.filter(x => x.estudianteNombre !== payloadTelemetria.estudianteNombre || x.seccionOGrupo !== payloadTelemetria.seccionOGrupo);
+      var teleGlobal = JSON.parse(localStorage.getItem('telemetria_registros') || '[]');
+      var filtered = teleGlobal.filter(function(x) {
+        return x.estudianteNombre !== payloadTelemetria.estudianteNombre || x.seccionOGrupo !== payloadTelemetria.seccionOGrupo;
+      });
       filtered.unshift(payloadTelemetria);
       localStorage.setItem('telemetria_registros', JSON.stringify(filtered));
+
+      if (urlDocenteCedula) {
+        var cleanCedKey = 'telemetria_registros_' + urlDocenteCedula.replace(/\D/g, '');
+        var docList = JSON.parse(localStorage.getItem(cleanCedKey) || '[]');
+        var docFiltered = docList.filter(function(x) {
+          return x.estudianteNombre !== payloadTelemetria.estudianteNombre || x.seccionOGrupo !== payloadTelemetria.seccionOGrupo;
+        });
+        docFiltered.unshift(payloadTelemetria);
+        localStorage.setItem(cleanCedKey, JSON.stringify(docFiltered));
+      }
     } catch(e){}
 
     // Enviar a la API si está disponible
     try {
-      const res = await fetch('/api/telemetria/enviar', {
+      var res = await fetch('/api/telemetria/enviar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -1212,7 +1300,7 @@ FIN</div>
     document.getElementById('results-section').scrollIntoView({behavior: 'smooth'});
   }
 
-  window.addEventListener('DOMContentLoaded', () => {
+  window.addEventListener('DOMContentLoaded', function() {
     parseUrlParams8vo();
   });
 </script>

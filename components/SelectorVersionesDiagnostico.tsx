@@ -22,6 +22,8 @@ import {
 import { QRCodeSVG } from "qrcode.react";
 import { NivelEducativo, obtenerDiagnosticoPorNivel } from "@/lib/diagnosticos";
 
+import { useDocente } from "@/context/DocenteContext";
+
 interface SelectorVersionesDiagnosticoProps {
   nivel?: NivelEducativo;
   docenteNombre?: string;
@@ -30,9 +32,10 @@ interface SelectorVersionesDiagnosticoProps {
 
 export default function SelectorVersionesDiagnostico({
   nivel = "8°",
-  docenteNombre = "Alberto Bustos Ortega",
-  institucionNombre = "Asesoría de Formación Tecnológica",
+  docenteNombre,
+  institucionNombre,
 }: SelectorVersionesDiagnosticoProps) {
+  const { docente } = useDocente();
   const [copiadoOnline, setCopiadoOnline] = useState(false);
   const [copiadoDocente, setCopiadoDocente] = useState(false);
   const [modalQROnline, setModalQROnline] = useState(false);
@@ -41,11 +44,35 @@ export default function SelectorVersionesDiagnostico({
 
   const diagConfig = obtenerDiagnosticoPorNivel(nivel);
 
+  // Determinar centro educativo y secciones asignadas para este nivel
+  const nivelNum = nivel.replace(/\D/g, ""); // "7", "8", "9"
+  const centrosConNivel = (docente?.centrosEducativos || []).filter((c) =>
+    (c.desgloseNiveles || []).some((dn) => dn.nivel.includes(nivelNum) && dn.activo === true)
+  );
+
+  const centroSeleccionado = centrosConNivel[0] || (docente?.centrosEducativos && docente.centrosEducativos[0]);
+  const desgloseNivelActivo = centroSeleccionado?.desgloseNiveles?.find((dn) => dn.nivel.includes(nivelNum));
+  const seccionesDocente = desgloseNivelActivo?.seccionesAtendidasDocente || [`${nivelNum}-1`];
+
+  const docNomFinal = docenteNombre || docente?.nombreCompleto || "Alberto Bustos Ortega";
+  const instNomFinal = institucionNombre || centroSeleccionado?.nombre || docente?.institucionNombre || "Centro Educativo MEP";
+  const docIdFinal = docente?.idDocente || docente?.cedula || "5-0305-0179";
+  const dreFinal = centroSeleccionado?.dreCodigo || centroSeleccionado?.dreNombre || docente?.dreCodigo || docente?.dreNombre || "DRE-01";
+  const circuitoFinal = centroSeleccionado?.circuito || docente?.circuito || "Circuito 01";
+
   const queryParams = new URLSearchParams();
-  if (docenteNombre) queryParams.set("docente", docenteNombre);
-  if (institucionNombre) queryParams.set("institucion", institucionNombre);
-  if (nivel) queryParams.set("nivel", nivel);
-  const queryString = queryParams.toString() ? `?${queryParams.toString()}` : "";
+  queryParams.set("docente", docNomFinal);
+  queryParams.set("docenteId", docIdFinal);
+  if (docente?.cedula) queryParams.set("cedula", docente.cedula);
+  queryParams.set("institucion", instNomFinal);
+  queryParams.set("dre", dreFinal);
+  queryParams.set("circuito", circuitoFinal);
+  queryParams.set("nivel", nivel);
+  if (seccionesDocente.length > 0) {
+    queryParams.set("secciones", seccionesDocente.join(","));
+  }
+
+  const queryString = `?${queryParams.toString()}`;
 
   // Rutas dinámicas según el nivel
   let pathOnline = "/webapps/diagnostico_8vo_modulo01_en_linea.html";

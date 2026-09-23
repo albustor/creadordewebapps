@@ -98,6 +98,47 @@ export default function DiagnosticoPage() {
           </div>
         </div>
 
+        {/* Banner Informativo Exclusivo para Asesoría */}
+        <div className="bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border-2 border-amber-300 rounded-3xl p-5 sm:p-6 shadow-xs">
+          <div className="flex flex-col sm:flex-row items-start gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-md">
+              <Lightning size={26} weight="fill" />
+            </div>
+            <div className="space-y-2 flex-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="px-2.5 py-0.5 rounded-full bg-amber-200/80 text-amber-950 font-black text-[10px] uppercase tracking-wider border border-amber-300">
+                  ⚡ Espacio de Asesoría Curricular y Pilotaje
+                </span>
+                <span className="text-xs font-bold text-slate-600">
+                  Guía de Uso para Asesores Nacionales y Regionales
+                </span>
+              </div>
+              <h3 className="text-base sm:text-lg font-black text-slate-900 leading-snug">
+                ¿Cómo funciona este entorno de prueba para el Asesor?
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+                Este módulo es un <strong>espejo interactivo</strong> de las herramientas curriculares que tienen los docentes en el aula. Desde aquí, usted como asesor/a puede explorar, interactuar y <strong>realizar simulaciones y pruebas pedagógicas con cada una de las secciones de 7.°, 8.° y 9.° Año</strong>.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+                <div className="bg-white/80 p-3 rounded-2xl border border-amber-200 flex items-start gap-2.5">
+                  <span className="text-base shrink-0">🎯</span>
+                  <div className="text-xs text-slate-700">
+                    <strong className="text-slate-900 block font-bold">Simulación Directa por Sección:</strong>
+                    Abra cualquier instrumento (estudiante o docente evaluador) para poner a prueba las dinámicas, reactivos y rúbricas socioafectivas.
+                  </div>
+                </div>
+                <div className="bg-white/80 p-3 rounded-2xl border border-amber-200 flex items-start gap-2.5">
+                  <span className="text-base shrink-0">📊</span>
+                  <div className="text-xs text-slate-700">
+                    <strong className="text-slate-900 block font-bold">Reflejo en su Dashboard:</strong>
+                    Al estar logueado/a como asesor/a, todo ensayo o prueba que realice con otras personas aparecerá en su <strong>Dashboard Docente</strong> para analizar telemetría, semáforos y recomendaciones DUA.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* SELECTOR DE PESTAÑAS DE NIVEL: 7.°, 8.° y 9.° AÑO */}
         <SelectorNivelDiagnosticoTabs
           nivelSeleccionado={nivelActivo}

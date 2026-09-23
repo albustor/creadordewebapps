@@ -1106,6 +1106,7 @@
         let institucion = params.get('institucion') || params.get('inst') || params.get('colegio');
         let dre = params.get('dre') || params.get('dreCodigo');
         let seccion = params.get('seccion') || params.get('sec') || params.get('grupo');
+        let seccionesParam = params.get('secciones');
         const token = params.get('token');
 
         if (token) {
@@ -1117,9 +1118,18 @@
               if (decoded.inst) institucion = decoded.inst;
               if (decoded.dre) dre = decoded.dre;
               if (decoded.sec) seccion = decoded.sec;
+              if (decoded.secciones) seccionesParam = decoded.secciones;
             }
           } catch (e) {
             console.warn('Error decodificando token URL:', e);
+          }
+        }
+
+        if (seccionesParam) {
+          if (Array.isArray(seccionesParam)) {
+            AppState.seccionesPermitidas = seccionesParam;
+          } else if (typeof seccionesParam === 'string') {
+            AppState.seccionesPermitidas = seccionesParam.split(',').map(s => s.trim()).filter(Boolean);
           }
         }
 
@@ -2161,7 +2171,10 @@
             <div class="form-group" style="min-width: 200px;">
               <label class="form-label">Sección Institucional:</label>
               <select id="regSection" class="form-select" style="max-width: 280px; ${AppState.sectionLocked ? 'border-color: var(--cyan-neon); font-weight: 800;' : ''}">
-                ${['7-1','7-2','7-3','7-4','7-5','7-6','7-7','7-8','7-9','7-10','7-11','7-12'].map(s => `<option value="${s}" ${AppState.section === s ? 'selected' : ''}>Sección ${s} ${AppState.section === s && AppState.sectionLocked ? '✓ (Asignada)' : ''}</option>`).join('')}
+                ${(AppState.seccionesPermitidas && AppState.seccionesPermitidas.length > 0 ? AppState.seccionesPermitidas : ['7-1','7-2','7-3','7-4','7-5','7-6','7-7','7-8','7-9','7-10','7-11','7-12']).map(s => {
+                  const sClean = s.replace(/^secci[oó]n\s*/i, '').trim();
+                  return `<option value="${sClean}" ${AppState.section === sClean ? 'selected' : ''}>Sección ${sClean} ${AppState.section === sClean && AppState.sectionLocked ? '✓ (Asignada)' : ''}</option>`;
+                }).join('')}
               </select>
             </div>
           </div>

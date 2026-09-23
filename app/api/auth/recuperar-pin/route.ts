@@ -24,6 +24,7 @@ export async function POST(req: NextRequest) {
       try {
         const resCorreo = await fetch("https://api.resend.com/emails", {
           method: "POST",
+          signal: AbortSignal.timeout(5000),
           headers: {
             Authorization: `Bearer ${resendApiKey}`,
             "Content-Type": "application/json",
@@ -60,9 +61,10 @@ export async function POST(req: NextRequest) {
         if (resCorreo.ok) {
           despachoCorreoExitoso = true;
         } else {
-          // Fallback a info@curiol.studio si Resend está en sandbox de desarrollo
+          // Fallback a correo institucional MEP
           const fallbackRes = await fetch("https://api.resend.com/emails", {
             method: "POST",
+            signal: AbortSignal.timeout(5000),
             headers: {
               Authorization: `Bearer ${resendApiKey}`,
               "Content-Type": "application/json",
@@ -109,6 +111,7 @@ export async function POST(req: NextRequest) {
 
         const resWp = await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
           method: "POST",
+          signal: AbortSignal.timeout(4000),
           headers: {
             apikey: evolutionApiKey,
             "Content-Type": "application/json",
@@ -131,20 +134,35 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    if (canal === "whatsapp" || canal === "mensajeria") {
+      if (despachoWhatsAppExitoso) {
+        return NextResponse.json({
+          exito: true,
+          mensaje: "Código despachado exitosamente por WhatsApp a tu número registrado.",
+          detalles: { despachoWhatsApp: true },
+        });
+      } else {
+        return NextResponse.json({
+          exito: false,
+          mensaje: "No fue posible despachar el mensaje por WhatsApp al número registrado en este momento. Por favor selecciona la opción de 'Correo MEP' para recibir tu código de recuperación.",
+          detalles: { despachoWhatsApp: false },
+        }, { status: 503 });
+      }
+    }
+
+    if (despachoCorreoExitoso) {
+      return NextResponse.json({
+        exito: true,
+        mensaje: "Código enviado exitosamente a tu correo electrónico institucional MEP.",
+        detalles: { despachoCorreo: true },
+      });
+    }
+
     return NextResponse.json({
-      exito: true,
-      mensaje:
-        (canal === "whatsapp" || canal === "mensajeria") && despachoWhatsAppExitoso
-          ? "Código despachado exitosamente por WhatsApp a tu número registrado."
-          : despachoCorreoExitoso
-          ? "Código enviado exitosamente a tu correo electrónico oficial."
-          : `Código generado exitosamente: ${codigoOTP}`,
-      codigoSimulado: codigoOTP,
-      detalles: {
-        despachoCorreo: despachoCorreoExitoso,
-        despachoWhatsApp: despachoWhatsAppExitoso,
-      },
-    });
+      exito: false,
+      mensaje: "No fue posible despachar el código al correo electrónico oficial en este momento. Por favor verifique sus datos o contacte a Asesoría.",
+      detalles: { despachoCorreo: false },
+    }, { status: 500 });
   } catch (error: any) {
     return NextResponse.json(
       { exito: false, mensaje: error?.message || "Error al procesar la solicitud." },

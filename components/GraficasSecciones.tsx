@@ -109,8 +109,11 @@ export default function GraficasSecciones({
       }
     >();
 
-    registros.forEach((r) => {
-      const sec = r.seccionOGrupo?.trim() || "Sección 9-1";
+    const defSecName = nivel === "7mo" ? "Sección 7-1" : nivel === "8vo" ? "Sección 8-1" : "Sección 9-1";
+
+    (registros || []).forEach((r) => {
+      if (!r) return;
+      const sec = (r.seccionOGrupo && typeof r.seccionOGrupo === "string" && r.seccionOGrupo.trim()) ? r.seccionOGrupo.trim() : defSecName;
       if (!mapa.has(sec)) {
         mapa.set(sec, {
           nombre: sec,
@@ -126,9 +129,9 @@ export default function GraficasSecciones({
 
       const item = mapa.get(sec)!;
       item.total += 1;
-      const puntaje = r.porcentaje !== undefined ? r.porcentaje : r.puntaje;
+      const puntaje = typeof r.porcentaje === "number" ? r.porcentaje : (typeof r.puntaje === "number" ? r.puntaje : 0);
       item.sumaPuntajes += puntaje;
-      item.tiempoTotal += r.tiempoSegundos || 45;
+      item.tiempoTotal += typeof r.tiempoSegundos === "number" ? r.tiempoSegundos : 45;
 
       if (puntaje >= minAvanzado) {
         item.avanzados += 1;
@@ -146,7 +149,7 @@ export default function GraficasSecciones({
           }
         });
       } else {
-        const cantidadLogrados = Math.round((puntaje / 100) * 10);
+        const cantidadLogrados = Math.min(10, Math.max(0, Math.round((puntaje / 100) * 10)));
         for (let i = 0; i < cantidadLogrados; i++) {
           if (i < 10) item.indicadoresLogrados[i] += 1;
         }
@@ -162,15 +165,20 @@ export default function GraficasSecciones({
         pctIntermedio: s.total > 0 ? Math.round((s.intermedios / s.total) * 100) : 0,
         pctInicial: s.total > 0 ? Math.round((s.iniciales / s.total) * 100) : 0,
       }))
-      .sort((a, b) => a.nombre.localeCompare(b.nombre, undefined, { numeric: true }));
-  }, [registros, minAvanzado, maxInicial]);
+      .sort((a, b) => (a.nombre || "").localeCompare(b.nombre || "", undefined, { numeric: true }));
+  }, [registros, minAvanzado, maxInicial, nivel]);
 
   // Cálculo de los 10 Indicadores para la sección seleccionada o global
   const datosIndicadores = useMemo(() => {
+    const lista = registros || [];
     const registrosAFiltrar =
       seccionDetalle === "Todas"
-        ? registros
-        : registros.filter((r) => (r.seccionOGrupo?.trim() || "Sección 9-1") === seccionDetalle);
+        ? lista
+        : lista.filter((r) => {
+            if (!r) return false;
+            const rSec = (r.seccionOGrupo || "").trim();
+            return rSec === seccionDetalle || rSec.replace(/^secci[oó]n\s*/i, "") === seccionDetalle.replace(/^secci[oó]n\s*/i, "");
+          });
 
     const totalEst = registrosAFiltrar.length;
     const conteoLogros = Array(10).fill(0);
@@ -178,7 +186,8 @@ export default function GraficasSecciones({
     const conteoAcomp = Array(10).fill(0);
 
     registrosAFiltrar.forEach((r) => {
-      const puntaje = r.porcentaje !== undefined ? r.porcentaje : r.puntaje;
+      if (!r) return;
+      const puntaje = typeof r.porcentaje === "number" ? r.porcentaje : (typeof r.puntaje === "number" ? r.puntaje : 0);
       if (r.cog && Array.isArray(r.cog)) {
         r.cog.forEach((c, idx) => {
           if (idx < 10) {
@@ -188,7 +197,7 @@ export default function GraficasSecciones({
           }
         });
       } else {
-        const cantLogrados = Math.round((puntaje / 100) * 10);
+        const cantLogrados = Math.min(10, Math.max(0, Math.round((puntaje / 100) * 10)));
         for (let i = 0; i < 10; i++) {
           if (i < cantLogrados) conteoLogros[i] += 1;
           else if (i === cantLogrados && puntaje > 50) conteoEnDesarrollo[i] += 1;
@@ -197,7 +206,8 @@ export default function GraficasSecciones({
       }
     });
 
-    return catalogoIndicadoresActivo.map((ind, idx) => {
+    const catalogo = catalogoIndicadoresActivo || [];
+    return catalogo.map((ind, idx) => {
       const logrados = conteoLogros[idx] || 0;
       const enDesarrollo = conteoEnDesarrollo[idx] || 0;
       const acomp = conteoAcomp[idx] || 0;
@@ -226,9 +236,9 @@ export default function GraficasSecciones({
 
   // Promedio global
   const promedioGeneral = useMemo(() => {
-    if (registros.length === 0) return 0;
-    const total = registros.reduce((acc, r) => acc + (r.porcentaje ?? r.puntaje), 0);
-    return Math.round(total / registros.length);
+    if (!registros || registros.length === 0) return 0;
+    const total = registros.reduce((acc, r) => acc + (typeof r?.porcentaje === "number" ? r.porcentaje : (typeof r?.puntaje === "number" ? r.puntaje : 0)), 0);
+    return Math.round(total / (registros.length || 1));
   }, [registros]);
 
   if (registros.length === 0) {

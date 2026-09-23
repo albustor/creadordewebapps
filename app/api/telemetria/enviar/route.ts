@@ -313,14 +313,12 @@ export async function GET(req: NextRequest) {
   const nombre = searchParams.get("docenteNombre");
 
   let datos = registrosTelemetriaMemoria;
-  const esAdmin =
-    docenteId === "ASESOR-FT-7729" ||
-    docenteId === "5-0305-0179" ||
-    docenteId === "SUPERADMIN-01" ||
+  const esSuperAdminGlobal =
     correo === "alberto.bustos.ortega@mep.go.cr" ||
-    correo === "allan.morera.araya@mep.go.cr";
+    correo === "allan.morera.araya@mep.go.cr" ||
+    docenteId === "SUPERADMIN-01";
 
-  if (!esAdmin && (docenteId || cedula || correo || nombre)) {
+  if (!esSuperAdminGlobal && (docenteId || cedula || correo || nombre)) {
     const docIdNorm = (docenteId || "").trim().toLowerCase();
     const cedNorm = (cedula || "").trim().toLowerCase();
     const corNorm = (correo || "").trim().toLowerCase();

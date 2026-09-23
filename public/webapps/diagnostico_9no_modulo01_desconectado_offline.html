@@ -3535,9 +3535,31 @@
     window.addEventListener("DOMContentLoaded", function() {
       try {
         var params = new URLSearchParams(window.location.search);
+        var token = params.get("token");
         var docParam = params.get("docente") || params.get("docenteNombre") || params.get("profesor");
         var instParam = params.get("institucion") || params.get("colegio") || params.get("centroEducativo");
         var secParam = params.get("seccion") || params.get("seccionGrupo");
+        var seccionesParam = params.get("secciones") || "";
+        var dreParam = params.get("dre") || params.get("dreNombre") || "";
+        var docIdParam = params.get("docenteId") || params.get("docId") || "";
+
+        if (token) {
+          try {
+            var decoded = JSON.parse(decodeURIComponent(escape(atob(token))));
+            if (decoded) {
+              if (decoded.doc) docParam = decoded.doc;
+              if (decoded.inst) instParam = decoded.inst;
+              if (decoded.dre) dreParam = decoded.dre;
+              if (decoded.docId) docIdParam = decoded.docId;
+              if (decoded.sec) secParam = decoded.sec;
+              if (decoded.secciones) seccionesParam = decoded.secciones;
+            }
+          } catch(e) {}
+        }
+
+        if (docIdParam) {
+          CONFIG.docenteId = docIdParam;
+        }
 
         var docNombre = docParam || "";
         var instNombre = instParam || "";
@@ -3592,9 +3614,28 @@
         }
 
         var selectSec = document.getElementById("selectSeccion");
-        if (selectSec && secParam) {
-          selectSec.value = secParam;
-          estado.seccionGrupo = secParam;
+        if (selectSec) {
+          if (seccionesParam) {
+            var seccionesList = Array.isArray(seccionesParam) ? seccionesParam : seccionesParam.split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+            if (seccionesList.length > 0) {
+              selectSec.innerHTML = '<option value="">-- Selecciona tu sección oficial --</option>';
+              seccionesList.forEach(function(s) {
+                var sClean = s.replace(/^secci[oó]n\s*/i, '').trim();
+                var opt = document.createElement("option");
+                opt.value = "Sección " + sClean;
+                opt.textContent = "Sección " + sClean;
+                selectSec.appendChild(opt);
+              });
+            }
+          }
+
+          if (secParam) {
+            var targetSecVal = secParam.includes("Sección") ? secParam : ("Sección " + secParam);
+            selectSec.value = targetSecVal;
+            estado.seccionGrupo = targetSecVal;
+            selectSec.style.borderColor = "#0284c7";
+            selectSec.style.fontWeight = "800";
+          }
         }
 
         // 🌟 RESTAURAR SESIÓN ACTIVA SI EXISTE (PERSISTENCIA ANTE RECARGAS F5 O CIERRE ACCIDENTAL)

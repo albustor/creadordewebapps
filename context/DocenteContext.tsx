@@ -482,14 +482,40 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
 
         setTelemetria((prev) => {
           const mapa = new Map<string, PayloadTelemetria>();
-          // Agregar previos
+          // Agregar previos ÚNICAMENTE si pertenecen al docente autenticado
+          const correoDocLimpio = (correoDoc || "").toLowerCase().trim();
+          const esSuperAdmin = correoDocLimpio === "alberto.bustos.ortega@mep.go.cr";
+          const esAsesorNacional = correoDocLimpio === "allan.morera.araya@mep.go.cr" || docenteActivoObj?.tipoRol === "Asesor Nacional";
+
           prev.forEach((item) => {
             const estNom = item.estudianteNombre?.toLowerCase()?.trim() || "";
             const estCor = item.estudianteCorreo?.toLowerCase()?.trim() || "";
             const esDocente = (nombreDoc && estNom === nombreDoc) || (correoDoc && estCor === correoDoc);
+
             if (!esDocente && estNom) {
-              const key = normalizarClave(item);
-              mapa.set(key, { ...item, seccionOGrupo: normalizarSeccion(item.seccionOGrupo) });
+              if (esSuperAdmin || esAsesorNacional) {
+                const key = normalizarClave(item);
+                mapa.set(key, { ...item, seccionOGrupo: normalizarSeccion(item.seccionOGrupo) });
+              } else {
+                const rDocId = (item.docenteId || "").trim().toLowerCase();
+                const rDocCed = ((item as any).docenteCedula || "").trim().toLowerCase();
+                const rDocEmail = ((item as any).docenteEmail || "").trim().toLowerCase();
+                const rDocNom = ((item as any).docenteNombre || "").trim().toLowerCase();
+
+                const cedDocClean = (cedulaDoc || "").replace(/\D/g, "");
+                const rDocIdClean = rDocId.replace(/\D/g, "");
+                const rDocCedClean = rDocCed.replace(/\D/g, "");
+
+                const matchId = docenteId && (rDocId === (docenteId || "").toLowerCase() || rDocId.includes((docenteId || "").toLowerCase()));
+                const matchCed = cedDocClean && (rDocIdClean === cedDocClean || rDocCedClean === cedDocClean);
+                const matchEmail = correoDoc && (rDocEmail === correoDoc || rDocEmail.includes(correoDoc));
+                const matchNom = nombreDoc && rDocNom && (rDocNom === nombreDoc || rDocNom.includes(nombreDoc));
+
+                if (matchId || matchCed || matchEmail || matchNom) {
+                  const key = normalizarClave(item);
+                  mapa.set(key, { ...item, seccionOGrupo: normalizarSeccion(item.seccionOGrupo) });
+                }
+              }
             }
           });
 
@@ -541,6 +567,10 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
 
           const unificados = Array.from(mapa.values()).sort((a, b) => b.timestamp - a.timestamp);
           SafeStorage.setItem("telemetria_registros", JSON.stringify(unificados));
+          if (cedulaDoc) {
+            const cleanKey = `telemetria_registros_${cedulaDoc.replace(/\D/g, "")}`;
+            SafeStorage.setItem(cleanKey, JSON.stringify(unificados));
+          }
           return unificados;
         });
       } catch (err) {
@@ -1011,24 +1041,20 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
         return {
           exito: true,
           mensaje: data.mensaje || `Código de 4 dígitos despachado exitosamente.`,
-          codigoSimulado: codigoOTP,
+        };
+      } else {
+        const data = await res.json().catch(() => ({}));
+        return {
+          exito: false,
+          mensaje: data.mensaje || "No fue posible despachar el código por el canal seleccionado. Por favor intente con el Correo MEP.",
         };
       }
-    } catch {}
-
-    if (canal === "whatsapp") {
+    } catch {
       return {
-        exito: true,
-        mensaje: `Se ha despachado el código de recuperación de 4 dígitos a tu teléfono registrado. (Válido por 10 minutos).`,
-        codigoSimulado: codigoOTP,
+        exito: false,
+        mensaje: "Error de conexión al intentar despachar el código de seguridad. Por favor intente de nuevo.",
       };
     }
-
-    return {
-      exito: true,
-      mensaje: `Se ha enviado el código de recuperación de 4 dígitos a tu correo oficial ${correoDestino || credLimpia}. (Válido por 10 minutos).`,
-      codigoSimulado: codigoOTP,
-    };
   };
 
   const verificarOTP = (
@@ -1087,6 +1113,7 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
 
   const cerrarSesion = () => {
     setDocente(null);
+    setTelemetria([]);
     SafeStorage.removeItem("docente_activo");
   };
 

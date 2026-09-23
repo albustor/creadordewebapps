@@ -74,16 +74,34 @@ export default function DashboardAnaliticoPage() {
     }
   }, []);
 
-  // Lista normalizada de todos los centros educativos registrados del docente
+  // Lista normalizada de centros educativos registrados del docente para el nivel activo
   const listaCentrosDocente = useMemo(() => {
-    if (docente?.centrosEducativos && docente.centrosEducativos.length > 0) {
-      return docente.centrosEducativos.map((c, idx) => ({
-        id: c.id || `centro-${idx}`,
-        nombre: c.nombre || `Institución ${idx + 1}`,
-        dreCodigo: c.dreCodigo || "DRE-01",
-        dreNombre: c.dreNombre || "San José Central",
-        circuito: c.circuito || "Circuito 01",
-      }));
+    const nivelKey = nivelActivo === "7mo" ? "7" : nivelActivo === "8vo" ? "8" : "9";
+    if (docente?.centrosEducativos && Array.isArray(docente.centrosEducativos) && docente.centrosEducativos.length > 0) {
+      return docente.centrosEducativos.map((c, idx) => {
+        if (!c) {
+          return {
+            id: `centro-${idx}`,
+            nombre: `Institución ${idx + 1}`,
+            dreCodigo: "DRE-01",
+            dreNombre: "San José Central",
+            circuito: "Circuito 01",
+            seccionesAtendidas: [`${nivelKey}-1`],
+          };
+        }
+        const dn = c.desgloseNiveles?.find((d) => d && typeof d.nivel === "string" && d.nivel.includes(nivelKey));
+        const seccionesDoc = dn?.seccionesAtendidasDocente && Array.isArray(dn.seccionesAtendidasDocente) && dn.seccionesAtendidasDocente.length > 0
+          ? dn.seccionesAtendidasDocente.filter(Boolean)
+          : [`${nivelKey}-1`];
+        return {
+          id: c.id || `centro-${idx}`,
+          nombre: c.nombre || `Institución ${idx + 1}`,
+          dreCodigo: c.dreCodigo || "DRE-01",
+          dreNombre: c.dreNombre || "San José Central",
+          circuito: c.circuito || "Circuito 01",
+          seccionesAtendidas: seccionesDoc.length > 0 ? seccionesDoc : [`${nivelKey}-1`],
+        };
+      });
     }
     if (docente?.institucionNombre) {
       if (docente.institucionNombre.includes("/")) {
@@ -94,6 +112,7 @@ export default function DashboardAnaliticoPage() {
           dreCodigo: idx === 0 ? (docente.dreCodigo || "DRE-01") : "DRE-17",
           dreNombre: idx === 0 ? (docente.dreNombre || "San José Central") : "Grande de Térraba",
           circuito: docente.circuito || "Circuito 01",
+          seccionesAtendidas: [`${nivelKey}-1`],
         }));
       }
       return [
@@ -103,24 +122,40 @@ export default function DashboardAnaliticoPage() {
           dreCodigo: docente.dreCodigo || "DRE-01",
           dreNombre: docente.dreNombre || "San José Central",
           circuito: docente.circuito || "Circuito 01",
+          seccionesAtendidas: [`${nivelKey}-1`],
         },
       ];
     }
     return [
       {
         id: "centro-principal",
-        nombre: "LICEO PRUEBA 1",
+        nombre: "LICEO MEP",
         dreCodigo: "DRE-01",
         dreNombre: "San José Central",
         circuito: "Circuito 01",
+        seccionesAtendidas: [`${nivelKey}-1`],
       },
     ];
-  }, [docente]);
+  }, [docente, nivelActivo]);
 
-  // Centro educativo actualmente seleccionado
-  const centroActivo = listaCentrosDocente[centroActivoIdx] || listaCentrosDocente[0];
+  // Centro educativo actualmente seleccionado asegurando límites válidos
+  const centroActivo = listaCentrosDocente[centroActivoIdx] || listaCentrosDocente[0] || {
+    id: "centro-default",
+    nombre: "Centro Educativo MEP",
+    dreCodigo: "DRE-01",
+    dreNombre: "San José Central",
+    circuito: "Circuito 01",
+    seccionesAtendidas: ["8-1"],
+  };
 
-  // Helper para generar URL al evaluador de un colegio específico
+  // Ajustar índice de centro si la lista filtrada cambia al cambiar de nivel
+  useEffect(() => {
+    if (centroActivoIdx >= listaCentrosDocente.length) {
+      setCentroActivoIdx(0);
+    }
+  }, [listaCentrosDocente.length, centroActivoIdx]);
+
+  // Helper para generar URL al evaluador de un colegio específico con secciones asignadas
   const getUrlEvaluador = (centro?: typeof listaCentrosDocente[0]) => {
     const c = centro || centroActivo;
     const baseWebapp =
@@ -139,6 +174,9 @@ export default function DashboardAnaliticoPage() {
     if (c?.nombre) params.set("institucion", c.nombre);
     if (c?.dreCodigo || c?.dreNombre) params.set("dre", c.dreCodigo || c.dreNombre || "");
     if (c?.circuito) params.set("circuito", c.circuito);
+    if (c?.seccionesAtendidas && c.seccionesAtendidas.length > 0) {
+      params.set("secciones", c.seccionesAtendidas.join(","));
+    }
 
     return `/webapps/${baseWebapp}?${params.toString()}`;
   };
@@ -146,23 +184,39 @@ export default function DashboardAnaliticoPage() {
   // Reiniciar filtro de grupo al cambiar de nivel para evitar secciones huérfanas
   const cambiarNivel = (nuevoNivel: "7mo" | "8vo" | "9no") => {
     setNivelActivo(nuevoNivel);
+    setCentroActivoIdx(0);
     setFiltroGrupo("Todos");
+    setFiltroInstitucion("Todas");
   };
 
-  // Lista de secciones disponibles filtradas dinámicamente según el nivel seleccionado
+  // Lista de secciones disponibles filtradas dinámicamente según el centro activo y telemetría
   const gruposDisponibles = useMemo(() => {
     const seccionesSet = new Set<string>();
     const prefix = nivelActivo === "7mo" ? "7-" : nivelActivo === "8vo" ? "8-" : "9-";
 
-    for (let i = 1; i <= 20; i++) {
-      seccionesSet.add(`Sección ${prefix}${i}`);
+    // 1. Agregar las secciones asignadas al centro educativo activo
+    if (centroActivo?.seccionesAtendidas && Array.isArray(centroActivo.seccionesAtendidas)) {
+      centroActivo.seccionesAtendidas.forEach((sec) => {
+        if (!sec || typeof sec !== "string") return;
+        const limpia = sec.replace(/^secci[oó]n\s*/i, "").trim();
+        if (limpia) seccionesSet.add(`Sección ${limpia}`);
+      });
     }
 
-    telemetria.forEach((t) => {
-      if (t.seccionOGrupo && t.seccionOGrupo.trim()) {
+    // Si aún está vacío, agregar al menos las 4 primeras del nivel
+    if (seccionesSet.size === 0) {
+      for (let i = 1; i <= 4; i++) {
+        seccionesSet.add(`Sección ${prefix}${i}`);
+      }
+    }
+
+    // 2. Agregar secciones que tengan datos de telemetría existentes para este nivel
+    (telemetria || []).forEach((t) => {
+      if (t?.seccionOGrupo && typeof t.seccionOGrupo === "string" && t.seccionOGrupo.trim()) {
         const sec = t.seccionOGrupo.trim();
         if (sec.includes(prefix)) {
-          seccionesSet.add(sec);
+          const limpia = sec.replace(/^secci[oó]n\s*/i, "").trim();
+          if (limpia) seccionesSet.add(`Sección ${limpia}`);
         }
       }
     });
@@ -170,7 +224,7 @@ export default function DashboardAnaliticoPage() {
     return Array.from(seccionesSet).sort((a, b) =>
       a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" })
     );
-  }, [telemetria, nivelActivo]);
+  }, [telemetria, nivelActivo, centroActivo]);
 
   // Nivel de logro dinámico según umbrales oficiales
   const obtenerNivelDinamico = (puntaje: number): string => {
@@ -190,27 +244,29 @@ export default function DashboardAnaliticoPage() {
     const esAsesorNacional =
       correoDocenteLimpio === "allan.morera.araya@mep.go.cr" || docente?.tipoRol === "Asesor Nacional";
 
-    const idDoc = docente?.idDocente?.trim().toLowerCase() || "";
-    const cedDoc = docente?.cedula?.trim().toLowerCase() || "";
+    const idDoc = (docente?.idDocente || "").trim().toLowerCase();
+    const cedDoc = (docente?.cedula || "").trim().toLowerCase();
 
-    return telemetria.filter((r) => {
-      const estNom = r.estudianteNombre?.toLowerCase()?.trim() || "";
-      const estCor = r.estudianteCorreo?.toLowerCase()?.trim() || "";
+    return (telemetria || []).filter((r) => {
+      if (!r) return false;
+
+      const estNom = (r.estudianteNombre || "").toLowerCase().trim();
+      const estCor = (r.estudianteCorreo || "").toLowerCase().trim();
 
       // Excluir si el registro coincide con el nombre o correo del propio docente
-      if (docente?.nombreCompleto && estNom === docente.nombreCompleto.toLowerCase().trim()) {
+      if (docente?.nombreCompleto && estNom && estNom === docente.nombreCompleto.toLowerCase().trim()) {
         return false;
       }
-      if (correoDocenteLimpio && estCor === correoDocenteLimpio) {
+      if (correoDocenteLimpio && estCor && estCor === correoDocenteLimpio) {
         return false;
       }
 
       // Aislamiento por Docente: Todo docente ve ÚNICAMENTE los registros vinculados a su ID, cédula, correo o nombre
       if (!esSuperAdmin && !esAsesorNacional) {
         const rDocId = (r.docenteId || "").trim().toLowerCase();
-        const rDocCed = ((r as any).docenteCedula || "").trim().toLowerCase();
-        const rDocEmail = ((r as any).docenteEmail || "").trim().toLowerCase();
-        const rDocNom = ((r as any).docenteNombre || "").trim().toLowerCase();
+        const rDocCed = ((r as any)?.docenteCedula || "").trim().toLowerCase();
+        const rDocEmail = ((r as any)?.docenteEmail || "").trim().toLowerCase();
+        const rDocNom = ((r as any)?.docenteNombre || "").trim().toLowerCase();
         const docNom = (docente?.nombreCompleto || "").trim().toLowerCase();
 
         const cedDocClean = cedDoc.replace(/\D/g, "");
@@ -230,42 +286,50 @@ export default function DashboardAnaliticoPage() {
       }
 
       // Filtro por Nivel Activo (Pestaña)
+      const rNivel = (r.nivel || "").toString();
+      const rSec = (r.seccionOGrupo || "").toString();
+      const rTit = (r.webAppTitulo || "").toString();
+      const rWebId = (r.webAppId || "").toString();
+
       if (nivelActivo === "7mo") {
-        const es7mo = r.nivel === "7°" || (r.seccionOGrupo && r.seccionOGrupo.includes("7-")) || r.webAppTitulo?.includes("7") || r.webAppId?.includes("7mo");
+        const es7mo = rNivel === "7°" || rNivel === "7mo" || rSec.includes("7-") || rTit.includes("7") || rWebId.includes("7mo");
         if (!es7mo) return false;
       } else if (nivelActivo === "8vo") {
-        const es8vo = r.nivel === "8°" || (r.seccionOGrupo && r.seccionOGrupo.includes("8-")) || r.webAppTitulo?.includes("8") || r.webAppId?.includes("8vo");
+        const es8vo = rNivel === "8°" || rNivel === "8vo" || rSec.includes("8-") || rTit.includes("8") || rWebId.includes("8vo");
         if (!es8vo) return false;
       } else if (nivelActivo === "9no") {
-        const es9no = r.nivel === "9°" || (r.seccionOGrupo && r.seccionOGrupo.includes("9-")) || r.webAppTitulo?.includes("9") || r.webAppId?.includes("9no");
+        const es9no = rNivel === "9°" || rNivel === "9no" || rSec.includes("9-") || rTit.includes("9") || rWebId.includes("9no");
         if (!es9no) return false;
       }
 
       // Filtro por Institución seleccionada
       if (filtroInstitucion !== "Todas") {
-        const rInst = ((r as any).institucionNombre || (r as any).institucion || (r as any).colegio || "").toLowerCase();
+        const rInst = ((r as any)?.institucionNombre || (r as any)?.institucion || (r as any)?.colegio || "").toLowerCase();
         if (rInst && !rInst.includes(filtroInstitucion.toLowerCase())) {
           return false;
         }
       }
 
-      const coincideTexto =
-        !filtroTexto.trim() ||
-        r.estudianteNombre.toLowerCase().includes(filtroTexto.toLowerCase()) ||
-        r.webAppTitulo.toLowerCase().includes(filtroTexto.toLowerCase());
+      const estNombre = (r.estudianteNombre || "").toLowerCase();
+      const webTitulo = (r.webAppTitulo || "").toLowerCase();
+      const textoLimpio = (filtroTexto || "").trim().toLowerCase();
+      const coincideTexto = !textoLimpio || estNombre.includes(textoLimpio) || webTitulo.includes(textoLimpio);
 
+      const rGrupo = (r.seccionOGrupo || "").trim();
       const coincideGrupo =
         filtroGrupo === "Todos" ||
-        r.seccionOGrupo === filtroGrupo ||
-        r.seccionOGrupo.replace("Sección ", "") === filtroGrupo.replace("Sección ", "");
+        rGrupo === filtroGrupo ||
+        rGrupo.replace(/^secci[oó]n\s*/i, "") === filtroGrupo.replace(/^secci[oó]n\s*/i, "");
 
-      const nivelDinamico = obtenerNivelDinamico(r.porcentaje ?? r.puntaje);
+      const puntajeVal = typeof r.porcentaje === "number" ? r.porcentaje : (typeof r.puntaje === "number" ? r.puntaje : 0);
+      const nivelDinamico = obtenerNivelDinamico(puntajeVal);
+      const rNivelLogro = (r.nivelLogro || "").toLowerCase();
       const coincideNivel =
         filtroNivelLogro === "Todos" ||
         nivelDinamico.toLowerCase().includes(filtroNivelLogro.toLowerCase()) ||
-        r.nivelLogro.toLowerCase().includes(filtroNivelLogro.toLowerCase());
+        rNivelLogro.includes(filtroNivelLogro.toLowerCase());
 
-      return coincideTexto && coincideGrupo && coincideNivel;
+      return Boolean(coincideTexto && coincideGrupo && coincideNivel);
     });
   }, [telemetria, nivelActivo, filtroTexto, filtroGrupo, filtroInstitucion, filtroNivelLogro, docente, configuracion]);
 
