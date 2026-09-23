@@ -421,10 +421,10 @@ export default function DashboardAnaliticoPage() {
                         <span>
                           Enlace Oficial •{" "}
                           {nivelSeleccionado === "7mo"
-                            ? "7.° Año (CyberQuest)"
+                            ? "Séptimo Año"
                             : nivelSeleccionado === "8vo"
-                            ? "8.° Año (PNFT)"
-                            : "9.° Año (Aula Inteligente)"}
+                            ? "Octavo Año"
+                            : "Noveno Año"}
                           :
                         </span>
                         <span className="text-[11px] text-emerald-700 font-bold lowercase">
@@ -490,7 +490,7 @@ export default function DashboardAnaliticoPage() {
           <div className="p-5 bg-indigo-50/80 border border-indigo-200 rounded-2xl flex items-center justify-between gap-4">
             <div className="space-y-1">
               <span className="text-[10px] font-black text-indigo-900 uppercase">Herramienta 7.° Año</span>
-              <h4 className="text-xs sm:text-sm font-black text-slate-900">CyberQuest 7° (Docente)</h4>
+              <h4 className="text-xs sm:text-sm font-black text-slate-900">Instrumento de evaluación diagnóstico docente séptimo año</h4>
             </div>
             <a
               href={`/webapps/diagnostico_7mo_modulo01_docente_evaluador.html?docenteId=${encodeURIComponent(
@@ -501,7 +501,7 @@ export default function DashboardAnaliticoPage() {
               target="_blank"
               rel="noopener noreferrer"
               className="p-2.5 bg-indigo-700 hover:bg-indigo-800 text-white rounded-xl text-xs font-bold shrink-0 transition-all shadow-xs"
-              title="Abrir evaluador de 7mo con perfil docente activo"
+              title="Abrir instrumento de evaluación diagnóstico docente séptimo año"
             >
               <ArrowSquareOut size={16} weight="bold" />
             </a>
@@ -510,7 +510,7 @@ export default function DashboardAnaliticoPage() {
           <div className="p-5 bg-teal-50/80 border border-teal-200 rounded-2xl flex items-center justify-between gap-4">
             <div className="space-y-1">
               <span className="text-[10px] font-black text-teal-900 uppercase">Herramienta 8.° Año</span>
-              <h4 className="text-xs sm:text-sm font-black text-slate-900">Módulo Evaluador 8° PNFT</h4>
+              <h4 className="text-xs sm:text-sm font-black text-slate-900">Instrumento de evaluación diagnóstico docente octavo año</h4>
             </div>
             <a
               href={`/webapps/diagnostico_8vo_modulo01_docente_evaluador.html?docenteId=${encodeURIComponent(
@@ -521,7 +521,7 @@ export default function DashboardAnaliticoPage() {
               target="_blank"
               rel="noopener noreferrer"
               className="p-2.5 bg-teal-700 hover:bg-teal-800 text-white rounded-xl text-xs font-bold shrink-0 transition-all shadow-xs"
-              title="Abrir evaluador de 8vo con perfil docente activo"
+              title="Abrir instrumento de evaluación diagnóstico docente octavo año"
             >
               <ArrowSquareOut size={16} weight="bold" />
             </a>
@@ -530,7 +530,7 @@ export default function DashboardAnaliticoPage() {
           <div className="p-5 bg-emerald-50/80 border border-emerald-200 rounded-2xl flex items-center justify-between gap-4">
             <div className="space-y-1">
               <span className="text-[10px] font-black text-emerald-900 uppercase">Herramienta 9.° Año</span>
-              <h4 className="text-xs sm:text-sm font-black text-slate-900">Aula Inteligente (Docente)</h4>
+              <h4 className="text-xs sm:text-sm font-black text-slate-900">Instrumento de evaluación diagnóstico docente noveno año</h4>
             </div>
             <a
               href={`/webapps/diagnostico_9no_modulo01_docente_evaluador.html?docenteId=${encodeURIComponent(
@@ -541,7 +541,7 @@ export default function DashboardAnaliticoPage() {
               target="_blank"
               rel="noopener noreferrer"
               className="p-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shrink-0 transition-all shadow-xs"
-              title="Abrir evaluador de 9no con perfil docente activo"
+              title="Abrir instrumento de evaluación diagnóstico docente noveno año"
             >
               <ArrowSquareOut size={16} weight="bold" />
             </a>
