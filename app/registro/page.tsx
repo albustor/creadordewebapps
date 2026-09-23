@@ -602,7 +602,9 @@ export default function RegistroDocentePage() {
     }
   };
 
-  const esAsesorNacional = docente?.dreCodigo === "DRE-NACIONAL" || docente?.correoInstitucional === "alberto.bustos.ortega@mep.go.cr";
+  const correoDocenteLimpio = docente?.correoInstitucional?.toLowerCase().trim() || "";
+  const esSuperAdmin = correoDocenteLimpio === "alberto.bustos.ortega@mep.go.cr";
+  const esAsesorNacional = esSuperAdmin || correoDocenteLimpio === "allan.morera.araya@mep.go.cr" || docente?.tipoRol === "Asesor Nacional";
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 animate-fadeIn">
@@ -959,103 +961,129 @@ export default function RegistroDocentePage() {
             </div>
           </div>
 
-          {/* Tarjeta 3: Selección de Rol Oficial */}
-          <div className="bg-white border-2 border-slate-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
-            <h3 className="text-base font-black text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
-              <GraduationCap size={22} className="text-emerald-700" weight="bold" />
-              <span>Rol y Tipo de Usuario en el Sistema MEP</span>
-            </h3>
-
-            <p className="text-xs text-slate-600 font-medium">
-              Selecciona tu función en el programa de Formación Tecnológica para adaptar tu entorno de diagnóstico y analítica:
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {/* Opción 1: Docente */}
-              <button
-                type="button"
-                onClick={() => setTipoRol("Docente")}
-                className={`p-4.5 rounded-2xl border-2 text-left transition-all flex flex-col justify-between gap-3 ${
-                  tipoRol === "Docente"
-                    ? "border-emerald-600 bg-emerald-50/60 shadow-sm ring-2 ring-emerald-500/20"
-                    : "border-slate-200 bg-slate-50/50 hover:bg-slate-100/70 text-slate-700"
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <div className={`p-2.5 rounded-xl ${tipoRol === "Docente" ? "bg-emerald-600 text-white" : "bg-slate-200 text-slate-700"}`}>
-                    <ChalkboardTeacher size={22} weight="bold" />
+          {/* Tarjeta 3: Rol del Usuario - Bloqueado a Docente para profesores */}
+          {docente && (docente.tipoRol === "Docente" || (!esSuperAdmin && !esAsesorNacional && docente.tipoRol !== "Asesor Regional")) ? (
+            <div className="bg-white border-2 border-emerald-300 rounded-3xl p-6 sm:p-8 space-y-3 shadow-xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-2xl bg-emerald-100 border border-emerald-300 text-emerald-800 flex items-center justify-center shrink-0">
+                    <ChalkboardTeacher size={24} weight="bold" />
                   </div>
-                  {tipoRol === "Docente" && (
-                    <span className="px-2.5 py-0.5 bg-emerald-600 text-white text-[10px] font-black rounded-full uppercase">
-                      Seleccionado
+                  <div>
+                    <span className="text-[10px] font-black uppercase tracking-wider text-emerald-800 block">
+                      Perfil Profesional Asignado
                     </span>
-                  )}
-                </div>
-                <div>
-                  <div className="font-extrabold text-xs text-slate-900">Profesor / Docente de Aula</div>
-                  <div className="text-[11px] text-slate-500 font-medium leading-relaxed mt-0.5">
-                    Aplica diagnósticos a sus secciones y gestiona resultados de estudiantes.
+                    <h3 className="text-base sm:text-lg font-black text-slate-900">
+                      Profesor / Docente de Formación Tecnológica
+                    </h3>
                   </div>
                 </div>
-              </button>
-
-              {/* Opción 2: Asesor Regional */}
-              <button
-                type="button"
-                onClick={() => setTipoRol("Asesor Regional")}
-                className={`p-4.5 rounded-2xl border-2 text-left transition-all flex flex-col justify-between gap-3 ${
-                  tipoRol === "Asesor Regional"
-                    ? "border-emerald-600 bg-emerald-50/60 shadow-sm ring-2 ring-emerald-500/20"
-                    : "border-slate-200 bg-slate-50/50 hover:bg-slate-100/70 text-slate-700"
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <div className={`p-2.5 rounded-xl ${tipoRol === "Asesor Regional" ? "bg-emerald-600 text-white" : "bg-slate-200 text-slate-700"}`}>
-                    <Buildings size={22} weight="bold" />
-                  </div>
-                  {tipoRol === "Asesor Regional" && (
-                    <span className="px-2.5 py-0.5 bg-emerald-600 text-white text-[10px] font-black rounded-full uppercase">
-                      Seleccionado
-                    </span>
-                  )}
-                </div>
-                <div>
-                  <div className="font-extrabold text-xs text-slate-900">Asesor(a) Regional</div>
-                  <div className="text-[11px] text-slate-500 font-medium leading-relaxed mt-0.5">
-                    Supervisa y analiza el desempeño en los centros educativos de su DRE.
-                  </div>
-                </div>
-              </button>
-
-              {/* Opción 3: Asesor Nacional */}
-              <button
-                type="button"
-                onClick={() => setTipoRol("Asesor Nacional")}
-                className={`p-4.5 rounded-2xl border-2 text-left transition-all flex flex-col justify-between gap-3 ${
-                  tipoRol === "Asesor Nacional"
-                    ? "border-emerald-600 bg-emerald-50/60 shadow-sm ring-2 ring-emerald-500/20"
-                    : "border-slate-200 bg-slate-50/50 hover:bg-slate-100/70 text-slate-700"
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <div className={`p-2.5 rounded-xl ${tipoRol === "Asesor Nacional" ? "bg-emerald-600 text-white" : "bg-slate-200 text-slate-700"}`}>
-                    <GraduationCap size={22} weight="bold" />
-                  </div>
-                  {tipoRol === "Asesor Nacional" && (
-                    <span className="px-2.5 py-0.5 bg-emerald-600 text-white text-[10px] font-black rounded-full uppercase">
-                      Seleccionado
-                    </span>
-                  )}
-                </div>
-                <div>
-                  <div className="font-extrabold text-xs text-slate-900">Asesoría Nacional</div>
-                  <div className="text-[11px] text-slate-500 font-medium leading-relaxed mt-0.5">
-                    Acceso macro nacional a todas las DRE y consolidación del país.
-                  </div>
-                </div>
-              </button>
+                <span className="px-3 py-1 bg-emerald-50 text-emerald-900 border border-emerald-200 text-xs font-black rounded-full uppercase self-start sm:self-auto">
+                  Docente Activo
+                </span>
+              </div>
+              <p className="text-xs text-slate-600 font-medium leading-relaxed pt-1 border-t border-slate-100">
+                Como docente de aula, a continuación puedes editar y actualizar tus <strong>centros educativos</strong>, tus <strong>secciones atendidas por nivel (7.°, 8.° y 9.°)</strong> y tus datos de contacto.
+              </p>
             </div>
-          </div>
+          ) : (
+            <div className="bg-white border-2 border-slate-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
+              <h3 className="text-base font-black text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
+                <GraduationCap size={22} className="text-emerald-700" weight="bold" />
+                <span>Rol y Tipo de Usuario en el Sistema MEP</span>
+              </h3>
+
+              <p className="text-xs text-slate-600 font-medium">
+                Selecciona tu función en el programa de Formación Tecnológica para adaptar tu entorno de diagnóstico y analítica:
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* Opción 1: Docente */}
+                <button
+                  type="button"
+                  onClick={() => setTipoRol("Docente")}
+                  className={`p-4.5 rounded-2xl border-2 text-left transition-all flex flex-col justify-between gap-3 ${
+                    tipoRol === "Docente"
+                      ? "border-emerald-600 bg-emerald-50/60 shadow-sm ring-2 ring-emerald-500/20"
+                      : "border-slate-200 bg-slate-50/50 hover:bg-slate-100/70 text-slate-700"
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className={`p-2.5 rounded-xl ${tipoRol === "Docente" ? "bg-emerald-600 text-white" : "bg-slate-200 text-slate-700"}`}>
+                      <ChalkboardTeacher size={22} weight="bold" />
+                    </div>
+                    {tipoRol === "Docente" && (
+                      <span className="px-2.5 py-0.5 bg-emerald-600 text-white text-[10px] font-black rounded-full uppercase">
+                        Seleccionado
+                      </span>
+                    )}
+                  </div>
+                  <div>
+                    <div className="font-extrabold text-xs text-slate-900">Profesor / Docente de Aula</div>
+                    <div className="text-[11px] text-slate-500 font-medium leading-relaxed mt-0.5">
+                      Aplica diagnósticos a sus secciones y gestiona resultados de estudiantes.
+                    </div>
+                  </div>
+                </button>
+
+                {/* Opción 2: Asesor Regional */}
+                <button
+                  type="button"
+                  onClick={() => setTipoRol("Asesor Regional")}
+                  className={`p-4.5 rounded-2xl border-2 text-left transition-all flex flex-col justify-between gap-3 ${
+                    tipoRol === "Asesor Regional"
+                      ? "border-emerald-600 bg-emerald-50/60 shadow-sm ring-2 ring-emerald-500/20"
+                      : "border-slate-200 bg-slate-50/50 hover:bg-slate-100/70 text-slate-700"
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className={`p-2.5 rounded-xl ${tipoRol === "Asesor Regional" ? "bg-emerald-600 text-white" : "bg-slate-200 text-slate-700"}`}>
+                      <Buildings size={22} weight="bold" />
+                    </div>
+                    {tipoRol === "Asesor Regional" && (
+                      <span className="px-2.5 py-0.5 bg-emerald-600 text-white text-[10px] font-black rounded-full uppercase">
+                        Seleccionado
+                      </span>
+                    )}
+                  </div>
+                  <div>
+                    <div className="font-extrabold text-xs text-slate-900">Asesor(a) Regional</div>
+                    <div className="text-[11px] text-slate-500 font-medium leading-relaxed mt-0.5">
+                      Supervisa y analiza el desempeño en los centros educativos de su DRE.
+                    </div>
+                  </div>
+                </button>
+
+                {/* Opción 3: Asesor Nacional */}
+                <button
+                  type="button"
+                  onClick={() => setTipoRol("Asesor Nacional")}
+                  className={`p-4.5 rounded-2xl border-2 text-left transition-all flex flex-col justify-between gap-3 ${
+                    tipoRol === "Asesor Nacional"
+                      ? "border-emerald-600 bg-emerald-50/60 shadow-sm ring-2 ring-emerald-500/20"
+                      : "border-slate-200 bg-slate-50/50 hover:bg-slate-100/70 text-slate-700"
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className={`p-2.5 rounded-xl ${tipoRol === "Asesor Nacional" ? "bg-emerald-600 text-white" : "bg-slate-200 text-slate-700"}`}>
+                      <GraduationCap size={22} weight="bold" />
+                    </div>
+                    {tipoRol === "Asesor Nacional" && (
+                      <span className="px-2.5 py-0.5 bg-emerald-600 text-white text-[10px] font-black rounded-full uppercase">
+                        Seleccionado
+                      </span>
+                    )}
+                  </div>
+                  <div>
+                    <div className="font-extrabold text-xs text-slate-900">Asesoría Nacional</div>
+                    <div className="text-[11px] text-slate-500 font-medium leading-relaxed mt-0.5">
+                      Acceso macro nacional a todas las DRE y consolidación del país.
+                    </div>
+                  </div>
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Tarjeta 4A: Configuración para Asesor Nacional */}
           {tipoRol === "Asesor Nacional" && (

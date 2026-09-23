@@ -163,8 +163,10 @@ export const DOCENTE_ASESOR_ALLAN: DocenteData = {
   idDocente: "ASESOR-FT-8841",
   nombreCompleto: "Allan Morera Araya",
   correoInstitucional: "allan.morera.araya@mep.go.cr",
-  cedula: "1-0987-0654",
+  cedula: "2-0481-0073",
   telefono: "+506 8888-7777",
+  pin: "7319",
+  contrasena: "7319",
   tipoRol: "Asesor Nacional",
   dreCodigo: "DRE-NACIONAL",
   dreNombre: "Asesoría de Formación Tecnológica",
@@ -685,6 +687,23 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       limpiarFallos();
       guardarDocente(DOCENTE_DEFAULT);
       return { exito: true, mensaje: "Sesión iniciada correctamente como Asesor Principal de Formación Tecnológica." };
+    }
+
+    // 2. Verificación Inmediata: Asesor Nacional (Allan Morera Araya)
+    const esAsesorAllan =
+      credencialLimpia === "allan.morera.araya@mep.go.cr" ||
+      credencialLimpia === "allan.morera" ||
+      credencialLimpia === "2-0481-0073" ||
+      credencialLimpia === "204810073" ||
+      credencialLimpia === "1-0987-0654" ||
+      credencialLimpia === "109870654";
+
+    const esPinValidoAllan = pinOPassLimpia === "7319" || pinOPassLimpia === "2617" || pinOPassLimpia === "1726";
+
+    if (esAsesorAllan && esPinValidoAllan) {
+      limpiarFallos();
+      guardarDocente(DOCENTE_ASESOR_ALLAN);
+      return { exito: true, mensaje: "Sesión iniciada correctamente como Asesor Nacional de Formación Tecnológica." };
     }
 
     // 3. Verificación Inmediata: Docente de Prueba Regional (Esteban Gómez Chinchilla)

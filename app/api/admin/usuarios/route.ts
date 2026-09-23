@@ -43,7 +43,7 @@ let USUARIOS_DB: UsuarioDocente[] = [
     id: "ASESOR-FT-8841",
     nombreCompleto: "Allan Morera Araya",
     correoInstitucional: "allan.morera.araya@mep.go.cr",
-    cedula: "1-0987-0654",
+    cedula: "2-0481-0073",
     telefono: "+506 8888-7777",
     dreCodigo: "DRE-NACIONAL",
     dreNombre: "Asesoría de Formación Tecnológica",
@@ -55,6 +55,7 @@ let USUARIOS_DB: UsuarioDocente[] = [
     fechaAprobacion: "2026-01-15T08:00:00.000Z",
     aprobadoPor: "ADMINISTRADOR PRINCIPAL",
     webAppsCreadas: 12,
+    pin: "7319",
   },
   {
     id: "ASE-DRE03-102",
@@ -75,7 +76,7 @@ let USUARIOS_DB: UsuarioDocente[] = [
     id: "ASE-DRE07-551",
     nombreCompleto: "Licda. Marielos Valverde Soto",
     correoInstitucional: "marielos.valverde.soto@mep.go.cr",
-    cedula: "1-0987-0654",
+    cedula: "1-1155-0888",
     telefono: "+506 8333-2211",
     dreCodigo: "DRE-07",
     dreNombre: "Alajuela",
@@ -194,7 +195,7 @@ export async function POST(req: NextRequest) {
         id: yaExiste?.id || (esAllan ? "ASESOR-FT-8841" : esAlberto ? "SUPERADMIN-01" : `USR-${Math.floor(1000 + Math.random() * 9000)}`),
         nombreCompleto: usuarioData.nombreCompleto || "Docente de Formación Tecnológica",
         correoInstitucional: correoLimpio,
-        cedula: usuarioData.cedula || (esAllan ? "1-0987-0654" : "N/A"),
+        cedula: usuarioData.cedula || (esAllan ? "2-0481-0073" : "N/A"),
         telefono: usuarioData.telefono || (esAllan ? "+506 8888-7777" : "N/A"),
         dreCodigo: usuarioData.dreCodigo || "DRE-NACIONAL",
         dreNombre: usuarioData.dreNombre || "Asesoría de Formación Tecnológica",
@@ -204,7 +205,7 @@ export async function POST(req: NextRequest) {
         estado: (rolAsignado === "Docente" || esAlberto || esAllan) ? "Aprobado" : "Pendiente",
         fechaSolicitud: yaExiste?.fechaSolicitud || new Date().toISOString(),
         webAppsCreadas: yaExiste?.webAppsCreadas || 0,
-        pin: usuarioData.pin || usuarioData.contrasena || (esAlberto ? "2617" : undefined),
+        pin: usuarioData.pin || usuarioData.contrasena || (esAlberto ? "2617" : esAllan ? "7319" : undefined),
       };
 
       USUARIOS_DB = [nuevo, ...USUARIOS_DB.filter((u) => u.correoInstitucional.toLowerCase().trim() !== correoLimpio)];
