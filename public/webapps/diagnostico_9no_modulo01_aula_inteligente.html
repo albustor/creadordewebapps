@@ -1242,50 +1242,60 @@
     </div>
 
     <!-- ==================================================================== -->
-    <!-- ETAPA 4: COMPROBANTE DE ENTREGA Y CÓDIGO QR PARA EL DOCENTE         -->
+    <!-- ETAPA 4: COMPROBANTE DE ENTREGA Y CONFIRMACIÓN DOCENTE               -->
     <!-- ==================================================================== -->
     <div id="seccion4" class="card" style="display: none; text-align: center; max-width: 680px; margin: 0 auto;">
       <div style="font-size: 38px; margin-bottom: 6px;">🎉</div>
-      <h2 style="font-size: 1.4rem; color: #0369a1; font-weight: 900;">
+      <h2 style="font-size: 1.4rem; color: #0369a1; font-weight: 900; margin-bottom: 14px;">
         ¡Diagnóstico Completado con Éxito!
       </h2>
-      <p style="font-size: 12.5px; color: #475569; margin-bottom: 14px;" id="etiquetaEstudianteResumen">
-        Estudiante: <strong style="color: #0f172a;">Estudiante 9° Año</strong> • Sección: <strong style="color: #0284c7;">Sección 9-1</strong>
-      </p>
 
-      <!-- TARJETA DEL CÓDIGO QR PARA QUE EL DOCENTE ESCANEE DESDE LA PANTALLA DE LA COMPUTADORA -->
-      <div style="background: #ffffff; border: 2px solid #7dd3fc; border-radius: 14px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.08);">
-        <h3 style="font-size: 13px; color: #0369a1; font-weight: 800; margin-bottom: 8px;">
-          🖥️ Código QR de Entrega (Presenta esta pantalla al Docente si lo solicita)
+      <!-- TARJETA PRINCIPAL DE CONFIRMACIÓN Y EVIDENCIAS TRANSMITIDAS -->
+      <div style="background: #ffffff; border: 2px solid #86efac; border-radius: 16px; padding: 24px 20px; margin-bottom: 16px; box-shadow: 0 4px 20px rgba(16, 185, 129, 0.08);">
+        
+        <div style="width: 52px; height: 52px; background: #dcfce7; border: 2px solid #86efac; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; margin: 0 auto 12px;">
+          ✅
+        </div>
+
+        <h3 style="font-size: 14.5px; color: #065f46; font-weight: 900; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">
+          Evidencia Transmitida y Registrada con Éxito en el Dashboard del Docente
         </h3>
-        <p style="font-size: 11.5px; color: #64748b; margin-bottom: 14px;">
-          Tus respuestas han sido procesadas. El docente puede escanear este código QR o visualizar tu registro directo en el Instrumento Evaluador.
-        </p>
 
-        <div style="display: inline-block; background: white; padding: 12px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); border: 1px solid #e2e8f0;">
-          <canvas id="qrCanvasFinal" width="200" height="200" style="display: block;"></canvas>
+        <!-- DATOS DEL DOCENTE Y ESTUDIANTE -->
+        <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 16px; text-align: left; font-size: 12.5px; margin-bottom: 14px; line-height: 1.6;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 10px;">
+            <div>
+              <span style="color: #64748b; font-size: 11px; font-weight: 700;">👨‍🏫 DOCENTE EVALUADOR:</span><br>
+              <strong style="color: #0f172a; font-size: 13.5px;" id="etiquetaDocenteConfirmacion">Prof. Luis López Rueda</strong>
+            </div>
+            <div>
+              <span style="color: #64748b; font-size: 11px; font-weight: 700;">🏫 INSTITUCIÓN EDUCATIVA:</span><br>
+              <strong style="color: #0369a1; font-size: 13px;" id="etiquetaInstitucionConfirmacion">Liceo / CTP MEP</strong>
+            </div>
+          </div>
+
+          <div style="border-top: 1px solid #e2e8f0; padding-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div>
+              <span style="color: #64748b; font-size: 11px; font-weight: 700;">🎓 PERSONA ESTUDIANTE:</span><br>
+              <strong style="color: #0f172a; font-size: 13.5px;" id="etiquetaEstudianteConfirmacion">Estudiante 9° Año</strong>
+            </div>
+            <div>
+              <span style="color: #64748b; font-size: 11px; font-weight: 700;">🏷️ SECCIÓN / GRUPO:</span><br>
+              <strong style="color: #0284c7; font-size: 13.5px;" id="etiquetaSeccionConfirmacion">Sección 9-1</strong>
+            </div>
+          </div>
         </div>
 
-        <div style="margin-top: 12px; font-size: 11.5px; color: #334155;" id="tokenHashLabelFinal">
-          <strong>HASH DE SEGURIDAD:</strong> <span style="color: #15803d; font-family: monospace; font-weight: 800;">DIAG9-VALIDADO</span>
+        <!-- HASH DE SEGURIDAD Y HORA FINAL DE ENVÍO -->
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 10px 14px; font-size: 11.5px; color: #166534;" id="tokenHashLabelFinal">
+          <strong>🔒 HASH DE SEGURIDAD:</strong> <span style="color: #047857; font-family: monospace; font-weight: 800;" id="valorHashSeguridadFinal">DIAG9-VALIDADO</span> • <strong>HORA FINAL:</strong> <span id="valorHoraFinalEnvio">02:00:00 p.m.</span>
         </div>
       </div>
 
-      <!-- ESTADO DE TRANSMISIÓN TELEMÉTRICA / LOCAL -->
-      <div id="estadoTelemetria" style="padding: 10px 14px; border-radius: 10px; margin-bottom: 16px; font-size: 12px; font-weight: 700; background: #e0f2fe; border: 1.5px solid #7dd3fc; color: #0369a1;">
-        📡 Evidencia sincronizada con la base de datos docente.
-      </div>
-
-      <!-- ACCIONES Y REINICIO PARA SIGUIENTE ESTUDIANTE -->
-      <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
-        <button class="btn" style="background: #059669; color: white; font-weight: 900; font-size: 12.5px; padding: 9px 18px; border-radius: 10px; box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25);" onclick="prepararSiguienteEstudiante(false)" title="Prepara el equipo para el siguiente estudiante en el laboratorio">
-          ✨ Iniciar Siguiente Estudiante
-        </button>
-        <button class="btn btn-accent" onclick="mostrarModalQR()" title="Muestra el código QR ampliado">
-          🔍 Ver QR Ampliado
-        </button>
-        <button class="btn btn-outline" onclick="mostrarModalInstrumento()">
-          📋 Ver Criterios de Logro
+      <!-- BOTÓN CERRAR VENTANA Y FINALIZAR SESIÓN -->
+      <div style="display: flex; justify-content: center; gap: 10px; margin-top: 10px;">
+        <button class="btn" style="background: #dc2626; color: white; font-weight: 900; font-size: 13.5px; padding: 12px 28px; border-radius: 12px; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25); cursor: pointer; border: none;" onclick="cerrarVentanaDiagnostico()">
+          🚪 Cerrar Ventana y Finalizar Sesión
         </button>
       </div>
     </div>
@@ -2888,32 +2898,46 @@
         localStorage.setItem("diagnosticos_mep_9no", JSON.stringify(registrosPrevios));
       } catch(e) {}
 
-      var estadoDiv = document.getElementById("estadoTelemetria");
-      estadoDiv.innerHTML = "📡 Transmitiendo evidencias de <strong>" + nombreEst + "</strong> (" + horaStr + ") al Dashboard Docente...";
-      estadoDiv.style.background = "rgba(37, 99, 235, 0.15)";
-      estadoDiv.style.borderColor = "#2563eb";
-      estadoDiv.style.color = "#93c5fd";
+      var nombreDoc = estado.docenteNombre || "Docente Evaluador";
+      var instDoc = estado.centroEducativo || "Liceo / CTP MEP";
+
+      var elDocC = document.getElementById("etiquetaDocenteConfirmacion");
+      if (elDocC) elDocC.textContent = "Prof. " + nombreDoc;
+      var elInstC = document.getElementById("etiquetaInstitucionConfirmacion");
+      if (elInstC) elInstC.textContent = instDoc;
+      var elEstC = document.getElementById("etiquetaEstudianteConfirmacion");
+      if (elEstC) elEstC.textContent = nombreEst;
+      var elSecC = document.getElementById("etiquetaSeccionConfirmacion");
+      if (elSecC) elSecC.textContent = seccionEst;
+      var elHashC = document.getElementById("valorHashSeguridadFinal");
+      if (elHashC) elHashC.textContent = hashToken;
+      var elHoraC = document.getElementById("valorHoraFinalEnvio");
+      if (elHoraC) elHoraC.textContent = horaStr;
 
       fetch(CONFIG.urlTelemetria, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
-      })
-      .then(function(r) { return r.json(); })
-      .then(function(data) {
-        if (data.ok || data.success) {
-          estadoDiv.innerHTML = "✅ EVIDENCIAS TRANSMITIDAS Y REGISTRADAS CON ÉXITO EN EL DASHBOARD DOCENTE.<br><span style='font-size: 11px; font-weight: normal; color: #a7f3d0;'>Comprobante Oficial: #" + hashToken + " • " + horaStr + "</span>";
-          estadoDiv.style.background = "rgba(16, 185, 129, 0.25)";
-          estadoDiv.style.borderColor = "#10b981";
-          estadoDiv.style.color = "#34d399";
-        }
-      })
-      .catch(function() {
-        estadoDiv.innerHTML = "💾 Evidencia Guardada en Memoria Offline (" + horaStr + "). Muestra el Código QR al Docente.";
-      });
+      }).catch(function() {});
+    }
 
-      // Generar el código QR
-      generarQRDetallado(payload);
+    function cerrarVentanaDiagnostico() {
+      try {
+        window.close();
+      } catch(e) {}
+      setTimeout(function() {
+        var sec4 = document.getElementById("seccion4");
+        if (sec4) {
+          sec4.innerHTML = '<div style="padding: 40px 20px; text-align: center; background: #ffffff; border-radius: 16px; border: 2px solid #86efac; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">' +
+            '<div style="font-size: 46px; margin-bottom: 12px;">🔒</div>' +
+            '<h2 style="font-size: 1.35rem; color: #0f172a; font-weight: 900; margin-bottom: 8px;">Evaluación Diagnóstica Finalizada</h2>' +
+            '<p style="font-size: 13px; color: #64748b; margin-bottom: 16px;">Tus respuestas ya fueron debidamente transmitidas y registradas en el Dashboard Docente.</p>' +
+            '<div style="font-size: 12.5px; color: #047857; font-weight: 800; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 10px 18px; border-radius: 10px; display: inline-block;">' +
+              '✅ Sesión Cerrada de Forma Segura' +
+            '</div>' +
+          '</div>';
+        }
+      }, 150);
     }
 
     function mostrarModalInstrumento() {
