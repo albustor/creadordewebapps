@@ -46,30 +46,28 @@ export default function SemaforoLogro({ registros, configuracion, nivel = "todos
     );
   }
 
+  const getPuntajeVal = (r: PayloadTelemetria): number => {
+    if (typeof r.porcentaje === "number" && !isNaN(r.porcentaje)) return r.porcentaje;
+    if (typeof r.puntaje === "number" && !isNaN(r.puntaje)) return r.puntaje;
+    return 0;
+  };
+
   // Clasificación dinámica según umbrales configurados
-  const avanzados = registros.filter((r) => {
-    const valor = r.porcentaje !== undefined ? r.porcentaje : r.puntaje;
-    return valor >= minAvanzado;
-  }).length;
-
-  const iniciales = registros.filter((r) => {
-    const valor = r.porcentaje !== undefined ? r.porcentaje : r.puntaje;
-    return valor <= maxInicial;
-  }).length;
-
+  const avanzados = registros.filter((r) => getPuntajeVal(r) >= minAvanzado).length;
+  const iniciales = registros.filter((r) => getPuntajeVal(r) <= maxInicial).length;
   const intermedios = Math.max(0, total - avanzados - iniciales);
 
-  const pctAvanzado = Math.round((avanzados / total) * 100);
-  const pctIntermedio = Math.round((intermedios / total) * 100);
-  const pctInicial = Math.round((iniciales / total) * 100);
+  const pctAvanzado = total > 0 ? Math.round((avanzados / total) * 100) : 0;
+  const pctIntermedio = total > 0 ? Math.round((intermedios / total) * 100) : 0;
+  const pctInicial = total > 0 ? Math.round((iniciales / total) * 100) : 0;
 
-  const promedioPuntaje = Math.round(
-    registros.reduce((acc, curr) => acc + (curr.porcentaje ?? curr.puntaje), 0) / total
-  );
+  const promedioPuntaje = total > 0
+    ? Math.round(registros.reduce((acc, curr) => acc + getPuntajeVal(curr), 0) / total)
+    : 0;
 
-  const tiempoPromedioSegundos = Math.round(
-    registros.reduce((acc, curr) => acc + (curr.tiempoSegundos || 45), 0) / total
-  );
+  const tiempoPromedioSegundos = total > 0
+    ? Math.round(registros.reduce((acc, curr) => acc + (typeof curr.tiempoSegundos === "number" ? curr.tiempoSegundos : 45), 0) / total)
+    : 0;
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-mepCard space-y-6">

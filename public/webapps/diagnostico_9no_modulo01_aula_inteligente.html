@@ -748,19 +748,17 @@
           </h3>
         </div>
 
-        <div id="teacherInfoBadge9no" style="display: none; background: #eff6ff; border: 1.5px solid #38bdf8; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px;">
-          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 20px;">👨‍🏫</span>
-              <div>
-                <strong id="badgeTeacherName9no" style="font-size: 12.5px; color: #003366; display: block;">Docente: —</strong>
-                <span id="badgeTeacherMeta9no" style="font-size: 11px; color: #475569;">Institución: —</span>
-              </div>
+        <div id="teacherInfoBadge9no" style="display: flex; background: #eff6ff; border: 1.5px solid #38bdf8; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 20px;">👨‍🏫</span>
+            <div>
+              <strong id="badgeTeacherName9no" style="font-size: 12.5px; color: #003366; display: block;">Docente: Evaluador Asignado</strong>
+              <span id="badgeTeacherMeta9no" style="font-size: 11px; color: #475569;">Centro Educativo MEP</span>
             </div>
-            <span style="background: #dcfce7; color: #15803d; border: 1px solid #86efac; font-size: 10.5px; font-weight: 800; padding: 2px 7px; border-radius: 6px;">
-              🔗 Sincronización Automática
-            </span>
           </div>
+          <span style="background: #dcfce7; color: #15803d; border: 1px solid #86efac; font-size: 10.5px; font-weight: 800; padding: 2px 7px; border-radius: 6px;">
+            🔒 Vinculado al Docente Evaluador
+          </span>
         </div>
         
         <div style="display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 12px; margin-bottom: 12px;">
@@ -818,16 +816,16 @@
 
         <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; margin-bottom: 8px;">
           <div>
-            <label style="display: block; font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 4px;">
-              Centro Educativo:
+            <label style="display: block; font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 4px;">
+              🏫 Centro Educativo: <span style="color: #0369a1; font-weight: 800; font-size: 10.5px;">🔒 (Asignado)</span>
             </label>
-            <input type="text" id="inputCentroEducativo" placeholder="Ej: Colegio Técnico Profesional / Liceo..." value="" style="width: 100%; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; color: #0f172a; font-size: 11.5px; outline: none;">
+            <input type="text" id="inputCentroEducativo" readonly placeholder="Cargando institución asignada..." value="" style="width: 100%; background: #f1f5f9; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; color: #0f172a; font-size: 12px; font-weight: 700; outline: none; cursor: not-allowed;">
           </div>
           <div>
-            <label style="display: block; font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 4px;">
-              Docente Evaluador:
+            <label style="display: block; font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 4px;">
+              👨‍🏫 Docente Evaluador: <span style="color: #0369a1; font-weight: 800; font-size: 10.5px;">🔒 (Asignado)</span>
             </label>
-            <input type="text" id="inputDocente" placeholder="Nombre de la persona docente a cargo" value="" style="width: 100%; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; color: #0f172a; font-size: 11.5px; outline: none;">
+            <input type="text" id="inputDocente" readonly placeholder="Cargando docente a cargo..." value="" style="width: 100%; background: #f1f5f9; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; color: #0f172a; font-size: 12px; font-weight: 700; outline: none; cursor: not-allowed;">
           </div>
         </div>
 
@@ -1574,10 +1572,70 @@
 
   <!-- MOTOR JAVASCRIPT -->
   <script>
+    function obtenerDocenteEInstitucionActiva() {
+      var params = new URLSearchParams(window.location.search);
+      var docParam = params.get("docente") || params.get("docenteNombre") || params.get("profesor");
+      var instParam = params.get("institucion") || params.get("colegio") || params.get("centroEducativo");
+      var secParam = params.get("seccion") || params.get("seccionGrupo");
+      var dreParam = params.get("dre") || params.get("dreNombre") || "";
+      var docIdParam = params.get("docenteId") || params.get("idDocente") || params.get("cedula") || "";
+
+      var docNombre = docParam ? docParam.trim() : "";
+      var instNombre = instParam ? instParam.trim() : "";
+      var docenteId = docIdParam ? docIdParam.trim() : "";
+      var dreNombre = dreParam ? dreParam.trim() : "";
+
+      // Prioridad 2: Buscar en almacenamiento local global
+      if (!docNombre || !instNombre) {
+        try {
+          var rawDoc = localStorage.getItem("docente_activo") || localStorage.getItem("MEP_DOCENTE_PERFIL_GLOBAL") || localStorage.getItem("antigravity_docente_sesion");
+          if (rawDoc) {
+            var parsed = JSON.parse(rawDoc);
+            if (parsed) {
+              if (!docNombre) docNombre = parsed.nombreCompleto || parsed.nombre || "";
+              if (!instNombre) instNombre = parsed.institucionNombre || parsed.colegio || parsed.institucion || "";
+              if (!docenteId) docenteId = parsed.cedula || parsed.idDocente || "";
+              if (!dreNombre) dreNombre = parsed.dreNombre || parsed.dreCodigo || "";
+            }
+          }
+        } catch(e) {}
+      }
+
+      // Prioridad 3: Usuarios registrados
+      if (!docNombre || !instNombre) {
+        try {
+          var rawUsers = localStorage.getItem("usuarios_registrados_locales");
+          if (rawUsers) {
+            var listUsers = JSON.parse(rawUsers);
+            if (Array.isArray(listUsers) && listUsers.length > 0) {
+              var lastUser = listUsers[listUsers.length - 1];
+              if (!docNombre) docNombre = lastUser.nombreCompleto || lastUser.nombre || "";
+              if (!instNombre) instNombre = lastUser.institucionNombre || lastUser.institucion || lastUser.colegio || "";
+              if (!docenteId) docenteId = lastUser.idDocente || lastUser.cedula || "";
+              if (!dreNombre) dreNombre = lastUser.dreNombre || lastUser.dreCodigo || "";
+            }
+          }
+        } catch(e) {}
+      }
+
+      // Fallback seguro institucional
+      if (!docNombre) docNombre = "Luis López Rueda";
+      if (!instNombre) instNombre = "Liceo / CTP MEP";
+      if (!docenteId) docenteId = "1-0892-0456";
+
+      return {
+        docenteNombre: docNombre,
+        instNombre: instNombre,
+        docenteId: docenteId,
+        dreNombre: dreNombre,
+        secParam: secParam
+      };
+    }
+
     var CONFIG = {
       webAppId: "diag-9no-mod01-aula-inteligente",
       webAppTitulo: "Diagnóstico Integrado 9°: «Aula Inteligente» - Formación Tecnológica 2026",
-      docenteId: "DOC-DRE01-7729",
+      docenteId: "1-0892-0456",
       nivel: "9° Año - Secundaria",
       totalItems: 10,
       umbralLux: 300,
@@ -1675,12 +1733,25 @@
       var ced = (document.getElementById("inputEstudianteCedula").value || "").trim();
       var cor = (document.getElementById("inputEstudianteCorreo").value || "").trim();
 
+      var infoDocente = obtenerDocenteEInstitucionActiva();
       estado.estudianteNombre = nom;
       estado.seccionGrupo = sec;
       estado.estudianteCedula = ced;
       estado.estudianteCorreo = cor;
-      estado.centroEducativo = (document.getElementById("inputCentroEducativo").value || "").trim();
-      estado.docenteNombre = (document.getElementById("inputDocente").value || "").trim();
+      estado.centroEducativo = infoDocente.instNombre;
+      estado.docenteNombre = infoDocente.docenteNombre;
+      CONFIG.docenteId = infoDocente.docenteId;
+
+      var elDoc = document.getElementById("inputDocente");
+      if (elDoc && (!elDoc.value || elDoc.value !== infoDocente.docenteNombre)) {
+        elDoc.value = infoDocente.docenteNombre;
+        elDoc.readOnly = true;
+      }
+      var elCent = document.getElementById("inputCentroEducativo");
+      if (elCent && (!elCent.value || elCent.value !== infoDocente.instNombre)) {
+        elCent.value = infoDocente.instNombre;
+        elCent.readOnly = true;
+      }
 
       var msg = document.getElementById("msgValidacionDatos");
       var btn = document.getElementById("btnIniciarDiagnostico");
@@ -1924,8 +1995,18 @@
           if (elSec) elSec.disabled = false;
           if (elCed) elCed.disabled = false;
           if (elCor) elCor.disabled = false;
-          if (elCent) elCent.disabled = false;
-          if (elDoc) elDoc.disabled = false;
+
+          var infoDoc = obtenerDocenteEInstitucionActiva();
+          if (elCent) {
+            elCent.disabled = false;
+            elCent.readOnly = true;
+            elCent.value = infoDoc.instNombre;
+          }
+          if (elDoc) {
+            elDoc.disabled = false;
+            elDoc.readOnly = true;
+            elDoc.value = infoDoc.docenteNombre;
+          }
           if (btn) {
             btn.disabled = false;
             btn.innerHTML = "Comenzar Parte A (Conocimientos previos) ➔";
@@ -3206,11 +3287,7 @@
           localStorage.removeItem("diagnostico_9no_sesion_activa");
         } catch(e) {}
 
-        // Mantener datos del docente e institución pero resetear estudiante
-        var docNombre = estado.docenteNombre;
-        var instNombre = estado.centroEducativo;
-        var secNombre = estado.seccionGrupo;
-
+        var infoDoc = obtenerDocenteEInstitucionActiva();
         estado.estudianteNombre = "";
         estado.estudianteCedula = "";
         estado.estudianteCorreo = "";
@@ -3244,6 +3321,8 @@
         estado.reto3Explicacion = "";
         estado.finalizado = false;
         estado.horaFin = null;
+        estado.docenteNombre = infoDoc.docenteNombre;
+        estado.centroEducativo = infoDoc.instNombre;
 
         guardarProgresoEnLocalStorage();
         window.location.reload();
@@ -3258,104 +3337,6 @@
       } else {
         ejecutarReset();
       }
-    }
-      estado.pinSeleccionado = null;
-      estado.actuadorActual = "LED";
-      estado.fallaInyectada = 0;
-      estado.luzActual = 180;
-      estado.tiempoInicio = Date.now();
-      estado.tiempoTotal = 0;
-
-      // Restaurar DOM de la página principal si estaba en pantalla de bloqueo
-      var main = document.querySelector(".main-container");
-      var nav = document.querySelector(".nav-tabs");
-      if (nav) nav.style.display = "flex";
-
-      // Desbloquear y limpiar inputs de identificación
-      var elNom = document.getElementById("inputEstudianteNombre");
-      var elCed = document.getElementById("inputEstudianteCedula");
-      var elCor = document.getElementById("inputEstudianteCorreo");
-      var elSec = document.getElementById("selectSeccion");
-      var elCent = document.getElementById("inputCentroEducativo");
-      var elDoc = document.getElementById("inputDocente");
-      var btn = document.getElementById("btnIniciarDiagnostico");
-      var lbl1 = document.getElementById("tabSec1Label");
-      var sub1 = document.getElementById("tabSec1Sub");
-      var msg = document.getElementById("msgValidacionDatos");
-
-      if (elNom) { elNom.value = ""; elNom.disabled = false; }
-      if (elCed) { elCed.value = ""; elCed.disabled = false; }
-      if (elCor) { elCor.value = ""; elCor.disabled = false; }
-      if (elSec && secNombre) { elSec.value = secNombre; elSec.disabled = false; }
-      if (elCent) {
-        elCent.value = instNombre || estado.centroEducativo || "Asesoría de Formación Tecnológica";
-        elCent.readOnly = true;
-        elCent.style.background = "#f1f5f9";
-        elCent.style.color = "#334155";
-        elCent.style.fontWeight = "700";
-      }
-      if (elDoc) {
-        elDoc.value = docNombre || estado.docenteNombre || "Alberto Bustos Ortega";
-        elDoc.readOnly = true;
-        elDoc.style.background = "#f1f5f9";
-        elDoc.style.color = "#334155";
-        elDoc.style.fontWeight = "700";
-      }
-
-      if (btn) {
-        btn.disabled = false;
-        btn.innerHTML = "Comenzar Parte A (Conocimientos previos) ➔";
-        btn.style.background = "#0284c7";
-        btn.style.cursor = "pointer";
-      }
-
-      if (lbl1) lbl1.innerText = "1. Datos";
-      if (sub1) sub1.innerText = "Identificación";
-      var tab1 = document.getElementById("tabSec1");
-      if (tab1) tab1.style.opacity = "1";
-
-      if (msg) {
-        msg.innerText = "✨ Equipo listo para el siguiente estudiante. Escribe tu Nombre y Apellidos completos.";
-        msg.style.color = "#059669";
-      }
-
-      // Resetear opciones de reactivos en la interfaz
-      for (var k = 1; k <= 10; k++) {
-        var cont = document.getElementById("optsItem" + k);
-        if (cont) {
-          var btns = cont.children;
-          for (var b = 0; b < btns.length; b++) {
-            btns[b].className = "opcion-btn";
-          }
-        }
-        var retroDiv = document.getElementById("retroItem" + k);
-        if (retroDiv) {
-          retroDiv.style.display = "none";
-          retroDiv.innerText = "";
-        }
-      }
-
-      // Resetear contador
-      var contResp = document.getElementById("contadorRespuestas");
-      if (contResp) contResp.innerText = "Respondidas: 0 / " + CONFIG.totalItems;
-      var badgeH = document.getElementById("badgeProgresoHeader");
-      if (badgeH) badgeH.innerText = "Progreso: 0%";
-
-      // Volver a la sección 1
-      for (var i = 1; i <= 5; i++) {
-        var sec = document.getElementById("seccion" + i);
-        var tab = document.getElementById("tabSec" + i);
-        if (sec) sec.style.display = (i === 1 ? "block" : "none");
-        if (tab) {
-          if (i === 1) tab.className = "nav-tab activa";
-          else tab.className = "nav-tab";
-        }
-      }
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      setTimeout(function() {
-        if (elNom) elNom.focus();
-      }, 150);
     }
 
     // REINICIAR DIAGNÓSTICO COMPLETO
@@ -3406,6 +3387,8 @@
         var s = JSON.parse(raw);
         if (!s || !s.estudianteNombre || !s.estudianteNombre.trim()) return false;
 
+        var infoDoc = obtenerDocenteEInstitucionActiva();
+
         // Restaurar campos de identificación
         if (s.estudianteNombre) {
           var inputNom = document.getElementById("inputEstudianteNombre");
@@ -3427,15 +3410,21 @@
           if (inputCor) inputCor.value = s.estudianteCorreo;
           estado.estudianteCorreo = s.estudianteCorreo;
         }
-        if (s.centroEducativo) {
-          var inputCent = document.getElementById("inputCentroEducativo");
-          if (inputCent) inputCent.value = s.centroEducativo;
-          estado.centroEducativo = s.centroEducativo;
+        
+        // Docente e Institución siempre se blindan con la asignación activa
+        estado.centroEducativo = infoDoc.instNombre;
+        estado.docenteNombre = infoDoc.docenteNombre;
+        CONFIG.docenteId = infoDoc.docenteId;
+
+        var inputCent = document.getElementById("inputCentroEducativo");
+        if (inputCent) {
+          inputCent.value = infoDoc.instNombre;
+          inputCent.readOnly = true;
         }
-        if (s.docenteNombre) {
-          var inputDoc = document.getElementById("inputDocente");
-          if (inputDoc) inputDoc.value = s.docenteNombre;
-          estado.docenteNombre = s.docenteNombre;
+        var inputDoc = document.getElementById("inputDocente");
+        if (inputDoc) {
+          inputDoc.value = infoDoc.docenteNombre;
+          inputDoc.readOnly = true;
         }
 
         // Si los datos ya estaban confirmados o inició la prueba, bloquear inputs
@@ -3539,62 +3528,28 @@
     // INICIALIZACIÓN DINÁMICA DE DATOS Y RESTAURACIÓN DE SESIÓN
     window.addEventListener("DOMContentLoaded", function() {
       try {
-        var params = new URLSearchParams(window.location.search);
-        var docParam = params.get("docente") || params.get("docenteNombre") || params.get("profesor");
-        var instParam = params.get("institucion") || params.get("colegio") || params.get("centroEducativo");
-        var secParam = params.get("seccion") || params.get("seccionGrupo");
-        var dreParam = params.get("dre") || params.get("dreNombre") || "";
-        var docIdParam = params.get("docenteId") || "";
+        var infoDoc = obtenerDocenteEInstitucionActiva();
+        var docNombre = infoDoc.docenteNombre;
+        var instNombre = infoDoc.instNombre;
+        var secParam = infoDoc.secParam;
+        var dreNombre = infoDoc.dreNombre;
 
-        var docNombre = docParam || "";
-        var instNombre = instParam || "";
-
-        if (docNombre || instNombre || docIdParam) {
-          var badge = document.getElementById("teacherInfoBadge9no");
-          var nameEl = document.getElementById("badgeTeacherName9no");
-          var metaEl = document.getElementById("badgeTeacherMeta9no");
-          if (badge) badge.style.display = "block";
-          if (nameEl) nameEl.textContent = "👨‍🏫 Docente: Prof. " + (docNombre || "Evaluador Asignado");
-          if (metaEl) metaEl.textContent = "🏫 " + (instNombre || "Colegio") + (dreParam ? " • 📍 " + dreParam : "");
-          if (docIdParam) CONFIG.docenteId = docIdParam;
-        }
-
-        if (!docNombre) {
-          try {
-            var rawDoc = localStorage.getItem("docente_activo") || localStorage.getItem("antigravity_docente_sesion");
-            if (rawDoc) {
-              var parsedDoc = JSON.parse(rawDoc);
-              if (parsedDoc) {
-                docNombre = parsedDoc.nombreCompleto || parsedDoc.nombre || "";
-                if (!instNombre) instNombre = parsedDoc.institucionNombre || parsedDoc.institucion || "";
-                if (parsedDoc.idDocente) CONFIG.docenteId = parsedDoc.idDocente;
-              }
-            }
-            if (!docNombre) {
-              var rawUsers = localStorage.getItem("usuarios_registrados_locales");
-              if (rawUsers) {
-                var listUsers = JSON.parse(rawUsers);
-                if (Array.isArray(listUsers) && listUsers.length > 0) {
-                  var lastUser = listUsers[listUsers.length - 1];
-                  docNombre = lastUser.nombreCompleto || lastUser.nombre || "";
-                  if (!instNombre) instNombre = lastUser.institucionNombre || lastUser.institucion || "";
-                  if (lastUser.idDocente) CONFIG.docenteId = lastUser.idDocente;
-                }
-              }
-            }
-          } catch(e) {}
-        }
-
-        if (!docNombre) docNombre = "Alberto Bustos Ortega";
-        if (!instNombre) instNombre = "Asesoría de Formación Tecnológica";
+        var badge = document.getElementById("teacherInfoBadge9no");
+        var nameEl = document.getElementById("badgeTeacherName9no");
+        var metaEl = document.getElementById("badgeTeacherMeta9no");
+        if (badge) badge.style.display = "block";
+        if (nameEl) nameEl.textContent = "👨‍🏫 Docente: Prof. " + docNombre;
+        if (metaEl) metaEl.textContent = "🏫 " + instNombre + (dreNombre ? " • 📍 " + dreNombre : "");
+        CONFIG.docenteId = infoDoc.docenteId;
 
         var inputDoc = document.getElementById("inputDocente");
         if (inputDoc) {
           inputDoc.value = docNombre;
           inputDoc.readOnly = true;
           inputDoc.style.background = "#f1f5f9";
-          inputDoc.style.color = "#334155";
+          inputDoc.style.color = "#0f172a";
           inputDoc.style.fontWeight = "700";
+          inputDoc.style.cursor = "not-allowed";
           estado.docenteNombre = docNombre;
         }
 
@@ -3603,8 +3558,9 @@
           inputInst.value = instNombre;
           inputInst.readOnly = true;
           inputInst.style.background = "#f1f5f9";
-          inputInst.style.color = "#334155";
+          inputInst.style.color = "#0f172a";
           inputInst.style.fontWeight = "700";
+          inputInst.style.cursor = "not-allowed";
           estado.centroEducativo = instNombre;
         }
 

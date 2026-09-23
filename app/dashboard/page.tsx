@@ -109,9 +109,10 @@ export default function DashboardAnaliticoPage() {
         const seccionesDoc = dn?.seccionesAtendidasDocente && Array.isArray(dn.seccionesAtendidasDocente) && dn.seccionesAtendidasDocente.length > 0
           ? dn.seccionesAtendidasDocente.filter(Boolean)
           : [`${nivelKey}-1`];
+        const nomFinal = c.nombre || (c as any).colegio || `Institución ${idx + 1}`;
         return {
           id: c.id || `centro-${idx}`,
-          nombre: c.nombre || `Institución ${idx + 1}`,
+          nombre: nomFinal,
           dreCodigo: c.dreCodigo || "DRE-01",
           dreNombre: c.dreNombre || "San José Central",
           circuito: c.circuito || "Circuito 01",
@@ -155,14 +156,17 @@ export default function DashboardAnaliticoPage() {
   }, [docente, nivelActivo]);
 
   // Centro educativo actualmente seleccionado asegurando límites válidos
-  const centroActivo = listaCentrosDocente[centroActivoIdx] || listaCentrosDocente[0] || {
-    id: "centro-default",
-    nombre: "Centro Educativo MEP",
-    dreCodigo: "DRE-01",
-    dreNombre: "San José Central",
-    circuito: "Circuito 01",
-    seccionesAtendidas: ["8-1"],
-  };
+  const centroActivo =
+    listaCentrosDocente && listaCentrosDocente.length > 0
+      ? (listaCentrosDocente[centroActivoIdx] || listaCentrosDocente[0])
+      : {
+          id: "centro-default",
+          nombre: docente?.institucionNombre || "Centro Educativo MEP",
+          dreCodigo: docente?.dreCodigo || "DRE-01",
+          dreNombre: docente?.dreNombre || "San José Central",
+          circuito: docente?.circuito || "Circuito 01",
+          seccionesAtendidas: [`${nivelActivo === "7mo" ? "7" : nivelActivo === "8vo" ? "8" : "9"}-1`],
+        };
 
   // Ajustar índice de centro si la lista filtrada cambia al cambiar de nivel
   useEffect(() => {
@@ -789,8 +793,8 @@ export default function DashboardAnaliticoPage() {
                 className="px-3 py-2 bg-stone-50 border border-stone-300 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:border-emerald-600"
               >
                 <option value="Todas">Todos los colegios</option>
-                {listaCentrosDocente.map((c) => (
-                  <option key={c.nombre} value={c.nombre}>
+                {listaCentrosDocente.map((c, idx) => (
+                  <option key={c.id || `${c.nombre}-${idx}`} value={c.nombre}>
                     🏫 {c.nombre}
                   </option>
                 ))}
@@ -899,7 +903,9 @@ export default function DashboardAnaliticoPage() {
                           </span>
                         </td>
                         <td className="p-3 text-right text-stone-400 text-[11px] font-mono">
-                          {new Date(item.timestamp).toLocaleString("es-CR")}
+                          {item.timestamp && !isNaN(new Date(item.timestamp).getTime())
+                            ? new Date(item.timestamp).toLocaleString("es-CR")
+                            : "—"}
                         </td>
                         <td className="p-3 text-center">
                           <div className="flex items-center justify-center gap-1.5">
