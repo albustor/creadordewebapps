@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#003366">
   <title>Aplicativo Docente: Registro y Evaluación Diagnóstica 9° (Módulo 1)</title>
   <script src="/vendor/html5-qrcode.min.js"></script>
+  <script src="/vendor/qrcode.min.js"></script>
   
   <style>
     :root {
@@ -119,6 +120,130 @@
     .btn-outline:hover { background: #f8fafc; border-color: #94a3b8; }
     .btn-estudiante { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); border-color: #0284c7; color: white; }
     .btn-online-hub { background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); border-color: #7c3aed; color: white; }
+
+    /* ESTILOS DE ALTO CONTRASTE PARA TABS Y BOTONES */
+    .auth-tab-btn {
+      flex: 1;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 800;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      background: #f1f5f9;
+      color: #334155; /* Alto contraste inactivo */
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .auth-tab-btn.active {
+      background: #003366 !important;
+      color: #ffffff !important; /* Alto contraste activo */
+      border-color: #002244 !important;
+      box-shadow: 0 2px 6px rgba(0, 51, 102, 0.25);
+    }
+    .auth-tab-btn:hover:not(.active) {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    .toggle-pill-btn {
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1.5px solid #cbd5e1;
+      background: #f8fafc;
+      color: #334155; /* Inactivo alto contraste */
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .toggle-pill-btn.active {
+      background: #059669 !important;
+      color: #ffffff !important; /* Activo alto contraste */
+      border-color: #047857 !important;
+      box-shadow: 0 2px 6px rgba(5, 150, 105, 0.25);
+    }
+    .toggle-pill-btn:hover:not(.active) {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    .sec-badge-btn {
+      padding: 4px 9px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
+      color: #334155;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .sec-badge-btn.active {
+      background: #0284c7 !important;
+      color: #ffffff !important;
+      border-color: #0369a1 !important;
+      font-weight: 800;
+    }
+    .sec-badge-btn:hover:not(.active) {
+      background: #f1f5f9;
+      color: #0f172a;
+      border-color: #94a3b8;
+    }
+
+    .filter-input {
+      padding: 8px 10px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 12.5px;
+      background: #ffffff;
+      color: #0f172a;
+      outline: none;
+    }
+    .filter-input:focus {
+      border-color: #0284c7;
+      box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15);
+    }
+
+    .filter-select {
+      padding: 8px 10px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 12px;
+      background: #ffffff;
+      color: #0f172a;
+      outline: none;
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #ffffff;
+      border-radius: 14px;
+      max-width: 620px;
+      width: 100%;
+      max-height: 90vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25);
+    }
 
     /* NAVEGACIÓN DE VISTAS */
     .view-nav {
@@ -369,15 +494,22 @@
       </div>
       <div>
         <div class="mep-badge">
-          <span>Instrumento Oficial • Formación Tecnológica 2026</span>
+          <span>MEP 2026 • Formación Tecnológica</span>
         </div>
         <h1 style="font-size: 1.05rem; font-weight: 900; letter-spacing: -0.2px; margin-top: 2px; color: #0f172a;">
-          Registro y Evaluación Diagnóstica: Noveno Año (Módulo 1)
+          📋 Módulo Docente Evaluador — 9° Año
         </h1>
       </div>
     </div>
 
-    <div class="top-actions">
+    <div class="top-actions" style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+      <div id="teacherProfileBar" style="background: rgba(2, 132, 199, 0.08); border: 1px solid rgba(2, 132, 199, 0.25); padding: 5px 10px; border-radius: 8px; display: flex; flex-direction: column; align-items: flex-end; gap: 2px;">
+        <span id="badgeTeacherName" style="font-weight: 800; font-size: 12px; color: #0369a1;">👨‍🏫 Docente no identificado</span>
+        <span id="badgeTeacherSchool" style="font-size: 10.5px; color: #64748b;">Sin registrar</span>
+      </div>
+      <button class="btn btn-outline" style="background: #ffffff; color: #0f172a; padding: 6px 12px; font-size: 11.5px; border-radius: 8px; font-weight: 800;" onclick="openAuthModal(false)">
+        ⚙️ Perfil / PIN
+      </button>
       <span class="mep-badge" id="badgeSincronizacionServidor" style="background:#dcfce7; border-color:#86efac; color:#15803d; font-size:10.5px;">
         🟢 Base de datos: sincronizada
       </span>
@@ -386,6 +518,9 @@
       </button>
       <button class="btn btn-secondary" style="font-size: 11.5px; padding: 5px 12px; min-height: 30px;" onclick="sincronizarConBaseDeDatos(true)" title="Sincronizar manualmente con el dashboard central y base de datos">
         🔄 Sincronizar
+      </button>
+      <button class="btn btn-accent" style="font-size: 11.5px; padding: 5px 12px; min-height: 30px; background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); border-color: #0284c7; color: white; font-weight: 800;" onclick="openStudentLinksModal()" title="Generar enlaces y proyectar QR para computadoras de estudiantes">
+        🔗 Enlaces Estudiantes (PC)
       </button>
       <a href="/dashboard" target="_blank" class="btn btn-online-hub" style="font-size: 11.5px; padding: 5px 12px; min-height: 30px;" title="Abrir dashboard analítico en línea">
         📈 Dashboard web
@@ -992,17 +1127,25 @@
       <!-- Panel Manual -->
       <div id="panelScanManual" style="display: none;">
         <p style="font-size: 11.5px; color: #64748b; margin-bottom: 8px;">
-          Pega el código JSON o token de respaldo generado en el diagnóstico del estudiante:
+          Pega el código JSON o token de respaldo generado en el diagnóstico de 9° año:
         </p>
-        <textarea id="inputTokenQR" placeholder='Pega aquí el código QR (Ej: {"nom":"Juan Pérez","sec":"Sección 9-1",...})' rows="4" style="width: 100%; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 8px; color: #0f172a; font-size: 11.5px; outline: none; margin-bottom: 12px;"></textarea>
+        <textarea id="inputTokenQR" placeholder='Pega aquí el código QR (Ej: {"t":"MEP9","nom":"Sebastián Fallas","sec":"9-1",...})' rows="4" style="width: 100%; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 8px; color: #0f172a; font-size: 11.5px; outline: none; margin-bottom: 12px; font-family: monospace;"></textarea>
         
-        <button type="button" class="btn btn-accent" style="width: 100%; font-size: 12px; padding: 9px;" onclick="procesarTokenQRManual()">
-          ⚡ Importar Datos del Estudiante
-        </button>
+        <div style="display: flex; gap: 8px; justify-content: flex-end; margin-bottom: 6px;">
+          <button type="button" class="btn btn-secondary" style="font-size: 11.5px; padding: 6px 12px;" onclick="insertTestQrPayload9no()">
+            🧪 Pegar Ejemplo de Prueba (9°)
+          </button>
+          <button type="button" class="btn btn-accent" style="font-size: 11.5px; padding: 6px 14px; background: #0284c7; border-color: #0369a1; color: white;" onclick="procesarTokenQRManual()">
+            📥 Procesar Registro
+          </button>
+        </div>
       </div>
 
-      <div style="margin-top: 14px; text-align: right;">
-        <button type="button" class="btn btn-secondary" style="font-size: 11px;" onclick="cerrarModalEscanerQR()">Cerrar</button>
+      <div style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #e2e8f0; padding-top: 10px;">
+        <button type="button" class="btn btn-outline" style="font-size: 11.5px; padding: 5px 10px; color: #0284c7; border-color: #7dd3fc; background: #f0f9ff; font-weight: 700;" onclick="insertTestQrPayload9no()">
+          🧪 Probar con Estudiante Demo
+        </button>
+        <button type="button" class="btn btn-secondary" style="font-size: 11.5px; padding: 5px 14px; font-weight: 700;" onclick="cerrarModalEscanerQR()">Finalizar Escaneo</button>
       </div>
     </div>
   </div>
@@ -1150,7 +1293,1081 @@
     </div>
   </div>
 
+  <!-- MODAL DE AUTENTICACIÓN / REGISTRO UNIFICADO DOCENTE (MEP 2026) -->
+  <div class="modal-overlay" id="authDocenteModal">
+    <div class="modal-box">
+      
+      <!-- HEADER MODAL -->
+      <div style="background: linear-gradient(135deg, #003366 0%, #002244 100%); color: white; border-bottom: 2px solid #38bdf8; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="background: #0284c7; color: #fff; font-weight: 900; font-size: 11px; padding: 4px 8px; border-radius: 6px;">MEP 2026</span>
+          <div>
+            <h2 style="font-size: 14.5px; font-weight: 800; color: #fff; margin: 0;">Identificación y Registro del Docente</h2>
+            <p style="font-size: 11px; color: #94a3b8; margin: 0;">Módulo de Docente Evaluador &bull; III Ciclo (9° Año)</p>
+          </div>
+        </div>
+        <button id="authModalCloseBtn" class="btn btn-outline" style="padding: 4px 8px; color: #fff; border-color: rgba(255,255,255,0.3); background: transparent;" onclick="closeAuthModal()">✕</button>
+      </div>
+
+      <!-- TABS LOGIN / REGISTRO (ALTO CONTRASTE) -->
+      <div style="display: flex; background: #e2e8f0; padding: 6px; border-bottom: 1px solid #cbd5e1; gap: 6px;">
+        <button id="tabAuthLogin" type="button" class="auth-tab-btn" onclick="switchAuthTab('login')">
+          🔑 Iniciar con PIN
+        </button>
+        <button id="tabAuthRegister" type="button" class="auth-tab-btn active" onclick="switchAuthTab('register')">
+          👤 Registrarse
+        </button>
+      </div>
+
+      <div class="modal-body" style="padding: 16px 20px; max-height: 75vh; overflow-y: auto;">
+        
+        <!-- FORMULARIO DE INICIO DE SESIÓN CON PIN -->
+        <div id="authViewLogin" style="display: none; flex-direction: column; gap: 14px;">
+          <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 10px 12px; font-size: 11.5px; color: #166534;">
+            ℹ️ Si ya completaste tu registro docente en este dispositivo, escribe tu <strong>cédula</strong> o <strong>correo MEP</strong> y tu <strong>PIN de 4 dígitos</strong> para reanudar tu sesión evaluadora.
+          </div>
+
+          <div>
+            <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 3px;">Cédula o Correo Institucional MEP *</label>
+            <input type="text" id="loginUser" class="filter-input" style="width: 100%;" placeholder="ej. 1-2345-6789 o usuario@mep.go.cr">
+            <span style="font-size: 10.5px; color: #64748b; margin-top: 2px; display: block;">Identificador previamente registrado en el aplicativo.</span>
+          </div>
+
+          <div>
+            <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 3px;">PIN de Acceso (4 dígitos) *</label>
+            <input type="password" id="loginPin" maxlength="4" class="filter-input" style="width: 100%; letter-spacing: 4px; font-size: 15px; font-weight: 800; text-align: center;" placeholder="••••">
+            <span style="font-size: 10.5px; color: #64748b; margin-top: 2px; display: block;">Clave de 4 dígitos creada durante tu registro.</span>
+          </div>
+
+          <button class="btn btn-accent" style="width: 100%; min-height: 42px; font-size: 13px; background: #059669; justify-content: center; margin-top: 6px;" onclick="submitDocenteLogin()">
+            🔑 Iniciar Sesión con PIN
+          </button>
+
+          <div style="display: flex; justify-content: center; margin-top: 4px;">
+            <button type="button" class="btn btn-outline" style="font-size: 11px; padding: 4px 10px; color: #0284c7; border-color: #7dd3fc; background: #f0f9ff; font-weight: 700;" onclick="rellenarLoginDemo()">
+              🧪 Llenar Usuario Demo para Prueba (PIN: 1234)
+            </button>
+          </div>
+        </div>
+
+        <!-- FORMULARIO DE REGISTRO COMPLETO -->
+        <div id="authViewRegister" style="display: flex; flex-direction: column; gap: 14px;">
+          
+          <!-- BANNER DE USUARIO DEMO / PRUEBA -->
+          <div style="display: flex; justify-content: space-between; align-items: center; background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 8px; padding: 8px 12px; flex-wrap: wrap; gap: 6px;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="font-size: 16px;">🧪</span>
+              <span style="font-size: 11.5px; color: #166534; font-weight: 700;">¿Modo de Prueba o Cuenta Simulada?</span>
+            </div>
+            <button type="button" class="btn btn-accent" style="font-size: 11px; padding: 4px 10px; background: #059669; font-weight: 800;" onclick="cargarUsuarioDemo()">
+              ⚡ Cargar Datos Demo de Prueba
+            </button>
+          </div>
+
+          <!-- ROL PROFESIONAL DOCENTE FIJO Y MINIMALISTA -->
+          <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-left: 4px solid #059669; border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 18px;">👨‍🏫</span>
+              <div>
+                <strong style="font-size: 12px; color: #0f172a; display: block;">Rol: Docente Evaluador</strong>
+                <span style="font-size: 10.5px; color: #64748b;">Habilitado exclusivamente para docentes que evalúan grupos de III Ciclo</span>
+              </div>
+            </div>
+            <span style="background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 9999px;">OFICIAL</span>
+          </div>
+
+          <!-- NOMBRE COMPLETO -->
+          <div>
+            <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 2px;">Nombre completo (Nombre y Apellidos) *</label>
+            <input type="text" id="regName" class="filter-input" style="width: 100%;" placeholder="Ingresa tu nombre completo con apellidos">
+            <span style="font-size: 10.5px; color: #64748b; margin-top: 2px; display: block;">Firma oficial requerida para las actas e informes diagnósticos generados.</span>
+          </div>
+
+          <!-- CÉDULA Y TELÉFONO -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px;">
+            <div>
+              <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 2px;">Cédula / Identificación *</label>
+              <input type="text" id="regId" class="filter-input" style="width: 100%;" placeholder="ej. 1-2345-6789">
+              <span style="font-size: 10.5px; color: #64748b; margin-top: 2px; display: block;">Identificador único para respaldar la autoría del registro.</span>
+            </div>
+            <div>
+              <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 2px;">Teléfono Celular de Contacto</label>
+              <input type="text" id="regPhone" class="filter-input" style="width: 100%;" placeholder="ej. 8888-0000">
+              <span style="font-size: 10.5px; color: #0369a1; margin-top: 2px; display: block;">📱 <strong>Función:</strong> Avisos por WhatsApp/SMS, respaldo de acceso y soporte inmediato.</span>
+            </div>
+          </div>
+
+          <!-- CORREO INSTITUCIONAL -->
+          <div>
+            <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 2px;">Correo Electrónico Institucional MEP (@mep.go.cr) *</label>
+            <input type="email" id="regEmail" class="filter-input" style="width: 100%;" placeholder="nombre.apellido.apellido@mep.go.cr">
+            <span style="font-size: 10.5px; color: #64748b; margin-top: 2px; display: block;">Recepción de respaldos digitales, consolidado ministerial y actas en PDF.</span>
+          </div>
+
+          <!-- CENTROS EDUCATIVOS Y ASIGNACIÓN CURRICULAR (ACORDEÓN MULTI-INSTITUCIÓN) -->
+          <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="background: #059669; color: white; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800;">1</span>
+                <div>
+                  <strong style="font-size: 12px; color: #0f172a; display: block;">Centro(s) Educativo(s) y Asignación Curricular</strong>
+                  <span style="font-size: 10px; color: #64748b;">Configura los niveles (7°, 8°, 9°) y secciones para cada colegio</span>
+                </div>
+              </div>
+              <button type="button" class="btn btn-outline" style="padding: 4px 10px; font-size: 11px; background: #ffffff; color: #059669; border-color: #10b981; font-weight: 800;" onclick="addSchoolField()">
+                ➕ Agregar otro Centro Educativo
+              </button>
+            </div>
+
+            <!-- CONTENEDOR DINÁMICO DE CENTROS EDUCATIVOS (MENÚ ACORDEÓN) -->
+            <div id="schoolsListContainer" style="display: flex; flex-direction: column; gap: 8px;">
+              <!-- Se renderizan dinámicamente con renderSchoolCards() con menú acordeón, niveles y secciones por colegio -->
+            </div>
+          </div>
+
+          <!-- PIN DE ACCESO RÁPIDO -->
+          <div style="background: #eff6ff; border: 1.5px solid #bfdbfe; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <strong style="font-size: 12px; color: #1e3a8a;">🔒 PIN de Acceso Rápido (4 Dígitos Numéricos) *</strong>
+              <button type="button" class="btn btn-outline" style="padding: 2px 6px; font-size: 10.5px; min-height: 22px; background: white;" onclick="togglePinVisibility()">
+                👁️ <span id="pinVisibilityLabel">Ver PIN</span>
+              </button>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px;">
+              <div>
+                <label style="font-size: 11px; font-weight: 700; color: #334155; display: block; margin-bottom: 2px;">Crea tu PIN (4 números):</label>
+                <input type="password" id="regPin" maxlength="4" class="filter-input" style="width: 100%; text-align: center; font-size: 15px; font-weight: 800; letter-spacing: 4px;" placeholder="••••">
+              </div>
+              <div>
+                <label style="font-size: 11px; font-weight: 700; color: #334155; display: block; margin-bottom: 2px;">Confirma tu PIN:</label>
+                <input type="password" id="regPinConfirm" maxlength="4" class="filter-input" style="width: 100%; text-align: center; font-size: 15px; font-weight: 800; letter-spacing: 4px;" placeholder="••••">
+              </div>
+            </div>
+            <span style="font-size: 10.5px; color: #1e40af;">🔑 Clave personal para reanudar sesión rápidamente sin tener que registrarte de nuevo.</span>
+          </div>
+
+          <button class="btn btn-accent" style="width: 100%; min-height: 44px; font-size: 13.5px; background: #059669; justify-content: center; margin-top: 4px;" onclick="submitDocenteRegistro()">
+            👤 Registrarse e Ingresar con PIN
+          </button>
+
+        </div>
+
+      </div>
+
+      <div style="background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; padding: 10px 18px;">
+        <span style="font-size: 11px; color: #64748b;">Ministerio de Educación Pública &bull; Suite Diagnóstica MEP 2026</span>
+        <button class="btn btn-secondary" style="font-size: 11.5px; padding: 4px 10px;" onclick="cerrarSesionDocente()">
+          🚪 Salir / Restablecer
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL GENERADOR DE ENLACES Y QR PARA ESTUDIANTES (PC / LABORATORIO - 9NO AÑO) -->
+  <div class="modal-overlay" id="modalStudentLinks" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(4px); justify-content: center; align-items: center; padding: 16px; z-index: 9999;">
+    <div class="modal-box" style="background: #ffffff; border: 2px solid #0284c7; border-radius: 14px; max-width: 780px; width: 100%; max-height: 90vh; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+      
+      <!-- HEADER -->
+      <div style="background: linear-gradient(135deg, #003366 0%, #002244 100%); color: white; border-bottom: 2px solid #38bdf8; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 24px;">🔗</span>
+          <div>
+            <h2 style="font-size: 15px; font-weight: 800; color: #fff; margin: 0;">Generador de Enlaces y QR para Estudiantes (9.° Año)</h2>
+            <p style="font-size: 11.5px; color: #94a3b8; margin: 0;">Diagnóstico Aula Inteligente 9° (Módulo 1)</p>
+          </div>
+        </div>
+        <button class="btn btn-outline" style="padding: 4px 8px; color: #fff; border-color: rgba(255,255,255,0.3); background: transparent;" onclick="closeStudentLinksModal()">✕</button>
+      </div>
+
+      <div class="modal-body" style="padding: 18px 22px; max-height: 75vh; overflow-y: auto; display: flex; flex-direction: column; gap: 16px;">
+        
+        <!-- AVISO OBLIGATORIO DE COMPUTADORAS DE LABORATORIO (ALTO CONTRASTE) -->
+        <div style="background: #eff6ff; border: 2px solid #38bdf8; border-radius: 10px; padding: 12px 16px; display: flex; align-items: flex-start; gap: 12px;">
+          <span style="font-size: 26px; line-height: 1;">💻</span>
+          <div>
+            <strong style="font-size: 12.5px; color: #0369a1; display: block; margin-bottom: 2px; text-transform: uppercase;">
+              Requisito Obligatorio: Ejecución Exclusiva en Computadoras de Laboratorio
+            </strong>
+            <p style="font-size: 11.5px; color: #334155; margin: 0; line-height: 1.45;">
+              Esta evaluación diagnóstica curricular interactiva está optimizada <strong>estrictamente para ejecutarse en computadoras de escritorio o portátiles (PC / Mac)</strong> de las aulas tecnológicas o laboratorios de informática educativa. <strong>No debe ejecutarse en celulares de estudiantes.</strong>
+            </p>
+          </div>
+        </div>
+
+        <!-- SELECTOR DE CENTRO EDUCATIVO ACTIVO (SI TIENE VARIOS) -->
+        <div id="slmSchoolSelectorWrap" style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
+            <label style="font-size: 12px; font-weight: 800; color: #0f172a;">🏫 Centro Educativo para Generación de Enlaces:</label>
+            <span id="slmTeacherIdentityBadge" style="font-size: 11px; font-weight: 700; color: #0284c7; background: #e0f2fe; padding: 2px 8px; border-radius: 6px;">👨‍🏫 Docente Activo</span>
+          </div>
+          <select id="slmSchoolSelect" class="filter-select" style="width: 100%; font-size: 12.5px; font-weight: 700; color: #0f172a; padding: 6px 10px; border-radius: 8px; border: 1.5px solid #cbd5e1;" onchange="updateStudentLinksView()">
+            <!-- Dinámico -->
+          </select>
+        </div>
+
+        <!-- BLOQUE 1: ENLACE GENERAL DEL NIVEL (ESTUDIANTE ELIGE SECCIÓN) -->
+        <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
+            <div>
+              <strong style="font-size: 13px; color: #003366; display: flex; align-items: center; gap: 6px;">
+                🌐 Enlace General — Todo 9.° Año (Todas las secciones)
+              </strong>
+              <span style="font-size: 11px; color: #64748b;">El estudiante abre la prueba en la PC del laboratorio y elige su sección al identificarse.</span>
+            </div>
+            <span class="badge" style="background: #dcfce7; color: #166534; font-size: 10.5px; font-weight: 800; padding: 3px 8px; border-radius: 4px;">Recomendado</span>
+          </div>
+
+          <div style="display: flex; gap: 6px;">
+            <input type="text" id="slmGeneralUrlInput" readonly style="flex: 1; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 8px 12px; font-size: 12px; font-family: monospace; color: #0f172a; outline: none;" value="">
+          </div>
+
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn btn-accent" style="font-size: 11.5px; padding: 6px 14px; background: #0284c7; border-color: #0369a1; color: white; font-weight: 700;" onclick="copyGeneralStudentLink()">
+              📋 Copiar Enlace General
+            </button>
+            <a id="slmOpenGeneralBtn" href="#" target="_blank" class="btn btn-outline" style="font-size: 11.5px; padding: 6px 14px; text-decoration: none; color: #0f172a; background: white; border: 1.5px solid #cbd5e1; font-weight: 700;">
+              🖥️ Abrir en esta PC
+            </a>
+          </div>
+        </div>
+
+        <!-- BLOQUE 2: ENLACES DIRECTOS POR SECCIÓN (9-1, 9-2...) -->
+        <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 10px;">
+          <div>
+            <strong style="font-size: 12.5px; color: #003366; display: flex; align-items: center; gap: 6px;">
+              🏷️ Enlaces Directos por Sección (Auto-asignación 9-1, 9-2, etc.):
+            </strong>
+            <span style="font-size: 11px; color: #64748b;">Cada enlace preselecciona automáticamente la sección correspondiente en la computadora.</span>
+          </div>
+
+          <div id="slmSectionCardsContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px;">
+            <!-- Renderizado dinámico -->
+          </div>
+        </div>
+
+      </div>
+
+      <div style="background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; padding: 10px 18px;">
+        <span style="font-size: 11px; color: #64748b;">Ministerio de Educación Pública &bull; Telemetría Curricular 2026</span>
+        <button class="btn btn-secondary" onclick="closeStudentLinksModal()">Cerrar</button>
+      </div>
+
+    </div>
+  </div>
+
   <script>
+    const DRE_LIST = [
+      { code: 'DRE-01', name: 'DRE-01 - San José Central (San José)' },
+      { code: 'DRE-02', name: 'DRE-02 - Alajuela (Alajuela)' },
+      { code: 'DRE-03', name: 'DRE-03 - Cartago (Cartago)' },
+      { code: 'DRE-04', name: 'DRE-04 - Heredia (Heredia)' },
+      { code: 'DRE-05', name: 'DRE-05 - Liberia (Liberia)' },
+      { code: 'DRE-06', name: 'DRE-06 - Pérez Zeledón (San Isidro)' },
+      { code: 'DRE-07', name: 'DRE-07 - San Carlos (Ciudad Quesada)' },
+      { code: 'DRE-08', name: 'DRE-08 - Limón (Limón)' },
+      { code: 'DRE-09', name: 'DRE-09 - Puntarenas (Puntarenas)' },
+      { code: 'DRE-10', name: 'DRE-10 - San José Norte (Guadalupe)' },
+      { code: 'DRE-11', name: 'DRE-11 - San José Oeste (Hatillo/Pavas)' },
+      { code: 'DRE-12', name: 'DRE-12 - Coto (Neily)' },
+      { code: 'DRE-13', name: 'DRE-13 - Desamparados (Desamparados)' },
+      { code: 'DRE-14', name: 'DRE-14 - Puriscal (Santiago)' },
+      { code: 'DRE-15', name: 'DRE-15 - Los Santos (San Marcos de Tarrazú)' },
+      { code: 'DRE-16', name: 'DRE-16 - Sarapiquí (Puerto Viejo)' },
+      { code: 'DRE-17', name: 'DRE-17 - Grande de Térraba (Palmar Norte)' },
+      { code: 'DRE-18', name: 'DRE-18 - Aguirre (Quepos)' },
+      { code: 'DRE-19', name: 'DRE-19 - Guápiles (Pococí)' },
+      { code: 'DRE-20', name: 'DRE-20 - Nicoya (Nicoya)' },
+      { code: 'DRE-21', name: 'DRE-21 - Santa Cruz (Santa Cruz)' },
+      { code: 'DRE-22', name: 'DRE-22 - Cañas (Cañas)' },
+      { code: 'DRE-23', name: 'DRE-23 - Upala (Upala)' },
+      { code: 'DRE-24', name: 'DRE-24 - Turrialba (Turrialba)' },
+      { code: 'DRE-25', name: 'DRE-25 - Sulá (Talamanca)' },
+      { code: 'DRE-26', name: 'DRE-26 - Occidente (San Ramón)' },
+      { code: 'DRE-27', name: 'DRE-27 - Zona Norte-Norte (Guatuso)' }
+    ];
+
+    let currentSchools = [
+      createDefaultSchoolObject(0)
+    ];
+
+    function createDefaultSchoolObject(index) {
+      return {
+        id: 'school_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+        dreCodigo: 'DRE-01',
+        dreNombre: 'DRE-01 - San José Central (San José)',
+        colegio: '',
+        isExpanded: true,
+        niveles: { '7': false, '8': false, '9': true },
+        secciones: {
+          '7': { total: 6, selected: ['7-1'] },
+          '8': { total: 6, selected: ['8-1'] },
+          '9': { total: 6, selected: ['9-1', '9-2', '9-3'] }
+        }
+      };
+    }
+
+    function syncSchoolsFromDOM() {
+      currentSchools.forEach((s, idx) => {
+        const nameEl = document.getElementById(`regSchoolName_${idx}`);
+        const dreEl = document.getElementById(`regSchoolDre_${idx}`);
+        if (nameEl) s.colegio = nameEl.value.trim();
+        if (dreEl) {
+          s.dreCodigo = dreEl.value;
+          s.dreNombre = dreEl.options[dreEl.selectedIndex]?.text || s.dreCodigo;
+        }
+      });
+    }
+
+    function renderSchoolCards() {
+      const container = document.getElementById('schoolsListContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      currentSchools.forEach((school, index) => {
+        if (!school.niveles) school.niveles = { '7': false, '8': false, '9': true };
+        if (!school.secciones) school.secciones = {
+          '7': { total: 6, selected: ['7-1'] },
+          '8': { total: 6, selected: ['8-1'] },
+          '9': { total: 6, selected: ['9-1', '9-2', '9-3'] }
+        };
+        if (school.isExpanded === undefined) school.isExpanded = (index === 0 || currentSchools.length === 1);
+
+        const card = document.createElement('div');
+        card.className = 'school-accordion-card';
+        card.style.background = '#ffffff';
+        card.style.border = school.isExpanded ? '1.5px solid #003366' : '1px solid #cbd5e1';
+        card.style.borderRadius = '10px';
+        card.style.overflow = 'hidden';
+        card.style.boxShadow = school.isExpanded ? '0 2px 8px rgba(0, 51, 102, 0.08)' : 'none';
+        card.style.transition = 'all 0.2s ease';
+
+        // HEADER DEL ACORDEÓN
+        const header = document.createElement('div');
+        header.style.background = school.isExpanded ? '#f0f9ff' : '#f8fafc';
+        header.style.padding = '10px 12px';
+        header.style.display = 'flex';
+        header.style.justifyContent = 'space-between';
+        header.style.alignItems = 'center';
+        header.style.cursor = 'pointer';
+        header.style.borderBottom = school.isExpanded ? '1px solid #bae6fd' : 'none';
+        header.onclick = (e) => {
+          if (e.target.tagName === 'BUTTON' || e.target.closest('button')) return;
+          toggleSchoolAccordion(index);
+        };
+
+        const leftHeader = document.createElement('div');
+        leftHeader.style.display = 'flex';
+        leftHeader.style.flexDirection = 'column';
+        leftHeader.style.gap = '3px';
+
+        const titleRow = document.createElement('div');
+        titleRow.style.display = 'flex';
+        titleRow.style.alignItems = 'center';
+        titleRow.style.gap = '6px';
+        titleRow.style.flexWrap = 'wrap';
+
+        const title = document.createElement('strong');
+        title.style.fontSize = '12px';
+        title.style.color = '#0f172a';
+        title.innerHTML = `🏫 Centro #${index + 1} ${index === 0 ? '<span style="color:#059669; font-size:10.5px; font-weight:800;">(Principal)</span>' : ''}`;
+        titleRow.appendChild(title);
+
+        if (school.colegio && school.colegio.trim()) {
+          const colName = document.createElement('span');
+          colName.style.fontSize = '11.5px';
+          colName.style.fontWeight = '700';
+          colName.style.color = '#003366';
+          colName.textContent = `— ${school.colegio}`;
+          titleRow.appendChild(colName);
+        }
+        leftHeader.appendChild(titleRow);
+
+        const summaryRow = document.createElement('div');
+        summaryRow.style.display = 'flex';
+        summaryRow.style.gap = '5px';
+        summaryRow.style.flexWrap = 'wrap';
+
+        const activeNivs = ['7', '8', '9'].filter(n => school.niveles[n]);
+        if (activeNivs.length > 0) {
+          activeNivs.forEach(n => {
+            const secs = (school.secciones[n]?.selected || []).length;
+            const tag = document.createElement('span');
+            tag.style.fontSize = '10px';
+            tag.style.fontWeight = '700';
+            tag.style.background = '#e2e8f0';
+            tag.style.color = '#334155';
+            tag.style.padding = '1px 6px';
+            tag.style.borderRadius = '4px';
+            tag.textContent = `${n}°: ${secs > 0 ? secs + ' sec' : 'sin sec'}`;
+            summaryRow.appendChild(tag);
+          });
+        } else {
+          const tag = document.createElement('span');
+          tag.style.fontSize = '10px';
+          tag.style.color = '#94a3b8';
+          tag.textContent = 'Sin niveles seleccionados';
+          summaryRow.appendChild(tag);
+        }
+        leftHeader.appendChild(summaryRow);
+        header.appendChild(leftHeader);
+
+        const rightActions = document.createElement('div');
+        rightActions.style.display = 'flex';
+        rightActions.style.alignItems = 'center';
+        rightActions.style.gap = '6px';
+
+        if (currentSchools.length > 1) {
+          const btnRemove = document.createElement('button');
+          btnRemove.type = 'button';
+          btnRemove.className = 'btn btn-outline';
+          btnRemove.style.padding = '2px 8px';
+          btnRemove.style.fontSize = '11px';
+          btnRemove.style.color = '#dc2626';
+          btnRemove.style.borderColor = '#fca5a5';
+          btnRemove.style.background = '#fef2f2';
+          btnRemove.innerHTML = '🗑️';
+          btnRemove.title = 'Quitar este centro educativo';
+          btnRemove.onclick = (e) => {
+            e.stopPropagation();
+            removeSchoolField(index);
+          };
+          rightActions.appendChild(btnRemove);
+        }
+
+        const btnToggle = document.createElement('button');
+        btnToggle.type = 'button';
+        btnToggle.className = 'btn btn-outline';
+        btnToggle.style.padding = '3px 8px';
+        btnToggle.style.fontSize = '11px';
+        btnToggle.style.color = '#334155';
+        btnToggle.style.borderColor = '#cbd5e1';
+        btnToggle.style.background = '#ffffff';
+        btnToggle.style.fontWeight = '700';
+        btnToggle.innerHTML = school.isExpanded ? '▲ Plegar' : '▼ Desplegar';
+        btnToggle.onclick = (e) => {
+          e.stopPropagation();
+          toggleSchoolAccordion(index);
+        };
+        rightActions.appendChild(btnToggle);
+
+        header.appendChild(rightActions);
+        card.appendChild(header);
+
+        if (school.isExpanded) {
+          const body = document.createElement('div');
+          body.style.padding = '12px';
+          body.style.display = 'flex';
+          body.style.flexDirection = 'column';
+          body.style.gap = '10px';
+          body.style.background = '#ffffff';
+
+          const grid = document.createElement('div');
+          grid.style.display = 'grid';
+          grid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(200px, 1fr))';
+          grid.style.gap = '10px';
+
+          // DRE
+          const dreDiv = document.createElement('div');
+          const dreLabel = document.createElement('label');
+          dreLabel.style.fontSize = '11px';
+          dreLabel.style.fontWeight = '700';
+          dreLabel.style.color = '#475569';
+          dreLabel.style.display = 'block';
+          dreLabel.style.marginBottom = '2px';
+          dreLabel.textContent = 'DIRECCIÓN REGIONAL (DRE) *';
+
+          const dreSelect = document.createElement('select');
+          dreSelect.className = 'filter-select';
+          dreSelect.style.width = '100%';
+          dreSelect.style.fontSize = '11.5px';
+          dreSelect.id = `regSchoolDre_${index}`;
+          DRE_LIST.forEach(d => {
+            const opt = document.createElement('option');
+            opt.value = d.code;
+            opt.textContent = d.name;
+            if (d.code === school.dreCodigo) opt.selected = true;
+            dreSelect.appendChild(opt);
+          });
+          dreSelect.onchange = (e) => {
+            currentSchools[index].dreCodigo = e.target.value;
+            currentSchools[index].dreNombre = e.target.options[e.target.selectedIndex]?.text || e.target.value;
+          };
+          dreDiv.appendChild(dreLabel);
+          dreDiv.appendChild(dreSelect);
+
+          // School Name
+          const nameDiv = document.createElement('div');
+          const nameLabel = document.createElement('label');
+          nameLabel.style.fontSize = '11px';
+          nameLabel.style.fontWeight = '700';
+          nameLabel.style.color = '#475569';
+          nameLabel.style.display = 'block';
+          nameLabel.style.marginBottom = '2px';
+          nameLabel.textContent = 'NOMBRE DEL COLEGIO / LICEO *';
+
+          const nameInput = document.createElement('input');
+          nameInput.type = 'text';
+          nameInput.className = 'filter-input';
+          nameInput.style.width = '100%';
+          nameInput.style.fontSize = '12px';
+          nameInput.id = `regSchoolName_${index}`;
+          nameInput.placeholder = 'ej. C.T.P. / Liceo...';
+          nameInput.value = school.colegio || '';
+          nameInput.oninput = (e) => {
+            currentSchools[index].colegio = e.target.value;
+          };
+          nameDiv.appendChild(nameLabel);
+          nameDiv.appendChild(nameInput);
+
+          grid.appendChild(dreDiv);
+          grid.appendChild(nameDiv);
+          body.appendChild(grid);
+
+          // Niveles atendidos
+          const nivelesWrap = document.createElement('div');
+          nivelesWrap.style.marginTop = '2px';
+
+          const nivHeader = document.createElement('div');
+          nivHeader.style.display = 'flex';
+          nivHeader.style.justifyContent = 'space-between';
+          nivHeader.style.alignItems = 'center';
+          nivHeader.style.marginBottom = '4px';
+
+          const nivLabel = document.createElement('label');
+          nivLabel.style.fontSize = '11px';
+          nivLabel.style.fontWeight = '700';
+          nivLabel.style.color = '#475569';
+          nivLabel.textContent = `NIVELES QUE ATIENDES EN ESTE CENTRO:`;
+
+          const nivHint = document.createElement('span');
+          nivHint.style.fontSize = '10px';
+          nivHint.style.color = '#64748b';
+          nivHint.textContent = 'Toca para activar o desactivar';
+
+          nivHeader.appendChild(nivLabel);
+          nivHeader.appendChild(nivHint);
+          nivelesWrap.appendChild(nivHeader);
+
+          const nivButtonsRow = document.createElement('div');
+          nivButtonsRow.style.display = 'flex';
+          nivButtonsRow.style.gap = '8px';
+
+          ['7', '8', '9'].forEach(n => {
+            const isAct = !!school.niveles[n];
+            const btnN = document.createElement('button');
+            btnN.type = 'button';
+            btnN.className = isAct ? 'toggle-pill-btn active' : 'toggle-pill-btn';
+            btnN.textContent = isAct ? `✓ ${n}° Año` : `${n}° Año`;
+            btnN.onclick = () => toggleSchoolNivel(index, n);
+            nivButtonsRow.appendChild(btnN);
+          });
+          nivelesWrap.appendChild(nivButtonsRow);
+          body.appendChild(nivelesWrap);
+
+          // Secciones por cada nivel activo
+          const secContainer = document.createElement('div');
+          secContainer.style.display = 'flex';
+          secContainer.style.flexDirection = 'column';
+          secContainer.style.gap = '8px';
+          secContainer.style.marginTop = '2px';
+
+          ['7', '8', '9'].forEach(n => {
+            if (!school.niveles[n]) return;
+
+            const secBlock = document.createElement('div');
+            secBlock.style.background = '#f8fafc';
+            secBlock.style.border = '1px solid #e2e8f0';
+            secBlock.style.borderRadius = '8px';
+            secBlock.style.padding = '8px 10px';
+
+            const secHead = document.createElement('div');
+            secHead.style.display = 'flex';
+            secHead.style.justifyContent = 'space-between';
+            secHead.style.alignItems = 'center';
+            secHead.style.marginBottom = '6px';
+            secHead.style.flexWrap = 'wrap';
+            secHead.style.gap = '6px';
+
+            const secTitle = document.createElement('strong');
+            secTitle.style.fontSize = '11.5px';
+            secTitle.style.color = '#0f172a';
+            secTitle.textContent = `${n}° Año: Secciones Atendidas`;
+            secHead.appendChild(secTitle);
+
+            const totalWrap = document.createElement('div');
+            totalWrap.style.display = 'flex';
+            totalWrap.style.alignItems = 'center';
+            totalWrap.style.gap = '6px';
+
+            const totalLabel = document.createElement('span');
+            totalLabel.style.fontSize = '10.5px';
+            totalLabel.style.color = '#64748b';
+            totalLabel.textContent = 'Total colegio:';
+            totalWrap.appendChild(totalLabel);
+
+            const totalSelect = document.createElement('select');
+            totalSelect.className = 'filter-select';
+            totalSelect.style.padding = '2px 6px';
+            totalSelect.style.fontSize = '11px';
+            const curTotal = school.secciones[n]?.total || 6;
+            [1, 2, 3, 4, 5, 6, 8, 10, 12].forEach(num => {
+              const opt = document.createElement('option');
+              opt.value = num;
+              opt.textContent = `${num} sección${num > 1 ? 'es' : ''}`;
+              if (num === curTotal) opt.selected = true;
+              totalSelect.appendChild(opt);
+            });
+            totalSelect.onchange = (e) => changeSchoolTotalSec(index, n, e.target.value);
+            totalWrap.appendChild(totalSelect);
+            secHead.appendChild(totalWrap);
+            secBlock.appendChild(secHead);
+
+            const badgesRow = document.createElement('div');
+            badgesRow.style.display = 'flex';
+            badgesRow.style.flexWrap = 'wrap';
+            badgesRow.style.gap = '6px';
+
+            const selSecs = school.secciones[n]?.selected || [];
+            for (let i = 1; i <= curTotal; i++) {
+              const secCode = `${n}-${i}`;
+              const isSelected = selSecs.includes(secCode);
+              const badgeBtn = document.createElement('button');
+              badgeBtn.type = 'button';
+              badgeBtn.className = isSelected ? 'sec-badge-btn active' : 'sec-badge-btn';
+              badgeBtn.textContent = secCode;
+              badgeBtn.onclick = () => toggleSchoolSecBadge(index, n, secCode);
+              badgesRow.appendChild(badgeBtn);
+            }
+            secBlock.appendChild(badgesRow);
+            secContainer.appendChild(secBlock);
+          });
+
+          body.appendChild(secContainer);
+          card.appendChild(body);
+        }
+
+        container.appendChild(card);
+      });
+    }
+
+    function toggleSchoolAccordion(index) {
+      syncSchoolsFromDOM();
+      if (currentSchools[index]) {
+        currentSchools[index].isExpanded = !currentSchools[index].isExpanded;
+        renderSchoolCards();
+      }
+    }
+
+    function addSchoolField() {
+      syncSchoolsFromDOM();
+      currentSchools.forEach(s => s.isExpanded = false);
+      currentSchools.push(createDefaultSchoolObject(currentSchools.length));
+      renderSchoolCards();
+    }
+
+    function removeSchoolField(index) {
+      if (currentSchools.length > 1) {
+        syncSchoolsFromDOM();
+        currentSchools.splice(index, 1);
+        if (currentSchools.length === 1) currentSchools[0].isExpanded = true;
+        renderSchoolCards();
+      }
+    }
+
+    function toggleSchoolNivel(schoolIndex, nivel) {
+      syncSchoolsFromDOM();
+      const sch = currentSchools[schoolIndex];
+      if (!sch) return;
+      sch.niveles[nivel] = !sch.niveles[nivel];
+      if (sch.niveles[nivel] && (!sch.secciones[nivel]?.selected || sch.secciones[nivel].selected.length === 0)) {
+        sch.secciones[nivel] = { total: 6, selected: [`${nivel}-1`, `${nivel}-2`] };
+      }
+      renderSchoolCards();
+    }
+
+    function changeSchoolTotalSec(schoolIndex, nivel, totalVal) {
+      syncSchoolsFromDOM();
+      const sch = currentSchools[schoolIndex];
+      if (!sch) return;
+      if (!sch.secciones[nivel]) sch.secciones[nivel] = { total: 6, selected: [] };
+      sch.secciones[nivel].total = parseInt(totalVal, 10);
+      renderSchoolCards();
+    }
+
+    function toggleSchoolSecBadge(schoolIndex, nivel, secCode) {
+      syncSchoolsFromDOM();
+      const sch = currentSchools[schoolIndex];
+      if (!sch || !sch.secciones[nivel]) return;
+      const list = sch.secciones[nivel].selected || [];
+      if (list.includes(secCode)) {
+        sch.secciones[nivel].selected = list.filter(s => s !== secCode);
+      } else {
+        sch.secciones[nivel].selected = [...list, secCode];
+      }
+      renderSchoolCards();
+    }
+
+    function cargarUsuarioDemo() {
+      if (document.getElementById('regName')) document.getElementById('regName').value = 'Prof. Alberto Bustos Ortega (Demo)';
+      if (document.getElementById('regId')) document.getElementById('regId').value = '1-1234-5678';
+      if (document.getElementById('regPhone')) document.getElementById('regPhone').value = '8888-9999';
+      if (document.getElementById('regEmail')) document.getElementById('regEmail').value = 'alberto.docente.demo@mep.go.cr';
+      if (document.getElementById('regPin')) document.getElementById('regPin').value = '1234';
+      if (document.getElementById('regPinConfirm')) document.getElementById('regPinConfirm').value = '1234';
+
+      currentSchools = [
+        {
+          id: 'school_demo_1',
+          dreCodigo: 'DRE-01',
+          dreNombre: 'DRE-01 - San José Central (San José)',
+          colegio: 'Liceo de Costa Rica',
+          isExpanded: true,
+          niveles: { '7': true, '8': true, '9': false },
+          secciones: {
+            '7': { total: 6, selected: ['7-1', '7-2'] },
+            '8': { total: 6, selected: ['8-1', '8-2'] },
+            '9': { total: 6, selected: [] }
+          }
+        },
+        {
+          id: 'school_demo_2',
+          dreCodigo: 'DRE-02',
+          dreNombre: 'DRE-02 - Alajuela (Alajuela)',
+          colegio: 'C.T.P. de Alajuela',
+          isExpanded: false,
+          niveles: { '7': false, '8': false, '9': true },
+          secciones: {
+            '7': { total: 6, selected: [] },
+            '8': { total: 6, selected: [] },
+            '9': { total: 6, selected: ['9-1', '9-2'] }
+          }
+        }
+      ];
+      renderSchoolCards();
+    }
+
+    function rellenarLoginDemo() {
+      const stored = getStoredProfile();
+      if (document.getElementById('loginUser')) {
+        document.getElementById('loginUser').value = stored ? (stored.cedula || stored.correo || '1-1234-5678') : '1-1234-5678';
+      }
+      if (document.getElementById('loginPin')) {
+        document.getElementById('loginPin').value = stored ? (stored.pin || '1234') : '1234';
+      }
+    }
+
+    function getStoredProfile() {
+      try {
+        const saved = localStorage.getItem('MEP_DOCENTE_PERFIL_GLOBAL');
+        if (saved) return JSON.parse(saved);
+      } catch (e) {}
+      return null;
+    }
+
+    function checkTeacherAuth() {
+      const profile = getStoredProfile();
+      if (profile && profile.autenticado && profile.nombre) {
+        applyTeacherProfileUI(profile);
+      } else {
+        applyTeacherProfileUI(null);
+        openAuthModal(true);
+      }
+    }
+
+    function openAuthModal(isMandatory = false) {
+      const modal = document.getElementById('authDocenteModal');
+      const closeBtn = document.getElementById('authModalCloseBtn');
+      const profile = getStoredProfile();
+
+      if (closeBtn) {
+        closeBtn.style.display = (isMandatory || !profile || !profile.autenticado) ? 'none' : 'block';
+      }
+
+      switchAuthTab('register');
+
+      if (document.getElementById('regName')) document.getElementById('regName').value = profile?.nombre || '';
+      if (document.getElementById('regId')) document.getElementById('regId').value = profile?.cedula || '';
+      if (document.getElementById('regPhone')) document.getElementById('regPhone').value = profile?.telefono || '';
+      if (document.getElementById('regEmail')) document.getElementById('regEmail').value = profile?.correo || '';
+      if (document.getElementById('regPin')) document.getElementById('regPin').value = profile?.pin || '';
+      if (document.getElementById('regPinConfirm')) document.getElementById('regPinConfirm').value = profile?.pin || '';
+      if (document.getElementById('loginUser')) document.getElementById('loginUser').value = '';
+      if (document.getElementById('loginPin')) document.getElementById('loginPin').value = '';
+
+      if (profile && profile.centrosEducativos && Array.isArray(profile.centrosEducativos) && profile.centrosEducativos.length > 0) {
+        currentSchools = JSON.parse(JSON.stringify(profile.centrosEducativos));
+        currentSchools.forEach((s, idx) => {
+          if (!s.niveles) {
+            s.niveles = {
+              '7': (profile.niveles || []).some(n => n.includes('7')),
+              '8': (profile.niveles || []).some(n => n.includes('8')),
+              '9': (profile.niveles || []).some(n => n.includes('9'))
+            };
+          }
+          if (!s.secciones) {
+            s.secciones = {
+              '7': { total: 6, selected: (profile.seccionesPorNivel && profile.seccionesPorNivel['7']) || ['7-1'] },
+              '8': { total: 6, selected: (profile.seccionesPorNivel && profile.seccionesPorNivel['8']) || ['8-1', '8-2'] },
+              '9': { total: 6, selected: (profile.seccionesPorNivel && profile.seccionesPorNivel['9']) || ['9-1', '9-2'] }
+            };
+          }
+          if (s.isExpanded === undefined) s.isExpanded = (idx === 0);
+        });
+      } else if (profile && profile.colegio) {
+        currentSchools = [{
+          dreCodigo: profile.dreCodigo || 'DRE-01',
+          dreNombre: profile.dreNombre || 'DRE-01',
+          colegio: profile.colegio || '',
+          isExpanded: true,
+          niveles: {
+            '7': (profile.niveles || []).some(n => n.includes('7')),
+            '8': (profile.niveles || []).some(n => n.includes('8')),
+            '9': (profile.niveles || []).some(n => n.includes('9'))
+          },
+          secciones: {
+            '7': { total: 6, selected: (profile.seccionesPorNivel && profile.seccionesPorNivel['7']) || ['7-1'] },
+            '8': { total: 6, selected: (profile.seccionesPorNivel && profile.seccionesPorNivel['8']) || ['8-1', '8-2'] },
+            '9': { total: 6, selected: (profile.seccionesPorNivel && profile.seccionesPorNivel['9']) || ['9-1', '9-2'] }
+          }
+        }];
+      } else {
+        currentSchools = [createDefaultSchoolObject(0)];
+      }
+
+      renderSchoolCards();
+      modal.classList.add('open');
+    }
+
+    function closeAuthModal() {
+      const profile = getStoredProfile();
+      if (!profile || !profile.autenticado) {
+        alert('Debes registrarte o iniciar sesión con tu PIN para acceder al módulo evaluador.');
+        return;
+      }
+      document.getElementById('authDocenteModal').classList.remove('open');
+    }
+
+    function switchAuthTab(tab) {
+      const loginView = document.getElementById('authViewLogin');
+      const registerView = document.getElementById('authViewRegister');
+      const tabLogin = document.getElementById('tabAuthLogin');
+      const tabRegister = document.getElementById('tabAuthRegister');
+
+      if (!loginView || !registerView || !tabLogin || !tabRegister) return;
+
+      if (tab === 'login') {
+        loginView.style.display = 'flex';
+        registerView.style.display = 'none';
+        tabLogin.className = 'auth-tab-btn active';
+        tabRegister.className = 'auth-tab-btn';
+      } else {
+        loginView.style.display = 'none';
+        registerView.style.display = 'flex';
+        tabRegister.className = 'auth-tab-btn active';
+        tabLogin.className = 'auth-tab-btn';
+      }
+    }
+
+    function togglePinVisibility() {
+      const p1 = document.getElementById('regPin');
+      const p2 = document.getElementById('regPinConfirm');
+      const label = document.getElementById('pinVisibilityLabel');
+      if (!p1) return;
+      const isPass = p1.type === 'password';
+      p1.type = isPass ? 'text' : 'password';
+      if (p2) p2.type = isPass ? 'text' : 'password';
+      if (label) label.textContent = isPass ? 'Ocultar PIN' : 'Ver PIN';
+    }
+
+    function submitDocenteRegistro() {
+      const nombre = (document.getElementById('regName')?.value || '').trim();
+      const cedula = (document.getElementById('regId')?.value || '').trim();
+      const telefono = (document.getElementById('regPhone')?.value || '').trim();
+      const correo = (document.getElementById('regEmail')?.value || '').trim();
+      const pin = (document.getElementById('regPin')?.value || '').trim();
+      const pinConfirm = (document.getElementById('regPinConfirm')?.value || '').trim();
+
+      if (!nombre) { alert('Por favor ingresa tu nombre completo.'); return; }
+      if (!cedula) { alert('Por favor ingresa tu cédula o número de identificación.'); return; }
+      if (!correo || !correo.includes('@')) { alert('Por favor ingresa un correo electrónico institucional MEP válido.'); return; }
+
+      syncSchoolsFromDOM();
+
+      const primarySchool = currentSchools[0] || createDefaultSchoolObject(0);
+      if (!primarySchool.colegio || !primarySchool.colegio.trim()) {
+        alert('Por favor ingresa el nombre de tu colegio o liceo principal (#1).');
+        return;
+      }
+
+      const centrosEducativosValidos = currentSchools.filter(s => s.colegio && s.colegio.trim() !== '');
+
+      const nivelesSet = new Set();
+      const seccionesSet = new Set();
+      const seccionesPorNivelConsolidadas = { '7': [], '8': [], '9': [] };
+
+      centrosEducativosValidos.forEach(sch => {
+        ['7', '8', '9'].forEach(n => {
+          if (sch.niveles[n]) {
+            nivelesSet.add(`${n}° Año`);
+            const sel = sch.secciones[n]?.selected || [];
+            sel.forEach(s => {
+              seccionesSet.add(s);
+              if (!seccionesPorNivelConsolidadas[n].includes(s)) {
+                seccionesPorNivelConsolidadas[n].push(s);
+              }
+            });
+          }
+        });
+      });
+
+      const nivelesAtendidos = Array.from(nivelesSet);
+      const todasLasSecciones = Array.from(seccionesSet);
+
+      if (nivelesAtendidos.length === 0) {
+        alert('Por favor activa al menos un nivel educativo (7°, 8° o 9°) en tus centros educativos asignados.');
+        return;
+      }
+
+      if (!pin || pin.length < 4) { alert('El PIN debe contener exactamente 4 dígitos numéricos.'); return; }
+      if (pin !== pinConfirm) { alert('Los PINs ingresados no coinciden. Por favor verifícalos.'); return; }
+
+      const perfil = {
+        nombre,
+        cedula,
+        telefono,
+        correo,
+        tipoRol: 'Docente',
+        dreCodigo: primarySchool.dreCodigo,
+        dreNombre: primarySchool.dreNombre,
+        colegio: primarySchool.colegio,
+        centrosEducativos: centrosEducativosValidos,
+        niveles: nivelesAtendidos,
+        seccionesPorNivel: seccionesPorNivelConsolidadas,
+        secciones: todasLasSecciones,
+        pin,
+        autenticado: true,
+        registradoEl: new Date().toISOString()
+      };
+
+      localStorage.setItem('MEP_DOCENTE_PERFIL_GLOBAL', JSON.stringify(perfil));
+      
+      // Compatibilidad con docente_activo
+      try {
+        localStorage.setItem('docente_activo', JSON.stringify({
+          nombreCompleto: nombre,
+          institucionNombre: primarySchool.colegio,
+          correoInstitucional: correo,
+          idDocente: cedula
+        }));
+      } catch(e) {}
+
+      applyTeacherProfileUI(perfil);
+      document.getElementById('authDocenteModal').classList.remove('open');
+      alert(`✅ ¡Registro exitoso, ${nombre}!\nTus datos y PIN han quedado respaldados en este dispositivo.`);
+    }
+
+    function submitDocenteLogin() {
+      const user = (document.getElementById('loginUser')?.value || '').trim().toLowerCase();
+      const pin = (document.getElementById('loginPin')?.value || '').trim();
+
+      if (!user || !pin) {
+        alert('Por favor ingresa tu cédula/correo y tu PIN de 4 dígitos.');
+        return;
+      }
+
+      const stored = getStoredProfile();
+      if (stored && (stored.cedula.toLowerCase().includes(user) || stored.correo.toLowerCase() === user) && stored.pin === pin) {
+        stored.autenticado = true;
+        localStorage.setItem('MEP_DOCENTE_PERFIL_GLOBAL', JSON.stringify(stored));
+        
+        // Compatibilidad con docente_activo
+        try {
+          localStorage.setItem('docente_activo', JSON.stringify({
+            nombreCompleto: stored.nombre,
+            institucionNombre: stored.colegio,
+            correoInstitucional: stored.correo,
+            idDocente: stored.cedula
+          }));
+        } catch(e) {}
+
+        applyTeacherProfileUI(stored);
+        document.getElementById('authDocenteModal').classList.remove('open');
+        alert(`✅ ¡Bienvenido(a) de nuevo, ${stored.nombre}!`);
+        return;
+      }
+
+      alert('⚠️ Cédula/correo o PIN no coinciden con ningún registro docente en este dispositivo. Si es tu primera vez, por favor utiliza la pestaña "Registrarse".');
+    }
+
+    function applyTeacherProfileUI(profile) {
+      const badgeName = document.getElementById('badgeTeacherName');
+      const badgeSchool = document.getElementById('badgeTeacherSchool');
+
+      if (profile && profile.autenticado && profile.nombre) {
+        if (badgeName) badgeName.textContent = `👨‍🏫 ${profile.nombre}`;
+        
+        let schools9 = [];
+        if (profile.centrosEducativos && profile.centrosEducativos.length > 0) {
+          schools9 = profile.centrosEducativos.filter(s => s.niveles && s.niveles['9']);
+        }
+        let schoolsDisplay = '';
+        if (schools9.length > 0) {
+          schoolsDisplay = schools9.map(s => `${s.colegio} [${s.dreCodigo || 'DRE'}]`).join(' • ');
+        } else {
+          schoolsDisplay = `${profile.colegio || 'Institución asignada a 9.°'} (${profile.dreCodigo || 'DRE'})`;
+        }
+        if (badgeSchool) badgeSchool.textContent = schoolsDisplay;
+
+        // Actualizar opciones del filtro de sección para 9°
+        const filtroSec = document.getElementById('filtroSeccion');
+        const filtroSecObs = document.getElementById('filtroSeccionObs');
+        const sec9 = (profile.seccionesPorNivel && profile.seccionesPorNivel['9']) || (schools9[0]?.secciones?.['9']?.selected) || [];
+        
+        if (sec9.length > 0) {
+          if (filtroSec) {
+            const curVal = filtroSec.value;
+            filtroSec.innerHTML = `<option value="TODAS">Todas las secciones asignadas (9°)</option>`;
+            sec9.forEach(s => {
+              const opt = document.createElement('option');
+              const sFormatted = s.startsWith('Sección') ? s : `Sección ${s}`;
+              opt.value = sFormatted;
+              opt.textContent = sFormatted;
+              if (sFormatted === curVal) opt.selected = true;
+              filtroSec.appendChild(opt);
+            });
+          }
+          if (filtroSecObs) {
+            const curValObs = filtroSecObs.value;
+            filtroSecObs.innerHTML = `<option value="TODAS">Todas las secciones asignadas (9°)</option>`;
+            sec9.forEach(s => {
+              const opt = document.createElement('option');
+              const sFormatted = s.startsWith('Sección') ? s : `Sección ${s}`;
+              opt.value = sFormatted;
+              opt.textContent = sFormatted;
+              if (sFormatted === curValObs) opt.selected = true;
+              filtroSecObs.appendChild(opt);
+            });
+          }
+        }
+      } else {
+        if (badgeName) badgeName.textContent = `👨‍🏫 Docente no identificado`;
+        if (badgeSchool) badgeSchool.textContent = 'Sin registrar';
+      }
+    }
+
+    function cerrarSesionDocente() {
+      if (confirm('¿Deseas cerrar la sesión o cambiar de perfil docente en este dispositivo?')) {
+        const profile = getStoredProfile();
+        if (profile) {
+          profile.autenticado = false;
+          localStorage.setItem('MEP_DOCENTE_PERFIL_GLOBAL', JSON.stringify(profile));
+        }
+        openAuthModal(true);
+      }
+    }
+
     // CRITERIOS Y CONDUCTAS OFICIALES MEP CON DESCRIPCIÓN COMPLETA PARA CELULAR Y TABLETA
     var CRITERIOS_DETALLADOS = {
       psi: [
@@ -1277,6 +2494,9 @@
 
     // Inicializar aplicativo
     window.addEventListener("DOMContentLoaded", function() {
+      // Verificar sesión y perfil unificado del docente
+      checkTeacherAuth();
+
       // Configurar enlace con datos del docente activo
       try {
         var rawDoc = localStorage.getItem("docente_activo") || localStorage.getItem("antigravity_docente_sesion");
@@ -2629,9 +3849,9 @@
     }
 
     function cerrarModalEscanerQR() {
-      detenerCamaraQR();
       var modal = document.getElementById("modalEscanerQR");
       if (modal) modal.style.display = "none";
+      detenerCamaraQR();
     }
 
     function iniciarCamaraQR() {
@@ -2791,6 +4011,186 @@
       var raw = document.getElementById("inputTokenQR").value.trim();
       if (!raw) return;
       procesarDatosQR(raw);
+    }
+
+    function insertTestQrPayload9no() {
+      const demoStudents9 = [
+        { nom: "Sebastián Fallas Monge", sec: "Sección 9-1", porc: 100, cog: ["L","L","L","L","L","L","L","L","L","L"] },
+        { nom: "Valeria Chaves Porras", sec: "Sección 9-2", porc: 90, cog: ["L","L","L","L","L","RA","L","L","L","L"] },
+        { nom: "Daniel Barquero Solís", sec: "Sección 9-3", porc: 80, cog: ["L","L","L","L","L","RA","L","RA","L","L"] },
+        { nom: "Jimena Alvarado Castro", sec: "Sección 9-1", porc: 100, cog: ["L","L","L","L","L","L","L","L","L","L"] }
+      ];
+      const selected = demoStudents9[Math.floor(Math.random() * demoStudents9.length)];
+      const hash = "HASH-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+      const hora = new Date().toLocaleTimeString('es-CR', { hour: '2-digit', minute: '2-digit' });
+
+      const testPayload = {
+        t: "MEP9",
+        nom: selected.nom,
+        sec: selected.sec,
+        porc: selected.porc,
+        cog: selected.cog,
+        fec: "Hoy",
+        hor: hora,
+        h: hash
+      };
+
+      const inputEl = document.getElementById("inputTokenQR");
+      if (inputEl) {
+        inputEl.value = JSON.stringify(testPayload);
+      }
+      cambiarTabEscaner('manual');
+    }
+
+    /* =========================================================================
+     * GENERADOR DE ENLACES Y CÓDIGOS QR PARA ESTUDIANTES (9.° AÑO - PC)
+     * ========================================================================= */
+    let currentSlmSchoolIndex = 0;
+
+    function openStudentLinksModal() {
+      const profile = getStoredProfile();
+      if (!profile || !profile.autenticado) {
+        alert('⚠️ Por favor completa tu identificación o inicia sesión con tu PIN antes de generar enlaces.');
+        openAuthModal(true);
+        return;
+      }
+
+      const modal = document.getElementById('modalStudentLinks');
+      const schoolSelect = document.getElementById('slmSchoolSelect');
+      const teacherBadge = document.getElementById('slmTeacherIdentityBadge');
+
+      if (teacherBadge) {
+        teacherBadge.textContent = `👨‍🏫 ${profile.nombre || 'Docente'}`;
+      }
+
+      // Populate schools
+      schoolSelect.innerHTML = '';
+      const schools = (profile.centrosEducativos && profile.centrosEducativos.length > 0)
+        ? profile.centrosEducativos
+        : [{ colegio: profile.colegio || 'Liceo / CTP MEP', dreNombre: profile.dreNombre || 'DRE-01', dreCodigo: profile.dreCodigo || 'DRE-01', niveles: { '9': true }, secciones: { '9': { total: 6, selected: ['9-1', '9-2'] } } }];
+
+      schools.forEach((sch, idx) => {
+        const opt = document.createElement('option');
+        opt.value = idx;
+        opt.textContent = `${sch.colegio || 'Centro Educativo ' + (idx + 1)} (${sch.dreNombre || sch.dreCodigo || 'DRE'})`;
+        schoolSelect.appendChild(opt);
+      });
+
+      currentSlmSchoolIndex = 0;
+      schoolSelect.value = 0;
+      updateStudentLinksView();
+      modal.style.display = 'flex';
+      modal.classList.add('open');
+    }
+
+    function closeStudentLinksModal() {
+      const modal = document.getElementById('modalStudentLinks');
+      if (modal) {
+        modal.style.display = 'none';
+        modal.classList.remove('open');
+      }
+    }
+
+    function getBase9noStudentUrl() {
+      const origin = window.location.origin && window.location.origin.startsWith('http')
+        ? window.location.origin
+        : 'https://diagnosticosecundaria.vercel.app';
+      return `${origin}/webapps/diagnostico_9no_modulo01_aula_inteligente.html`;
+    }
+
+    function updateStudentLinksView() {
+      const profile = getStoredProfile();
+      if (!profile) return;
+
+      const schoolSelect = document.getElementById('slmSchoolSelect');
+      const schIdx = parseInt(schoolSelect?.value || '0', 10);
+      currentSlmSchoolIndex = schIdx;
+
+      const schools = (profile.centrosEducativos && profile.centrosEducativos.length > 0)
+        ? profile.centrosEducativos
+        : [{ colegio: profile.colegio || '', dreNombre: profile.dreNombre || 'DRE-01', dreCodigo: profile.dreCodigo || 'DRE-01', niveles: { '9': true }, secciones: { '9': { total: 6, selected: ['9-1', '9-2'] } } }];
+
+      const school = schools[schIdx] || schools[0];
+      const baseUrl = getBase9noStudentUrl();
+
+      // Params
+      const baseParams = new URLSearchParams();
+      if (profile.cedula) baseParams.set('docenteId', profile.cedula);
+      if (profile.nombre) baseParams.set('docente', profile.nombre);
+      if (school.colegio) baseParams.set('institucion', school.colegio);
+      if (school.dreCodigo || school.dreNombre) baseParams.set('dre', school.dreCodigo || school.dreNombre);
+      baseParams.set('nivel', '9');
+
+      const generalUrl = `${baseUrl}?${baseParams.toString()}`;
+
+      // Update General input & button
+      const genInput = document.getElementById('slmGeneralUrlInput');
+      const openBtn = document.getElementById('slmOpenGeneralBtn');
+      if (genInput) genInput.value = generalUrl;
+      if (openBtn) openBtn.href = generalUrl;
+
+      // Update Sections cards
+      const container = document.getElementById('slmSectionCardsContainer');
+      if (container) {
+        container.innerHTML = '';
+        const secList = (school.secciones && school.secciones['9'] && school.secciones['9'].selected && school.secciones['9'].selected.length > 0)
+          ? school.secciones['9'].selected
+          : ['9-1', '9-2', '9-3', '9-4'];
+
+        secList.forEach(sec => {
+          const secParams = new URLSearchParams(baseParams);
+          secParams.set('seccion', sec);
+          const secUrl = `${baseUrl}?${secParams.toString()}`;
+
+          const card = document.createElement('div');
+          card.style.background = '#ffffff';
+          card.style.border = '1.5px solid #cbd5e1';
+          card.style.borderRadius = '8px';
+          card.style.padding = '8px 10px';
+          card.style.display = 'flex';
+          card.style.flexDirection = 'column';
+          card.style.gap = '6px';
+
+          card.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <strong style="font-size: 12.5px; color: #003366;">Sección ${sec}</strong>
+              <span class="badge" style="background: #e0f2fe; color: #0369a1; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 800;">Directo</span>
+            </div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+              <button class="btn btn-accent" style="padding: 4px 10px; font-size: 11px; background: #0284c7; border-color: #0369a1; color: white; font-weight: 700;" onclick="copySectionStudentLink('${secUrl}', '${sec}')">
+                📋 Copiar
+              </button>
+              <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px; font-weight: 700;" onclick="projectSectionQr('${secUrl}', '${sec}')">
+                📽️ QR
+              </button>
+              <a href="${secUrl}" target="_blank" class="btn btn-outline" style="padding: 4px 10px; font-size: 11px; text-decoration: none; color: #0f172a; background: white; border: 1px solid #cbd5e1; font-weight: 700;">
+                🖥️ Abrir PC
+              </a>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      }
+
+    function copyGeneralStudentLink() {
+      const input = document.getElementById('slmGeneralUrlInput');
+      if (input && input.value) {
+        navigator.clipboard.writeText(input.value).then(() => {
+          alert('✅ ¡Enlace General de 9.° Año copiado al portapapeles!\n\nCompártelo para que los estudiantes lo abran en las computadoras del laboratorio.');
+        }).catch(() => {
+          input.select();
+          document.execCommand('copy');
+          alert('✅ ¡Enlace General copiado!');
+        });
+      }
+    }
+
+    function copySectionStudentLink(url, sec) {
+      navigator.clipboard.writeText(url).then(() => {
+        alert(`✅ ¡Enlace directo para Sección ${sec} copiado al portapapeles!`);
+      }).catch(() => {
+        prompt(`Copia el enlace de la Sección ${sec}:`, url);
+      });
     }
   </script>
 </body>

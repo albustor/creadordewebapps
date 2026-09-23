@@ -423,8 +423,24 @@
   <!-- Parte Administrativa -->
   <section class="item-card" id="admin-section">
     <div class="item-title">I. Datos Administrativos</div>
+    
+    <div id="teacherInfoBadge8vo" style="display: none; background: #eff6ff; border: 1.5px solid #38bdf8; border-radius: 8px; padding: 10px 14px; margin-bottom: 15px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 20px;">👨‍🏫</span>
+          <div>
+            <strong id="badgeTeacherName8vo" style="font-size: 13px; color: #003366; display: block;">Docente: —</strong>
+            <span id="badgeTeacherMeta8vo" style="font-size: 11.5px; color: #475569;">Institución: —</span>
+          </div>
+        </div>
+        <span style="background: #dcfce7; color: #15803d; border: 1px solid #86efac; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 6px;">
+          🔗 Sincronización Automática Activa
+        </span>
+      </div>
+    </div>
+
     <div class="form-group">
-      <label for="studentName">Nombre del / de la Estudiante:</label>
+      <label for="studentName">Nombre del / de la Estudiante: *</label>
       <input type="text" id="studentName" placeholder="Escriba su nombre completo" required>
     </div>
     <div class="form-group">
@@ -1074,11 +1090,50 @@ FIN</div>
     reportHTML += '</tbody></table>';
     document.getElementById('indicator-report').innerHTML = reportHTML;
 
+    let urlDocenteId = '';
+    let urlDocente = '';
+    let urlInstitucion = '';
+    let urlDre = '';
+
+    function parseUrlParams8vo() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        urlDocenteId = params.get('docenteId') || '';
+        urlDocente = params.get('docente') || '';
+        urlInstitucion = params.get('institucion') || '';
+        urlDre = params.get('dre') || '';
+        const seccion = params.get('seccion') || '';
+
+        if (urlDocente || urlInstitucion || urlDocenteId) {
+          const badge = document.getElementById('teacherInfoBadge8vo');
+          const nameEl = document.getElementById('badgeTeacherName8vo');
+          const metaEl = document.getElementById('badgeTeacherMeta8vo');
+          if (badge) badge.style.display = 'block';
+          if (nameEl) nameEl.textContent = `👨‍🏫 Docente: Prof. ${urlDocente || 'Evaluador Asignado'}`;
+          if (metaEl) metaEl.textContent = `🏫 ${urlInstitucion || 'Centro Educativo'} • 📍 ${urlDre || 'DRE'}`;
+        }
+
+        if (seccion) {
+          const secSelect = document.getElementById('sectionGroup');
+          if (secSelect) {
+            secSelect.value = seccion;
+            secSelect.style.borderColor = '#0284c7';
+            secSelect.style.fontWeight = '800';
+          }
+        }
+      } catch (e) {
+        console.warn('Error al procesar parámetros URL:', e);
+      }
+    }
+
     // ENVÍO DE TELEMETRÍA AUTOMÁTICA
     const payloadTelemetria = {
       webAppId: "diag-8vo-hardware-algoritmos-2026",
       webAppTitulo: "Evaluación Diagnóstica — 8° Año (PNFT)",
-      docenteId: "ASESOR-FT-7729",
+      docenteId: urlDocenteId || "ASESOR-FT-7729",
+      docenteNombre: urlDocente || "",
+      institucionNombre: urlInstitucion || "",
+      dreCodigo: urlDre || "",
       nivel: "8°",
       estudianteNombre: name,
       estudianteCedula: cedula || "No indicada",
@@ -1116,11 +1171,14 @@ FIN</div>
       const res = await fetch('/api/telemetria/enviar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payloadTelemetria)
+        body: JSON.stringify({
+          origen: 'ESTUDIANTE_8VO_EN_LINEA',
+          datos: payloadTelemetria
+        })
       });
       if (res.ok) {
         document.getElementById('telemetryStatus').className = 'telemetry-status status-ok';
-        document.getElementById('telemetryStatus').innerHTML = '✅ <strong>¡Resultado sincronizado exitosamente!</strong> Tus respuestas fueron registradas en el sistema docente.';
+        document.getElementById('telemetryStatus').innerHTML = '✅ <strong>¡Resultado sincronizado exitosamente!</strong> Tus respuestas fueron registradas en el sistema docente y en el Dashboard Central.';
       } else {
         document.getElementById('telemetryStatus').className = 'telemetry-status status-ok';
         document.getElementById('telemetryStatus').innerHTML = '💾 <strong>Guardado en memoria local:</strong> El resultado se guardó de forma segura en este equipo.';
@@ -1134,6 +1192,10 @@ FIN</div>
     document.getElementById('results-section').style.display = 'block';
     document.getElementById('results-section').scrollIntoView({behavior: 'smooth'});
   }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    parseUrlParams8vo();
+  });
 </script>
 
 </body>

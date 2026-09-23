@@ -747,6 +747,21 @@
             👤 Datos de Identificación del Estudiante:
           </h3>
         </div>
+
+        <div id="teacherInfoBadge9no" style="display: none; background: #eff6ff; border: 1.5px solid #38bdf8; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 20px;">👨‍🏫</span>
+              <div>
+                <strong id="badgeTeacherName9no" style="font-size: 12.5px; color: #003366; display: block;">Docente: —</strong>
+                <span id="badgeTeacherMeta9no" style="font-size: 11px; color: #475569;">Institución: —</span>
+              </div>
+            </div>
+            <span style="background: #dcfce7; color: #15803d; border: 1px solid #86efac; font-size: 10.5px; font-weight: 800; padding: 2px 7px; border-radius: 6px;">
+              🔗 Sincronización Automática
+            </span>
+          </div>
+        </div>
         
         <div style="display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 12px; margin-bottom: 12px;">
           <div>
@@ -3528,9 +3543,21 @@
         var docParam = params.get("docente") || params.get("docenteNombre") || params.get("profesor");
         var instParam = params.get("institucion") || params.get("colegio") || params.get("centroEducativo");
         var secParam = params.get("seccion") || params.get("seccionGrupo");
+        var dreParam = params.get("dre") || params.get("dreNombre") || "";
+        var docIdParam = params.get("docenteId") || "";
 
         var docNombre = docParam || "";
         var instNombre = instParam || "";
+
+        if (docNombre || instNombre || docIdParam) {
+          var badge = document.getElementById("teacherInfoBadge9no");
+          var nameEl = document.getElementById("badgeTeacherName9no");
+          var metaEl = document.getElementById("badgeTeacherMeta9no");
+          if (badge) badge.style.display = "block";
+          if (nameEl) nameEl.textContent = "👨‍🏫 Docente: Prof. " + (docNombre || "Evaluador Asignado");
+          if (metaEl) metaEl.textContent = "🏫 " + (instNombre || "Colegio") + (dreParam ? " • 📍 " + dreParam : "");
+          if (docIdParam) CONFIG.docenteId = docIdParam;
+        }
 
         if (!docNombre) {
           try {
@@ -3583,8 +3610,11 @@
 
         var selectSec = document.getElementById("selectSeccion");
         if (selectSec && secParam) {
-          selectSec.value = secParam;
-          estado.seccionGrupo = secParam;
+          var valToSet = secParam.startsWith("Sección ") ? secParam : ("Sección " + secParam);
+          selectSec.value = valToSet;
+          selectSec.style.borderColor = "#0284c7";
+          selectSec.style.fontWeight = "800";
+          estado.seccionGrupo = valToSet;
         }
 
         // 🌟 RESTAURAR SESIÓN ACTIVA SI EXISTE (PERSISTENCIA ANTE RECARGAS F5 O CIERRE ACCIDENTAL)

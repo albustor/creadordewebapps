@@ -340,7 +340,7 @@ export default function DiagnosticoPage() {
                     <tr className="bg-slate-900 text-white">
                       <th className="p-3 border border-slate-700">Nivel / Dimensión</th>
                       <th className="p-3 border border-slate-700">Documento Oficial MEP</th>
-                      <th className="p-3 border border-slate-700">Implementación Digital Antigravity</th>
+                      <th className="p-3 border border-slate-700">Implementación Digital Oficial MEP</th>
                       <th className="p-3 border border-slate-700 text-center">Estado</th>
                     </tr>
                   </thead>

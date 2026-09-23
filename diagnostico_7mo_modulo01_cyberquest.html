@@ -1047,10 +1047,38 @@
         s3_colaboracion: 3,
         s4_frustracion: 3
       },
+      teacher: null,
+      sectionLocked: false,
       sessionHash: null
     };
 
     let AppState = { ...defaultState };
+
+    function parseUrlParams() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const docenteId = params.get('docenteId');
+        const docente = params.get('docente');
+        const institucion = params.get('institucion');
+        const dre = params.get('dre');
+        const seccion = params.get('seccion');
+
+        if (docente || institucion || docenteId) {
+          AppState.teacher = {
+            id: docenteId || '',
+            name: docente || '',
+            institution: institucion || '',
+            dre: dre || ''
+          };
+        }
+        if (seccion) {
+          AppState.section = seccion;
+          AppState.sectionLocked = true;
+        }
+      } catch (e) {
+        console.warn('Error parsing URL params:', e);
+      }
+    }
 
     function loadState() {
       try {
@@ -1077,6 +1105,8 @@
       } catch (e) {
         console.warn('Error al cargar estado previo:', e);
       }
+      // Re-apply URL params in case the URL specifies a distinct teacher or section
+      parseUrlParams();
     }
 
     function saveState() {
@@ -1855,49 +1885,55 @@
       const syncEl = document.getElementById('telemetrySyncStatus');
       const payload = getTelemetryPayload();
 
-      if (!SERVER_WEBHOOK_URL) {
-        if (syncEl) {
-          syncEl.innerHTML = `
-            <div style="background: rgba(0, 240, 255, 0.1); border: 1px solid var(--cyan-neon); border-radius: 10px; padding: 10px 14px; display: inline-flex; align-items: center; gap: 8px;">
-              <span style="font-size: 16px;">📱</span>
-              <span style="font-size: 13px; color: var(--cyan-neon); font-weight: 700;">Telemetría lista en pantalla para Escaneo QR del Docente</span>
-            </div>
-          `;
-        }
-        return;
-      }
-
       if (syncEl) {
         syncEl.innerHTML = `
           <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid var(--amber-neon); border-radius: 10px; padding: 10px 14px; display: inline-flex; align-items: center; gap: 8px;">
             <span style="font-size: 16px;">⏳</span>
-            <span style="font-size: 13px; color: var(--amber-neon); font-weight: 700;">Sincronizando telemetría...</span>
+            <span style="font-size: 13px; color: var(--amber-neon); font-weight: 700;">Sincronizando telemetría con el sistema docente...</span>
           </div>
         `;
       }
 
+      let syncExitosa = false;
+
+      // 1. Envío directo al servidor de telemetría de la plataforma
       try {
-        await fetch(SERVER_WEBHOOK_URL, {
+        const resLocal = await fetch('/api/telemetria/enviar', {
           method: 'POST',
-          mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
+        if (resLocal.ok) {
+          syncExitosa = true;
+        }
+      } catch (e) {}
 
-        if (syncEl) {
+      // 2. Envío secundario a webhook si está configurado
+      if (!syncExitosa && SERVER_WEBHOOK_URL) {
+        try {
+          await fetch(SERVER_WEBHOOK_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          syncExitosa = true;
+        } catch (err) {}
+      }
+
+      if (syncEl) {
+        if (syncExitosa) {
           syncEl.innerHTML = `
             <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid var(--lime-neon); border-radius: 10px; padding: 10px 14px; display: inline-flex; align-items: center; gap: 8px;">
               <span style="font-size: 16px;">✅</span>
-              <span style="font-size: 13px; color: var(--lime-neon); font-weight: 800;">Misión sincronizada exitosamente</span>
+              <span style="font-size: 13px; color: var(--lime-neon); font-weight: 800;">Misión sincronizada exitosamente con el sistema docente</span>
             </div>
           `;
-        }
-      } catch (err) {
-        if (syncEl) {
+        } else {
           syncEl.innerHTML = `
-            <div style="background: rgba(245, 158, 11, 0.15); border: 1px solid var(--amber-neon); border-radius: 10px; padding: 10px 14px; display: inline-flex; align-items: center; gap: 8px;">
-              <span style="font-size: 16px;">📶</span>
-              <span style="font-size: 13px; color: var(--amber-neon); font-weight: 700;">Modo Desconectado: El docente escaneará el Código QR en pantalla</span>
+            <div style="background: rgba(0, 240, 255, 0.1); border: 1px solid var(--cyan-neon); border-radius: 10px; padding: 10px 14px; display: inline-flex; align-items: center; gap: 8px;">
+              <span style="font-size: 16px;">📱</span>
+              <span style="font-size: 13px; color: var(--cyan-neon); font-weight: 700;">Guardado localmente en este equipo. Telemetría lista en pantalla.</span>
             </div>
           `;
         }
@@ -2012,10 +2048,25 @@
             <p class="card-desc">Evaluación Diagnóstica Oficial MEP 2026 - III Ciclo. Registra a ambos estudiantes (Líder de Misión y Co-piloto de Datos) para iniciar el diagnóstico.</p>
           </div>
 
+          ${AppState.teacher && (AppState.teacher.name || AppState.teacher.institution) ? `
+            <div style="background: rgba(0, 240, 255, 0.08); border: 1.5px solid var(--cyan-neon); border-radius: 10px; padding: 10px 14px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 20px;">👨‍🏫</span>
+                <div>
+                  <strong style="font-size: 12.5px; color: var(--cyan-neon); display: block;">Docente: ${AppState.teacher.name || 'Docente Evaluador'}</strong>
+                  <span style="font-size: 11px; color: #cbd5e1;">🏫 ${AppState.teacher.institution || 'Colegio'} &bull; 📍 ${AppState.teacher.dre || 'DRE'}</span>
+                </div>
+              </div>
+              <span class="mep-tag" style="background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #34d399; font-size: 10.5px;">
+                🔗 Vinculado al Docente Evaluador
+              </span>
+            </div>
+          ` : ''}
+
           <div class="form-group" style="margin-bottom: 16px;">
             <label class="form-label">Sección Institucional Compartida:</label>
-            <select id="regSection" class="form-select" style="max-width: 280px;">
-              ${['7-1','7-2','7-3','7-4','7-5','7-6','7-7','7-8','7-9','7-10','7-11','7-12'].map(s => `<option value="${s}" ${AppState.section === s ? 'selected' : ''}>Sección ${s}</option>`).join('')}
+            <select id="regSection" class="form-select" style="max-width: 280px; ${AppState.sectionLocked ? 'border-color: var(--cyan-neon); font-weight: 800;' : ''}">
+              ${['7-1','7-2','7-3','7-4','7-5','7-6','7-7','7-8','7-9','7-10','7-11','7-12'].map(s => `<option value="${s}" ${AppState.section === s ? 'selected' : ''}>Sección ${s} ${AppState.section === s && AppState.sectionLocked ? '✓ (Asignada)' : ''}</option>`).join('')}
             </select>
           </div>
 
@@ -2110,6 +2161,7 @@
         AppState.phase = 1;
         saveState();
         AudioEngine.playFanfare();
+        sendTelemetryToGoogleSheets(); // Sincronización instantánea de inicio con el dashboard del docente
         renderActivePhase();
       });
     }
@@ -2597,6 +2649,10 @@
         sessionHash: AppState.sessionHash,
         completedAt: AppState.completedAt || new Date().toISOString(),
         seccion: AppState.section,
+        docenteId: AppState.teacher?.id || '',
+        docenteNombre: AppState.teacher?.name || '',
+        institucionNombre: AppState.teacher?.institution || '',
+        dreCodigo: AppState.teacher?.dre || '',
         cadet1: AppState.cadet1,
         cadet2: AppState.cadet2,
         psicomotriz: AppState.psicomotriz,
@@ -2609,36 +2665,39 @@
         globalLevel: metrics.globalLevel
       };
 
-      if (!webhookUrl) {
-        statusEl.innerHTML = `
-          <div style="background: rgba(16, 185, 129, 0.12); border: 1px solid var(--lime-neon); color: #34d399; font-size: 13px; font-weight: 700; padding: 10px 16px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px;">
-            <span>📡 Telemetría generada en pantalla para Escaneo QR del Docente</span>
-          </div>
-        `;
-        return;
+      // Intentar sincronización automática con API central
+      let syncedApi = false;
+      try {
+        const res = await fetch('/api/telemetria/enviar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            origen: 'ESTUDIANTE_CYBERQUEST_7MO',
+            datos: fullData
+          })
+        });
+        if (res.ok) syncedApi = true;
+      } catch (e) {}
+
+      if (webhookUrl) {
+        try {
+          await fetch(webhookUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(fullData)
+          });
+          syncedApi = true;
+        } catch (e) {}
       }
 
-      statusEl.innerHTML = `
-        <div style="background: rgba(0, 240, 255, 0.12); border: 1px solid var(--cyan-neon); color: var(--cyan-neon); font-size: 13px; font-weight: 700; padding: 10px 16px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px;">
-          <span>⏳ Sincronizando misión en segundo plano...</span>
-        </div>
-      `;
-
-      try {
-        await fetch(webhookUrl, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(fullData)
-        });
-
+      if (syncedApi) {
         statusEl.innerHTML = `
           <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid var(--lime-neon); color: #34d399; font-size: 13px; font-weight: 700; padding: 10px 16px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px;">
-            <span>✅ Misión sincronizada exitosamente</span>
+            <span>✅ Misión sincronizada con el Dashboard Central</span>
           </div>
         `;
-      } catch (err) {
-        console.warn('Error syncing webhook:', err);
+      } else {
         statusEl.innerHTML = `
           <div style="background: rgba(16, 185, 129, 0.12); border: 1px solid var(--lime-neon); color: #34d399; font-size: 13px; font-weight: 700; padding: 10px 16px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px;">
             <span>📡 Telemetría generada en pantalla para Escaneo QR del Docente</span>
