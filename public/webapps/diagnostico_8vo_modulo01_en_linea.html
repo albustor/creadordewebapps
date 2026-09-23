@@ -954,6 +954,28 @@ FIN</div>
 
     let percentage = Math.min(Math.round((answered / totalItems) * 100), 100);
     document.getElementById('progressBar').style.width = percentage + '%';
+
+    // Telemetría en tiempo real de avance
+    const name = document.getElementById('studentName')?.value?.trim();
+    const sec = document.getElementById('sectionGroup')?.value;
+    if (name && sec && answered >= 1) {
+      const pingProgreso = {
+        webAppId: "diag-8vo-hardware-algoritmos-2026",
+        webAppTitulo: "Evaluación Diagnóstica — 8° Año (PNFT)",
+        docenteId: "ASESOR-FT-7729",
+        nivel: "8°",
+        estudianteNombre: name,
+        seccionOGrupo: sec,
+        porcentaje: percentage,
+        estadoProgreso: percentage >= 100 ? "completado" : "en_progreso",
+        timestamp: Date.now()
+      };
+      fetch('/api/telemetria/enviar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(pingProgreso)
+      }).catch(() => {});
+    }
   }
 
   async function processResults() {

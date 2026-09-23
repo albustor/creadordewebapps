@@ -2116,6 +2116,7 @@
         AppState.phase = 1;
         saveState();
         AudioEngine.playFanfare();
+        sendTelemetryToGoogleSheets(); // Sincronización instantánea de inicio con el dashboard del docente
         renderActivePhase();
       });
     }

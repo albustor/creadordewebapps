@@ -402,10 +402,11 @@
       </div>
       <div class="top-actions">
         <button class="btn btn-accent" style="background:#0284c7; border-color:#0369a1;" onclick="openQrScannerModal()">📷 Escanear QR Parejas</button>
+        <button class="btn btn-accent" id="btnSyncBatch" style="background:#10b981; border-color:#059669;" onclick="syncBatchToDashboard()">🔄 Sincronizar (0)</button>
         <button class="btn btn-secondary" onclick="configureWebhookUrl()">⚙️ Webhook Central</button>
         <button class="btn btn-secondary" onclick="loadSampleCadets()">🧪 Muestra Demo</button>
-        <button class="btn btn-accent" onclick="exportToExcel()">📊 Exportar Excel</button>
-        <button class="btn" onclick="window.print()">🖨️ Imprimir Acta</button>
+        <button class="btn btn-outline" onclick="exportToExcel()">📊 Exportar Excel</button>
+        <button class="btn btn-outline" onclick="window.print()">🖨️ Imprimir Acta</button>
       </div>
     </div>
   </header>
@@ -417,8 +418,35 @@
     <div class="print-only-header">
       <h2 style="font-size: 16px; font-weight: 800; text-transform: uppercase;">Ministerio de Educación Pública de Costa Rica</h2>
       <h3 style="font-size: 14px; font-weight: 700;">Acta Oficial de Evaluación Diagnóstica en Parejas - Informática Educativa 7.° Año (2026)</h3>
-      <p style="font-size: 12px; color: #444; margin-top: 4px;">Generado automáticamente desde la Suite de Diagnóstico CyberQuest 7°</p>
+      <p style="font-size: 12px; color: #444; margin-top: 4px;" id="printTeacherMeta">Generado automáticamente desde la Suite de Diagnóstico CyberQuest 7°</p>
     </div>
+
+    <!-- FICHA DE IDENTIFICACIÓN DEL DOCENTE EVALUADOR (MODALIDAD LOCAL/OFFLINE) -->
+    <section style="background: #ffffff; border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 18px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.03);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 18px;">👨‍🏫</span>
+          <strong style="font-size: 13.5px; color: #0f172a;">Identificación del Docente Evaluador</strong>
+          <span style="font-size: 11px; background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 6px; font-weight: 700;">Respaldo Local Automático</span>
+        </div>
+        <span style="font-size: 11.5px; color: var(--text-muted);">Estos datos viajarán adjuntos a la telemetría central</span>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">
+        <div>
+          <label style="font-size: 11.5px; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">Nombre del Docente:</label>
+          <input type="text" id="teacherName" class="filter-input" style="width: 100%; font-size: 12.5px;" placeholder="Ej. Prof. Alberto Bustos Ortega" oninput="saveTeacherProfile()">
+        </div>
+        <div>
+          <label style="font-size: 11.5px; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">Cédula / Identificación:</label>
+          <input type="text" id="teacherId" class="filter-input" style="width: 100%; font-size: 12.5px;" placeholder="Ej. 1-1234-0567" oninput="saveTeacherProfile()">
+        </div>
+        <div>
+          <label style="font-size: 11.5px; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">Institución Educativa / Colegio:</label>
+          <input type="text" id="teacherSchool" class="filter-input" style="width: 100%; font-size: 12.5px;" placeholder="Ej. C.T.P. de Educación Vocacional" oninput="saveTeacherProfile()">
+        </div>
+      </div>
+    </section>
 
     <!-- METRICS ROW -->
     <section class="metrics-row">
@@ -814,9 +842,100 @@
       }
     }
 
+    function saveTeacherProfile() {
+      const profile = {
+        name: document.getElementById('teacherName')?.value || '',
+        id: document.getElementById('teacherId')?.value || '',
+        school: document.getElementById('teacherSchool')?.value || ''
+      };
+      try {
+        localStorage.setItem('MEP_DOCENTE_7MO_PROFILE', JSON.stringify(profile));
+      } catch (e) {}
+
+      const printMeta = document.getElementById('printTeacherMeta');
+      if (printMeta) {
+        printMeta.textContent = `Docente: ${profile.name || 'Sin especificar'} | Cédula: ${profile.id || 'N/A'} | Institución: ${profile.school || 'MEP'}`;
+      }
+    }
+
+    function loadTeacherProfile() {
+      try {
+        const saved = localStorage.getItem('MEP_DOCENTE_7MO_PROFILE');
+        if (saved) {
+          const profile = JSON.parse(saved);
+          if (document.getElementById('teacherName')) document.getElementById('teacherName').value = profile.name || '';
+          if (document.getElementById('teacherId')) document.getElementById('teacherId').value = profile.id || '';
+          if (document.getElementById('teacherSchool')) document.getElementById('teacherSchool').value = profile.school || '';
+
+          const printMeta = document.getElementById('printTeacherMeta');
+          if (printMeta) {
+            printMeta.textContent = `Docente: ${profile.name || 'Sin especificar'} | Cédula: ${profile.id || 'N/A'} | Institución: ${profile.school || 'MEP'}`;
+          }
+        }
+      } catch (e) {}
+    }
+
+    async function syncBatchToDashboard() {
+      if (evaluatedCadets.length === 0) {
+        alert('No hay evaluaciones registradas para sincronizar.');
+        return;
+      }
+
+      let webhookUrl = localStorage.getItem('APP_WEBHOOK_URL') || '';
+      if (!webhookUrl) {
+        const setUrl = prompt('Ingresa la URL del Webhook Central / Apps Script para sincronizar:', '');
+        if (setUrl && setUrl.trim()) {
+          webhookUrl = setUrl.trim();
+          localStorage.setItem('APP_WEBHOOK_URL', webhookUrl);
+        } else {
+          return;
+        }
+      }
+
+      const teacherProfile = {
+        docente: (document.getElementById('teacherName')?.value || 'Docente').trim(),
+        cedula: (document.getElementById('teacherId')?.value || '').trim(),
+        colegio: (document.getElementById('teacherSchool')?.value || '').trim()
+      };
+
+      const syncPayload = {
+        tipo: 'MEP_7MO_BATCH_SYNC',
+        version: '2026.1',
+        syncedAt: new Date().toISOString(),
+        teacher: teacherProfile,
+        totalParejas: evaluatedCadets.length,
+        evaluaciones: evaluatedCadets
+      };
+
+      const btn = document.getElementById('btnSyncBatch');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '⏳ Sincronizando...';
+      }
+
+      try {
+        await fetch(webhookUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(syncPayload)
+        });
+
+        alert(`✅ ¡Sincronización completada exitosamente!\nSe transmitieron ${evaluatedCadets.length} parejas evaluadas al Dashboard Central.`);
+      } catch (err) {
+        console.warn('Error al sincronizar lote:', err);
+        alert('⚠️ No se pudo completar la sincronización. Verifica tu conexión a internet o la URL del Webhook.');
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = `🔄 Sincronizar (${evaluatedCadets.length})`;
+        }
+      }
+    }
+
     function configureWebhookUrl() {
       const current = localStorage.getItem('APP_WEBHOOK_URL') || '';
-      const url = prompt('Ingresa la URL del Webhook Central de Telemetría:', current);
+      const url = prompt('Ingresa la URL del Webhook Central de Telemetría (Apps Script):', current);
       if (url !== null) {
         localStorage.setItem('APP_WEBHOOK_URL', url.trim());
         alert('URL del Webhook Central guardada correctamente.');
@@ -827,6 +946,11 @@
       const totalPairs = evaluatedCadets.length;
       document.getElementById('valTotalStudents').textContent = totalPairs;
       document.getElementById('valTotalIndiv').textContent = `${totalPairs * 2} estudiantes evaluados`;
+
+      const btnSync = document.getElementById('btnSyncBatch');
+      if (btnSync) {
+        btnSync.textContent = `🔄 Sincronizar (${totalPairs})`;
+      }
 
       if (totalPairs === 0) {
         document.getElementById('valLevelA').textContent = '0 (0%)';
@@ -1099,6 +1223,7 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      loadTeacherProfile();
       loadDocenteState();
     });
   </script>
