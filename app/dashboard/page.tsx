@@ -183,19 +183,41 @@ export default function DashboardAnaliticoPage() {
     return "En Desarrollo";
   };
 
-  // Filtrado reactivo de telemetría
+  // Filtrado reactivo de telemetría con aislamiento estricto por cuenta docente
   const telemetriaFiltrada = useMemo(() => {
-    const nombreDocenteLimpio = docente?.nombreCompleto?.toLowerCase()?.trim() || "";
     const correoDocenteLimpio = docente?.correoInstitucional?.toLowerCase()?.trim() || "";
+    const esSuperAdmin = correoDocenteLimpio === "alberto.bustos.ortega@mep.go.cr";
+    const esAsesorNacional = correoDocenteLimpio === "allan.morera.araya@mep.go.cr" || docente?.tipoRol === "Asesor Nacional";
+
+    const idDoc = docente?.idDocente?.trim().toLowerCase() || "";
+    const cedDoc = docente?.cedula?.trim().toLowerCase() || "";
 
     return telemetria.filter((r) => {
       const estNom = r.estudianteNombre?.toLowerCase()?.trim() || "";
       const estCor = r.estudianteCorreo?.toLowerCase()?.trim() || "";
-      if (nombreDocenteLimpio && (estNom === nombreDocenteLimpio || estNom.includes(nombreDocenteLimpio))) {
+      
+      // Excluir si el registro coincide con el nombre o correo del propio docente
+      if (docente?.nombreCompleto && estNom === docente.nombreCompleto.toLowerCase().trim()) {
         return false;
       }
       if (correoDocenteLimpio && estCor === correoDocenteLimpio) {
         return false;
+      }
+
+      // Aislamiento por Docente: Todo docente ve ÚNICAMENTE los registros vinculados a su ID, cédula o correo
+      if (!esSuperAdmin && !esAsesorNacional) {
+        const rDocId = (r.docenteId || "").trim().toLowerCase();
+        const rDocCed = ((r as any).docenteCedula || "").trim().toLowerCase();
+        const rDocEmail = ((r as any).docenteEmail || "").trim().toLowerCase();
+
+        const perteneceAlDocente =
+          (idDoc && (rDocId === idDoc || rDocId.includes(idDoc) || idDoc.includes(rDocId))) ||
+          (cedDoc && (rDocId === cedDoc || rDocCed === cedDoc)) ||
+          (correoDocenteLimpio && rDocEmail === correoDocenteLimpio);
+
+        if (!perteneceAlDocente) {
+          return false;
+        }
       }
 
       // Filtro por Nivel Tab
@@ -211,6 +233,7 @@ export default function DashboardAnaliticoPage() {
       }
 
       const coincideTexto =
+        !filtroTexto.trim() ||
         r.estudianteNombre.toLowerCase().includes(filtroTexto.toLowerCase()) ||
         r.webAppTitulo.toLowerCase().includes(filtroTexto.toLowerCase());
       
@@ -225,19 +248,9 @@ export default function DashboardAnaliticoPage() {
         nivelDinamico.toLowerCase().includes(filtroNivelLogro.toLowerCase()) ||
         r.nivelLogro.toLowerCase().includes(filtroNivelLogro.toLowerCase());
 
-      const coincideDocente =
-        !filtroSoloMios ||
-        (docente &&
-          (r.docenteId === docente.idDocente ||
-            r.docenteId === docente.cedula ||
-            r.docenteId === "ASESOR-FT-7729" ||
-            r.docenteId === "5-0305-0179" ||
-            r.docenteId === "DOC-MEP-7MO" ||
-            r.docenteId === "DOC-MEP-AUTONOMO"));
-
-      return coincideTexto && coincideGrupo && coincideNivel && coincideDocente;
+      return coincideTexto && coincideGrupo && coincideNivel;
     });
-  }, [telemetria, filtroNivelTab, filtroTexto, filtroGrupo, filtroNivelLogro, filtroSoloMios, docente, configuracion]);
+  }, [telemetria, filtroNivelTab, filtroTexto, filtroGrupo, filtroNivelLogro, docente, configuracion]);
 
   const abrirEditar = (item: PayloadTelemetria) => {
     setRegistroEditando(item);
@@ -685,8 +698,18 @@ export default function DashboardAnaliticoPage() {
               <tbody className="divide-y divide-stone-100">
                 {telemetriaFiltrada.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="p-8 text-center text-slate-400">
-                      No hay registros para los filtros seleccionados. Los envíos de los estudiantes aparecerán aquí automáticamente.
+                    <td colSpan={7} className="p-10 text-center">
+                      <div className="max-w-md mx-auto space-y-2">
+                        <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center mx-auto">
+                          <CheckCircle size={24} weight="duotone" />
+                        </div>
+                        <div className="font-extrabold text-slate-800 text-sm">
+                          Sin registros de telemetría activos
+                        </div>
+                        <p className="text-xs text-slate-500 leading-relaxed">
+                          Este espacio se encuentra completamente limpio y listo. Al compartir el enlace oficial de su nivel con sus estudiantes, las entregas y evaluaciones aparecerán aquí en tiempo real.
+                        </p>
+                      </div>
                     </td>
                   </tr>
                 ) : (

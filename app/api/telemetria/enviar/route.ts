@@ -284,18 +284,14 @@ export async function GET(req: NextRequest) {
   const docenteId = searchParams.get("docenteId");
 
   let datos = registrosTelemetriaMemoria;
-  if (docenteId && docenteId !== "ASESOR-FT-7729" && docenteId !== "5-0305-0179") {
-    datos = registrosTelemetriaMemoria.filter((r) => 
-      !r.docenteId ||
-      r.docenteId === docenteId ||
-      r.docenteId === "DOC-MEP-AUTONOMO" ||
-      r.docenteId === "DOC-MEP-7MO" ||
-      r.docenteId === "DOC-MEP-8VO" ||
-      r.docenteId === "DOC-MEP-2026" ||
-      r.docenteId === "5-0305-0179" ||
-      r.docenteId === "ASESOR-FT-7729" ||
-      (docenteId && r.docenteId && (r.docenteId.includes(docenteId) || docenteId.includes(r.docenteId)))
-    );
+  if (docenteId && docenteId !== "ASESOR-FT-7729" && docenteId !== "5-0305-0179" && docenteId !== "SUPERADMIN-01") {
+    const docIdNorm = docenteId.trim().toLowerCase();
+    datos = registrosTelemetriaMemoria.filter((r) => {
+      const rDocId = (r.docenteId || "").trim().toLowerCase();
+      const rDocCed = (r.docenteCedula || "").trim().toLowerCase();
+      const rDocEmail = (r.docenteEmail || "").trim().toLowerCase();
+      return rDocId === docIdNorm || rDocCed === docIdNorm || rDocEmail === docIdNorm;
+    });
   }
 
   return NextResponse.json(
