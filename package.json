@@ -10,14 +10,14 @@
     "test:dashboard": "node scripts/validar-dashboard-telemetria.mjs"
   },
   "curiolHub": {
-    "name": "Herramienta Creador de WebApps",
+    "name": "Diagnóstico Secundaria MEP (7°, 8° y 9°)",
     "port": 3001,
     "category": "Herramientas",
     "color": "emerald",
     "status": "terminado",
-    "icon": "ph-cube",
-    "description": "Creador y simulador pedagógico de WebApps autónomas con IA, telemetría y rúbricas oficiales",
-    "route": "/taller-webapps"
+    "icon": "ph-chart-line-up",
+    "description": "Suite de Evaluación Diagnóstica MEP (7°, 8° y 9° Año), Telemetría en Vivo, Rúbricas y Módulos Docentes Evaluadores",
+    "route": "/diagnostico"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.7",
