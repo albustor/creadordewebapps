@@ -997,12 +997,54 @@
     let currentEditingIndex = null;
     let html5QrScannerInstance = null;
 
+    function isDocenteMatch(item, profile) {
+      if (!profile || !profile.autenticado) return false;
+      const userCed = (profile.cedula || '').trim().toLowerCase();
+      const userMail = (profile.correo || '').trim().toLowerCase();
+      const userNom = (profile.nombre || '').trim().toLowerCase();
+      const userRole = (profile.tipoRol || '').trim().toLowerCase();
+
+      // Supervisores, Asesores Nacionales y Administradores tienen vista consolidada
+      if (userCed === '5-0305-0179' || userCed === '1-0987-0654' || userMail.includes('bustos') || userMail.includes('morera') || userRole.includes('asesor') || userRole.includes('admin') || userCed === 'admin') {
+        return true;
+      }
+
+      // Si el item viene con docenteId específico
+      const rDocId = (item.docenteId || item.docId || item.raw?.docenteId || '').trim().toLowerCase();
+      const rDocNom = (item.docenteNombre || item.docente || item.raw?.docenteNombre || '').trim().toLowerCase();
+      const rDocEmail = (item.docenteEmail || item.correo || item.raw?.docenteEmail || '').trim().toLowerCase();
+      const rColegio = (item.institucionNombre || item.colegio || item.raw?.institucionNombre || '').trim().toLowerCase();
+
+      // 1. Coincidencia estricta de Cédula / ID
+      if (userCed && rDocId && (rDocId === userCed || rDocId.includes(userCed) || userCed.includes(rDocId))) return true;
+
+      // 2. Coincidencia de Correo
+      if (userMail && rDocEmail && (rDocEmail === userMail || rDocEmail.includes(userMail) || userMail.includes(rDocEmail))) return true;
+
+      // 3. Coincidencia de Nombre del Docente
+      if (userNom && rDocNom && (rDocNom === userNom || rDocNom.includes(userNom) || userNom.includes(rDocNom))) return true;
+
+      // 4. Coincidencia de Centro Educativo asignado al Docente
+      if (profile.centrosEducativos && Array.isArray(profile.centrosEducativos)) {
+        const matchCol = profile.centrosEducativos.some(sch => {
+          const sNom = (sch.colegio || '').trim().toLowerCase();
+          return sNom && rColegio && (rColegio.includes(sNom) || sNom.includes(rColegio));
+        });
+        if (matchCol && (!rDocId || rDocId.startsWith('DOC-MEP'))) return true;
+      }
+
+      return false;
+    }
+
     function loadDocenteState() {
+      const profile = getStoredProfile();
+      evaluatedCadets = [];
       try {
-        const saved = localStorage.getItem('MEP_DOCENTE_7MO_EVALUATIONS');
+        const storageKey = profile?.cedula ? `MEP_DOCENTE_7MO_EVALUATIONS_${profile.cedula.replace(/[^a-zA-Z0-9]/g, '')}` : 'MEP_DOCENTE_7MO_EVALUATIONS';
+        const saved = localStorage.getItem(storageKey) || localStorage.getItem('MEP_DOCENTE_7MO_EVALUATIONS');
         if (saved) {
           const parsed = JSON.parse(saved);
-          evaluatedCadets = parsed.map(c => {
+          evaluatedCadets = parsed.filter(c => isDocenteMatch(c, profile)).map(c => {
             if (c.name1 && typeof c.name1 === 'object') c.name1 = c.name1.name || 'Estudiante 1';
             if (c.name2 && typeof c.name2 === 'object') c.name2 = c.name2.name || 'Estudiante 2';
             if (c.name1 === '[object Object]') c.name1 = 'Juan Viales Calderón';
@@ -1011,13 +1053,13 @@
           });
         }
 
-        // Cargar también registros generados en el mismo navegador desde telemetria_registros
+        // Cargar también registros generados en el mismo navegador desde telemetria_registros siempre que pertenezcan al docente activo
         const rawTelemetria = localStorage.getItem('telemetria_registros');
         if (rawTelemetria) {
           const list = JSON.parse(rawTelemetria);
           list.forEach(item => {
             const es7mo = item.tipo === 'CYBERQUEST_7MO' || item.nivel === '7°' || (item.seccionOGrupo && item.seccionOGrupo.includes('7-')) || item.cadet1;
-            if (es7mo && item.estudianteNombre) {
+            if (es7mo && item.estudianteNombre && isDocenteMatch(item, profile)) {
               const parts = item.estudianteNombre.split('&').map(s => s.trim());
               const name1 = parts[0] || 'Estudiante 1';
               const name2 = parts[1] || 'Individual';
@@ -1065,6 +1107,12 @@
       let syncExitosa = true;
       try {
         const profile = getStoredProfile();
+        if (!profile || !profile.autenticado) {
+          if (dot) dot.style.background = '#64748b';
+          if (spin) spin.style.animation = 'none';
+          return;
+        }
+
         const docenteId = profile?.cedula || profile?.idDocente || '';
         const url = docenteId ? `/api/telemetria/enviar?docenteId=${encodeURIComponent(docenteId)}` : '/api/telemetria/enviar';
         
@@ -1083,18 +1131,6 @@
           syncExitosa = false;
         }
 
-        if (remotos.length === 0 && docenteId) {
-          try {
-            const resGen = await fetch('/api/telemetria/enviar');
-            if (resGen.ok) {
-              const jsonGen = await resGen.json();
-              if (jsonGen.registros && Array.isArray(jsonGen.registros)) {
-                remotos = jsonGen.registros;
-              }
-            }
-          } catch(e) {}
-        }
-
         let locales = [];
         try {
           const rawTele = localStorage.getItem('telemetria_registros');
@@ -1106,7 +1142,7 @@
 
         todos.forEach(item => {
           const es7mo = item.tipo === 'CYBERQUEST_7MO' || item.tipo === 'MEP_7MO_CYBERQUEST' || item.nivel === '7°' || (item.seccionOGrupo && item.seccionOGrupo.includes('7-')) || item.cadet1 || item.webAppId?.includes('7mo');
-          if (es7mo && (item.estudianteNombre || item.cadet1)) {
+          if (es7mo && (item.estudianteNombre || item.cadet1) && isDocenteMatch(item, profile)) {
             const c1 = typeof item.cadet1 === 'object' ? (item.cadet1?.name || 'Cadete 1') : (item.cadet1 || '');
             const c2 = typeof item.cadet2 === 'object' ? (item.cadet2?.name || '') : (item.cadet2 || '');
             let name1 = c1;
@@ -1161,7 +1197,7 @@
         }
 
         if (esManual) {
-          alert('✅ Sincronización con Dashboard completada (' + evaluatedCadets.length + ' parejas registradas).');
+          alert('✅ Sincronización con Dashboard completada (' + evaluatedCadets.length + ' evaluaciones registradas).');
         }
       } catch(e) {
         if (dot) {
@@ -1179,7 +1215,9 @@
 
     function saveDocenteState() {
       try {
-        localStorage.setItem('MEP_DOCENTE_7MO_EVALUATIONS', JSON.stringify(evaluatedCadets));
+        const profile = getStoredProfile();
+        const storageKey = profile?.cedula ? `MEP_DOCENTE_7MO_EVALUATIONS_${profile.cedula.replace(/[^a-zA-Z0-9]/g, '')}` : 'MEP_DOCENTE_7MO_EVALUATIONS';
+        localStorage.setItem(storageKey, JSON.stringify(evaluatedCadets));
       } catch (e) {
         console.warn('Error al guardar datos docentes:', e);
       }
@@ -2484,8 +2522,14 @@
 
     function updateGlobalMetrics() {
       const totalPairs = evaluatedCadets.length;
+      const totalIndiv = evaluatedCadets.reduce((acc, c) => {
+        const n2 = typeof c.name2 === 'object' && c.name2 !== null ? (c.name2.name || '') : (c.name2 || '');
+        const isIndiv = !n2 || n2 === 'Individual' || n2 === 'N/A' || n2 === 'Sin Pareja';
+        return acc + (isIndiv ? 1 : 2);
+      }, 0);
+
       document.getElementById('valTotalStudents').textContent = totalPairs;
-      document.getElementById('valTotalIndiv').textContent = `${totalPairs * 2} estudiantes evaluados`;
+      document.getElementById('valTotalIndiv').textContent = `${totalIndiv} estudiantes evaluados`;
 
       const btnSync = document.getElementById('btnSyncBatch');
       if (btnSync) {
@@ -2528,7 +2572,7 @@
 
       const countLabel = document.getElementById('tableCountLabel');
       if (countLabel) {
-        countLabel.textContent = `Mostrando ${filtered.length} de ${evaluatedCadets.length} parejas`;
+        countLabel.textContent = `Mostrando ${filtered.length} de ${evaluatedCadets.length} registros`;
       }
 
       const tbody = document.getElementById('cadetsTableBody');
@@ -2556,8 +2600,9 @@
           return '<span class="badge badge-c" style="background:#fee2e2; color:#b91c1c; border:1px solid #fca5a5; font-weight:800; padding:4px 8px; border-radius:6px;">Nivel C (Inicial)</span>';
         };
 
-        const displayName1 = typeof c.name1 === 'object' && c.name1 !== null ? (c.name1.name || 'Estudiante 1') : c.name1;
-        const displayName2 = typeof c.name2 === 'object' && c.name2 !== null ? (c.name2.name || 'Estudiante 2') : c.name2;
+        const displayName1 = typeof c.name1 === 'object' && c.name1 !== null ? (c.name1.name || 'Estudiante 1') : (c.name1 || 'Estudiante');
+        const displayName2 = typeof c.name2 === 'object' && c.name2 !== null ? (c.name2.name || '') : (c.name2 || '');
+        const isIndiv = !displayName2 || displayName2 === 'Individual' || displayName2 === 'N/A' || displayName2 === 'Sin Pareja';
 
         tr.innerHTML = `
           <td style="font-weight: 800; color: #0f172a; text-align: center;">${idx + 1}</td>
@@ -2569,8 +2614,10 @@
           </td>
           <td>
             <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 18px;">${c.avatar2 || '⚡'}</span>
-              <strong style="color: #334155; font-size: 13px;">${displayName2}</strong>
+              <span style="font-size: 18px;">${isIndiv ? '👤' : (c.avatar2 || '⚡')}</span>
+              ${isIndiv 
+                ? '<span style="color: #64748b; font-style: italic; font-weight: 600; font-size: 12px;">(Individual)</span>' 
+                : `<strong style="color: #334155; font-size: 13px;">${displayName2}</strong>`}
             </div>
           </td>
           <td><span class="badge" style="background:#e0f2fe; color:#0369a1; border:1px solid #bae6fd; font-weight:800;">${c.section}</span></td>
@@ -2595,10 +2642,13 @@
       if (!cadet) return;
       currentEditingIndex = evaluatedCadets.indexOf(cadet);
 
-      const dispName1 = typeof cadet.name1 === 'object' && cadet.name1 !== null ? (cadet.name1.name || 'Líder') : cadet.name1;
-      const dispName2 = typeof cadet.name2 === 'object' && cadet.name2 !== null ? (cadet.name2.name || 'Co-piloto') : cadet.name2;
+      const dispName1 = typeof cadet.name1 === 'object' && cadet.name1 !== null ? (cadet.name1.name || 'Líder') : (cadet.name1 || 'Estudiante');
+      const dispName2 = typeof cadet.name2 === 'object' && cadet.name2 !== null ? (cadet.name2.name || '') : (cadet.name2 || '');
+      const isIndiv = !dispName2 || dispName2 === 'Individual' || dispName2 === 'N/A' || dispName2 === 'Sin Pareja';
 
-      document.getElementById('modalStudentName').textContent = `Pareja: ${cadet.avatar1 || '🤖'} ${dispName1} (Líder) & ${cadet.avatar2 || '⚡'} ${dispName2} (Co-piloto)`;
+      document.getElementById('modalStudentName').textContent = isIndiv
+        ? `Estudiante: ${cadet.avatar1 || '🤖'} ${dispName1} (Misión Individual)`
+        : `Pareja: ${cadet.avatar1 || '🤖'} ${dispName1} (Líder) & ${cadet.avatar2 || '⚡'} ${dispName2} (Co-piloto)`;
       document.getElementById('modalStudentMeta').textContent = `Sección: ${cadet.section} | Hash de Telemetría: ${cadet.id}`;
 
       const raw = cadet.raw || {};

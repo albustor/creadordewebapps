@@ -280,12 +280,55 @@
       line-height: 1.5;
     }
 
+    /* MODALIDAD DE PARTICIPACION */
+    .mode-toggle-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .mode-toggle-btn {
+      background: #080c16;
+      border: 1.5px solid var(--border-dark);
+      color: var(--text-muted);
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      user-select: none;
+    }
+
+    .mode-toggle-btn:hover {
+      border-color: var(--cyan-neon);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .mode-toggle-btn.active {
+      background: rgba(0, 240, 255, 0.12);
+      border-color: var(--cyan-neon);
+      color: var(--cyan-neon);
+      box-shadow: 0 0 12px var(--cyan-glow);
+    }
+
     /* PAIR REGISTRATION BOXES */
     .pair-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
       gap: 16px;
       margin: 16px 0;
+      transition: all 0.3s ease;
+    }
+
+    .pair-grid.solo-mode {
+      grid-template-columns: 1fr;
+      max-width: 620px;
+      margin: 16px auto;
     }
 
     .cadet-box {
@@ -980,7 +1023,7 @@
         <div class="step-item active" id="step0">0. Pareja</div>
         <div class="step-item" id="step1">1. Psicomotriz</div>
         <div class="step-item" id="step2">2. Cognitivo</div>
-        <div class="step-item" id="step3">3. Socioafectivo</div>
+        <div class="step-item" id="step3">3. Autoevaluación</div>
         <div class="step-item" id="step4">4. Misión Cumplida</div>
       </div>
     </section>
@@ -1023,6 +1066,7 @@
         avatar: '⚡',
         avatarName: 'Voltix'
       },
+      modalidad: 'parejas', // 'parejas' | 'individual'
       section: '7-1',
       institution: 'Colegio Técnico Profesional / Académico MEP',
       phase: 0,
@@ -2005,11 +2049,12 @@
       const perc = document.getElementById('progressPercentage');
       const lbl = document.getElementById('progressCurrentMission');
       
+      const isIndiv = AppState.modalidad === 'individual' || !AppState.cadet2.name;
       const phaseNames = [
-        'Fase 0: Registro de Pareja de Cadetes',
-        'Fase 1: Entrenamiento Psicomotriz en Pareja',
+        isIndiv ? 'Fase 0: Registro de Cadete' : 'Fase 0: Registro de Pareja de Cadetes',
+        isIndiv ? 'Fase 1: Entrenamiento Psicomotriz Individual' : 'Fase 1: Entrenamiento Psicomotriz en Pareja',
         'Fase 2: Desafíos Cognitivos y Pensamiento Computacional',
-        'Fase 3: Dimensión Socioafectiva y Coevaluación',
+        isIndiv ? 'Fase 3: Dimensión 3 • Valoración Socioafectiva' : 'Fase 3: Dimensión 3 • Valoración Socioafectiva',
         'Fase 4: Misión Cumplida y Telemetría Oficial'
       ];
       
@@ -2024,6 +2069,7 @@
         const stepEl = document.getElementById(`step${i}`);
         if (stepEl) {
           stepEl.className = 'step-item';
+          if (i === 0) stepEl.textContent = isIndiv ? '0. Cadete' : '0. Pareja';
           if (i === AppState.phase) stepEl.classList.add('active');
           if (i < AppState.phase) stepEl.classList.add('completed');
         }
@@ -2035,12 +2081,14 @@
       if (AppState.cadet1.name) {
         pill1.style.display = 'flex';
         document.getElementById('hudAvatar1Icon').textContent = AppState.cadet1.avatar;
-        document.getElementById('hudCadet1Name').textContent = `${AppState.cadet1.name.split(' ')[0]} (Líder)`;
+        document.getElementById('hudCadet1Name').textContent = isIndiv
+          ? `${AppState.cadet1.name.split(' ')[0]} (Cadete)`
+          : `${AppState.cadet1.name.split(' ')[0]} (Líder)`;
       } else {
         pill1.style.display = 'none';
       }
 
-      if (AppState.cadet2.name) {
+      if (AppState.cadet2.name && !isIndiv) {
         pill2.style.display = 'flex';
         document.getElementById('hudAvatar2Icon').textContent = AppState.cadet2.avatar;
         document.getElementById('hudCadet2Name').textContent = `${AppState.cadet2.name.split(' ')[0]} (Co-piloto)`;
@@ -2072,12 +2120,14 @@
         { icon: '🚀', name: 'NovaShip' }
       ];
 
+      const isSolo = AppState.modalidad === 'individual';
+
       container.innerHTML = `
         <div class="cyber-card">
           <div class="card-header">
-            <span class="mission-badge badge-psico">FASE INICIAL &bull; REGISTRO DE PAREJA TECNOLÓGICA</span>
-            <h1 class="card-title">Bienvenido a CyberQuest 7.° Año (Misión en Parejas)</h1>
-            <p class="card-desc">Evaluación Diagnóstica Oficial MEP 2026 - III Ciclo. Registra a ambos estudiantes (Líder de Misión y Co-piloto de Datos) para iniciar el diagnóstico.</p>
+            <span class="mission-badge badge-psico" id="phase0Badge">FASE INICIAL &bull; REGISTRO DE CADETE${isSolo ? ' (INDIVIDUAL)' : 'S (MISIÓN EN PAREJAS)'}</span>
+            <h1 class="card-title">Bienvenido a CyberQuest 7.° Año</h1>
+            <p class="card-desc">Evaluación Diagnóstica Oficial MEP 2026 - III Ciclo. Registra la información del estudiante para iniciar la aventura diagnóstica.</p>
           </div>
 
           ${AppState.teacher && (AppState.teacher.name || AppState.teacher.institution) ? `
@@ -2095,18 +2145,34 @@
             </div>
           ` : ''}
 
-          <div class="form-group" style="margin-bottom: 16px;">
-            <label class="form-label">Sección Institucional Compartida:</label>
-            <select id="regSection" class="form-select" style="max-width: 280px; ${AppState.sectionLocked ? 'border-color: var(--cyan-neon); font-weight: 800;' : ''}">
-              ${['7-1','7-2','7-3','7-4','7-5','7-6','7-7','7-8','7-9','7-10','7-11','7-12'].map(s => `<option value="${s}" ${AppState.section === s ? 'selected' : ''}>Sección ${s} ${AppState.section === s && AppState.sectionLocked ? '✓ (Asignada)' : ''}</option>`).join('')}
-            </select>
+          <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 16px; align-items: flex-end;">
+            <div class="form-group" style="flex: 1; min-width: 220px;">
+              <label class="form-label">Modalidad de Diagnóstico:</label>
+              <div class="mode-toggle-group" id="modeSelectorGroup">
+                <button type="button" id="btnModePairs" class="mode-toggle-btn ${!isSolo ? 'active' : ''}">
+                  👥 En Parejas (Recomendado MEP)
+                </button>
+                <button type="button" id="btnModeSolo" class="mode-toggle-btn ${isSolo ? 'active' : ''}">
+                  👤 Individual
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group" style="min-width: 200px;">
+              <label class="form-label">Sección Institucional:</label>
+              <select id="regSection" class="form-select" style="max-width: 280px; ${AppState.sectionLocked ? 'border-color: var(--cyan-neon); font-weight: 800;' : ''}">
+                ${['7-1','7-2','7-3','7-4','7-5','7-6','7-7','7-8','7-9','7-10','7-11','7-12'].map(s => `<option value="${s}" ${AppState.section === s ? 'selected' : ''}>Sección ${s} ${AppState.section === s && AppState.sectionLocked ? '✓ (Asignada)' : ''}</option>`).join('')}
+              </select>
+            </div>
           </div>
 
-          <div class="pair-grid">
+          <div class="pair-grid ${isSolo ? 'solo-mode' : ''}" id="pairGridContainer">
             
-            <div class="cadet-box leader-box">
+            <div class="cadet-box leader-box" id="cadetBox1">
               <div class="cadet-box-header">
-                <span class="cadet-role-tag tag-cyan">🚀 Estudiante 1 &bull; Líder de Misión</span>
+                <span class="cadet-role-tag tag-cyan" id="cadet1RoleTag">
+                  ${isSolo ? '🚀 Estudiante &bull; Cadete Titular' : '🚀 Estudiante 1 &bull; Líder de Misión'}
+                </span>
               </div>
               <div class="form-group">
                 <label class="form-label">Nombre Completo:</label>
@@ -2125,7 +2191,7 @@
               </div>
             </div>
 
-            <div class="cadet-box copilot-box">
+            <div class="cadet-box copilot-box" id="cadetBox2" style="${isSolo ? 'display: none;' : ''}">
               <div class="cadet-box-header">
                 <span class="cadet-role-tag tag-violet">🧭 Estudiante 2 &bull; Co-piloto de Datos</span>
               </div>
@@ -2156,6 +2222,38 @@
         </div>
       `;
 
+      // Eventos selector de modalidad
+      const btnPairs = document.getElementById('btnModePairs');
+      const btnSolo = document.getElementById('btnModeSolo');
+      const cadetBox2 = document.getElementById('cadetBox2');
+      const pairGridContainer = document.getElementById('pairGridContainer');
+      const cadet1RoleTag = document.getElementById('cadet1RoleTag');
+      const phase0Badge = document.getElementById('phase0Badge');
+
+      if (btnPairs && btnSolo) {
+        btnPairs.addEventListener('click', () => {
+          AppState.modalidad = 'parejas';
+          btnPairs.classList.add('active');
+          btnSolo.classList.remove('active');
+          if (cadetBox2) cadetBox2.style.display = 'flex';
+          if (pairGridContainer) pairGridContainer.classList.remove('solo-mode');
+          if (cadet1RoleTag) cadet1RoleTag.innerHTML = '🚀 Estudiante 1 &bull; Líder de Misión';
+          if (phase0Badge) phase0Badge.innerHTML = 'FASE INICIAL &bull; REGISTRO DE PAREJA TECNOLÓGICA';
+          AudioEngine.playClick();
+        });
+
+        btnSolo.addEventListener('click', () => {
+          AppState.modalidad = 'individual';
+          btnSolo.classList.add('active');
+          btnPairs.classList.remove('active');
+          if (cadetBox2) cadetBox2.style.display = 'none';
+          if (pairGridContainer) pairGridContainer.classList.add('solo-mode');
+          if (cadet1RoleTag) cadet1RoleTag.innerHTML = '🚀 Estudiante &bull; Cadete Titular';
+          if (phase0Badge) phase0Badge.innerHTML = 'FASE INICIAL &bull; REGISTRO DE CADETE (INDIVIDUAL)';
+          AudioEngine.playClick();
+        });
+      }
+
       document.querySelectorAll('#avatarGrid1 .avatar-card').forEach(card => {
         card.addEventListener('click', () => {
           document.querySelectorAll('#avatarGrid1 .avatar-card').forEach(c => c.classList.remove('selected'));
@@ -2178,16 +2276,39 @@
 
       document.getElementById('btnStartQuest').addEventListener('click', () => {
         const name1 = document.getElementById('regName1').value.trim();
-        const name2 = document.getElementById('regName2').value.trim();
+        const name2 = (document.getElementById('regName2')?.value || '').trim();
 
-        if (!name1 || !name2) {
-          showToast('⚠️ Ingresa el nombre de ambos estudiantes.');
+        if (!name1) {
+          showToast('⚠️ Ingresa el nombre del estudiante.');
           AudioEngine.playBeep();
+          document.getElementById('regName1').focus();
           return;
         }
 
-        AppState.cadet1.name = name1;
-        AppState.cadet2.name = name2;
+        if (AppState.modalidad === 'individual') {
+          AppState.cadet1.name = name1;
+          AppState.cadet2.name = '';
+        } else {
+          // Modalidad en parejas
+          if (!name2) {
+            const continuarSolo = confirm(
+              `Solo has ingresado a "${name1}".\n\n¿Deseas realizar la evaluación de forma INDIVIDUAL (solo 1 estudiante) o deseas ingresar a tu compañero/a de pareja?\n\n- Presiona [Aceptar] para continuar en modo INDIVIDUAL.\n- Presiona [Cancelar] para ingresar el nombre de la pareja.`
+            );
+            if (continuarSolo) {
+              AppState.modalidad = 'individual';
+              AppState.cadet1.name = name1;
+              AppState.cadet2.name = '';
+            } else {
+              if (document.getElementById('regName2')) document.getElementById('regName2').focus();
+              showToast('ℹ️ Ingresa el nombre del segundo estudiante.');
+              return;
+            }
+          } else {
+            AppState.cadet1.name = name1;
+            AppState.cadet2.name = name2;
+          }
+        }
+
         AppState.section = document.getElementById('regSection').value;
         AppState.startedAt = new Date().toISOString();
         AppState.phase = 1;
@@ -2201,10 +2322,11 @@
     // FASE 1: PSICOMOTRIZ (SIN REALIMENTACIÓN)
     let activeSubP = 'p1';
     function renderPhase1(container) {
+      const isSolo = AppState.modalidad === 'individual' || !AppState.cadet2.name;
       container.innerHTML = `
         <div class="cyber-card">
           <div class="card-header">
-            <span class="mission-badge badge-psico">DIMENSIÓN 1 &bull; PSICOMOTRIZ Y PERCEPTIVO-MOTRIZ EN PAREJA</span>
+            <span class="mission-badge badge-psico">DIMENSIÓN 1 &bull; PSICOMOTRIZ Y PERCEPTIVO-MOTRIZ ${isSolo ? 'INDIVIDUAL' : 'EN PAREJA'}</span>
             <div style="display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0;">
               <button class="btn-cyber-outline ${activeSubP === 'p1' ? 'btn-cyber' : ''}" onclick="switchSubP('p1')">P1. Lateralidad (4x4)</button>
               <button class="btn-cyber-outline ${activeSubP === 'p2' ? 'btn-cyber' : ''}" onclick="switchSubP('p2')">P2. Ritmo e Inhibición</button>
@@ -2367,6 +2489,7 @@
       AppState.phase = 2;
       saveState();
       AudioEngine.playFanfare();
+      sendTelemetryToGoogleSheets('en_progreso');
       renderActivePhase();
     }
 
@@ -2380,6 +2503,7 @@
       if (!q) {
         AppState.phase = 3;
         saveState();
+        sendTelemetryToGoogleSheets('en_progreso');
         renderActivePhase();
         return;
       }
@@ -2453,20 +2577,25 @@
         AppState.cognitivo.currentQuestionIndex = qIndex + 1;
       } else {
         AppState.phase = 3;
+        sendTelemetryToGoogleSheets('en_progreso');
       }
       saveState();
       AudioEngine.playClick();
       renderActivePhase();
     }
 
-    // FASE 3: SOCIOAFECTIVO
+    // FASE 3: SOCIOAFECTIVO (AUTOEVALUACIÓN / COEVALUACIÓN FORMATIVA)
     function renderPhase3(container) {
+      const isSolo = AppState.modalidad === 'individual' || !AppState.cadet2.name;
+
       container.innerHTML = `
         <div class="cyber-card">
           <div class="card-header">
-            <span class="mission-badge badge-socio">DIMENSIÓN 3 &bull; SOCIOAFECTIVA Y ACTITUDINAL (PAREJAS)</span>
-            <h2 class="card-title">Reflexión y Coevaluación de la Pareja</h2>
-            <p class="card-desc">Valoren conjuntamente su experiencia de trabajo en equipo durante esta misión diagnóstica según la escala oficial MEP.</p>
+            <span class="mission-badge badge-socio">DIMENSIÓN 3 &bull; VALORACIÓN SOCIOAFECTIVA ${isSolo ? '(INDIVIDUAL)' : '(PAREJAS)'}</span>
+            <h2 class="card-title">${isSolo ? 'Valoración Formativa y Reflexión' : 'Valoración Formativa y Reflexión de la Pareja'}</h2>
+            <p class="card-desc">
+              Valore el trabajo realizado durante esta misión diagnóstica.
+            </p>
           </div>
 
           <div style="display: flex; flex-direction: column; gap: 16px;">
@@ -2482,18 +2611,18 @@
             <div class="form-group">
               <label class="form-label">S2. Resiliencia: ¿Cómo afrontaron los errores durante los retos?</label>
               <div class="likert-group">
-                <button class="likert-btn ${AppState.socioafectivo.s2_resiliencia === 1 ? 'selected' : ''}" onclick="setSocio('s2_resiliencia', 1)">Nos desanimamos</button>
-                <button class="likert-btn ${AppState.socioafectivo.s2_resiliencia === 2 ? 'selected' : ''}" onclick="setSocio('s2_resiliencia', 2)">Reintentamos con guía</button>
-                <button class="likert-btn ${AppState.socioafectivo.s2_resiliencia === 3 ? 'selected' : ''}" onclick="setSocio('s2_resiliencia', 3)">Aprendimos y mejoramos</button>
+                <button class="likert-btn ${AppState.socioafectivo.s2_resiliencia === 1 ? 'selected' : ''}" onclick="setSocio('s2_resiliencia', 1)">${isSolo ? 'Me desanimé' : 'Nos desanimamos'}</button>
+                <button class="likert-btn ${AppState.socioafectivo.s2_resiliencia === 2 ? 'selected' : ''}" onclick="setSocio('s2_resiliencia', 2)">${isSolo ? 'Reintenté con guía' : 'Reintentamos con guía'}</button>
+                <button class="likert-btn ${AppState.socioafectivo.s2_resiliencia === 3 ? 'selected' : ''}" onclick="setSocio('s2_resiliencia', 3)">${isSolo ? 'Aprendí y mejoré' : 'Aprendimos y mejoramos'}</button>
               </div>
             </div>
 
             <div class="form-group">
-              <label class="form-label">S3. Sinergia y Diálogo en Pareja (Líder y Co-piloto):</label>
+              <label class="form-label">${isSolo ? 'S3. Autonomía, Compromiso y Disposición al Trabajo:' : 'S3. Sinergia y Diálogo en Pareja (Líder y Co-piloto):'}</label>
               <div class="likert-group">
-                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 1 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 1)">Poco acuerdo</button>
-                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 2 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 2)">Buena cooperación</button>
-                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 3 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 3)">Excelente sinergia</button>
+                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 1 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 1)">${isSolo ? 'Poco compromiso' : 'Poco acuerdo'}</button>
+                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 2 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 2)">${isSolo ? 'Buena disposición' : 'Buena cooperación'}</button>
+                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 3 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 3)">${isSolo ? 'Excelente autonomía' : 'Excelente sinergia'}</button>
               </div>
             </div>
 
@@ -2509,7 +2638,7 @@
 
           <div style="margin-top: 24px; display: flex; justify-content: flex-end;">
             <button class="btn-cyber-lime" onclick="finishQuest()">
-              Finalizar y Generar Telemetría de la Pareja ⚡
+              ${isSolo ? 'Finalizar y Generar Telemetría Oficial ⚡' : 'Finalizar y Generar Telemetría de la Pareja ⚡'}
             </button>
           </div>
         </div>
@@ -2534,15 +2663,19 @@
 
     // FASE 4: EXPEDIENTE FINAL Y QR DE TELEMETRÍA (SIN BOTÓN JSON)
     function renderPhase4(container) {
+      const isSolo = AppState.modalidad === 'individual' || !AppState.cadet2.name;
+
       container.innerHTML = `
         <div class="cyber-card" style="text-align: center;">
           <div class="card-header">
-            <span class="mission-badge badge-psico">MISIÓN CUMPLIDA &bull; EXPEDIENTE DIAGNÓSTICO EN PAREJA</span>
+            <span class="mission-badge badge-psico">MISIÓN CUMPLIDA &bull; EXPEDIENTE DIAGNÓSTICO ${isSolo ? 'INDIVIDUAL' : 'EN PAREJA'}</span>
             <h1 class="card-title" style="font-size: 1.65rem; margin: 10px 0;">
-              🎉 ¡Felicitaciones, Cadetes ${AppState.cadet1.avatar} ${AppState.cadet1.name.split(' ')[0]} y ${AppState.cadet2.avatar} ${AppState.cadet2.name.split(' ')[0]}!
+              ${isSolo 
+                ? `🎉 ¡Felicitaciones, Cadete ${AppState.cadet1.avatar} ${AppState.cadet1.name}!`
+                : `🎉 ¡Felicitaciones, Cadetes ${AppState.cadet1.avatar} ${AppState.cadet1.name.split(' ')[0]} y ${AppState.cadet2.avatar} ${AppState.cadet2.name.split(' ')[0]}!`}
             </h1>
             <p class="card-desc">
-              Han completado con éxito la aventura tecnológica de 7.° Año para la <strong>Sección ${AppState.section}</strong> (MEP 2026).
+              Has completado con éxito la aventura tecnológica de 7.° Año para la <strong>Sección ${AppState.section}</strong> (MEP 2026).
             </p>
           </div>
 
@@ -2561,9 +2694,9 @@
             </div>
 
             <div class="stat-card">
-              <span class="stat-card-title">❤️ Trabajo en Equipo</span>
-              <span class="stat-card-value" style="font-size: 1.4rem;">🤝 Sinergia</span>
-              <span class="stat-card-badge badge-level-a">Líder & Co-piloto</span>
+              <span class="stat-card-title">${isSolo ? '🌟 Autonomía Digital' : '❤️ Trabajo en Equipo'}</span>
+              <span class="stat-card-value" style="font-size: 1.4rem;">${isSolo ? '🎯 Misión Individual' : '🤝 Sinergia'}</span>
+              <span class="stat-card-badge badge-level-a">${isSolo ? 'Cadete Titular' : 'Líder & Co-piloto'}</span>
             </div>
 
             <div class="stat-card">
@@ -2579,9 +2712,9 @@
           <!-- CÓDIGO QR DINÁMICO EN PANTALLA -->
           <div style="background: #0d1322; border: 1px solid var(--border-neon); border-radius: 16px; padding: 20px; margin: 16px auto; max-width: 480px; display: flex; flex-direction: column; align-items: center; gap: 10px;">
             <span class="mep-tag" style="font-size: 10px;">TELEMETRÍA OFICIAL</span>
-            <h3 style="font-size: 15px; color: #fff; font-weight: 800;">📱 Código QR de la Pareja de Cadetes</h3>
+            <h3 style="font-size: 15px; color: #fff; font-weight: 800;">📱 Código QR ${isSolo ? 'del Cadete' : 'de la Pareja de Cadetes'}</h3>
             <p style="font-size: 12.5px; color: var(--text-muted); max-width: 400px; line-height: 1.4;">
-              Muestren esta pantalla a su docente para escanear y registrar automáticamente la misión en la sábana institucional.
+              Muestra esta pantalla a tu docente para escanear y registrar automáticamente la misión en la sábana institucional.
             </p>
 
             <div style="background: #ffffff; padding: 12px; border-radius: 14px; box-shadow: 0 0 25px rgba(0, 240, 255, 0.35); margin: 8px 0; display: inline-flex; align-items: center; justify-content: center;">
@@ -2595,7 +2728,7 @@
 
           ${AppState.psicomotriz.p4_dibujo.dataUrl ? `
             <div style="background: #0d1322; border: 1px solid var(--border-dark); border-radius: 12px; padding: 12px; margin: 14px auto; max-width: 360px; text-align: center;">
-              <span style="font-size: 11.5px; color: var(--text-muted); font-weight: 700;">🖥️ Plano de Computadora Diseñado por la Pareja:</span><br>
+              <span style="font-size: 11.5px; color: var(--text-muted); font-weight: 700;">🖥️ Plano de Computadora Diseñado ${isSolo ? 'por el Estudiante' : 'por la Pareja'}:</span><br>
               <img src="${AppState.psicomotriz.p4_dibujo.dataUrl}" style="max-width: 240px; border-radius: 8px; border: 1px solid var(--border-neon); margin-top: 6px;" alt="Plano P4">
             </div>
           ` : ''}
@@ -2668,7 +2801,7 @@
       }
     }
 
-    async function sendTelemetryToGoogleSheets() {
+    async function sendTelemetryToGoogleSheets(overrideStatus) {
       const statusEl = document.getElementById('telemetrySyncStatus');
       const webhookUrl = localStorage.getItem('APP_WEBHOOK_URL') || '';
       const metrics = calculateDiagnosticsMetrics();
@@ -2678,13 +2811,15 @@
       const nombreCompletoPareja = cadet2Name ? `${cadet1Name} & ${cadet2Name}` : cadet1Name;
       const secClean = (AppState.section || '7-1').replace(/^secci[oó]n\s*/i, '').trim();
       const secFormateada = `Sección ${secClean}`;
+      const docId = AppState.teacher?.id || '5-0305-0179';
+      const estadoActual = overrideStatus || (AppState.phase === 4 ? 'completado' : 'en_progreso');
 
       const fullData = {
         tipo: 'CYBERQUEST_7MO',
         idResultado: `res-7mo-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
         webAppId: 'diagnostico_7mo_modulo01_cyberquest',
         webAppTitulo: 'CyberQuest 7°: Diagnóstico de Fundamentos Digitales',
-        docenteId: AppState.teacher?.id || '5-0305-0179',
+        docenteId: docId,
         docenteNombre: AppState.teacher?.name || 'Alberto Bustos Ortega',
         institucionNombre: AppState.teacher?.institution || 'Centro Educativo MEP',
         dreCodigo: AppState.teacher?.dre || 'DRE-01',
@@ -2697,7 +2832,7 @@
         fallos: Math.max(0, 10 - (metrics.cogScore ? Math.round((metrics.cogScore / 100) * 10) : 8)),
         nivelLogro: metrics.globalLevel === 'A' ? 'Avanzado' : (metrics.globalLevel === 'B' ? 'Intermedio' : 'Inicial'),
         tiempoSegundos: 120,
-        estadoProgreso: 'completado',
+        estadoProgreso: estadoActual,
         timestamp: Date.now(),
         sessionHash: AppState.sessionHash,
         cadet1: cadet1Name,
@@ -2725,32 +2860,39 @@
         localStorage.setItem('telemetria_registros', JSON.stringify(lista));
       } catch(e) {}
 
-      // 1.b Guardar también en MEP_DOCENTE_7MO_EVALUATIONS para el evaluador local docente
-      try {
-        const rawEvaluations = localStorage.getItem('MEP_DOCENTE_7MO_EVALUATIONS');
-        const listEvaluations = rawEvaluations ? JSON.parse(rawEvaluations) : [];
-        const evalRecord = {
-          id: fullData.idResultado,
-          name1: cadet1Name,
-          name2: cadet2Name || 'Individual',
-          avatar1: fullData.cadet1Avatar,
-          avatar2: fullData.cadet2Avatar,
-          section: secClean,
-          psicoScore: metrics.psicoScore,
-          cogScore: metrics.cogScore,
-          socioScore: metrics.socioScore,
-          globalAvg: metrics.globalAvg,
-          globalLevel: metrics.globalLevel,
-          raw: fullData
-        };
-        const exIdx = listEvaluations.findIndex(e => e.name1 === cadet1Name && e.section === secClean);
-        if (exIdx >= 0) {
-          listEvaluations[exIdx] = { ...listEvaluations[exIdx], ...evalRecord };
-        } else {
-          listEvaluations.unshift(evalRecord);
-        }
-        localStorage.setItem('MEP_DOCENTE_7MO_EVALUATIONS', JSON.stringify(listEvaluations));
-      } catch(e) {}
+      // 1.b Guardar también en MEP_DOCENTE_7MO_EVALUATIONS (global y específico del docente)
+      const saveToStorageKey = (key) => {
+        try {
+          const rawEvaluations = localStorage.getItem(key);
+          const listEvaluations = rawEvaluations ? JSON.parse(rawEvaluations) : [];
+          const evalRecord = {
+            id: fullData.idResultado,
+            name1: cadet1Name,
+            name2: cadet2Name || 'Individual',
+            avatar1: fullData.cadet1Avatar,
+            avatar2: fullData.cadet2Avatar,
+            section: secClean,
+            psicoScore: metrics.psicoScore,
+            cogScore: metrics.cogScore,
+            socioScore: metrics.socioScore,
+            globalAvg: metrics.globalAvg,
+            globalLevel: metrics.globalLevel,
+            raw: fullData
+          };
+          const exIdx = listEvaluations.findIndex(e => e.name1 === cadet1Name && e.section === secClean);
+          if (exIdx >= 0) {
+            listEvaluations[exIdx] = { ...listEvaluations[exIdx], ...evalRecord };
+          } else {
+            listEvaluations.unshift(evalRecord);
+          }
+          localStorage.setItem(key, JSON.stringify(listEvaluations));
+        } catch(e) {}
+      };
+
+      saveToStorageKey('MEP_DOCENTE_7MO_EVALUATIONS');
+      if (docId) {
+        saveToStorageKey(`MEP_DOCENTE_7MO_EVALUATIONS_${docId}`);
+      }
 
       // 2. Intentar sincronización automática con API central
       let syncedApi = false;
