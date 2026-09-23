@@ -22,7 +22,17 @@ export default function Navbar() {
   const { docente, cerrarSesion } = useDocente();
   const [menuAbierto, setMenuAbierto] = useState(false);
 
-  // Navegación: Inicio, Dashboard (Docentes), Diagnóstico (Asesoría & Recursos)
+  const esSuperAdmin =
+    docente?.correoInstitucional?.toLowerCase().trim() === "alberto.bustos.ortega@mep.go.cr" ||
+    docente?.correoInstitucional?.toLowerCase().trim() === "allan.morera.araya@mep.go.cr";
+
+  const esAsesor =
+    esSuperAdmin ||
+    docente?.tipoRol === "Asesor Nacional" ||
+    docente?.tipoRol === "Asesor Regional" ||
+    docente?.dreCodigo === "DRE-NACIONAL";
+
+  // Navegación: Inicio, Dashboard (Docentes), Diagnóstico (Asesoría & Recursos solo para asesores)
   const enlaces = [
     {
       href: "/",
@@ -36,17 +46,17 @@ export default function Navbar() {
       icon: <ChartBar size={18} weight="duotone" />,
       titulo: "Panel de control del docente, enlaces seguros y telemetría de 7°, 8° y 9°",
     },
-    {
-      href: "/diagnostico",
-      label: "Asesoría & Recursos",
-      icon: <Lightning size={18} weight="fill" className="text-amber-600" />,
-      titulo: "Módulo para asesores nacionales, regionales y exploración curricular por nivel",
-    },
+    ...(esAsesor
+      ? [
+          {
+            href: "/diagnostico",
+            label: "Asesoría & Recursos",
+            icon: <Lightning size={18} weight="fill" className="text-amber-600" />,
+            titulo: "Módulo para asesores nacionales, regionales y exploración curricular por nivel",
+          },
+        ]
+      : []),
   ];
-
-  const esSuperAdmin =
-    docente?.correoInstitucional?.toLowerCase().trim() === "alberto.bustos.ortega@mep.go.cr" ||
-    docente?.correoInstitucional?.toLowerCase().trim() === "allan.morera.araya@mep.go.cr";
 
   return (
     <header className="sticky top-0 z-50 bg-[#FCFBF9]/95 backdrop-blur-md border-b border-stone-200/90 shadow-xs transition-all duration-300">

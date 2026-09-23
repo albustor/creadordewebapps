@@ -60,9 +60,8 @@ export default function DashboardAnaliticoPage() {
   const [filtroNivelLogro, setFiltroNivelLogro] = useState("Todos");
   const [filtroSoloMios, setFiltroSoloMios] = useState(false);
 
-  // Generador de Enlace Blindado
+  // Generador de Enlace Blindado por Nivel
   const [nivelGen, setNivelGen] = useState<"7mo" | "8vo" | "9no">("9no");
-  const [seccionGen, setSeccionGen] = useState("9-1");
   const [enlaceCopiado, setEnlaceCopiado] = useState(false);
 
   // Modal Edición de Registro
@@ -83,7 +82,7 @@ export default function DashboardAnaliticoPage() {
     }
   }, []);
 
-  // Generar Token Encriptado y URL Blindada para el Estudiante (Sin QR)
+  // Generar Token Encriptado y URL Blindada para el Estudiante por Nivel (Sin QR)
   const enlaceGeneradoParaEstudiante = useMemo(() => {
     const payload = {
       docId: docente?.idDocente || "DOC-MEP-2026",
@@ -91,7 +90,6 @@ export default function DashboardAnaliticoPage() {
       inst: docente?.institucionNombre || "Centro Educativo MEP",
       dre: docente?.dreCodigo || "DRE-01",
       nivel: nivelGen === "7mo" ? 7 : nivelGen === "8vo" ? 8 : 9,
-      sec: seccionGen,
       ts: Date.now(),
     };
 
@@ -110,8 +108,8 @@ export default function DashboardAnaliticoPage() {
         : "diagnostico_9no_modulo01_en_linea.html";
 
     const origin = typeof window !== "undefined" ? window.location.origin : "https://diagnosticosecundaria.vercel.app";
-    return `${origin}/webapps/${archivoWebapp}?token=${tokenB64}&sec=${encodeURIComponent(seccionGen)}`;
-  }, [docente, nivelGen, seccionGen]);
+    return `${origin}/webapps/${archivoWebapp}?token=${tokenB64}&docenteId=${encodeURIComponent(docente?.idDocente || "")}&docente=${encodeURIComponent(docente?.nombreCompleto || "")}&institucion=${encodeURIComponent(docente?.institucionNombre || "")}&dre=${encodeURIComponent(docente?.dreCodigo || "")}`;
+  }, [docente, nivelGen]);
 
   const copiarEnlaceGenerado = () => {
     navigator.clipboard.writeText(enlaceGeneradoParaEstudiante);
@@ -281,7 +279,7 @@ export default function DashboardAnaliticoPage() {
           </div>
         </div>
 
-        {/* 1. GENERADOR DE ENLACE BLINDADO E INMUTABLE POR NIVEL Y SECCIÓN (SIN QR) */}
+        {/* 1. GENERADOR DE ENLACE BLINDADO E INMUTABLE POR NIVEL (SIN QR) */}
         <div className="bg-white border-2 border-emerald-400 rounded-3xl p-6 sm:p-8 shadow-softPastel space-y-5">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-stone-100 pb-4">
             <div className="flex items-center gap-3">
@@ -290,13 +288,13 @@ export default function DashboardAnaliticoPage() {
               </div>
               <div>
                 <h3 className="font-black text-slate-900 text-base sm:text-lg flex items-center gap-2">
-                  <span>Generador de Enlace Único por Sección (Blindado con Token)</span>
+                  <span>Generador de Enlace Único por Nivel (Blindado con Token)</span>
                   <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase">
                     100% Computadoras
                   </span>
                 </h3>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  El enlace es permanente y contiene las credenciales seguras del docente para evitar cruce de datos.
+                  El enlace es único y permanente por nivel. Contiene las credenciales seguras del docente para registrar la telemetría automáticamente.
                 </p>
               </div>
             </div>
@@ -305,11 +303,8 @@ export default function DashboardAnaliticoPage() {
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                onClick={() => {
-                  setNivelGen("7mo");
-                  setSeccionGen("7-1");
-                }}
-                className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all ${
+                onClick={() => setNivelGen("7mo")}
+                className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
                   nivelGen === "7mo"
                     ? "bg-indigo-700 text-white shadow-xs"
                     : "bg-stone-100 text-stone-700 hover:bg-stone-200"
@@ -319,11 +314,8 @@ export default function DashboardAnaliticoPage() {
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  setNivelGen("8vo");
-                  setSeccionGen("8-1");
-                }}
-                className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all ${
+                onClick={() => setNivelGen("8vo")}
+                className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
                   nivelGen === "8vo"
                     ? "bg-teal-700 text-white shadow-xs"
                     : "bg-stone-100 text-stone-700 hover:bg-stone-200"
@@ -333,11 +325,8 @@ export default function DashboardAnaliticoPage() {
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  setNivelGen("9no");
-                  setSeccionGen("9-1");
-                }}
-                className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all ${
+                onClick={() => setNivelGen("9no")}
+                className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
                   nivelGen === "9no"
                     ? "bg-emerald-700 text-white shadow-xs"
                     : "bg-stone-100 text-stone-700 hover:bg-stone-200"
@@ -350,48 +339,28 @@ export default function DashboardAnaliticoPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
             
-            {/* Selector de Sección */}
-            <div>
-              <label className="block text-xs font-black text-slate-800 uppercase tracking-wider mb-1.5">
-                Sección / Grupo:
-              </label>
-              <select
-                value={seccionGen}
-                onChange={(e) => setSeccionGen(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-300 rounded-xl text-xs font-black text-slate-900 focus:outline-none focus:border-emerald-600"
-              >
-                {Array.from({ length: 15 }, (_, i) => {
-                  const pref = nivelGen === "7mo" ? "7" : nivelGen === "8vo" ? "8" : "9";
-                  return `${pref}-${i + 1}`;
-                }).map((sec) => (
-                  <option key={sec} value={sec}>
-                    Sección {sec}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Vista Previa del Enlace Encriptado */}
-            <div className="md:col-span-2">
-              <label className="block text-xs font-black text-slate-800 uppercase tracking-wider mb-1.5">
-                Enlace Oficial Blindado:
+            {/* Vista Previa del Enlace Encriptado por Nivel */}
+            <div className="md:col-span-3">
+              <label className="block text-xs font-black text-slate-800 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                <span>Enlace Oficial Blindado • {nivelGen === "7mo" ? "7.° Año (CyberQuest)" : nivelGen === "8vo" ? "8.° Año (PNFT)" : "9.° Año (Aula Inteligente)"}:</span>
+                <span className="text-[11px] text-emerald-700 font-bold lowercase">1 único link para todas las secciones de este nivel</span>
               </label>
               <div className="relative">
                 <input
                   type="text"
                   readOnly
                   value={enlaceGeneradoParaEstudiante}
-                  className="w-full pl-3.5 pr-10 py-2.5 bg-stone-100 border border-stone-300 rounded-xl text-xs font-mono text-slate-600 truncate focus:outline-none"
+                  className="w-full pl-3.5 pr-10 py-2.5 bg-stone-100 border border-stone-300 rounded-xl text-xs font-mono text-slate-700 select-all focus:outline-none focus:border-emerald-600 font-semibold"
                 />
               </div>
             </div>
 
             {/* Botón de Copiar Enlace */}
-            <div>
+            <div className="md:col-span-1">
               <button
                 type="button"
                 onClick={copiarEnlaceGenerado}
-                className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-black transition-all shadow-xs ${
+                className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-black transition-all shadow-xs cursor-pointer ${
                   enlaceCopiado
                     ? "bg-emerald-800 text-white"
                     : "bg-emerald-700 hover:bg-emerald-800 text-white"
@@ -407,7 +376,7 @@ export default function DashboardAnaliticoPage() {
           <div className="p-3.5 bg-emerald-50/70 border border-emerald-200 rounded-2xl text-[11.5px] text-emerald-950 leading-relaxed font-medium flex items-center gap-2.5">
             <ShieldCheck size={20} className="text-emerald-700 shrink-0" weight="fill" />
             <span>
-              <strong>Regla de Intento Único y Rezagados:</strong> Cada estudiante realiza la prueba una sola vez. Si un estudiante falta a la clase de informática, el docente le entrega este mismo enlace en su siguiente lección; el estudiante ingresa de forma limpia y se anexa automáticamente al grupo sin sobreescribir nada.
+              <strong>Regla de Intento Único y Rezagados:</strong> Cada estudiante realiza la prueba una sola vez con este enlace. Si un estudiante falta a la clase de informática, el docente le entrega este mismo enlace en su siguiente lección; el estudiante ingresa de forma limpia y se anexa automáticamente al grupo sin sobreescribir nada.
             </span>
           </div>
         </div>

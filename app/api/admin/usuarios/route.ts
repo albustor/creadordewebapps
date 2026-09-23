@@ -55,7 +55,6 @@ let USUARIOS_DB: UsuarioDocente[] = [
     fechaAprobacion: "2026-01-15T08:00:00.000Z",
     aprobadoPor: "ADMINISTRADOR PRINCIPAL",
     webAppsCreadas: 12,
-    pin: "2617",
   },
   {
     id: "ASE-DRE03-102",
@@ -195,7 +194,7 @@ export async function POST(req: NextRequest) {
         estado: (rolAsignado === "Docente" || esAlberto || esAllan) ? "Aprobado" : "Pendiente",
         fechaSolicitud: new Date().toISOString(),
         webAppsCreadas: 0,
-        pin: usuarioData.pin || usuarioData.contrasena || "2617",
+        pin: usuarioData.pin || usuarioData.contrasena || (esAlberto ? "2617" : undefined),
       };
 
       USUARIOS_DB = [nuevo, ...USUARIOS_DB.filter((u) => u.correoInstitucional.toLowerCase() !== nuevo.correoInstitucional.toLowerCase())];

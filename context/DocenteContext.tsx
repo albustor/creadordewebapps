@@ -163,8 +163,6 @@ export const DOCENTE_ASESOR_ALLAN: DocenteData = {
   idDocente: "ASESOR-FT-8841",
   nombreCompleto: "Allan Morera Araya",
   correoInstitucional: "allan.morera.araya@mep.go.cr",
-  pin: "2617",
-  contrasena: "2617",
   cedula: "1-0987-0654",
   telefono: "+506 8888-7777",
   tipoRol: "Asesor Nacional",
@@ -444,15 +442,15 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
                 institucionNombre: usr.institucionNombre || "",
                 asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
                 fechaRegistro: usr.fechaSolicitud || new Date().toISOString(),
-                pin: usr.pin || "2617",
-                contrasena: usr.pin || "2617",
+                pin: usr.pin,
+                contrasena: usr.pin,
               };
               if (idx !== -1) {
                 locales[idx] = {
                   ...dataSrv,
                   ...locales[idx],
-                  pin: locales[idx].pin || dataSrv.pin || "2617",
-                  contrasena: locales[idx].contrasena || dataSrv.contrasena || "2617",
+                  pin: locales[idx].pin || dataSrv.pin,
+                  contrasena: locales[idx].contrasena || dataSrv.contrasena,
                 };
               } else {
                 locales.push(dataSrv);
@@ -597,8 +595,8 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
               circuito: data.circuito,
               institucionNombre: data.institucionNombre,
               rol: data.rol,
-              pin: data.pin || data.contrasena || "2617",
-              contrasena: data.contrasena || data.pin || "2617",
+              pin: data.pin || data.contrasena,
+              contrasena: data.contrasena || data.pin,
             },
           }),
         }).catch(() => {});
@@ -651,28 +649,6 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       limpiarFallos();
       guardarDocente(DOCENTE_DEFAULT);
       return { exito: true, mensaje: "Sesión iniciada correctamente como Asesor Principal de Formación Tecnológica." };
-    }
-
-    // 2. Verificación Inmediata: Asesor de Formación Tecnológica (Allan Morera Araya)
-    const esAsesorAllan =
-      credencialLimpia === "allan.morera.araya@mep.go.cr" ||
-      credencialLimpia === "allan.morera" ||
-      credencialLimpia === "allan" ||
-      credencialLimpia === "1-0987-0654" ||
-      credencialLimpia === "109870654";
-
-    const esPinValidoAllan =
-      pinOPassLimpia === "2617" ||
-      pinOPassLimpia === "1726" ||
-      pinOPassLimpia === "2026" ||
-      pinOPassLimpia === "8841" ||
-      pinOPassLimpia === "EdcRfvTgb2617**" ||
-      pinOPassLimpia === "1234";
-
-    if (esAsesorAllan && esPinValidoAllan) {
-      limpiarFallos();
-      guardarDocente(DOCENTE_ASESOR_ALLAN);
-      return { exito: true, mensaje: "Bienvenido(a), Allan Morera Araya (Asesoría de Formación Tecnológica)." };
     }
 
     // 3. Verificación Inmediata: Docente de Prueba Regional (Esteban Gómez Chinchilla)

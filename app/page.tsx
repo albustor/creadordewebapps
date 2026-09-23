@@ -698,13 +698,6 @@ export default function HomePage() {
                   <IdentificationCard size={16} weight="bold" />
                   <span>Mi perfil</span>
                 </Link>
-                <button
-                  onClick={() => cerrarSesion()}
-                  className="flex items-center gap-1.5 px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-800 text-xs font-bold rounded-xl border border-rose-200 transition-colors"
-                >
-                  <SignOut size={16} weight="bold" />
-                  <span>Cerrar sesión</span>
-                </button>
               </div>
             </div>
 
@@ -724,67 +717,81 @@ export default function HomePage() {
               </p>
             </div>
 
-            {/* Módulos Principales: Dashboard Docente y Asesoría & Diagnóstico */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-              
-              {/* Tarjeta 1: Dashboard Docente */}
-              <div className="bg-white text-slate-900 rounded-3xl border-2 border-emerald-400 p-6 sm:p-8 shadow-softPastel flex flex-col justify-between hover:border-emerald-600 transition-all group">
-                <div className="space-y-4">
-                  <div className="w-12 h-12 rounded-2xl bg-emerald-100/90 text-emerald-800 border border-emerald-300/70 flex items-center justify-center group-hover:scale-105 transition-transform shadow-xs">
-                    <ChartBar size={28} weight="duotone" />
-                  </div>
-                  <div>
-                    <span className="px-3 py-1 bg-emerald-50 text-emerald-900 border border-emerald-200 text-xs font-extrabold rounded-full">
-                      Herramienta del Docente
-                    </span>
-                    <h3 className="text-xl font-black text-slate-900 mt-2">
-                      Dashboard Docente (7°, 8° y 9°)
-                    </h3>
-                  </div>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Generación de enlaces seguros por sección (sin QR), recepción de telemetría en tiempo real, rúbrica de saberes procedimentales y socioafectivos, y exportación oficial a Excel/PDF.
-                  </p>
-                </div>
-                <div className="pt-6">
-                  <Link
-                    href="/dashboard"
-                    className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition-all"
-                  >
-                    <span>Ingresar al Dashboard Docente</span>
-                    <ArrowRight size={16} weight="bold" />
-                  </Link>
-                </div>
-              </div>
+            {/* Módulos Principales: Dashboard Docente (y Asesoría solo para Asesores/Admins) */}
+            {(() => {
+              const esSuperAdmin =
+                docente?.correoInstitucional?.toLowerCase().trim() === "alberto.bustos.ortega@mep.go.cr" ||
+                docente?.correoInstitucional?.toLowerCase().trim() === "allan.morera.araya@mep.go.cr";
+              const esAsesor =
+                esSuperAdmin ||
+                docente?.tipoRol === "Asesor Nacional" ||
+                docente?.tipoRol === "Asesor Regional" ||
+                docente?.dreCodigo === "DRE-NACIONAL";
 
-              {/* Tarjeta 2: Asesoría & Recursos */}
-              <div className="bg-white text-slate-900 rounded-3xl border-2 border-indigo-300/80 p-6 sm:p-8 shadow-softPastel flex flex-col justify-between hover:border-indigo-500 transition-all group">
-                <div className="space-y-4">
-                  <div className="w-12 h-12 rounded-2xl bg-indigo-100/90 text-indigo-800 border border-indigo-300/70 flex items-center justify-center group-hover:scale-105 transition-transform shadow-xs">
-                    <Lightning size={28} weight="fill" className="text-indigo-600" />
+              return (
+                <div className={`grid grid-cols-1 ${esAsesor ? "md:grid-cols-2" : "max-w-2xl mx-auto"} gap-6 pt-4`}>
+                  {/* Tarjeta 1: Dashboard Docente */}
+                  <div className="bg-white text-slate-900 rounded-3xl border-2 border-emerald-400 p-6 sm:p-8 shadow-softPastel flex flex-col justify-between hover:border-emerald-600 transition-all group">
+                    <div className="space-y-4">
+                      <div className="w-12 h-12 rounded-2xl bg-emerald-100/90 text-emerald-800 border border-emerald-300/70 flex items-center justify-center group-hover:scale-105 transition-transform shadow-xs">
+                        <ChartBar size={28} weight="duotone" />
+                      </div>
+                      <div>
+                        <span className="px-3 py-1 bg-emerald-50 text-emerald-900 border border-emerald-200 text-xs font-extrabold rounded-full">
+                          Herramienta del Docente
+                        </span>
+                        <h3 className="text-xl font-black text-slate-900 mt-2">
+                          Dashboard Docente (7°, 8° y 9°)
+                        </h3>
+                      </div>
+                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        Generación de enlaces seguros por nivel (sin QR), recepción de telemetría en tiempo real, rúbrica de saberes procedimentales y socioafectivos, y exportación oficial a Excel/PDF.
+                      </p>
+                    </div>
+                    <div className="pt-6">
+                      <Link
+                        href="/dashboard"
+                        className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition-all"
+                      >
+                        <span>Ingresar al Dashboard Docente</span>
+                        <ArrowRight size={16} weight="bold" />
+                      </Link>
+                    </div>
                   </div>
-                  <div>
-                    <span className="px-3 py-1 bg-indigo-50 text-indigo-900 border border-indigo-200 text-xs font-extrabold rounded-full">
-                      Módulo para Asesores & Recursos
-                    </span>
-                    <h3 className="text-xl font-black text-slate-900 mt-2">
-                      Asesoría & Diagnóstico
-                    </h3>
-                  </div>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Exploración curricular seccionada por niveles (7.°, 8.°, 9.°), descarga de dossiers técnicos en PDF, banco de instrumentos y dictamen de validación ministerial.
-                  </p>
+
+                  {/* Tarjeta 2: Asesoría & Recursos (SOLO VISIBLE PARA ASESORES Y ADMINISTRADORES) */}
+                  {esAsesor && (
+                    <div className="bg-white text-slate-900 rounded-3xl border-2 border-indigo-300/80 p-6 sm:p-8 shadow-softPastel flex flex-col justify-between hover:border-indigo-500 transition-all group">
+                      <div className="space-y-4">
+                        <div className="w-12 h-12 rounded-2xl bg-indigo-100/90 text-indigo-800 border border-indigo-300/70 flex items-center justify-center group-hover:scale-105 transition-transform shadow-xs">
+                          <Lightning size={28} weight="fill" className="text-indigo-600" />
+                        </div>
+                        <div>
+                          <span className="px-3 py-1 bg-indigo-50 text-indigo-900 border border-indigo-200 text-xs font-extrabold rounded-full">
+                            Módulo para Asesores & Recursos
+                          </span>
+                          <h3 className="text-xl font-black text-slate-900 mt-2">
+                            Asesoría & Diagnóstico
+                          </h3>
+                        </div>
+                        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                          Exploración curricular seccionada por niveles (7.°, 8.°, 9.°), descarga de dossiers técnicos en PDF, banco de instrumentos y dictamen de validación ministerial.
+                        </p>
+                      </div>
+                      <div className="pt-6">
+                        <Link
+                          href="/diagnostico"
+                          className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 bg-indigo-700 hover:bg-indigo-800 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition-all"
+                        >
+                          <span>Explorar Módulos y Dossiers</span>
+                          <ArrowRight size={16} weight="bold" />
+                        </Link>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <div className="pt-6">
-                  <Link
-                    href="/diagnostico"
-                    className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 bg-indigo-700 hover:bg-indigo-800 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition-all"
-                  >
-                    <span>Explorar Módulos y Dossiers</span>
-                    <ArrowRight size={16} weight="bold" />
-                  </Link>
-                </div>
-              </div>
-            </div>
+              );
+            })()}
 
             {/* Métricas Resumidas */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">

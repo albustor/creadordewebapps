@@ -2,12 +2,10 @@
 // EXPORTADOR DE REPORTES Y ANALÍTICA (EXCEL .XLSX & PDF OFICIAL)
 // ============================================================================
 
-import * as XLSX from "xlsx";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
 import { PayloadTelemetria } from "./antiFraude";
 
-export function exportarAExcel(registros: PayloadTelemetria[], nombreArchivo = "Reporte_Trabajo_Cotidiano_Secundaria") {
+export async function exportarAExcel(registros: PayloadTelemetria[], nombreArchivo = "Reporte_Trabajo_Cotidiano_Secundaria") {
+  const XLSX = await import("xlsx");
   const datosFormateados = registros.map((r, index) => ({
     "N°": index + 1,
     "Estudiante": r.estudianteNombre,
@@ -49,7 +47,10 @@ export function exportarAExcel(registros: PayloadTelemetria[], nombreArchivo = "
   XLSX.writeFile(workbook, `${nombreArchivo}_${new Date().toISOString().slice(0, 10)}.xlsx`);
 }
 
-export function exportarAPDF(registros: PayloadTelemetria[], tituloReporte = "Informe Oficial de Evidencias de Trabajo Cotidiano (III Ciclo)") {
+export async function exportarAPDF(registros: PayloadTelemetria[], tituloReporte = "Informe Oficial de Evidencias de Trabajo Cotidiano (III Ciclo)") {
+  const { default: jsPDF } = await import("jspdf");
+  const autoTable = (await import("jspdf-autotable")).default;
+
   const doc = new jsPDF({
     orientation: "portrait",
     unit: "mm",
