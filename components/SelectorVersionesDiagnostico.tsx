@@ -62,8 +62,9 @@ export default function SelectorVersionesDiagnostico({
 
   const queryParams = new URLSearchParams();
   queryParams.set("docente", docNomFinal);
-  queryParams.set("docenteId", docIdFinal);
-  if (docente?.cedula) queryParams.set("cedula", docente.cedula);
+  if (docente?.idDocente) {
+    queryParams.set("docenteId", docente.idDocente);
+  }
   queryParams.set("institucion", instNomFinal);
   queryParams.set("dre", dreFinal);
   queryParams.set("circuito", circuitoFinal);

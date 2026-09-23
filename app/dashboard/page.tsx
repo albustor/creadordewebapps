@@ -185,10 +185,9 @@ export default function DashboardAnaliticoPage() {
         : "diagnostico_9no_modulo01_docente_evaluador.html";
 
     const params = new URLSearchParams();
-    if (docente?.idDocente || docente?.cedula) {
-      params.set("docenteId", docente.idDocente || docente.cedula || "");
+    if (docente?.idDocente) {
+      params.set("docenteId", docente.idDocente);
     }
-    if (docente?.cedula) params.set("cedula", docente.cedula);
     if (docente?.nombreCompleto) params.set("docente", docente.nombreCompleto);
     if (c?.nombre) params.set("institucion", c.nombre);
     if (c?.dreCodigo || c?.dreNombre) params.set("dre", c.dreCodigo || c.dreNombre || "");

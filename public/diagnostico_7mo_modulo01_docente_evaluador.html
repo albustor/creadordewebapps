@@ -3144,6 +3144,12 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      // Limpieza automática de la barra de direcciones para blindar privacidad y datos personales
+      if (window.location.search && window.history && window.history.replaceState) {
+        try {
+          window.history.replaceState({}, document.title, window.location.pathname);
+        } catch (e) {}
+      }
       checkTeacherAuth();
       loadDocenteState();
       setInterval(sincronizarTelemetriaOnline, 3000);
