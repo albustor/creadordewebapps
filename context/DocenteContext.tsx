@@ -415,8 +415,61 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       }
     };
 
+    // Sincronizar usuarios registrados desde el servidor para acceso multi-navegador
+    const sincronizarUsuariosServidor = async () => {
+      try {
+        const res = await fetch("/api/admin/usuarios");
+        if (res.ok) {
+          const json = await res.json();
+          if (json.usuarios && Array.isArray(json.usuarios)) {
+            const guardadosRaw = SafeStorage.getItem("usuarios_registrados_locales");
+            let locales: DocenteData[] = guardadosRaw ? JSON.parse(guardadosRaw) : [...LISTA_DOCENTES_INICIALES];
+
+            json.usuarios.forEach((usr: any) => {
+              const correo = (usr.correoInstitucional || "").toLowerCase().trim();
+              if (!correo) return;
+              const idx = locales.findIndex((l) => (l.correoInstitucional || "").toLowerCase().trim() === correo);
+              const dataSrv: DocenteData = {
+                idDocente: usr.id || `DOC-${Date.now()}`,
+                nombreCompleto: usr.nombreCompleto || "",
+                correoInstitucional: usr.correoInstitucional,
+                cedula: usr.cedula || "",
+                telefono: usr.telefono || "",
+                tipoRol: usr.rol === "Super Administrador" ? "Asesor Nacional" : usr.rol || "Docente",
+                rol: usr.rol || "Docente",
+                dreCodigo: usr.dreCodigo || "DRE-NACIONAL",
+                dreNombre: usr.dreNombre || "Asesoría de Formación Tecnológica",
+                circuito: usr.circuito || "Circuito 01",
+                codigoPresupuestario: "FT-2026",
+                institucionNombre: usr.institucionNombre || "",
+                asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
+                fechaRegistro: usr.fechaSolicitud || new Date().toISOString(),
+                pin: usr.pin || "2617",
+                contrasena: usr.pin || "2617",
+              };
+              if (idx !== -1) {
+                locales[idx] = {
+                  ...dataSrv,
+                  ...locales[idx],
+                  pin: locales[idx].pin || dataSrv.pin || "2617",
+                  contrasena: locales[idx].contrasena || dataSrv.contrasena || "2617",
+                };
+              } else {
+                locales.push(dataSrv);
+              }
+            });
+            SafeStorage.setItem("usuarios_registrados_locales", JSON.stringify(locales));
+          }
+        }
+      } catch {}
+    };
+
+    sincronizarUsuariosServidor();
     sincronizarTelemetriaServidor();
-    const interval = setInterval(sincronizarTelemetriaServidor, 4000);
+    const interval = setInterval(() => {
+      sincronizarTelemetriaServidor();
+      sincronizarUsuariosServidor();
+    }, 4000);
 
     setIsInitialized(true);
 
@@ -500,7 +553,12 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
           listaUsuarios[indiceDuplicado].correoInstitucional.toLowerCase().trim() === correoLimpio
         ));
 
-      if (indiceDuplicado !== -1 && !esMismoDocente) {
+      const esCuentaOficialPredeterminada =
+        correoLimpio === "allan.morera.araya@mep.go.cr" ||
+        correoLimpio === "alberto.bustos.ortega@mep.go.cr" ||
+        correoLimpio === "esteban.gomez.chinchilla@mep.go.cr";
+
+      if (indiceDuplicado !== -1 && !esMismoDocente && !esCuentaOficialPredeterminada) {
         const usuarioDuplicado = listaUsuarios[indiceDuplicado];
         return {
           exito: false,
@@ -539,6 +597,8 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
               circuito: data.circuito,
               institucionNombre: data.institucionNombre,
               rol: data.rol,
+              pin: data.pin || data.contrasena || "2617",
+              contrasena: data.contrasena || data.pin || "2617",
             },
           }),
         }).catch(() => {});

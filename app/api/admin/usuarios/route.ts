@@ -16,6 +16,7 @@ export interface UsuarioDocente {
   fechaAprobacion?: string;
   aprobadoPor?: string;
   webAppsCreadas: number;
+  pin?: string;
 }
 
 // Base de datos en memoria para persistencia durante la sesión del servidor
@@ -36,6 +37,25 @@ let USUARIOS_DB: UsuarioDocente[] = [
     fechaAprobacion: "2026-01-15T08:00:00.000Z",
     aprobadoPor: "ADMINISTRADOR PRINCIPAL",
     webAppsCreadas: 18,
+    pin: "2617",
+  },
+  {
+    id: "ASESOR-FT-8841",
+    nombreCompleto: "Allan Morera Araya",
+    correoInstitucional: "allan.morera.araya@mep.go.cr",
+    cedula: "1-0987-0654",
+    telefono: "+506 8888-7777",
+    dreCodigo: "DRE-NACIONAL",
+    dreNombre: "Asesoría de Formación Tecnológica",
+    circuito: "Nivel Nacional / Ámbito General",
+    institucionNombre: "Asesoría Nacional de Formación Tecnológica (III Ciclo)",
+    rol: "Asesor Nacional",
+    estado: "Aprobado",
+    fechaSolicitud: "2026-01-15T08:00:00.000Z",
+    fechaAprobacion: "2026-01-15T08:00:00.000Z",
+    aprobadoPor: "ADMINISTRADOR PRINCIPAL",
+    webAppsCreadas: 12,
+    pin: "2617",
   },
   {
     id: "ASE-DRE03-102",
@@ -152,29 +172,33 @@ export async function POST(req: NextRequest) {
     if (accion === "solicitar_registro") {
       // Bloqueo estricto: Nadie puede registrarse como Super Administrador
       const esAlberto = usuarioData.correoInstitucional === "alberto.bustos.ortega@mep.go.cr";
+      const esAllan = usuarioData.correoInstitucional === "allan.morera.araya@mep.go.cr";
       const rolAsignado = esAlberto
         ? "Super Administrador"
+        : esAllan
+        ? "Asesor Nacional"
         : usuarioData.rol === "Super Administrador"
         ? "Asesor Nacional"
         : usuarioData.rol || "Docente";
 
       const nuevo: UsuarioDocente = {
-        id: `USR-${Math.floor(1000 + Math.random() * 9000)}`,
+        id: esAllan ? "ASESOR-FT-8841" : esAlberto ? "SUPERADMIN-01" : `USR-${Math.floor(1000 + Math.random() * 9000)}`,
         nombreCompleto: usuarioData.nombreCompleto || "Docente de Formación Tecnológica",
         correoInstitucional: usuarioData.correoInstitucional,
-        cedula: usuarioData.cedula || "N/A",
-        telefono: usuarioData.telefono || "N/A",
-        dreCodigo: usuarioData.dreCodigo || "DRE-01",
-        dreNombre: usuarioData.dreNombre || "San José Central",
-        circuito: usuarioData.circuito || "Circuito 01",
-        institucionNombre: usuarioData.institucionNombre || "Centro Educativo",
+        cedula: usuarioData.cedula || (esAllan ? "1-0987-0654" : "N/A"),
+        telefono: usuarioData.telefono || (esAllan ? "+506 8888-7777" : "N/A"),
+        dreCodigo: usuarioData.dreCodigo || "DRE-NACIONAL",
+        dreNombre: usuarioData.dreNombre || "Asesoría de Formación Tecnológica",
+        circuito: usuarioData.circuito || "Nivel Nacional / Ámbito General",
+        institucionNombre: usuarioData.institucionNombre || "Asesoría Nacional de Formación Tecnológica",
         rol: rolAsignado,
-        estado: rolAsignado === "Docente" ? "Aprobado" : "Pendiente",
+        estado: (rolAsignado === "Docente" || esAlberto || esAllan) ? "Aprobado" : "Pendiente",
         fechaSolicitud: new Date().toISOString(),
         webAppsCreadas: 0,
+        pin: usuarioData.pin || usuarioData.contrasena || "2617",
       };
 
-      USUARIOS_DB = [nuevo, ...USUARIOS_DB.filter((u) => u.correoInstitucional !== nuevo.correoInstitucional)];
+      USUARIOS_DB = [nuevo, ...USUARIOS_DB.filter((u) => u.correoInstitucional.toLowerCase() !== nuevo.correoInstitucional.toLowerCase())];
 
       HISTORICO_DB = [
         {
