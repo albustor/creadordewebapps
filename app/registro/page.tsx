@@ -101,9 +101,6 @@ export default function RegistroDocentePage() {
     { nivel: "7°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["7-1", "7-2", "7-3"] },
     { nivel: "8°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["8-1", "8-2", "8-3"] },
     { nivel: "9°", activo: true, totalSeccionesColegio: 8, seccionesAtendidasDocente: ["9-1", "9-2", "9-3", "9-4", "9-5"] },
-    { nivel: "10°", activo: false, totalSeccionesColegio: 4, seccionesAtendidasDocente: [] },
-    { nivel: "11°", activo: false, totalSeccionesColegio: 4, seccionesAtendidasDocente: [] },
-    { nivel: "12°", activo: false, totalSeccionesColegio: 2, seccionesAtendidasDocente: [] },
   ];
 
   const CREAR_CENTRO_DEFAULT = (idNum: number, dreDef = "DRE-01", nomDef = ""): CentroEducativoDocente => {

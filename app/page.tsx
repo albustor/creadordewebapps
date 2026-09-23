@@ -254,7 +254,7 @@ export default function HomePage() {
               </h1>
 
               <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto font-medium leading-relaxed">
-                Plataforma oficial de evaluación diagnóstica para <strong>7.°, 8.° y 9.° Año</strong> con ingreso mediante Cédula / Correo MEP y PIN de 4 dígitos.
+                Recurso para el desarrollo del diagnóstico formativo en <strong>7.°, 8.° y 9.° Año</strong> con base en el Programa de Estudios de Tecnologías de la Información.
               </p>
             </div>
 

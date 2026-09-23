@@ -17,9 +17,6 @@ export const CREAR_DESGLOSE_DEFAULT = (): DesgloseNivelSecciones[] => [
   { nivel: "7°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["7-1", "7-2", "7-3", "7-4"] },
   { nivel: "8°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["8-1", "8-2", "8-3", "8-4"] },
   { nivel: "9°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["9-1", "9-2", "9-3", "9-4", "9-5"] },
-  { nivel: "10°", activo: false, totalSeccionesColegio: 4, seccionesAtendidasDocente: ["10-1", "10-2", "10-3", "10-4"] },
-  { nivel: "11°", activo: false, totalSeccionesColegio: 4, seccionesAtendidasDocente: ["11-1", "11-2", "11-3", "11-4"] },
-  { nivel: "12°", activo: false, totalSeccionesColegio: 3, seccionesAtendidasDocente: ["12-1", "12-2", "12-3"] },
 ];
 
 export const CREAR_CENTRO_DEFAULT = (idNum: number, dreCodigoDefault = "DRE-01"): CentroEducativoDocente => {

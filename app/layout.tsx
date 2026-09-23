@@ -8,8 +8,8 @@ import Footer from "@/components/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Diagnóstico Secundaria - Plataforma Oficial MEP",
-  description: "Plataforma oficial de evaluación diagnóstica para 7°, 8° y 9° año del Ministerio de Educación Pública de Costa Rica.",
+  title: "Diagnóstico Secundaria - Tecnologías de la Información",
+  description: "Recurso para el desarrollo del diagnóstico formativo en 7°, 8° y 9° año con base en el Programa de Estudios de Tecnologías de la Información.",
 };
 
 export default function RootLayout({

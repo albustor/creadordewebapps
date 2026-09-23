@@ -56,7 +56,7 @@ export default function Navbar() {
           <Link
             href={docente ? "/dashboard" : "/"}
             className="flex items-center gap-3 shrink-0 group py-1 focus:outline-none"
-            title="Diagnóstico Secundaria - Plataforma Oficial MEP"
+            title="Diagnóstico Secundaria - Tecnologías de la Información"
           >
             <div className="w-11 h-11 rounded-2xl bg-emerald-100/90 border border-emerald-300/80 flex items-center justify-center text-emerald-800 shadow-xs group-hover:scale-105 transition-all">
               <Lightning size={24} weight="fill" className="text-amber-600" />

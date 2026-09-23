@@ -43,17 +43,17 @@ export default function DiagnosticoPage() {
           <div>
             <div className="flex items-center gap-2">
               <span className="px-3 py-1 rounded-full bg-sky-100 text-sky-900 border border-sky-300 text-[10px] font-black uppercase tracking-wider">
-                Ecosistema Diagnóstico Oficial • III Ciclo MEP
+                Ecosistema Diagnóstico • III Ciclo
               </span>
               <span className="text-xs font-bold text-slate-500">
-                Formación Tecnológica 2026
+                Tecnologías de la Información
               </span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mt-2">
               Evaluación Diagnóstica: 7.°, 8.° y 9.° Año
             </h1>
             <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-3xl leading-relaxed">
-              Seleccione el nivel educativo para acceder a los instrumentos diagnósticos oficiales, WebApps autónomas (en línea y desconectadas con QR) y módulos de evaluación docente con rúbricas socioafectivas y psicomotoras.
+              Seleccione el nivel educativo para acceder a los instrumentos diagnósticos basados en el Programa de Estudios de Tecnologías de la Información, WebApps autónomas (en línea y desconectadas con QR) y módulos de evaluación docente con rúbricas socioafectivas y psicomotoras.
             </p>
           </div>
 

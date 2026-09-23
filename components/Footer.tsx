@@ -18,7 +18,7 @@ export default function Footer() {
               <span className="font-extrabold text-base sm:text-lg">Diagnóstico Secundaria</span>
             </div>
             <p className="text-xs text-stone-500 leading-relaxed font-medium">
-              Plataforma oficial para la aplicación del diagnóstico formativo de 7°, 8° y 9° año y la consolidación analítica institucional del Ministerio de Educación Pública (MEP).
+              Recurso para el desarrollo del diagnóstico formativo de 7°, 8° y 9° año, diseñado con base en el Programa de Estudios de Tecnologías de la Información de la materia de Tecnología.
             </p>
           </div>
 
@@ -66,7 +66,7 @@ export default function Footer() {
 
         <div className="pt-6 border-t border-stone-200 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-stone-500">
           <div>
-            © 2026 Diagnóstico & Dashboard • Formación tecnológica (9° año).
+            © Diagnóstico & Dashboard • Tecnologías de la Información (7°, 8° y 9° año).
           </div>
           <div>
             Optimizado para computadoras de laboratorios, PCs y portátiles.
