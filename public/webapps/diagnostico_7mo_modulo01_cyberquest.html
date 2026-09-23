@@ -1855,49 +1855,55 @@
       const syncEl = document.getElementById('telemetrySyncStatus');
       const payload = getTelemetryPayload();
 
-      if (!SERVER_WEBHOOK_URL) {
-        if (syncEl) {
-          syncEl.innerHTML = `
-            <div style="background: rgba(0, 240, 255, 0.1); border: 1px solid var(--cyan-neon); border-radius: 10px; padding: 10px 14px; display: inline-flex; align-items: center; gap: 8px;">
-              <span style="font-size: 16px;">📱</span>
-              <span style="font-size: 13px; color: var(--cyan-neon); font-weight: 700;">Telemetría lista en pantalla para Escaneo QR del Docente</span>
-            </div>
-          `;
-        }
-        return;
-      }
-
       if (syncEl) {
         syncEl.innerHTML = `
           <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid var(--amber-neon); border-radius: 10px; padding: 10px 14px; display: inline-flex; align-items: center; gap: 8px;">
             <span style="font-size: 16px;">⏳</span>
-            <span style="font-size: 13px; color: var(--amber-neon); font-weight: 700;">Sincronizando telemetría...</span>
+            <span style="font-size: 13px; color: var(--amber-neon); font-weight: 700;">Sincronizando telemetría con el sistema docente...</span>
           </div>
         `;
       }
 
+      let syncExitosa = false;
+
+      // 1. Envío directo al servidor de telemetría de la plataforma
       try {
-        await fetch(SERVER_WEBHOOK_URL, {
+        const resLocal = await fetch('/api/telemetria/enviar', {
           method: 'POST',
-          mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
+        if (resLocal.ok) {
+          syncExitosa = true;
+        }
+      } catch (e) {}
 
-        if (syncEl) {
+      // 2. Envío secundario a webhook si está configurado
+      if (!syncExitosa && SERVER_WEBHOOK_URL) {
+        try {
+          await fetch(SERVER_WEBHOOK_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          syncExitosa = true;
+        } catch (err) {}
+      }
+
+      if (syncEl) {
+        if (syncExitosa) {
           syncEl.innerHTML = `
             <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid var(--lime-neon); border-radius: 10px; padding: 10px 14px; display: inline-flex; align-items: center; gap: 8px;">
               <span style="font-size: 16px;">✅</span>
-              <span style="font-size: 13px; color: var(--lime-neon); font-weight: 800;">Misión sincronizada exitosamente</span>
+              <span style="font-size: 13px; color: var(--lime-neon); font-weight: 800;">Misión sincronizada exitosamente con el sistema docente</span>
             </div>
           `;
-        }
-      } catch (err) {
-        if (syncEl) {
+        } else {
           syncEl.innerHTML = `
-            <div style="background: rgba(245, 158, 11, 0.15); border: 1px solid var(--amber-neon); border-radius: 10px; padding: 10px 14px; display: inline-flex; align-items: center; gap: 8px;">
-              <span style="font-size: 16px;">📶</span>
-              <span style="font-size: 13px; color: var(--amber-neon); font-weight: 700;">Modo Desconectado: El docente escaneará el Código QR en pantalla</span>
+            <div style="background: rgba(0, 240, 255, 0.1); border: 1px solid var(--cyan-neon); border-radius: 10px; padding: 10px 14px; display: inline-flex; align-items: center; gap: 8px;">
+              <span style="font-size: 16px;">📱</span>
+              <span style="font-size: 13px; color: var(--cyan-neon); font-weight: 700;">Guardado localmente en este equipo. Telemetría lista en pantalla.</span>
             </div>
           `;
         }

@@ -16,7 +16,10 @@ const CACHE_TELEMETRIA_PATH = path.join(process.cwd(), ".next", "telemetria_doce
 function normalizarSeccionServidor(sec?: string): string {
   if (!sec) return "Sección 9-1";
   const limpia = sec.replace(/^secci[oó]n\s*/i, "").trim();
-  return limpia.startsWith("9-") ? `Sección ${limpia}` : `Sección 9-${limpia}`;
+  if (/^[789]-/i.test(limpia)) {
+    return `Sección ${limpia}`;
+  }
+  return `Sección ${limpia}`;
 }
 
 function deduplicarRegistrosEnMemoria() {
@@ -117,8 +120,37 @@ export async function POST(req: NextRequest) {
 
     const procesados: any[] = [];
 
-    for (const body of items) {
-      if (!body.docenteId || !body.estudianteNombre) {
+    for (const rawItem of items) {
+      const body: any = { ...rawItem };
+
+      // Normalizar registros provenientes de CyberQuest 7.° Año (en parejas o individual)
+      if (body.tipo === 'CYBERQUEST_7MO' || body.cadet1) {
+        const c1 = body.cadet1 || "Cadete 1";
+        const c2 = body.cadet2;
+        const nombreEstudiante = c2 && c2.trim().length > 0 ? `${c1} & ${c2}` : c1;
+        body.estudianteNombre = body.estudianteNombre || nombreEstudiante;
+        body.docenteId = body.docenteId || "DOC-MEP-7MO";
+        body.seccionOGrupo = body.seccionOGrupo || body.seccion || "Sección 7-1";
+        body.porcentaje = body.porcentaje !== undefined ? body.porcentaje : (body.globalAvg !== undefined ? body.globalAvg : (body.cogScore !== undefined ? body.cogScore : 80));
+        body.puntaje = body.puntaje !== undefined ? body.puntaje : body.porcentaje;
+        body.nivel = body.nivel || "7°";
+        body.webAppId = body.webAppId || "diag-7mo-cyberquest-2026";
+        body.webAppTitulo = body.webAppTitulo || "CyberQuest 7°: Diagnóstico de Fundamentos Digitales";
+        body.tiempoSegundos = body.tiempoSegundos || 60;
+      }
+
+      // Normalizar registros de 8.° Año
+      if (body.webAppId?.includes("8vo") || body.subareasDetalle) {
+        body.docenteId = body.docenteId || "DOC-MEP-8VO";
+        body.nivel = body.nivel || "8°";
+        body.webAppTitulo = body.webAppTitulo || "Evaluación Diagnóstica — 8° Año (PNFT)";
+      }
+
+      if (!body.docenteId) {
+        body.docenteId = "DOC-MEP-AUTONOMO";
+      }
+
+      if (!body.estudianteNombre) {
         continue;
       }
 
