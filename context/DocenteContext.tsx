@@ -368,8 +368,26 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
               !esUsuarioBloqueado(t.estudianteNombre, t.estudianteCorreo) &&
               !esUsuarioBloqueado(t.docenteNombre, t.docenteEmail)
           );
-          setTelemetria(limpiosTele);
-          SafeStorage.setItem("telemetria_registros", JSON.stringify(limpiosTele));
+          // Deduplicación estricta al cargar: 1 único registro por estudiante y sección
+          const mapa = new Map<string, PayloadTelemetria>();
+          limpiosTele.forEach((item: any) => {
+            const nom = (item.estudianteNombre || "").toLowerCase().trim();
+            const sec = (item.seccionOGrupo || "").toLowerCase().trim();
+            const clave = `${nom}::${sec}`;
+            if (!mapa.has(clave)) {
+              mapa.set(clave, item);
+            } else {
+              const exist = mapa.get(clave)!;
+              if (item.estadoProgreso === "completado" && exist.estadoProgreso !== "completado") {
+                mapa.set(clave, item);
+              } else if ((item.timestamp || 0) >= (exist.timestamp || 0)) {
+                mapa.set(clave, item);
+              }
+            }
+          });
+          const deduplicados = Array.from(mapa.values()).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+          setTelemetria(deduplicados);
+          SafeStorage.setItem("telemetria_registros", JSON.stringify(deduplicados));
         } else {
           setTelemetria([]);
         }

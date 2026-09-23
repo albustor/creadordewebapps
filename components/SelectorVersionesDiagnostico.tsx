@@ -147,43 +147,30 @@ export default function SelectorVersionesDiagnostico({
       </div>
 
       {/* 2. GUÍA PEDAGÓGICA DESPLEGABLE */}
+      {/* 2. GUÍA PEDAGÓGICA DESPLEGABLE */}
       {guiaAbierta && (
         <div className="p-6 bg-stone-50 border border-stone-200 rounded-3xl space-y-4 animate-fadeIn shadow-xs">
           <h4 className="text-sm font-black text-slate-900 flex items-center gap-2">
             <Sparkle size={18} className="text-amber-600" weight="fill" />
-            <span>Criterios de elección y protocolo para el docente ({nivel} Año)</span>
+            <span>Protocolo de Aplicación y Telemetría en Tiempo Real ({nivel} Año)</span>
           </h4>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-            <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl space-y-2">
-              <div className="font-extrabold text-emerald-950 flex items-center gap-1.5 text-sm">
-                <GlobeHemisphereWest size={18} weight="bold" className="text-emerald-700" />
-                <span>¿Cuándo elegir la versión en línea?</span>
-              </div>
-              <ul className="list-disc list-inside text-slate-700 space-y-1 font-medium text-[11.5px] leading-relaxed">
-                <li>El laboratorio cuenta con <strong>internet fluido y estable</strong>.</li>
-                <li>Deseas ver el avance de los estudiantes en tiempo real en tu <strong>dashboard docente</strong>.</li>
-                <li><strong>Cómo compartir:</strong> Proyecta el código QR en la pizarra o comparte el enlace.</li>
-              </ul>
+          <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl space-y-2 text-xs">
+            <div className="font-extrabold text-emerald-950 flex items-center gap-1.5 text-sm">
+              <GlobeHemisphereWest size={18} weight="bold" className="text-emerald-700" />
+              <span>¿Cómo aplicar la evaluación diagnóstica con tus estudiantes?</span>
             </div>
-
-            <div className="p-4 bg-amber-50 border border-amber-200 rounded-2xl space-y-2">
-              <div className="font-extrabold text-amber-950 flex items-center gap-1.5 text-sm">
-                <HardDrive size={18} weight="bold" className="text-amber-700" />
-                <span>¿Cuándo elegir la versión desconectada (offline)?</span>
-              </div>
-              <ul className="list-disc list-inside text-slate-700 space-y-1 font-medium text-[11.5px] leading-relaxed">
-                <li>El laboratorio tiene <strong>conexión lenta, inestable o sin internet</strong>.</li>
-                <li><strong>Cómo aplicarlo:</strong> Copias el archivo único <code>.html</code> mediante llave USB.</li>
-                <li><strong>Cómo capturar las notas:</strong> Cada estudiante genera un QR final en su pantalla y tú lo escaneas con tu Módulo Docente en 1 segundo.</li>
-              </ul>
-            </div>
+            <ul className="list-disc list-inside text-slate-700 space-y-1.5 font-medium text-[11.5px] leading-relaxed">
+              <li><strong>Compartir el Enlace:</strong> Proyecta el código QR o copia y comparte el enlace de <em>Estudiantes en Línea</em> en el laboratorio.</li>
+              <li><strong>Identificación Automática:</strong> El enlace ya lleva precargado tu nombre como docente y tu institución de forma inmutable.</li>
+              <li><strong>Recepción en Vivo:</strong> Conforme los estudiantes contestan y completan la simulación, sus calificaciones e indicadores se reflejan en tu <strong>Dashboard Docente</strong> y en el <strong>Módulo Evaluador</strong> en tiempo real.</li>
+            </ul>
           </div>
         </div>
       )}
 
       {/* 3. TARJETAS DE ACCESO DIRECTO A LAS VERSIONES */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         {/* TARJETA 1: VERSIÓN EN LÍNEA (ESTUDIANTE) */}
         <div className="bg-white border-2 border-emerald-200/90 rounded-3xl p-6 text-slate-900 shadow-softPastel flex flex-col justify-between hover:border-emerald-400 transition-all">
@@ -191,7 +178,7 @@ export default function SelectorVersionesDiagnostico({
             <div className="flex items-center justify-between">
               <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-900 border border-emerald-200 text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
-                <span>Opción 1 • Con internet</span>
+                <span>Aplicación en Línea</span>
               </span>
               <span className="text-xs font-bold text-emerald-700">{nivel} Año</span>
             </div>
@@ -237,50 +224,7 @@ export default function SelectorVersionesDiagnostico({
           </div>
         </div>
 
-        {/* TARJETA 2: VERSIÓN DESCONECTADA OFFLINE (ESTUDIANTE) */}
-        <div className="bg-white border-2 border-amber-200/90 rounded-3xl p-6 text-slate-900 shadow-softPastel flex flex-col justify-between hover:border-amber-400 transition-all">
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="px-3 py-1 rounded-full bg-amber-50 text-amber-900 border border-amber-200 text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5">
-                <HardDrive size={14} className="text-amber-700" />
-                <span>Opción 2 • Sin internet</span>
-              </span>
-              <span className="text-xs font-bold text-amber-700">Modo USB</span>
-            </div>
-
-            <div>
-              <h3 className="text-base font-black text-slate-900 tracking-tight">
-                ESTUDIANTES DESCONECTADOS
-              </h3>
-              <p className="text-xs text-slate-600 mt-1 leading-relaxed font-medium">
-                Archivo HTML autónomo para llaves USB. Al terminar, cada alumno genera un QR en su pantalla para captura docente inmediata.
-              </p>
-            </div>
-          </div>
-
-          <div className="pt-4 space-y-2">
-            <a
-              href={urlOffline}
-              download
-              className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-black transition-all shadow-xs"
-            >
-              <DownloadSimple size={16} weight="bold" />
-              <span>Descargar HTML (.html)</span>
-            </a>
-
-            <a
-              href={urlOffline}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 text-[11px] font-bold border border-amber-200"
-            >
-              <ArrowSquareOut size={14} />
-              <span>Probar Versión Offline</span>
-            </a>
-          </div>
-        </div>
-
-        {/* TARJETA 3: MÓDULO DOCENTE EVALUADOR */}
+        {/* TARJETA 2: MÓDULO DOCENTE EVALUADOR */}
         <div className="bg-white border-2 border-indigo-200/90 rounded-3xl p-6 text-slate-900 shadow-softPastel flex flex-col justify-between hover:border-indigo-400 transition-all">
           <div className="space-y-3">
             <div className="flex items-center justify-between">
@@ -288,7 +232,7 @@ export default function SelectorVersionesDiagnostico({
                 <ChalkboardTeacher size={14} className="text-indigo-700" />
                 <span>Herramienta Docente</span>
               </span>
-              <span className="text-xs font-bold text-indigo-700">Scanner + Rúbricas</span>
+              <span className="text-xs font-bold text-indigo-700">Rúbricas + Telemetría</span>
             </div>
 
             <div>
@@ -296,7 +240,7 @@ export default function SelectorVersionesDiagnostico({
                 MÓDULO EVALUADOR {nivel}
               </h3>
               <p className="text-xs text-slate-600 mt-1 leading-relaxed font-medium">
-                Escanea los QR de los alumnos, evalúa en vivo las dimensiones socioafectiva y psicomotora, y exporta a Excel oficial MEP.
+                Visualiza los resultados en tiempo real, evalúa las dimensiones socioafectiva y psicomotora, y exporta a Excel oficial MEP.
               </p>
             </div>
           </div>
@@ -326,7 +270,7 @@ export default function SelectorVersionesDiagnostico({
                 className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-900 text-[11px] font-bold border border-indigo-200"
               >
                 <QrCode size={14} />
-                <span>QR Móvil</span>
+                <span>Proyectar QR</span>
               </button>
             </div>
           </div>
