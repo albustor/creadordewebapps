@@ -545,16 +545,16 @@
         </div>
       </div>
 
-      <!-- PESTAÑAS DE ÁREA SUPERIORES (ENCABEZADOS DE COLUMNA A1, B1, C1) -->
+      <!-- PESTAÑAS DE ÁREA SUPERIORES REORDENADAS OFICIAL MEP (SOCIOAFECTIVA -> PSICOMOTRIZ -> COGNITIVA) -->
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px;">
-        <button type="button" id="tabAreaPsi" class="view-tab activa" onclick="cambiarAreaObservacion('psi')" style="padding: 12px 10px; font-size: 12px; border-color: #86efac; color: #15803d; background: #dcfce7;">
-          <span style="font-size: 13px; font-weight: 900;">🖐️ 1. ÁREA PSICOMOTRIZ / PROCEDIMENTAL</span>
-          <span style="font-size: 10px; color: #166534; font-weight: normal;">6 Prácticas del Pensador Computacional en Simulación</span>
+        <button type="button" id="tabAreaSoc" class="view-tab activa" onclick="cambiarAreaObservacion('soc')" style="padding: 12px 10px; font-size: 12px; border-color: #fde68a; color: #b45309; background: #fef3c7;">
+          <span style="font-size: 13px; font-weight: 900;">❤️ 1. ÁREA SOCIOAFECTIVA / ACTITUDINAL</span>
+          <span style="font-size: 10px; color: #92400e; font-weight: normal;">4 Actitudes del Pensador Computacional y Autopercepción</span>
         </button>
 
-        <button type="button" id="tabAreaSoc" class="view-tab" onclick="cambiarAreaObservacion('soc')" style="padding: 12px 10px; font-size: 12px; border-color: #fde68a; color: #b45309; background: #ffffff;">
-          <span style="font-size: 13px; font-weight: 900;">❤️ 2. ÁREA SOCIOAFECTIVA / ACTITUDINAL</span>
-          <span style="font-size: 10px; color: #92400e; font-weight: normal;">4 Actitudes del Pensador Computacional y Autopercepción</span>
+        <button type="button" id="tabAreaPsi" class="view-tab" onclick="cambiarAreaObservacion('psi')" style="padding: 12px 10px; font-size: 12px; border-color: #86efac; color: #15803d; background: #ffffff;">
+          <span style="font-size: 13px; font-weight: 900;">🖐️ 2. ÁREA PSICOMOTRIZ / PROCEDIMENTAL</span>
+          <span style="font-size: 10px; color: #166534; font-weight: normal;">6 Prácticas del Pensador Computacional en Simulación</span>
         </button>
 
         <button type="button" id="tabAreaCog" class="view-tab" onclick="cambiarAreaObservacion('cog')" style="padding: 12px 10px; font-size: 12px; border-color: #7dd3fc; color: #0369a1; background: #ffffff;">
@@ -598,7 +598,7 @@
             ✨ Analizar Sección con IA
           </button>
           <button type="button" class="btn btn-outline" style="font-size: 11px; padding: 4px 10px; min-height: 28px;" id="btnMarcarTodoNivelA" onclick="marcarTodoGrupoNivelA()">
-            ⚡ Marcar Toda la Sección Nivel A
+            ⚡ Marcar Toda la Sección Socioafectiva en Nivel A
           </button>
           <div style="font-size: 11.5px; color: #475569; margin-left: 4px;">
             Total: <strong style="color: #0284c7;" id="cntTotalObs">0</strong> • Evaluados: <strong style="color: #15803d;" id="cntEvaluadosObs">0</strong>
@@ -606,82 +606,92 @@
         </div>
       </div>
 
-      <!-- PANEL DE GUÍA DE SIMBOLOGÍA OFICIAL MEP Y GLOSARIO DE INDICADORES -->
-      <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 12px 16px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.03);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
-          <div style="display: flex; align-items: center; gap: 6px;">
+      <!-- PANEL DE GUÍA DE SIMBOLOGÍA OFICIAL MEP Y GLOSARIO (SISTEMA ACORDEÓN DESPLEGABLE) -->
+      <details style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 10px 14px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.03); cursor: pointer;">
+        <summary style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; user-select: none; outline: none; font-weight: 800; list-style: none;">
+          <div style="display: flex; align-items: center; gap: 8px;">
             <span style="font-size: 16px;">📖</span>
-            <strong style="font-size: 12px; color: #0f172a; text-transform: uppercase; letter-spacing: 0.5px;">
+            <span style="font-size: 12px; color: #0f172a; text-transform: uppercase; letter-spacing: 0.5px;">
               Guía de Simbología Oficial MEP (Nivel de Desempeño Formativo)
-            </strong>
-          </div>
-          <span style="font-size: 10.5px; color: #64748b; font-weight: 700; background: #f1f5f9; padding: 2px 8px; border-radius: 6px;">
-            Evaluación 100% Cualitativa y Formativa
-          </span>
-        </div>
-
-        <!-- Simbología para las 3 Áreas -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; font-size: 11.5px;">
-          <!-- 1. Área Cognitiva (L / ED / RA) -->
-          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px;">
-            <strong style="color: #0369a1; display: block; margin-bottom: 4px; font-size: 11px;">
-              🧠 Área Cognitiva (Saberes Conceptuales):
-            </strong>
-            <div style="display: flex; flex-direction: column; gap: 4px;">
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <span class="badge-status" style="background: #dcfce7; color: #15803d; border: 1px solid #86efac; font-weight: 900; font-size: 10.5px; padding: 1px 7px;">L</span>
-                <span style="color: #334155;"><strong>Logrado:</strong> Dominio consolidado (&ge;80% / acierto del saber)</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <span class="badge-status" style="background: #fef3c7; color: #b45309; border: 1px solid #fde68a; font-weight: 900; font-size: 10.5px; padding: 1px 6px;">ED</span>
-                <span style="color: #334155;"><strong>En Desarrollo:</strong> Nivel intermedio / comprensión en proceso (60%-79%)</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <span class="badge-status" style="background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; font-weight: 900; font-size: 10.5px; padding: 1px 6px;">RA</span>
-                <span style="color: #334155;"><strong>Requiere Acompañamiento:</strong> Nivel inicial / dificultad (&le;59%)</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 2. Áreas Psicomotora y Socioafectiva (Escala A / B / C) -->
-          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px;">
-            <strong style="color: #15803d; display: block; margin-bottom: 4px; font-size: 11px;">
-              🖐️ Psicomotriz & ❤️ Socioafectiva (Escala A / B / C):
-            </strong>
-            <div style="display: flex; flex-direction: column; gap: 4px;">
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <span style="background: #dcfce7; color: #15803d; border: 1px solid #86efac; font-weight: 900; font-size: 10.5px; padding: 1px 7px; border-radius: 4px;">A</span>
-                <span style="color: #334155;"><strong>Nivel A (Alto / Autónomo / Consistente):</strong> Ejecuta con rigor y autonomía</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <span style="background: #fef3c7; color: #b45309; border: 1px solid #fde68a; font-weight: 900; font-size: 10.5px; padding: 1px 7px; border-radius: 4px;">B</span>
-                <span style="color: #334155;"><strong>Nivel B (Medio / Con Apoyo Ocasional):</strong> Requiere guía puntual o pista</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <span style="background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; font-weight: 900; font-size: 10.5px; padding: 1px 7px; border-radius: 4px;">C</span>
-                <span style="color: #334155;"><strong>Nivel C (Inicial / Acompañamiento):</strong> Demanda modelado paso a paso</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Glosario y Desglose Completo de Criterios (Optimizado para Celular / Tableta) -->
-        <div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #cbd5e1; font-size: 11px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; margin-bottom: 6px;">
-            <span style="color: #0369a1; font-weight: 700; display: flex; align-items: center; gap: 4px;">
-              💡 <span>En celular o tableta: <strong>Toca cualquier encabezado (ej. ℹ️ P1, S1, Ind 1)</strong> en la tabla para ver su rúbrica y descripción completa.</span>
+            </span>
+            <span style="font-size: 10px; color: #0284c7; background: #e0f2fe; border: 1px solid #bae6fd; padding: 2px 6px; border-radius: 4px; font-weight: 700;">
+              🔽 Toca para ver u ocultar criterios y rúbricas
             </span>
           </div>
+          <span style="font-size: 10.5px; color: #64748b; font-weight: 700; background: #f1f5f9; padding: 3px 8px; border-radius: 6px;">
+            Evaluación 100% Cualitativa y Formativa
+          </span>
+        </summary>
 
-          <details style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; cursor: pointer;">
-            <summary style="font-weight: 800; color: #0284c7; outline: none;">
-              📖 Toca aquí para ver el Glosario y Alineación Curricular Oficial MEP (20 Saberes y Criterios)
-            </summary>
-            
-            <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 10px;">
-              <!-- 1. Psicomotriz / Procedimental -->
+        <div style="margin-top: 12px; pt-3; border-top: 1px dashed #cbd5e1;">
+          <!-- Simbología para las 3 Áreas -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; font-size: 11.5px; margin-bottom: 10px;">
+            <!-- 1. Área Socioafectiva y Psicomotora (Escala A / B / C) -->
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px;">
+              <strong style="color: #b45309; display: block; margin-bottom: 4px; font-size: 11px;">
+                ❤️ Socioafectiva & 🖐️ Psicomotriz (Escala A / B / C):
+              </strong>
+              <div style="display: flex; flex-direction: column; gap: 4px;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span style="background: #dcfce7; color: #15803d; border: 1px solid #86efac; font-weight: 900; font-size: 10.5px; padding: 1px 7px; border-radius: 4px;">A</span>
+                  <span style="color: #334155;"><strong>Nivel A (Alto / Autónomo / Consistente):</strong> Ejecuta con rigor y autonomía</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span style="background: #fef3c7; color: #b45309; border: 1px solid #fde68a; font-weight: 900; font-size: 10.5px; padding: 1px 7px; border-radius: 4px;">B</span>
+                  <span style="color: #334155;"><strong>Nivel B (Medio / Con Apoyo Ocasional):</strong> Requiere guía puntual o pista</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span style="background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; font-weight: 900; font-size: 10.5px; padding: 1px 7px; border-radius: 4px;">C</span>
+                  <span style="color: #334155;"><strong>Nivel C (Inicial / Acompañamiento):</strong> Demanda modelado paso a paso</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. Área Cognitiva (L / ED / RA) -->
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px;">
+              <strong style="color: #0369a1; display: block; margin-bottom: 4px; font-size: 11px;">
+                🧠 Área Cognitiva (Saberes Conceptuales):
+              </strong>
+              <div style="display: flex; flex-direction: column; gap: 4px;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span class="badge-status" style="background: #dcfce7; color: #15803d; border: 1px solid #86efac; font-weight: 900; font-size: 10.5px; padding: 1px 7px;">L</span>
+                  <span style="color: #334155;"><strong>Logrado:</strong> Dominio consolidado (&ge;80% / acierto del saber)</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span class="badge-status" style="background: #fef3c7; color: #b45309; border: 1px solid #fde68a; font-weight: 900; font-size: 10.5px; padding: 1px 6px;">ED</span>
+                  <span style="color: #334155;"><strong>En Desarrollo:</strong> Nivel intermedio / comprensión en proceso (60%-79%)</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span class="badge-status" style="background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; font-weight: 900; font-size: 10.5px; padding: 1px 6px;">RA</span>
+                  <span style="color: #334155;"><strong>Requiere Acompañamiento:</strong> Nivel inicial / dificultad (&le;59%)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Glosario y Desglose Completo de Criterios (Optimizado para Celular / Tableta) -->
+          <div style="font-size: 11px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; margin-bottom: 8px;">
+              <span style="color: #0369a1; font-weight: 700; display: flex; align-items: center; gap: 4px;">
+                💡 <span>En computadora o tableta: <strong>Haz clic en cualquier encabezado (ej. ℹ️ S1, P1, Ind 1)</strong> en la tabla para ver su rúbrica y descripción completa.</span>
+              </span>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <!-- 1. Socioafectiva / Actitudinal -->
+              <div style="background: #ffffff; border: 1px solid #fde68a; border-radius: 8px; padding: 10px;">
+                <strong style="color: #b45309; display: block; margin-bottom: 6px; font-size: 11.5px;">❤️ 1. ÁREA SOCIOAFECTIVA / ACTITUDINAL (4 Actitudes Oficiales del Pensador Computacional y Autopercepción):</strong>
+                <ul style="padding-left: 18px; line-height: 1.6; color: #334155; font-size: 10.5px;">
+                  <li><strong>S1. Gusto por la Precisión:</strong> Demuestra esmero y minuciosidad al verificar los cables, los valores del multímetro (1.05V, 45W) y el monitor serial UART antes de avanzar.<br><span style="color:#64748b;"><em>Escala: Nivel A: Alto rigor y minuciosidad | Nivel B: Precisión moderada | Nivel C: Precipitación / descuido</em></span></li>
+                  <li><strong>S2. Aprender del Error:</strong> Convierte los desaciertos en oportunidades de aprendizaje: analiza con calma por qué la lámpara no encendía en lugar de rendirse o probar al azar.<br><span style="color:#64748b;"><em>Escala: Nivel A: Análisis reflexivo ante el fallo | Nivel B: Corrige tras orientación | Nivel C: Frustración ante el error</em></span></li>
+                  <li><strong>S3. Flexibilidad ante Problemas:</strong> Demuestra adaptabilidad y resiliencia para replantear su hipótesis cuando la propuesta con falla no responde como esperaba.<br><span style="color:#64748b;"><em>Escala: Nivel A: Adaptable y proactivo/a | Nivel B: Flexible con acompañamiento | Nivel C: Rigidez ante el problema</em></span></li>
+                  <li><strong>S4. Tolerancia a la Frustración y Confort:</strong> Autocontrol, paciencia y persistencia. Se vincula al selector emocional (Muy cómodo/a, Cómodo/a, Con alguna dificultad, Necesité bastante apoyo).<br><span style="color:#64748b;"><em>Escala: Nivel A: Alta perseverancia y confort | Nivel B: Persistencia media | Nivel C: Requiere soporte emocional constante</em></span></li>
+                </ul>
+              </div>
+
+              <!-- 2. Psicomotriz / Procedimental -->
               <div style="background: #ffffff; border: 1px solid #86efac; border-radius: 8px; padding: 10px;">
-                <strong style="color: #15803d; display: block; margin-bottom: 6px; font-size: 11.5px;">🖐️ 1. ÁREA PSICOMOTRIZ / PROCEDIMENTAL (Prácticas del Pensador Computacional en la Simulación Interactiva):</strong>
+                <strong style="color: #15803d; display: block; margin-bottom: 6px; font-size: 11.5px;">🖐️ 2. ÁREA PSICOMOTRIZ / PROCEDIMENTAL (Prácticas del Pensador Computacional en la Simulación Interactiva):</strong>
                 <ul style="padding-left: 18px; line-height: 1.6; color: #334155; font-size: 10.5px;">
                   <li><strong>P1. Modulariza:</strong> Resuelve la conexión por partes independientes: identifica y organiza espacialmente las 3 tarjetas de hardware (Sensor LDR, Microcontrolador MCU y Lámpara LED).<br><span style="color:#64748b;"><em>Escala: Nivel A: Autónomo / Consistente | Nivel B: Con apoyo ocasional | Nivel C: Requiere modelado paso a paso</em></span></li>
                   <li><strong>P2. Reconoce Patrones:</strong> Identifica las regularidades de polaridad y correspondencia de terminales (VCC 5V 🔴, GND ⚫, Pin A0 🟢, Pin D9 🟡).<br><span style="color:#64748b;"><em>Escala: Nivel A: Sin errores de polaridad | Nivel B: Corrige polaridad con guía | Nivel C: Confunde alimentación con señal</em></span></li>
@@ -689,17 +699,6 @@
                   <li><strong>P4. Programa:</strong> Valida la estructura condicional y asignación de pines: comprueba que al bajar la luz (&lt;300 Lux) el microcontrolador activa la salida digital D9.<br><span style="color:#64748b;"><em>Escala: Nivel A: Verifica umbral y estados DMM | Nivel B: Comprende tras aclaración | Nivel C: No asocia el umbral a la salida</em></span></li>
                   <li><strong>P5. Depura (Reto 2):</strong> Detecta la falla técnica inyectada en el simulador (señal conectada a 5V en vez de A0) y ejecuta la reconexión física del cable en el banco interactivo.<br><span style="color:#64748b;"><em>Escala: Nivel A: Detecta y reconecta con autonomía | Nivel B: Reconecta con pista docente | Nivel C: No logra corregir el cable</em></span></li>
                   <li><strong>P6. Transfiere (Reto 2):</strong> Transfiere el concepto a la justificación escrita: explica por qué la entrada analógica A0 lee voltajes variables según la luz mientras que 5V es fija.<br><span style="color:#64748b;"><em>Escala: Nivel A: Justificación técnica precisa | Nivel B: Justificación empírica parcial | Nivel C: No fundamenta la corrección</em></span></li>
-                </ul>
-              </div>
-
-              <!-- 2. Socioafectiva / Actitudinal -->
-              <div style="background: #ffffff; border: 1px solid #fde68a; border-radius: 8px; padding: 10px;">
-                <strong style="color: #b45309; display: block; margin-bottom: 6px; font-size: 11.5px;">❤️ 2. ÁREA SOCIOAFECTIVA / ACTITUDINAL (4 Actitudes Oficiales del Pensador Computacional y Autopercepción):</strong>
-                <ul style="padding-left: 18px; line-height: 1.6; color: #334155; font-size: 10.5px;">
-                  <li><strong>S1. Gusto por la Precisión:</strong> Demuestra esmero y minuciosidad al verificar los cables, los valores del multímetro (1.05V, 45W) y el monitor serial UART antes de avanzar.<br><span style="color:#64748b;"><em>Escala: Nivel A: Alto rigor y minuciosidad | Nivel B: Precisión moderada | Nivel C: Precipitación / descuido</em></span></li>
-                  <li><strong>S2. Aprender del Error:</strong> Convierte los desaciertos en oportunidades de aprendizaje: analiza con calma por qué la lámpara no encendía en lugar de rendirse o probar al azar.<br><span style="color:#64748b;"><em>Escala: Nivel A: Análisis reflexivo ante el fallo | Nivel B: Corrige tras orientación | Nivel C: Frustración ante el error</em></span></li>
-                  <li><strong>S3. Flexibilidad ante Problemas:</strong> Demuestra adaptabilidad y resiliencia para replantear su hipótesis cuando la propuesta con falla no responde como esperaba.<br><span style="color:#64748b;"><em>Escala: Nivel A: Adaptable y proactivo/a | Nivel B: Flexible con acompañamiento | Nivel C: Rigidez ante el problema</em></span></li>
-                  <li><strong>S4. Tolerancia a la Frustración y Confort:</strong> Autocontrol, paciencia y persistencia. Se vincula al selector emocional (Muy cómodo/a, Cómodo/a, Con alguna dificultad, Necesité bastante apoyo).<br><span style="color:#64748b;"><em>Escala: Nivel A: Alta perseverancia y confort | Nivel B: Persistencia media | Nivel C: Requiere soporte emocional constante</em></span></li>
                 </ul>
               </div>
 
@@ -719,24 +718,10 @@
                   <li><strong>Ind 10. Reflex. (Metacognición y Seguridad):</strong> Autoevalúa aprendizajes previos y normas de seguridad en el laboratorio tecnológico.</li>
                 </ul>
               </div>
-
-              <!-- 4. Matriz de Sistematización y Vinculación -->
-              <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px;">
-                <strong style="color: #0f172a; display: block; margin-bottom: 6px; font-size: 11.5px;">📊 3. MATRIZ DE SISTEMATIZACIÓN Y VINCULACIÓN (Pág. 15):</strong>
-                <p style="color: #334155; font-size: 10.5px; line-height: 1.5; margin-bottom: 6px;">
-                  En la Vista 3 (Sistematización) del Instrumento Docente, el sistema cruza los 10 Saberes Conceptuales (Área Cognitiva) con los desempeños Procedimentales (P1-P6) y Actitudinales (S1-S4):
-                </p>
-                <ul style="padding-left: 18px; line-height: 1.5; color: #334155; font-size: 10.5px;">
-                  <li><strong>🟢 L / Nivel A (Logrado / Autónomo):</strong> Demuestra dominio conceptual, destreza psicomotriz en el cableado y actitud perseverante.</li>
-                  <li><strong>🟡 ED / Nivel B (En Desarrollo / Con Apoyo):</strong> Comprensión intermedia, requiere mediación ocasional en conexiones o depuración.</li>
-                  <li><strong>🔴 RA / Nivel C (Requiere Acompañamiento):</strong> Demanda modelado paso a paso en circuitos y refuerzo en conceptos base.</li>
-                  <li><strong>✨ Generador de Diagnóstico Individual:</strong> Cada estudiante cuenta con un campo editable de Descripción del Desempeño y Acciones de Acompañamiento, autocompletable con el botón de Análisis con IA (360° Formativo) o editable manualmente por el docente.</li>
-                </ul>
-              </div>
             </div>
-          </details>
+          </div>
         </div>
-      </div>
+      </details>
 
       <!-- CONTENEDOR DE TABLA/MATRIZ EN VIVO TIPO EXCEL -->
       <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 14px; overflow-x: auto; box-shadow: 0 2px 10px rgba(0,0,0,0.04);">
@@ -1228,7 +1213,7 @@
 
     var estadoDocente = {
       vistaActual: 1,
-      areaActiva: 'psi', // 'psi' (Psicomotora), 'soc' (Socioafectiva), 'cog' (Cognitiva)
+      areaActiva: 'soc', // 'soc' (1. Socioafectiva), 'psi' (2. Psicomotriz), 'cog' (3. Cognitiva)
       estudiantes: [],
       estudianteActivoIdx: 0,
       seccionFiltro: "TODAS"
@@ -1247,9 +1232,9 @@
       var descEl = document.getElementById("modalCriterioTexto");
       var escalaEl = document.getElementById("modalCriterioEscala");
 
-      var areaNombre = area === 'psi' ? "🖐️ 1. Área Psicomotora" : (area === 'soc' ? "❤️ 2. Área Socioafectiva" : "🧠 3. Área Cognitiva");
-      var areaColor = area === 'psi' ? "#15803d" : (area === 'soc' ? "#b45309" : "#0369a1");
-      var areaBg = area === 'psi' ? "#dcfce7" : (area === 'soc' ? "#fef3c7" : "#e0f2fe");
+      var areaNombre = area === 'soc' ? "❤️ 1. Área Socioafectiva" : (area === 'psi' ? "🖐️ 2. Área Psicomotriz" : "🧠 3. Área Cognitiva");
+      var areaColor = area === 'soc' ? "#b45309" : (area === 'psi' ? "#15803d" : "#0369a1");
+      var areaBg = area === 'soc' ? "#fef3c7" : (area === 'psi' ? "#dcfce7" : "#e0f2fe");
 
       if (areaBadgeEl) {
         areaBadgeEl.innerText = areaNombre;

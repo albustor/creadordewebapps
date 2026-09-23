@@ -3,19 +3,48 @@
 import React from "react";
 import { PayloadTelemetria } from "@/lib/antiFraude";
 import { ConfiguracionDashboardDocente } from "./ConfiguradorInstrumentoDashboard";
-import { CheckCircle, Warning, XCircle, Users, Sparkle, Article } from "@phosphor-icons/react";
+import { CheckCircle, Warning, XCircle, Users, Sparkle, Article, Gauge } from "@phosphor-icons/react";
 
 interface SemaforoLogroProps {
   registros: PayloadTelemetria[];
   configuracion?: ConfiguracionDashboardDocente;
+  nivel?: "todos" | "7mo" | "8vo" | "9no";
 }
 
-export default function SemaforoLogro({ registros, configuracion }: SemaforoLogroProps) {
+export default function SemaforoLogro({ registros, configuracion, nivel = "todos" }: SemaforoLogroProps) {
   const esDiagnostico = configuracion?.tipoProceso === "diagnostico";
   const minAvanzado = configuracion?.umbralAvanzadoMin ?? 80;
   const maxInicial = configuracion?.umbralInicialMax ?? 59;
 
   const total = registros.length;
+
+  const nivelEtiqueta =
+    nivel === "7mo"
+      ? "7.° Año (CyberQuest)"
+      : nivel === "8vo"
+      ? "8.° Año (PNFT)"
+      : nivel === "9no"
+      ? "9.° Año (Aula Inteligente)"
+      : "Consolidado Institucional";
+
+  if (total === 0) {
+    return (
+      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-mepCard flex flex-col items-center justify-center text-center min-h-[260px]">
+        <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 mb-3">
+          <Gauge size={24} weight="duotone" />
+        </div>
+        <h3 className="font-extrabold text-sm text-slate-900 mb-1">
+          Semáforo Diagnóstico ({nivelEtiqueta})
+        </h3>
+        <p className="text-xs text-slate-500 max-w-sm leading-relaxed mb-3">
+          No hay registros de telemetría aún para este nivel o filtro seleccionado. La clasificación formativa (Consolidado, En Desarrollo, Acompañamiento) se calculará en tiempo real con las respuestas de los estudiantes.
+        </p>
+        <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
+          Esperando entregas diagnósticas
+        </span>
+      </div>
+    );
+  }
 
   // Clasificación dinámica según umbrales configurados
   const avanzados = registros.filter((r) => {
@@ -30,17 +59,17 @@ export default function SemaforoLogro({ registros, configuracion }: SemaforoLogr
 
   const intermedios = Math.max(0, total - avanzados - iniciales);
 
-  const pctAvanzado = total > 0 ? Math.round((avanzados / total) * 100) : 0;
-  const pctIntermedio = total > 0 ? Math.round((intermedios / total) * 100) : 0;
-  const pctInicial = total > 0 ? Math.round((iniciales / total) * 100) : 0;
+  const pctAvanzado = Math.round((avanzados / total) * 100);
+  const pctIntermedio = Math.round((intermedios / total) * 100);
+  const pctInicial = Math.round((iniciales / total) * 100);
 
-  const promedioPuntaje =
-    total > 0 ? Math.round(registros.reduce((acc, curr) => acc + (curr.porcentaje ?? curr.puntaje), 0) / total) : 0;
+  const promedioPuntaje = Math.round(
+    registros.reduce((acc, curr) => acc + (curr.porcentaje ?? curr.puntaje), 0) / total
+  );
 
-  const tiempoPromedioSegundos =
-    total > 0
-      ? Math.round(registros.reduce((acc, curr) => acc + curr.tiempoSegundos, 0) / total)
-      : 0;
+  const tiempoPromedioSegundos = Math.round(
+    registros.reduce((acc, curr) => acc + (curr.tiempoSegundos || 45), 0) / total
+  );
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-mepCard space-y-6">
@@ -48,7 +77,7 @@ export default function SemaforoLogro({ registros, configuracion }: SemaforoLogr
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-purple-100 text-purple-900 border border-purple-200">
-              Enfoque: Diagnóstico Integrado 9°
+              Enfoque: {nivelEtiqueta}
             </span>
             <span className="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full font-bold">
               {total} Evaluaciones
@@ -65,7 +94,7 @@ export default function SemaforoLogro({ registros, configuracion }: SemaforoLogr
 
         <div className="flex items-center gap-4 text-xs font-bold text-slate-700 bg-stone-50 px-3.5 py-2 rounded-xl border border-stone-200">
           <div>
-            Promedio: <span className="text-emerald-800 font-black">{total > 0 ? (promedioPuntaje / 10).toFixed(1) : "0.0"}/10 Saberes</span>
+            Promedio: <span className="text-emerald-800 font-black">{(promedioPuntaje / 10).toFixed(1)}/10 Saberes</span>
           </div>
           <div className="text-stone-300">|</div>
           <div>

@@ -55,12 +55,14 @@ interface AIAnalisisResponse {
 interface RecomendacionesDUAProps {
   registros: PayloadTelemetria[];
   configuracion?: ConfiguracionDashboardDocente;
+  nivel?: "todos" | "7mo" | "8vo" | "9no";
   seccionSeleccionada?: string;
 }
 
 export default function RecomendacionesDUA({
   registros,
   configuracion,
+  nivel = "todos",
   seccionSeleccionada = "Todas",
 }: RecomendacionesDUAProps) {
   const [aiData, setAiData] = useState<AIAnalisisResponse | null>(null);
@@ -76,6 +78,15 @@ export default function RecomendacionesDUA({
 
   const minAvanzado = configuracion?.umbralAvanzadoMin ?? 80;
   const maxInicial = configuracion?.umbralInicialMax ?? 59;
+
+  const nivelEtiqueta =
+    nivel === "7mo"
+      ? "7.° Año (CyberQuest)"
+      : nivel === "8vo"
+      ? "8.° Año (PNFT)"
+      : nivel === "9no"
+      ? "9.° Año (Aula Inteligente)"
+      : "General";
 
   // Estudiantes que requieren acompañamiento prioritario
   const estudiantesRezago = registros.filter((r) => {
@@ -102,19 +113,65 @@ export default function RecomendacionesDUA({
 
   // Generar análisis heurístico inmediato basado en datos
   const recomendacionesBase: RecomendacionesEstructuradas = generarRecomendacionesPedagogicas({
-    nivel: configuracion?.nivelEducativo || "9° Año - Secundaria",
+    nivel:
+      nivel === "7mo"
+        ? "7° Año - Secundaria"
+        : nivel === "8vo"
+        ? "8° Año - Secundaria"
+        : nivel === "9no"
+        ? "9° Año - Secundaria"
+        : configuracion?.nivelEducativo || "Secundaria - MEP",
     saberConceptual:
-      configuracion?.saberConceptual ||
-      "Fundamentos y conceptos clave de circuitos, sensores y microcontroladores",
-    saberProcedimental: "Formulación de algoritmos, análisis y conexionado práctico en simulador 2D",
+      nivel === "7mo"
+        ? "Fundamentos de hardware, software, sistemas operativos y algoritmos básicos"
+        : nivel === "8vo"
+        ? "Lógica algorítmica, variables, estructuras condicionales dobles y bucles"
+        : configuracion?.saberConceptual ||
+          "Fundamentos y conceptos clave de circuitos, sensores y microcontroladores",
+    saberProcedimental:
+      nivel === "7mo"
+        ? "Resolución de retos conceptuales, clasificación de componentes y secuencias"
+        : nivel === "8vo"
+        ? "Construcción de diagramas de flujo y depuración de código interactivo"
+        : "Formulación de algoritmos, análisis y conexionado práctico en simulador 2D",
     saberActitudinal: "Pensamiento crítico, perseverancia y aprendizaje reflexivo del error",
-    indicadorCodigo: configuracion?.indicadorCodigo || "SEC.9NO.DIAG.01",
-    indicadorNombre: configuracion?.nombreInstrumento || "Diagnóstico Integrado 9°: «Aula Inteligente»",
+    indicadorCodigo:
+      nivel === "7mo"
+        ? "SEC.7MO.DIAG.01"
+        : nivel === "8vo"
+        ? "SEC.8VO.DIAG.01"
+        : configuracion?.indicadorCodigo || "SEC.9NO.DIAG.01",
+    indicadorNombre:
+      nivel === "7mo"
+        ? "CyberQuest 7°: Diagnóstico de Fundamentos Digitales"
+        : nivel === "8vo"
+        ? "Diagnóstico 8° PNFT: Pensamiento Computacional"
+        : configuracion?.nombreInstrumento || "Diagnóstico Integrado 9°: «Aula Inteligente»",
     porcentajePromedio: promedioPuntaje,
     tasaRezago: tasaAlerta,
     esDiagnostico: true,
     estudiantesRezago: estudiantesRezago.map((e) => e.estudianteNombre),
   });
+
+  // Si no hay registros, mostramos el empty state limpio
+  if (total === 0) {
+    return (
+      <div className="bg-white rounded-3xl border border-slate-200 shadow-xl p-6 sm:p-8 flex flex-col items-center justify-center text-center">
+        <div className="w-12 h-12 rounded-2xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 mb-3">
+          <Sparkle size={24} weight="duotone" />
+        </div>
+        <h3 className="font-black text-base text-slate-900 mb-1">
+          Recomendaciones Pedagógicas DUA & Asistente IA ({nivelEtiqueta})
+        </h3>
+        <p className="text-xs text-slate-500 max-w-md leading-relaxed mb-3">
+          El generador de estrategias de mediación pedagógica diferenciada, ajustes DUA (Diseño Universal para el Aprendizaje) y análisis con IA multi-proveedor se activará automáticamente con los primeros registros de entrega diagnóstica.
+        </p>
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-purple-50 border border-purple-200 rounded-xl text-[11px] font-bold text-purple-800">
+          <span>✨ Cascada Multi-Proveedor (Gemini, Groq, Qwen) en espera de datos</span>
+        </div>
+      </div>
+    );
+  }
 
   // Función para solicitar a la IA en Cascada Multi-Proveedor el análisis pedagógico
   const ejecutarAnalisisConIA = useCallback(async () => {

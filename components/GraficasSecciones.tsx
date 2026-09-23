@@ -22,27 +22,55 @@ import {
 interface GraficasSeccionesProps {
   registros: PayloadTelemetria[];
   configuracion: ConfiguracionDashboardDocente;
+  nivel?: "todos" | "7mo" | "8vo" | "9no";
   seccionSeleccionada?: string;
   onSeleccionarSeccion?: (seccion: string) => void;
 }
 
-// Catálogo oficial de los 10 Indicadores Cognitivos
-const INDICADORES_CATALOGO = [
-  { id: 1, codigo: "IND-01", nombre: "Microcontroladores y Arquitectura", area: "Hardware", descripcion: "Identificación de pines, voltajes y función de la placa" },
-  { id: 2, codigo: "IND-02", nombre: "Entradas y Salidas Digitales/Analógicas", area: "Circuitos", descripcion: "Diferenciación entre señales discretas y continuas" },
-  { id: 3, codigo: "IND-03", nombre: "Variables y Tipos de Datos", area: "Programación", descripcion: "Manejo de variables numéricas, booleanas y de texto" },
-  { id: 4, codigo: "IND-04", nombre: "Estructuras Condicionales (if / else)", area: "Lógica", descripcion: "Toma de decisiones lógicas según lectura de sensores" },
-  { id: 5, codigo: "IND-05", nombre: "Ciclos y Repetición (for / while)", area: "Lógica", descripcion: "Automatización de secuencias e iteraciones de código" },
-  { id: 6, codigo: "IND-06", nombre: "Algoritmos y Secuenciación", area: "Pensamiento Computacional", descripcion: "Planificación paso a paso para resolver un problema" },
-  { id: 7, codigo: "IND-07", nombre: "Sensores y Actuadores", area: "Mecatrónica", descripcion: "Integración de sensores ultrasónicos, luz y servomotores" },
-  { id: 8, codigo: "IND-08", nombre: "Ley de Ohm y Análisis de Circuitos", area: "Electrónica", descripcion: "Cálculo de voltaje, corriente y dimensionamiento de resistencias" },
-  { id: 9, codigo: "IND-09", nombre: "Redes y Fundamentos IoT", area: "Conectividad", descripcion: "Protocolos de comunicación y telemetría de dispositivos" },
-  { id: 10, codigo: "IND-10", nombre: "Depuración y Resolución de Errores", area: "Pensamiento Crítico", descripcion: "Detección y corrección de bugs en hardware y código" },
-];
+// Catálogo oficial dinámico de los 10 Indicadores Cognitivos según el Nivel
+const INDICADORES_POR_NIVEL: Record<string, Array<{ id: number; codigo: string; nombre: string; area: string; descripcion: string }>> = {
+  "7mo": [
+    { id: 1, codigo: "IND-01", nombre: "Hardware y Periféricos", area: "Hardware", descripcion: "Identificación de periféricos de entrada, salida y almacenamiento" },
+    { id: 2, codigo: "IND-02", nombre: "Software y Aplicaciones", area: "Software", descripcion: "Diferenciación entre software de sistema y aplicaciones" },
+    { id: 3, codigo: "IND-03", nombre: "Sistemas Operativos y Archivos", area: "Gestión", descripcion: "Estructura jerárquica de carpetas y extensiones de archivos" },
+    { id: 4, codigo: "IND-04", nombre: "Seguridad Digital y Contraseñas", area: "Ciberseguridad", descripcion: "Buenas prácticas de contraseñas robustas y autenticación" },
+    { id: 5, codigo: "IND-05", nombre: "Ciudadanía y Convivencia Digital", area: "Ética Digital", descripcion: "Uso responsable, huella digital y netiqueta estudiantil" },
+    { id: 6, codigo: "IND-06", nombre: "Algoritmos y Secuencias", area: "Pensamiento Computacional", descripcion: "Instrucciones lógicas ordenadas paso a paso" },
+    { id: 7, codigo: "IND-07", nombre: "Descomposición de Problemas", area: "Pensamiento Computacional", descripcion: "División de retos complejos en subproblemas sencillos" },
+    { id: 8, codigo: "IND-08", nombre: "Reconocimiento de Patrones", area: "Lógica", descripcion: "Identificación de regularidades y secuencias repetitivas" },
+    { id: 9, codigo: "IND-09", nombre: "Programación por Bloques", area: "Programación", descripcion: "Construcción de secuencias con eventos y acciones" },
+    { id: 10, codigo: "IND-10", nombre: "Depuración y Corrección", area: "Pensamiento Crítico", descripcion: "Localización y ajuste de fallas en algoritmos" },
+  ],
+  "8vo": [
+    { id: 1, codigo: "IND-01", nombre: "Lógica Algorítmica y Diagramas", area: "Pensamiento Computacional", descripcion: "Modelado de flujos y toma de decisiones estructuradas" },
+    { id: 2, codigo: "IND-02", nombre: "Variables y Operadores Lógicos", area: "Programación", descripcion: "Manejo de variables numéricas, booleanas y comparaciones" },
+    { id: 3, codigo: "IND-03", nombre: "Estructuras Condicionales Dobles", area: "Lógica", descripcion: "Bifurcaciones si-entonces-sino según condiciones lógicas" },
+    { id: 4, codigo: "IND-04", nombre: "Bucles y Repetición Controlada", area: "Lógica", descripcion: "Automatización con ciclos de repetición controlados" },
+    { id: 5, codigo: "IND-05", nombre: "Entorno Físico y Sensado", area: "Mecatrónica", descripcion: "Interacción con magnitudes físicas del entorno" },
+    { id: 6, codigo: "IND-06", nombre: "Circuitos Básicos y Señales", area: "Electrónica", descripcion: "Conexión elemental de componentes, alimentación y señales" },
+    { id: 7, codigo: "IND-07", nombre: "Depuración y Corrección de Bugs", area: "Pensamiento Crítico", descripcion: "Aislamiento y corrección de inconsistencias lógicas" },
+    { id: 8, codigo: "IND-08", nombre: "Pensamiento Crítico y Abstracción", area: "Pensamiento Computacional", descripcion: "Generalización y modelos simplificados" },
+    { id: 9, codigo: "IND-09", nombre: "Seguridad y Privacidad de Datos", area: "Ciberseguridad", descripcion: "Cuidado de la privacidad y navegación segura" },
+    { id: 10, codigo: "IND-10", nombre: "Metacognición y Transferencia", area: "Metacognición", descripcion: "Reflexión del propio aprendizaje y resolución autónoma" },
+  ],
+  "9no": [
+    { id: 1, codigo: "IND-01", nombre: "Microcontrolador MCU y 328P", area: "Hardware", descripcion: "Identificación de pines digitales, voltajes 5V/GND y MCU" },
+    { id: 2, codigo: "IND-02", nombre: "Sensor LDR y Actuador LED", area: "Componentes", descripcion: "Entradas sensoriales analógicas y salidas de potencia" },
+    { id: 3, codigo: "IND-03", nombre: "Modelo E-P-S (Entrada-Proceso-Salida)", area: "Sistémica", descripcion: "Comprensión del flujo sistémico del dato interactivo" },
+    { id: 4, codigo: "IND-04", nombre: "Algoritmo de Automatización", area: "Lógica", descripcion: "Secuencia de instrucciones para conmutación automática" },
+    { id: 5, codigo: "IND-05", nombre: "Umbral de Activación (Lux/Voltaje)", area: "Sensado", descripcion: "Definición del punto de corte para conmutación del actuador" },
+    { id: 6, codigo: "IND-06", nombre: "Relación de Componentes e Interconexión", area: "Circuitos", descripcion: "Conexionado en placa y circuito cerrado" },
+    { id: 7, codigo: "IND-07", nombre: "Lectura Analógica vs Digital", area: "Señales", descripcion: "Voltajes continuos en A0 frente a estados HIGH/LOW" },
+    { id: 8, codigo: "IND-08", nombre: "Estructura Condicional Doble", area: "Programación", descripcion: "Ejecución de ramas según nivel de iluminación" },
+    { id: 9, codigo: "IND-09", nombre: "Reto de Ensamble y Simulación 2D", area: "Simulación", descripcion: "Montaje práctico en el banco virtual interactivo" },
+    { id: 10, codigo: "IND-10", nombre: "Ciclo del Dato y Metacognición", area: "Reflexión", descripcion: "Seguridad en taller tecnológico y justificación técnica" },
+  ],
+};
 
 export default function GraficasSecciones({
   registros,
   configuracion,
+  nivel = "todos",
   seccionSeleccionada = "Todos",
   onSeleccionarSeccion,
 }: GraficasSeccionesProps) {
@@ -52,6 +80,18 @@ export default function GraficasSecciones({
 
   const minAvanzado = configuracion?.umbralAvanzadoMin ?? 80;
   const maxInicial = configuracion?.umbralInicialMax ?? 59;
+
+  const nivelClave = nivel === "7mo" ? "7mo" : nivel === "8vo" ? "8vo" : "9no";
+  const catalogoIndicadoresActivo = INDICADORES_POR_NIVEL[nivelClave] || INDICADORES_POR_NIVEL["9no"];
+
+  const nivelEtiqueta =
+    nivel === "7mo"
+      ? "7.° Año"
+      : nivel === "8vo"
+      ? "8.° Año"
+      : nivel === "9no"
+      ? "9.° Año"
+      : "Todos los Niveles";
 
   // Agrupación y cálculo analítico por sección
   const datosPorSeccion = useMemo(() => {
@@ -98,7 +138,7 @@ export default function GraficasSecciones({
         item.intermedios += 1;
       }
 
-      // Procesar array cog si existe, o simular con base en el puntaje
+      // Procesar array cog si existe, o estimar con base en el puntaje
       if (r.cog && Array.isArray(r.cog)) {
         r.cog.forEach((c, idx) => {
           if (idx < 10 && c === "L") {
@@ -106,7 +146,6 @@ export default function GraficasSecciones({
           }
         });
       } else {
-        // Estimación heurística de indicadores logrados según porcentaje
         const cantidadLogrados = Math.round((puntaje / 100) * 10);
         for (let i = 0; i < cantidadLogrados; i++) {
           if (i < 10) item.indicadoresLogrados[i] += 1;
@@ -158,7 +197,7 @@ export default function GraficasSecciones({
       }
     });
 
-    return INDICADORES_CATALOGO.map((ind, idx) => {
+    return catalogoIndicadoresActivo.map((ind, idx) => {
       const logrados = conteoLogros[idx] || 0;
       const enDesarrollo = conteoEnDesarrollo[idx] || 0;
       const acomp = conteoAcomp[idx] || 0;
@@ -183,7 +222,7 @@ export default function GraficasSecciones({
             : "Brecha Crítica",
       };
     });
-  }, [registros, seccionDetalle]);
+  }, [registros, seccionDetalle, catalogoIndicadoresActivo]);
 
   // Promedio global
   const promedioGeneral = useMemo(() => {
@@ -191,6 +230,25 @@ export default function GraficasSecciones({
     const total = registros.reduce((acc, r) => acc + (r.porcentaje ?? r.puntaje), 0);
     return Math.round(total / registros.length);
   }, [registros]);
+
+  if (registros.length === 0) {
+    return (
+      <div className="bg-white rounded-3xl border border-slate-200 shadow-xl p-6 sm:p-8 flex flex-col items-center justify-center text-center min-h-[300px]">
+        <div className="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 mb-3">
+          <ChartBar size={24} weight="duotone" />
+        </div>
+        <h3 className="font-black text-base text-slate-900 mb-1">
+          Analítica Visual & Desglose de Indicadores ({nivelEtiqueta})
+        </h3>
+        <p className="text-xs text-slate-500 max-w-sm leading-relaxed mb-4">
+          Las gráficas comparativas por sección y el porcentaje de logro en los 10 indicadores curriculares se representarán en este panel en tiempo real tras la aplicación de las pruebas.
+        </p>
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-stone-50 border border-stone-200 rounded-xl text-[11px] font-bold text-stone-600">
+          <span>💡 Indicadores curriculares de {nivelEtiqueta} listos y calibrados</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-3xl border border-slate-200 shadow-xl p-6 sm:p-8 space-y-6">

@@ -106,7 +106,7 @@ export default function DashboardAnaliticoPage() {
       nivelGen === "7mo"
         ? "diagnostico_7mo_modulo01_cyberquest.html"
         : nivelGen === "8vo"
-        ? "diagnostico_8vo_modulo01.html"
+        ? "diagnostico_8vo_modulo01_en_linea.html"
         : "diagnostico_9no_modulo01_en_linea.html";
 
     const origin = typeof window !== "undefined" ? window.location.origin : "https://diagnosticosecundaria.vercel.app";
@@ -414,7 +414,7 @@ export default function DashboardAnaliticoPage() {
               <h4 className="text-xs sm:text-sm font-black text-slate-900">CyberQuest 7° (Docente)</h4>
             </div>
             <a
-              href="/Recursos/setimo/cyberquest_7_juego_interactivo_de_formaci_n_tecnol_gica.html"
+              href="/webapps/diagnostico_7mo_modulo01_docente_evaluador.html"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2.5 bg-indigo-700 hover:bg-indigo-800 text-white rounded-xl text-xs font-bold shrink-0 transition-all shadow-xs"
@@ -427,10 +427,10 @@ export default function DashboardAnaliticoPage() {
           <div className="p-5 bg-teal-50/80 border border-teal-200 rounded-2xl flex items-center justify-between gap-4">
             <div className="space-y-1">
               <span className="text-[10px] font-black text-teal-900 uppercase">Herramienta 8.° Año</span>
-              <h4 className="text-xs sm:text-sm font-black text-slate-900">Diagnóstico 8vo PNFT</h4>
+              <h4 className="text-xs sm:text-sm font-black text-slate-900">Módulo Evaluador 8° PNFT</h4>
             </div>
             <a
-              href="/Recursos/octavo/Diagnostico_8vo_PNFT_MEJORADO-VF.html"
+              href="/webapps/diagnostico_8vo_modulo01_docente_evaluador.html"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2.5 bg-teal-700 hover:bg-teal-800 text-white rounded-xl text-xs font-bold shrink-0 transition-all shadow-xs"
@@ -663,12 +663,24 @@ export default function DashboardAnaliticoPage() {
 
         {/* 4. GRÁFICAS DE SECCIONES Y SEMÁFORO DE LOGRO INSTITUCIONAL */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <SemaforoLogro registros={telemetriaFiltrada} configuracion={configuracion} />
-          <GraficasSecciones registros={telemetriaFiltrada} configuracion={configuracion} />
+          <SemaforoLogro
+            registros={telemetriaFiltrada}
+            configuracion={configuracion}
+            nivel={filtroNivelTab}
+          />
+          <GraficasSecciones
+            registros={telemetriaFiltrada}
+            configuracion={configuracion}
+            nivel={filtroNivelTab}
+          />
         </div>
 
         {/* 5. RECOMENDACIONES PEDAGÓGICAS DUA */}
-        <RecomendacionesDUA registros={telemetriaFiltrada} configuracion={configuracion} />
+        <RecomendacionesDUA
+          registros={telemetriaFiltrada}
+          configuracion={configuracion}
+          nivel={filtroNivelTab}
+        />
 
         {/* MODAL EDITAR REGISTRO */}
         {registroEditando && (
