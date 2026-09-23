@@ -281,6 +281,12 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
   const [telemetria, setTelemetria] = useState<PayloadTelemetria[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
 
+  const esUsuarioBloqueado = (nom?: string, cor?: string) => {
+    const n = (nom || "").toLowerCase().trim();
+    const c = (cor || "").toLowerCase().trim();
+    return n.includes("augrey") || c.includes("augrey.bermudez") || c.includes("augrey");
+  };
+
   useEffect(() => {
     // Cargar datos persistidos
     const savedDocente = SafeStorage.getItem("docente_activo");
@@ -288,15 +294,38 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
     const savedComunidad = SafeStorage.getItem("webapps_comunidad");
     const savedTelemetria = SafeStorage.getItem("telemetria_registros");
 
+    // Limpieza defensiva de cuentas purgadas
+    const guardadosRaw = SafeStorage.getItem("usuarios_registrados_locales");
+    if (guardadosRaw) {
+      try {
+        const parsed = JSON.parse(guardadosRaw);
+        if (Array.isArray(parsed)) {
+          const limpios = parsed.filter(
+            (u: any) => !esUsuarioBloqueado(u.nombreCompleto || u.nombre, u.correoInstitucional || u.correo)
+          );
+          SafeStorage.setItem("usuarios_registrados_locales", JSON.stringify(limpios));
+        }
+      } catch {}
+    }
+
     if (savedDocente) {
       try {
         const parsed = JSON.parse(savedDocente);
         if (parsed && parsed.correoInstitucional) {
-          if (parsed.correoInstitucional.includes("@educacion.cr")) {
-            parsed.correoInstitucional = parsed.correoInstitucional.replace("@educacion.cr", "@mep.go.cr");
-            SafeStorage.setItem("docente_activo", JSON.stringify(parsed));
+          if (esUsuarioBloqueado(parsed.nombreCompleto, parsed.correoInstitucional)) {
+            SafeStorage.removeItem("docente_activo");
+            if (typeof window !== "undefined") {
+              localStorage.removeItem("docente_activo");
+              localStorage.removeItem("MEP_DOCENTE_PERFIL_GLOBAL");
+            }
+            setDocente(null);
+          } else {
+            if (parsed.correoInstitucional.includes("@educacion.cr")) {
+              parsed.correoInstitucional = parsed.correoInstitucional.replace("@educacion.cr", "@mep.go.cr");
+              SafeStorage.setItem("docente_activo", JSON.stringify(parsed));
+            }
+            setDocente(parsed);
           }
-          setDocente(parsed);
         } else {
           setDocente(null);
         }
@@ -326,8 +355,21 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
 
     if (savedTelemetria) {
       try {
-        setTelemetria(JSON.parse(savedTelemetria));
-      } catch {}
+        const parsedTele = JSON.parse(savedTelemetria);
+        if (Array.isArray(parsedTele)) {
+          const limpiosTele = parsedTele.filter(
+            (t: any) =>
+              !esUsuarioBloqueado(t.estudianteNombre, t.estudianteCorreo) &&
+              !esUsuarioBloqueado(t.docenteNombre, t.docenteEmail)
+          );
+          setTelemetria(limpiosTele);
+          SafeStorage.setItem("telemetria_registros", JSON.stringify(limpiosTele));
+        } else {
+          setTelemetria([]);
+        }
+      } catch {
+        setTelemetria([]);
+      }
     } else {
       setTelemetria([]);
       SafeStorage.setItem("telemetria_registros", JSON.stringify([]));
@@ -590,7 +632,7 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
 
             json.usuarios.forEach((usr: any) => {
               const correo = (usr.correoInstitucional || "").toLowerCase().trim();
-              if (!correo) return;
+              if (!correo || esUsuarioBloqueado(usr.nombreCompleto, usr.correoInstitucional)) return;
               const idx = locales.findIndex((l) => (l.correoInstitucional || "").toLowerCase().trim() === correo);
               const dataSrv: DocenteData = {
                 idDocente: usr.id || `DOC-${Date.now()}`,

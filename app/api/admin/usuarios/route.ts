@@ -151,7 +151,57 @@ let HISTORICO_DB: EventoHistorico[] = [
   },
 ];
 
+import fs from "fs";
+import path from "path";
+import os from "os";
+
+const CACHE_USUARIOS_PATH = path.join(os.tmpdir(), "usuarios_docentes_cache.json");
+
+function esUsuarioEliminado(correo?: string, nombre?: string): boolean {
+  const c = (correo || "").toLowerCase().trim();
+  const n = (nombre || "").toLowerCase().trim();
+  return c.includes("augrey.bermudez") || c.includes("augrey") || n.includes("augrey");
+}
+
+function cargarUsuariosServidor() {
+  try {
+    if (fs.existsSync(CACHE_USUARIOS_PATH)) {
+      const data = fs.readFileSync(CACHE_USUARIOS_PATH, "utf8");
+      if (data && data.trim().length > 0) {
+        const parsed = JSON.parse(data);
+        if (Array.isArray(parsed)) {
+          USUARIOS_DB = parsed.filter(
+            (u) => !esUsuarioEliminado(u.correoInstitucional, u.nombreCompleto)
+          );
+        }
+      }
+    }
+  } catch (e) {}
+  USUARIOS_DB = USUARIOS_DB.filter(
+    (u) => !esUsuarioEliminado(u.correoInstitucional, u.nombreCompleto)
+  );
+}
+
+function guardarUsuariosServidor() {
+  try {
+    USUARIOS_DB = USUARIOS_DB.filter(
+      (u) => !esUsuarioEliminado(u.correoInstitucional, u.nombreCompleto)
+    );
+    const dir = path.dirname(CACHE_USUARIOS_PATH);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    fs.writeFileSync(CACHE_USUARIOS_PATH, JSON.stringify(USUARIOS_DB, null, 2), "utf8");
+  } catch (e) {}
+}
+
+// Cargar al inicializar el módulo
+try {
+  cargarUsuariosServidor();
+} catch (e) {}
+
 export async function GET(req: NextRequest) {
+  cargarUsuariosServidor();
   return NextResponse.json({
     success: true,
     superAdmin: "alberto.bustos.ortega@mep.go.cr",

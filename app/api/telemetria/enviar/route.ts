@@ -25,10 +25,24 @@ function normalizarSeccionServidor(sec?: string): string {
   return `Sección ${limpia}`;
 }
 
+function esRegistroBloqueado(r: any): boolean {
+  if (!r) return true;
+  const estNom = (r.estudianteNombre || "").toLowerCase().trim();
+  const estCor = (r.estudianteCorreo || "").toLowerCase().trim();
+  const docNom = (r.docenteNombre || "").toLowerCase().trim();
+  const docCor = (r.docenteEmail || "").toLowerCase().trim();
+  return (
+    estNom.includes("augrey") ||
+    estCor.includes("augrey.bermudez") ||
+    docNom.includes("augrey") ||
+    docCor.includes("augrey.bermudez")
+  );
+}
+
 function deduplicarRegistrosEnMemoria() {
   const mapa = new Map<string, any>();
   registrosTelemetriaMemoria.forEach((r) => {
-    if (r && r.estudianteNombre) {
+    if (r && r.estudianteNombre && !esRegistroBloqueado(r)) {
       const nom = r.estudianteNombre.trim().toLowerCase();
       const sec = normalizarSeccionServidor(r.seccionOGrupo).trim().toLowerCase();
       const clave = `${nom}::${sec}`;
