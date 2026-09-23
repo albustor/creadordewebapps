@@ -113,7 +113,7 @@ function generarDossier7moPDF() {
   doc.text("• Población Meta: Estudiantes de 7.° Año (Sétimo de Secundaria / Tercer Ciclo EGB).", margin + 6, yPos + 12);
   doc.text("• Modalidad de Aplicación: Parejas de Ciber-Agentes (Líder de Consola y Co-piloto) o Individual.", margin + 6, yPos + 17);
   doc.text("• Enfoque de Evaluación: 100% Formativo, Diagnóstico y Cualitativo (Sin calificación sumativa punitiva).", margin + 6, yPos + 22);
-  doc.text("• Acceso Web en Línea: https://creadordewebapps.vercel.app/diagnostico (Pestaña 7.° Año).", margin + 6, yPos + 27);
+  doc.text("• Acceso Web en Línea: https://diagnosticosecundaria.vercel.app/diagnostico (Pestaña 7.° Año).", margin + 6, yPos + 27);
 
   // Fundamentación Pedagógica
   yPos = 106;
@@ -592,11 +592,11 @@ function generarDossier7moPDF() {
     },
     head: [['Recurso de 7.° Año', 'URL Oficial en Producción', 'Modo de Acceso']],
     body: [
-      ['Portal Multi-Nivel MEP', 'https://creadordewebapps.vercel.app/diagnostico', 'En Línea (Pestaña 7°)'],
-      ['WebApp CyberQuest 7°', 'https://creadordewebapps.vercel.app/webapps/diagnostico_7mo_modulo01_cyberquest.html', 'En Línea / Local'],
-      ['Evaluador Docente 7° Año', 'https://creadordewebapps.vercel.app/webapps/diagnostico_7mo_modulo01_docente_evaluador.html', 'En Línea / Escáner QR'],
-      ['Dashboard de Telemetría', 'https://creadordewebapps.vercel.app/dashboard', 'Monitoreo Global'],
-      ['Dossier PDF Oficial 7°', 'https://creadordewebapps.vercel.app/documentos/Dossier_Diagnostico_MEP_7mo_CyberQuest.pdf', 'Descarga Oficial']
+      ['Portal Multi-Nivel MEP', 'https://diagnosticosecundaria.vercel.app/diagnostico', 'En Línea (Pestaña 7°)'],
+      ['WebApp CyberQuest 7°', 'https://diagnosticosecundaria.vercel.app/webapps/diagnostico_7mo_modulo01_cyberquest.html', 'En Línea / Local'],
+      ['Evaluador Docente 7° Año', 'https://diagnosticosecundaria.vercel.app/webapps/diagnostico_7mo_modulo01_docente_evaluador.html', 'En Línea / Escáner QR'],
+      ['Dashboard de Telemetría', 'https://diagnosticosecundaria.vercel.app/dashboard', 'Monitoreo Global'],
+      ['Dossier PDF Oficial 7°', 'https://diagnosticosecundaria.vercel.app/documentos/Dossier_Diagnostico_MEP_7mo_CyberQuest.pdf', 'Descarga Oficial']
     ]
   });
 

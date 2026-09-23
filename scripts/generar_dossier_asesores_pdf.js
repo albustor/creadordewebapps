@@ -109,7 +109,7 @@ function generarDossierPDF() {
   doc.text("• Autoría y Desarrollo: Asesoría Nacional de Formación Tecnológica MEP & Ecosistema Curiol", margin + 6, yPos + 13);
   doc.text("• Nivel y Cobertura: Educación Secundaria (Tercer Ciclo: 7.°, 8.° y 9.° Año de la Educación General Básica)", margin + 6, yPos + 18);
   doc.text("• Enfoque de Evaluación: 100% Cualitativo, Formativo, Diagnóstico e Inclusivo (Sin calificación sumativa)", margin + 6, yPos + 23);
-  doc.text("• Despliegue en Producción: https://creadordewebapps.vercel.app/diagnostico", margin + 6, yPos + 28);
+  doc.text("• Despliegue en Producción: https://diagnosticosecundaria.vercel.app/diagnostico", margin + 6, yPos + 28);
 
   // Sección: 3 Pilares del Ecosistema
   yPos = 108;
@@ -680,13 +680,13 @@ function generarDossierPDF() {
     },
     head: [['Recurso o Vista', 'Enlace Web Oficial en Producción', 'Modo de Operación']],
     body: [
-      ['Portal Diagnóstico Multi-Nivel', 'https://creadordewebapps.vercel.app/diagnostico', 'En Línea (Acceso Universal)'],
-      ['WebApp Estudiante 9.° Año', 'https://creadordewebapps.vercel.app/webapps/diagnostico_9no_modulo01_en_linea.html', 'En Línea / Local Autónomo'],
-      ['Evaluador Docente 9.° Año', 'https://creadordewebapps.vercel.app/webapps/diagnostico_9no_modulo01_docente_evaluador.html', 'En Línea / Escáner QR'],
-      ['WebApp Estudiante 7.° Año', 'https://creadordewebapps.vercel.app/webapps/diagnostico_7mo_modulo01_cyberquest.html', 'En Línea (CyberQuest 7°)'],
-      ['Evaluador Docente 7.° Año', 'https://creadordewebapps.vercel.app/webapps/diagnostico_7mo_modulo01_docente_evaluador.html', 'En Línea / Escáner QR'],
-      ['Dashboard de Telemetría Central', 'https://creadordewebapps.vercel.app/dashboard', 'Monitoreo Institucional'],
-      ['API de Telemetría Central', 'https://creadordewebapps.vercel.app/api/telemetria/enviar', 'Endpoint RESTful JSON']
+      ['Portal Diagnóstico Multi-Nivel', 'https://diagnosticosecundaria.vercel.app/diagnostico', 'En Línea (Acceso Universal)'],
+      ['WebApp Estudiante 9.° Año', 'https://diagnosticosecundaria.vercel.app/webapps/diagnostico_9no_modulo01_en_linea.html', 'En Línea / Local Autónomo'],
+      ['Evaluador Docente 9.° Año', 'https://diagnosticosecundaria.vercel.app/webapps/diagnostico_9no_modulo01_docente_evaluador.html', 'En Línea / Escáner QR'],
+      ['WebApp Estudiante 7.° Año', 'https://diagnosticosecundaria.vercel.app/webapps/diagnostico_7mo_modulo01_cyberquest.html', 'En Línea (CyberQuest 7°)'],
+      ['Evaluador Docente 7.° Año', 'https://diagnosticosecundaria.vercel.app/webapps/diagnostico_7mo_modulo01_docente_evaluador.html', 'En Línea / Escáner QR'],
+      ['Dashboard de Telemetría Central', 'https://diagnosticosecundaria.vercel.app/dashboard', 'Monitoreo Institucional'],
+      ['API de Telemetría Central', 'https://diagnosticosecundaria.vercel.app/api/telemetria/enviar', 'Endpoint RESTful JSON']
     ]
   });
 
