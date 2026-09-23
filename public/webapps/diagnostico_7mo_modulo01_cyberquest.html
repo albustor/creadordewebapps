@@ -2592,7 +2592,7 @@
         <div class="cyber-card">
           <div class="card-header">
             <span class="mission-badge badge-socio">DIMENSIÓN 3 &bull; VALORACIÓN SOCIOAFECTIVA ${isSolo ? '(INDIVIDUAL)' : '(PAREJAS)'}</span>
-            <h2 class="card-title">${isSolo ? 'Valoración Formativa y Reflexión' : 'Valoración Formativa y Reflexión de la Pareja'}</h2>
+            <h2 class="card-title">${isSolo ? 'Reflexión y Autoevaluación Individual' : 'Reflexión y Coevaluación de la Pareja'}</h2>
             <p class="card-desc">
               Valore el trabajo realizado durante esta misión diagnóstica.
             </p>
@@ -2609,7 +2609,7 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label">S2. Resiliencia: ¿Cómo afrontaron los errores durante los retos?</label>
+              <label class="form-label">S2. Aprender del error: ¿Cómo fue la reacción ante los errores o imprevistos surgidos durante los retos?</label>
               <div class="likert-group">
                 <button class="likert-btn ${AppState.socioafectivo.s2_resiliencia === 1 ? 'selected' : ''}" onclick="setSocio('s2_resiliencia', 1)">${isSolo ? 'Me desanimé' : 'Nos desanimamos'}</button>
                 <button class="likert-btn ${AppState.socioafectivo.s2_resiliencia === 2 ? 'selected' : ''}" onclick="setSocio('s2_resiliencia', 2)">${isSolo ? 'Reintenté con guía' : 'Reintentamos con guía'}</button>
@@ -2618,11 +2618,11 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label">${isSolo ? 'S3. Autonomía, Compromiso y Disposición al Trabajo:' : 'S3. Sinergia y Diálogo en Pareja (Líder y Co-piloto):'}</label>
+              <label class="form-label">S3. Flexibilidad para mejorar problemas: ¿Cómo gestionaron la toma de decisiones conjunta (en pareja) o el proceso de auto-revisión del trabajo (individual)?</label>
               <div class="likert-group">
-                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 1 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 1)">${isSolo ? 'Poco compromiso' : 'Poco acuerdo'}</button>
-                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 2 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 2)">${isSolo ? 'Buena disposición' : 'Buena cooperación'}</button>
-                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 3 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 3)">${isSolo ? 'Excelente autonomía' : 'Excelente sinergia'}</button>
+                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 1 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 1)">${isSolo ? 'Poco acuerdo' : 'Poco acuerdo'}</button>
+                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 2 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 2)">${isSolo ? 'Buena cooperación' : 'Buena cooperación'}</button>
+                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 3 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 3)">${isSolo ? 'Excelente sinergia' : 'Excelente sinergia'}</button>
               </div>
             </div>
 

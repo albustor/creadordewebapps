@@ -183,10 +183,28 @@ export async function POST(req: NextRequest) {
       }
 
       // Normalizar registros de 8.° Año
-      if (body.webAppId?.includes("8vo") || body.subareasDetalle) {
-        body.docenteId = body.docenteId || "DOC-MEP-8VO";
-        body.nivel = body.nivel || "8°";
+      if (
+        body.webAppId?.includes("8vo") ||
+        body.tipo === "MEP_8VO_DIAGNOSTICO" ||
+        body.origen?.includes("8VO") ||
+        body.subareasDetalle ||
+        (body.seccionOGrupo && /8-/i.test(body.seccionOGrupo))
+      ) {
+        body.docenteId = body.docenteId || body.docenteCedula || "DOC-MEP-8VO";
+        body.nivel = "8°";
+        body.webAppId = body.webAppId || "diagnostico_8vo_modulo01_docente_evaluador";
         body.webAppTitulo = body.webAppTitulo || "Evaluación Diagnóstica — 8° Año (PNFT)";
+        body.totalReactivos = body.totalReactivos || 14;
+        body.puntajeMaximo = body.puntajeMaximo || 14;
+
+        const rawPts = body.puntaje !== undefined && body.puntaje <= 14 ? body.puntaje : (body.aciertos !== undefined && body.aciertos <= 14 ? body.aciertos : Math.round(((body.porcentaje ?? body.puntaje ?? 80) / 100) * 14));
+        const rawScore = body.porcentaje !== undefined ? body.porcentaje : Math.round((rawPts / 14) * 100);
+
+        body.puntaje = rawPts;
+        body.porcentaje = rawScore;
+        body.aciertos = rawPts;
+        body.fallos = Math.max(0, 14 - rawPts);
+        body.nivelLogro = rawScore >= 80 ? "Avanzado" : rawScore <= 59 ? "Inicial" : "Intermedio";
       }
 
       if (!body.docenteId) {
@@ -228,28 +246,33 @@ export async function POST(req: NextRequest) {
         const esNuevoCompletado = resultadoProcesado.estadoProgreso === "completado";
         const esExistenteCompletado = existente.estadoProgreso === "completado";
 
-        let puntajeFinal = puntajeNuevo;
-        let aciertosFinal = resultadoProcesado.aciertos ?? Math.round((puntajeNuevo / 100) * 10);
+        let porcentajeFinal = puntajeNuevo;
+        const totReactivos = resultadoProcesado.totalReactivos || existente.totalReactivos || (resultadoProcesado.nivel === "8°" ? 14 : 10);
+        let aciertosFinal = resultadoProcesado.aciertos ?? Math.round((porcentajeFinal / 100) * totReactivos);
         let cogFinal = resultadoProcesado.cog || existente.cog;
 
         // Si el existente ya estaba completado y el nuevo es solo un ping de 'iniciado', conservar el completado
         if (esExistenteCompletado && !esNuevoCompletado) {
-          puntajeFinal = puntajeExistente;
-          aciertosFinal = existente.aciertos ?? Math.round((puntajeExistente / 100) * 10);
+          porcentajeFinal = puntajeExistente;
+          aciertosFinal = existente.aciertos ?? Math.round((puntajeExistente / 100) * totReactivos);
           cogFinal = existente.cog;
         }
 
         const nivelFinal =
-          puntajeFinal >= 80 ? "Avanzado" : puntajeFinal <= 59 ? "Inicial" : "Intermedio";
+          porcentajeFinal >= 80 ? "Avanzado" : porcentajeFinal <= 59 ? "Inicial" : "Intermedio";
 
         registrosTelemetriaMemoria[indexExistente] = {
           ...existente,
           ...resultadoProcesado,
-          puntaje: puntajeFinal,
-          porcentaje: puntajeFinal,
+          puntaje: resultadoProcesado.nivel === "8°" ? aciertosFinal : porcentajeFinal,
+          porcentaje: porcentajeFinal,
           aciertos: aciertosFinal,
-          fallos: Math.max(0, 10 - aciertosFinal),
+          totalReactivos: totReactivos,
+          fallos: Math.max(0, totReactivos - aciertosFinal),
           cog: cogFinal,
+          subareasDetalle: resultadoProcesado.subareasDetalle || existente.subareasDetalle,
+          socioafectivo: resultadoProcesado.socioafectivo || existente.socioafectivo,
+          psicomotor: resultadoProcesado.psicomotor || existente.psicomotor,
           nivelLogro: nivelFinal,
           estadoProgreso: esNuevoCompletado || esExistenteCompletado ? "completado" : "iniciado",
           ultimaActualizacion: new Date().toISOString(),

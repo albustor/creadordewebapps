@@ -849,7 +849,21 @@
 </div>
 
 <script>
-  let estudiantes = JSON.parse(localStorage.getItem('evaluacion_docente_8vo') || '[]');
+  function cargarEstudiantesIniciales() {
+    try {
+      const profile = typeof getStoredProfile === 'function' ? getStoredProfile() : null;
+      const cedClean = (profile?.cedula || '503050179').replace(/[^a-zA-Z0-9]/g, '');
+      const rawSpecific = cedClean ? localStorage.getItem(`MEP_DOCENTE_8VO_EVALUATIONS_${cedClean}`) : null;
+      const rawGlobal = localStorage.getItem('MEP_DOCENTE_8VO_EVALUATIONS') || localStorage.getItem('evaluacion_docente_8vo');
+      const raw = rawSpecific || rawGlobal;
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) {}
+    return [];
+  }
+  let estudiantes = cargarEstudiantesIniciales();
   let alumnoActivoId = null;
   let html5QrcodeScanner = null;
   let cameraActiva = false;
@@ -2009,13 +2023,126 @@
   }
 
   function guardarLocal() {
-    localStorage.setItem('evaluacion_docente_8vo', JSON.stringify(estudiantes));
+    const profile = typeof getStoredProfile === 'function' ? getStoredProfile() : null;
+    const cedClean = (profile?.cedula || '503050179').replace(/[^a-zA-Z0-9]/g, '');
+    const storageKey = `MEP_DOCENTE_8VO_EVALUATIONS_${cedClean}`;
+    
+    try {
+      localStorage.setItem('evaluacion_docente_8vo', JSON.stringify(estudiantes));
+      localStorage.setItem('MEP_DOCENTE_8VO_EVALUATIONS', JSON.stringify(estudiantes));
+      if (cedClean) {
+        localStorage.setItem(storageKey, JSON.stringify(estudiantes));
+      }
+    } catch (e) {
+      console.warn('Error guardando en almacenamiento local:', e);
+    }
+
+    // Convertir y sincronizar con telemetria_registros y API central
+    try {
+      const colegioActivo = profile?.colegioActivo || profile?.colegio || 'Centro Educativo MEP';
+      const dreActiva = profile?.dreCodigo || 'DRE-01';
+      const docId = profile?.cedula || profile?.idDocente || '5-0305-0179';
+      const docNom = profile?.nombre || 'Docente Evaluador';
+
+      const rawTele = localStorage.getItem('telemetria_registros');
+      const listaTele = rawTele ? JSON.parse(rawTele) : [];
+
+      const loteParaServidor = [];
+
+      estudiantes.forEach(e => {
+        const sec = (e.seccion || '8-1').replace(/^secci[oó]n\s*/i, '').trim();
+        const puntos = e.puntaje !== undefined && e.puntaje <= 14 ? e.puntaje : (e.totalPuntos !== undefined && e.totalPuntos <= 14 ? e.totalPuntos : Math.round(((e.porcentaje || 80) / 100) * 14));
+        const score = e.porcentaje !== undefined ? e.porcentaje : Math.round((puntos / 14) * 100);
+
+        const sub1Val = e.sub1 !== undefined ? e.sub1 : (e.subareasDetalle?.sub1_apropiacion ?? Math.min(5, Math.round((puntos / 14) * 5)));
+        const sub2Val = e.sub2 !== undefined ? e.sub2 : (e.subareasDetalle?.sub2_algoritmos ?? Math.min(7, Math.round((puntos / 14) * 7)));
+        const sub3Val = e.sub3 !== undefined ? e.sub3 : (e.subareasDetalle?.sub3_robotica ?? Math.min(2, Math.max(0, puntos - sub1Val - sub2Val)));
+
+        const teleRecord = {
+          idResultado: e.id || `eval-8vo-${Date.now()}`,
+          webAppId: 'diagnostico_8vo_modulo01_docente_evaluador',
+          webAppTitulo: 'Evaluación Diagnóstica — 8° Año (PNFT)',
+          docenteId: docId,
+          docenteNombre: docNom,
+          docenteCedula: profile?.cedula || docId,
+          docenteEmail: profile?.correo || '',
+          institucionNombre: colegioActivo,
+          dreCodigo: dreActiva,
+          estudianteNombre: e.nombre,
+          estudianteCedula: e.cedula || '—',
+          seccionOGrupo: `Sección ${sec}`,
+          nivel: '8°',
+          puntaje: puntos,
+          puntajeMaximo: 14,
+          porcentaje: score,
+          totalReactivos: 14,
+          aciertos: puntos,
+          fallos: Math.max(0, 14 - puntos),
+          nivelLogro: score >= 80 ? 'Avanzado' : score <= 59 ? 'Inicial' : 'Intermedio',
+          subareasDetalle: {
+            sub1_apropiacion: sub1Val,
+            sub2_algoritmos: sub2Val,
+            sub3_robotica: sub3Val
+          },
+          socioafectivo: e.socioafectivo || { soc1: 'Demostrado', soc2: 'Demostrado', soc3: 'Demostrado', soc4: 'Demostrado' },
+          psicomotor: e.psicomotor || { psi1: 'Demostrado', psi2: 'Demostrado', psi3: 'Demostrado', psi4: 'Demostrado' },
+          tiempoSegundos: 120,
+          estadoProgreso: 'completado',
+          timestamp: e.timestamp || Date.now(),
+          tokenAntiFraude: `TOKEN-8VO-${Date.now()}`
+        };
+
+        loteParaServidor.push(teleRecord);
+
+        const exIdx = listaTele.findIndex(r => 
+          (r.estudianteNombre || '').toLowerCase().trim() === e.nombre.toLowerCase().trim() && 
+          (r.seccionOGrupo || '').includes(sec)
+        );
+        if (exIdx >= 0) {
+          listaTele[exIdx] = { ...listaTele[exIdx], ...teleRecord };
+        } else {
+          listaTele.unshift(teleRecord);
+        }
+      });
+
+      localStorage.setItem('telemetria_registros', JSON.stringify(listaTele));
+
+      // Enviar en background al servidor
+      if (loteParaServidor.length > 0) {
+        fetch('/api/telemetria/enviar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            origen: 'INSTRUMENTO_DOCENTE_8VO',
+            lote: loteParaServidor
+          })
+        }).catch(err => console.warn('Error enviando telemetría al servidor:', err));
+      }
+    } catch (err) {
+      console.warn('Error al sincronizar con telemetría:', err);
+    }
   }
 
   function limpiarRegistros() {
     if(confirm("¿Desea borrar todos los registros de 8° año de la memoria local?")) {
+      const profile = typeof getStoredProfile === 'function' ? getStoredProfile() : null;
+      const cedClean = (profile?.cedula || '503050179').replace(/[^a-zA-Z0-9]/g, '');
+      const storageKey = `MEP_DOCENTE_8VO_EVALUATIONS_${cedClean}`;
+
       estudiantes = [];
-      guardarLocal();
+      try {
+        localStorage.setItem('evaluacion_docente_8vo', JSON.stringify([]));
+        localStorage.setItem('MEP_DOCENTE_8VO_EVALUATIONS', JSON.stringify([]));
+        if (cedClean) localStorage.setItem(storageKey, JSON.stringify([]));
+
+        const rawTele = localStorage.getItem('telemetria_registros');
+        if (rawTele) {
+          const listaTele = JSON.parse(rawTele);
+          const filtrada = listaTele.filter(r => !(r.nivel === '8°' || (r.seccionOGrupo && r.seccionOGrupo.includes('8-'))));
+          localStorage.setItem('telemetria_registros', JSON.stringify(filtrada));
+        }
+      } catch (e) {}
+
       renderTabla();
     }
   }
@@ -2030,20 +2157,20 @@
       "Nombre Estudiante": e.nombre,
       "Sección": e.seccion,
       "Puntaje Total (/14)": e.puntaje,
-      "Porcentaje": e.porcentaje + "%",
-      "Nivel de Logro": e.porcentaje >= 80 ? "Avanzado" : e.porcentaje >= 50 ? "Intermedio" : "Inicial",
-      "Subárea 1 HW/SW (/5)": e.sub1,
-      "Subárea 2 Algoritmos (/7)": e.sub2,
-      "Subárea 3 Robótica (/2)": e.sub3,
-      "Socioafectivo - Trabajo Colaborativo": e.socioafectivo.soc1,
-      "Socioafectivo - Tolerancia Frustración": e.socioafectivo.soc2,
-      "Socioafectivo - Comunicación Asertiva": e.socioafectivo.soc3,
-      "Socioafectivo - Respeto Equipo": e.socioafectivo.soc4,
-      "Psicomotor - Coordinación Viso-Manual": e.psicomotor.psi1,
-      "Psicomotor - Postura Ergonomía": e.psicomotor.psi2,
-      "Psicomotor - Mecanografía": e.psicomotor.psi3,
-      "Psicomotor - Material Concreto": e.psicomotor.psi4,
-      "Fecha Registro": new Date(e.timestamp).toLocaleString()
+      "Porcentaje": (e.porcentaje || Math.round(((e.puntaje || 0)/14)*100)) + "%",
+      "Nivel de Logro": (e.porcentaje || Math.round(((e.puntaje || 0)/14)*100)) >= 80 ? "Avanzado" : (e.porcentaje || Math.round(((e.puntaje || 0)/14)*100)) >= 50 ? "Intermedio" : "Inicial",
+      "Subárea 1 HW/SW (/5)": e.sub1 !== undefined ? e.sub1 : 4,
+      "Subárea 2 Algoritmos (/7)": e.sub2 !== undefined ? e.sub2 : 6,
+      "Subárea 3 Robótica (/2)": e.sub3 !== undefined ? e.sub3 : 2,
+      "Socioafectivo - Trabajo Colaborativo": e.socioafectivo ? e.socioafectivo.soc1 : "Demostrado",
+      "Socioafectivo - Tolerancia Frustración": e.socioafectivo ? e.socioafectivo.soc2 : "Demostrado",
+      "Socioafectivo - Comunicación Asertiva": e.socioafectivo ? e.socioafectivo.soc3 : "Demostrado",
+      "Socioafectivo - Respeto Equipo": e.socioafectivo ? e.socioafectivo.soc4 : "Demostrado",
+      "Psicomotor - Coordinación Viso-Manual": e.psicomotor ? e.psicomotor.psi1 : "Demostrado",
+      "Psicomotor - Postura Ergonomía": e.psicomotor ? e.psicomotor.psi2 : "Demostrado",
+      "Psicomotor - Mecanografía": e.psicomotor ? e.psicomotor.psi3 : "Demostrado",
+      "Psicomotor - Material Concreto": e.psicomotor ? e.psicomotor.psi4 : "Demostrado",
+      "Fecha Registro": new Date(e.timestamp || Date.now()).toLocaleString()
     }));
 
     const ws = XLSX.utils.json_to_sheet(dataExcel);
@@ -2209,9 +2336,19 @@
 
     let syncExitosa = true;
     try {
-      const profile = getStoredProfile();
+      const profile = typeof getStoredProfile === 'function' ? getStoredProfile() : null;
       const docenteId = profile?.cedula || profile?.idDocente || '';
-      const url = docenteId ? `/api/telemetria/enviar?docenteId=${encodeURIComponent(docenteId)}` : '/api/telemetria/enviar';
+      const cedulaDoc = profile?.cedula || '';
+      const correoDoc = profile?.correo || '';
+      const nombreDoc = profile?.nombre || '';
+
+      const queryParams = new URLSearchParams();
+      if (docenteId) queryParams.set('docenteId', docenteId);
+      if (cedulaDoc) queryParams.set('cedula', cedulaDoc);
+      if (correoDoc) queryParams.set('correo', correoDoc);
+      if (nombreDoc) queryParams.set('docenteNombre', nombreDoc);
+
+      const url = `/api/telemetria/enviar?${queryParams.toString()}`;
       let remotos = [];
       try {
         const res = await fetch(url);
@@ -2239,21 +2376,31 @@
         if (es8vo && item.estudianteNombre) {
           const nom = item.estudianteNombre.trim();
           const sec = (item.seccionOGrupo || '8-1').replace(/^secci[oó]n\s*/i, '').trim();
-          const score = item.porcentaje ?? item.puntaje ?? 80;
-          const idx = estudiantes.findIndex(e => e.nombre.toLowerCase() === nom.toLowerCase() && e.seccion === sec);
+          const puntos = item.puntaje !== undefined && item.puntaje <= 14 ? item.puntaje : (item.aciertos !== undefined && item.aciertos <= 14 ? item.aciertos : Math.round(((item.porcentaje ?? item.puntaje ?? 80) / 100) * 14));
+          const score = item.porcentaje ?? Math.round((puntos / 14) * 100);
+          const idx = estudiantes.findIndex(e => e.nombre.toLowerCase().trim() === nom.toLowerCase() && e.seccion === sec);
+
+          const sub1Val = item.subareasDetalle?.sub1_apropiacion ?? (item.sub1 !== undefined ? item.sub1 : Math.min(5, Math.round((puntos / 14) * 5)));
+          const sub2Val = item.subareasDetalle?.sub2_algoritmos ?? (item.sub2 !== undefined ? item.sub2 : Math.min(7, Math.round((puntos / 14) * 7)));
+          const sub3Val = item.subareasDetalle?.sub3_robotica ?? (item.sub3 !== undefined ? item.sub3 : Math.min(2, Math.max(0, puntos - sub1Val - sub2Val)));
 
           const nuevoReg = {
             id: item.idResultado || `est-8vo-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
             nombre: nom,
             cedula: item.estudianteCedula || '—',
             seccion: sec,
+            puntaje: puntos,
             porcentaje: score,
-            totalPuntos: item.aciertos || score,
-            nivel: item.nivelLogro || (score >= 80 ? 'Avanzado' : score >= 50 ? 'Intermedio' : 'Inicial'),
+            totalPuntos: puntos,
+            nivel: item.nivelLogro || (score >= 80 ? 'Avanzado' : score <= 59 ? 'Inicial' : 'Intermedio'),
+            sub1: sub1Val,
+            sub2: sub2Val,
+            sub3: sub3Val,
             tiempo: item.tiempoSegundos ? `${Math.round(item.tiempoSegundos / 60)} min` : '5 min',
-            psi: { psi1: 'Demostrado', psi2: 'Demostrado', psi3: 'Demostrado', psi4: 'Demostrado' },
-            soc: { soc1: 'Demostrado', soc2: 'Demostrado', soc3: 'Demostrado', soc4: 'Demostrado' },
-            fechaHora: item.fechaEntrega || new Date().toLocaleDateString('es-CR')
+            psicomotor: item.psicomotor || { psi1: 'Demostrado', psi2: 'Demostrado', psi3: 'Demostrado', psi4: 'Demostrado' },
+            socioafectivo: item.socioafectivo || { soc1: 'Demostrado', soc2: 'Demostrado', soc3: 'Demostrado', soc4: 'Demostrado' },
+            timestamp: item.timestamp || Date.now(),
+            fechaHora: item.fechaEntrega || new Date(item.timestamp || Date.now()).toLocaleDateString('es-CR')
           };
 
           if (idx >= 0) {
@@ -2266,7 +2413,7 @@
       });
 
       if (huboNuevos) {
-        localStorage.setItem('evaluacion_docente_8vo', JSON.stringify(estudiantes));
+        guardarLocal();
         renderTabla();
       }
 

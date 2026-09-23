@@ -231,13 +231,13 @@ export default function DashboardAnaliticoPage() {
 
       // Filtro por Nivel Activo (Pestaña)
       if (nivelActivo === "7mo") {
-        const es7mo = (r.seccionOGrupo && r.seccionOGrupo.includes("7-")) || r.webAppTitulo?.includes("7");
+        const es7mo = r.nivel === "7°" || (r.seccionOGrupo && r.seccionOGrupo.includes("7-")) || r.webAppTitulo?.includes("7") || r.webAppId?.includes("7mo");
         if (!es7mo) return false;
       } else if (nivelActivo === "8vo") {
-        const es8vo = (r.seccionOGrupo && r.seccionOGrupo.includes("8-")) || r.webAppTitulo?.includes("8");
+        const es8vo = r.nivel === "8°" || (r.seccionOGrupo && r.seccionOGrupo.includes("8-")) || r.webAppTitulo?.includes("8") || r.webAppId?.includes("8vo");
         if (!es8vo) return false;
       } else if (nivelActivo === "9no") {
-        const es9no = (r.seccionOGrupo && r.seccionOGrupo.includes("9-")) || r.webAppTitulo?.includes("9");
+        const es9no = r.nivel === "9°" || (r.seccionOGrupo && r.seccionOGrupo.includes("9-")) || r.webAppTitulo?.includes("9") || r.webAppId?.includes("9no");
         if (!es9no) return false;
       }
 

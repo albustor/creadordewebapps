@@ -100,26 +100,62 @@ export default function QRScannerResultados({
         datos = { estudianteNombre: "Estudiante Escaneado", puntaje: 80 };
       }
 
-      const puntaje = typeof datos.pts === "number" ? datos.pts : (typeof datos.puntaje === "number" ? datos.puntaje : 80);
+      const es8vo = datos.n === "8°" || datos.t === "MEP8" || (datos.s && typeof datos.s === "string" && datos.s.startsWith("8-")) || (datos.sec && typeof datos.sec === "string" && datos.sec.startsWith("8-"));
+      const es7mo = datos.n === "7°" || datos.tipo === "CYBERQUEST_7MO" || (datos.s && typeof datos.s === "string" && datos.s.startsWith("7-"));
+
+      let estNombre = datos.est || datos.estudianteNombre || datos.e || datos.nom || datos.nombre || "Estudiante Escaneado";
+      let seccion = datos.grp || datos.seccionOGrupo || datos.s || datos.sec || datos.seccion || (es8vo ? "Sección 8-1" : es7mo ? "Sección 7-1" : "General");
+      if (!seccion.startsWith("Sección ") && /^[789]-/i.test(seccion)) {
+        seccion = `Sección ${seccion}`;
+      }
+
+      let puntaje = 80;
+      let porcentaje = 80;
+      let totalReactivos = es8vo ? 14 : 10;
+      let aciertos = es8vo ? 11 : 8;
+
+      if (es8vo) {
+        const pRaw = typeof datos.p === "number" ? datos.p : (typeof datos.puntaje === "number" ? datos.puntaje : 11);
+        const porcRaw = typeof datos.porc === "number" ? datos.porc : (typeof datos.porcentaje === "number" ? datos.porcentaje : Math.round((pRaw / 14) * 100));
+        puntaje = pRaw <= 14 ? pRaw : Math.round((porcRaw / 100) * 14);
+        porcentaje = porcRaw;
+        totalReactivos = 14;
+        aciertos = puntaje;
+      } else {
+        const pRaw = typeof datos.pts === "number" ? datos.pts : (typeof datos.puntaje === "number" ? datos.puntaje : (typeof datos.porcentaje === "number" ? datos.porcentaje : 80));
+        porcentaje = pRaw;
+        puntaje = pRaw;
+        totalReactivos = datos.tot || 10;
+        aciertos = datos.ac || Math.round((pRaw / 100) * totalReactivos);
+      }
+
+      const subareasDetalle = es8vo ? {
+        sub1_apropiacion: typeof datos.s1 === "number" ? datos.s1 : 4,
+        sub2_algoritmos: typeof datos.s2 === "number" ? datos.s2 : 6,
+        sub3_robotica: typeof datos.s3 === "number" ? datos.s3 : 2
+      } : undefined;
+
       const payload: PayloadTelemetria = {
-        webAppId: datos.wId || datos.webAppId || "webapp-offline",
-        webAppTitulo: datos.wTitulo || datos.webAppTitulo || "Reto Offline Escaneado",
+        webAppId: datos.wId || datos.webAppId || (es8vo ? "diagnostico_8vo_modulo01_docente_evaluador" : "webapp-offline"),
+        webAppTitulo: datos.wTitulo || datos.webAppTitulo || (es8vo ? "Evaluación Diagnóstica — 8° Año (PNFT)" : "Reto Offline Escaneado"),
         docenteId: datos.dId || datos.docenteId || "DOC-OFFLINE",
-        estudianteNombre: datos.est || datos.estudianteNombre || "Estudiante",
-        seccionOGrupo: datos.grp || datos.seccionOGrupo || "General",
+        estudianteNombre: estNombre,
+        seccionOGrupo: seccion,
+        nivel: es8vo ? "8°" : (es7mo ? "7°" : (datos.nivel || "8°")),
         puntaje: puntaje,
-        puntajeMaximo: 100,
-        porcentaje: puntaje,
-        nivelLogro: calcularNivelLogro(puntaje),
-        tiempoSegundos: datos.seg || datos.tiempoSegundos || 45,
-        totalReactivos: datos.tot || 4,
-        aciertos: datos.ac || Math.round((puntaje / 100) * 4),
-        fallos: datos.fl || (4 - Math.round((puntaje / 100) * 4)),
+        puntajeMaximo: es8vo ? 14 : 100,
+        porcentaje: porcentaje,
+        nivelLogro: calcularNivelLogro(porcentaje),
+        tiempoSegundos: datos.seg || datos.t || datos.tiempoSegundos || 45,
+        totalReactivos: totalReactivos,
+        aciertos: aciertos,
+        fallos: Math.max(0, totalReactivos - aciertos),
+        subareasDetalle: subareasDetalle,
         timestamp: datos.ts || Date.now(),
-        tokenAntiFraude: datos.tok || "token-sha256-offline-verified",
+        tokenAntiFraude: datos.tok || `TOKEN-${Date.now()}`,
       };
 
-      setUltimoDetectado(payload.estudianteNombre + " - " + payload.puntaje + "%");
+      setUltimoDetectado(payload.estudianteNombre + " - " + payload.porcentaje + "%");
       alDetectarResultado(payload);
 
       // Reproducir sonido beep local

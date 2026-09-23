@@ -404,6 +404,66 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
           }
         } catch (e) {}
 
+        // 2. Cargar evaluaciones locales de 8vo si existen
+        const evaluacionesLocales8vo: PayloadTelemetria[] = [];
+        try {
+          const cedClean = cedulaDoc.replace(/[^a-zA-Z0-9]/g, "");
+          const raw8vo =
+            (cedClean ? SafeStorage.getItem(`MEP_DOCENTE_8VO_EVALUATIONS_${cedClean}`) : null) ||
+            SafeStorage.getItem("MEP_DOCENTE_8VO_EVALUATIONS") ||
+            SafeStorage.getItem("evaluacion_docente_8vo");
+          if (raw8vo) {
+            const list8vo = JSON.parse(raw8vo);
+            if (Array.isArray(list8vo)) {
+              list8vo.forEach((ev: any) => {
+                const estNombre = ev.nombre || ev.estudianteNombre || "Estudiante 8°";
+                const sec = normalizarSeccion(ev.seccion || ev.seccionOGrupo || "8-1");
+                const puntos = ev.puntaje !== undefined && ev.puntaje <= 14 ? ev.puntaje : (ev.totalPuntos !== undefined && ev.totalPuntos <= 14 ? ev.totalPuntos : Math.round(((ev.porcentaje || 80) / 100) * 14));
+                const score = ev.porcentaje ?? Math.round((puntos / 14) * 100);
+
+                const sub1Val = ev.sub1 !== undefined ? ev.sub1 : (ev.subareasDetalle?.sub1_apropiacion ?? Math.min(5, Math.round((puntos / 14) * 5)));
+                const sub2Val = ev.sub2 !== undefined ? ev.sub2 : (ev.subareasDetalle?.sub2_algoritmos ?? Math.min(7, Math.round((puntos / 14) * 7)));
+                const sub3Val = ev.sub3 !== undefined ? ev.sub3 : (ev.subareasDetalle?.sub3_robotica ?? Math.min(2, Math.max(0, puntos - sub1Val - sub2Val)));
+
+                const rec: PayloadTelemetria = {
+                  idResultado: ev.id || `eval-8vo-${Date.now()}`,
+                  webAppId: "diagnostico_8vo_modulo01_docente_evaluador",
+                  webAppTitulo: "Evaluación Diagnóstica — 8° Año (PNFT)",
+                  docenteId: docenteId || "5-0305-0179",
+                  docenteNombre: docenteActivoObj?.nombreCompleto || "Docente Evaluador",
+                  docenteCedula: cedulaDoc || docenteId || "5-0305-0179",
+                  docenteEmail: correoDoc || "",
+                  institucionNombre: ev.institucionNombre || docenteActivoObj?.institucionNombre || "Centro Educativo MEP",
+                  dreCodigo: ev.dreCodigo || docenteActivoObj?.dreCodigo || "DRE-01",
+                  estudianteNombre: estNombre,
+                  estudianteCedula: ev.cedula || "—",
+                  seccionOGrupo: sec,
+                  nivel: "8°",
+                  puntaje: puntos,
+                  puntajeMaximo: 14,
+                  porcentaje: score,
+                  totalReactivos: 14,
+                  aciertos: puntos,
+                  fallos: Math.max(0, 14 - puntos),
+                  nivelLogro: score >= 80 ? "Avanzado" : score <= 59 ? "Inicial" : "Intermedio",
+                  subareasDetalle: {
+                    sub1_apropiacion: sub1Val,
+                    sub2_algoritmos: sub2Val,
+                    sub3_robotica: sub3Val,
+                  },
+                  socioafectivo: ev.socioafectivo || { soc1: "Demostrado", soc2: "Demostrado", soc3: "Demostrado", soc4: "Demostrado" },
+                  psicomotor: ev.psicomotor || { psi1: "Demostrado", psi2: "Demostrado", psi3: "Demostrado", psi4: "Demostrado" },
+                  tiempoSegundos: 120,
+                  estadoProgreso: "completado",
+                  timestamp: ev.timestamp || Date.now(),
+                  tokenAntiFraude: `TOKEN-8VO-${Date.now()}`,
+                };
+                evaluacionesLocales8vo.push(rec);
+              });
+            }
+          }
+        } catch (e) {}
+
         const queryParams = new URLSearchParams();
         if (docenteId) queryParams.set("docenteId", docenteId);
         if (cedulaDoc) queryParams.set("cedula", cedulaDoc);
@@ -435,6 +495,14 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
 
           // Agregar locales de 7mo
           evaluacionesLocales7mo.forEach((item) => {
+            const key = normalizarClave(item);
+            if (!mapa.has(key)) {
+              mapa.set(key, item);
+            }
+          });
+
+          // Agregar locales de 8vo
+          evaluacionesLocales8vo.forEach((item) => {
             const key = normalizarClave(item);
             if (!mapa.has(key)) {
               mapa.set(key, item);
@@ -561,9 +629,18 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
           setWebAppsComunidad(JSON.parse(e.newValue));
         } catch {}
       }
-      if (e.key === "telemetria_registros" && e.newValue) {
+      if (
+        e.key === "telemetria_registros" ||
+        e.key === "evaluacion_docente_8vo" ||
+        e.key === "MEP_DOCENTE_8VO_EVALUATIONS" ||
+        e.key === "MEP_DOCENTE_7MO_EVALUATIONS" ||
+        (e.key && e.key.startsWith("MEP_DOCENTE_8VO_EVALUATIONS_"))
+      ) {
         try {
-          setTelemetria(JSON.parse(e.newValue));
+          const raw = SafeStorage.getItem("telemetria_registros");
+          if (raw) {
+            setTelemetria(JSON.parse(raw));
+          }
         } catch {}
       }
     };
