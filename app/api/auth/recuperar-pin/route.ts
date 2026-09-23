@@ -100,37 +100,50 @@ export async function POST(req: NextRequest) {
     }
 
     // 2. Despacho por WhatsApp (Evolution API)
-    const evolutionUrl = process.env.EVOLUTION_URL;
+    const evolutionUrl = process.env.EVOLUTION_URL?.replace(/\/$/, "");
     const evolutionApiKey = process.env.EVOLUTION_API_KEY;
     const evolutionInstance = process.env.EVOLUTION_INSTANCE_NAME;
 
-    if (evolutionUrl && evolutionApiKey && evolutionInstance && (canal === "whatsapp" || canal === "mensajeria") && telefonoDestino) {
-      try {
-        const numCompleto = telefonoDestino.startsWith("506") ? telefonoDestino : `506${telefonoDestino}`;
-        const mensajeTexto = `🔐 *MEP • Diagnóstico Secundaria*\n\nEstimado(a) *${nombreDocente || "Docente"}*, tu código de recuperación de PIN es:\n\n👉 *${codigoOTP}*\n\n⏱️ _Válido por 10 minutos. No compartas este código con terceros._`;
+    let telefonoLimpio = telefonoDestino ? telefonoDestino.replace(/[^0-9]/g, "") : "";
+    if (telefonoLimpio.length === 8) {
+      telefonoLimpio = `506${telefonoLimpio}`;
+    }
 
+    if (evolutionUrl && evolutionApiKey && evolutionInstance && (canal === "whatsapp" || canal === "mensajeria") && telefonoLimpio) {
+      try {
+        const mensajeTexto = `🔐 *MEP • Diagnóstico Secundaria*\n\nEstimado(a) *${nombreDocente || "Docente"}*, tu código de verificación y recuperación de PIN es:\n\n👉 *${codigoOTP}*\n\n⏱️ _Válido por 10 minutos. No compartas este código con terceros._\n\n_Ministerio de Educación Pública de Costa Rica_`;
+
+        // Intentar envío estándar Evolution API
         const resWp = await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
           method: "POST",
-          signal: AbortSignal.timeout(4000),
+          signal: AbortSignal.timeout(6000),
           headers: {
             apikey: evolutionApiKey,
+            apiKey: evolutionApiKey,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            number: numCompleto,
+            number: telefonoLimpio,
             text: mensajeTexto,
+            textMessage: {
+              text: mensajeTexto,
+            },
             options: {
               delay: 1200,
               presence: "composing",
+              linkPreview: false,
             },
           }),
         });
 
         if (resWp.ok) {
           despachoWhatsAppExitoso = true;
+        } else {
+          const errBody = await resWp.text().catch(() => "");
+          console.error(`Evolution API responded with status ${resWp.status}:`, errBody);
         }
-      } catch (err) {
-        console.error("Error en Evolution API:", err);
+      } catch (err: any) {
+        console.error("Error al conectar con Evolution API (WhatsApp):", err?.message || err);
       }
     }
 
@@ -138,13 +151,16 @@ export async function POST(req: NextRequest) {
       if (despachoWhatsAppExitoso) {
         return NextResponse.json({
           exito: true,
-          mensaje: "Código despachado exitosamente por WhatsApp a tu número registrado.",
-          detalles: { despachoWhatsApp: true },
+          mensaje: `Código despachado exitosamente por WhatsApp al número (+${telefonoLimpio}).`,
+          detalles: { despachoWhatsApp: true, telefono: telefonoLimpio },
         });
       } else {
+        const motivo = !telefonoLimpio
+          ? "No se encontró un número de teléfono registrado para esta cuenta."
+          : "El servidor de WhatsApp (Evolution API) no se encuentra disponible o no respondió a tiempo.";
         return NextResponse.json({
           exito: false,
-          mensaje: "No fue posible despachar el mensaje por WhatsApp al número registrado en este momento. Por favor selecciona la opción de 'Correo MEP' para recibir tu código de recuperación.",
+          mensaje: `⚠️ No fue posible enviar el código por WhatsApp: ${motivo} Por favor selecciona la opción de 'Correo MEP' para recibir tu código.`,
           detalles: { despachoWhatsApp: false },
         }, { status: 503 });
       }
