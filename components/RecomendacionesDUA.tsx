@@ -670,12 +670,12 @@ export default function RecomendacionesDUA({
         {(subTabActiva === "decisiones" || subTabActiva === "todos") && (
           <div className="bg-gradient-to-br from-purple-950/5 via-indigo-950/5 to-slate-900/5 border-2 border-purple-300/80 rounded-2xl p-5 space-y-4 shadow-sm">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-purple-200 pb-3">
-              <div className="flex items-center gap-2 text-purple-950 font-black text-sm uppercase tracking-wide">
+              <div className="flex items-center gap-2 text-purple-950 font-black text-sm">
                 <Lightbulb size={20} className="text-purple-700" weight="fill" />
-                <span>5. Criterios de Decisión Docente y Estrategias de Mediación ({nivelEtiqueta})</span>
+                <span>5. Criterios de decisión docente y estrategias de mediación • {nivelEtiqueta}</span>
               </div>
               <span className="px-2.5 py-1 bg-purple-100 text-purple-900 text-[11px] font-bold rounded-lg border border-purple-200">
-                Protocolo Oficial MEP • Formación Tecnológica
+                Protocolo oficial MEP • Formación Tecnológica
               </span>
             </div>
 

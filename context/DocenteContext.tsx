@@ -1360,14 +1360,16 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       } catch {}
     }
 
+    const soloDigitos = credLimpia.replace(/[^0-9]/g, "");
     const docenteEncontrado = listaUsuarios.find(
       (u) =>
         u.correoInstitucional.toLowerCase() === credLimpia ||
-        u.cedula.replace(/[^0-9]/g, "") === credLimpia.replace(/[^0-9]/g, "")
+        (soloDigitos && u.cedula.replace(/[^0-9]/g, "") === soloDigitos) ||
+        (soloDigitos && u.telefono && u.telefono.replace(/[^0-9]/g, "") === soloDigitos)
     );
 
     const correoDestino = docenteEncontrado?.correoInstitucional || (credLimpia.includes("@") ? credLimpia : undefined);
-    const telefonoDestino = docenteEncontrado?.telefono || undefined;
+    const telefonoDestino = docenteEncontrado?.telefono || (soloDigitos.length >= 8 ? soloDigitos : undefined);
     const nombreDestino = docenteEncontrado?.nombreCompleto || "Docente MEP";
 
     // Intentar despacho en el servidor
