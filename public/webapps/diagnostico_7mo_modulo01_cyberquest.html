@@ -3102,9 +3102,10 @@
       saveState();
       AudioEngine.playFanfare();
       renderActivePhase();
+      sendTelemetryToGoogleSheets('completado');
     }
 
-    // FASE 4: EXPEDIENTE FINAL Y QR DE TELEMETRÍA (SIN BOTÓN JSON)
+    // FASE 4: EXPEDIENTE FINAL Y CONFIRMACIÓN DE TELEMETRÍA AUTOMÁTICA
     function renderPhase4(container) {
       const isSolo = AppState.modalidad === 'individual' || !AppState.cadet2.name;
 
@@ -3152,48 +3153,60 @@
           <!-- ESTADO DE SINCRONIZACIÓN AUTOMÁTICA -->
           <div id="telemetrySyncStatus" style="margin: 12px 0;"></div>
 
-          <!-- TELEMETRÍA AUTOMÁTICA EN LÍNEA (EXITOSA) -->
-          <div style="background: rgba(16, 185, 129, 0.12); border: 1.5px solid var(--lime-neon); border-radius: 16px; padding: 20px; margin: 16px auto; max-width: 520px; display: flex; flex-direction: column; align-items: center; gap: 8px; box-shadow: 0 8px 30px rgba(16, 185, 129, 0.15);">
-            <div style="font-size: 32px;">✅</div>
-            <span class="mep-tag" style="background: rgba(16, 185, 129, 0.25); border: 1px solid var(--lime-neon); color: #34d399; font-size: 11px; padding: 4px 12px; border-radius: 20px; font-weight: 800;">
-              TELEMETRÍA ENVIADA Y REGISTRADA EN LÍNEA
+          <!-- PANEL OFICIAL DE CONFIRMACIÓN Y TRANSFERENCIA AUTOMÁTICA (SIN QR) -->
+          <div style="background: rgba(16, 185, 129, 0.12); border: 1.5px solid var(--lime-neon); border-radius: 16px; padding: 22px; margin: 16px auto; max-width: 580px; display: flex; flex-direction: column; align-items: center; gap: 10px; box-shadow: 0 8px 30px rgba(16, 185, 129, 0.18);">
+            <div style="font-size: 36px; line-height: 1;">✅</div>
+            
+            <span class="mep-tag" style="background: rgba(16, 185, 129, 0.25); border: 1px solid var(--lime-neon); color: #34d399; font-size: 12px; padding: 4px 14px; border-radius: 20px; font-weight: 800; letter-spacing: 0.5px;">
+              DIAGNÓSTICO REGISTRADO Y SINCRONIZADO EN LÍNEA
             </span>
-            <h3 style="font-size: 16px; color: #fff; font-weight: 800; margin: 4px 0 0 0;">
-              ¡Diagnóstico Registrado en Tiempo Real!
-            </h3>
-            <p style="font-size: 12.5px; color: #cbd5e1; max-width: 440px; line-height: 1.45; margin: 0;">
-              Tus respuestas y resultados han sido transmitidos y sincronizados directamente al <strong>Dashboard del Docente Evaluador</strong>.
-            </p>
-            <div id="telemetrySyncStatus" style="margin-top: 6px;"></div>
 
-            <div style="font-size: 11.5px; color: #94a3b8; font-family: monospace; margin-top: 4px;">
-              Hash de Seguridad: <strong style="color: var(--cyan-neon);">${AppState.sessionHash || 'HASH-CYBER2027'}</strong> &bull; Sección: <strong style="color: #fff;">${AppState.section}</strong>
+            <h3 style="font-size: 17px; color: #ffffff; font-weight: 800; margin: 4px 0 0 0;">
+              ¡Información Transferida con Éxito!
+            </h3>
+
+            <p style="font-size: 13px; color: #cbd5e1; max-width: 500px; line-height: 1.5; margin: 0; text-align: center;">
+              Tus respuestas y resultados diagnósticos han sido <strong>transferidos y sincronizados de manera automática</strong> con la <strong>Herramienta de Evaluación del Docente</strong> y con el <strong>Dashboard Institucional Central MEP</strong>.
+            </p>
+
+            <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(0, 240, 255, 0.25); border-radius: 12px; padding: 12px 16px; width: 100%; max-width: 480px; margin: 6px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; text-align: left; font-size: 12px;">
+              <div>
+                <span style="color: #94a3b8; font-size: 11px; display: block;">Estado de Evaluación:</span>
+                <strong style="color: #34d399;">🟢 Completado (100%)</strong>
+              </div>
+              <div>
+                <span style="color: #94a3b8; font-size: 11px; display: block;">Sección / Grupo:</span>
+                <strong style="color: #ffffff;">Sección ${AppState.section}</strong>
+              </div>
+              <div>
+                <span style="color: #94a3b8; font-size: 11px; display: block;">Docente Asignado:</span>
+                <strong style="color: #38bdf8;">${AppState.teacher?.name || 'Prof. Formación Tecnológica'}</strong>
+              </div>
+              <div>
+                <span style="color: #94a3b8; font-size: 11px; display: block;">Institución:</span>
+                <strong style="color: #e2e8f0; font-size: 11px;">${AppState.teacher?.institution || 'Colegio MEP'}</strong>
+              </div>
+              <div style="grid-column: span 2; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 6px;">
+                <span style="color: #94a3b8; font-size: 11px; display: block;">Código Único de Verificación:</span>
+                <strong style="color: var(--cyan-neon); font-family: monospace; font-size: 11.5px;">${AppState.sessionHash || 'HASH-CYBER2027'}</strong>
+              </div>
             </div>
+
+            <p style="font-size: 11.5px; color: #94a3b8; margin: 0; font-style: italic;">
+              ℹ️ En esta modalidad en línea no se requiere código QR ni escaneo manual, ya que la comunicación digital se procesa en tiempo real.
+            </p>
 
             <!-- ACCIONES EN LÍNEA Y DESCARGAS -->
             <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 10px;">
-              <button type="button" class="btn-cyber" style="padding: 8px 14px; font-size: 12px; background: rgba(0, 240, 255, 0.15); border-color: var(--cyan-neon); color: #e0f2fe;" onclick="toggleQrRespaldo()">
-                📱 Ver Código QR de Respaldo
+              <button type="button" class="btn-cyber" style="padding: 8px 14px; font-size: 12px; background: rgba(168, 85, 247, 0.2); border-color: var(--violet-neon); color: #e9d5ff;" onclick="downloadTelemetryJson()" title="Descargar archivo JSON con el desglose de respuestas">
+                💾 Descargar Ficha (.json)
               </button>
-              <button type="button" class="btn-cyber" style="padding: 8px 14px; font-size: 12px; background: rgba(168, 85, 247, 0.2); border-color: var(--violet-neon); color: #e9d5ff;" onclick="downloadTelemetryJson()" title="Descargar archivo JSON para llave maya USB">
-                💾 Descargar Copia (.json)
-              </button>
-              <button type="button" class="btn-cyber" style="padding: 8px 14px; font-size: 12px; background: linear-gradient(135deg, #0891b2, #0e7490); border-color: #22d3ee;" onclick="downloadTelemetryCsv7mo()" title="Descargar archivo CSV compatible con Excel">
+              <button type="button" class="btn-cyber" style="padding: 8px 14px; font-size: 12px; background: linear-gradient(135deg, #0891b2, #0e7490); border-color: #22d3ee; color: #ffffff;" onclick="downloadTelemetryCsv7mo()" title="Descargar archivo CSV compatible con Excel">
                 📊 Descargar Ficha (.csv)
               </button>
               <button type="button" class="btn-cyber" style="padding: 8px 14px; font-size: 12px; background: rgba(16, 185, 129, 0.2); border-color: var(--lime-neon); color: #a7f3d0;" onclick="window.print()">
                 🖨️ Imprimir Comprobante
               </button>
-            </div>
-
-            <!-- QR DE RESPALDO (COLAPSABLE / OPCIONAL) -->
-            <div id="qrRespaldoBox" style="display: none; background: #090d16; border: 1px solid var(--border-neon); border-radius: 12px; padding: 14px; margin-top: 12px; text-align: center;">
-              <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 8px;">
-                Código QR de respaldo (únicamente si tu docente solicita escaneo visual presencial):
-              </p>
-              <div style="background: #ffffff; padding: 10px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center;">
-                <canvas id="qrCanvasTelemetria" width="200" height="200" style="display: block; width: 200px; height: 200px;"></canvas>
-              </div>
             </div>
           </div>
 
@@ -3208,19 +3221,8 @@
       `;
 
       setTimeout(() => {
-        renderQrCodeCanvas('qrCanvasTelemetria');
-        sendTelemetryToGoogleSheets();
+        sendTelemetryToGoogleSheets('completado');
       }, 100);
-    }
-    
-    function toggleQrRespaldo() {
-      const box = document.getElementById('qrRespaldoBox');
-      if (box) {
-        box.style.display = box.style.display === 'none' ? 'block' : 'none';
-        if (box.style.display === 'block') {
-          renderQrCodeCanvas('qrCanvasTelemetria');
-        }
-      }
     }
 
     function calculateDiagnosticsMetrics() {
@@ -3278,41 +3280,6 @@
         p3: AppState.psicomotriz?.p3_pulso?.score || 0,
         p4: AppState.psicomotriz?.p4_dibujo?.score || 0
       };
-    }
-
-    function renderQrCodeCanvas(canvasId) {
-      const data = get7moTelemetryData();
-      const compactPayload = JSON.stringify({
-        t: 'MEP7',
-        sec: data.sec,
-        c1: data.c1,
-        a1: data.a1,
-        c2: data.c2 || 'Individual',
-        a2: data.a2 || '',
-        p: data.p,
-        c: data.c,
-        s: data.s,
-        g: data.g,
-        lvl: data.lvl,
-        h: data.h
-      });
-
-      const canvas = typeof canvasId === 'string' ? document.getElementById(canvasId) : canvasId;
-      if (!canvas) return;
-
-      try {
-        if (typeof QRCode !== 'undefined') {
-          QRCode(canvas, {
-            text: compactPayload,
-            size: 200,
-            background: '#ffffff',
-            foreground: '#000000',
-            correctLevel: 1
-          });
-        }
-      } catch (err) {
-        console.error('Error rendering QR canvas:', err);
-      }
     }
 
     function downloadTelemetryJson() {
@@ -3419,8 +3386,8 @@
       const secClean = (AppState.section || '7-1').replace(/^secci[oó]n\s*/i, '').trim();
       const secFormateada = `Sección ${secClean}`;
       const docId = AppState.teacher?.id || '5-0305-0179';
-      const estadoActual = overrideStatus || (AppState.phase === 4 ? 'completado' : 'en_progreso');
-      const isCompleted = estadoActual === 'completado';
+      const estadoActual = overrideStatus || (AppState.phase >= 4 ? 'completado' : 'en_progreso');
+      const isCompleted = estadoActual === 'completado' || AppState.phase >= 4;
 
       const p1Data = AppState.psicomotriz?.p1_lateralidad || {};
       const p2Data = AppState.psicomotriz?.p2_ritmo || {};
@@ -3439,7 +3406,7 @@
         estudianteNombre: nombreCompletoPareja,
         seccionOGrupo: secFormateada,
         nivel: '7°',
-        faseActual: `Fase ${AppState.phase} de 4`,
+        faseActual: isCompleted ? 'Misión Completada (100%)' : `Fase ${AppState.phase} de 4`,
         puntaje: isCompleted ? metrics.globalAvg : null,
         porcentaje: isCompleted ? metrics.globalAvg : Math.round((AppState.phase / 4) * 100),
         aciertos: isCompleted ? (metrics.cogScore ? Math.round((metrics.cogScore / 100) * 10) : 8) : 0,
@@ -3448,7 +3415,7 @@
           ? (metrics.globalLevel === 'A' ? 'Avanzado' : (metrics.globalLevel === 'B' ? 'Intermedio' : 'Inicial'))
           : 'En Evaluación',
         tiempoSegundos: 120,
-        estadoProgreso: estadoActual,
+        estadoProgreso: isCompleted ? 'completado' : estadoActual,
         timestamp: Date.now(),
         sessionHash: AppState.sessionHash,
         cadet1: cadet1Name,
@@ -3494,7 +3461,7 @@
             avatar1: fullData.cadet1Avatar,
             avatar2: fullData.cadet2Avatar,
             section: secClean,
-            estadoProgreso: estadoActual,
+            estadoProgreso: isCompleted ? 'completado' : estadoActual,
             faseActual: fullData.faseActual,
             psicoScore: fullData.psicoScore,
             cogScore: fullData.cogScore,
@@ -3553,7 +3520,7 @@
         } else {
           statusEl.innerHTML = `
             <div style="background: rgba(16, 185, 129, 0.12); border: 1px solid var(--lime-neon); color: #34d399; font-size: 13px; font-weight: 700; padding: 10px 16px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px;">
-              <span>📡 Telemetría generada en pantalla para Escaneo QR del Docente</span>
+              <span>✅ Registrado y disponible en la plataforma docente</span>
             </div>
           `;
         }

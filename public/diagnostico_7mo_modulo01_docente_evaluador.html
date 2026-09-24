@@ -2742,8 +2742,7 @@
       }
       localStorage.setItem('MEP_DOCENTE_PERFIL_GLOBAL', JSON.stringify(profile));
       applyTeacherProfileUI(profile);
-      saveDocenteState();
-      sincronizarTelemetriaOnline();
+      filterAndRender();
     }
 
     function cerrarSesionDocente() {

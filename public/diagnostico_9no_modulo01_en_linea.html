@@ -1050,7 +1050,7 @@
           🔌 Reto 1: Conectar una luz de acuerdo a la intensidad de luz ambiente
         </h3>
         <p style="font-size: 12px; color: #1e293b; line-height: 1.5; margin: 0;">
-          <strong>Instrucción:</strong> Conecta los <strong>5 terminales de polaridad y señal</strong> entre el sensor LDR (VCC 5V, GND, Pin A0) y el actuador de lámpara LED (Pin D9, GND). Luego varía la luz ambiental con el deslizador para validar que la lámpara encienda automáticamente cuando baje la iluminación (&lt;300 Lux).
+          <strong>Instrucción:</strong> Conecta los <strong>5 terminales de polaridad y señal</strong> entre el sensor de luz (VCC, GND, SIG), el microcontrolador (5V, GND, A0, D9) y el actuador de lámpara LED (SIG, GND). Luego varía la luz ambiental con el deslizador para validar que la lámpara encienda automáticamente cuando baje la iluminación (&lt;300 Lux).
         </p>
       </div>
 
@@ -1094,17 +1094,17 @@
           </div>
 
           <div class="hardware-workspace">
-            <!-- SENSOR LDR -->
+            <!-- SENSOR DE LUZ -->
             <div class="hardware-card" id="cardSensor">
               <div>
                 <div style="font-size: 20px;">☀️</div>
-                <strong style="font-size: 11px; color: #0f172a; display: block; font-weight: 900;">Sensor LDR</strong>
+                <strong style="font-size: 11px; color: #0f172a; display: block; font-weight: 900;">Sensor de luz</strong>
               </div>
 
               <div style="margin-top: 4px; display: flex; flex-direction: column; gap: 3px;">
                 <div class="pin-terminal" id="pin_sensor_vcc" onclick="clickPin('sensor_vcc')">⚫ VCC (5V)</div>
                 <div class="pin-terminal" id="pin_sensor_gnd" onclick="clickPin('sensor_gnd')">⚫ GND</div>
-                <div class="pin-terminal" id="pin_sensor_sig" onclick="clickPin('sensor_sig')">⚫ Pin A0</div>
+                <div class="pin-terminal" id="pin_sensor_sig" onclick="clickPin('sensor_sig')">⚫ SIG</div>
               </div>
             </div>
 
@@ -1143,7 +1143,7 @@
               </div>
 
               <div style="margin-top: 4px; display: flex; flex-direction: column; gap: 3px;">
-                <div class="pin-terminal" id="pin_act_sig" onclick="clickPin('act_sig')">⚫ Pin D9</div>
+                <div class="pin-terminal" id="pin_act_sig" onclick="clickPin('act_sig')">⚫ SIG</div>
                 <div class="pin-terminal" id="pin_act_gnd" onclick="clickPin('act_gnd')">⚫ GND</div>
               </div>
 
