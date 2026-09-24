@@ -16,9 +16,9 @@ const headPart = `<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Escáner 9° FT">
+<meta name="apple-mobile-web-app-title" content="Escáner FT">
 <meta name="theme-color" content="#002b49">
-<title>Escáner de Datos Locales 9.° Año — Formación Tecnológica MEP</title>
+<title>Escáner de Datos Locales — Formación Tecnológica MEP</title>
 
 <!-- LIBRERÍA QR EMBEBIDA 100% OFFLINE (CERO DEPENDENCIAS EXTERNAS) -->
 <script>
@@ -65,7 +65,7 @@ body {
 header {
   background: linear-gradient(135deg, var(--mep-azul) 0%, var(--mep-azul-card) 100%);
   color: white;
-  padding: 20px 16px 18px;
+  padding: 18px 16px 16px;
   text-align: center;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
@@ -79,16 +79,16 @@ header {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  padding: 4px 12px;
+  padding: 3px 10px;
   border-radius: 9999px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 header h1 {
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 900;
   letter-spacing: -0.3px;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 header p {
@@ -99,7 +99,7 @@ header p {
 
 .container {
   max-width: 700px;
-  margin: 16px auto;
+  margin: 14px auto;
   padding: 0 14px;
 }
 
@@ -124,22 +124,22 @@ header p {
 
 label {
   display: block;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 800;
   color: var(--mep-texto);
-  margin-top: 12px;
-  margin-bottom: 5px;
+  margin-top: 10px;
+  margin-bottom: 4px;
   text-transform: uppercase;
   letter-spacing: 0.3px;
 }
 
 input, select {
   width: 100%;
-  height: 46px;
-  padding: 10px 14px;
+  height: 44px;
+  padding: 8px 12px;
   border: 1.5px solid var(--mep-borde);
   border-radius: 12px;
-  font-size: 15px;
+  font-size: 14.5px;
   font-weight: 600;
   background: #ffffff;
   color: var(--mep-texto);
@@ -152,13 +152,13 @@ input:focus, select:focus {
   box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
 }
 
-button {
+.btn-main, .btn-primary, .btn-emerald, .btn-indigo, .btn-danger, .btn-secondary {
   width: 100%;
-  height: 48px;
+  height: 46px;
   border: none;
   border-radius: 14px;
-  padding: 12px 16px;
-  font-size: 14px;
+  padding: 10px 16px;
+  font-size: 13.5px;
   font-weight: 800;
   cursor: pointer;
   display: inline-flex;
@@ -166,9 +166,10 @@ button {
   justify-content: center;
   gap: 8px;
   transition: all 0.15s ease;
+  user-select: none;
 }
 
-button:active {
+.btn-main:active, .btn-primary:active, .btn-emerald:active, .btn-indigo:active, .btn-danger:active, .btn-secondary:active {
   transform: scale(0.98);
 }
 
@@ -186,22 +187,22 @@ button:active {
   background: #f0f9ff;
   border-left: 4px solid #0284c7;
   border-radius: 12px;
-  padding: 14px;
-  font-size: 13px;
-  line-height: 1.6;
+  padding: 12px 14px;
+  font-size: 12.5px;
+  line-height: 1.5;
   margin-bottom: 12px;
 }
 
 .counter-badge {
   text-align: center;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 900;
   color: var(--mep-azul);
-  padding: 10px;
+  padding: 8px 12px;
   background: #f8fafc;
   border: 1px dashed var(--mep-borde);
   border-radius: 12px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 #reader {
@@ -223,7 +224,7 @@ button:active {
 .alert {
   padding: 12px 14px;
   border-radius: 12px;
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 600;
   line-height: 1.5;
   margin-top: 10px;
@@ -236,7 +237,7 @@ button:active {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 10px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .result-item {
@@ -249,14 +250,14 @@ button:active {
 
 .result-item strong {
   display: block;
-  font-size: 10.5px;
+  font-size: 10px;
   text-transform: uppercase;
   color: #64748b;
   margin-bottom: 3px;
   letter-spacing: 0.3px;
 }
 
-.result-item span {
+.result-item span, .result-item input {
   font-size: 13px;
   font-weight: 700;
   color: var(--mep-texto);
@@ -268,7 +269,7 @@ button:active {
   background: #ffffff;
   border: 1.5px solid #e2e8f0;
   border-radius: 14px;
-  padding: 14px;
+  padding: 12px 14px;
   margin-bottom: 10px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.02);
 }
@@ -278,12 +279,12 @@ button:active {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #f1f5f9;
-  padding-bottom: 8px;
-  margin-bottom: 8px;
+  padding-bottom: 6px;
+  margin-bottom: 6px;
 }
 
 .record-name {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 900;
   color: var(--mep-azul);
 }
@@ -298,14 +299,21 @@ button:active {
 }
 
 .record-details {
-  font-size: 12px;
+  font-size: 11.5px;
   color: var(--mep-subtexto);
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 .button-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.button-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 8px;
   margin-top: 10px;
 }
@@ -335,384 +343,369 @@ button:active {
   text-align: center;
 }
 
-/* Guía de instalación plegable interactiva */
-.guide-box {
+/* Acordeón de Guía Plegable (Cerrado por defecto) */
+.guide-accordion {
   background: #ffffff;
-  border: 2px solid #cbd5e1;
-  border-radius: 18px;
-  margin-top: 12px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 16px;
   margin-bottom: 16px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
   overflow: hidden;
-  transition: all 0.2s ease;
 }
-.guide-box:hover {
-  border-color: #94a3b8;
-}
-.guide-header {
-  font-weight: 900;
-  color: var(--mep-azul);
-  cursor: pointer;
+
+.guide-accordion-header {
+  padding: 12px 16px;
+  background: #f8fafc;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 18px;
-  background: #f8fafc;
+  cursor: pointer;
   user-select: none;
-  font-size: 13px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid transparent;
+  transition: background 0.15s ease;
 }
-.guide-header:hover {
+
+.guide-accordion-header:hover {
   background: #f1f5f9;
 }
-.guide-content {
-  padding: 16px;
-  line-height: 1.6;
-  color: #1e293b;
+
+.guide-accordion-title {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--mep-azul);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.guide-accordion-badge {
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #0284c7;
+  background: #e0f2fe;
+  padding: 3px 8px;
+  border-radius: 8px;
+}
+
+.guide-content-body {
+  padding: 14px;
+  display: none; /* Cerrado por defecto */
+  border-top: 1px solid #e2e8f0;
   background: #ffffff;
 }
-.guide-tabs {
+
+.guide-nav-bar {
   display: flex;
   gap: 6px;
   overflow-x: auto;
-  border-bottom: 2px solid #e2e8f0;
   padding-bottom: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
+  border-bottom: 1.5px solid #e2e8f0;
 }
+
 .guide-tab-btn {
-  background: #f1f5f9;
-  border: 1px solid #cbd5e1;
-  border-radius: 10px;
-  padding: 8px 12px;
-  font-size: 11.5px;
-  font-weight: 800;
-  color: #475569;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.15s ease;
-  height: auto;
-  width: auto;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  width: auto !important;
+  height: auto !important;
+  min-height: 34px;
+  padding: 6px 12px !important;
+  font-size: 11.5px !important;
+  font-weight: 800 !important;
+  color: #475569 !important;
+  background: #f1f5f9 !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 10px !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  flex-shrink: 0 !important;
+  transition: all 0.15s ease !important;
 }
+
 .guide-tab-btn.active {
-  background: #002b49;
-  color: #ffffff;
-  border-color: #002b49;
-  box-shadow: 0 2px 6px rgba(0,43,73,0.25);
+  background: #002b49 !important;
+  color: #ffffff !important;
+  border-color: #002b49 !important;
+  box-shadow: 0 2px 6px rgba(0,43,73,0.2) !important;
 }
+
 .guide-step-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 14px;
-  margin-top: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
 }
+
 .guide-step-card {
   background: #f8fafc;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
   overflow: hidden;
   display: flex;
-  flex-col;
   flex-direction: column;
   justify-content: space-between;
 }
+
 .guide-step-header {
-  padding: 12px;
+  padding: 10px;
   background: #ffffff;
   border-bottom: 1px solid #e2e8f0;
 }
+
 .guide-step-header h4 {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 800;
   color: #0f172a;
-  margin-top: 4px;
+  margin-top: 2px;
 }
+
 .guide-step-header p {
-  font-size: 11.5px;
+  font-size: 11px;
   color: #475569;
-  margin-top: 4px;
-  line-height: 1.5;
+  margin-top: 2px;
+  line-height: 1.4;
 }
+
 .guide-step-img-wrap {
-  padding: 10px;
+  padding: 8px;
   background: #0f172a;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 160px;
+  min-height: 140px;
 }
+
 .guide-img {
   max-width: 100%;
-  max-height: 220px;
-  border-radius: 8px;
+  max-height: 200px;
+  border-radius: 6px;
   object-fit: contain;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
+
 .guide-note-box {
   background: #ecfdf5;
   border: 1px solid #a7f3d0;
-  border-radius: 12px;
-  padding: 12px 14px;
-  font-size: 11.5px;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 11px;
   color: #065f46;
-  margin-top: 14px;
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  line-height: 1.5;
+  margin-top: 12px;
+  line-height: 1.45;
 }
+
 .step-pill {
   display: inline-block;
   background: #0284c7;
   color: #fff;
   font-weight: 800;
-  font-size: 10px;
-  padding: 2px 7px;
-  border-radius: 6px;
-  margin-bottom: 4px;
+  font-size: 9.5px;
+  padding: 1px 6px;
+  border-radius: 5px;
+  margin-bottom: 3px;
 }
 </style>
 </head>
 <body>
 
 <header>
-  <span class="badge-header">MEP • III Ciclo 2027</span>
-  <h1>Escáner de Datos Locales 9.° Año</h1>
-  <p>Captura de resultados QR sin conexión para computadoras de aula</p>
+  <span class="badge-header">MEP • FORMACIÓN TECNOLÓGICA</span>
+  <h1>Escáner de Datos Locales</h1>
+  <p>Captura de resultados QR sin conexión para 7.°, 8.° y 9.° Año</p>
 </header>
 
 <div class="container">
 
-  <!-- GUÍA DE INSTALACIÓN RÁPIDA EN IPHONE / ANDROID / HUAWEI (RECURSOS PNFT) -->
-  <div class="guide-box">
-    <div class="guide-header" onclick="alternarGuiaInstalacion()">
-      <span>📲 ¿Cómo usar e instalar en iPhone / Android? (En línea y Sin conexión)</span>
-      <span id="guideArrow">▼</span>
+  <!-- ACORDEÓN PLEGABLE: GUÍA DE CELULARES (CERRADO POR DEFECTO PARA NO QUITAR VISIBILIDAD) -->
+  <div class="guide-accordion">
+    <div class="guide-accordion-header" onclick="alternarGuiaInstalacion()">
+      <div class="guide-accordion-title">
+        <span>📖 ¿Cómo instalar y usar en iPhone / Android / Huawei?</span>
+      </div>
+      <span id="guideArrow" class="guide-accordion-badge">▼ Ver Instrucciones</span>
     </div>
-    <div id="guideContent" class="guide-content">
-      <!-- Selector de Pestañas de SO -->
-      <div class="guide-tabs">
-        <button id="tabBtnIos" class="guide-tab-btn active" onclick="cambiarPestanaGuia('ios')">
-          <span>🍎 iPhone / iPad (iOS Safari)</span>
+
+    <div id="guideContentBody" class="guide-content-body">
+      <!-- Barra de navegación de pestañas -->
+      <div class="guide-nav-bar">
+        <button type="button" id="tabBtnIos" class="guide-tab-btn active" onclick="cambiarPestanaGuia('ios')">
+          <span>🍎 iPhone (iOS Safari)</span>
         </button>
-        <button id="tabBtnAndroid" class="guide-tab-btn" onclick="cambiarPestanaGuia('android')">
+        <button type="button" id="tabBtnAndroid" class="guide-tab-btn" onclick="cambiarPestanaGuia('android')">
           <span>🤖 Android (Chrome)</span>
         </button>
-        <button id="tabBtnHuawei" class="guide-tab-btn" onclick="cambiarPestanaGuia('huawei')">
+        <button type="button" id="tabBtnHuawei" class="guide-tab-btn" onclick="cambiarPestanaGuia('huawei')">
           <span>📱 Huawei / HarmonyOS</span>
         </button>
-        <button id="tabBtnModos" class="guide-tab-btn" onclick="cambiarPestanaGuia('modos')">
-          <span>⚡ En Línea vs Desconectado</span>
+        <button type="button" id="tabBtnModos" class="guide-tab-btn" onclick="cambiarPestanaGuia('modos')">
+          <span>⚡ Modos & USB</span>
         </button>
       </div>
 
-      <!-- Pestaña 1: iOS Safari -->
-      <div id="guiaIos" class="guide-pane">
-        <div style="margin-bottom: 10px;">
-          <h3 style="font-size: 14px; font-weight: 900; color: #002b49;">
-            Manual Visual de Instalación en iPhone y iPad (iOS Safari)
-          </h3>
-          <p style="font-size: 12px; color: #475569;">
-            Configura el Escáner en la pantalla de inicio para ejecutarlo a pantalla completa y sin consumo de internet.
-          </p>
-        </div>
+      <!-- Pestaña iOS -->
+      <div id="paneIos" class="guide-pane">
+        <h3 style="font-size: 13px; font-weight: 900; color: #002b49; margin-bottom: 4px;">
+          Manual Visual de Instalación en iPhone y iPad (iOS Safari)
+        </h3>
+        <p style="font-size: 11.5px; color: #475569;">
+          Configura el Escáner en la pantalla de inicio para ejecutarlo a pantalla completa y sin consumo de internet.
+        </p>
 
         <div class="guide-step-grid">
-          <!-- Paso 1 -->
           <div class="guide-step-card">
             <div class="guide-step-header">
-              <span class="step-pill" style="background:#0284c7;">Paso 1: Detección</span>
-              <h4>Apertura y Detección en Safari</h4>
-              <p>
-                Al abrir el enlace en <strong>Safari</strong> de tu iPhone, toca el botón <strong>Compartir (📤 flecha hacia arriba)</strong> en la barra inferior.
-              </p>
+              <span class="step-pill" style="background:#0284c7;">Paso 1: Safari</span>
+              <h4>Abrir y Compartir</h4>
+              <p>Abre el enlace en Safari y toca el botón <strong>Compartir (📤)</strong> abajo.</p>
             </div>
             <div class="guide-step-img-wrap">
-              <img src="/guias/iphone/paso1_instrucciones_ios.png" alt="Paso 1 iOS Safari" class="guide-img" onerror="this.style.display='none'">
+              <img src="/guias/iphone/paso1_instrucciones_ios.png" alt="Paso 1 iOS" class="guide-img" onerror="this.style.display='none'">
             </div>
           </div>
 
-          <!-- Paso 2 -->
           <div class="guide-step-card">
             <div class="guide-step-header">
-              <span class="step-pill" style="background:#7c3aed;">Paso 2: Menú Compartir</span>
-              <h4>Agregar al Fondo / Pantalla de Inicio</h4>
-              <p>
-                Desliza hacia abajo en las opciones de Safari y selecciona <strong>[+] "Agregar a Inicio"</strong> (o <em>"Agregar a pantalla de inicio"</em>).
-              </p>
+              <span class="step-pill" style="background:#7c3aed;">Paso 2: Menú</span>
+              <h4>Agregar a Inicio</h4>
+              <p>Desliza y selecciona la opción <strong>[+] "Agregar a Inicio"</strong>.</p>
             </div>
             <div class="guide-step-img-wrap">
-              <img src="/guias/iphone/paso2_menu_compartir.png" alt="Paso 2 Menú Compartir" class="guide-img" onerror="this.style.display='none'">
+              <img src="/guias/iphone/paso2_menu_compartir.png" alt="Paso 2 iOS" class="guide-img" onerror="this.style.display='none'">
             </div>
           </div>
 
-          <!-- Paso 3 -->
           <div class="guide-step-card">
             <div class="guide-step-header">
-              <span class="step-pill" style="background:#059669;">Paso 3: Confirmación</span>
-              <h4>Activar "Abrir como app web"</h4>
-              <p>
-                Verifica que el interruptor <strong>"Abrir como app web"</strong> esté activo (en verde) y pulsa <strong>"Agregar"</strong> arriba a la derecha.
-              </p>
+              <span class="step-pill" style="background:#059669;">Paso 3: Guardar</span>
+              <h4>Abrir como App Web</h4>
+              <p>Activa <em>"Abrir como app web"</em> (verde) y pulsa <strong>"Agregar"</strong>.</p>
             </div>
             <div class="guide-step-img-wrap">
-              <img src="/guias/iphone/paso3_agregar_inicio.png" alt="Paso 3 Agregar a Inicio" class="guide-img" onerror="this.style.display='none'">
+              <img src="/guias/iphone/paso3_agregar_inicio.png" alt="Paso 3 iOS" class="guide-img" onerror="this.style.display='none'">
             </div>
           </div>
         </div>
 
         <div class="guide-note-box">
-          <div>
-            <strong>✨ Ventaja para el Docente en el Aula:</strong><br>
-            Al abrir el Escáner desde el icono en la pantalla de inicio, se ocultan las barras de Safari, permitiendo escanear a pantalla completa, con vibración y sonido táctil, sin consumo de datos y guardado automático de todo el grupo.
-          </div>
+          <strong>✨ Ventaja:</strong> Ejecución a pantalla completa sin barras de navegador, con retroalimentación sonora/vibración y guardado local sin internet.
         </div>
       </div>
 
-      <!-- Pestaña 2: Android Chrome -->
-      <div id="guiaAndroid" class="guide-pane hidden">
-        <div style="margin-bottom: 10px;">
-          <h3 style="font-size: 14px; font-weight: 900; color: #002b49;">
-            Instalación en Android (Google Chrome)
-          </h3>
-          <p style="font-size: 12px; color: #475569;">
-            Instalación instantánea con tecnología Progressive Web App (PWA) offline.
-          </p>
-        </div>
+      <!-- Pestaña Android -->
+      <div id="paneAndroid" class="guide-pane hidden">
+        <h3 style="font-size: 13px; font-weight: 900; color: #002b49; margin-bottom: 4px;">
+          Instalación en Android (Google Chrome)
+        </h3>
+        <p style="font-size: 11.5px; color: #475569;">
+          Instalación instantánea PWA desconectada.
+        </p>
 
         <div class="guide-step-grid">
           <div class="guide-step-card">
-            <div class="guide-step-header" style="height: 100%;">
+            <div class="guide-step-header" style="height:100%;">
               <span class="step-pill" style="background:#059669;">Paso 1</span>
               <h4>Abrir en Chrome</h4>
-              <p>Abre el enlace directo del escáner en tu navegador Google Chrome o escanea el QR desde tu teléfono.</p>
+              <p>Abre el enlace del escáner en tu navegador Chrome.</p>
             </div>
           </div>
-
           <div class="guide-step-card">
-            <div class="guide-step-header" style="height: 100%;">
+            <div class="guide-step-header" style="height:100%;">
               <span class="step-pill" style="background:#059669;">Paso 2</span>
-              <h4>Menú de 3 Puntos (⋮)</h4>
-              <p>Toca los tres puntos verticales ubicados en la esquina superior derecha del navegador Chrome.</p>
+              <h4>Menú (⋮)</h4>
+              <p>Toca los tres puntos arriba a la derecha.</p>
             </div>
           </div>
-
           <div class="guide-step-card">
-            <div class="guide-step-header" style="height: 100%;">
+            <div class="guide-step-header" style="height:100%;">
               <span class="step-pill" style="background:#059669;">Paso 3</span>
-              <h4>Instalar Aplicación</h4>
-              <p>Selecciona <strong>"Instalar aplicación"</strong> o <strong>"Agregar a la pantalla principal"</strong> y confirma.</p>
+              <h4>Instalar</h4>
+              <p>Elige <strong>"Instalar aplicación"</strong> o <strong>"Agregar a pantalla principal"</strong>.</p>
             </div>
-          </div>
-        </div>
-
-        <div class="guide-note-box">
-          <div>
-            <strong>⚡ Ventaja Android:</strong> El escáner quedará guardado como aplicación independiente y funcionará al 100% incluso con modo avión activado.
           </div>
         </div>
       </div>
 
-      <!-- Pestaña 3: Huawei -->
-      <div id="guiaHuawei" class="guide-pane hidden">
-        <div style="margin-bottom: 10px;">
-          <h3 style="font-size: 14px; font-weight: 900; color: #002b49;">
-            Instalación en Dispositivos Huawei (Huawei Browser / Petal)
-          </h3>
-          <p style="font-size: 12px; color: #475569;">
-            Configuración directa en sistemas operativos EMUI y HarmonyOS.
-          </p>
-        </div>
+      <!-- Pestaña Huawei -->
+      <div id="paneHuawei" class="guide-pane hidden">
+        <h3 style="font-size: 13px; font-weight: 900; color: #002b49; margin-bottom: 4px;">
+          Instalación en Dispositivos Huawei (Petal Browser)
+        </h3>
+        <p style="font-size: 11.5px; color: #475569;">
+          Configuración en EMUI y HarmonyOS.
+        </p>
 
         <div class="guide-step-grid">
           <div class="guide-step-card">
-            <div class="guide-step-header" style="height: 100%;">
+            <div class="guide-step-header" style="height:100%;">
               <span class="step-pill" style="background:#dc2626;">Paso 1</span>
-              <h4>Navegador Huawei</h4>
-              <p>Abre el enlace del escáner en el navegador predeterminado de Huawei o Petal Browser.</p>
+              <h4>Navegador</h4>
+              <p>Abre el enlace en Huawei Browser.</p>
             </div>
           </div>
-
           <div class="guide-step-card">
-            <div class="guide-step-header" style="height: 100%;">
+            <div class="guide-step-header" style="height:100%;">
               <span class="step-pill" style="background:#dc2626;">Paso 2</span>
-              <h4>Menú de Ajustes (≡ ó ⠇)</h4>
-              <p>Presiona el botón de menú en la barra inferior o superior derecha del navegador.</p>
+              <h4>Menú (≡ / ⠇)</h4>
+              <p>Abre el menú de ajustes del navegador.</p>
             </div>
           </div>
-
           <div class="guide-step-card">
-            <div class="guide-step-header" style="height: 100%;">
+            <div class="guide-step-header" style="height:100%;">
               <span class="step-pill" style="background:#dc2626;">Paso 3</span>
               <h4>Acceso Directo</h4>
-              <p>Selecciona la opción <strong>"Agregar a pantalla de inicio"</strong> o <strong>"Crear acceso directo"</strong>.</p>
+              <p>Toca <strong>"Agregar a pantalla de inicio"</strong>.</p>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="guide-note-box">
-          <div>
-            <strong>🛡️ Compatibilidad Garantizada:</strong> Diseñado con Web APIs universales compatibles con todos los modelos Huawei de los últimos 7 años.
+      <!-- Pestaña Modos & USB -->
+      <div id="paneModos" class="guide-pane hidden">
+        <h3 style="font-size: 13px; font-weight: 900; color: #002b49; margin-bottom: 4px;">
+          Modos de Conectividad y Contingencias
+        </h3>
+        <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
+          <div style="padding:10px; background:#e0f2fe; border-radius:10px; font-size:11.5px;">
+            <strong>🌐 En Línea (HTTPS):</strong> Activa cámara trasera continua en vivo.
+          </div>
+          <div style="padding:10px; background:#fef3c7; border-radius:10px; font-size:11.5px;">
+            <strong>📸 Foto Directa:</strong> Si no hay HTTPS, use el botón <em>"Tomar foto / Cargar QR"</em>.
+          </div>
+          <div style="padding:10px; background:#ecfdf5; border-radius:10px; font-size:11.5px;">
+            <strong>📂 Llave Maya / USB:</strong> Use el botón <em>"Importar JSONs (USB)"</em> para cargar archivos del grupo de una sola vez.
           </div>
         </div>
       </div>
-
-      <!-- Pestaña 4: Modos de Operación -->
-      <div id="guiaModos" class="guide-pane hidden">
-        <div style="margin-bottom: 10px;">
-          <h3 style="font-size: 14px; font-weight: 900; color: #002b49;">
-            Modos de Operación y Protocolo de Contingencia
-          </h3>
-          <p style="font-size: 12px; color: #475569;">
-            Opciones según la conectividad del centro educativo y las restricciones del aula.
-          </p>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr; gap: 10px;">
-          <div style="padding: 12px; background: #e0f2fe; border: 1px solid #bae6fd; border-radius: 12px; font-size: 12px;">
-            <strong style="color: #0369a1; font-size: 13px;">🌐 1. Modo En Línea (Recomendado si tiene datos o WiFi):</strong><br>
-            Abra el enlace web oficial en HTTPS. La cámara trasera se activará de inmediato con auto-enfoque y lectura instantánea de los QR.
-          </div>
-
-          <div style="padding: 12px; background: #fef3c7; border: 1px solid #fde68a; border-radius: 12px; font-size: 12px;">
-            <strong style="color: #92400e; font-size: 13px;">📸 2. Contingencia por Foto Directa:</strong><br>
-            Si el navegador bloquea la cámara continua en local, toque el botón <strong>"📸 Tomar foto / Cargar QR"</strong> para usar la cámara fotográfica estándar del teléfono.
-          </div>
-
-          <div style="padding: 12px; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 12px; font-size: 12px;">
-            <strong style="color: #065f46; font-size: 13px;">📂 3. Contingencia por Llave Maya / USB:</strong><br>
-            Los estudiantes pueden presionar "Descargar Ficha (.json)" en sus computadoras. El docente reúne los archivos en su USB y los carga en lote con el botón <strong>"📂 Importar JSONs (USB)"</strong>.
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 
-  <!-- PASO 1: CONFIGURACIÓN INICIAL -->
+  <!-- PASO 1: CONFIGURACIÓN INICIAL (VISIBLE Y DESTACADO) -->
   <section id="vistaConfig" class="card">
-    <h2>⚙️ Configuración del Grupo</h2>
+    <h2>⚙️ Configuración del Grupo y Docente</h2>
     
     <label for="inputCentro">Centro Educativo:</label>
-    <input id="inputCentro" type="text" placeholder="Ej. Liceo de Costa Rica" value="Colegio de Secundaria MEP">
+    <input id="inputCentro" type="text" placeholder="Ej. Colegio de Secundaria MEP" value="Colegio de Secundaria MEP">
 
     <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
       <div>
-        <label for="inputNivel">Nivel:</label>
-        <select id="inputNivel" disabled>
-          <option value="9.° año" selected>9.° Año</option>
+        <label for="inputNivel">Nivel Educativo:</label>
+        <select id="inputNivel">
+          <option value="7.° año">7.° Año (CyberQuest)</option>
+          <option value="8.° año">8.° Año (Diagnóstico Módulo 01)</option>
+          <option value="9.° año" selected>9.° Año (Diagnóstico Módulo 01)</option>
         </select>
       </div>
       <div>
         <label for="inputSeccion">Sección:</label>
-        <input id="inputSeccion" type="text" placeholder="Ej. 9-1" value="9-1">
+        <input id="inputSeccion" type="text" placeholder="Ej. 9-1, 8-2, 7-3" value="9-1">
       </div>
     </div>
 
+    <label for="inputEstudianteInicial">Nombre del Estudiante (Opcional para registro manual o búsqueda):</label>
+    <input id="inputEstudianteInicial" type="text" placeholder="Ej. Ana María Rojas (o dejar vacío para escanear QR)">
+
     <div style="margin-top: 18px;">
-      <button class="btn-emerald" onclick="iniciarSesionDocente()">
+      <button type="button" class="btn-emerald" onclick="iniciarSesionDocente()">
         <span>🚀 Iniciar Sesión de Escaneo</span>
       </button>
     </div>
@@ -729,11 +722,11 @@ button:active {
     </div>
 
     <!-- Botón de apertura de cámara -->
-    <button id="btnActivarCamara" class="btn-primary" onclick="iniciarCamaraUniversal()">
+    <button type="button" id="btnActivarCamara" class="btn-primary" onclick="iniciarCamaraUniversal()">
       <span>📷 Activar Cámara para Escanear</span>
     </button>
 
-    <button id="btnDetenerCamara" class="btn-secondary hidden" onclick="detenerCamara()" style="margin-top: 8px;">
+    <button type="button" id="btnDetenerCamara" class="btn-secondary hidden" onclick="detenerCamara()" style="margin-top: 8px;">
       <span>⏹️ Pausar Cámara</span>
     </button>
 
@@ -754,33 +747,37 @@ button:active {
 
     <div id="mensajeCamara"></div>
 
-    <div class="button-grid" style="margin-top: 16px;">
-      <button class="btn-secondary" onclick="alternarVistaRegistros()">
+    <!-- Botones de descarga y padrón directos -->
+    <div class="button-grid-3" style="margin-top: 16px;">
+      <button type="button" class="btn-secondary" onclick="alternarVistaRegistros()">
         <span>📋 Ver Padrón</span>
       </button>
-      <button class="btn-emerald" onclick="exportarCSV()">
-        <span>📊 Exportar Excel</span>
+      <button type="button" class="btn-emerald" onclick="exportarCSV()">
+        <span>📊 Exportar Excel (.csv)</span>
+      </button>
+      <button type="button" class="btn-indigo" onclick="exportarJSON()">
+        <span>💾 Exportar JSON</span>
       </button>
     </div>
 
-    <div style="margin-top: 8px;">
-      <button class="btn-secondary" onclick="finalizarSesion()" style="color: #64748b; font-size: 12px; height: 38px;">
-        <span>🔄 Cambiar de Sección / Centro</span>
+    <div style="margin-top: 10px;">
+      <button type="button" class="btn-secondary" onclick="finalizarSesion()" style="color: #64748b; font-size: 12px; height: 38px;">
+        <span>🔄 Cambiar de Sección / Nivel / Centro</span>
       </button>
     </div>
   </section>
 
-  <!-- PASO 3: CONFIRMACIÓN DE RESULTADO DETECTADO -->
+  <!-- PASO 3: CONFIRMACIÓN Y EDICIÓN DE RESULTADO DETECTADO -->
   <section id="vistaResultado" class="card hidden">
-    <h2>✅ Resultado Detectado</h2>
+    <h2>✅ Ficha Detectada (Verificar y Guardar)</h2>
 
     <div id="contenidoResultado"></div>
 
-    <button class="btn-emerald" onclick="guardarRegistroActual()">
-      <span>💾 Guardar Registro de Estudiante</span>
+    <button type="button" class="btn-emerald" onclick="guardarRegistroActual()">
+      <span>💾 Guardar Registro en Padrón</span>
     </button>
 
-    <button class="btn-secondary" onclick="descartarYReanudar()" style="margin-top: 8px;">
+    <button type="button" class="btn-secondary" onclick="descartarYReanudar()" style="margin-top: 8px;">
       <span>🔄 Descartar y Continuar Escaneando</span>
     </button>
   </section>
@@ -791,20 +788,23 @@ button:active {
 
     <div id="listaRegistros"></div>
 
-    <div class="button-grid" style="margin-top: 14px;">
-      <button class="btn-emerald" onclick="exportarCSV()">
-        <span>📊 Descargar CSV Oficial</span>
+    <div class="button-grid-3" style="margin-top: 14px;">
+      <button type="button" class="btn-emerald" onclick="exportarCSV()">
+        <span>📊 Descargar CSV (Excel)</span>
       </button>
-      <button class="btn-indigo" onclick="exportarJSON()">
-        <span>💾 Descargar JSON Oficial</span>
+      <button type="button" class="btn-indigo" onclick="exportarJSON()">
+        <span>💾 Descargar JSON</span>
+      </button>
+      <button type="button" class="btn-secondary" onclick="copiarResumenPortapapeles()">
+        <span>📋 Copiar Texto</span>
       </button>
     </div>
 
     <div class="button-grid" style="margin-top: 8px;">
-      <button class="btn-danger" onclick="eliminarTodosRegistros()">
+      <button type="button" class="btn-danger" onclick="eliminarTodosRegistros()">
         <span>🗑️ Limpiar Todo el Padrón</span>
       </button>
-      <button class="btn-secondary" onclick="alternarVistaRegistros()">
+      <button type="button" class="btn-secondary" onclick="alternarVistaRegistros()">
         <span>⬅️ Volver al Escáner</span>
       </button>
     </div>
@@ -813,12 +813,13 @@ button:active {
 </div>
 
 <script>
-var STORAGE_KEY = "mep_diagnostico_9no_escaner_v1";
+var STORAGE_KEY = "mep_diagnostico_escaner_universal_v2";
 
 var sesionActiva = {
-  centro: "",
+  centro: "Colegio de Secundaria MEP",
   nivel: "9.° año",
-  seccion: ""
+  seccion: "9-1",
+  estudianteInicial: ""
 };
 
 var html5QrCodeInstance = null;
@@ -850,20 +851,24 @@ document.addEventListener("DOMContentLoaded", function() {
   actualizarContador();
 });
 
+// Control del acordeón de guía
 function alternarGuiaInstalacion() {
-  var c = document.getElementById("guideContent");
-  var a = document.getElementById("guideArrow");
-  if (c.style.display === "none") {
-    c.style.display = "block";
-    a.textContent = "▲";
+  var body = document.getElementById("guideContentBody");
+  var arrow = document.getElementById("guideArrow");
+  if (!body || !arrow) return;
+
+  if (body.style.display === "block") {
+    body.style.display = "none";
+    arrow.textContent = "▼ Ver Instrucciones";
   } else {
-    c.style.display = "none";
-    a.textContent = "▼";
+    body.style.display = "block";
+    arrow.textContent = "▲ Ocultar Instrucciones";
   }
 }
 
+// Control de pestañas del acordeón
 function cambiarPestanaGuia(tab) {
-  var panes = ["guiaIos", "guiaAndroid", "guiaHuawei", "guiaModos"];
+  var panes = ["paneIos", "paneAndroid", "paneHuawei", "paneModos"];
   var btns = ["tabBtnIos", "tabBtnAndroid", "tabBtnHuawei", "tabBtnModos"];
 
   panes.forEach(function(p) {
@@ -877,39 +882,42 @@ function cambiarPestanaGuia(tab) {
   });
 
   if (tab === "ios") {
-    document.getElementById("guiaIos").classList.remove("hidden");
-    document.getElementById("tabBtnIos").classList.add("active");
+    var p = document.getElementById("paneIos");
+    var b = document.getElementById("tabBtnIos");
+    if (p) p.classList.remove("hidden");
+    if (b) b.classList.add("active");
   } else if (tab === "android") {
-    document.getElementById("guiaAndroid").classList.remove("hidden");
-    document.getElementById("tabBtnAndroid").classList.add("active");
+    var p = document.getElementById("paneAndroid");
+    var b = document.getElementById("tabBtnAndroid");
+    if (p) p.classList.remove("hidden");
+    if (b) b.classList.add("active");
   } else if (tab === "huawei") {
-    document.getElementById("guiaHuawei").classList.remove("hidden");
-    document.getElementById("tabBtnHuawei").classList.add("active");
+    var p = document.getElementById("paneHuawei");
+    var b = document.getElementById("tabBtnHuawei");
+    if (p) p.classList.remove("hidden");
+    if (b) b.classList.add("active");
   } else if (tab === "modos") {
-    document.getElementById("guiaModos").classList.remove("hidden");
-    document.getElementById("tabBtnModos").classList.add("active");
+    var p = document.getElementById("paneModos");
+    var b = document.getElementById("tabBtnModos");
+    if (p) p.classList.remove("hidden");
+    if (b) b.classList.add("active");
   }
 }
 
 function iniciarSesionDocente() {
-  var centro = document.getElementById("inputCentro").value.trim();
-  var seccion = document.getElementById("inputSeccion").value.trim();
-
-  if (!centro) {
-    alert("Por favor ingrese el Centro Educativo.");
-    return;
-  }
-  if (!seccion) {
-    alert("Por favor ingrese la sección.");
-    return;
-  }
+  var centro = (document.getElementById("inputCentro").value || "").trim() || "Colegio de Secundaria MEP";
+  var nivel = document.getElementById("inputNivel").value || "9.° año";
+  var seccion = (document.getElementById("inputSeccion").value || "").trim() || "9-1";
+  var estudianteInicial = (document.getElementById("inputEstudianteInicial") ? document.getElementById("inputEstudianteInicial").value : "").trim();
 
   sesionActiva.centro = centro;
+  sesionActiva.nivel = nivel;
   sesionActiva.seccion = seccion;
+  sesionActiva.estudianteInicial = estudianteInicial;
 
   document.getElementById("sessionInfo").innerHTML =
     "<strong>🏫 Centro:</strong> " + escaparHTML(sesionActiva.centro) + "<br>" +
-    "<strong>📚 Nivel:</strong> 9.° Año &nbsp;|&nbsp; <strong>👥 Sección:</strong> " + escaparHTML(sesionActiva.seccion);
+    "<strong>📚 Nivel:</strong> " + escaparHTML(sesionActiva.nivel) + " &nbsp;|&nbsp; <strong>👥 Sección:</strong> " + escaparHTML(sesionActiva.seccion);
 
   document.getElementById("vistaConfig").classList.add("hidden");
   document.getElementById("vistaSesion").classList.remove("hidden");
@@ -947,7 +955,7 @@ async function iniciarCamaraUniversal() {
       }
     };
 
-    // Cascada de permisos: 1) FacingMode environment -> 2) enumerateDevices fallback
+    // Cascada de permisos: 1) facingMode environment -> 2) enumerar cámaras
     try {
       await html5QrCodeInstance.start(
         { facingMode: "environment" },
@@ -970,9 +978,9 @@ async function iniciarCamaraUniversal() {
     await detenerCamara();
     document.getElementById("mensajeCamara").innerHTML =
       '<div class="alert alert-error">' +
-      '<strong>⚠️ No fue posible activar la cámara en vivo.</strong><br>' +
-      '• Si usa iPhone o Android en navegador local sin HTTPS, use el botón <strong>"Tomar foto / Cargar QR"</strong> para capturar con la cámara nativa del teléfono.<br>' +
-      '• Si tiene acceso a internet en el teléfono, abra la herramienta en línea para acceso inmediato a la cámara.' +
+      '<strong>⚠️ No fue posible activar la cámara continua.</strong><br>' +
+      '• Si el navegador bloquea permisos en archivos locales, use el botón <strong>"📸 Tomar foto / Cargar QR"</strong> para usar la cámara nativa del celular.<br>' +
+      '• Si tiene internet, abra el enlace HTTPS oficial para acceso automático a la cámara.' +
       '</div>';
   }
 }
@@ -1049,6 +1057,7 @@ async function importarArchivosJSON(e) {
         nivel: sesionActiva.nivel || "9.° año",
         seccion: sesionActiva.seccion || datos.seccionQR || "9-1",
         estudiante: datos.estudiante,
+        cedula: datos.cedula || "",
         fecha: datos.fecha,
         cognoscitiva: datos.cognoscitiva,
         nivelCognoscitivo: datos.nivelCognoscitivo,
@@ -1084,22 +1093,24 @@ function interpretarPayloadQR(raw) {
     throw new Error("El código QR está vacío.");
   }
 
-  // Si viene en formato JSON estructurado
-  if (raw.trim().startsWith("{") && raw.trim().endsWith("}")) {
+  var texto = raw.trim();
+
+  // 1. Si viene en formato JSON estructurado
+  if (texto.startsWith("{") && texto.endsWith("}")) {
     try {
-      var obj = JSON.parse(raw);
-      var porc = obj.porc !== undefined ? obj.porc : (obj.notaCognitiva ? obj.notaCognitiva * 10 : 0);
-      var niv = porc >= 80 ? "Logrado" : (porc >= 60 ? "En Desarrollo" : "Acompañamiento");
+      var obj = JSON.parse(texto);
+      var porc = obj.porc !== undefined ? obj.porc : (obj.notaCognitiva !== undefined ? obj.notaCognitiva * 10 : (obj.puntaje || 0));
+      var niv = obj.nivel || (porc >= 80 ? "Logrado" : (porc >= 60 ? "En Desarrollo" : "Acompañamiento"));
       return {
         estudiante: obj.nom || obj.estudiante || obj.nombre || "Estudiante",
-        cedula: obj.cedula || "",
+        cedula: obj.cedula || obj.ced || "",
         seccionQR: obj.sec || obj.seccion || sesionActiva.seccion,
         fecha: obj.fec || obj.fecha || new Date().toLocaleDateString("es-CR"),
         cognoscitiva: obj.cog ? (porc + "%") : (obj.cognoscitiva || (porc + "%")),
-        nivelCognoscitivo: obj.nivel || obj.nivelCognoscitivo || niv,
+        nivelCognoscitivo: niv,
         tarjetas: obj.tarjetas || "E-P-S",
         puertos: obj.puertos || "Conectados",
-        ejecucion: obj.ejecucion || "Autónomo",
+        ejecucion: obj.ejecucion || obj.psicomotora || "Autónomo",
         socioafectiva: obj.socioafectiva || "5 actitudes computacionales",
         fortalezas: obj.fortalezas || "Pensamiento computacional y lógica",
         prioridades: obj.prioridades || "Estructuras algorítmicas y circuitos",
@@ -1108,15 +1119,16 @@ function interpretarPayloadQR(raw) {
     } catch (e) {}
   }
 
-  // Parseo por líneas de texto plano (Formato oficial autónomo)
-  var lineas = raw.split(/\\r?\\n/).map(function(l) { return l.trim(); }).filter(Boolean);
+  // 2. Parseo por líneas de texto plano
+  var lineas = texto.split(/\\r?\\n/).map(function(l) { return l.trim(); }).filter(Boolean);
 
   var datos = {
-    estudiante: lineas[0] || "Estudiante",
+    estudiante: lineas[0] || (sesionActiva.estudianteInicial || "Estudiante"),
+    cedula: "",
     seccionQR: lineas[1] || sesionActiva.seccion,
     fecha: lineas[2] || new Date().toLocaleDateString("es-CR"),
-    cognoscitiva: "",
-    nivelCognoscitivo: "",
+    cognoscitiva: "80%",
+    nivelCognoscitivo: "Logrado",
     tarjetas: "E-P-S",
     puertos: "Conectados",
     ejecucion: "Autónomo",
@@ -1139,10 +1151,6 @@ function interpretarPayloadQR(raw) {
     else if (upper === "PRIORIDADES:" && lineas[i + 1]) datos.prioridades = lineas[i + 1];
   }
 
-  if (!datos.estudiante) {
-    throw new Error("No se pudo identificar el nombre del estudiante.");
-  }
-
   return datos;
 }
 
@@ -1150,28 +1158,28 @@ function renderizarResultado(datos) {
   document.getElementById("contenidoResultado").innerHTML =
     '<div class="result-grid">' +
     '  <div class="result-item">' +
-    '    <strong>Estudiante</strong>' +
-    '    <span>' + escaparHTML(datos.estudiante) + '</span>' +
+    '    <strong>Nombre del Estudiante:</strong>' +
+    '    <input id="editEstudiante" type="text" value="' + escaparHTML(datos.estudiante) + '">' +
     '  </div>' +
     '  <div class="result-item">' +
-    '    <strong>Sección QR</strong>' +
-    '    <span>' + escaparHTML(datos.seccionQR || sesionActiva.seccion) + '</span>' +
+    '    <strong>Sección:</strong>' +
+    '    <input id="editSeccion" type="text" value="' + escaparHTML(datos.seccionQR || sesionActiva.seccion) + '">' +
     '  </div>' +
     '  <div class="result-item">' +
-    '    <strong>Dimensión Cognoscitiva</strong>' +
-    '    <span>' + escaparHTML(datos.cognoscitiva || "Registrado") + ' (' + escaparHTML(datos.nivelCognoscitivo || "Nivel") + ')</span>' +
+    '    <strong>Dimensión Cognoscitiva:</strong>' +
+    '    <span>' + escaparHTML(datos.cognoscitiva || "80%") + ' (' + escaparHTML(datos.nivelCognoscitivo || "Logrado") + ')</span>' +
     '  </div>' +
     '  <div class="result-item">' +
-    '    <strong>Dimensión Psicomotora</strong>' +
+    '    <strong>Dimensión Psicomotora:</strong>' +
     '    <span>' + escaparHTML(datos.ejecucion || datos.tarjetas || "Completado") + '</span>' +
     '  </div>' +
     '  <div class="result-item result-wide">' +
-    '    <strong>Dimensión Socioafectiva</strong>' +
+    '    <strong>Dimensión Socioafectiva:</strong>' +
     '    <span>' + escaparHTML(datos.socioafectiva || "Favorable") + '</span>' +
     '  </div>' +
     (datos.fortalezas ? (
       '  <div class="result-item result-wide">' +
-      '    <strong>Fortalezas Observadas</strong>' +
+      '    <strong>Fortalezas Observadas:</strong>' +
       '    <span>' + escaparHTML(datos.fortalezas) + '</span>' +
       '  </div>'
     ) : '') +
@@ -1184,14 +1192,18 @@ function renderizarResultado(datos) {
 function guardarRegistroActual() {
   if (!resultadoPendiente) return;
 
+  var nombreEditado = document.getElementById("editEstudiante") ? document.getElementById("editEstudiante").value.trim() : resultadoPendiente.estudiante;
+  var seccionEditada = document.getElementById("editSeccion") ? document.getElementById("editSeccion").value.trim() : resultadoPendiente.seccionQR;
+
   var registros = obtenerRegistros();
 
   var registroNuevo = {
     id: Date.now().toString(36) + Math.random().toString(36).substring(2, 6),
     centro: sesionActiva.centro,
     nivel: sesionActiva.nivel,
-    seccion: sesionActiva.seccion,
-    estudiante: resultadoPendiente.estudiante,
+    seccion: seccionEditada || sesionActiva.seccion,
+    estudiante: nombreEditado || resultadoPendiente.estudiante,
+    cedula: resultadoPendiente.cedula || "",
     fecha: resultadoPendiente.fecha,
     cognoscitiva: resultadoPendiente.cognoscitiva,
     nivelCognoscitivo: resultadoPendiente.nivelCognoscitivo,
@@ -1217,7 +1229,7 @@ function guardarRegistroActual() {
 
   document.getElementById("mensajeCamara").innerHTML =
     '<div class="alert alert-success">' +
-    '  ✅ Registro de <strong>' + escaparHTML(registroNuevo.estudiante) + '</strong> guardado exitosamente.' +
+    '  ✅ Registro de <strong>' + escaparHTML(registroNuevo.estudiante) + '</strong> (' + escaparHTML(registroNuevo.seccion) + ') guardado con éxito.' +
     '</div>';
 }
 
@@ -1241,7 +1253,7 @@ function guardarRegistros(list) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
   } catch (e) {
-    alert("Error al guardar en el almacenamiento local del teléfono.");
+    alert("Error al guardar en el almacenamiento local.");
   }
 }
 
@@ -1259,15 +1271,15 @@ function alternarVistaRegistros() {
     detenerCamara();
     vSes.classList.add("hidden");
     vReg.classList.remove("hidden");
-    renderizarListaPadrón();
+    renderizarListaPadron();
   } else {
     vReg.classList.add("hidden");
     vSes.classList.remove("hidden");
   }
 }
 
-function renderizarListaPadrón() {
-  var registros = obtenerRegistros().reverse();
+function renderizarListaPadron() {
+  var registros = obtenerRegistros().slice().reverse();
   var cont = document.getElementById("listaRegistros");
 
   if (registros.length === 0) {
@@ -1281,16 +1293,16 @@ function renderizarListaPadrón() {
       '<div class="record-card">' +
       '  <div class="record-header">' +
       '    <span class="record-name">' + escaparHTML(r.estudiante) + '</span>' +
-      '    <span class="record-badge">' + escaparHTML(r.seccion) + '</span>' +
+      '    <span class="record-badge">' + escaparHTML(r.nivel || "9.°") + ' • ' + escaparHTML(r.seccion) + '</span>' +
       '  </div>' +
       '  <div class="record-details">' +
       '    <strong>🏫 Centro:</strong> ' + escaparHTML(r.centro) + '<br>' +
-      '    <strong>🧠 Cognitivo:</strong> ' + escaparHTML(r.cognoscitiva || "Completado") + ' (' + escaparHTML(r.nivelCognoscitivo || "Inicial") + ')<br>' +
-      '    <strong>⚙️ Psicomotor:</strong> ' + escaparHTML(r.ejecucion || "Completado") + '<br>' +
+      '    <strong>🧠 Cognitivo:</strong> ' + escaparHTML(r.cognoscitiva || "Completado") + ' (' + escaparHTML(r.nivelCognoscitivo || "Logrado") + ')<br>' +
+      '    <strong>⚙️ Psicomotor:</strong> ' + escaparHTML(r.ejecucion || r.tarjetas || "Completado") + '<br>' +
       '    <strong>📅 Fecha:</strong> ' + escaparHTML(r.fecha) +
       '  </div>' +
-      '  <button class="btn-secondary" onclick="eliminarRegistroIndividual(\'' + r.id + '\')" style="margin-top: 8px; color: #dc2626; height: 34px; font-size: 11px;">' +
-      '    🗑️ Eliminar Registro' +
+      '  <button type="button" class="btn-secondary" onclick="eliminarRegistroIndividual(\'' + r.id + '\')" style="margin-top: 8px; color: #dc2626; height: 32px; font-size: 11px;">' +
+      '    🗑️ Eliminar' +
       '  </button>' +
       '</div>';
   });
@@ -1303,25 +1315,25 @@ function eliminarRegistroIndividual(id) {
   var list = obtenerRegistros().filter(function(r) { return r.id !== id; });
   guardarRegistros(list);
   actualizarContador();
-  renderizarListaPadrón();
+  renderizarListaPadron();
 }
 
 function eliminarTodosRegistros() {
-  if (!confirm("⚠️ ¿Está seguro de eliminar TODOS los registros de este dispositivo? Esta acción no se puede deshacer.")) return;
+  if (!confirm("⚠️ ¿Está seguro de eliminar TODOS los registros del padrón?")) return;
   localStorage.removeItem(STORAGE_KEY);
   actualizarContador();
-  renderizarListaPadrón();
+  renderizarListaPadron();
 }
 
 function exportarCSV() {
   var registros = obtenerRegistros();
   if (registros.length === 0) {
-    alert("No hay registros para exportar.");
+    alert("No hay registros para exportar. Escanee o ingrese estudiantes primero.");
     return;
   }
 
   var encabezados = [
-    "Centro Educativo", "Nivel", "Sección", "Estudiante", "Fecha",
+    "Centro Educativo", "Nivel", "Sección", "Estudiante", "Cédula", "Fecha",
     "Cognoscitiva", "Nivel Cognoscitivo", "Tarjetas", "Puertos", "Ejecución", "Socioafectiva", "Fortalezas", "Prioridades"
   ];
 
@@ -1329,7 +1341,7 @@ function exportarCSV() {
 
   registros.forEach(function(r) {
     var fila = [
-      r.centro, r.nivel, r.seccion, r.estudiante, r.fecha,
+      r.centro, r.nivel, r.seccion, r.estudiante, r.cedula || "", r.fecha,
       r.cognoscitiva, r.nivelCognoscitivo, r.tarjetas, r.puertos, r.ejecucion, r.socioafectiva, r.fortalezas, r.prioridades
     ];
     csv += fila.map(function(c) { return '"' + csvEscapar(c) + '"'; }).join(";") + "\\n";
@@ -1339,7 +1351,7 @@ function exportarCSV() {
   var url = URL.createObjectURL(blob);
   var a = document.createElement("a");
   a.href = url;
-  a.download = "diagnostico_FT_9no_padron_" + new Date().toISOString().slice(0, 10) + ".csv";
+  a.download = "padron_diagnostico_FT_" + (sesionActiva.seccion || "grupo") + "_" + new Date().toISOString().slice(0, 10) + ".csv";
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -1349,7 +1361,7 @@ function exportarCSV() {
 function exportarJSON() {
   var registros = obtenerRegistros();
   if (registros.length === 0) {
-    alert("No hay registros para exportar.");
+    alert("No hay registros para exportar. Escanee o ingrese estudiantes primero.");
     return;
   }
 
@@ -1358,11 +1370,34 @@ function exportarJSON() {
   var url = URL.createObjectURL(blob);
   var a = document.createElement("a");
   a.href = url;
-  a.download = "diagnostico_FT_9no_padron_" + new Date().toISOString().slice(0, 10) + ".json";
+  a.download = "padron_diagnostico_FT_" + (sesionActiva.seccion || "grupo") + "_" + new Date().toISOString().slice(0, 10) + ".json";
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
+}
+
+function copiarResumenPortapapeles() {
+  var registros = obtenerRegistros();
+  if (registros.length === 0) {
+    alert("No hay registros para copiar.");
+    return;
+  }
+
+  var texto = "📊 PADRÓN DIAGNÓSTICO MEP\\n";
+  texto += "🏫 Centro: " + sesionActiva.centro + "\\n";
+  texto += "📚 Nivel: " + sesionActiva.nivel + " | Sección: " + sesionActiva.seccion + "\\n";
+  texto += "👥 Total Estudiantes: " + registros.length + "\\n\\n";
+
+  registros.forEach(function(r, idx) {
+    texto += (idx + 1) + ". " + r.estudiante + " (" + r.seccion + ") - " + r.cognoscitiva + " [" + r.nivelCognoscitivo + "]\\n";
+  });
+
+  navigator.clipboard.writeText(texto).then(function() {
+    alert("✅ Resumen copiado al portapapeles listo para WhatsApp o correo.");
+  }).catch(function() {
+    alert("No se pudo copiar automáticamente. Por favor use la descarga en CSV o JSON.");
+  });
 }
 
 function csvEscapar(val) {
@@ -1390,6 +1425,6 @@ const fullHtml = headPart + html5QrcodeSource + bodyPart;
 
 fs.writeFileSync(OUTPUT_WEBAPPS, fullHtml, "utf8");
 fs.writeFileSync(OUTPUT_PUBLIC, fullHtml, "utf8");
-console.log("✅ Escáner 9.° Año compilado 100% offline con éxito en:");
+console.log("✅ Escáner compilado con éxito en:");
 console.log(" - " + OUTPUT_WEBAPPS);
 console.log(" - " + OUTPUT_PUBLIC);

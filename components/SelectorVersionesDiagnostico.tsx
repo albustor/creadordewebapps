@@ -282,27 +282,26 @@ export default function SelectorVersionesDiagnostico({
           </div>
         </div>
 
-        {/* TARJETA 3: ESCÁNER DE DATOS LOCALES 9.° AÑO (CELULARES) */}
-        {nivel === "9°" && (
-          <div className="bg-white border-2 border-purple-200/90 rounded-3xl p-6 text-slate-900 shadow-softPastel flex flex-col justify-between hover:border-purple-400 transition-all md:col-span-2">
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="px-3 py-1 rounded-full bg-purple-50 text-purple-900 border border-purple-200 text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-purple-600 animate-pulse" />
-                  <span>Escáner Celular / Tablet</span>
-                </span>
-                <span className="text-xs font-bold text-purple-700">Android • iPhone • Huawei</span>
-              </div>
-
-              <div>
-                <h3 className="text-base font-black text-slate-900 tracking-tight">
-                  📱 ESCÁNER DE DATOS LOCALES 9.° AÑO
-                </h3>
-                <p className="text-xs text-slate-600 mt-1 leading-relaxed font-medium">
-                  App docente para teléfono móvil que captura los códigos QR generados en las computadoras sin conexión a internet. Úsalo directamente en línea (HTTPS con cámara nativa) o instálalo como Web App en la pantalla de inicio de tu iPhone / Android.
-                </p>
-              </div>
+        {/* TARJETA 3: ESCÁNER DE DATOS LOCALES (CELULARES) */}
+        <div className="bg-white border-2 border-purple-200/90 rounded-3xl p-6 text-slate-900 shadow-softPastel flex flex-col justify-between hover:border-purple-400 transition-all md:col-span-2">
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="px-3 py-1 rounded-full bg-purple-50 text-purple-900 border border-purple-200 text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-purple-600 animate-pulse" />
+                <span>Escáner Celular / Tablet</span>
+              </span>
+              <span className="text-xs font-bold text-purple-700">7.°, 8.° y 9.° Año • iOS / Android</span>
             </div>
+
+            <div>
+              <h3 className="text-base font-black text-slate-900 tracking-tight">
+                📱 ESCÁNER DE DATOS LOCALES ({nivel} AÑO Y SECUNDARIA)
+              </h3>
+              <p className="text-xs text-slate-600 mt-1 leading-relaxed font-medium">
+                App docente para teléfono móvil que captura los códigos QR generados en las computadoras sin conexión a internet. Úsalo directamente en línea (HTTPS con cámara nativa) o instálalo como Web App en la pantalla de inicio de tu iPhone / Android. Permite exportar a Excel (.csv) y JSON.
+              </p>
+            </div>
+          </div>
 
             <div className="pt-4 grid grid-cols-1 sm:grid-cols-3 gap-2">
               <a
@@ -333,7 +332,6 @@ export default function SelectorVersionesDiagnostico({
               </button>
             </div>
           </div>
-        )}
 
       </div>
 
