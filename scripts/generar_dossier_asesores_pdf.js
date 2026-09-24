@@ -4,7 +4,7 @@ const { jsPDF } = require('jspdf');
 const autoTableMod = require('jspdf-autotable');
 const autoTable = autoTableMod.default || autoTableMod;
 
-function generarDossierPDF() {
+function generarDocumentoAsesoresPDF() {
   const doc = new jsPDF({
     orientation: 'portrait',
     unit: 'mm',
@@ -16,38 +16,41 @@ function generarDossierPDF() {
   const margin = 14;
   const contentWidth = pageWidth - margin * 2;
 
-  // Paleta de Colores Oficial MEP & Ecosistema Tecnológico
+  // Paleta de colores oficial MEP & Ecosistema Tecnológico
   const COLOR_PRIMARY = [0, 51, 102];      // Azul Institucional MEP #003366
+  const COLOR_HEADER = [15, 23, 42];       // Slate 900 #0f172a
   const COLOR_SECONDARY = [2, 132, 199];   // Sky / Cyan #0284c7
-  const COLOR_ACCENT = [16, 185, 129];     // Emerald #10b981
-  const COLOR_DARK = [15, 23, 42];         // Slate 900 #0f172a
-  const COLOR_MUTED = [100, 116, 139];     // Slate 500 #64748b
-  const COLOR_LIGHT_BG = [248, 250, 252];  // Slate 50 #f8fafc
-  const COLOR_BORDER = [226, 232, 240];    // Slate 200 #e2e8f0
+  const COLOR_EMERALD = [4, 120, 87];      // Emerald 700 #047857
+  const COLOR_PURPLE = [126, 34, 206];     // Purple 700 #7e22ce
+  const COLOR_AMBER = [180, 83, 9];        // Amber 700 #b45309
+  const COLOR_DARK = [15, 23, 42];         // Slate 900 (Texto principal)
+  const COLOR_MUTED = [71, 85, 105];       // Slate 600 (Texto secundario)
+  const COLOR_LIGHT_BG = [248, 250, 252];  // Slate 50 (Fondo tarjetas claras)
+  const COLOR_BORDER = [203, 213, 225];    // Slate 300 (Bordes definidos)
 
   function drawHeaderFooter(pageNum, totalPages, titleSection) {
-    // Top Bar
+    // Barra superior
     doc.setFillColor(...COLOR_PRIMARY);
-    doc.rect(0, 0, pageWidth, 6, 'F');
+    doc.rect(0, 0, pageWidth, 5, 'F');
     doc.setFillColor(...COLOR_SECONDARY);
-    doc.rect(0, 6, pageWidth, 1.5, 'F');
+    doc.rect(0, 5, pageWidth, 1.5, 'F');
 
-    // Header Text
+    // Texto de cabecera
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(7.5);
     doc.setTextColor(...COLOR_PRIMARY);
-    doc.text("MINISTERIO DE EDUCACIÓN PÚBLICA DE COSTA RICA • DRTE • PNFT 2027", margin, 12);
+    doc.text("MINISTERIO DE EDUCACIÓN PÚBLICA DE COSTA RICA • DRTE • PNFT 2027", margin, 11.5);
     
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7);
     doc.setTextColor(...COLOR_MUTED);
-    doc.text(titleSection || "Dossier Técnico y Curricular • Evaluación Diagnóstica Integrada", pageWidth - margin, 12, { align: 'right' });
+    doc.text(titleSection || "Documento técnico oficial • Evaluación diagnóstica integrada", pageWidth - margin, 11.5, { align: 'right' });
 
     doc.setDrawColor(...COLOR_BORDER);
     doc.setLineWidth(0.3);
-    doc.line(margin, 14, pageWidth - margin, 14);
+    doc.line(margin, 13.5, pageWidth - margin, 13.5);
 
-    // Footer Bar
+    // Barra inferior
     doc.setDrawColor(...COLOR_BORDER);
     doc.setLineWidth(0.3);
     doc.line(margin, pageHeight - 12, pageWidth - margin, pageHeight - 12);
@@ -55,7 +58,7 @@ function generarDossierPDF() {
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7);
     doc.setTextColor(...COLOR_MUTED);
-    doc.text("Ecosistema de WebApps Autónomas con Telemetría en Tiempo Real y Rúbricas Oficiales MEP", margin, pageHeight - 8);
+    doc.text("Ecosistema de WebApps autónomas con telemetría en tiempo real y rúbricas oficiales del MEP", margin, pageHeight - 8);
     doc.text(`Página ${pageNum} de ${totalPages}`, pageWidth - margin, pageHeight - 8, { align: 'right' });
   }
 
@@ -63,245 +66,245 @@ function generarDossierPDF() {
   // PÁGINA 1: PORTADA EJECUTIVA E INSTITUCIONAL
   // =========================================================================
   
-  // Background Header Wave / Block
-  doc.setFillColor(...COLOR_PRIMARY);
+  // Banner de portada
+  doc.setFillColor(...COLOR_HEADER);
   doc.rect(0, 0, pageWidth, 58, 'F');
   doc.setFillColor(...COLOR_SECONDARY);
   doc.rect(0, 58, pageWidth, 3, 'F');
 
-  // Badge Superior
-  doc.setFillColor(255, 255, 255, 0.15);
-  doc.roundedRect(margin, 10, 100, 7, 2, 2, 'F');
+  // Distintivo superior
+  doc.setFillColor(2, 132, 199);
+  doc.roundedRect(margin, 10, 120, 6.5, 1.5, 1.5, 'F');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8);
+  doc.setFontSize(7.5);
   doc.setTextColor(255, 255, 255);
-  doc.text("DOCUMENTO TÉCNICO Y PEDAGÓGICO OFICIAL", margin + 4, 15);
+  doc.text("DOCUMENTO TÉCNICO Y PEDAGÓGICO OFICIAL", margin + 4, 14.5);
 
-  // Título Principal Portada
+  // Título principal en formato gramatical hispanoamericano
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(18);
+  doc.setFontSize(16);
   doc.setTextColor(255, 255, 255);
-  doc.text("ECOSISTEMA DE EVALUACIÓN DIAGNÓSTICA", margin, 27);
-  doc.setFontSize(15);
-  doc.setTextColor(186, 230, 253); // Light Cyan
-  doc.text("INTEGRADA Y FORMATIVA (7.°, 8.° Y 9.° AÑO)", margin, 35);
+  doc.text("Ecosistema de evaluación diagnóstica", margin, 26);
+  doc.setFontSize(13);
+  doc.setTextColor(186, 230, 253); // Sky claro
+  doc.text("Integrada y formativa (7.°, 8.° y 9.° año)", margin, 34);
 
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(9);
+  doc.setFontSize(8);
   doc.setTextColor(241, 245, 249);
-  doc.text("Programa Nacional de Formación Tecnológica (PNFT) • Guía Curricular Oficial MEP 2027", margin, 43);
-  doc.text("Simuladores 2D Interactivos • Matriz Tripartita de Saberes • Telemetría Centralizada e IA", margin, 49);
+  doc.text("Programa Nacional de Formación Tecnológica (PNFT) • Guía curricular oficial MEP 2027.", margin, 42);
+  doc.text("Simuladores 2D interactivos • Matriz tripartita de saberes • Telemetría centralizada e IA.", margin, 48);
 
   // Tarjeta de Metadatos Ejecutivos
-  let yPos = 68;
+  let yPos = 67;
   doc.setFillColor(...COLOR_LIGHT_BG);
   doc.setDrawColor(...COLOR_BORDER);
-  doc.roundedRect(margin, yPos, contentWidth, 34, 3, 3, 'FD');
+  doc.roundedRect(margin, yPos, contentWidth, 34, 2.5, 2.5, 'FD');
 
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(9);
+  doc.setFontSize(8.5);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("METADATOS DEL ECOSISTEMA TECNOLÓGICO", margin + 6, yPos + 7);
+  doc.text("Metadatos del ecosistema tecnológico", margin + 6, yPos + 6);
 
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8);
+  doc.setFontSize(7.5);
   doc.setTextColor(...COLOR_DARK);
-  doc.text("• Autoría y Desarrollo: Asesoría Nacional de Formación Tecnológica MEP & Ecosistema Curiol", margin + 6, yPos + 13);
-  doc.text("• Nivel y Cobertura: Educación Secundaria (Tercer Ciclo: 7.°, 8.° y 9.° Año de la Educación General Básica)", margin + 6, yPos + 18);
-  doc.text("• Enfoque de Evaluación: 100% Cualitativo, Formativo, Diagnóstico e Inclusivo (Sin calificación sumativa)", margin + 6, yPos + 23);
-  doc.text("• Despliegue en Producción: https://diagnosticosecundaria.vercel.app/diagnostico", margin + 6, yPos + 28);
+  doc.text("• Autoría y desarrollo: Asesoría Nacional de Formación Tecnológica MEP & Ecosistema Curiol.", margin + 6, yPos + 12);
+  doc.text("• Nivel y cobertura: Educación secundaria (Tercer Ciclo: 7.°, 8.° y 9.° año de la Educación General Básica).", margin + 6, yPos + 17);
+  doc.text("• Enfoque de evaluación: Formativo, diagnóstico, cualitativo e inclusivo (sin nota sumativa punitiva).", margin + 6, yPos + 22);
+  doc.text("• Despliegue en producción: https://diagnosticosecundaria.vercel.app/diagnostico", margin + 6, yPos + 27);
 
-  // Sección: 3 Pilares del Ecosistema
-  yPos = 108;
+  // 1. Pilares Estructurales
+  yPos = 106;
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(11);
+  doc.setFontSize(10.5);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("1. PILARES ESTRUCTURALES DEL DESARROLLO", margin, yPos);
+  doc.text("1. Pilares estructurales del desarrollo", margin, yPos);
 
   const colW = (contentWidth - 8) / 3;
   
   // Pilar 1: Estudiante
   doc.setFillColor(240, 249, 255);
   doc.setDrawColor(186, 230, 253);
-  doc.roundedRect(margin, yPos + 4, colW, 44, 2, 2, 'FD');
+  doc.roundedRect(margin, yPos + 4, colW, 46, 2, 2, 'FD');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(9);
+  doc.setFontSize(8);
   doc.setTextColor(3, 105, 161);
-  doc.text("📱 WebApp Estudiante", margin + 4, yPos + 11);
+  doc.text("1. WebApp estudiante", margin + 4, yPos + 11);
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(7.5);
+  doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
-  doc.text("• 10 Ítems Conceptuales interactivos.", margin + 4, yPos + 17);
+  doc.text("• 10 reactivos conceptuales interactivos.", margin + 4, yPos + 17);
   doc.text("• Simulador 2D de hardware y circuitos.", margin + 4, yPos + 22);
   doc.text("• Reto de diagnóstico de fallas físicas.", margin + 4, yPos + 27);
   doc.text("• Reflexión metacognitiva final.", margin + 4, yPos + 32);
   doc.text("• Comprobante digital con token seguro.", margin + 4, yPos + 37);
-  doc.text("• Modo Online y Modo Local Autónomo.", margin + 4, yPos + 42);
+  doc.text("• Modo en línea y modo local autónomo.", margin + 4, yPos + 42);
 
   // Pilar 2: Docente Evaluador
   doc.setFillColor(236, 253, 245);
   doc.setDrawColor(167, 243, 208);
-  doc.roundedRect(margin + colW + 4, yPos + 4, colW, 44, 2, 2, 'FD');
+  doc.roundedRect(margin + colW + 4, yPos + 4, colW, 46, 2, 2, 'FD');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(9);
-  doc.setTextColor(21, 128, 61);
-  doc.text("📋 Evaluador Docente", margin + colW + 8, yPos + 11);
+  doc.setFontSize(8);
+  doc.setTextColor(...COLOR_EMERALD);
+  doc.text("2. Evaluador docente", margin + colW + 8, yPos + 11);
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(7.5);
+  doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
   doc.text("• Matriz de observación en vivo tipo Excel.", margin + colW + 8, yPos + 17);
   doc.text("• Gestión de secciones (ej. 9-1 a 9-20).", margin + colW + 8, yPos + 22);
   doc.text("• Rúbrica de 3 áreas (A/B/C y L/ED/RA).", margin + colW + 8, yPos + 27);
-  doc.text("• Sistematización Oficial (Pág. 15).", margin + colW + 8, yPos + 32);
-  doc.text("• Exportación CSV / Excel oficial.", margin + colW + 8, yPos + 37);
+  doc.text("• Sistematización oficial conforme al MEP.", margin + colW + 8, yPos + 32);
+  doc.text("• Exportación CSV y Excel oficial.", margin + colW + 8, yPos + 37);
   doc.text("• Generación de actas para planeamiento.", margin + colW + 8, yPos + 42);
 
   // Pilar 3: Telemetría e IA
   doc.setFillColor(250, 245, 255);
   doc.setDrawColor(233, 213, 255);
-  doc.roundedRect(margin + (colW + 4) * 2, yPos + 4, colW, 44, 2, 2, 'FD');
+  doc.roundedRect(margin + (colW + 4) * 2, yPos + 4, colW, 46, 2, 2, 'FD');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(9);
-  doc.setTextColor(126, 34, 206);
-  doc.text("🧠 Telemetría e IA", margin + (colW + 4) * 2 + 4, yPos + 11);
+  doc.setFontSize(8);
+  doc.setTextColor(...COLOR_PURPLE);
+  doc.text("3. Telemetría e IA", margin + (colW + 4) * 2 + 4, yPos + 11);
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(7.5);
+  doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
   doc.text("• Sincronización en tiempo real (0 ms).", margin + (colW + 4) * 2 + 4, yPos + 17);
   doc.text("• Telemetría protegida antifraude.", margin + (colW + 4) * 2 + 4, yPos + 22);
-  doc.text("• Motor de IA Multi-Proveedor en cascada.", margin + (colW + 4) * 2 + 4, yPos + 27);
+  doc.text("• Motor de IA multi-proveedor en cascada.", margin + (colW + 4) * 2 + 4, yPos + 27);
   doc.text("• Análisis 360° formativo de sección.", margin + (colW + 4) * 2 + 4, yPos + 32);
   doc.text("• Sugerencias de mediación inmediata.", margin + (colW + 4) * 2 + 4, yPos + 37);
-  doc.text("• Dashboard administrativo integrado.", margin + (colW + 4) * 2 + 4, yPos + 42);
+  doc.text("• Panel administrativo centralizado.", margin + (colW + 4) * 2 + 4, yPos + 42);
 
-  // Sección: Resumen de Niveles y Módulos
+  // 2. Matriz General de Niveles
   yPos = 162;
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(11);
+  doc.setFontSize(10);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("2. MATRIZ GENERAL DE NIVELES EDUCATIVOS INTEGRADOS", margin, yPos);
+  doc.text("2. Matriz general de niveles educativos integrados", margin, yPos);
 
   autoTable(doc, {
-    startY: yPos + 4,
+    startY: yPos + 3,
     margin: { left: margin, right: margin },
     theme: 'grid',
     headStyles: {
       fillColor: COLOR_PRIMARY,
       textColor: [255, 255, 255],
-      fontSize: 8,
+      fontSize: 7.5,
       fontStyle: 'bold',
       halign: 'center'
     },
     bodyStyles: {
-      fontSize: 7.5,
+      fontSize: 7,
       textColor: COLOR_DARK,
-      cellPadding: 2.5
+      cellPadding: 2.2
     },
     columnStyles: {
       0: { cellWidth: 18, fontStyle: 'bold', halign: 'center' },
       1: { cellWidth: 38, fontStyle: 'bold' },
       2: { cellWidth: 54 },
-      3: { cellWidth: 38 },
+      3: { cellWidth: 40 },
       4: { cellWidth: 32, halign: 'center' }
     },
-    head: [['Nivel', 'Nombre de la Misión', 'Saberes y Retos Principales', 'Simulador Integrado', 'Estado Plataforma']],
+    head: [['Nivel', 'Nombre de la misión', 'Saberes y retos principales', 'Simulador integrado', 'Estado en plataforma']],
     body: [
-      ['7.° Año', 'CyberQuest 7° (Misión Tecnológica)', 'Módulo Psicomotor (Lateralidad, Ritmo, Trazo), HW vs SW, Archivos y Bloques de Código.', 'Rejilla Espacial + Semáforo Ritmo + Scratch 2D', 'Integrado (Versión 4.0)'],
-      ['8.° Año', 'Robótica & Automatización 8°', 'Sistemas de Control, Sensores Avanzados, Estructuras de Flujo y Procesamiento de Datos.', 'Simulador de Control y Lógica Modular', 'Estructurado para Módulo 1'],
-      ['9.° Año', 'Aula Inteligente (Domótica)', 'Microcontroladores 328P, Iluminación LDR + LED, Climatización NTC + Fan DC, Depuración A3➔D9.', 'Circuito Electrónico 2D con Falla Inyectada', 'Completado y Desplegado']
+      ['7.° año', 'CyberQuest 7° (Misión Tecnológica)', 'Módulo psicomotor (lateralidad, ritmo, trazo), HW/SW, archivos y lógica lineal.', 'Rejilla espacial + Semáforo + Canvas 2D', 'Integrado (Versión 4.0)'],
+      ['8.° año', 'Robótica y algoritmos 8°', 'Sistemas de control, sensores, estructuras de flujo condicional y bucles.', 'Simulador de control y lógica modular', 'Completado y validado'],
+      ['9.° año', 'Aula Inteligente (Domótica)', 'Microcontrolador 328P, sensores LDR, actuador LED, depuración de pines.', 'Circuito electrónico 2D en protoboard', 'Completado y desplegado']
     ]
   });
 
-  drawHeaderFooter(1, 6, "Resumen Ejecutivo y Visión General");
+  drawHeaderFooter(1, 6, "Resumen ejecutivo y visión general");
 
   // =========================================================================
   // PÁGINA 2: FUNDAMENTACIÓN CURRICULAR Y ENFOQUE TRIPARTITO (MEP 2027)
   // =========================================================================
   doc.addPage();
   
-  yPos = 20;
+  yPos = 19;
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(12);
+  doc.setFontSize(11);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("3. ALINEACIÓN CURRICULAR Y MODELO FORMATIVO TRIPARTITO", margin, yPos);
+  doc.text("3. Alineación curricular y modelo formativo tripartito", margin, yPos);
 
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8.5);
+  doc.setFontSize(8);
   doc.setTextColor(...COLOR_DARK);
   doc.text(
-    "El ecosistema diagnostica el aprendizaje de manera integral, respetando la estructura curricular oficial del PNFT MEP 2027 (Páginas 48 a 55). No se limita a pruebas de selección única, sino que evalúa tres dimensiones complementarias:",
-    margin, yPos + 6, { maxWidth: contentWidth }
+    "El ecosistema diagnostica el aprendizaje de manera integral, respetando la estructura curricular oficial del PNFT MEP 2027. Evalúa tres dimensiones formativas complementarias:",
+    margin, yPos + 5, { maxWidth: contentWidth }
   );
 
-  yPos = 38;
+  yPos = 31;
 
   // Dimensión 1: Cognitiva
   doc.setFillColor(240, 249, 255);
   doc.setDrawColor(186, 230, 253);
   doc.roundedRect(margin, yPos, contentWidth, 38, 2, 2, 'FD');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(9.5);
+  doc.setFontSize(8.5);
   doc.setTextColor(3, 105, 161);
-  doc.text("🧠 ÁREA 1: SABERES CONCEPTUALES (ÁREA COGNITIVA)", margin + 4, yPos + 6);
+  doc.text("Área 1: Saberes conceptuales (Área cognitiva)", margin + 4, yPos + 6);
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8);
+  doc.setFontSize(7.5);
   doc.setTextColor(...COLOR_DARK);
   doc.text("• Definición: Conocimientos declarativos sobre sistemas computacionales, algoritmos, circuitos y ciencia de datos.", margin + 4, yPos + 12);
-  doc.text("• Instrumento: 10 Reactivos Teóricos Situacionales y contextualizados en la WebApp.", margin + 4, yPos + 17);
-  doc.text("• Escala Oficial MEP:", margin + 4, yPos + 22);
+  doc.text("• Instrumento: 10 Reactivos teóricos situacionales y contextualizados en la WebApp.", margin + 4, yPos + 17);
+  doc.text("• Escala oficial del MEP:", margin + 4, yPos + 22);
   doc.setFont('helvetica', 'bold');
-  doc.text("   🟢 Logrado (L): Demuestra dominio conceptual consolidado (≥80% de acierto).", margin + 4, yPos + 27);
-  doc.text("   🟡 En Desarrollo (ED): Comprensión intermedia en proceso de consolidación (60% - 79%).", margin + 4, yPos + 31);
-  doc.text("   🔴 Requiere Acompañamiento (RA): Nivel inicial, demanda mediación pedagógica puntual (≤59%).", margin + 4, yPos + 35);
+  doc.text("   [L] Logrado: Demuestra dominio conceptual consolidado (>= 80% de acierto).", margin + 4, yPos + 27);
+  doc.text("   [ED] En desarrollo: Comprensión intermedia en proceso de consolidación (60% - 79%).", margin + 4, yPos + 31);
+  doc.text("   [RA] Requiere acompañamiento: Nivel inicial, demanda mediación pedagógica puntual (<= 59%).", margin + 4, yPos + 35);
 
-  yPos = 80;
+  yPos = 72;
 
   // Dimensión 2: Psicomotora / Procedimental
   doc.setFillColor(236, 253, 245);
   doc.setDrawColor(167, 243, 208);
   doc.roundedRect(margin, yPos, contentWidth, 42, 2, 2, 'FD');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(9.5);
-  doc.setTextColor(21, 128, 61);
-  doc.text("🖐️ ÁREA 2: SABERES PROCEDIMENTALES (PRÁCTICAS DEL PENSADOR COMPUTACIONAL)", margin + 4, yPos + 6);
+  doc.setFontSize(8.5);
+  doc.setTextColor(...COLOR_EMERALD);
+  doc.text("Área 2: Saberes procedimentales (Prácticas del pensador computacional)", margin + 4, yPos + 6);
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8);
+  doc.setFontSize(7.5);
   doc.setTextColor(...COLOR_DARK);
   doc.text("• Definición: Habilidades motrices y procedimentales aplicadas directamente en el simulador interactivo.", margin + 4, yPos + 12);
-  doc.text("• Prácticas Evaluadas: Modulariza, Reconoce Patrones, Formula Algoritmos, Programa, Depura y Transfiere.", margin + 4, yPos + 17);
-  doc.text("• Escala Formativa de Observación:", margin + 4, yPos + 22);
+  doc.text("• Prácticas evaluadas: Modulariza, reconoce patrones, formula algoritmos, programa, depura y transfiere.", margin + 4, yPos + 17);
+  doc.text("• Escala formativa de observación:", margin + 4, yPos + 22);
   doc.setFont('helvetica', 'bold');
-  doc.text("   🟢 Nivel A (Alto / Autónomo / Consistente): Ejecuta el conexionado y la depuración sin apoyo.", margin + 4, yPos + 27);
-  doc.text("   🟡 Nivel B (Medio / Con Apoyo Ocasional): Requiere pistas o recordatorios puntuales del docente.", margin + 4, yPos + 32);
-  doc.text("   🔴 Nivel C (Inicial / Acompañamiento): Demanda modelado paso a paso para resolver la conexión.", margin + 4, yPos + 37);
+  doc.text("   [A] Nivel A (Autónomo / Consistente): Ejecuta el conexionado y la depuración sin apoyo.", margin + 4, yPos + 27);
+  doc.text("   [B] Nivel B (Con apoyo ocasional): Requiere pistas o recordatorios puntuales del docente.", margin + 4, yPos + 32);
+  doc.text("   [C] Nivel C (Inicial / Acompañamiento): Demanda modelado paso a paso para resolver la conexión.", margin + 4, yPos + 37);
 
-  yPos = 126;
+  yPos = 117;
 
   // Dimensión 3: Socioafectiva / Actitudinal
   doc.setFillColor(254, 243, 199);
   doc.setDrawColor(253, 230, 138);
   doc.roundedRect(margin, yPos, contentWidth, 42, 2, 2, 'FD');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(9.5);
-  doc.setTextColor(180, 83, 9);
-  doc.text("❤️ ÁREA 3: SABERES ACTITUDINALES (ACTITUDES DEL PENSADOR COMPUTACIONAL)", margin + 4, yPos + 6);
+  doc.setFontSize(8.5);
+  doc.setTextColor(...COLOR_AMBER);
+  doc.text("Área 3: Saberes actitudinales (Actitudes del pensador computacional)", margin + 4, yPos + 6);
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8);
+  doc.setFontSize(7.5);
   doc.setTextColor(...COLOR_DARK);
-  doc.text("• Definición: Disposiciones emocionales, éticas y conductuales ante los desafíos tecnológicos y el trabajo.", margin + 4, yPos + 12);
-  doc.text("• Actitudes Oficiales: Gusto por la Precisión, Aprender del Error, Flexibilidad ante Problemas y Tolerancia a Frustración.", margin + 4, yPos + 17);
-  doc.text("• Fuentes de Información: Observación docente en vivo + Respuestas de autopercepción en la Parte C.", margin + 4, yPos + 22);
+  doc.text("• Definición: Disposiciones emocionales, éticas y conductuales ante los desafíos tecnológicos y el trabajo en equipo.", margin + 4, yPos + 12);
+  doc.text("• Actitudes oficiales: Gusto por la precisión, aprender del error, adaptabilidad y persistencia ante problemas.", margin + 4, yPos + 17);
+  doc.text("• Fuentes de información: Observación docente directa y respuestas de autoevaluación reflexiva.", margin + 4, yPos + 22);
   doc.setFont('helvetica', 'bold');
-  doc.text("   🟢 Nivel A (Alto): Actitud perseverante, reflexiva ante fallas, rigurosa y colaborativa.", margin + 4, yPos + 27);
-  doc.text("   🟡 Nivel B (Medio): Adaptabilidad moderada, requiere motivación periódica ante dificultades.", margin + 4, yPos + 32);
-  doc.text("   🔴 Nivel C (Inicial): Manifiesta frustración inmediata o abandono ante el error del circuito.", margin + 4, yPos + 37);
+  doc.text("   [A] Nivel A (Alto): Actitud perseverante, reflexiva ante fallas, rigurosa y colaborativa.", margin + 4, yPos + 27);
+  doc.text("   [B] Nivel B (Medio): Adaptabilidad moderada, requiere motivación periódica ante dificultades.", margin + 4, yPos + 32);
+  doc.text("   [C] Nivel C (Inicial): Manifiesta frustración inmediata o abandono ante el error del circuito.", margin + 4, yPos + 37);
 
-  // Tabla: Comparativa Enfoque Tradicional vs Ecosistema Integrado
-  yPos = 174;
+  // 4. Comparativa Enfoques
+  yPos = 163;
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("4. COMPARATIVA: EVALUACIÓN TRADICIONAL VS ECOSISTEMA INTEGRADO", margin, yPos);
+  doc.text("4. Comparativa: evaluación tradicional frente a ecosistema integrado", margin, yPos);
 
   autoTable(doc, {
     startY: yPos + 3,
@@ -310,83 +313,87 @@ function generarDossierPDF() {
     headStyles: {
       fillColor: COLOR_PRIMARY,
       textColor: [255, 255, 255],
-      fontSize: 8,
+      fontSize: 7.5,
       fontStyle: 'bold'
     },
     bodyStyles: {
-      fontSize: 7.5,
-      textColor: COLOR_DARK
+      fontSize: 7,
+      textColor: COLOR_DARK,
+      cellPadding: 2
     },
-    head: [['Aspecto', 'Evaluación Tradicional en Papel / Cuestionario', 'Ecosistema Diagnóstico Integrado MEP']],
+    head: [['Aspecto', 'Evaluación tradicional en papel', 'Ecosistema diagnóstico integrado MEP']],
     body: [
-      ['Naturaleza de la Prueba', 'Exclusivamente teórica y memorística.', 'Práctica, interactiva y de resolución de problemas reales.'],
-      ['Evidencia de Desempeño', 'Respuestas marcadas con equis en papel.', 'Conexionado de circuitos en 2D y depuración guiada en vivo.'],
-      ['Registro de Datos', 'Revisión manual que toma horas al docente.', 'Sincronización instantánea (0 ms) en matriz tipo Excel.'],
-      ['Tratamiento del Error', 'Penalización con resta de puntos.', 'Oportunidad de aprendizaje para evaluar resiliencia.'],
-      ['Sistematización Oficial', 'Llenado manual complejo de la pág. 15.', 'Generación automática con asistencia de Inteligencia Artificial.']
+      ['Naturaleza de la prueba', 'Exclusivamente teórica y memorística.', 'Práctica, interactiva y de resolución de problemas reales.'],
+      ['Evidencia de desempeño', 'Respuestas marcadas con lápiz en papel.', 'Conexionado de circuitos en 2D y depuración guiada en vivo.'],
+      ['Registro de datos', 'Revisión manual que toma horas al docente.', 'Sincronización instantánea (0 ms) en matriz digital centralizada.'],
+      ['Tratamiento del error', 'Penalización con resta de puntos sumativos.', 'Oportunidad formativa para evaluar resiliencia y depuración.'],
+      ['Sistematización oficial', 'Llenado manual complejo de actas físicas.', 'Generación automática con asistencia de Inteligencia Artificial.']
     ]
   });
 
-  drawHeaderFooter(2, 6, "Fundamentación Curricular y Enfoque Tripartito");
+  drawHeaderFooter(2, 6, "Fundamentación curricular y enfoque tripartito");
 
   // =========================================================================
-  // PÁGINA 3: NIVEL 9.° AÑO — SIMULACIÓN «AULA INTELIGENTE»
+  // PÁGINA 3: ESPECIFICACIÓN DETALLADA DE 9.° AÑO
   // =========================================================================
   doc.addPage();
   
-  yPos = 20;
+  yPos = 19;
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(12);
+  doc.setFontSize(11);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("5. ESPECIFICACIÓN DETALLADA DE 9.° AÑO: «AULA INTELIGENTE»", margin, yPos);
+  doc.text("5. Especificación detallada de 9.° año: «Aula Inteligente»", margin, yPos);
 
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8.5);
+  doc.setFontSize(8);
   doc.setTextColor(...COLOR_DARK);
   doc.text(
     "El diagnóstico de noveno año contextualiza la automatización domótica en dos retos prácticos de hardware con microcontrolador ATmega328P, sensores analógicos y actuadores digitales:",
-    margin, yPos + 6, { maxWidth: contentWidth }
+    margin, yPos + 5, { maxWidth: contentWidth }
   );
 
-  yPos = 35;
+  yPos = 31;
+  const colWRetos = (contentWidth - 4) / 2;
 
-  // Reto 1 y Reto 2
-  doc.setFillColor(248, 250, 252);
+  // Reto 1
+  doc.setFillColor(...COLOR_LIGHT_BG);
   doc.setDrawColor(...COLOR_BORDER);
-  doc.roundedRect(margin, yPos, (contentWidth - 4) / 2, 36, 2, 2, 'FD');
-  doc.roundedRect(margin + (contentWidth - 4) / 2 + 4, yPos, (contentWidth - 4) / 2, 36, 2, 2, 'FD');
-
+  doc.roundedRect(margin, yPos, colWRetos, 36, 2, 2, 'FD');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8.5);
+  doc.setFontSize(8);
   doc.setTextColor(3, 105, 161);
-  doc.text("💡 RETO 1: ILUMINACIÓN INTELIGENTE", margin + 4, yPos + 6);
+  doc.text("Reto 1: Iluminación inteligente", margin + 4, yPos + 6);
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(7.5);
+  doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
   doc.text("• Módulos: Sensor LDR + MCU 328P + Lámpara LED.", margin + 4, yPos + 12);
   doc.text("• Conexiones: VCC (5V), GND, A0 (Sensor), D9 (LED).", margin + 4, yPos + 17);
-  doc.text("• Condición Lógica: SI (Luz < 300 Lux) ➔ LED ON.", margin + 4, yPos + 22);
+  doc.text("• Condición lógica: Si (luz < 300 Lux) entonces LED ON.", margin + 4, yPos + 22);
   doc.text("• Instrumentos: Luxómetro interactivo y multímetro.", margin + 4, yPos + 27);
   doc.text("• Telemetría: Registro del umbral exacto de activación.", margin + 4, yPos + 32);
 
+  // Reto 2
+  doc.setFillColor(...COLOR_LIGHT_BG);
+  doc.setDrawColor(...COLOR_BORDER);
+  doc.roundedRect(margin + colWRetos + 4, yPos, colWRetos, 36, 2, 2, 'FD');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8.5);
-  doc.setTextColor(180, 83, 9);
-  doc.text("❄️ RETO 2: CLIMATIZACIÓN CON FALLA", margin + (contentWidth - 4) / 2 + 8, yPos + 6);
+  doc.setFontSize(8);
+  doc.setTextColor(...COLOR_AMBER);
+  doc.text("Reto 2: Climatización con falla", margin + colWRetos + 8, yPos + 6);
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(7.5);
+  doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
-  doc.text("• Módulos: Termistor NTC + MCU 328P + Ventilador DC.", margin + (contentWidth - 4) / 2 + 8, yPos + 12);
-  doc.text("• Falla Inyectada: Señal del ventilador conectada a A3.", margin + (contentWidth - 4) / 2 + 8, yPos + 17);
-  doc.text("• Paso 1: Diagnóstico técnico del pin erróneo en A3.", margin + (contentWidth - 4) / 2 + 8, yPos + 22);
-  doc.text("• Paso 2: Corrección física desconectando y pasando a D9.", margin + (contentWidth - 4) / 2 + 8, yPos + 27);
-  doc.text("• Paso 3: Justificación conceptual (Analógico vs Digital).", margin + (contentWidth - 4) / 2 + 8, yPos + 32);
+  doc.text("• Módulos: Termistor NTC + MCU 328P + Ventilador DC.", margin + colWRetos + 8, yPos + 12);
+  doc.text("• Falla inyectada: Señal del ventilador conectada a A3.", margin + colWRetos + 8, yPos + 17);
+  doc.text("• Paso 1: Diagnóstico técnico del pin erróneo en A3.", margin + colWRetos + 8, yPos + 22);
+  doc.text("• Paso 2: Corrección física pasando el cable a D9.", margin + colWRetos + 8, yPos + 27);
+  doc.text("• Paso 3: Justificación conceptual (analógico frente a digital).", margin + colWRetos + 8, yPos + 32);
 
-  yPos = 76;
+  yPos = 71;
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("RÚBRICA DE SABERES PROCEDIMENTALES Y ACTITUDINALES (9.° AÑO)", margin, yPos);
+  doc.text("Rúbrica de saberes procedimentales y actitudinales (9.° año)", margin, yPos);
 
   autoTable(doc, {
     startY: yPos + 3,
@@ -405,47 +412,44 @@ function generarDossierPDF() {
     },
     columnStyles: {
       0: { cellWidth: 10, fontStyle: 'bold', halign: 'center' },
-      1: { cellWidth: 30, fontStyle: 'bold' },
+      1: { cellWidth: 32, fontStyle: 'bold' },
       2: { cellWidth: 70 },
-      3: { cellWidth: 70 }
+      3: { cellWidth: 68 }
     },
-    head: [['Cód.', 'Saber / Práctica', 'Criterio Observable en Simulación', 'Escala Formativa Oficial MEP']],
+    head: [['Cód.', 'Saber / Práctica', 'Criterio observable en simulación', 'Escala formativa oficial del MEP']],
     body: [
-      ['P1', 'Modulariza', 'Resuelve la conexión por partes independientes: identifica y organiza espacialmente las 3 tarjetas de hardware (LDR, MCU, LED).', 'A: Autónomo / Consistente\nB: Con apoyo ocasional\nC: Requiere modelado paso a paso'],
-      ['P2', 'Reconoce Patrones', 'Identifica regularidades de polaridad y correspondencia de terminales (VCC 5V, GND, Pin A0, Pin D9).', 'A: Sin errores de polaridad\nB: Corrige polaridad con guía\nC: Confunde alimentación con señal'],
-      ['P3', 'Formula Algoritmos', 'Establece el flujo lógico secuencial del sistema (Entrada ➔ Proceso ➔ Salida) cerrando el circuito ordenadamente.', 'A: Secuencia lógica inmediata\nB: Ensayo y error guiado\nC: Desorden en el conexionado'],
-      ['P4', 'Programa', 'Valida estructura condicional y asignación de pines: comprueba que al bajar luz (<300 Lux) se active la salida digital D9.', 'A: Verifica umbral y estados DMM\nB: Comprende tras aclaración\nC: No asocia umbral a la salida'],
-      ['P5', 'Depura (Reto 2)', 'Detecta la falla inyectada (señal conectada a 5V/A3) y ejecuta la reconexión física del cable en el banco interactivo.', 'A: Detecta y reconecta con autonomía\nB: Reconecta con pista docente\nC: No logra corregir el cable'],
-      ['P6', 'Transfiere (Reto 2)', 'Transfiere el concepto a justificación escrita: explica por qué A0 lee voltajes variables mientras 5V es fijo.', 'A: Justificación técnica precisa\nB: Justificación empírica parcial\nC: No fundamenta la corrección'],
-      ['S1', 'Gusto por la Precisión', 'Demuestra esmero y minuciosidad al verificar cables, valores del multímetro (1.05V, 45W) y monitor serial.', 'A: Alto rigor y minuciosidad\nB: Precisión moderada\nC: Precipitación / descuido'],
-      ['S2', 'Aprender del Error', 'Convierte desaciertos en oportunidades: analiza con calma por qué la lámpara no encendía en lugar de probar al azar.', 'A: Análisis reflexivo ante el fallo\nB: Corrige tras orientación\nC: Frustración ante el error'],
-      ['S3', 'Flexibilidad', 'Demuestra adaptabilidad para replantear hipótesis cuando la propuesta con falla no responde como esperaba.', 'A: Adaptable y proactivo/a\nB: Flexible con acompañamiento\nC: Rigidez ante el problema'],
-      ['S4', 'Tolerancia / Confort', 'Autocontrol, paciencia y persistencia. Vinculado al selector emocional de autopercepción en Parte C.', 'A: Alta perseverancia y confort\nB: Persistencia media\nC: Requiere soporte emocional']
+      ['P1', 'Modulariza', 'Resuelve la conexión por partes: identifica y organiza las 3 tarjetas de hardware (LDR, MCU, LED).', 'A: Autónomo y consistente\nB: Con apoyo ocasional\nC: Requiere modelado paso a paso'],
+      ['P2', 'Reconoce patrones', 'Identifica regularidades de polaridad y correspondencia de terminales (VCC 5V, GND, Pin A0, Pin D9).', 'A: Sin errores de polaridad\nB: Corrige polaridad con guía\nC: Confunde alimentación con señal'],
+      ['P3', 'Formula algoritmos', 'Establece el flujo lógico secuencial del sistema (Entrada -> Proceso -> Salida) cerrando el circuito.', 'A: Secuencia lógica inmediata\nB: Ensayo y error guiado\nC: Desorden en el conexionado'],
+      ['P4', 'Programa y valida', 'Valida condición y asignación: comprueba que al bajar la luz (< 300 Lux) se active la salida digital D9.', 'A: Verifica umbral y estados\nB: Comprende tras aclaración\nC: No asocia umbral a la salida'],
+      ['P5', 'Depura (Reto 2)', 'Detecta la falla inyectada (señal a pin incorrecto) y ejecuta la reconexión física del cable.', 'A: Detecta y reconecta con autonomía\nB: Reconecta con pista docente\nC: No logra corregir el cable'],
+      ['S1', 'Gusto por la precisión', 'Demuestra esmero al verificar cables, valores de multímetro y monitor serial.', 'A: Alto rigor y minuciosidad\nB: Precisión moderada\nC: Precipitación o descuido'],
+      ['S2', 'Aprender del error', 'Convierte desaciertos en oportunidades: analiza con calma por qué la carga no respondía.', 'A: Análisis reflexivo ante el fallo\nB: Corrige tras orientación\nC: Frustración ante el error']
     ]
   });
 
-  drawHeaderFooter(3, 6, "Especificación Curricular de 9.° Año");
+  drawHeaderFooter(3, 6, "Especificación curricular de 9.° año");
 
   // =========================================================================
-  // PÁGINA 4: NIVEL 7.° AÑO — «CYBERQUEST 7°»
+  // PÁGINA 4: ESPECIFICACIÓN DETALLADA DE 7.° Y 8.° AÑO
   // =========================================================================
   doc.addPage();
   
-  yPos = 20;
+  yPos = 19;
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(12);
+  doc.setFontSize(11);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("6. ESPECIFICACIÓN DETALLADA DE 7.° AÑO: «CYBERQUEST 7°»", margin, yPos);
+  doc.text("6. Especificación de 7.° y 8.° año: CyberQuest y Robótica", margin, yPos);
 
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8.5);
+  doc.setFontSize(8);
   doc.setTextColor(...COLOR_DARK);
   doc.text(
-    "Diseñado para la transición a secundaria, CyberQuest 7° combina el desarrollo psicomotor y perceptivo-motriz con el pensamiento computacional inicial, mediante retos gamificados en parejas o individual:",
-    margin, yPos + 6, { maxWidth: contentWidth }
+    "Resumen de la arquitectura evaluativa para los niveles iniciales e intermedios del Tercer Ciclo:",
+    margin, yPos + 5, { maxWidth: contentWidth }
   );
 
-  yPos = 35;
+  yPos = 31;
 
   autoTable(doc, {
     startY: yPos,
@@ -454,139 +458,125 @@ function generarDossierPDF() {
     headStyles: {
       fillColor: COLOR_PRIMARY,
       textColor: [255, 255, 255],
-      fontSize: 8,
+      fontSize: 7.5,
       fontStyle: 'bold'
     },
     bodyStyles: {
-      fontSize: 7.5,
+      fontSize: 7,
       textColor: COLOR_DARK,
-      cellPadding: 2.5
+      cellPadding: 2.2
     },
     columnStyles: {
       0: { cellWidth: 32, fontStyle: 'bold' },
       1: { cellWidth: 70 },
       2: { cellWidth: 46 },
-      3: { cellWidth: 32 }
+      3: { cellWidth: 34 }
     },
-    head: [['Módulo del Reto', 'Descripción de la Actividad Interactiva', 'Saber / Habilidad Evaluada', 'Métrica de Telemetría']],
+    head: [['Nivel / Módulo', 'Descripción de la actividad interactiva', 'Saber o habilidad evaluada', 'Métrica en telemetría']],
     body: [
-      ['Módulo 0:\nPsicomotor y Perceptivo-Motriz', '• Rejilla Espacial 4x4: Guiar bot con comandos.\n• Semáforo de Ritmo: Pulsar en verde / Frenar en rojo.\n• Canal de Trazo Fino: Dibujar sin tocar paredes.', '• Lateralidad y Esquema Espacial.\n• Ritmo y Control de Inhibición.\n• Coordinación Viso-Manual Fina.', 'Puntaje de precisión (%) y aciertos rítmicos (0-5).'],
-      ['Módulo 1:\nSistemas y Abstracción', '• Clasificación interactiva en cajas de Hardware vs Software.\n• Preguntas sobre función del SO y ventajas de redes.', '• Abstracción de Sistemas.\n• Diferenciación Físico vs Lógico.\n• Redes de Comunicación.', 'Aciertos en clasificación (8 ítems) + 2 preguntas SO.'],
-      ['Módulo 2:\nArchivos y Multimedia', '• Clasificación de extensiones (.png, .mp3, .pdf, .jpg).\n• Selección de editor gráfico (Paint vs otros).\n• Lienzo de dibujo libre para diseño gráfico.', '• Organización del Sistema de Archivos.\n• Multimedia y Diseño Digital.\n• Motricidad Viso-Motriz.', 'Ubicación en carpetas + selección de software gráfico.'],
-      ['Módulo 3:\nAlgoritmos y Depuración', '• Simulador paso a paso de código en bloques.\n• Seguimiento de variable "puntos" y bucle (3 ciclos).\n• Evaluación de condición SI (puntos > 10).', '• Formulación de Algoritmos.\n• Ciclos y Variables.\n• Estructuras Condicionales.', 'Respuestas de análisis algorítmico y ejecución.'],
-      ['Módulo 4:\nLógica y Operadores', '• Selección de operadores aritméticos (+, -, *, /).\n• Selección de operadores relacionales (=, >, <).\n• Depuración de expresiones lógicas en el código.', '• Gusto por la Precisión.\n• Pensamiento Lógico Formal.\n• Depuración de Expresiones.', 'Aciertos en los 4 desafíos de operadores.'],
-      ['Módulo 5:\nReflexión Metacognitiva', '• Autoevaluación escrita sobre aprender del error.\n• Distribución de roles en pareja.\n• Identificación del reto de mayor exigencia.', '• Tolerancia a la Frustración.\n• Colaboración y Comunicación.\n• Metacognición del Aprendizaje.', 'Texto cualitativo de autopercepción formativa.']
+      ['7.°: Módulo psicomotor', '• Rejilla espacial 4x4 con comandos.\n• Semáforo de ritmo y freno motriz.\n• Canal de trazo fino sin colisiones.', '• Lateralidad y esquema espacial.\n• Ritmo y control de impulsos.\n• Coordinación viso-manual.', 'Porcentaje de precisión y aciertos rítmicos.'],
+      ['7.°: Misiones 1 a 10', '• Clasificación interactiva de HW vs SW.\n• Algoritmos lineales y secuencias.\n• Ciberseguridad y prevención digital.', '• Fundamentos tecnológicos.\n• Lógica secuencial básica.\n• Ética y ciudadanía digital.', 'Puntaje de aciertos (0 a 100%) y tiempo.'],
+      ['8.°: Apropiación HW/SW', '• Periféricos, software, redes y SO.\n• Unidades de almacenamiento (KB a TB).', '• Conceptos de hardware y redes.\n• Gestión del sistema operativo.', 'Puntaje en ítems 1 al 5.'],
+      ['8.°: Algoritmos y lógica', '• Estructura E-P-S, variables y tipos.\n• Condicionales dobles y bucles.', '• Formulación algorítmica.\n• Control de flujo y ciclos.', 'Puntaje en ítems 6 al 12.'],
+      ['8.°: Robótica y DUA', '• Sensores, actuadores y microcontrolador.\n• Protocolos de seguridad en taller.', '• Computación física elemental.\n• Normas técnicas de seguridad.', 'Puntaje en ítems 13 y 14.']
     ]
   });
 
-  yPos = doc.lastAutoTable.finalY + 8;
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(10);
-  doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("MAPEO AL INSTRUMENTO EVALUADOR DOCENTE (7.° AÑO)", margin, yPos);
-
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8);
-  doc.setTextColor(...COLOR_DARK);
-  doc.text(
-    "Al igual que en 9.° año, las interacciones de CyberQuest 7° se traducen automáticamente en la matriz docente:\n" +
-    "• Dimensión Psicomotora: P1. Lateralidad Espacial | P2. Ritmo e Inhibición | P3. Coordinación Viso-Manual | P4. Trazo Gráfico.\n" +
-    "• Dimensión Cognitiva: Ind 1 a Ind 10 (Hardware, Software, Redes, SO, Archivos, Gráficos, Bloques, Bucles, Condicionales, Operadores).\n" +
-    "• Dimensión Socioafectiva: S1. Precisión | S2. Aprender del Error | S3. Colaboración | S4. Tolerancia a la Frustración.",
-    margin, yPos + 5, { maxWidth: contentWidth }
-  );
-
-  drawHeaderFooter(4, 6, "Especificación Curricular de 7.° Año (CyberQuest)");
+  drawHeaderFooter(4, 6, "Especificación de 7.° y 8.° año");
 
   // =========================================================================
   // PÁGINA 5: EL INSTRUMENTO EVALUADOR DOCENTE Y SISTEMATIZACIÓN
   // =========================================================================
   doc.addPage();
   
-  yPos = 20;
+  yPos = 19;
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(12);
+  doc.setFontSize(11);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("7. EL INSTRUMENTO DOCENTE EVALUADOR Y SISTEMATIZACIÓN OFICIAL", margin, yPos);
+  doc.text("7. El instrumento docente evaluador y sistematización oficial", margin, yPos);
 
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8.5);
+  doc.setFontSize(8);
   doc.setTextColor(...COLOR_DARK);
   doc.text(
-    "El aplicativo del docente evaluador (diagnostico_9no_modulo01_docente_evaluador.html y homólogo de 7.°) sustituye las hojas de cálculo tradicionales por una plataforma web reactiva con sincronización en tiempo real:",
-    margin, yPos + 6, { maxWidth: contentWidth }
+    "El aplicativo del docente evaluador sustituye las hojas de cálculo tradicionales por una plataforma web reactiva con sincronización en tiempo real:",
+    margin, yPos + 5, { maxWidth: contentWidth }
   );
 
-  yPos = 36;
-
-  // 4 Vistas del Evaluador Docente
+  yPos = 31;
   const vW = (contentWidth - 4) / 2;
   const vH = 34;
 
   // Vista 1
-  doc.setFillColor(248, 250, 252);
+  doc.setFillColor(...COLOR_LIGHT_BG);
   doc.setDrawColor(...COLOR_BORDER);
   doc.roundedRect(margin, yPos, vW, vH, 2, 2, 'FD');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8.5);
+  doc.setFontSize(8);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("VISTA 1: NÓMINA Y REGISTRO", margin + 4, yPos + 6);
+  doc.text("Vista 1: Nómina y registro", margin + 4, yPos + 6);
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(7.5);
+  doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
-  doc.text("• Carga de nómina vía Excel, CSV o texto pegado.", margin + 4, yPos + 12);
+  doc.text("• Carga de nómina vía Excel o CSV oficial.", margin + 4, yPos + 12);
   doc.text("• Registro automático en vivo cuando el alumno inicia.", margin + 4, yPos + 17);
   doc.text("• Filtro dinámico por secciones (ej. 9-1 a 9-20).", margin + 4, yPos + 22);
-  doc.text("• Estado de entrega: Evaluado vs Pendiente.", margin + 4, yPos + 27);
+  doc.text("• Estado de entrega: evaluado frente a pendiente.", margin + 4, yPos + 27);
 
   // Vista 2
+  doc.setFillColor(...COLOR_LIGHT_BG);
+  doc.setDrawColor(...COLOR_BORDER);
   doc.roundedRect(margin + vW + 4, yPos, vW, vH, 2, 2, 'FD');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8.5);
+  doc.setFontSize(8);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("VISTA 2: MATRIZ DE OBSERVACIÓN", margin + vW + 8, yPos + 6);
+  doc.text("Vista 2: Matriz de observación", margin + vW + 8, yPos + 6);
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(7.5);
+  doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
   doc.text("• Matriz horizontal interactiva tipo hoja de cálculo.", margin + vW + 8, yPos + 12);
-  doc.text("• Pestañas por área: Psicomotora, Socioafectiva, Cognitiva.", margin + vW + 8, yPos + 17);
-  doc.text("• Marcación en 1 clic de niveles formativos (A/B/C).", margin + vW + 8, yPos + 22);
+  doc.text("• Pestañas por área: psicomotora, socioafectiva, cognitiva.", margin + vW + 8, yPos + 17);
+  doc.text("• Marcación en un clic de niveles formativos (A / B / C).", margin + vW + 8, yPos + 22);
   doc.text("• Asistente de IA para análisis global de sección.", margin + vW + 8, yPos + 27);
 
   // Vista 3
-  yPos = 74;
+  yPos = 69;
+  doc.setFillColor(...COLOR_LIGHT_BG);
+  doc.setDrawColor(...COLOR_BORDER);
   doc.roundedRect(margin, yPos, vW, vH, 2, 2, 'FD');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8.5);
+  doc.setFontSize(8);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("VISTA 3: SISTEMATIZACIÓN (PÁG. 15)", margin + 4, yPos + 6);
+  doc.text("Vista 3: Sistematización oficial", margin + 4, yPos + 6);
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(7.5);
+  doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
-  doc.text("• Formato oficial idéntico al documento base MEP.", margin + 4, yPos + 12);
-  doc.text("• Consolidado automático de los 10 saberes conceptuales.", margin + 4, yPos + 17);
+  doc.text("• Formato oficial idéntico a las directrices del MEP.", margin + 4, yPos + 12);
+  doc.text("• Consolidado automático de saberes conceptuales.", margin + 4, yPos + 17);
   doc.text("• Cuadro de descripción de desempeño individual.", margin + 4, yPos + 22);
-  doc.text("• Generación de acompañamiento pedagógico con IA.", margin + 4, yPos + 27);
+  doc.text("• Generación de recomendaciones pedagógicas con IA.", margin + 4, yPos + 27);
 
   // Vista 4
+  doc.setFillColor(...COLOR_LIGHT_BG);
+  doc.setDrawColor(...COLOR_BORDER);
   doc.roundedRect(margin + vW + 4, yPos, vW, vH, 2, 2, 'FD');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8.5);
+  doc.setFontSize(8);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("VISTA 4: DECISIONES PEDAGÓGICAS", margin + vW + 8, yPos + 6);
+  doc.text("Vista 4: Decisiones pedagógicas", margin + vW + 8, yPos + 6);
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(7.5);
+  doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
-  doc.text("• Alertas automáticas de áreas débiles del grupo.", margin + vW + 8, yPos + 12);
+  doc.text("• Matriz de 6 criterios oficiales de decisión docente.", margin + vW + 8, yPos + 12);
   doc.text("• Detección de necesidades en circuitos o algoritmos.", margin + vW + 8, yPos + 17);
-  doc.text("• Estrategias de mediación sugeridas para el planeamiento.", margin + vW + 8, yPos + 22);
-  doc.text("• Exportación a Excel/CSV e impresión de actas.", margin + vW + 8, yPos + 27);
+  doc.text("• Estrategias de mediación para el planeamiento.", margin + vW + 8, yPos + 22);
+  doc.text("• Exportación a Excel, CSV e informes en PDF.", margin + vW + 8, yPos + 27);
 
-  yPos = 114;
+  yPos = 108;
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("8. FUNCIONES AVANZADAS DE AUTOMATIZACIÓN PARA EL DOCENTE", margin, yPos);
+  doc.text("8. Funciones de automatización para la labor docente", margin, yPos);
 
   autoTable(doc, {
     startY: yPos + 3,
@@ -595,68 +585,69 @@ function generarDossierPDF() {
     headStyles: {
       fillColor: COLOR_PRIMARY,
       textColor: [255, 255, 255],
-      fontSize: 8,
+      fontSize: 7.5,
       fontStyle: 'bold'
     },
     bodyStyles: {
-      fontSize: 7.5,
-      textColor: COLOR_DARK
+      fontSize: 7,
+      textColor: COLOR_DARK,
+      cellPadding: 2
     },
-    head: [['Función Técnica', 'Impacto en la Labor Docente', 'Cumplimiento Normativo MEP']],
+    head: [['Función técnica', 'Impacto en la labor docente', 'Cumplimiento normativo del MEP']],
     body: [
-      ['Sincronización Bidireccional', 'Los resultados de los estudiantes aparecen en la pantalla del docente en tiempo real sin requerir recargar la página.', 'Registro oportuno y transparente de evidencias de aula.'],
-      ['Lector QR Offline Integrado', 'En colegios sin internet, el docente escanea con la cámara del celular el código QR de la pantalla del alumno para transferir datos en 0 segundos.', 'Garantiza equidad e inclusión para zonas rurales o con baja conectividad.'],
-      ['Asistente IA Pedagógico', 'Redacta síntesis diagnósticas de sección y recomendaciones pedagógicas personalizadas por estudiante.', 'Facilita la elaboración del Planeamiento Didáctico Trimestral.'],
-      ['Exportación de Expediente', 'Genera archivos CSV compatibles con Excel oficial MEP e informes imprimibles en PDF con membrete institucional.', 'Respaldo administrativo conforme a directrices de supervisión.']
+      ['Sincronización en tiempo real', 'Los resultados aparecen en la pantalla docente al instante sin recargar.', 'Registro oportuno y transparente de evidencias.'],
+      ['Lector QR sin conexión', 'En colegios sin internet, el docente escanea el código QR de cada alumno.', 'Garantiza equidad e inclusión para zonas rurales.'],
+      ['Asistente IA pedagógico', 'Genera síntesis diagnóstica y recomendaciones por estudiante.', 'Facilita la elaboración del planeamiento didáctico.'],
+      ['Exportación de expediente', 'Genera archivos CSV, Excel e informes imprimibles en PDF.', 'Respaldo administrativo conforme a directrices oficiales.']
     ]
   });
 
-  drawHeaderFooter(5, 6, "Instrumento Docente y Sistematización");
+  drawHeaderFooter(5, 6, "Instrumento docente y sistematización");
 
   // =========================================================================
-  // PÁGINA 6: ARQUITECTURA TECNOLÓGICA, RESILIENCIA Y DESPLIEGUE
+  // PÁGINA 6: ARQUITECTURA TECNOLÓGICA Y ENLACES OFICIALES
   // =========================================================================
   doc.addPage();
   
-  yPos = 20;
+  yPos = 19;
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(12);
+  doc.setFontSize(11);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("9. ARQUITECTURA TECNOLÓGICA Y PROTOCOLO DE RESILIENCIA", margin, yPos);
+  doc.text("9. Arquitectura tecnológica y protocolo de resiliencia", margin, yPos);
 
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8.5);
+  doc.setFontSize(8);
   doc.setTextColor(...COLOR_DARK);
   doc.text(
     "La infraestructura está construida con tecnologías web de última generación (Next.js 15, TypeScript, Tailwind CSS, Web Audio API y APIs de Inteligencia Artificial con arquitectura de resiliencia en 4 capas):",
-    margin, yPos + 6, { maxWidth: contentWidth }
+    margin, yPos + 5, { maxWidth: contentWidth }
   );
 
-  yPos = 36;
+  yPos = 31;
 
   // Diagrama de Cascada de IA
   doc.setFillColor(240, 253, 244);
   doc.setDrawColor(187, 247, 208);
   doc.roundedRect(margin, yPos, contentWidth, 38, 2, 2, 'FD');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(9);
-  doc.setTextColor(21, 128, 61);
-  doc.text("🛡️ ARQUITECTURA DE IA MULTI-PROVEEDOR CON RESILIENCIA EN CASCADA (FAILOVER)", margin + 4, yPos + 6);
+  doc.setFontSize(8.5);
+  doc.setTextColor(...COLOR_EMERALD);
+  doc.text("Arquitectura de IA multi-proveedor con resiliencia en cascada (Failover)", margin + 4, yPos + 6);
   
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7.5);
   doc.setTextColor(...COLOR_DARK);
-  doc.text("1. Caché SHA-256 en Memoria: Respuestas en 0ms y ahorro total de tokens ante consultas idénticas.", margin + 4, yPos + 12);
+  doc.text("1. Caché SHA-256 en memoria: Respuestas en 0 ms y ahorro total de tokens ante consultas idénticas.", margin + 4, yPos + 12);
   doc.text("2. Nivel 1 (Principal): Google Gemini (gemini-2.5-flash) para análisis pedagógico rápido y estructurado.", margin + 4, yPos + 17);
-  doc.text("3. Nivel 2 (Ultra-Baja Latencia): Groq LPU (llama-3.3-70b-versatile, llama-3.1-8b-instant).", margin + 4, yPos + 22);
-  doc.text("4. Nivel 3 (Multi-Proveedor): OpenRouter con Qwen 2.5 (qwen/qwen-2.5-72b-instruct) y DeepSeek Chat.", margin + 4, yPos + 27);
-  doc.text("5. Auditoría Diaria (5:00 AM): Endpoint cron (/api/cron/verificador-modelos-ia) con reporte al correo oficial MEP.", margin + 4, yPos + 32);
+  doc.text("3. Nivel 2 (Baja latencia): Groq LPU (llama-3.3-70b-versatile, llama-3.1-8b-instant).", margin + 4, yPos + 22);
+  doc.text("4. Nivel 3 (Multi-proveedor): OpenRouter con Qwen 2.5 (qwen/qwen-2.5-72b-instruct) y DeepSeek Chat.", margin + 4, yPos + 27);
+  doc.text("5. Auditoría diaria (5:00 AM): Verificación automatizada con reporte ejecutivo al correo oficial del MEP.", margin + 4, yPos + 32);
 
-  yPos = 80;
+  yPos = 74;
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("10. GUÍA DE ACCESO Y ENLACES OFICIALES EN PRODUCCIÓN", margin, yPos);
+  doc.text("10. Guía de acceso y enlaces oficiales en producción", margin, yPos);
 
   autoTable(doc, {
     startY: yPos + 3,
@@ -665,41 +656,42 @@ function generarDossierPDF() {
     headStyles: {
       fillColor: COLOR_PRIMARY,
       textColor: [255, 255, 255],
-      fontSize: 8,
+      fontSize: 7.5,
       fontStyle: 'bold'
     },
     bodyStyles: {
-      fontSize: 7.5,
+      fontSize: 7,
       textColor: COLOR_DARK,
-      cellPadding: 2.5
+      cellPadding: 2.2
     },
     columnStyles: {
-      0: { cellWidth: 45, fontStyle: 'bold' },
-      1: { cellWidth: 85 },
-      2: { cellWidth: 50, halign: 'center' }
+      0: { cellWidth: 48, fontStyle: 'bold' },
+      1: { cellWidth: 86 },
+      2: { cellWidth: 48, halign: 'center' }
     },
-    head: [['Recurso o Vista', 'Enlace Web Oficial en Producción', 'Modo de Operación']],
+    head: [['Recurso o vista', 'Enlace web oficial en producción', 'Modo de operación']],
     body: [
-      ['Portal Diagnóstico Multi-Nivel', 'https://diagnosticosecundaria.vercel.app/diagnostico', 'En Línea (Acceso Universal)'],
-      ['WebApp Estudiante 9.° Año', 'https://diagnosticosecundaria.vercel.app/webapps/diagnostico_9no_modulo01_en_linea.html', 'En Línea / Local Autónomo'],
-      ['Evaluador Docente 9.° Año', 'https://diagnosticosecundaria.vercel.app/webapps/diagnostico_9no_modulo01_docente_evaluador.html', 'En Línea / Escáner QR'],
-      ['WebApp Estudiante 7.° Año', 'https://diagnosticosecundaria.vercel.app/webapps/diagnostico_7mo_modulo01_cyberquest.html', 'En Línea (CyberQuest 7°)'],
-      ['Evaluador Docente 7.° Año', 'https://diagnosticosecundaria.vercel.app/webapps/diagnostico_7mo_modulo01_docente_evaluador.html', 'En Línea / Escáner QR'],
-      ['Dashboard de Telemetría Central', 'https://diagnosticosecundaria.vercel.app/dashboard', 'Monitoreo Institucional'],
-      ['API de Telemetría Central', 'https://diagnosticosecundaria.vercel.app/api/telemetria/enviar', 'Endpoint RESTful JSON']
+      ['Portal diagnóstico multi-nivel', 'https://diagnosticosecundaria.vercel.app/diagnostico', 'En línea (Acceso universal)'],
+      ['WebApp estudiante 9.° año', 'https://diagnosticosecundaria.vercel.app/webapps/diagnostico_9no_modulo01_en_linea.html', 'En línea / Local autónomo'],
+      ['Evaluador docente 9.° año', 'https://diagnosticosecundaria.vercel.app/webapps/diagnostico_9no_modulo01_docente_evaluador.html', 'En línea / Escáner QR'],
+      ['WebApp estudiante 8.° año', 'https://diagnosticosecundaria.vercel.app/webapps/diagnostico_8vo_modulo01_en_linea.html', 'En línea / Local autónomo'],
+      ['Evaluador docente 8.° año', 'https://diagnosticosecundaria.vercel.app/webapps/diagnostico_8vo_modulo01_docente_evaluador.html', 'En línea / Escáner QR'],
+      ['WebApp estudiante 7.° año', 'https://diagnosticosecundaria.vercel.app/webapps/diagnostico_7mo_modulo01_en_linea.html', 'En línea / Local autónomo'],
+      ['Evaluador docente 7.° año', 'https://diagnosticosecundaria.vercel.app/webapps/diagnostico_7mo_modulo01_docente_evaluador.html', 'En línea / Escáner QR'],
+      ['Panel central de telemetría', 'https://diagnosticosecundaria.vercel.app/dashboard', 'Monitoreo institucional']
     ]
   });
 
-  yPos = doc.lastAutoTable.finalY + 8;
+  yPos = doc.lastAutoTable.finalY + 7;
 
-  // Recuadro de Cierre / Firma Asesoría
+  // Recuadro de Cierre
   doc.setFillColor(...COLOR_LIGHT_BG);
   doc.setDrawColor(...COLOR_PRIMARY);
   doc.setLineWidth(0.5);
-  doc.roundedRect(margin, yPos, contentWidth, 26, 2, 2, 'FD');
+  doc.roundedRect(margin, yPos, contentWidth, 24, 2, 2, 'FD');
 
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8.5);
+  doc.setFontSize(8);
   doc.setTextColor(...COLOR_PRIMARY);
   doc.text("DIRECCIÓN DE RECURSOS TECNOLÓGICOS EN EDUCACIÓN (DRTE) • MEP COSTA RICA", margin + 4, yPos + 6);
   
@@ -712,31 +704,24 @@ function generarDossierPDF() {
   doc.setTextColor(...COLOR_SECONDARY);
   doc.text("Asesoría Nacional de Formación Tecnológica • Ciclo Lectivo 2027", margin + 4, yPos + 22);
 
-  drawHeaderFooter(6, 6, "Arquitectura Tecnológica y Despliegue");
+  drawHeaderFooter(6, 6, "Arquitectura tecnológica y despliegue");
 
   return doc;
 }
 
-// 1. Guardar en public/documentos/
+// 1. Guardar en public/documentos/ y public/docs/
 const outputDirWeb = path.join(__dirname, '..', 'public', 'documentos');
-if (!fs.existsSync(outputDirWeb)) {
-  fs.mkdirSync(outputDirWeb, { recursive: true });
-}
-const outputPathWeb = path.join(outputDirWeb, 'Dossier_Evaluacion_Diagnostica_MEP_7mo_8vo_9no.pdf');
+const outputDirDocs = path.join(__dirname, '..', 'public', 'docs');
 
-// 2. Guardar en artifacts directory
-const artifactsDir = 'C:\\Users\\curio\\.gemini\\antigravity\\brain\\d99aa2c3-313b-4597-b0ff-83b2bf23c7e4';
-const outputPathArtifact = path.join(artifactsDir, 'Dossier_Evaluacion_Diagnostica_MEP_7mo_8vo_9no.pdf');
+if (!fs.existsSync(outputDirWeb)) fs.mkdirSync(outputDirWeb, { recursive: true });
+if (!fs.existsSync(outputDirDocs)) fs.mkdirSync(outputDirDocs, { recursive: true });
 
-const doc = generarDossierPDF();
+const outputPathWeb = path.join(outputDirWeb, 'Documento_Tecnico_Evaluacion_Diagnostica_MEP_7mo_8vo_9no.pdf');
+const outputPathDocs = path.join(outputDirDocs, 'DOCUMENTO_TECNICO_DIAGNOSTICO_MEP_III_CICLO.pdf');
+
+const doc = generarDocumentoAsesoresPDF();
 const pdfBuffer = Buffer.from(doc.output('arraybuffer'));
 
 fs.writeFileSync(outputPathWeb, pdfBuffer);
-console.log(`✅ PDF guardado con éxito en Web: ${outputPathWeb}`);
-
-try {
-  fs.writeFileSync(outputPathArtifact, pdfBuffer);
-  console.log(`✅ PDF guardado con éxito en Artifacts: ${outputPathArtifact}`);
-} catch (e) {
-  console.log(`⚠️ No se pudo escribir en artifacts dir: ${e.message}`);
-}
+fs.writeFileSync(outputPathDocs, pdfBuffer);
+console.log(`✅ PDF general guardado con éxito en:\n - ${outputPathWeb}\n - ${outputPathDocs}`);

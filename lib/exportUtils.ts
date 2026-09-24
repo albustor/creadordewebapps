@@ -168,18 +168,18 @@ export async function exportarAPDF(
 
   // Cuadro del Semáforo Diagnóstico con Barra Gráfica
   doc.setFillColor(255, 255, 255);
-  doc.setDrawColor(226, 232, 240);
+  doc.setDrawColor(203, 213, 225);
   doc.roundedRect(14, 56, 182, 28, 2, 2, "FD");
 
   doc.setFontSize(8.5);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(0, 51, 102);
-  doc.text("📊 CONSOLIDADO GRUPAL DEL SEMÁFORO DIAGNÓSTICO (DISTRIBUCIÓN DE LOGRO):", 18, 62);
+  doc.text("Consolidado grupal del semáforo diagnóstico (distribución de logro):", 18, 62);
 
   doc.setFontSize(7.5);
   doc.setFont("helvetica", "normal");
   doc.setTextColor(51, 65, 85);
-  doc.text(`Total Evaluados: ${total} estudiantes   |   Consolidado (Nivel A): ${nivelA} (${pctA}%)   |   En Desarrollo (Nivel B): ${nivelB} (${pctB}%)   |   Acompañamiento (Nivel C): ${nivelC} (${pctC}%)`, 18, 67);
+  doc.text(`Total evaluados: ${total} estudiantes   |   Consolidado (Nivel A): ${nivelA} (${pctA}%)   |   En desarrollo (Nivel B): ${nivelB} (${pctB}%)   |   Acompañamiento (Nivel C): ${nivelC} (${pctC}%)`, 18, 67);
 
   // Barra de progreso segmentada proporcional
   const barX = 18;
@@ -224,10 +224,10 @@ export async function exportarAPDF(
     const psicoVal = raw.psicoScore ?? (puntajeVal >= 70 ? 88 : 65);
     const socioVal = raw.socioScore ?? 80;
 
-    const cogTexto = cogVal >= 80 ? "🟢 Dominio Pleno" : cogVal >= 60 ? "🟡 En Desarrollo" : "🔴 Nivelación";
-    const psicoTexto = psicoVal >= 80 ? "🟢 Control Óptimo" : psicoVal >= 60 ? "🟡 En Proceso" : "🔴 Requiere Guía";
-    const socioTexto = socioVal >= 80 ? "🟢 Colaborativo" : socioVal >= 60 ? "🟡 Participativo" : "🔴 Mediación";
-    const nivelGlobal = puntajeVal >= 80 ? "NIVEL A (Autónomo)" : puntajeVal >= 60 ? "NIVEL B (Con Apoyo)" : "NIVEL C (Inicial)";
+    const cogTexto = cogVal >= 80 ? "[A] Dominio pleno" : cogVal >= 60 ? "[B] En desarrollo" : "[C] Nivelación";
+    const psicoTexto = psicoVal >= 80 ? "[A] Control óptimo" : psicoVal >= 60 ? "[B] En proceso" : "[C] Requiere guía";
+    const socioTexto = socioVal >= 80 ? "[A] Colaborativo" : socioVal >= 60 ? "[B] Participativo" : "[C] Mediación";
+    const nivelGlobal = puntajeVal >= 80 ? "NIVEL A (Autónomo)" : puntajeVal >= 60 ? "NIVEL B (Con apoyo)" : "NIVEL C (Inicial)";
 
     return [
       (i + 1).toString(),

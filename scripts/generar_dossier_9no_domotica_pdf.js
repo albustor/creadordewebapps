@@ -4,7 +4,7 @@ const { jsPDF } = require('jspdf');
 const autoTableMod = require('jspdf-autotable');
 const autoTable = autoTableMod.default || autoTableMod;
 
-function generarDossier9noPDF() {
+function generarDocumento9noPDF() {
   const doc = new jsPDF({
     orientation: 'portrait',
     unit: 'mm',
@@ -16,41 +16,41 @@ function generarDossier9noPDF() {
   const margin = 14;
   const contentWidth = pageWidth - margin * 2; // 182 mm
 
-  // Paleta de Colores Oficial MEP & 9no Aula Inteligente
-  const COLOR_PRIMARY = [15, 23, 42];     // Slate 900 #0f172a
+  // Paleta de colores oficial MEP & 9.° año («Aula Inteligente»)
+  const COLOR_PRIMARY = [0, 51, 102];     // Azul Institucional MEP #003366
+  const COLOR_HEADER = [15, 23, 42];      // Slate 900 #0f172a
   const COLOR_PURPLE = [126, 34, 206];    // Purple 700 #7e22ce
-  const COLOR_PURPLE_LIGHT = [168, 85, 247]; // Purple 500 #a855f7
-  const COLOR_AMBER = [217, 119, 6];      // Amber 600 #d97706
-  const COLOR_EMERALD = [16, 185, 129];   // Emerald 500 #10b981
-  const COLOR_CYAN = [6, 182, 212];       // Cyan 500 #06b6d4
-  const COLOR_DARK = [15, 23, 42];        // Slate 900 #0f172a
-  const COLOR_MUTED = [100, 116, 139];    // Slate 500 #64748b
-  const COLOR_LIGHT_BG = [248, 250, 252]; // Slate 50 #f8fafc
-  const COLOR_BORDER = [226, 232, 240];   // Slate 200 #e2e8f0
+  const COLOR_PURPLE_DARK = [88, 28, 135]; // Purple 900 #581c87
+  const COLOR_EMERALD = [4, 120, 87];     // Emerald 700 #047857
+  const COLOR_AMBER = [180, 83, 9];       // Amber 700 #b45309
+  const COLOR_DARK = [15, 23, 42];        // Slate 900 (Texto principal)
+  const COLOR_MUTED = [71, 85, 105];      // Slate 600 (Texto secundario de alto contraste)
+  const COLOR_LIGHT_BG = [248, 250, 252]; // Slate 50 (Fondo tarjetas claras)
+  const COLOR_BORDER = [203, 213, 225];   // Slate 300 (Bordes definidos)
 
   function drawHeaderFooter(pageNum, totalPages, titleSection) {
-    // Top Bar
+    // Barra superior
     doc.setFillColor(...COLOR_PRIMARY);
-    doc.rect(0, 0, pageWidth, 6, 'F');
+    doc.rect(0, 0, pageWidth, 5, 'F');
     doc.setFillColor(...COLOR_PURPLE);
-    doc.rect(0, 6, pageWidth, 1.5, 'F');
+    doc.rect(0, 5, pageWidth, 1.5, 'F');
 
-    // Header Text
+    // Texto de cabecera
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(7.5);
-    doc.setTextColor(0, 51, 102); // MEP Blue
-    doc.text("MINISTERIO DE EDUCACIÓN PÚBLICA DE COSTA RICA • DRTE • PNFT 2027", margin, 12);
+    doc.setTextColor(...COLOR_PRIMARY);
+    doc.text("MINISTERIO DE EDUCACIÓN PÚBLICA DE COSTA RICA • DRTE • PNFT 2027", margin, 11.5);
     
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7);
     doc.setTextColor(...COLOR_MUTED);
-    doc.text(titleSection || "Guía Pedagógica y Dossier Técnico • 9° Año Aula Inteligente", pageWidth - margin, 12, { align: 'right' });
+    doc.text(titleSection || "Documento técnico oficial • Diagnóstico de 9.° año", pageWidth - margin, 11.5, { align: 'right' });
 
     doc.setDrawColor(...COLOR_BORDER);
     doc.setLineWidth(0.3);
-    doc.line(margin, 14, pageWidth - margin, 14);
+    doc.line(margin, 13.5, pageWidth - margin, 13.5);
 
-    // Footer Bar
+    // Barra inferior
     doc.setDrawColor(...COLOR_BORDER);
     doc.setLineWidth(0.3);
     doc.line(margin, pageHeight - 12, pageWidth - margin, pageHeight - 12);
@@ -58,7 +58,7 @@ function generarDossier9noPDF() {
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7);
     doc.setTextColor(...COLOR_MUTED);
-    doc.text("Evaluación Diagnóstica 9.° Año: Aula Inteligente y Sistemas Embebidos (Simulador 2D, LDR, MCU, DUA)", margin, pageHeight - 8);
+    doc.text("Evaluación diagnóstica de 9.° año: «Aula Inteligente», simulación 2D y sistemas embebidos (triada formativa)", margin, pageHeight - 8);
     doc.text(`Página ${pageNum} de ${totalPages}`, pageWidth - margin, pageHeight - 8, { align: 'right' });
   }
 
@@ -66,70 +66,70 @@ function generarDossier9noPDF() {
   // PÁGINA 1: PORTADA Y FUNDAMENTACIÓN PEDAGÓGICA DE 9.° AÑO
   // =========================================================================
   
-  // Header Banner
-  doc.setFillColor(...COLOR_PRIMARY);
+  // Banner de portada
+  doc.setFillColor(...COLOR_HEADER);
   doc.rect(0, 0, pageWidth, 58, 'F');
   doc.setFillColor(...COLOR_PURPLE);
   doc.rect(0, 58, pageWidth, 3, 'F');
 
-  // Badge Superior
-  doc.setFillColor(126, 34, 206, 0.25);
-  doc.roundedRect(margin, 10, 115, 7, 2, 2, 'F');
+  // Distintivo superior
+  doc.setFillColor(126, 34, 206);
+  doc.roundedRect(margin, 10, 120, 6.5, 1.5, 1.5, 'F');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8);
-  doc.setTextColor(192, 132, 252); // Purple 400
-  doc.text("PROGRAMA NACIONAL DE FORMACIÓN TECNOLÓGICA • MEP 2027", margin + 4, 15);
-
-  // Título Principal
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(18);
+  doc.setFontSize(7.5);
   doc.setTextColor(255, 255, 255);
-  doc.text("DIAGNÓSTICO 9.° AÑO: AULA INTELIGENTE", margin, 27);
-  doc.setFontSize(14);
-  doc.setTextColor(216, 180, 254); // Purple light
-  doc.text("GUÍA PEDAGÓGICA Y DOSSIER TÉCNICO OFICIAL", margin, 35);
+  doc.text("PROGRAMA NACIONAL DE FORMACIÓN TECNOLÓGICA • MEP 2027", margin + 4, 14.5);
+
+  // Título principal en formato gramatical hispanoamericano
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(16);
+  doc.setTextColor(255, 255, 255);
+  doc.text("Diagnóstico de 9.° año: Aula Inteligente", margin, 26);
+  doc.setFontSize(13);
+  doc.setTextColor(216, 180, 254); // Violeta claro
+  doc.text("Guía pedagógica y documento técnico oficial", margin, 34);
 
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8.5);
+  doc.setFontSize(8);
   doc.setTextColor(241, 245, 249);
-  doc.text("Evaluación Integral de Sistemas Embebidos: Simulador 2D de Circuitos, 10 Reactivos Cognitivos y Triada DUA", margin, 43);
-  doc.text("Arquitectura de Doble Código QR: Estudiante Autónomo + Docente Evaluador y Sistematizador Inmediato", margin, 49);
+  doc.text("Evaluación integral de sistemas embebidos: simulador 2D de circuitos, 10 reactivos cognitivos y triada DUA.", margin, 42);
+  doc.text("Arquitectura de doble código QR: estudiante autónomo y docente evaluador con sistematización en tiempo real.", margin, 48);
 
-  // Tarjeta de Metadatos
-  let yPos = 68;
+  // Tarjeta de Ficha Técnica
+  let yPos = 67;
   doc.setFillColor(...COLOR_LIGHT_BG);
   doc.setDrawColor(...COLOR_BORDER);
-  doc.roundedRect(margin, yPos, contentWidth, 32, 3, 3, 'FD');
+  doc.roundedRect(margin, yPos, contentWidth, 32, 2.5, 2.5, 'FD');
 
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8.5);
-  doc.setTextColor(0, 51, 102);
-  doc.text("FICHA TÉCNICA DEL RECURSO DIAGNÓSTICO (9.° AÑO)", margin + 6, yPos + 6);
+  doc.setTextColor(...COLOR_PRIMARY);
+  doc.text("Ficha técnica del recurso diagnóstico (9.° año)", margin + 6, yPos + 6);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7.5);
   doc.setTextColor(...COLOR_DARK);
-  doc.text("• Población Meta: Estudiantes de 9.° Año (Noveno de Secundaria / Cierre del Tercer Ciclo EGB).", margin + 6, yPos + 12);
-  doc.text("• Enfoque de la Misión: «Aula Inteligente» — Domótica, Sensores LDR, Microcontroladores y Redes IoT.", margin + 6, yPos + 17);
-  doc.text("• Componentes Evaluativos: Parte A (10 Ítems Cognitivos) + Parte B (Simulador 2D Circuitos) + Observación Docente.", margin + 6, yPos + 22);
-  doc.text("• Acceso Web en Producción: https://diagnosticosecundaria.vercel.app/diagnostico (Pestaña 9.° Año).", margin + 6, yPos + 27);
+  doc.text("• Población meta: Estudiantes de 9.° año (noveno de secundaria / cierre del Tercer Ciclo de la EGB).", margin + 6, yPos + 12);
+  doc.text("• Enfoque de la misión: «Aula Inteligente» — Domótica, sensores LDR, microcontroladores y lógica IoT.", margin + 6, yPos + 17);
+  doc.text("• Componentes evaluativos: Parte A (10 reactivos cognitivos) + Parte B (simulador 2D) + observación docente.", margin + 6, yPos + 22);
+  doc.text("• Acceso web en producción: https://diagnosticosecundaria.vercel.app/diagnostico (pestaña 9.° año).", margin + 6, yPos + 27);
 
-  // Fundamentación Pedagógica
-  yPos = 106;
+  // 1. Fundamentación Pedagógica
+  yPos = 105;
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10.5);
-  doc.setTextColor(0, 51, 102);
-  doc.text("1. FUNDAMENTACIÓN PEDAGÓGICA Y CURRICULAR DE 9.° AÑO", margin, yPos);
+  doc.setTextColor(...COLOR_PRIMARY);
+  doc.text("1. Fundamentación pedagógica y curricular de 9.° año", margin, yPos);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   doc.setTextColor(...COLOR_DARK);
   doc.text(
-    "El diagnóstico de 9.° Año representa la culminación del Tercer Ciclo en Formación Tecnológica. Integra los saberes de computación física, automatización y pensamiento computacional en un reto situado de «Aula Inteligente» que evalúa tres dimensiones de aprendizaje formativo:",
+    "El diagnóstico de 9.° año representa la culminación del Tercer Ciclo en Formación Tecnológica. Integra los saberes de computación física, automatización y pensamiento computacional en un reto situado de «Aula Inteligente» que evalúa tres dimensiones de aprendizaje formativo:",
     margin, yPos + 5, { maxWidth: contentWidth }
   );
 
-  yPos = 124;
+  yPos = 123;
   const colW = (contentWidth - 6) / 3;
 
   // Dimensión 1: Cognitiva
@@ -137,55 +137,55 @@ function generarDossier9noPDF() {
   doc.setDrawColor(216, 180, 254);
   doc.roundedRect(margin, yPos, colW, 46, 2, 2, 'FD');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8.5);
-  doc.setTextColor(107, 33, 168);
-  doc.text("💡 1. Dimensión Cognitiva", margin + 4, yPos + 7);
+  doc.setFontSize(8);
+  doc.setTextColor(...COLOR_PURPLE_DARK);
+  doc.text("1. Dimensión cognitiva", margin + 4, yPos + 7);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
-  doc.text("• Fuentes y conversión energética.", margin + 4, yPos + 13);
-  doc.text("• Circuitos, conductores y aislantes.", margin + 4, yPos + 20);
-  doc.text("• Ley de Ohm cualitativa y sensores LDR.", margin + 4, yPos + 27);
-  doc.text("• Microcontrolador y lógica si/entonces.", margin + 4, yPos + 34);
+  doc.text("• Fuentes y conversión energética.", margin + 4, yPos + 14);
+  doc.text("• Circuitos, conductores y aislantes.", margin + 4, yPos + 21);
+  doc.text("• Ley de Ohm cualitativa y sensores LDR.", margin + 4, yPos + 28);
+  doc.text("• Microcontrolador y lógica condicional.", margin + 4, yPos + 35);
 
   // Dimensión 2: Psicomotriz y Simulación 2D
   doc.setFillColor(236, 253, 245);
   doc.setDrawColor(167, 243, 208);
   doc.roundedRect(margin + colW + 3, yPos, colW, 46, 2, 2, 'FD');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8.5);
-  doc.setTextColor(4, 120, 87);
-  doc.text("🔌 2. Simulación 2D y Psicomotriz", margin + colW + 7, yPos + 7);
+  doc.setFontSize(8);
+  doc.setTextColor(...COLOR_EMERALD);
+  doc.text("2. Simulación 2D y psicomotriz", margin + colW + 7, yPos + 7);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
-  doc.text("• Conexionado interactivo en Protoboard.", margin + colW + 7, yPos + 13);
-  doc.text("• Cableado VCC 5V, GND, Pin A0 y D9.", margin + colW + 7, yPos + 20);
-  doc.text("• Prueba de iluminación y umbral lumínico.", margin + colW + 7, yPos + 27);
-  doc.text("• Destreza en interfaz y manipulación.", margin + colW + 7, yPos + 34);
+  doc.text("• Conexionado interactivo en protoboard.", margin + colW + 7, yPos + 14);
+  doc.text("• Cableado VCC 5V, GND, Pin A0 y D9.", margin + colW + 7, yPos + 21);
+  doc.text("• Prueba de iluminación y umbral lumínico.", margin + colW + 7, yPos + 28);
+  doc.text("• Destreza en interfaz y manipulación.", margin + colW + 7, yPos + 35);
 
   // Dimensión 3: Socioafectiva y Ética
   doc.setFillColor(254, 243, 199);
   doc.setDrawColor(253, 230, 138);
   doc.roundedRect(margin + (colW + 3) * 2, yPos, colW, 46, 2, 2, 'FD');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8.5);
-  doc.setTextColor(180, 83, 9);
-  doc.text("❤️ 3. Dimensión Socioafectiva", margin + (colW + 3) * 2 + 4, yPos + 7);
+  doc.setFontSize(8);
+  doc.setTextColor(...COLOR_AMBER);
+  doc.text("3. Dimensión socioafectiva", margin + (colW + 3) * 2 + 4, yPos + 7);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
-  doc.text("• Eficiencia energética y sostenibilidad.", margin + (colW + 3) * 2 + 4, yPos + 13);
-  doc.text("• Ciberseguridad y privacidad en IoT.", margin + (colW + 3) * 2 + 4, yPos + 20);
-  doc.text("• Resiliencia ante errores de circuito.", margin + (colW + 3) * 2 + 4, yPos + 27);
-  doc.text("• Colaboración y diálogo constructivo.", margin + (colW + 3) * 2 + 4, yPos + 34);
+  doc.text("• Eficiencia energética y sostenibilidad.", margin + (colW + 3) * 2 + 4, yPos + 14);
+  doc.text("• Ciberseguridad y privacidad en IoT.", margin + (colW + 3) * 2 + 4, yPos + 21);
+  doc.text("• Resiliencia ante errores de circuito.", margin + (colW + 3) * 2 + 4, yPos + 28);
+  doc.text("• Colaboración y diálogo constructivo.", margin + (colW + 3) * 2 + 4, yPos + 35);
 
-  // Arquitectura de Doble Código QR
-  yPos = 178;
+  // 2. Arquitectura de Doble Código QR
+  yPos = 177;
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10);
-  doc.setTextColor(0, 51, 102);
-  doc.text("2. ARQUITECTURA DE DOBLE CÓDIGO QR PARA RESILIENCIA OPERATIVA (OFFLINE-FIRST)", margin, yPos);
+  doc.setTextColor(...COLOR_PRIMARY);
+  doc.text("2. Arquitectura de doble código QR para resiliencia operativa (sin conexión)", margin, yPos);
 
   autoTable(doc, {
     startY: yPos + 3,
@@ -200,44 +200,44 @@ function generarDossier9noPDF() {
     bodyStyles: {
       fontSize: 7,
       textColor: COLOR_DARK,
-      cellPadding: 2
+      cellPadding: 2.2
     },
     columnStyles: {
-      0: { cellWidth: 32, fontStyle: 'bold' },
-      1: { cellWidth: 74 },
+      0: { cellWidth: 36, fontStyle: 'bold' },
+      1: { cellWidth: 72 },
       2: { cellWidth: 74 }
     },
-    head: [['Canal de Acceso', 'Función y Mecanismo en Pantalla', 'Beneficio Operativo en el Aula']],
+    head: [['Canal de acceso', 'Función y mecanismo en pantalla', 'Beneficio operativo en el aula']],
     body: [
-      ['📱 QR 1: Estudiante (Autónomo)', 'Abre la WebApp de Aula Inteligente con los 10 reactivos, simulador 2D y reflexión. Al finalizar genera su QR individual cifrado.', 'Permite que cada alumno trabaje a su propio ritmo sin requerir cuenta previa ni conexión a internet.'],
-      ['💻 QR 2: Docente (Evaluador)', 'Abre el aplicativo evaluador del profesor para configurar nómina, escanear QRs estudiantiles y registrar observación psicomotriz.', 'Consolida la sección en menos de 2 minutos y genera el acta oficial MEP al instante.'],
-      ['🔐 Cifrado SHA-256', 'Firma criptográfica incluida en el QR individual que garantiza la autenticidad e inmutabilidad de las respuestas.', 'Elimina fraudes o alteraciones de datos en entornos desconectados.'],
-      ['⚡ Modo Dual En Línea / Local', 'Transición transparente entre base de datos remota (cuando hay red) y almacenamiento local con escaneo QR (sin red).', 'Garantiza cobertura del 100% de centros educativos del país.']
+      ['Canal QR 1: Estudiante (autónomo)', 'Abre la WebApp de Aula Inteligente con los 10 reactivos, simulador 2D y reflexión. Al finalizar genera su QR individual cifrado.', 'Permite que cada alumno trabaje a su propio ritmo sin requerir cuenta previa ni conexión a internet.'],
+      ['Canal QR 2: Docente (evaluador)', 'Abre el aplicativo evaluador del profesor para configurar nómina, escanear códigos QR estudiantiles y registrar observación psicomotriz.', 'Consolida la sección en menos de 2 minutos y genera el acta oficial del MEP al instante.'],
+      ['Firma de seguridad SHA-256', 'Firma criptográfica incluida en el QR individual que garantiza la autenticidad e inmutabilidad de los resultados obtenidos.', 'Elimina fraudes o alteraciones de datos en entornos desconectados.'],
+      ['Modalidad dual (en línea / local)', 'Transición transparente entre base de datos remota (cuando hay red) y almacenamiento local con escaneo QR (sin red).', 'Garantiza cobertura del 100% de centros educativos del país.']
     ]
   });
 
-  drawHeaderFooter(1, 5, "Fundamentación y Arquitectura QR de 9.° Año");
+  drawHeaderFooter(1, 5, "Fundamentación y arquitectura QR de 9.° año");
 
   // =========================================================================
   // PÁGINA 2: LOS 10 REACTIVOS COGNITIVOS Y SIMULADOR 2D (9.° AÑO)
   // =========================================================================
   doc.addPage();
   
-  yPos = 20;
+  yPos = 19;
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(12);
-  doc.setTextColor(0, 51, 102);
-  doc.text("3. MATRIZ DE REACTIVOS COGNITIVOS Y SIMULADOR 2D (9.° AÑO)", margin, yPos);
+  doc.setFontSize(11);
+  doc.setTextColor(...COLOR_PRIMARY);
+  doc.text("3. Matriz de reactivos cognitivos y simulador 2D (9.° año)", margin, yPos);
 
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8.5);
+  doc.setFontSize(8);
   doc.setTextColor(...COLOR_DARK);
   doc.text(
-    "Estructura de la Parte A (Conocimientos Previos) y Parte B (Simulación Práctica 2D) del Diagnóstico de 9.° Año:",
-    margin, yPos + 6, { maxWidth: contentWidth }
+    "Estructura de la Parte A (conocimientos conceptuales) y Parte B (simulación práctica 2D) del diagnóstico de 9.° año:",
+    margin, yPos + 5, { maxWidth: contentWidth }
   );
 
-  yPos = 34;
+  yPos = 31;
 
   autoTable(doc, {
     startY: yPos,
@@ -255,49 +255,49 @@ function generarDossier9noPDF() {
       cellPadding: 1.8
     },
     columnStyles: {
-      0: { cellWidth: 14, fontStyle: 'bold', halign: 'center' },
+      0: { cellWidth: 16, fontStyle: 'bold', halign: 'center' },
       1: { cellWidth: 32, fontStyle: 'bold' },
       2: { cellWidth: 70 },
       3: { cellWidth: 64 }
     },
-    head: [['Reactivo', 'Saber Curricular', 'Descripción de la Situación Problema', 'Criterio de Evaluación']],
+    head: [['Reactivo', 'Saber curricular', 'Descripción de la situación problema', 'Criterio de evaluación']],
     body: [
-      ['Ítem 1', 'Energía y Conversión', 'Transformación de energía solar a eléctrica y cinética en actuadores.', 'Logrado: Reconoce principio de conservación.'],
-      ['Ítem 2', 'Circuito Eléctrico Simple', 'Función de fuente, interruptor, carga/actuador y trayectoria cerrada.', 'Logrado: Identifica los 3 componentes esenciales.'],
-      ['Ítem 3', 'Conductores y Aislantes', 'Materiales conductores (cobre, aluminio) vs aislantes (goma, plástico).', 'Logrado: Selecciona materiales seguros.'],
-      ['Ítem 4', 'Ley de Ohm Cualitativa', 'Relación entre voltaje, corriente y resistencia ante cambios de carga.', 'Logrado: Comprende la oposición al paso de corriente.'],
-      ['Ítem 5', 'Polaridad de Componentes', 'Orientación de ánodo/cátodo en diodos LED y conexionado de servos.', 'Logrado: Identifica patilla larga/corta y polaridad.'],
-      ['Ítem 6', 'Sensor de Luz (LDR)', 'Comportamiento de la fotocélula: resistencia disminuye con luz ambiental.', 'Logrado: Deduce variación analógica de la LDR.'],
-      ['Ítem 7', 'Microcontrolador / MCU', 'El microcontrolador como unidad central de procesamiento embebida.', 'Logrado: Distingue MCU de sensores y actuadores.'],
-      ['Ítem 8', 'Control Algorítmico', 'Estructura condicional `SI (luz < umbral) ENTONCES encender_luz`.', 'Logrado: Formula la regla de automatización.'],
-      ['Ítem 9', 'Prevención Cortocircuitos', 'Detección de conexión directa VCC-GND sin resistencia limitadora.', 'Logrado: Reconoce el peligro y corrige cableado.'],
-      ['Ítem 10', 'Seguridad y Orden', 'Protocolo de desenergización antes de modificar conexiones físicas.', 'Logrado: Cumple la norma de seguridad en taller.'],
-      ['Simulador 2D', 'Conexionado Protoboard', 'Cableado virtual en Canvas: VCC 5V, GND, Pin A0 (LDR) y Pin D9 (LED).', 'Logrado: 4/4 conexiones correctas + test funcional.']
+      ['Ítem 1', 'Energía y conversión', 'Transformación de energía solar a eléctrica y cinética en actuadores.', 'Logrado: Reconoce principio de conservación.'],
+      ['Ítem 2', 'Circuito eléctrico simple', 'Función de fuente, interruptor, carga o actuador y trayectoria cerrada.', 'Logrado: Identifica los 3 componentes esenciales.'],
+      ['Ítem 3', 'Conductores y aislantes', 'Materiales conductores (cobre, aluminio) frente a aislantes (goma, plástico).', 'Logrado: Selecciona materiales seguros.'],
+      ['Ítem 4', 'Ley de Ohm cualitativa', 'Relación entre voltaje, corriente y resistencia ante variaciones de carga.', 'Logrado: Comprende la oposición al paso de corriente.'],
+      ['Ítem 5', 'Polaridad de componentes', 'Orientación de ánodo y cátodo en diodos LED y conexionado de servomotores.', 'Logrado: Identifica terminales y polaridad.'],
+      ['Ítem 6', 'Sensor de luz (LDR)', 'Comportamiento de la fotocélula: la resistencia disminuye con mayor luz ambiental.', 'Logrado: Deduce variación analógica de la LDR.'],
+      ['Ítem 7', 'Microcontrolador (MCU)', 'El microcontrolador como unidad central de procesamiento embebida.', 'Logrado: Distingue MCU de sensores y actuadores.'],
+      ['Ítem 8', 'Control algorítmico', 'Estructura condicional lógica: Si (luz < umbral) entonces encender actuador.', 'Logrado: Formula la regla de automatización.'],
+      ['Ítem 9', 'Prevención cortocircuitos', 'Detección de conexión directa VCC-GND sin resistencia limitadora.', 'Logrado: Reconoce el peligro y corrige el cableado.'],
+      ['Ítem 10', 'Seguridad y orden técnico', 'Protocolo de desenergización antes de modificar conexiones físicas.', 'Logrado: Cumple la norma de seguridad en el taller.'],
+      ['Simulador 2D', 'Conexionado en protoboard', 'Cableado virtual en simulador: VCC 5V, GND, Pin A0 (LDR) y Pin D9 (LED).', 'Logrado: 4/4 conexiones correctas y prueba funcional.']
     ]
   });
 
-  drawHeaderFooter(2, 5, "Reactivos y Simulador 2D de 9.° Año");
+  drawHeaderFooter(2, 5, "Reactivos y simulador 2D de 9.° año");
 
   // =========================================================================
   // PÁGINA 3: RÚBRICAS OFICIALES DOCENTES (9.° AÑO)
   // =========================================================================
   doc.addPage();
   
-  yPos = 20;
+  yPos = 19;
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(12);
-  doc.setTextColor(0, 51, 102);
-  doc.text("4. RÚBRICAS OFICIALES DOCENTES: DIMENSIÓN PSICOMOTRIZ Y SOCIOAFECTIVA (9.°)", margin, yPos);
+  doc.setFontSize(11);
+  doc.setTextColor(...COLOR_PRIMARY);
+  doc.text("4. Rúbricas oficiales docentes: dimensión psicomotriz y socioafectiva (9.° año)", margin, yPos);
 
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8.5);
+  doc.setFontSize(8);
   doc.setTextColor(...COLOR_DARK);
   doc.text(
-    "Indicadores de observación directa evaluados por el docente durante la sesión de laboratorio de 9.° Año:",
-    margin, yPos + 6, { maxWidth: contentWidth }
+    "Indicadores de observación directa evaluados por el docente durante la sesión de laboratorio de 9.° año:",
+    margin, yPos + 5, { maxWidth: contentWidth }
   );
 
-  yPos = 34;
+  yPos = 31;
 
   autoTable(doc, {
     startY: yPos,
@@ -320,70 +320,70 @@ function generarDossier9noPDF() {
       2: { cellWidth: 68 },
       3: { cellWidth: 68 }
     },
-    head: [['Cód.', 'Criterio Observado', 'Conducta Observable en 9.° Año', 'Escala Formativa Oficial MEP']],
+    head: [['Cód.', 'Criterio observado', 'Conducta observable en 9.° año', 'Escala formativa oficial del MEP']],
     body: [
-      // Psicomotora
-      ['P1', 'Manipulación de Protoboard', 'Inserta y retira componentes y jumpers en la placa de pruebas con motricidad fina y sin doblar pines.', 'Nivel A: Precisión y destreza ergonómica\nNivel B: Inserción adecuada con lentitud\nNivel C: Fuerza excesiva o deformación de pines'],
-      ['P2', 'Conexionado de Terminales', 'Identifica y vincula con exactitud los terminales VCC, GND y Pines Analógicos/Digitales del MCU.', 'Nivel A: Cableado exacto y ordenado\nNivel B: Corrige terminal con verificación\nNivel C: Confunde líneas de polaridad'],
-      ['P3', 'Calibración de Sensores', 'Ajusta el potenciómetro o umbral lumínico observando la respuesta en tiempo real del actuador.', 'Nivel A: Calibración precisa y sistemática\nNivel B: Calibra por ensayo y error\nNivel C: Dificultad para ajustar el umbral'],
+      // Psicomotriz
+      ['P1', 'Manipulación de protoboard', 'Inserta y retira componentes y cables en la placa de pruebas con motricidad fina y sin doblar pines.', 'Nivel A: Precisión y destreza ergonómica\nNivel B: Inserción adecuada con lentitud\nNivel C: Fuerza excesiva o deformación de pines'],
+      ['P2', 'Conexionado de terminales', 'Identifica y vincula con exactitud los terminales VCC, GND y Pines Analógicos/Digitales del MCU.', 'Nivel A: Cableado exacto y ordenado\nNivel B: Corrige terminal con verificación\nNivel C: Confunde líneas de polaridad'],
+      ['P3', 'Calibración de sensores', 'Ajusta el potenciómetro o umbral lumínico observando la respuesta en tiempo real del actuador.', 'Nivel A: Calibración precisa y sistemática\nNivel B: Calibra por ensayo y error\nNivel C: Dificultad para ajustar el umbral'],
       // Socioafectiva
-      ['S1', 'Conciencia de Eficiencia', 'Valora el impacto de la automatización en el ahorro energético de la institución y el medio ambiente.', 'Nivel A: Reflexión crítica y propositiva\nNivel B: Reconoce el ahorro básico\nNivel C: Desinterés por el impacto energético'],
-      ['S2', 'Ética y Privacidad en IoT', 'Reconoce la importancia de proteger datos y sensores en redes interconectadas frente a vulnerabilidades.', 'Nivel A: Alto criterio de ciberseguridad\nNivel B: Noción elemental de privacidad\nNivel C: Descuido en la seguridad de red'],
-      ['S3', 'Resiliencia ante Fallos', 'Depura con serenidad y método lógico los errores de cableado o umbrales sin mostrar frustración.', 'Nivel A: Análisis constructivo del error\nNivel B: Requiere orientación docente\nNivel C: Abandono de la actividad ante fallas'],
-      ['S4', 'Colaboración en Taller', 'Comparte herramientas de laboratorio, apoya solidariamente a sus compañeros y cuida el material.', 'Nivel A: Solidaridad y trabajo en equipo\nNivel B: Participación individualista\nNivel C: Conflictos en la mesa de trabajo']
+      ['S1', 'Conciencia de eficiencia', 'Valora el impacto de la automatización en el ahorro energético de la institución y el medio ambiente.', 'Nivel A: Reflexión crítica y propositiva\nNivel B: Reconoce el ahorro básico\nNivel C: Desinterés por el impacto energético'],
+      ['S2', 'Ética y privacidad en IoT', 'Reconoce la importancia de proteger datos y sensores en redes interconectadas frente a vulnerabilidades.', 'Nivel A: Alto criterio de ciberseguridad\nNivel B: Noción elemental de privacidad\nNivel C: Descuido en la seguridad de red'],
+      ['S3', 'Resiliencia ante fallos', 'Depura con serenidad y método lógico los errores de cableado o umbrales sin mostrar frustración.', 'Nivel A: Análisis constructivo del error\nNivel B: Requiere orientación docente\nNivel C: Abandono de la actividad ante fallas'],
+      ['S4', 'Colaboración en taller', 'Comparte herramientas de laboratorio, apoya solidariamente a sus compañeros y cuida el material.', 'Nivel A: Solidaridad y trabajo en equipo\nNivel B: Participación individualista\nNivel C: Conflictos en la mesa de trabajo']
     ]
   });
 
   // Metacognición Parte C
   yPos = doc.lastAutoTable.finalY + 6;
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(9.5);
-  doc.setTextColor(0, 51, 102);
-  doc.text("PARTE C: REFLEXIÓN METACOGNITIVA DEL ESTUDIANTE (9.° AÑO)", margin, yPos);
+  doc.setFontSize(9);
+  doc.setTextColor(...COLOR_PRIMARY);
+  doc.text("Parte C: Reflexión metacognitiva del estudiante (9.° año)", margin, yPos);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7.5);
   doc.setTextColor(...COLOR_DARK);
   doc.text(
     "Al finalizar la prueba, el estudiante responde 3 preguntas abiertas de autoevaluación: 1) ¿Qué reto fue más complejo en el conexionado? • " +
-    "2) ¿Cómo resolvió las dudas o fallos? • 3) ¿Cómo aplicaría un sistema de aula inteligente en su propio colegio? Estas reflexiones se incorporan al reporte docente.",
+    "2) ¿Cómo resolvió las dudas o fallos técnicos? • 3) ¿Cómo aplicaría un sistema de aula inteligente en su propio colegio? Estas reflexiones se integran al reporte docente.",
     margin, yPos + 4, { maxWidth: contentWidth }
   );
 
-  drawHeaderFooter(3, 5, "Rúbricas Psicomotrices y Socioafectivas de 9.° Año");
+  drawHeaderFooter(3, 5, "Rúbricas psicomotrices y socioafectivas de 9.° año");
 
   // =========================================================================
   // PÁGINA 4: EL INSTRUMENTO DOCENTE EVALUADOR Y SISTEMATIZACIÓN (9.° AÑO)
   // =========================================================================
   doc.addPage();
   
-  yPos = 20;
+  yPos = 19;
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(12);
-  doc.setTextColor(0, 51, 102);
-  doc.text("5. EL INSTRUMENTO DOCENTE EVALUADOR Y SISTEMATIZADOR DE 9.° AÑO", margin, yPos);
+  doc.setFontSize(11);
+  doc.setTextColor(...COLOR_PRIMARY);
+  doc.text("5. El instrumento docente evaluador y sistematizador de 9.° año", margin, yPos);
 
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8.5);
+  doc.setFontSize(8);
   doc.setTextColor(...COLOR_DARK);
   doc.text(
-    "El aplicativo del docente para 9.° Año integra un potente sistematizador grupal que procesa nóminas completas con escaneo QR y telemetría en la nube:",
-    margin, yPos + 6, { maxWidth: contentWidth }
+    "El aplicativo del docente para 9.° año integra un potente sistematizador grupal que procesa nóminas completas con escaneo QR y telemetría centralizada:",
+    margin, yPos + 5, { maxWidth: contentWidth }
   );
 
-  yPos = 36;
+  yPos = 33;
   const cardW = (contentWidth - 4) / 2;
 
-  // Card 1
-  doc.setFillColor(248, 250, 252);
+  // Card 1: Nómina Dinámica
+  doc.setFillColor(...COLOR_LIGHT_BG);
   doc.setDrawColor(...COLOR_BORDER);
   doc.roundedRect(margin, yPos, cardW, 36, 2, 2, 'FD');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8.5);
-  doc.setTextColor(0, 51, 102);
-  doc.text("📊 NÓMINA DINÁMICA POR SECCIONES", margin + 4, yPos + 6);
+  doc.setFontSize(8);
+  doc.setTextColor(...COLOR_PRIMARY);
+  doc.text("1. Nómina dinámica por secciones", margin + 4, yPos + 6);
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(7.5);
+  doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
   doc.text("• Carga ágil de nómina de estudiantes (9-1 a 9-20).", margin + 4, yPos + 12);
   doc.text("• Asistente de primer ingreso y configuración rápida.", margin + 4, yPos + 17);
@@ -391,58 +391,64 @@ function generarDossier9noPDF() {
   doc.text("• Marcado directo de indicadores psicomotores.", margin + 4, yPos + 27);
   doc.text("• Almacenamiento local blindado sin fugas de datos.", margin + 4, yPos + 32);
 
-  // Card 2
+  // Card 2: Sistematización Grupal
+  doc.setFillColor(...COLOR_LIGHT_BG);
+  doc.setDrawColor(...COLOR_BORDER);
   doc.roundedRect(margin + cardW + 4, yPos, cardW, 36, 2, 2, 'FD');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8.5);
-  doc.setTextColor(0, 51, 102);
-  doc.text("📑 SISTEMATIZACIÓN GRUPAL INMEDIATA", margin + cardW + 8, yPos + 6);
+  doc.setFontSize(8);
+  doc.setTextColor(...COLOR_PRIMARY);
+  doc.text("2. Sistematización grupal inmediata", margin + cardW + 8, yPos + 6);
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(7.5);
+  doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
-  doc.text("• Semáforos de logro grupal por cada uno de los 10 reactivos.", margin + cardW + 8, yPos + 12);
-  doc.text("• Consolidado tripartito: Cognitivo, Circuito y Actitudinal.", margin + cardW + 8, yPos + 17);
-  doc.text("• Generación de código QR con el reporte grupal.", margin + cardW + 8, yPos + 22);
-  doc.text("• Exportación a Excel (.xlsx) oficial compatible con MEP.", margin + cardW + 8, yPos + 27);
-  doc.text("• Generación de informe PDF para supervisión curricular.", margin + cardW + 8, yPos + 32);
+  doc.text("• Cálculo instantáneo de porcentajes de logro (L / ED / RA).", margin + cardW + 8, yPos + 12);
+  doc.text("• Consolidado tripartito de la triada formativa oficial.", margin + cardW + 8, yPos + 17);
+  doc.text("• Exportación de actas completas en formatos CSV y Excel.", margin + cardW + 8, yPos + 22);
+  doc.text("• Generación de PDF institucional con sello del MEP.", margin + cardW + 8, yPos + 27);
+  doc.text("• Respaldo local y recuperación de registros previos.", margin + cardW + 8, yPos + 32);
 
-  // Card 3
-  yPos = 76;
+  // Card 3: Monitoreo en Tiempo Real
+  yPos = 73;
+  doc.setFillColor(...COLOR_LIGHT_BG);
+  doc.setDrawColor(...COLOR_BORDER);
   doc.roundedRect(margin, yPos, cardW, 36, 2, 2, 'FD');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8.5);
-  doc.setTextColor(0, 51, 102);
-  doc.text("📱 APLICACIÓN PWA INSTALABLE", margin + 4, yPos + 6);
+  doc.setFontSize(8);
+  doc.setTextColor(...COLOR_PRIMARY);
+  doc.text("3. Monitoreo en tiempo real (Telemetría)", margin + 4, yPos + 6);
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(7.5);
+  doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
-  doc.text("• Puede instalarse como App de escritorio o móvil.", margin + 4, yPos + 12);
-  doc.text("• Guía interactiva paso a paso por Sistema Operativo.", margin + 4, yPos + 17);
-  doc.text("• Funciona al 100% sin conexión a internet.", margin + 4, yPos + 22);
-  doc.text("• Icono directo en el escritorio del docente.", margin + 4, yPos + 27);
-  doc.text("• Cero consumo de datos móviles en el taller.", margin + 4, yPos + 32);
+  doc.text("• Recepción instantánea (0 ms) de entregas estudiantiles.", margin + 4, yPos + 12);
+  doc.text("• Módulo de validación antifraude con token criptográfico.", margin + 4, yPos + 17);
+  doc.text("• Identificación de reactivos con mayor índice de error.", margin + 4, yPos + 22);
+  doc.text("• Análisis comparativo entre secciones de 9.° año.", margin + 4, yPos + 27);
+  doc.text("• Sincronización transparente con base de datos en la nube.", margin + 4, yPos + 32);
 
-  // Card 4
+  // Card 4: Decisiones Pedagógicas y DUA
+  doc.setFillColor(...COLOR_LIGHT_BG);
+  doc.setDrawColor(...COLOR_BORDER);
   doc.roundedRect(margin + cardW + 4, yPos, cardW, 36, 2, 2, 'FD');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8.5);
-  doc.setTextColor(0, 51, 102);
-  doc.text("✨ TELEMETRÍA Y SEGURIDAD MULTI-TENANT", margin + cardW + 8, yPos + 6);
+  doc.setFontSize(8);
+  doc.setTextColor(...COLOR_PRIMARY);
+  doc.text("4. Decisiones pedagógicas y DUA", margin + cardW + 8, yPos + 6);
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(7.5);
+  doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
-  doc.text("• Aislamiento estricto por cuenta y cédula docente.", margin + cardW + 8, yPos + 12);
-  doc.text("• Sincronización transparente con el Dashboard central.", margin + cardW + 8, yPos + 17);
-  doc.text("• Verificación criptográfica SHA-256 en cada envío.", margin + cardW + 8, yPos + 22);
-  doc.text("• Registro histórico en base de datos para auditoría.", margin + cardW + 8, yPos + 27);
-  doc.text("• Asistente pedagógico con resiliencia en cascada.", margin + cardW + 8, yPos + 32);
+  doc.text("• Matriz de 6 criterios oficiales de decisión docente.", margin + cardW + 8, yPos + 12);
+  doc.text("• Estrategias de mediación diferenciada según brechas.", margin + cardW + 8, yPos + 17);
+  doc.text("• Ajustes metodológicos para el planeamiento didáctico.", margin + cardW + 8, yPos + 22);
+  doc.text("• Asistente IA multi-proveedor (Gemini, Groq, Qwen).", margin + cardW + 8, yPos + 27);
+  doc.text("• Resumen ejecutivo para comités de evaluación.", margin + cardW + 8, yPos + 32);
 
-  // Flujo Operativo
-  yPos = 118;
+  // 6. Comparativa Operativa
+  yPos = 114;
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10);
-  doc.setTextColor(0, 51, 102);
-  doc.text("6. FLUJO OPERATIVO DEL DIAGNÓSTICO DE 9.° AÑO", margin, yPos);
+  doc.setTextColor(...COLOR_PRIMARY);
+  doc.text("6. Comparativa operativa: en línea frente a sin conexión (QR)", margin, yPos);
 
   autoTable(doc, {
     startY: yPos + 3,
@@ -456,40 +462,41 @@ function generarDossier9noPDF() {
     },
     bodyStyles: {
       fontSize: 7,
-      textColor: COLOR_DARK
+      textColor: COLOR_DARK,
+      cellPadding: 2
     },
-    head: [['Fase', 'Acción Estudiante (WebApp 9°)', 'Acción Docente (Evaluador 9°)']],
+    head: [['Dimensión operativa', 'Modalidad en línea (con internet)', 'Modalidad sin conexión (desconectada / QR)']],
     body: [
-      ['1. Ingreso', 'Abre el QR 1 o archivo local en su PC.', 'Abre el QR 2 o Evaluador en su computadora/móvil.'],
-      ['2. Resolución', 'Responde 10 reactivos y conecta el simulador 2D.', 'Observa destreza psicomotriz y registro actitudinal.'],
-      ['3. QR Individual', 'Genera comprobante con QR cifrado localmente.', 'Activa el escáner QR de su aplicativo evaluador.'],
-      ['4. Escaneo', 'Muestra el QR en su pantalla o celular.', 'Escanea los QRs de cada estudiante de la sección.'],
-      ['5. Acta Final', 'Guarda comprobante o portafolio personal.', 'Genera la Sistematización Grupal y exporta a Excel/PDF.']
+      ['Requisitos de red', 'Conexión a internet estable en el laboratorio.', 'Cero conexión a internet requerida (100% local).'],
+      ['Ejecución estudiantil', 'Abre la WebApp en línea desde el navegador.', 'Abre el archivo autónomo .html desde red local o USB.'],
+      ['Transmisión de datos', 'Envío automático por telemetría a la base de datos.', 'Generación de código QR cifrado en pantalla al finalizar.'],
+      ['Consolidación docente', 'Los resultados aparecen al instante en el panel.', 'El docente escanea los códigos QR con su cámara.'],
+      ['Seguridad de datos', 'Tokens seguros y aislamiento por cuenta docente.', 'Firma criptográfica SHA-256 en cada código QR.']
     ]
   });
 
-  drawHeaderFooter(4, 5, "Instrumento Docente y Sistematización de 9.° Año");
+  drawHeaderFooter(4, 5, "Instrumento docente y sistematización de 9.° año");
 
   // =========================================================================
   // PÁGINA 5: PROTOCOLO DE APLICACIÓN EN AULA Y ENLACES OFICIALES
   // =========================================================================
   doc.addPage();
   
-  yPos = 20;
+  yPos = 19;
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(12);
-  doc.setTextColor(0, 51, 102);
-  doc.text("7. PROTOCOLO DE APLICACIÓN EN EL AULA / TALLER DE 9.° AÑO", margin, yPos);
+  doc.setFontSize(11);
+  doc.setTextColor(...COLOR_PRIMARY);
+  doc.text("7. Protocolo de aplicación en el aula o laboratorio de 9.° año", margin, yPos);
 
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8.5);
+  doc.setFontSize(8);
   doc.setTextColor(...COLOR_DARK);
   doc.text(
-    "Orientaciones prácticas para docentes y asesores para la aplicación de Aula Inteligente 9°:",
-    margin, yPos + 6, { maxWidth: contentWidth }
+    "Guía paso a paso para la mediación diagnóstica durante las primeras semanas del ciclo escolar:",
+    margin, yPos + 5, { maxWidth: contentWidth }
   );
 
-  yPos = 34;
+  yPos = 31;
 
   autoTable(doc, {
     startY: yPos,
@@ -504,43 +511,43 @@ function generarDossier9noPDF() {
     bodyStyles: {
       fontSize: 7,
       textColor: COLOR_DARK,
-      cellPadding: 2.5
+      cellPadding: 2.2
     },
     columnStyles: {
-      0: { cellWidth: 28, fontStyle: 'bold' },
-      1: { cellWidth: 72 },
-      2: { cellWidth: 80 }
+      0: { cellWidth: 30, fontStyle: 'bold' },
+      1: { cellWidth: 74 },
+      2: { cellWidth: 78 }
     },
-    head: [['Fase de Aplicación', 'Acciones del Docente en el Laboratorio', 'Acciones de las Personas Estudiantes']],
+    head: [['Fase de aplicación', 'Acciones del docente en el aula', 'Acciones de las personas estudiantes']],
     body: [
       [
-        'Fase 1: Ambientación\n(5 a 10 min)',
-        '• Plantear el reto de «Aula Inteligente» y ahorro energético.\n• Proyectar el QR 1 o facilitar el enlace web / archivo local.',
-        '• Acceder al instrumento desde su equipo.\n• Ingresar nombre, cédula y seleccionar sección (ej. 9-1).'
+        'Fase 1: Inducción\n(5 a 10 min)',
+        '• Explicar el propósito formativo de «Aula Inteligente».\n• Proyectar el enlace web o distribuir el archivo autónomo.',
+        '• Ingresar a la WebApp desde sus equipos de cómputo.\n• Ingresar nombre completo, cédula y sección (ej. 9-1).'
       ],
       [
-        'Fase 2: Reto Cognitivo y Circuito\n(25 a 35 min)',
-        '• Circular por el taller observando el conexionado en pantalla.\n• Evaluar el manejo ergonómico y el cumplimiento de normas.',
-        '• Resolver los 10 reactivos interactivos.\n• Realizar el cableado virtual en el simulador 2D de Protoboard.'
+        'Fase 2: Ejecución\n(25 a 35 min)',
+        '• Observar la manipulación del simulador 2D y protoboard.\n• Calificar indicadores psicomotores en la rúbrica docente.',
+        '• Responder 10 reactivos cognitivos (Parte A).\n• Realizar el cableado en el simulador 2D (Parte B).'
       ],
       [
-        'Fase 3: Reflexión y Escaneo\n(10 min)',
-        '• Escanear los QRs de los estudiantes con la cámara del dispositivo.\n• Verificar que todas las filas de la nómina queden registradas.',
-        '• Responder las 3 preguntas metacognitivas de la Parte C.\n• Proyectar su código QR individual para el registro docente.'
+        'Fase 3: Reflexión\n(10 min)',
+        '• Guiar la reflexión sobre eficiencia energética y domótica.\n• Verificar recepción de telemetría o escanear códigos QR.',
+        '• Responder las 3 preguntas metacognitivas (Parte C).\n• Presentar su código QR o comprobante digital final.'
       ],
       [
-        'Fase 4: Sistematización\n(Posterior a la clase)',
-        '• Analizar los semáforos de logro de la sección de 9°.\n• Descargar el acta oficial en Excel y el informe pedagógico.',
-        '• Conservar copia de su comprobante digital o imprimir insignia.'
+        'Fase 4: Toma de decisiones\n(Posterior a la clase)',
+        '• Consultar la matriz de decisiones en el panel central.\n• Aplicar mediación pedagógica diferenciada según brechas.',
+        '• Participar en las actividades de nivelación o retos avanzados programados por el docente.'
       ]
     ]
   });
 
-  yPos = doc.lastAutoTable.finalY + 8;
+  yPos = doc.lastAutoTable.finalY + 7;
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10);
-  doc.setTextColor(0, 51, 102);
-  doc.text("8. ENLACES OFICIALES Y ACCESOS EN PRODUCCIÓN (9.° AÑO)", margin, yPos);
+  doc.setTextColor(...COLOR_PRIMARY);
+  doc.text("8. Enlaces oficiales y accesos en producción (9.° año)", margin, yPos);
 
   autoTable(doc, {
     startY: yPos + 3,
@@ -549,52 +556,52 @@ function generarDossier9noPDF() {
     headStyles: {
       fillColor: COLOR_PRIMARY,
       textColor: [255, 255, 255],
-      fontSize: 8,
+      fontSize: 7.5,
       fontStyle: 'bold'
     },
     bodyStyles: {
-      fontSize: 7.5,
+      fontSize: 7,
       textColor: COLOR_DARK,
-      cellPadding: 2.2
+      cellPadding: 2
     },
     columnStyles: {
-      0: { cellWidth: 50, fontStyle: 'bold' },
+      0: { cellWidth: 52, fontStyle: 'bold' },
       1: { cellWidth: 90 },
       2: { cellWidth: 40, halign: 'center' }
     },
-    head: [['Recurso de 9.° Año', 'URL Oficial en Producción', 'Modo de Acceso']],
+    head: [['Recurso de 9.° año', 'URL oficial en producción', 'Modo de acceso']],
     body: [
-      ['Portal Multi-Nivel MEP', 'https://diagnosticosecundaria.vercel.app/diagnostico', 'En Línea (Pestaña 9°)'],
-      ['WebApp Aula Inteligente 9° (En Línea)', 'https://diagnosticosecundaria.vercel.app/webapps/diagnostico_9no_modulo01_en_linea.html', 'En Línea / Telemetría'],
-      ['WebApp Aula Inteligente 9° (Offline)', 'https://diagnosticosecundaria.vercel.app/webapps/diagnostico_9no_modulo01_desconectado_offline.html', 'Desconectado / Local (QR)'],
-      ['Evaluador Docente 9° Año', 'https://diagnosticosecundaria.vercel.app/webapps/diagnostico_9no_modulo01_docente_evaluador.html', 'En Línea / Escáner QR'],
-      ['Dashboard de Telemetría', 'https://diagnosticosecundaria.vercel.app/dashboard', 'Monitoreo Global'],
-      ['Guía Pedagógica Oficial 9° (PDF)', 'https://diagnosticosecundaria.vercel.app/docs/GUIA_PEDAGOGICA_DIAGNOSTICO_9NO_MEP.pdf', 'Descarga Oficial']
+      ['Portal multi-nivel MEP', 'https://diagnosticosecundaria.vercel.app/diagnostico', 'En línea (pestaña 9.°)'],
+      ['WebApp estudiante 9.° (en línea)', 'https://diagnosticosecundaria.vercel.app/webapps/diagnostico_9no_modulo01_en_linea.html', 'En línea / Telemetría'],
+      ['WebApp estudiante 9.° (offline)', 'https://diagnosticosecundaria.vercel.app/webapps/diagnostico_9no_modulo01_desconectado_offline.html', 'Desconectado / Local (QR)'],
+      ['Evaluador docente 9.° año', 'https://diagnosticosecundaria.vercel.app/webapps/diagnostico_9no_modulo01_docente_evaluador.html', 'En línea / Escáner QR'],
+      ['Panel central de telemetría', 'https://diagnosticosecundaria.vercel.app/dashboard', 'Monitoreo global'],
+      ['Guía pedagógica oficial 9.° (PDF)', 'https://diagnosticosecundaria.vercel.app/docs/GUIA_PEDAGOGICA_DIAGNOSTICO_9NO_MEP.pdf', 'Descarga oficial']
     ]
   });
 
-  yPos = doc.lastAutoTable.finalY + 8;
+  yPos = doc.lastAutoTable.finalY + 7;
 
-  // Cierre Institucional
+  // Cierre institucional
   doc.setFillColor(...COLOR_LIGHT_BG);
-  doc.setDrawColor(0, 51, 102);
+  doc.setDrawColor(...COLOR_PRIMARY);
   doc.setLineWidth(0.5);
-  doc.roundedRect(margin, yPos, contentWidth, 24, 2, 2, 'FD');
+  doc.roundedRect(margin, yPos, contentWidth, 22, 2, 2, 'FD');
 
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8.5);
-  doc.setTextColor(0, 51, 102);
+  doc.setFontSize(8);
+  doc.setTextColor(...COLOR_PRIMARY);
   doc.text("MINISTERIO DE EDUCACIÓN PÚBLICA DE COSTA RICA • DRTE • PNFT", margin + 4, yPos + 6);
   
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7.5);
   doc.setTextColor(...COLOR_DARK);
-  doc.text("Guía Pedagógica y Dossier Técnico Oficial de 9.° Año para Asesorías y Equipos Docentes.", margin + 4, yPos + 11);
+  doc.text("Guía pedagógica y documento técnico oficial de 9.° año para asesorías y equipos docentes.", margin + 4, yPos + 11);
   doc.setFont('helvetica', 'bold');
-  doc.setTextColor(126, 34, 206);
-  doc.text("Ecosistema de Formación Tecnológica • Ciclo Lectivo 2027", margin + 4, yPos + 18);
+  doc.setTextColor(...COLOR_PURPLE);
+  doc.text("Ecosistema de Formación Tecnológica • Ciclo Lectivo 2027", margin + 4, yPos + 17);
 
-  drawHeaderFooter(5, 5, "Protocolo de Aplicación y Enlaces Oficiales (9°)");
+  drawHeaderFooter(5, 5, "Protocolo de aplicación y enlaces oficiales (9.° año)");
 
   return doc;
 }
@@ -607,23 +614,11 @@ if (!fs.existsSync(outputDirDocs)) fs.mkdirSync(outputDirDocs, { recursive: true
 if (!fs.existsSync(outputDirDocumentos)) fs.mkdirSync(outputDirDocumentos, { recursive: true });
 
 const outputPathGuia = path.join(outputDirDocs, 'GUIA_PEDAGOGICA_DIAGNOSTICO_9NO_MEP.pdf');
-const outputPathDossier = path.join(outputDirDocumentos, 'Dossier_Diagnostico_MEP_9no_Aula_Inteligente.pdf');
+const outputPathDocTecnico = path.join(outputDirDocumentos, 'Documento_Tecnico_Pedagogico_MEP_9no_Domotica.pdf');
 
-const doc = generarDossier9noPDF();
+const doc = generarDocumento9noPDF();
 const pdfBuffer = Buffer.from(doc.output('arraybuffer'));
 
 fs.writeFileSync(outputPathGuia, pdfBuffer);
-fs.writeFileSync(outputPathDossier, pdfBuffer);
-console.log(`✅ PDF de 9no guardado con éxito en: \n - ${outputPathGuia}\n - ${outputPathDossier}`);
-
-// 2. Guardar en artifacts dir si aplica
-const artifactsDir = 'C:\\Users\\curio\\.gemini\\antigravity\\brain\\8ebb4f86-4fbc-4c47-a30f-5353796bacf0';
-try {
-  if (fs.existsSync(artifactsDir)) {
-    fs.writeFileSync(path.join(artifactsDir, 'GUIA_PEDAGOGICA_DIAGNOSTICO_9NO_MEP.pdf'), pdfBuffer);
-    fs.writeFileSync(path.join(artifactsDir, 'Dossier_Diagnostico_MEP_9no_Aula_Inteligente.pdf'), pdfBuffer);
-    console.log(`✅ PDF de 9no guardado con éxito en Artifacts: ${artifactsDir}`);
-  }
-} catch (e) {
-  console.log(`⚠️ No se pudo escribir en artifacts dir: ${e.message}`);
-}
+fs.writeFileSync(outputPathDocTecnico, pdfBuffer);
+console.log(`✅ PDF de 9.° año generado con éxito en:\n - ${outputPathGuia}\n - ${outputPathDocTecnico}`);

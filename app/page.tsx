@@ -773,7 +773,7 @@ export default function HomePage() {
                           </h3>
                         </div>
                         <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                          Exploración curricular seccionada por niveles (7.°, 8.°, 9.°), descarga de dossiers técnicos en PDF, banco de instrumentos y dictamen de validación ministerial.
+                          Exploración curricular seccionada por niveles (7.°, 8.°, 9.°), descarga de documentos técnicos y guías pedagógicas en PDF, banco de instrumentos y dictamen de validación ministerial.
                         </p>
                       </div>
                       <div className="pt-6">
@@ -781,7 +781,7 @@ export default function HomePage() {
                           href="/diagnostico"
                           className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 bg-indigo-700 hover:bg-indigo-800 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition-all"
                         >
-                          <span>Explorar Módulos y Dossiers</span>
+                          <span>Explorar módulos y guías pedagógicas</span>
                           <ArrowRight size={16} weight="bold" />
                         </Link>
                       </div>
