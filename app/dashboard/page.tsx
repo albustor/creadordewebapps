@@ -542,7 +542,7 @@ export default function DashboardAnaliticoPage() {
                 </h3>
 
                 <p className="text-xs sm:text-sm text-indigo-100/90 leading-relaxed">
-                  Aplicativo central para la valoración y registro de criterios de logro, observación docente en tiempo real, gestión del enlace para estudiantes del nivel y generación automática de actas pedagógicas.
+                  Aplicativo central para la valoración y registro de criterios de logro, observación docente en tiempo real, gestión de enlaces para la aplicación del diagnóstico y generación automática de actas pedagógicas con los datos obtenidos.
                 </p>
 
                 {/* Metadatos del Docente */}
@@ -640,7 +640,7 @@ export default function DashboardAnaliticoPage() {
                 </h3>
 
                 <p className="text-xs sm:text-sm text-teal-100/90 leading-relaxed">
-                  Aplicativo central para la valoración y registro de criterios de logro, observación docente en tiempo real, gestión del enlace para estudiantes del nivel y generación automática de actas pedagógicas.
+                  Aplicativo central para la valoración y registro de criterios de logro, observación docente en tiempo real, gestión de enlaces para la aplicación del diagnóstico y generación automática de actas pedagógicas con los datos obtenidos.
                 </p>
 
                 {/* Metadatos del Docente */}
@@ -738,7 +738,7 @@ export default function DashboardAnaliticoPage() {
                 </h3>
 
                 <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed">
-                  Aplicativo central para la valoración y registro de criterios de logro, observación docente en tiempo real, gestión del enlace único para estudiantes del nivel y telemetría curricular consolidada.
+                  Aplicativo central para la valoración y registro de criterios de logro, observación docente en tiempo real, gestión de enlaces para la aplicación del diagnóstico y generación automática de actas pedagógicas con los datos obtenidos.
                 </p>
 
                 {/* Metadatos del Docente */}
