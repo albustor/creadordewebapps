@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useDocente } from "@/context/DocenteContext";
 import {
   CheckCircle,
-  Circle,
   NotePencil,
   DownloadSimple,
   Copy,
@@ -19,12 +18,14 @@ import {
   FloppyDisk,
   ArrowSquareOut,
   Info,
-  QrCode,
-  ChartBar,
   Code,
   Robot,
   Database,
   DeviceMobile,
+  Question,
+  BookOpen,
+  Bookmarks,
+  Lightbulb,
 } from "@phosphor-icons/react";
 
 interface TareaVerificacion {
@@ -232,6 +233,8 @@ export default function RecursoAprendizajeAutogestionado() {
   const [tareasCompletadas, setTareasCompletadas] = useState<Record<string, boolean>>({});
   const [apuntesDocente, setApuntesDocente] = useState<string>("");
   const [etapaAbierta, setEtapaAbierta] = useState<number>(1);
+  const [areaGlosarioAbierta, setAreaGlosarioAbierta] = useState<number>(1);
+  const [casoContingenciaAbierto, setCasoContingenciaAbierto] = useState<number | null>(null);
   const [copiadoExitoso, setCopiadoExitoso] = useState<boolean>(false);
   const [guardadoAutomatico, setGuardadoAutomatico] = useState<boolean>(false);
 
@@ -279,6 +282,29 @@ export default function RecursoAprendizajeAutogestionado() {
   const notificarGuardado = () => {
     setGuardadoAutomatico(true);
     setTimeout(() => setGuardadoAutomatico(false), 2000);
+  };
+
+  // Insertar plantillas guiadas en los apuntes
+  const insertarPlantilla = (tipo: "dua" | "seguimiento") => {
+    const fechaHora = new Date().toLocaleString("es-CR");
+    let plantilla = "";
+
+    if (tipo === "dua") {
+      plantilla = `\n\n--- [PLAN DE APOYO PEDAGÓGICO DUA • ${fechaHora}] ---\n` +
+        `• Fortalezas observadas en el grupo: \n` +
+        `• Barreras identificadas (Saber / Saber Hacer / Saber Ser): \n` +
+        `• Estrategias de representación y acción múltiple DUA: \n` +
+        `• Ajustes para estudiantes en nivel Inicial: \n`;
+    } else {
+      plantilla = `\n\n--- [ACUERDOS DE AULA Y SEGUIMIENTO • ${fechaHora}] ---\n` +
+        `• Centro Educativo / Sección: \n` +
+        `• Acciones prioritarias en las 4 áreas curriculares: \n` +
+        `• Coordinación con el Comité de Evaluación: \n` +
+        `• Próxima fecha de revisión de avances: \n`;
+    }
+
+    const nuevoTexto = apuntesDocente ? apuntesDocente + plantilla : plantilla.trimStart();
+    handleCambioApuntes(nuevoTexto);
   };
 
   // Copiar al portapapeles
@@ -345,7 +371,7 @@ export default function RecursoAprendizajeAutogestionado() {
             Ruta Sistemática de Validación & Bitácora Docente
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 font-medium max-w-2xl leading-relaxed">
-            Siga paso a paso las 7 etapas del ciclo de evaluación, registre sus avances con casillas interactivas y conserve sus apuntes pedagógicos con guardado automático en su cuenta.
+            Siga paso a paso las 7 etapas del ciclo de evaluación, consulte el glosario de las 4 áreas oficiales de la <strong>Guía Docente 2026</strong> y conserve sus apuntes pedagógicos con guardado automático en su cuenta.
           </p>
         </div>
 
@@ -353,7 +379,7 @@ export default function RecursoAprendizajeAutogestionado() {
         <div className="bg-stone-50 border border-stone-200 rounded-2xl p-4 flex flex-col items-center justify-center min-w-[170px] shrink-0 text-center shadow-2xs">
           <span className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">Estado de Dominio</span>
           <span className={`text-base font-black mt-0.5 ${porcentajeProgreso === 100 ? "text-emerald-700" : porcentajeProgreso >= 50 ? "text-indigo-700" : "text-amber-700"}`}>
-            {porcentajeProgreso === 100 ? "🎉 Listo para Aula" : porcentajeProgreso >= 50 ? "⚡ En Progreso" : "🌱 Iniciando"}
+            {porcentajeProgreso === 100 ? "🎉 Dominio Completo" : porcentajeProgreso >= 50 ? "⚡ En Progreso" : "🌱 Iniciando"}
           </span>
           <span className="text-xs text-stone-600 font-mono font-bold mt-1">
             {tareasHechasCount} de {totalTareas} verificados
@@ -388,58 +414,239 @@ export default function RecursoAprendizajeAutogestionado() {
         </div>
       </div>
 
-      {/* Marco Curricular de las Cuatro Áreas Oficiales */}
-      <div className="bg-stone-50/80 border border-stone-300/80 rounded-2xl p-5 space-y-3">
-        <div className="flex items-center gap-2">
-          <Cpu size={20} className="text-emerald-700" weight="duotone" />
+      {/* Glosario Didáctico de las Cuatro Áreas Oficiales (Guía Docente 2026) */}
+      <div className="bg-stone-50/90 border border-stone-300 rounded-2xl p-5 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-3">
+          <div className="flex items-center gap-2">
+            <BookOpen size={20} className="text-emerald-700" weight="bold" />
+            <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider">
+              Glosario Didáctico de las Cuatro Áreas Curriculares (Guía Docente 2026)
+            </h3>
+          </div>
+          <span className="text-[11px] font-bold text-stone-500">
+            Fundamentos oficiales para 7.°, 8.° y 9.° Año
+          </span>
+        </div>
+
+        {/* Selector de Áreas del Glosario */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
+          {[
+            { id: 1, nombre: "1. Apropiación Tecnológica", icono: DeviceMobile, color: "text-emerald-700", bgActive: "bg-emerald-700 text-white" },
+            { id: 2, nombre: "2. Programación y Algoritmos", icono: Code, color: "text-blue-700", bgActive: "bg-blue-700 text-white" },
+            { id: 3, nombre: "3. Computación Física y Robótica", icono: Robot, color: "text-amber-700", bgActive: "bg-amber-700 text-white" },
+            { id: 4, nombre: "4. Ciencia de Datos e IA", icono: Database, color: "text-purple-700", bgActive: "bg-purple-700 text-white" },
+          ].map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => setAreaGlosarioAbierta(item.id)}
+              className={`p-2.5 rounded-xl text-xs font-bold text-left transition-all flex items-center gap-2 ${
+                areaGlosarioAbierta === item.id
+                  ? item.bgActive + " shadow-xs ring-2 ring-stone-400/20"
+                  : "bg-white border border-stone-200 text-slate-700 hover:bg-stone-100"
+              }`}
+            >
+              <item.icono size={16} weight="bold" className={areaGlosarioAbierta === item.id ? "text-white" : item.color} />
+              <span className="truncate">{item.nombre}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Fichas Conceptuales Detalladas */}
+        <div className="bg-white border border-stone-200 rounded-xl p-4 shadow-2xs space-y-3">
+          {areaGlosarioAbierta === 1 && (
+            <div className="space-y-2.5 animate-fadeIn">
+              <div className="font-extrabold text-xs text-emerald-950 flex items-center gap-1.5">
+                <DeviceMobile size={18} className="text-emerald-700" />
+                <span>Área 1: Apropiación Tecnológica y Digital</span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                <div className="p-3 bg-stone-50 border border-stone-200 rounded-lg space-y-1">
+                  <strong className="text-slate-900 block">Ciudadanía e Identidad Digital:</strong>
+                  <p className="text-slate-600 text-[11.5px] leading-relaxed">
+                    Ejercicio responsable de derechos y deberes en entornos virtuales, prevención del ciberacoso y convivencia digital pacífica.
+                  </p>
+                </div>
+                <div className="p-3 bg-stone-50 border border-stone-200 rounded-lg space-y-1">
+                  <strong className="text-slate-900 block">Huella Digital y Ciberseguridad:</strong>
+                  <p className="text-slate-600 text-[11.5px] leading-relaxed">
+                    Rastro de datos dejado al interactuar en la red, contraseñas seguras, autenticación y medidas de resguardo de información personal.
+                  </p>
+                </div>
+                <div className="p-3 bg-stone-50 border border-stone-200 rounded-lg space-y-1">
+                  <strong className="text-slate-900 block">Ergonomía y Bienestar Digital:</strong>
+                  <p className="text-slate-600 text-[11.5px] leading-relaxed">
+                    Postura física adecuada frente al computador, iluminación del laboratorio, pausas activas y balance saludable con la tecnología.
+                  </p>
+                </div>
+                <div className="p-3 bg-stone-50 border border-stone-200 rounded-lg space-y-1">
+                  <strong className="text-slate-900 block">Licenciamiento y Propiedad Intelectual:</strong>
+                  <p className="text-slate-600 text-[11.5px] leading-relaxed">
+                    Reconocimiento de autoría, licencias Creative Commons, software libre y uso ético de fuentes bibliográficas y recursos en la web.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {areaGlosarioAbierta === 2 && (
+            <div className="space-y-2.5 animate-fadeIn">
+              <div className="font-extrabold text-xs text-blue-950 flex items-center gap-1.5">
+                <Code size={18} className="text-blue-700" />
+                <span>Área 2: Programación y Algoritmos</span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                <div className="p-3 bg-stone-50 border border-stone-200 rounded-lg space-y-1">
+                  <strong className="text-slate-900 block">Pensamiento Computacional:</strong>
+                  <p className="text-slate-600 text-[11.5px] leading-relaxed">
+                    Habilidad para descomponer problemas complejos, reconocer patrones recurrentes y abstraer elementos irrelevantes para crear modelos.
+                  </p>
+                </div>
+                <div className="p-3 bg-stone-50 border border-stone-200 rounded-lg space-y-1">
+                  <strong className="text-slate-900 block">Secuenciación y Algoritmia:</strong>
+                  <p className="text-slate-600 text-[11.5px] leading-relaxed">
+                    Construcción de pasos ordenados, finitos y lógicos para ejecutar tareas precisas y resolver desafíos cotidianos de forma determinista.
+                  </p>
+                </div>
+                <div className="p-3 bg-stone-50 border border-stone-200 rounded-lg space-y-1">
+                  <strong className="text-slate-900 block">Variables y Estructuras de Control:</strong>
+                  <p className="text-slate-600 text-[11.5px] leading-relaxed">
+                    Almacenamiento dinámico de datos, toma de decisiones condicionales (<em>si... entonces</em>) y repeticiones controladas (<em>bucles mientras / para</em>).
+                  </p>
+                </div>
+                <div className="p-3 bg-stone-50 border border-stone-200 rounded-lg space-y-1">
+                  <strong className="text-slate-900 block">Depuración y Resolución Metódica:</strong>
+                  <p className="text-slate-600 text-[11.5px] leading-relaxed">
+                    Rastreo sistemático y corrección de errores en secuencias de código, fomentando la perseverancia y el ensayo y ajuste reflexivo.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {areaGlosarioAbierta === 3 && (
+            <div className="space-y-2.5 animate-fadeIn">
+              <div className="font-extrabold text-xs text-amber-950 flex items-center gap-1.5">
+                <Robot size={18} className="text-amber-700" />
+                <span>Área 3: Computación Física y Robótica</span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                <div className="p-3 bg-stone-50 border border-stone-200 rounded-lg space-y-1">
+                  <strong className="text-slate-900 block">Sensores (Entrada):</strong>
+                  <p className="text-slate-600 text-[11.5px] leading-relaxed">
+                    Componentes que captan variables del entorno físico (luz, sonido, proximidad, temperatura) y las convierten en señales digitales.
+                  </p>
+                </div>
+                <div className="p-3 bg-stone-50 border border-stone-200 rounded-lg space-y-1">
+                  <strong className="text-slate-900 block">Actuadores (Salida):</strong>
+                  <p className="text-slate-600 text-[11.5px] leading-relaxed">
+                    Dispositivos que transforman instrucciones del software en acciones físicas palpables (motores, luces LED, pantallas y zumbadores).
+                  </p>
+                </div>
+                <div className="p-3 bg-stone-50 border border-stone-200 rounded-lg space-y-1">
+                  <strong className="text-slate-900 block">Lazo de Control y Procesamiento:</strong>
+                  <p className="text-slate-600 text-[11.5px] leading-relaxed">
+                    Ciclo interactivo continuo entre la lectura de sensores, la evaluación de condiciones algorítmicas y la activación de actuadores.
+                  </p>
+                </div>
+                <div className="p-3 bg-stone-50 border border-stone-200 rounded-lg space-y-1">
+                  <strong className="text-slate-900 block">Automatización y Solución de Problemas:</strong>
+                  <p className="text-slate-600 text-[11.5px] leading-relaxed">
+                    Diseño de prototipos interactivos programables para responder a necesidades reales del colegio o la comunidad.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {areaGlosarioAbierta === 4 && (
+            <div className="space-y-2.5 animate-fadeIn">
+              <div className="font-extrabold text-xs text-purple-950 flex items-center gap-1.5">
+                <Database size={18} className="text-purple-700" />
+                <span>Área 4: Ciencia de Datos e Inteligencia Artificial</span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                <div className="p-3 bg-stone-50 border border-stone-200 rounded-lg space-y-1">
+                  <strong className="text-slate-900 block">Datos versus Información:</strong>
+                  <p className="text-slate-600 text-[11.5px] leading-relaxed">
+                    Diferenciación entre registros sin procesar y datos estructurados organizados que permiten tomar decisiones pedagógicas e informadas.
+                  </p>
+                </div>
+                <div className="p-3 bg-stone-50 border border-stone-200 rounded-lg space-y-1">
+                  <strong className="text-slate-900 block">Reconocimiento y Análisis de Patrones:</strong>
+                  <p className="text-slate-600 text-[11.5px] leading-relaxed">
+                    Clasificación, visualización mediante tablas o gráficos y detección de tendencias estadísticas en conjuntos de evidencias.
+                  </p>
+                </div>
+                <div className="p-3 bg-stone-50 border border-stone-200 rounded-lg space-y-1">
+                  <strong className="text-slate-900 block">Modelos Predictivos y Aprendizaje:</strong>
+                  <p className="text-slate-600 text-[11.5px] leading-relaxed">
+                    Comprensión de cómo los algoritmos de inteligencia artificial analizan muestras históricas para reconocer imágenes, voz o generar texto.
+                  </p>
+                </div>
+                <div className="p-3 bg-stone-50 border border-stone-200 rounded-lg space-y-1">
+                  <strong className="text-slate-900 block">Ética, Sesgos y Responsabilidad:</strong>
+                  <p className="text-slate-600 text-[11.5px] leading-relaxed">
+                    Evaluación crítica del impacto social de la IA, prevención de sesgos algorítmicos y uso transparente y ético de la tecnología.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Protocolo de Aula y Situaciones Imprevistas (Guía Rápida "¿Qué hacer si...?") */}
+      <div className="bg-stone-50/90 border border-stone-300 rounded-2xl p-5 space-y-3">
+        <div className="flex items-center gap-2 border-b border-stone-200 pb-2">
+          <Question size={20} className="text-indigo-700" weight="bold" />
           <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider">
-            Cuatro Áreas Oficiales de Evaluación Curricular (7.°, 8.° y 9.° Año)
+            Protocolo de Aula y Situaciones Imprevistas («¿Qué hacer si...?»)
           </h3>
         </div>
-        <p className="text-xs text-slate-600 font-medium leading-relaxed">
-          Tanto la aplicación del diagnóstico estudiantil como la matriz de observación directa docente se articulan en torno a estas cuatro áreas normativas:
-        </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
-          <div className="p-3 bg-white border border-stone-200 rounded-xl space-y-1 shadow-2xs">
-            <div className="flex items-center gap-1.5 text-xs font-black text-emerald-800">
-              <DeviceMobile size={16} weight="bold" />
-              <span>1. Apropiación Tecnológica y Digital</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {[
+            {
+              id: 1,
+              pregunta: "¿Qué hago si se cae o falla el internet a mitad de la prueba?",
+              respuesta: "La WebApp opera de manera autónoma gracias al almacenamiento local en el navegador. Indique al estudiante que continúe; al finalizar, la pantalla generará el código QR y token SHA-256 para que usted lo escanee con el lector del panel docente.",
+            },
+            {
+              id: 2,
+              pregunta: "¿Qué sucede si un estudiante cierra la pestaña por error?",
+              respuesta: "El avance se guarda en tiempo real en la memoria local del equipo. Al reabrir el enlace o QR en el mismo navegador, el estudiante reanuda la sesión sin perder las respuestas previas.",
+            },
+            {
+              id: 3,
+              pregunta: "¿Cómo garantizo la equidad si no hay computadoras suficientes?",
+              respuesta: "El docente debe validar previamente las condiciones técnicas y organizar turnos por estaciones o grupos de trabajo rotativos, asegurando que el 100 % de los estudiantes tenga acceso al mismo instrumento sin exclusión.",
+            },
+            {
+              id: 4,
+              pregunta: "¿Cómo traslado los resultados finales al registro oficial?",
+              respuesta: "Desde el tablero docente (/dashboard), una vez consolidadas las secciones, utilice los botones oficiales de exportación a Excel y PDF con formato institucional MEP.",
+            },
+          ].map((item) => (
+            <div
+              key={item.id}
+              className="p-3.5 bg-white border border-stone-200 rounded-xl space-y-1.5 shadow-2xs"
+            >
+              <button
+                type="button"
+                onClick={() => setCasoContingenciaAbierto(casoContingenciaAbierto === item.id ? null : item.id)}
+                className="w-full text-left font-bold text-xs text-slate-900 flex items-center justify-between gap-2 cursor-pointer"
+              >
+                <span>{item.pregunta}</span>
+                {casoContingenciaAbierto === item.id ? <CaretDown size={16} /> : <CaretRight size={16} />}
+              </button>
+              {casoContingenciaAbierto === item.id && (
+                <p className="text-[11.5px] text-stone-600 leading-relaxed pt-1 border-t border-stone-100 animate-fadeIn">
+                  {item.respuesta}
+                </p>
+              )}
             </div>
-            <p className="text-[11px] text-slate-600 leading-snug">
-              Ciberseguridad, uso seguro, ciudadanía digital y colaboración tecnológica.
-            </p>
-          </div>
-
-          <div className="p-3 bg-white border border-stone-200 rounded-xl space-y-1 shadow-2xs">
-            <div className="flex items-center gap-1.5 text-xs font-black text-blue-800">
-              <Code size={16} weight="bold" />
-              <span>2. Programación y Algoritmos</span>
-            </div>
-            <p className="text-[11px] text-slate-600 leading-snug">
-              Pensamiento computacional, variables, bucles y lógica algorítmica.
-            </p>
-          </div>
-
-          <div className="p-3 bg-white border border-stone-200 rounded-xl space-y-1 shadow-2xs">
-            <div className="flex items-center gap-1.5 text-xs font-black text-amber-800">
-              <Robot size={16} weight="bold" />
-              <span>3. Computación Física y Robótica</span>
-            </div>
-            <p className="text-[11px] text-slate-600 leading-snug">
-              Sensores, actuadores, automatización y control de hardware.
-            </p>
-          </div>
-
-          <div className="p-3 bg-white border border-stone-200 rounded-xl space-y-1 shadow-2xs">
-            <div className="flex items-center gap-1.5 text-xs font-black text-purple-800">
-              <Database size={16} weight="bold" />
-              <span>4. Ciencia de Datos e Inteligencia Artificial</span>
-            </div>
-            <p className="text-[11px] text-slate-600 leading-snug">
-              Patrones de datos, modelos predictivos y ética de la inteligencia artificial.
-            </p>
-          </div>
+          ))}
         </div>
       </div>
 
@@ -605,12 +812,38 @@ export default function RecursoAprendizajeAutogestionado() {
           </div>
         </div>
 
+        {/* Botones de Plantillas Guiadas Rápidas */}
+        <div className="flex items-center gap-2 flex-wrap pt-1">
+          <span className="text-[11px] font-bold text-stone-500 flex items-center gap-1">
+            <Bookmarks size={14} className="text-indigo-600" />
+            <span>Insertar plantilla guiada:</span>
+          </span>
+
+          <button
+            type="button"
+            onClick={() => insertarPlantilla("dua")}
+            className="px-2.5 py-1 bg-white hover:bg-indigo-50 border border-indigo-200 text-indigo-900 text-[11px] font-bold rounded-lg transition-colors flex items-center gap-1 shadow-2xs"
+          >
+            <Lightbulb size={13} className="text-amber-600" weight="fill" />
+            <span>+ Plantilla DUA</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => insertarPlantilla("seguimiento")}
+            className="px-2.5 py-1 bg-white hover:bg-emerald-50 border border-emerald-200 text-emerald-900 text-[11px] font-bold rounded-lg transition-colors flex items-center gap-1 shadow-2xs"
+          >
+            <ShieldCheck size={13} className="text-emerald-700" weight="bold" />
+            <span>+ Acuerdos de Seguimiento</span>
+          </button>
+        </div>
+
         <div className="space-y-2">
           <textarea
-            rows={5}
+            rows={6}
             value={apuntesDocente}
             onChange={(e) => handleCambioApuntes(e.target.value)}
-            placeholder="Escriba aquí sus anotaciones, dudas técnicas, acuerdos de sección o reflexiones sobre las 4 áreas curriculares..."
+            placeholder="Escriba aquí sus anotaciones pedagógicas, reflexiones sobre las 4 áreas curriculares de la Guía Docente 2026, acuerdos de sección o adaptaciones DUA..."
             className="w-full p-4 bg-white border border-stone-300 rounded-2xl text-xs sm:text-sm font-medium text-slate-900 placeholder-stone-400 focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/20 leading-relaxed shadow-inner"
           />
 
