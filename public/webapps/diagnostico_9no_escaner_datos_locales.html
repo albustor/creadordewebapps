@@ -1288,7 +1288,7 @@ function renderizarListaPadron() {
       '    <strong>⚙️ Psicomotor:</strong> ' + escaparHTML(r.ejecucion || r.tarjetas || "Completado") + '<br>' +
       '    <strong>📅 Fecha:</strong> ' + escaparHTML(r.fecha) +
       '  </div>' +
-      '  <button type="button" class="btn-secondary" onclick="eliminarRegistroIndividual('' + r.id + '')" style="margin-top: 8px; color: #dc2626; height: 32px; font-size: 11px;">' +
+      '  <button type="button" class="btn-secondary" data-id="' + r.id + '" onclick="eliminarRegistroIndividual(this.getAttribute(\'data-id\'))" style="margin-top: 8px; color: #dc2626; height: 32px; font-size: 11px;">' +
       '    🗑️ Eliminar' +
       '  </button>' +
       '</div>';
@@ -1324,16 +1324,18 @@ function exportarCSV() {
     "Cognoscitiva", "Nivel Cognoscitivo", "Tarjetas", "Puertos", "Ejecución", "Socioafectiva", "Fortalezas", "Prioridades"
   ];
 
-  var csv = "﻿" + encabezados.map(function(c) { return '"' + csvEscapar(c) + '"'; }).join(";") + "\n";
+  var lineas = [];
+  lineas.push(encabezados.map(function(c) { return '"' + csvEscapar(c) + '"'; }).join(";"));
 
   registros.forEach(function(r) {
     var fila = [
       r.centro, r.nivel, r.seccion, r.estudiante, r.cedula || "", r.fecha,
       r.cognoscitiva, r.nivelCognoscitivo, r.tarjetas, r.puertos, r.ejecucion, r.socioafectiva, r.fortalezas, r.prioridades
     ];
-    csv += fila.map(function(c) { return '"' + csvEscapar(c) + '"'; }).join(";") + "\n";
+    lineas.push(fila.map(function(c) { return '"' + csvEscapar(c) + '"'; }).join(";"));
   });
 
+  var csv = "\uFEFF" + lineas.join("\r\n");
   var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   var url = URL.createObjectURL(blob);
   var a = document.createElement("a");
@@ -1371,14 +1373,18 @@ function copiarResumenPortapapeles() {
     return;
   }
 
-  var texto = "📊 PADRÓN DIAGNÓSTICO MEP\n";
-  texto += "🏫 Centro: " + sesionActiva.centro + "\n";
-  texto += "📚 Nivel: " + sesionActiva.nivel + " | Sección: " + sesionActiva.seccion + "\n";
-  texto += "👥 Total Estudiantes: " + registros.length + "\n\n";
+  var lineas = [];
+  lineas.push("📊 PADRÓN DIAGNÓSTICO MEP");
+  lineas.push("🏫 Centro: " + sesionActiva.centro);
+  lineas.push("📚 Nivel: " + sesionActiva.nivel + " | Sección: " + sesionActiva.seccion);
+  lineas.push("👥 Total Estudiantes: " + registros.length);
+  lineas.push("");
 
   registros.forEach(function(r, idx) {
-    texto += (idx + 1) + ". " + r.estudiante + " (" + r.seccion + ") - " + r.cognoscitiva + " [" + r.nivelCognoscitivo + "]\n";
+    lineas.push((idx + 1) + ". " + r.estudiante + " (" + r.seccion + ") - " + r.cognoscitiva + " [" + r.nivelCognoscitivo + "]");
   });
+
+  var texto = lineas.join("\n");
 
   navigator.clipboard.writeText(texto).then(function() {
     alert("✅ Resumen copiado al portapapeles listo para WhatsApp o correo.");
@@ -1404,6 +1410,7 @@ function finalizarSesion() {
   document.getElementById("vistaRegistros").classList.add("hidden");
   document.getElementById("vistaConfig").classList.remove("hidden");
 }
+
 </script>
 </body>
 </html>
