@@ -45,7 +45,7 @@ function generarDocumento7moPDF() {
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7);
     doc.setTextColor(...COLOR_MUTED);
-    doc.text(titleSection || "Documento técnico oficial • CyberQuest 7.° año", pageWidth - margin, 11.5, { align: 'right' });
+    doc.text(titleSection || "Guía pedagógica oficial • 7.° año (CyberQuest)", pageWidth - margin, 11.5, { align: 'right' });
 
     doc.setDrawColor(...COLOR_BORDER);
     doc.setLineWidth(0.3);
@@ -73,13 +73,13 @@ function generarDocumento7moPDF() {
   doc.setFillColor(...COLOR_CYAN);
   doc.rect(0, 58, pageWidth, 3, 'F');
 
-  // Distintivo superior
+  // Distintivo superior con nivel explícito
   doc.setFillColor(8, 145, 178);
-  doc.roundedRect(margin, 10, 120, 6.5, 1.5, 1.5, 'F');
+  doc.roundedRect(margin, 10, 145, 6.5, 1.5, 1.5, 'F');
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7.5);
   doc.setTextColor(255, 255, 255);
-  doc.text("PROGRAMA NACIONAL DE FORMACIÓN TECNOLÓGICA • MEP 2027", margin + 4, 14.5);
+  doc.text("PROGRAMA NACIONAL DE FORMACIÓN TECNOLÓGICA • 7.° AÑO (SÉTIMO)", margin + 4, 14.5);
 
   // Títulos principales en formato gramatical hispanoamericano
   doc.setFont('helvetica', 'bold');
@@ -88,7 +88,7 @@ function generarDocumento7moPDF() {
   doc.text("CyberQuest 7.° año: misión tecnológica", margin, 26);
   doc.setFontSize(13);
   doc.setTextColor(103, 232, 249); // Cyan claro
-  doc.text("Guía pedagógica y documento técnico oficial", margin, 34);
+  doc.text("Guía pedagógica y documento técnico oficial • 7.° año de secundaria", margin, 34);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);

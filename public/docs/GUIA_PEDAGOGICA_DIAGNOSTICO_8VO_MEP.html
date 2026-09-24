@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Guía Pedagógica y Documento Técnico Oficial • 8.° Año (Robótica y Algoritmos) • MEP PNFT 2027</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
+
+    @page {
+      size: letter portrait;
+      margin: 10mm 12mm 12mm 12mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #1e293b;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .page {
+      page-break-after: always;
+      position: relative;
+      min-height: 100%;
+      padding-bottom: 8px;
+    }
+    .page:last-child {
+      page-break-after: avoid;
+    }
+
+    /* HEADER */
+    .header-mep {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2.5px solid #003366;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+    }
+    .header-titles h1 {
+      font-size: 16px;
+      font-weight: 900;
+      color: #003366;
+      margin: 0;
+      letter-spacing: -0.3px;
+    }
+    .header-titles h2 {
+      font-size: 11px;
+      font-weight: 800;
+      color: #059669;
+      margin: 2px 0 0 0;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .header-level-badge {
+      display: inline-block;
+      background: #059669;
+      color: #ffffff;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-top: 3px;
+      text-transform: uppercase;
+    }
+    .mep-badge-pill {
+      background: #ecfdf5;
+      border: 1.5px solid #6ee7b7;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 9px;
+      font-weight: 800;
+      color: #065f46;
+      text-align: right;
+    }
+
+    /* TYPOGRAPHY */
+    h3.section-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: #003366;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 10px 0 6px 0;
+      padding-bottom: 3px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    p {
+      margin: 0 0 5px 0;
+      color: #334155;
+    }
+
+    /* CARDS & GRIDS */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .grid-14-indicators {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+      margin-bottom: 8px;
+    }
+
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
+    .card-primary {
+      background: #f0fdf4;
+      border: 1.5px solid #bbf7d0;
+    }
+    .card-accent {
+      background: #faf5ff;
+      border: 1.5px solid #e9d5ff;
+    }
+    .card-success {
+      background: #f0fdf4;
+      border: 1.5px solid #bbf7d0;
+    }
+
+    .card-title {
+      font-size: 11px;
+      font-weight: 800;
+      color: #003366;
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* INDICATOR CARD */
+    .indicator-card {
+      border-radius: 7px;
+      padding: 6px 9px;
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .indicator-card.logrado {
+      background: #f0fdf4;
+      border-color: #86efac;
+    }
+    .indicator-card.desarrollo {
+      background: #fffbeb;
+      border-color: #fde68a;
+    }
+
+    .ind-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .ind-num-title {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 800;
+      font-size: 10px;
+      color: #0f172a;
+    }
+    .ind-badge-num {
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      background: #059669;
+      color: #ffffff;
+      font-size: 9px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ind-tag {
+      font-size: 8px;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+    .tag-logrado { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+    .tag-desarrollo { background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; }
+
+    .ind-desc {
+      font-size: 8.5px;
+      color: #64748b;
+      margin: 0;
+      line-height: 1.2;
+    }
+    .ind-progress-bar {
+      height: 4px;
+      border-radius: 2px;
+      width: 100%;
+      margin: 2px 0;
+    }
+    .bar-green { background: #10b981; }
+    .bar-yellow { background: #f59e0b; }
+
+    /* STEP FLOW INFOGRAPHIC */
+    .flow-container {
+      display: flex;
+      gap: 6px;
+      margin: 8px 0 10px 0;
+    }
+    .flow-step {
+      flex: 1;
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 6px 8px;
+    }
+    .flow-step.active {
+      border-color: #059669;
+      background: #ecfdf5;
+    }
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      background: #003366;
+      color: #ffffff;
+      border-radius: 50%;
+      font-size: 9px;
+      font-weight: 800;
+      margin-bottom: 2px;
+    }
+    .step-name {
+      font-size: 10px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 2px;
+    }
+    .step-desc {
+      font-size: 8.5px;
+      color: #475569;
+      line-height: 1.3;
+    }
+
+    /* TABLES */
+    table.mep-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9.5px;
+      margin-bottom: 8px;
+    }
+    table.mep-table th {
+      background: #003366;
+      color: #ffffff;
+      padding: 5px 7px;
+      text-align: left;
+      font-weight: 700;
+      border: 1px solid #002244;
+    }
+    table.mep-table td {
+      padding: 4px 7px;
+      border: 1px solid #e2e8f0;
+      color: #334155;
+    }
+    table.mep-table tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    /* PILLS & BADGES */
+    .badge {
+      display: inline-block;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 8.5px;
+      font-weight: 700;
+    }
+    .badge-a { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+    .badge-b { background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; }
+    .badge-c { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+
+    /* FOOTER */
+    .page-footer {
+      border-top: 1px solid #cbd5e1;
+      padding-top: 4px;
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 8px;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== PÁGINA 1: PROPÓSITO, ABORDAJE Y BENEFICIOS ==================== -->
+  <div class="page">
+    <div class="header-mep">
+      <div class="header-titles">
+        <h1>Ministerio de Educación Pública de Costa Rica</h1>
+        <h2>PROGRAMA NACIONAL DE FORMACIÓN TECNOLÓGICA • 8.° AÑO (OCTAVO DE SECUNDARIA)</h2>
+        <div class="header-level-badge">GUÍA PEDAGÓGICA Y DOCUMENTO TÉCNICO OFICIAL • ROBÓTICA Y ALGORITMOS 8.° AÑO</div>
+      </div>
+      <div class="mep-badge-pill">
+        📘 GUÍA TÉCNICO-PEDAGÓGICA<br>
+        <span style="font-size: 8.5px; font-weight: 800; color: #047857;">8.° AÑO (OCTAVO)</span><br>
+        <span style="font-size: 7.5px; font-weight: 600; color: #475569;">Curso Lectivo 2027</span>
+      </div>
+    </div>
+
+    <!-- RESUMEN EJECUTIVO -->
+    <div class="card card-primary" style="margin-bottom: 8px;">
+      <div class="card-title">🎯 Propósito del Instrumento de Evaluación Diagnóstica (8.° Año - Robótica)</div>
+      <p style="font-size: 10.5px; margin: 0; line-height: 1.4;">
+        Esta herramienta web interactiva permite la <strong>identificación oportuna de saberes previos</strong> en robótica educativa, lógica computacional y circuitos. Su diseño pedagógico vincula la telemetría formativa en tiempo real con las <strong>Estrategias de Mediación del Planeamiento Didáctico Oficial</strong> de 8.° año, estructurado bajo el <em>Diseño Universal para el Aprendizaje (DUA)</em>.
+      </p>
+    </div>
+
+    <!-- ABORDAJE TEMÁTICO INTEGRAL: ARTICULACIÓN DEL PNFT -->
+    <h3 class="section-title">🧭 Abordaje Temático y Dimensiones Curriculares Evaluadas (PNFT 8.° Año)</h3>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-title" style="color: #0369a1;">🧠 1. Dimensión Cognitiva</div>
+        <p style="font-size: 9.5px; color: #475569; margin-bottom: 3px;"><strong>Saber (Conceptual) • 14 Saberes Clave:</strong></p>
+        <ul style="margin: 0; padding-left: 12px; font-size: 9px; color: #334155; line-height: 1.3;">
+          <li>Arquitectura de computadoras y buses.</li>
+          <li>Lógica booleana y condicionales dobles.</li>
+          <li>Variables, tipos y estructuras de datos.</li>
+          <li>Bucles controlados y funciones modulares.</li>
+          <li>Fundamentos de sensórica y actuadores.</li>
+          <li>Pensamiento computacional aplicado a robots.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title" style="color: #059669;">🖐️ 2. Dimensión Psicomotriz</div>
+        <p style="font-size: 9.5px; color: #475569; margin-bottom: 3px;"><strong>Saber hacer (Procedimental) • Rúbrica de Taller:</strong></p>
+        <ul style="margin: 0; padding-left: 12px; font-size: 9px; color: #334155; line-height: 1.3;">
+          <li><strong>P1:</strong> Manipulación precisa de periféricos y teclado.</li>
+          <li><strong>P2:</strong> Ensamblaje de bloques y diagramas de flujo.</li>
+          <li><strong>P3:</strong> Secuenciación de pasos de inicio y guardado.</li>
+          <li><strong>P4:</strong> Destreza visomotora en simulación de robots.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title" style="color: #7c3aed;">🤝 3. Dimensión Socioafectiva</div>
+        <p style="font-size: 9.5px; color: #475569; margin-bottom: 3px;"><strong>Saber ser (Actitudinal) • Actitudes de Laboratorio:</strong></p>
+        <ul style="margin: 0; padding-left: 12px; font-size: 9px; color: #334155; line-height: 1.3;">
+          <li>Perseverancia y resiliencia ante errores de código.</li>
+          <li>Autorregulación y gestión autónoma del tiempo.</li>
+          <li>Trabajo colaborativo y apoyo mutuo entre pares.</li>
+          <li>Responsabilidad en el cuidado del equipamiento.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- BENEFICIOS CLAVE -->
+    <h3 class="section-title">⭐ Beneficios Transformadores para la Comunidad Educativa de 8.° Año</h3>
+    <div class="grid-2">
+      <div class="card card-success">
+        <div class="card-title" style="color: #15803d;">👨‍🏫 Para el Docente de 8.° Año</div>
+        <ul style="margin: 0; padding-left: 12px; font-size: 9.5px; color: #166534; line-height: 1.35;">
+          <li><strong>Consolidación Automática:</strong> Resultados de los 14 ítems procesados al instante.</li>
+          <li><strong>Detección de Brechas:</strong> Identificación precisa de dificultades en bucles o variables.</li>
+          <li><strong>Recomendaciones DUA con IA:</strong> Estrategias didácticas adaptadas al nivel del grupo.</li>
+          <li><strong>Exportación Oficial:</strong> Actas institucionales en Excel y PDF con formato MEP.</li>
+        </ul>
+      </div>
+
+      <div class="card card-accent">
+        <div class="card-title" style="color: #6d28d9;">🧑‍🎓 Para el Estudiante de 8.° Año</div>
+        <ul style="margin: 0; padding-left: 12px; font-size: 9.5px; color: #581c87; line-height: 1.35;">
+          <li><strong>Evaluación Interactiva:</strong> Retos situacionales en lugar de exámenes memorísticos.</li>
+          <li><strong>Comprensión del Error:</strong> Explicaciones pedagógicas inmediatas para cada respuesta.</li>
+          <li><strong>Comprobante Seguro:</strong> Token digital que certifica la realización formativa.</li>
+          <li><strong>Accesibilidad Total:</strong> Modo en línea y modo sin conexión con código QR.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ESCALA DE VALORACIÓN OFICIAL MEP -->
+    <h3 class="section-title">📊 Escala Oficial de Valoración Diagnóstica MEP 2027 (8.° Año)</h3>
+    <table class="mep-table">
+      <thead>
+        <tr>
+          <th style="width: 24%;">Nivel de Logro</th>
+          <th style="width: 18%;">Saberes Demostrados</th>
+          <th style="width: 30%;">Descripción Pedagógica</th>
+          <th style="width: 28%;">Acción en Planeamiento Didáctico</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-a">LOGRADO (L)</span></td>
+          <td><strong>11 a 14 Saberes</strong> (80% - 100%)</td>
+          <td>Domina con soltura los fundamentos de lógica algorítmica y robótica.</td>
+          <td>Retos de programación avanzada, proyectos de robótica y liderazgo técnico.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-b">EN DESARROLLO (ED)</span></td>
+          <td><strong>8 a 10 Saberes</strong> (60% - 79%)</td>
+          <td>Comprende conceptos esenciales pero requiere afianzar la lógica de bucles.</td>
+          <td>Ejercicios guiados de flujo lógico, diagramas visuales y apoyo docente.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-c">REQUIERE ACOMPAÑAMIENTO (RA)</span></td>
+          <td><strong>Menos de 8 Saberes</strong> (< 60%)</td>
+          <td>Presenta brechas significativas en lógica básica y pensamiento secuencial.</td>
+          <td>Nivelación conceptual previa, tutoría entre pares y adecuación DUA.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="page-footer">
+      <span>Ministerio de Educación Pública • Formación Tecnológica 2027 • 8.° Año (Octavo)</span>
+      <span>Página 1 de 2 • Fundamento Curricular y Beneficios</span>
+    </div>
+  </div>
+
+  <!-- ==================== PÁGINA 2: MATRIZ DE INDICADORES Y PROTOCOLO ==================== -->
+  <div class="page">
+    <div class="header-mep">
+      <div class="header-titles">
+        <h1>Matriz Diagnóstica de Saberes y Protocolo de Aplicación</h1>
+        <h2>PROGRAMA NACIONAL DE FORMACIÓN TECNOLÓGICA • 8.° AÑO (OCTAVO DE SECUNDARIA)</h2>
+        <div class="header-level-badge">SUITE DE APLICACIÓN DOCENTE • ROBÓTICA Y ALGORITMOS 8.° AÑO</div>
+      </div>
+      <div class="mep-badge-pill">
+        📊 MATRIZ CURRICULAR<br>
+        <span style="font-size: 8.5px; font-weight: 800; color: #047857;">8.° AÑO (OCTAVO)</span><br>
+        <span style="font-size: 7.5px; font-weight: 600; color: #475569;">Curso Lectivo 2027</span>
+      </div>
+    </div>
+
+    <!-- MATRIZ DE SABERES DE 8VO -->
+    <h3 class="section-title">🧩 Matriz de los 14 Saberes Cognitivos Evaluados (8.° Año)</h3>
+    <div class="grid-14-indicators">
+      <div class="indicator-card logrado">
+        <div class="ind-header"><div class="ind-num-title"><span class="ind-badge-num">1</span><span>HW/SW y Periféricos</span></div><span class="ind-tag tag-logrado">Logrado</span></div>
+        <p class="ind-desc">Identificación de periféricos de entrada, salida y almacenamiento.</p>
+      </div>
+      <div class="indicator-card logrado">
+        <div class="ind-header"><div class="ind-num-title"><span class="ind-badge-num">2</span><span>Arquitectura de CPU</span></div><span class="ind-tag tag-logrado">Logrado</span></div>
+        <p class="ind-desc">Diferenciación entre procesador, memoria RAM y almacenamiento.</p>
+      </div>
+      <div class="indicator-card logrado">
+        <div class="ind-header"><div class="ind-num-title"><span class="ind-badge-num">3</span><span>Sistemas de Archivos</span></div><span class="ind-tag tag-logrado">Logrado</span></div>
+        <p class="ind-desc">Estructura jerárquica de carpetas y formatos digitales.</p>
+      </div>
+      <div class="indicator-card logrado">
+        <div class="ind-header"><div class="ind-num-title"><span class="ind-badge-num">4</span><span>Redes y Ciberseguridad</span></div><span class="ind-tag tag-logrado">Logrado</span></div>
+        <p class="ind-desc">Privacidad, contraseñas robustas y autenticación en dos pasos.</p>
+      </div>
+      <div class="indicator-card desarrollo">
+        <div class="ind-header"><div class="ind-num-title"><span class="ind-badge-num">5</span><span>Algoritmos y Secuencias</span></div><span class="ind-tag tag-desarrollo">En Desarrollo</span></div>
+        <p class="ind-desc">Diseño de secuencias ordenadas para solución de problemas.</p>
+      </div>
+      <div class="indicator-card desarrollo">
+        <div class="ind-header"><div class="ind-num-title"><span class="ind-badge-num">6</span><span>Variables y Tipos de Datos</span></div><span class="ind-tag tag-desarrollo">En Desarrollo</span></div>
+        <p class="ind-desc">Uso de enteros, decimales, textos y booleanos en código.</p>
+      </div>
+      <div class="indicator-card desarrollo">
+        <div class="ind-header"><div class="ind-num-title"><span class="ind-badge-num">7</span><span>Condicionales Dobles</span></div><span class="ind-tag tag-desarrollo">En Desarrollo</span></div>
+        <p class="ind-desc">Toma de decisiones lógicas (Si / Si No) en robots.</p>
+      </div>
+      <div class="indicator-card desarrollo">
+        <div class="ind-header"><div class="ind-num-title"><span class="ind-badge-num">8</span><span>Bucles y Ciclos</span></div><span class="ind-tag tag-desarrollo">En Desarrollo</span></div>
+        <p class="ind-desc">Repetición controlada de instrucciones (Mientras / Repetir N).</p>
+      </div>
+      <div class="indicator-card desarrollo">
+        <div class="ind-header"><div class="ind-num-title"><span class="ind-badge-num">9</span><span>Funciones y Modularidad</span></div><span class="ind-tag tag-desarrollo">En Desarrollo</span></div>
+        <p class="ind-desc">Descomposición en bloques reutilizables de código.</p>
+      </div>
+      <div class="indicator-card desarrollo">
+        <div class="ind-header"><div class="ind-num-title"><span class="ind-badge-num">10</span><span>Sensores de Robótica</span></div><span class="ind-tag tag-desarrollo">En Desarrollo</span></div>
+        <p class="ind-desc">Lectura de luz (LDR), distancia (ultrasonido) y pulsadores.</p>
+      </div>
+      <div class="indicator-card desarrollo">
+        <div class="ind-header"><div class="ind-num-title"><span class="ind-badge-num">11</span><span>Actuadores y Motores</span></div><span class="ind-tag tag-desarrollo">En Desarrollo</span></div>
+        <p class="ind-desc">Control de servomotores, motores DC y LEDs de señalización.</p>
+      </div>
+      <div class="indicator-card desarrollo">
+        <div class="ind-header"><div class="ind-num-title"><span class="ind-badge-num">12</span><span>Lógica Booleana</span></div><span class="ind-tag tag-desarrollo">En Desarrollo</span></div>
+        <p class="ind-desc">Operadores lógicos Y (AND), O (OR) y NO (NOT) en condiciones.</p>
+      </div>
+      <div class="indicator-card desarrollo">
+        <div class="ind-header"><div class="ind-num-title"><span class="ind-badge-num">13</span><span>Depuración y Fallas</span></div><span class="ind-tag tag-desarrollo">En Desarrollo</span></div>
+        <p class="ind-desc">Identificación metódica de fallas lógicas y errores sintácticos.</p>
+      </div>
+      <div class="indicator-card desarrollo">
+        <div class="ind-header"><div class="ind-num-title"><span class="ind-badge-num">14</span><span>Ética y Tecnología</span></div><span class="ind-tag tag-desarrollo">En Desarrollo</span></div>
+        <p class="ind-desc">Impacto de la automatización y uso ético de la inteligencia artificial.</p>
+      </div>
+    </div>
+
+    <!-- INFOGRAFÍA: FLUJO DE 4 PASOS -->
+    <h3 class="section-title">🔄 Flujo de Trabajo en 4 Fases para el Docente de 8.° Año</h3>
+    <div class="flow-container">
+      <div class="flow-step active">
+        <span class="step-number">1</span>
+        <div class="step-name">Ingreso Docente</div>
+        <div class="step-desc">Ingresa al panel con su cédula/PIN y selecciona la sección correspondiente (ej. 8-1 a 8-20).</div>
+      </div>
+      <div class="flow-step">
+        <span class="step-number">2</span>
+        <div class="step-name">Proyección QR</div>
+        <div class="step-desc">Proyecta el código QR o comparte el archivo HTML autónomo para laboratorios sin conexión.</div>
+      </div>
+      <div class="flow-step">
+        <span class="step-number">3</span>
+        <div class="step-name">Ejecución del Alumno</div>
+        <div class="step-desc">Los estudiantes resuelven los 14 ítems y registran sus reflexiones de taller y robótica.</div>
+      </div>
+      <div class="flow-step">
+        <span class="step-number">4</span>
+        <div class="step-name">Sistematización</div>
+        <div class="step-desc">Los resultados se sincronizan al instante en el Dashboard con análisis de IA y reportes oficiales.</div>
+      </div>
+    </div>
+
+    <!-- POLÍTICAS Y DIRECTRIZ OBLIGATORIA -->
+    <div style="background: #003366; color: #ffffff; border-radius: 8px; padding: 8px 12px; margin-top: 6px; display: flex; align-items: center; gap: 10px;">
+      <span style="font-size: 20px;">📌</span>
+      <div style="font-size: 9px; line-height: 1.35;">
+        <strong style="font-size: 10px; color: #38bdf8; display: block; text-transform: uppercase; margin-bottom: 2px;">
+          Directriz de Vinculación Curricular Obligatoria MEP • 8.° Año
+        </strong>
+        Los resultados cualitativos de 8.° año deben incorporarse en las <strong>Estrategias de Mediación Pedagógica</strong> del planeamiento didáctico oficial para nivelar conocimientos en lógica algorítmica y robótica.
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span>Ministerio de Educación Pública • Formación Tecnológica 2027 • 8.° Año (Octavo)</span>
+      <span>Página 2 de 2 • Matriz de Indicadores y Protocolo de Aplicación</span>
+    </div>
+  </div>
+
+</body>
+</html>

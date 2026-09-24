@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Guía Pedagógica y Documento Técnico Oficial • 9.° Año (Aula Inteligente) • MEP PNFT 2027</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
+
+    @page {
+      size: letter portrait;
+      margin: 10mm 12mm 12mm 12mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #1e293b;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .page {
+      page-break-after: always;
+      position: relative;
+      min-height: 100%;
+      padding-bottom: 8px;
+    }
+    .page:last-child {
+      page-break-after: avoid;
+    }
+
+    /* HEADER */
+    .header-mep {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2.5px solid #003366;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+    }
+    .header-titles h1 {
+      font-size: 16px;
+      font-weight: 900;
+      color: #003366;
+      margin: 0;
+      letter-spacing: -0.3px;
+    }
+    .header-titles h2 {
+      font-size: 11px;
+      font-weight: 800;
+      color: #7c3aed;
+      margin: 2px 0 0 0;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .header-level-badge {
+      display: inline-block;
+      background: #7c3aed;
+      color: #ffffff;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-top: 3px;
+      text-transform: uppercase;
+    }
+    .mep-badge-pill {
+      background: #faf5ff;
+      border: 1.5px solid #d8b4fe;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 9px;
+      font-weight: 800;
+      color: #6b21a8;
+      text-align: right;
+    }
+
+    /* TYPOGRAPHY */
+    h3.section-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: #003366;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 10px 0 6px 0;
+      padding-bottom: 3px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    p {
+      margin: 0 0 5px 0;
+      color: #334155;
+    }
+
+    /* CARDS & GRIDS */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .grid-10-indicators {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
+    .card-primary {
+      background: #faf5ff;
+      border: 1.5px solid #e9d5ff;
+    }
+    .card-accent {
+      background: #f0f9ff;
+      border: 1.5px solid #bae6fd;
+    }
+    .card-success {
+      background: #f0fdf4;
+      border: 1.5px solid #bbf7d0;
+    }
+
+    .card-title {
+      font-size: 11px;
+      font-weight: 800;
+      color: #003366;
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* INDICATOR CARD */
+    .indicator-card {
+      border-radius: 8px;
+      padding: 7px 10px;
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .indicator-card.logrado {
+      background: #f0fdf4;
+      border-color: #86efac;
+    }
+    .indicator-card.desarrollo {
+      background: #fffbeb;
+      border-color: #fde68a;
+    }
+    .indicator-card.acompanamiento {
+      background: #fef2f2;
+      border-color: #fca5a5;
+    }
+
+    .ind-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .ind-num-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 800;
+      font-size: 10.5px;
+      color: #0f172a;
+    }
+    .ind-badge-num {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #7c3aed;
+      color: #ffffff;
+      font-size: 9.5px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ind-tag {
+      font-size: 8.5px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+    .tag-logrado { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+    .tag-desarrollo { background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; }
+    .tag-acomp { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+
+    .ind-desc {
+      font-size: 9px;
+      color: #64748b;
+      margin: 0;
+      line-height: 1.25;
+    }
+    .ind-progress-bar {
+      height: 5px;
+      border-radius: 3px;
+      width: 100%;
+      margin: 2px 0;
+    }
+    .bar-green { background: #10b981; }
+    .bar-yellow { background: #f59e0b; }
+    .bar-red { background: #ef4444; }
+
+    /* STEP FLOW INFOGRAPHIC */
+    .flow-container {
+      display: flex;
+      gap: 6px;
+      margin: 8px 0 10px 0;
+    }
+    .flow-step {
+      flex: 1;
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 6px 8px;
+      position: relative;
+    }
+    .flow-step.active {
+      border-color: #7c3aed;
+      background: #faf5ff;
+    }
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      background: #003366;
+      color: #ffffff;
+      border-radius: 50%;
+      font-size: 9px;
+      font-weight: 800;
+      margin-bottom: 2px;
+    }
+    .step-name {
+      font-size: 10px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 2px;
+    }
+    .step-desc {
+      font-size: 8.5px;
+      color: #475569;
+      line-height: 1.3;
+    }
+
+    /* TABLES */
+    table.mep-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9.5px;
+      margin-bottom: 8px;
+    }
+    table.mep-table th {
+      background: #003366;
+      color: #ffffff;
+      padding: 5px 7px;
+      text-align: left;
+      font-weight: 700;
+      border: 1px solid #002244;
+    }
+    table.mep-table td {
+      padding: 4px 7px;
+      border: 1px solid #e2e8f0;
+      color: #334155;
+    }
+    table.mep-table tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    /* PILLS & BADGES */
+    .badge {
+      display: inline-block;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 8.5px;
+      font-weight: 700;
+    }
+    .badge-a { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+    .badge-b { background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; }
+    .badge-c { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+
+    /* FOOTER */
+    .page-footer {
+      border-top: 1px solid #cbd5e1;
+      padding-top: 4px;
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 8px;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== PÁGINA 1: PROPÓSITO, ABORDAJE Y BENEFICIOS ==================== -->
+  <div class="page">
+    <div class="header-mep">
+      <div class="header-titles">
+        <h1>Ministerio de Educación Pública de Costa Rica</h1>
+        <h2>PROGRAMA NACIONAL DE FORMACIÓN TECNOLÓGICA • 9.° AÑO (NOVENO DE SECUNDARIA)</h2>
+        <div class="header-level-badge">GUÍA PEDAGÓGICA Y DOCUMENTO TÉCNICO OFICIAL • AULA INTELIGENTE 9.° AÑO</div>
+      </div>
+      <div class="mep-badge-pill">
+        📘 GUÍA TÉCNICO-PEDAGÓGICA<br>
+        <span style="font-size: 8.5px; font-weight: 800; color: #6b21a8;">9.° AÑO (NOVENO)</span><br>
+        <span style="font-size: 7.5px; font-weight: 600; color: #475569;">Curso Lectivo 2027</span>
+      </div>
+    </div>
+
+    <!-- RESUMEN EJECUTIVO -->
+    <div class="card card-primary" style="margin-bottom: 8px;">
+      <div class="card-title">🎯 Propósito del Instrumento de Evaluación Diagnóstica (9.° Año - Aula Inteligente)</div>
+      <p style="font-size: 10.5px; margin: 0; line-height: 1.4;">
+        Esta herramienta web interactiva constituye un instrumento curricular para la <strong>identificación oportuna de saberes previos</strong> en sistemas embebidos, sensórica y domótica. Integra un simulador 2D interactivo de circuitos con 10 reactivos conceptuales y telemetría formativa en tiempo real para fundamentar las <strong>Estrategias de Mediación del Planeamiento Didáctico Oficial</strong> de 9.° año bajo principios del <em>Diseño Universal para el Aprendizaje (DUA)</em>.
+      </p>
+    </div>
+
+    <!-- ABORDAJE TEMÁTICO INTEGRAL: ARTICULACIÓN DEL PNFT -->
+    <h3 class="section-title">🧭 Abordaje Temático y Dimensiones Curriculares Evaluadas (PNFT 9.° Año)</h3>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-title" style="color: #0369a1;">🧠 1. Dimensión Cognitiva</div>
+        <p style="font-size: 9.5px; color: #475569; margin-bottom: 3px;"><strong>Saber (Conceptual) • 10 Saberes Clave:</strong></p>
+        <ul style="margin: 0; padding-left: 12px; font-size: 9px; color: #334155; line-height: 1.3;">
+          <li>Microcontroladores y pines digitales/analógicos.</li>
+          <li>Sensores de luz (LDR) y movimiento (PIR).</li>
+          <li>Actuadores de potencia (Relés y ventiladores).</li>
+          <li>Pantallas LCD I2C y protocolos de comunicación.</li>
+          <li>Lógica de umbrales y condicionales de control.</li>
+          <li>Eficiencia energética y automatización de edificios.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title" style="color: #059669;">🖐️ 2. Dimensión Psicomotriz</div>
+        <p style="font-size: 9.5px; color: #475569; margin-bottom: 3px;"><strong>Saber hacer (Procedimental) • Simulador 2D:</strong></p>
+        <ul style="margin: 0; padding-left: 12px; font-size: 9px; color: #334155; line-height: 1.3;">
+          <li><strong>P1:</strong> Conexionado de alimentación (VCC 5V y GND).</li>
+          <li><strong>P2:</strong> Conexión correcta de líneas de señal (A0, D2, D4).</li>
+          <li><strong>P3:</strong> Identificación y corrección de cortocircuitos.</li>
+          <li><strong>P4:</strong> Calibración de umbrales interactivos de luz y calor.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title" style="color: #7c3aed;">🤝 3. Dimensión Socioafectiva</div>
+        <p style="font-size: 9.5px; color: #475569; margin-bottom: 3px;"><strong>Saber ser (Actitudinal) • Actitudes de Taller:</strong></p>
+        <ul style="margin: 0; padding-left: 12px; font-size: 9px; color: #334155; line-height: 1.3;">
+          <li>Conciencia de eficiencia energética y sostenibilidad.</li>
+          <li>Ética, seguridad de datos y privacidad en IoT.</li>
+          <li>Resiliencia y método lógico ante fallos de conexión.</li>
+          <li>Colaboración y trabajo responsable en el laboratorio.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- BENEFICIOS CLAVE -->
+    <h3 class="section-title">⭐ Beneficios Transformadores para la Comunidad Educativa de 9.° Año</h3>
+    <div class="grid-2">
+      <div class="card card-success">
+        <div class="card-title" style="color: #15803d;">👨‍🏫 Para el Docente de 9.° Año</div>
+        <ul style="margin: 0; padding-left: 12px; font-size: 9.5px; color: #166534; line-height: 1.35;">
+          <li><strong>Sincronización en Vivo:</strong> Resultados del simulador y reactivos procesados al instante.</li>
+          <li><strong>Matriz de 6 Decisiones:</strong> Detección precisa de necesidades en hardware vs algoritmos.</li>
+          <li><strong>Recomendaciones DUA con IA:</strong> Sugerencias personalizadas para el planeamiento.</li>
+          <li><strong>Exportación Completa:</strong> Formatos oficiales de Excel, CSV y actas institucionales.</li>
+        </ul>
+      </div>
+
+      <div class="card card-accent">
+        <div class="card-title" style="color: #6d28d9;">🧑‍🎓 Para el Estudiante de 9.° Año</div>
+        <ul style="margin: 0; padding-left: 12px; font-size: 9.5px; color: #581c87; line-height: 1.35;">
+          <li><strong>Simulación Realista:</strong> Montaje seguro de circuitos sin riesgo de dañar componentes.</li>
+          <li><strong>Reflexión Metacognitiva:</strong> Autoevaluación al final del proceso de simulación.</li>
+          <li><strong>Token Criptográfico:</strong> Comprobante digital único antifraude.</li>
+          <li><strong>Modo Doble:</strong> Acceso en línea o mediante código QR para laboratorios rurales.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ESCALA DE VALORACIÓN OFICIAL MEP -->
+    <h3 class="section-title">📊 Escala Oficial de Valoración Diagnóstica MEP 2027 (9.° Año)</h3>
+    <table class="mep-table">
+      <thead>
+        <tr>
+          <th style="width: 24%;">Nivel de Logro</th>
+          <th style="width: 18%;">Saberes Demostrados</th>
+          <th style="width: 30%;">Descripción Pedagógica</th>
+          <th style="width: 28%;">Acción en Planeamiento Didáctico</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-a">CONSOLIDADO (L)</span></td>
+          <td><strong>8 a 10 Saberes</strong> (80% - 100%)</td>
+          <td>Domina con soltura el conexionado, la sensórica y la lógica domótica.</td>
+          <td>Retos de automatización avanzada, diseño de proyectos IoT y liderazgo.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-b">EN DESARROLLO (ED)</span></td>
+          <td><strong>6 a 7 Saberes</strong> (60% - 79%)</td>
+          <td>Comprende los circuitos básicos pero requiere apoyo en polaridad y umbrales.</td>
+          <td>Fichas nemotécnicas de conexionado, modelado guiado y práctica en parejas.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-c">REQUIERE ACOMPAÑAMIENTO (RA)</span></td>
+          <td><strong>Menos de 6 Saberes</strong> (< 60%)</td>
+          <td>Presenta dificultades en la identificación de pines y lógica de control.</td>
+          <td>Nivelación conceptual prioritaria, andamiaje paso a paso y adecuación DUA.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="page-footer">
+      <span>Ministerio de Educación Pública • Formación Tecnológica 2027 • 9.° Año (Noveno)</span>
+      <span>Página 1 de 2 • Fundamento Curricular y Beneficios</span>
+    </div>
+  </div>
+
+  <!-- ==================== PÁGINA 2: MATRIZ DE 10 INDICADORES Y PROTOCOLO ==================== -->
+  <div class="page">
+    <div class="header-mep">
+      <div class="header-titles">
+        <h1>Matriz Diagnóstica de 10 Indicadores y Protocolo de Aplicación</h1>
+        <h2>PROGRAMA NACIONAL DE FORMACIÓN TECNOLÓGICA • 9.° AÑO (NOVENO DE SECUNDARIA)</h2>
+        <div class="header-level-badge">SUITE DE APLICACIÓN DOCENTE • AULA INTELIGENTE 9.° AÑO</div>
+      </div>
+      <div class="mep-badge-pill">
+        📊 MATRIZ CURRICULAR<br>
+        <span style="font-size: 8.5px; font-weight: 800; color: #6b21a8;">9.° AÑO (NOVENO)</span><br>
+        <span style="font-size: 7.5px; font-weight: 600; color: #475569;">Curso Lectivo 2027</span>
+      </div>
+    </div>
+
+    <!-- MATRIZ DIAGNÓSTICA DE LOS 10 INDICADORES DE 9NO -->
+    <h3 class="section-title">🧩 Matriz de los 10 Saberes de Sistemas Embebidos y Domótica (9.° Año)</h3>
+    <div class="grid-10-indicators">
+      <div class="indicator-card logrado">
+        <div class="ind-header"><div class="ind-num-title"><span class="ind-badge-num">1</span><span>Microcontrolador y Pines</span></div><span class="ind-tag tag-logrado">Logrado</span></div>
+        <p class="ind-desc">Identificación de funciones de pines digitales, analógicos y alimentación.</p>
+        <div class="ind-progress-bar bar-green"></div>
+      </div>
+      <div class="indicator-card logrado">
+        <div class="ind-header"><div class="ind-num-title"><span class="ind-badge-num">2</span><span>Sensor de Luz (LDR)</span></div><span class="ind-tag tag-logrado">Logrado</span></div>
+        <p class="ind-desc">Mapeo y lectura de valores analógicos según la iluminación ambiental.</p>
+        <div class="ind-progress-bar bar-green"></div>
+      </div>
+      <div class="indicator-card logrado">
+        <div class="ind-header"><div class="ind-num-title"><span class="ind-badge-num">3</span><span>Sensor de Movimiento (PIR)</span></div><span class="ind-tag tag-logrado">Logrado</span></div>
+        <p class="ind-desc">Detección de presencia mediante señales digitales binarias (HIGH/LOW).</p>
+        <div class="ind-progress-bar bar-green"></div>
+      </div>
+      <div class="indicator-card logrado">
+        <div class="ind-header"><div class="ind-num-title"><span class="ind-badge-num">4</span><span>Actuador Relé (Relay)</span></div><span class="ind-tag tag-logrado">Logrado</span></div>
+        <p class="ind-desc">Conmutación segura de cargas de alta potencia (foco 110V/220V).</p>
+        <div class="ind-progress-bar bar-green"></div>
+      </div>
+      <div class="indicator-card logrado">
+        <div class="ind-header"><div class="ind-num-title"><span class="ind-badge-num">5</span><span>Ventilador de Potencia</span></div><span class="ind-tag tag-logrado">Logrado</span></div>
+        <p class="ind-desc">Control de climatización automática basado en umbrales de temperatura.</p>
+        <div class="ind-progress-bar bar-green"></div>
+      </div>
+      <div class="indicator-card desarrollo">
+        <div class="ind-header"><div class="ind-num-title"><span class="ind-badge-num">6</span><span>Pantalla LCD I2C</span></div><span class="ind-tag tag-desarrollo">En Desarrollo</span></div>
+        <p class="ind-desc">Visualización de estados y mensajes del sistema mediante protocolo I2C.</p>
+        <div class="ind-progress-bar bar-yellow"></div>
+      </div>
+      <div class="indicator-card desarrollo">
+        <div class="ind-header"><div class="ind-num-title"><span class="ind-badge-num">7</span><span>Circuito Cerrado y Polaridad</span></div><span class="ind-tag tag-desarrollo">En Desarrollo</span></div>
+        <p class="ind-desc">Conexión correcta de líneas 5V y tierra común evitando cortos.</p>
+        <div class="ind-progress-bar bar-yellow"></div>
+      </div>
+      <div class="indicator-card desarrollo">
+        <div class="ind-header"><div class="ind-num-title"><span class="ind-badge-num">8</span><span>Lógica de Umbrales</span></div><span class="ind-tag tag-desarrollo">En Desarrollo</span></div>
+        <p class="ind-desc">Condicionales lógicos para activación automática de actuadores.</p>
+        <div class="ind-progress-bar bar-yellow"></div>
+      </div>
+      <div class="indicator-card desarrollo">
+        <div class="ind-header"><div class="ind-num-title"><span class="ind-badge-num">9</span><span>Seguridad y Ciberseguridad</span></div><span class="ind-tag tag-desarrollo">En Desarrollo</span></div>
+        <p class="ind-desc">Protección de redes IoT y prevención de accesos no autorizados.</p>
+        <div class="ind-progress-bar bar-yellow"></div>
+      </div>
+      <div class="indicator-card desarrollo">
+        <div class="ind-header"><div class="ind-num-title"><span class="ind-badge-num">10</span><span>Eficiencia Energética</span></div><span class="ind-tag tag-desarrollo">En Desarrollo</span></div>
+        <p class="ind-desc">Optimización del consumo eléctrico en instalaciones educativas inteligentes.</p>
+        <div class="ind-progress-bar bar-yellow"></div>
+      </div>
+    </div>
+
+    <!-- INFOGRAFÍA: FLUJO DE 4 PASOS -->
+    <h3 class="section-title">🔄 Flujo de Trabajo en 4 Fases para el Docente de 9.° Año</h3>
+    <div class="flow-container">
+      <div class="flow-step active">
+        <span class="step-number">1</span>
+        <div class="step-name">Ingreso y Sección</div>
+        <div class="step-desc">El docente ingresa al Dashboard y selecciona la sección (ej. 9-1 a 9-20).</div>
+      </div>
+      <div class="flow-step">
+        <span class="step-number">2</span>
+        <div class="step-name">Proyección QR / Enlace</div>
+        <div class="step-desc">Abre la suite diagnóstica y proyecta el código QR o enlace web de 9.° año.</div>
+      </div>
+      <div class="flow-step">
+        <span class="step-number">3</span>
+        <div class="step-name">Simulación y Reactivos</div>
+        <div class="step-desc">Los estudiantes arman el circuito en el simulador 2D y responden los 10 reactivos.</div>
+      </div>
+      <div class="flow-step">
+        <span class="step-number">4</span>
+        <div class="step-name">Dictamen e IA</div>
+        <div class="step-desc">La telemetría consolida resultados y genera recomendaciones DUA para el planeamiento.</div>
+      </div>
+    </div>
+
+    <!-- POLÍTICAS Y DIRECTRIZ OBLIGATORIA -->
+    <div style="background: #003366; color: #ffffff; border-radius: 8px; padding: 8px 12px; margin-top: 6px; display: flex; align-items: center; gap: 10px;">
+      <span style="font-size: 20px;">📌</span>
+      <div style="font-size: 9px; line-height: 1.35;">
+        <strong style="font-size: 10px; color: #38bdf8; display: block; text-transform: uppercase; margin-bottom: 2px;">
+          Directriz de Vinculación Curricular Obligatoria MEP • 9.° Año
+        </strong>
+        Los resultados cualitativos de 9.° año deben trasladarse directamente a las <strong>Estrategias de Mediación Pedagógica</strong> del planeamiento didáctico oficial para consolidar saberes en sensórica y sistemas embebidos.
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span>Ministerio de Educación Pública • Formación Tecnológica 2027 • 9.° Año (Noveno)</span>
+      <span>Página 2 de 2 • Matriz de Indicadores y Protocolo de Aplicación</span>
+    </div>
+  </div>
+
+</body>
+</html>

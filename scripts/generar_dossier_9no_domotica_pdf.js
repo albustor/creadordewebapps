@@ -44,7 +44,7 @@ function generarDocumento9noPDF() {
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7);
     doc.setTextColor(...COLOR_MUTED);
-    doc.text(titleSection || "Documento técnico oficial • Diagnóstico de 9.° año", pageWidth - margin, 11.5, { align: 'right' });
+    doc.text(titleSection || "Guía pedagógica oficial • 9.° año (Aula Inteligente)", pageWidth - margin, 11.5, { align: 'right' });
 
     doc.setDrawColor(...COLOR_BORDER);
     doc.setLineWidth(0.3);
@@ -74,11 +74,11 @@ function generarDocumento9noPDF() {
 
   // Distintivo superior
   doc.setFillColor(126, 34, 206);
-  doc.roundedRect(margin, 10, 120, 6.5, 1.5, 1.5, 'F');
+  doc.roundedRect(margin, 10, 145, 6.5, 1.5, 1.5, 'F');
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7.5);
   doc.setTextColor(255, 255, 255);
-  doc.text("PROGRAMA NACIONAL DE FORMACIÓN TECNOLÓGICA • MEP 2027", margin + 4, 14.5);
+  doc.text("PROGRAMA NACIONAL DE FORMACIÓN TECNOLÓGICA • 9.° AÑO (NOVENO)", margin + 4, 14.5);
 
   // Título principal en formato gramatical hispanoamericano
   doc.setFont('helvetica', 'bold');
@@ -87,7 +87,7 @@ function generarDocumento9noPDF() {
   doc.text("Diagnóstico de 9.° año: Aula Inteligente", margin, 26);
   doc.setFontSize(13);
   doc.setTextColor(216, 180, 254); // Violeta claro
-  doc.text("Guía pedagógica y documento técnico oficial", margin, 34);
+  doc.text("Guía pedagógica y documento técnico oficial • 9.° año de secundaria", margin, 34);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
