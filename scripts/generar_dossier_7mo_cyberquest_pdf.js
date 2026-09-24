@@ -79,7 +79,7 @@ function generarDocumento7moPDF() {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7.5);
   doc.setTextColor(255, 255, 255);
-  doc.text("PROGRAMA NACIONAL DE FORMACIÓN TECNOLÓGICA • 7.° AÑO (SÉTIMO)", margin + 4, 14.5);
+  doc.text("PROGRAMA NACIONAL DE FORMACIÓN TECNOLÓGICA • 7.° AÑO", margin + 4, 14.5);
 
   // Títulos principales en formato gramatical hispanoamericano
   doc.setFont('helvetica', 'bold');
@@ -88,7 +88,7 @@ function generarDocumento7moPDF() {
   doc.text("CyberQuest 7.° año: misión tecnológica", margin, 26);
   doc.setFontSize(13);
   doc.setTextColor(103, 232, 249); // Cyan claro
-  doc.text("Guía pedagógica y documento técnico oficial • 7.° año de secundaria", margin, 34);
+  doc.text("Guía pedagógica y documento técnico oficial • 7.° año", margin, 34);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
@@ -110,7 +110,7 @@ function generarDocumento7moPDF() {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7.5);
   doc.setTextColor(...COLOR_DARK);
-  doc.text("• Población meta: Estudiantes de 7.° año (sétimo de secundaria / Tercer Ciclo de la EGB).", margin + 6, yPos + 12);
+  doc.text("• Población meta: Estudiantes de 7.° año (Tercer Ciclo de la Educación General Básica).", margin + 6, yPos + 12);
   doc.text("• Modalidad de aplicación: Parejas de ciber-agentes (líder de consola y co-piloto) o individual.", margin + 6, yPos + 17);
   doc.text("• Enfoque de evaluación: Formativo, diagnóstico y cualitativo (identificación de brechas sin nota punitiva).", margin + 6, yPos + 22);
   doc.text("• Acceso web en producción: https://diagnosticosecundaria.vercel.app/diagnostico (pestaña 7.° año).", margin + 6, yPos + 27);
