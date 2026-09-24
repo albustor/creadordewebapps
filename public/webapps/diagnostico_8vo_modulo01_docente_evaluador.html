@@ -1014,12 +1014,10 @@
   function cargarEstudiantesIniciales() {
     try {
       const profile = typeof getStoredProfile === 'function' ? getStoredProfile() : null;
-      const cedClean = (profile?.cedula || '503050179').replace(/[^a-zA-Z0-9]/g, '');
+      const cedClean = profile?.cedula ? profile.cedula.replace(/[^a-zA-Z0-9]/g, '') : '';
       const rawSpecific = cedClean ? localStorage.getItem(`MEP_DOCENTE_8VO_EVALUATIONS_${cedClean}`) : null;
-      const rawGlobal = localStorage.getItem('MEP_DOCENTE_8VO_EVALUATIONS') || localStorage.getItem('evaluacion_docente_8vo');
-      const raw = rawSpecific || rawGlobal;
-      if (raw) {
-        const parsed = JSON.parse(raw);
+      if (rawSpecific) {
+        const parsed = JSON.parse(rawSpecific);
         if (Array.isArray(parsed) && parsed.length > 0) return parsed;
       }
     } catch (e) {}

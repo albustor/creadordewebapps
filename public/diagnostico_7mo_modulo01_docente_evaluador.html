@@ -1171,17 +1171,18 @@
       const profile = getStoredProfile();
       evaluatedCadets = [];
       try {
-        const storageKey = profile?.cedula ? `MEP_DOCENTE_7MO_EVALUATIONS_${profile.cedula.replace(/[^a-zA-Z0-9]/g, '')}` : 'MEP_DOCENTE_7MO_EVALUATIONS';
-        const saved = localStorage.getItem(storageKey) || localStorage.getItem('MEP_DOCENTE_7MO_EVALUATIONS');
+        const cedClean = profile?.cedula ? profile.cedula.replace(/[^a-zA-Z0-9]/g, '') : '';
+        const storageKey = cedClean ? `MEP_DOCENTE_7MO_EVALUATIONS_${cedClean}` : null;
+        const saved = storageKey ? localStorage.getItem(storageKey) : null;
         if (saved) {
           const parsed = JSON.parse(saved);
-          evaluatedCadets = parsed.filter(c => isDocenteMatch(c, profile)).map(c => {
-            if (c.name1 && typeof c.name1 === 'object') c.name1 = c.name1.name || 'Estudiante 1';
-            if (c.name2 && typeof c.name2 === 'object') c.name2 = c.name2.name || 'Estudiante 2';
-            if (c.name1 === '[object Object]') c.name1 = 'Juan Viales Calderón';
-            if (c.name2 === '[object Object]') c.name2 = 'María Gómez Porras';
-            return c;
-          });
+          if (Array.isArray(parsed)) {
+            evaluatedCadets = parsed.filter(c => isDocenteMatch(c, profile)).map(c => {
+              if (c.name1 && typeof c.name1 === 'object') c.name1 = c.name1.name || 'Estudiante 1';
+              if (c.name2 && typeof c.name2 === 'object') c.name2 = c.name2.name || 'Estudiante 2';
+              return c;
+            });
+          }
         }
 
         // Cargar también registros generados en el mismo navegador desde telemetria_registros siempre que pertenezcan al docente activo
