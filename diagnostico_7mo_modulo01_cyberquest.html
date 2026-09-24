@@ -983,7 +983,7 @@
   <header class="hud-header">
     <div class="hud-brand">
       <span class="mep-tag">MEP 2027</span>
-      <div class="cyber-title" id="hudCyberTitle">⚡ CyberQuest 7° &bull; Misión en Parejas</div>
+      <div class="cyber-title" id="hudCyberTitle">⚡ CyberQuest 7.° &bull; Misión en parejas</div>
     </div>
     <div class="hud-stats">
       <div class="stat-pill leader" id="hudCadet1Pill" style="display: none;">
@@ -1000,9 +1000,9 @@
       </div>
     </div>
     <div class="hud-controls">
-      <button class="btn-icon" id="btnAudioToggle" title="Activar/Silenciar Audio">🔊</button>
-      <button class="btn-icon" id="btnFullscreen" title="Pantalla Completa">⛶</button>
-      <button class="btn-icon" id="btnResetSession" title="Reiniciar Sesión">↺</button>
+      <button class="btn-icon" id="btnAudioToggle" title="Activar/silenciar audio">🔊</button>
+      <button class="btn-icon" id="btnFullscreen" title="Pantalla completa">⛶</button>
+      <button class="btn-icon" id="btnResetSession" title="Reiniciar sesión">↺</button>
     </div>
   </header>
 
@@ -1023,7 +1023,7 @@
         <div class="step-item" id="step1">1. Psicomotriz</div>
         <div class="step-item" id="step2">2. Cognitivo</div>
         <div class="step-item" id="step3">3. Autoevaluación</div>
-        <div class="step-item" id="step4">4. Misión Cumplida</div>
+        <div class="step-item" id="step4">4. Misión cumplida</div>
       </div>
     </section>
 
@@ -1036,7 +1036,7 @@
 
   <footer class="app-footer">
     Ministerio de Educación Pública de Costa Rica (MEP) | Dirección de Informática Educativa 2027<br>
-    Módulo Diagnóstico Formativo 7.° Año (III Ciclo) &bull; Modalidad en Parejas (Líder y Co-piloto) &bull; Evaluación Diagnóstica Pura Sin Realimentación
+    Módulo diagnóstico formativo de 7.° año (III Ciclo) &bull; Modalidad en parejas (líder y copiloto) &bull; Evaluación diagnóstica pura sin realimentación
   </footer>
 
   <div class="toast-container" id="toastContainer"></div>
@@ -1742,35 +1742,35 @@
     const COGNITIVE_QUESTIONS = [
       {
         id: 'ind1',
-        title: 'Indicador 1: Hardware y Dispositivos',
+        title: 'Indicador 1: Hardware y dispositivos',
         desc: 'Identifica la función y clasificación de los componentes físicos esenciales.',
-        question: '¿Cuál de los siguientes grupos contiene EXCLUSIVAMENTE dispositivos de ENTRADA (Input)?',
+        question: '¿Cuál de los siguientes grupos contiene exclusivamente dispositivos de entrada (input)?',
         options: [
-          'Monitor, Parlantes e Impresora',
-          'Teclado, Ratón (Mouse) y Micrófono',
-          'Disco Duro SSD, Memoria RAM y Pendrive USB',
-          'Pantalla Táctil, Proyector y Tarjeta Madre'
+          'Monitor, parlantes e impresora',
+          'Teclado, ratón (mouse) y micrófono',
+          'Disco duro SSD, memoria RAM y memoria USB (pendrive)',
+          'Pantalla táctil, proyector y tarjeta madre'
         ],
         correctIndex: 1
       },
       {
         id: 'ind2',
-        title: 'Indicador 2: Software y Programas',
+        title: 'Indicador 2: Software y programas',
         desc: 'Diferenciación entre aplicaciones de usuario y software utilitario.',
         question: 'Un estudiante necesita proteger su computadora contra virus y liberar espacio en el disco duro. ¿Qué tipo de software requiere utilizar?',
         options: [
-          'Software de Aplicación de Usuario (ej. Navegador Web o Paint)',
-          'Software Utilitario y de Mantenimiento / Seguridad',
-          'Software de Videojuegos',
-          'Controlador de Impresora'
+          'Software de aplicación de usuario (por ejemplo, navegador web o Paint)',
+          'Software utilitario, de mantenimiento y seguridad',
+          'Software de videojuegos',
+          'Controlador de impresora'
         ],
         correctIndex: 1
       },
       {
         id: 'ind3',
-        title: 'Indicador 3: Sistemas Operativos',
-        desc: 'Funciones cardinales del Sistema Operativo y administración de recursos.',
-        question: '¿Cuál es la función PRINCIPAL del Sistema Operativo (como Windows, Linux o macOS)?',
+        title: 'Indicador 3: Sistemas operativos',
+        desc: 'Funciones cardinales del sistema operativo y administración de recursos.',
+        question: '¿Cuál es la función principal del sistema operativo (como Windows, Linux o macOS)?',
         options: [
           'Crear diapositivas y hojas de cálculo para la clase',
           'Administrar el hardware (memoria, procesador) y servir de puente para que funcionen las aplicaciones',
@@ -1781,22 +1781,22 @@
       },
       {
         id: 'ind4',
-        title: 'Indicador 4: Redes y Conectividad',
+        title: 'Indicador 4: Redes y conectividad',
         desc: 'Topologías básicas, Internet vs Intranet y modelo Cliente-Servidor.',
         question: 'En el laboratorio de cómputo del colegio, todas las computadoras comparten una impresora mediante una red local cerrada sin salir al exterior. Esta red se clasifica como:',
         options: [
-          'WAN (Red de Área Mundial)',
-          'LAN / Intranet (Red de Área Local)',
-          'Bluetooth Personal PAN',
-          'Satélite Espacial'
+          'WAN (red de área amplia / mundial)',
+          'LAN / intranet (red de área local)',
+          'PAN (red de área personal Bluetooth)',
+          'Satélite espacial'
         ],
         correctIndex: 1
       },
       {
         id: 'ind5',
-        title: 'Indicador 5: Formatos y Extensiones de Archivo',
+        title: 'Indicador 5: Formatos y extensiones de archivo',
         desc: 'Clasificación de tipos de datos (.png, .mp3, .pdf, .docx, .py).',
-        question: 'Relaciona la extensión con su tipo: Si guardas una pista de audio para un podcast escolar, ¿cuál extensión es la adecuada?',
+        question: 'Al guardar una pista de audio para un pódcast escolar, ¿cuál extensión es la adecuada?',
         options: [
           '.png o .jpg',
           '.mp3 o .wav',
@@ -1807,33 +1807,33 @@
       },
       {
         id: 'ind6',
-        title: 'Indicador 6: Edición Gráfica y Medios',
+        title: 'Indicador 6: Edición gráfica y medios',
         desc: 'Principios de manipulación de imagen y diseño básico en entorno digital.',
         question: 'Al recortar y cambiar el contraste de una fotografía digital antes de publicarla en un mural educativo, estamos realizando:',
         options: [
-          'Edición y Retoque Gráfico Digital',
-          'Compilación de Código Fuente',
-          'Formateo del Disco Duro',
-          'Desfragmentación de Memoria'
+          'Edición y retoque gráfico digital',
+          'Compilación de código fuente',
+          'Formateo del disco duro',
+          'Desfragmentación de memoria'
         ],
         correctIndex: 0
       },
       {
         id: 'ind7',
-        title: 'Indicador 7: Algoritmos y Eventos',
+        title: 'Indicador 7: Algoritmos y eventos',
         desc: 'Disparadores de acción (bloques de evento en programación por bloques).',
-        question: 'En un programa de bloques (tipo Scratch), ¿qué bloque se utiliza para que un personaje hable JUSTO cuando el usuario hace clic sobre él?',
+        question: 'En un programa de bloques (como Scratch), ¿qué bloque se utiliza para que un personaje hable en el momento en que el usuario hace clic sobre él?',
         options: [
-          'Al presionar Bandera Verde',
-          'Al hacer clic en este objeto (Sprite)',
-          'Por siempre / Repetir',
+          'Al presionar la bandera verde',
+          'Al hacer clic en este objeto (sprite)',
+          'Por siempre / repetir',
           'Esperar 10 segundos'
         ],
         correctIndex: 1
       },
       {
         id: 'ind8',
-        title: 'Indicador 8: Variables y Bucles',
+        title: 'Indicador 8: Variables y bucles',
         desc: 'Rastreo y simulación de iteraciones.',
         codeSnippet: 'puntos = 0;\nRepetir 3 veces {\n    puntos = puntos + 5;\n}\nMostrar(puntos);',
         question: 'Al ejecutar este bloque de código, ¿qué valor final tendrá la variable "puntos"?',
@@ -1847,28 +1847,28 @@
       },
       {
         id: 'ind9',
-        title: 'Indicador 9: Condicionales Lógicos',
+        title: 'Indicador 9: Condicionales lógicos',
         desc: 'Evaluación de bifurcaciones booleanas Si / Si no.',
         codeSnippet: 'bateria = 15;\nSi (bateria < 20) Entonces {\n    Estado = "Activar Modo Ahorro";\n} Si no {\n    Estado = "Modo Alto Rendimiento";\n}',
         question: '¿Qué texto se guardará en la variable "Estado" según los datos dados?',
         options: [
-          '"Activar Modo Ahorro"',
-          '"Modo Alto Rendimiento"',
-          '"Batería Llena"',
-          '"Error de Sintaxis"'
+          '"Activar modo ahorro"',
+          '"Modo alto rendimiento"',
+          '"Batería llena"',
+          '"Error de sintaxis"'
         ],
         correctIndex: 0
       },
       {
         id: 'ind10',
-        title: 'Indicador 10: Operadores Lógicos y Aritméticos',
+        title: 'Indicador 10: Operadores lógicos y aritméticos',
         desc: 'Jerarquía de operaciones y operadores relacionales y lógicos.',
         codeSnippet: 'Resultado = (10 > 5) AND (4 + 2 == 6);',
         question: '¿Cuál es el valor booleano final de la variable "Resultado"?',
         options: [
-          'VERDADERO (True)',
-          'FALSO (False)',
-          'NULO (Null)',
+          'Verdadero (True)',
+          'Falso (False)',
+          'Nulo (Null)',
           '16'
         ],
         correctIndex: 0
@@ -2068,7 +2068,7 @@
 
       const lightEl = document.getElementById('semaphoreLight');
       lightEl.className = 'semaphore-light yellow';
-      lightEl.innerHTML = '⏳<span class="semaphore-status-label" style="color:#fbbf24;">PREPARADOS...</span>';
+      lightEl.innerHTML = '⏳<span class="semaphore-status-label" style="color:#fbbf24;">Preparados...</span>';
       AudioEngine.playTempoTick();
 
       const delay = 1000 + Math.random() * 1400;
@@ -2079,13 +2079,13 @@
           p2State.totalGreenShown++;
           p2State.activeColor = 'green';
           lightEl.className = 'semaphore-light green';
-          lightEl.innerHTML = '🟢<span class="semaphore-status-label" style="color:#34d399;">¡PULSA YA!</span>';
+          lightEl.innerHTML = '🟢<span class="semaphore-status-label" style="color:#34d399;">¡Pulsa ya!</span>';
           AudioEngine.playGreenBeat();
           p2State.lightStartTime = Date.now();
         } else {
           p2State.activeColor = 'red';
           lightEl.className = 'semaphore-light red';
-          lightEl.innerHTML = '🔴<span class="semaphore-status-label" style="color:#f87171;">¡ALTO! NO TOCAR</span>';
+          lightEl.innerHTML = '🔴<span class="semaphore-status-label" style="color:#f87171;">¡Alto! No tocar</span>';
           AudioEngine.playBeep();
         }
 
@@ -2096,7 +2096,7 @@
           }
           p2State.activeColor = 'off';
           lightEl.className = 'semaphore-light';
-          lightEl.innerHTML = '⚪<span class="semaphore-status-label" style="color:#64748b;">EN ESPERA</span>';
+          lightEl.innerHTML = '⚪<span class="semaphore-status-label" style="color:#64748b;">En espera</span>';
           setTimeout(nextP2Step, 900);
         }, 1100);
       }, delay);
@@ -2137,7 +2137,7 @@
       const lightEl = document.getElementById('semaphoreLight');
       if (lightEl) {
         lightEl.className = 'semaphore-light';
-        lightEl.innerHTML = '🏁<span class="semaphore-status-label" style="color:#10b981;">COMPLETADO</span>';
+        lightEl.innerHTML = '🏁<span class="semaphore-status-label" style="color:#10b981;">Completado</span>';
       }
 
       const greenCount = Math.max(1, p2State.totalGreenShown);
@@ -2402,11 +2402,11 @@
       
       const isIndiv = AppState.modalidad === 'individual' || !AppState.cadet2.name;
       const phaseNames = [
-        isIndiv ? 'Fase 0: Datos del estudiante' : 'Fase 0: Datos de los estudiantes (Pareja)',
-        isIndiv ? 'Fase 1: Entrenamiento Psicomotriz Individual' : 'Fase 1: Entrenamiento Psicomotriz en Pareja',
-        'Fase 2: Desafíos Cognitivos y Pensamiento Computacional',
-        isIndiv ? 'Fase 3: Dimensión 3 • Valoración Socioafectiva' : 'Fase 3: Dimensión 3 • Valoración Socioafectiva',
-        'Fase 4: Misión Cumplida y Telemetría Oficial'
+        isIndiv ? 'Fase 0: Datos del estudiante' : 'Fase 0: Datos de los estudiantes (pareja)',
+        isIndiv ? 'Fase 1: Entrenamiento psicomotriz individual' : 'Fase 1: Entrenamiento psicomotriz en pareja',
+        'Fase 2: Desafíos cognitivos y pensamiento computacional',
+        'Fase 3: Dimensión 3 • Valoración socioafectiva',
+        'Fase 4: Misión cumplida y telemetría oficial'
       ];
       
       const percentages = [5, 30, 65, 85, 100];
@@ -2429,8 +2429,8 @@
       const cyberTitleEl = document.getElementById('hudCyberTitle');
       if (cyberTitleEl) {
         cyberTitleEl.innerHTML = isIndiv 
-          ? '⚡ CyberQuest 7° &bull; Misión Individual' 
-          : '⚡ CyberQuest 7° &bull; Misión en Parejas';
+          ? '⚡ CyberQuest 7.° &bull; Misión individual' 
+          : '⚡ CyberQuest 7.° &bull; Misión en parejas';
       }
 
       const pill1 = document.getElementById('hudCadet1Pill');
@@ -2493,7 +2493,7 @@
       if (words.length < 3) {
         return {
           valid: false,
-          message: `⚠️ ${studentRoleLabel}:\n\nDebe ingresar el nombre completo con sus DOS apellidos (ejemplo: Juan Rosales Valverde o María José Gómez Porras).\n\nActualmente se ingresó: "${formatted}"`,
+          message: `⚠️ ${studentRoleLabel}:\n\nDebe ingresar el nombre completo con sus dos apellidos (ejemplo: Juan Rosales Valverde o María José Gómez Porras).\n\nActualmente se ingresó: "${formatted}"`,
           formatted
         };
       }
@@ -2526,8 +2526,8 @@
       container.innerHTML = `
         <div class="cyber-card">
           <div class="card-header">
-            <span class="mission-badge badge-psico" id="phase0Badge">FASE INICIAL &bull; DATOS DEL ESTUDIANTE${isSolo ? ' (INDIVIDUAL)' : ' (MISIÓN EN PAREJAS)'}</span>
-            <h1 class="card-title">Bienvenido a CyberQuest 7.° Año</h1>
+            <span class="mission-badge badge-psico" id="phase0Badge">Fase inicial &bull; Datos del estudiante ${isSolo ? '(individual)' : '(misión en parejas)'}</span>
+            <h1 class="card-title">Bienvenido a CyberQuest 7.° año</h1>
             <p class="card-desc">Evaluación Diagnóstica Oficial MEP 2027 - III Ciclo.</p>
           </div>
 
@@ -2546,16 +2546,16 @@
               </div>
             </div>
             <span class="mep-tag" style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #34d399; font-size: 11px; padding: 5px 12px; border-radius: 20px; font-weight: 800;">
-              🔗 Vinculado al Docente Evaluador
+              🔗 Vinculado al docente evaluador
             </span>
           </div>
 
           <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 16px; align-items: flex-end;">
             <div class="form-group" style="flex: 1; min-width: 220px;">
-              <label class="form-label">Modalidad de Diagnóstico:</label>
+              <label class="form-label">Modalidad de diagnóstico:</label>
               <div class="mode-toggle-group" id="modeSelectorGroup">
                 <button type="button" id="btnModePairs" class="mode-toggle-btn ${!isSolo ? 'active' : ''}">
-                  👥 En Parejas (Recomendado MEP)
+                  👥 En parejas (recomendado MEP)
                 </button>
                 <button type="button" id="btnModeSolo" class="mode-toggle-btn ${isSolo ? 'active' : ''}">
                   👤 Individual
@@ -2564,11 +2564,11 @@
             </div>
 
             <div class="form-group" style="min-width: 200px;">
-              <label class="form-label">Sección Institucional:</label>
+              <label class="form-label">Sección institucional:</label>
               <select id="regSection" class="form-select" style="max-width: 280px; ${AppState.sectionLocked ? 'border-color: var(--cyan-neon); font-weight: 800;' : ''}">
                 ${(AppState.seccionesPermitidas && AppState.seccionesPermitidas.length > 0 ? AppState.seccionesPermitidas : ['7-1','7-2','7-3','7-4','7-5','7-6','7-7','7-8','7-9','7-10','7-11','7-12']).map(s => {
                   const sClean = s.replace(/^secci[oó]n\s*/i, '').trim();
-                  return `<option value="${sClean}" ${AppState.section === sClean ? 'selected' : ''}>Sección ${sClean} ${AppState.section === sClean && AppState.sectionLocked ? '✓ (Asignada)' : ''}</option>`;
+                  return `<option value="${sClean}" ${AppState.section === sClean ? 'selected' : ''}>Sección ${sClean} ${AppState.section === sClean && AppState.sectionLocked ? '✓ (asignada)' : ''}</option>`;
                 }).join('')}
               </select>
             </div>
@@ -2587,15 +2587,15 @@
             <div class="cadet-box leader-box" id="cadetBox1">
               <div class="cadet-box-header">
                 <span class="cadet-role-tag tag-cyan" id="cadet1RoleTag">
-                  ${isSolo ? '🚀 Estudiante &bull; Datos del Estudiante' : '🚀 Estudiante 1 &bull; Líder de Misión'}
+                  ${isSolo ? '🚀 Estudiante &bull; Datos del estudiante' : '🚀 Estudiante 1 &bull; Líder de misión'}
                 </span>
               </div>
               <div class="form-group">
-                <label class="form-label">Nombre Completo (con ambos apellidos):</label>
+                <label class="form-label">Nombre completo (con ambos apellidos):</label>
                 <input type="text" id="regName1" class="form-input" placeholder="Ej. Juan Rosales Valverde" value="${AppState.cadet1.name}">
               </div>
               <div class="form-group">
-                <label class="form-label">Selecciona tu Avatar:</label>
+                <label class="form-label">Seleccione su avatar:</label>
                 <div class="avatar-grid" id="avatarGrid1">
                   ${avatars.map(a => `
                     <div class="avatar-card ${AppState.cadet1.avatar === a.icon ? 'selected' : ''}" data-target="1" data-icon="${a.icon}" data-name="${a.name}">
@@ -2609,14 +2609,14 @@
 
             <div class="cadet-box copilot-box" id="cadetBox2" style="${isSolo ? 'display: none;' : ''}">
               <div class="cadet-box-header">
-                <span class="cadet-role-tag tag-violet">🧭 Estudiante 2 &bull; Co-piloto de Datos</span>
+                <span class="cadet-role-tag tag-violet">🧭 Estudiante 2 &bull; Copiloto de datos</span>
               </div>
               <div class="form-group">
-                <label class="form-label">Nombre Completo (con ambos apellidos):</label>
+                <label class="form-label">Nombre completo (con ambos apellidos):</label>
                 <input type="text" id="regName2" class="form-input" placeholder="Ej. María Gómez Porras" value="${AppState.cadet2.name}">
               </div>
               <div class="form-group">
-                <label class="form-label">Selecciona tu Avatar:</label>
+                <label class="form-label">Seleccione su avatar:</label>
                 <div class="avatar-grid" id="avatarGrid2">
                   ${avatars.map(a => `
                     <div class="avatar-card ${AppState.cadet2.avatar === a.icon ? 'selected-purple' : ''}" data-target="2" data-icon="${a.icon}" data-name="${a.name}">
@@ -2632,7 +2632,7 @@
 
           <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
             <button class="btn-cyber" id="btnStartQuest">
-              Iniciar Misión Diagnóstica ⚡
+              Iniciar misión diagnóstica ⚡
             </button>
           </div>
         </div>
@@ -2654,7 +2654,7 @@
           if (cadetBox2) cadetBox2.style.display = 'flex';
           if (pairGridContainer) pairGridContainer.classList.remove('solo-mode');
           if (cadet1RoleTag) cadet1RoleTag.innerHTML = '🚀 Estudiante 1 &bull; Líder de Misión';
-          if (phase0Badge) phase0Badge.innerHTML = 'FASE INICIAL &bull; DATOS DEL ESTUDIANTE (MISIÓN EN PAREJAS)';
+          if (phase0Badge) phase0Badge.innerHTML = 'Fase inicial &bull; Datos del estudiante (misión en parejas)';
           updateProgressHUD();
           AudioEngine.playClick();
         });
@@ -2666,7 +2666,7 @@
           if (cadetBox2) cadetBox2.style.display = 'none';
           if (pairGridContainer) pairGridContainer.classList.add('solo-mode');
           if (cadet1RoleTag) cadet1RoleTag.innerHTML = '🚀 Estudiante &bull; Datos del Estudiante';
-          if (phase0Badge) phase0Badge.innerHTML = 'FASE INICIAL &bull; DATOS DEL ESTUDIANTE (INDIVIDUAL)';
+          if (phase0Badge) phase0Badge.innerHTML = 'Fase inicial &bull; Datos del estudiante (individual)';
           updateProgressHUD();
           AudioEngine.playClick();
         });
@@ -2789,12 +2789,12 @@
       container.innerHTML = `
         <div class="cyber-card">
           <div class="card-header">
-            <span class="mission-badge badge-psico">DIMENSIÓN 1 &bull; PSICOMOTRIZ Y PERCEPTIVO-MOTRIZ ${isSolo ? 'INDIVIDUAL' : 'EN PAREJA'}</span>
+            <span class="mission-badge badge-psico">Dimensión 1 &bull; Psicomotriz y perceptivo-motriz ${isSolo ? '(individual)' : '(en pareja)'}</span>
             <div style="display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0;">
               <button class="btn-cyber-outline ${activeSubP === 'p1' ? 'btn-cyber' : ''}" onclick="switchSubP('p1')">P1. Lateralidad (4x4)</button>
-              <button class="btn-cyber-outline ${activeSubP === 'p2' ? 'btn-cyber' : ''}" onclick="switchSubP('p2')">P2. Ritmo e Inhibición</button>
-              <button class="btn-cyber-outline ${activeSubP === 'p3' ? 'btn-cyber' : ''}" onclick="switchSubP('p3')">P3. Pulso Viso-Manual</button>
-              <button class="btn-cyber-outline ${activeSubP === 'p4' ? 'btn-cyber' : ''}" onclick="switchSubP('p4')">P4. Trazo y Diseño</button>
+              <button class="btn-cyber-outline ${activeSubP === 'p2' ? 'btn-cyber' : ''}" onclick="switchSubP('p2')">P2. Ritmo e inhibición</button>
+              <button class="btn-cyber-outline ${activeSubP === 'p3' ? 'btn-cyber' : ''}" onclick="switchSubP('p3')">P3. Pulso visomanual</button>
+              <button class="btn-cyber-outline ${activeSubP === 'p4' ? 'btn-cyber' : ''}" onclick="switchSubP('p4')">P4. Trazo y diseño</button>
             </div>
           </div>
           <div id="subPViewContainer"></div>
@@ -2815,15 +2815,15 @@
 
       if (activeSubP === 'p1') {
         subContainer.innerHTML = `
-          <h2 class="card-title">P1. Lateralidad y Orientación Espacial (Mando en Tiempo Real)</h2>
+          <h2 class="card-title">P1. Lateralidad y orientación espacial (mando en tiempo real)</h2>
           <p class="card-desc">Conduzca el robot en tiempo real hasta el <strong>Servidor Central 🖥️</strong> en la esquina inferior derecha (4,4), evitando chocar con los obstáculos de fuego 🔥 o salir del circuito.</p>
           
           <div class="p1-controls-wrapper" style="margin: 16px 0;">
             
             <div class="p1-live-hud">
               <div>Movimientos: <strong id="p1LiveMoves">${p1State.moves}</strong></div>
-              <div>Colisiones / Errores: <strong id="p1LiveErrors" style="color: ${p1State.pathErrors > 0 ? 'var(--red-neon)' : 'var(--cyan-neon)'};">${p1State.pathErrors}</strong></div>
-              <div>Posición / Rumbo: <strong id="p1LivePos">(${p1State.robotX + 1}, ${p1State.robotY + 1}) | Este ➔</strong></div>
+              <div>Colisiones / errores: <strong id="p1LiveErrors" style="color: ${p1State.pathErrors > 0 ? 'var(--red-neon)' : 'var(--cyan-neon)'};">${p1State.pathErrors}</strong></div>
+              <div>Posición / rumbo: <strong id="p1LivePos">(${p1State.robotX + 1}, ${p1State.robotY + 1}) | Este ➔</strong></div>
             </div>
 
             <div class="grid-board" id="p1GridBoard"></div>
@@ -2845,7 +2845,7 @@
             
             <div style="margin-top: 10px; width: 100%; display: flex; justify-content: flex-end;">
               <button class="btn-cyber" id="btnNextP1" style="display: ${AppState.psicomotriz.p1_lateralidad.completed ? 'inline-flex' : 'none'};" onclick="switchSubP('p2')">
-                Siguiente Desafío (P2) ➔
+                Siguiente desafío (P2) ➔
               </button>
             </div>
           </div>
@@ -2853,16 +2853,16 @@
         renderP1Board();
       } else if (activeSubP === 'p2') {
         subContainer.innerHTML = `
-          <h2 class="card-title">P2. Ritmo, Tempo e Inhibición Motriz</h2>
+          <h2 class="card-title">P2. Ritmo, tempo e inhibición motriz</h2>
           <p class="card-desc">
-            <strong>Instrucción del Sensor:</strong> Pulse el botón <strong>CAPTURAR PULSO</strong> únicamente cuando la luz central se encienda en <strong>VERDE 🟢</strong>.
-            Si se enciende en <strong>ROJO 🔴</strong> o está en espera, <strong>NO DEBE TOCAR EL BOTÓN</strong>.
+            <strong>Instrucción del sensor:</strong> Pulse el botón <strong>CAPTURAR PULSO</strong> únicamente cuando la luz central se encienda en <strong>VERDE 🟢</strong>.
+            Si se enciende en <strong>ROJO 🔴</strong> o está en espera, <strong>no debe tocar el botón</strong>.
           </p>
           
           <div class="semaphore-box">
             <div class="semaphore-light" id="semaphoreLight">
               ⚪
-              <span class="semaphore-status-label" style="color: #64748b;">EN ESPERA</span>
+              <span class="semaphore-status-label" style="color: #64748b;">En espera</span>
             </div>
 
             <div class="p2-hud-info" id="p2ProgressInfo" style="display: none;">
@@ -2870,23 +2870,23 @@
             </div>
             
             <button class="btn-cyber reaction-trigger-btn-cyber" id="btnStartP2" onclick="startP2Game()">
-              ▶ Iniciar Sensor de Reflejos
+              ▶ Iniciar sensor de reflejos
             </button>
             
             <button class="reaction-trigger-btn-cyber" id="btnActionP2" style="display: none;" onclick="handleP2Tap()">
-              ⚡ CAPTURAR PULSO (CLIC AQUÍ) ⚡
+              ⚡ Capturar pulso (clic aquí) ⚡
             </button>
 
             <div style="margin-top: 8px; width: 100%; display: flex; justify-content: flex-end;">
               <button class="btn-cyber" id="btnNextP2" style="display: ${AppState.psicomotriz.p2_ritmo.completed ? 'inline-flex' : 'none'};" onclick="switchSubP('p3')">
-                Siguiente Desafío (P3) ➔
+                Siguiente desafío (P3) ➔
               </button>
             </div>
           </div>
         `;
       } else if (activeSubP === 'p3') {
         subContainer.innerHTML = `
-          <h2 class="card-title">P3. Coordinación Viso-Manual y Pulso Digital</h2>
+          <h2 class="card-title">P3. Coordinación visomanual y pulso digital</h2>
           <p class="card-desc">Guíe el cursor o trazo con pulso firme desde la zona <strong>INICIO</strong> hasta la <strong>META</strong> dentro del canal continuo sin tocar los bordes.</p>
           
           <div class="canvas-wrapper" style="margin: 20px 0;">
@@ -2894,7 +2894,7 @@
 
             <div style="margin-top: 14px; width: 100%; display: flex; justify-content: flex-end;">
               <button class="btn-cyber" id="btnNextP3" style="display: ${AppState.psicomotriz.p3_pulso.completed ? 'inline-flex' : 'none'};" onclick="switchSubP('p4')">
-                Siguiente Desafío (P4) ➔
+                Siguiente desafío (P4) ➔
               </button>
             </div>
           </div>
@@ -2902,7 +2902,7 @@
         initP3Canvas();
       } else if (activeSubP === 'p4') {
         subContainer.innerHTML = `
-          <h2 class="card-title">P4. Motricidad Fina y Ergonomía: Dibujo de Computadora</h2>
+          <h2 class="card-title">P4. Motricidad fina y ergonomía: dibujo de computadora</h2>
           <p class="card-desc">
             Dibuje en el lienzo digital una <strong>computadora de escritorio</strong>. 
             El dibujo debe incluir estas 4 partes: 
@@ -2916,15 +2916,15 @@
           <div class="canvas-wrapper" style="margin: 20px 0;">
             <div class="paint-toolbar">
               <div class="color-picker-group">
-                <span class="color-dot active" style="background: #00f0ff;" title="Cian (Pantalla)" onclick="setP4Color('#00f0ff', this)"></span>
-                <span class="color-dot" style="background: #a855f7;" title="Violeta (CPU/Torre)" onclick="setP4Color('#a855f7', this)"></span>
-                <span class="color-dot" style="background: #10b981;" title="Verde (Teclado)" onclick="setP4Color('#10b981', this)"></span>
-                <span class="color-dot" style="background: #f59e0b;" title="Ámbar (Mouse)" onclick="setP4Color('#f59e0b', this)"></span>
-                <span class="color-dot" style="background: #ffffff;" title="Blanco (Detalles)" onclick="setP4Color('#ffffff', this)"></span>
+                <span class="color-dot active" style="background: #00f0ff;" title="Cian (pantalla)" onclick="setP4Color('#00f0ff', this)"></span>
+                <span class="color-dot" style="background: #a855f7;" title="Violeta (CPU/torre)" onclick="setP4Color('#a855f7', this)"></span>
+                <span class="color-dot" style="background: #10b981;" title="Verde (teclado)" onclick="setP4Color('#10b981', this)"></span>
+                <span class="color-dot" style="background: #f59e0b;" title="Ámbar (mouse)" onclick="setP4Color('#f59e0b', this)"></span>
+                <span class="color-dot" style="background: #ffffff;" title="Blanco (detalles)" onclick="setP4Color('#ffffff', this)"></span>
               </div>
               <div style="display: flex; gap: 8px;">
-                <button class="btn-cyber-outline" onclick="clearP4Canvas()">🗑️ Limpiar</button>
-                <button class="btn-cyber-lime" onclick="saveP4Drawing()">💾 Guardar Dibujo</button>
+                <button class="btn-cyber-outline" onclick="clearP4Canvas()">🗑️ Limpiar lienzo</button>
+                <button class="btn-cyber-lime" onclick="saveP4Drawing()">💾 Guardar dibujo</button>
               </div>
             </div>
             
@@ -2932,7 +2932,7 @@
 
             <div style="margin-top: 14px; width: 100%; display: flex; justify-content: flex-end;">
               <button class="btn-cyber-purple" id="btnNextP4" style="display: ${AppState.psicomotriz.p4_dibujo.completed ? 'inline-flex' : 'none'};" onclick="goToPhase2()">
-                Continuar a Desafíos Cognitivos ➔
+                Continuar a desafíos cognitivos ➔
               </button>
             </div>
           </div>
@@ -2977,7 +2977,7 @@
       container.innerHTML = `
         <div class="cyber-card">
           <div class="card-header">
-            <span class="mission-badge badge-cog">DIMENSIÓN 2 &bull; PENSAMIENTO COMPUTACIONAL (Reto ${qIndex + 1} de 10)</span>
+            <span class="mission-badge badge-cog">Dimensión 2 &bull; Pensamiento computacional (Reto ${qIndex + 1} de 10)</span>
             <h2 class="card-title">${q.title}</h2>
             <p class="card-desc">${q.desc}</p>
           </div>
@@ -3007,7 +3007,7 @@
           <div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center;">
             <span style="font-size: 12px; color: var(--text-muted);">Progreso: Pregunta ${qIndex + 1} de 10</span>
             <button class="btn-cyber" id="btnNextCog" style="display: ${selectedOptionForCurrentQ !== null ? 'inline-flex' : 'none'};" onclick="confirmAndNextCognitive(${qIndex})">
-              ${qIndex < 9 ? 'Registrar y Siguiente ➔' : 'Completar Fase Cognitiva ➔'}
+              ${qIndex < 9 ? 'Registrar y siguiente ➔' : 'Completar fase cognitiva ➔'}
             </button>
           </div>
         </div>
@@ -3054,8 +3054,8 @@
       container.innerHTML = `
         <div class="cyber-card">
           <div class="card-header">
-            <span class="mission-badge badge-socio">DIMENSIÓN 3 &bull; VALORACIÓN SOCIOAFECTIVA ${isSolo ? '(INDIVIDUAL)' : '(PAREJAS)'}</span>
-            <h2 class="card-title">${isSolo ? 'Reflexión y Autoevaluación Individual' : 'Reflexión y Coevaluación de la Pareja'}</h2>
+            <span class="mission-badge badge-socio">Dimensión 3 &bull; Valoración socioafectiva ${isSolo ? '(individual)' : '(en parejas)'}</span>
+            <h2 class="card-title">${isSolo ? 'Reflexión y autoevaluación individual' : 'Reflexión y coevaluación de la pareja'}</h2>
             <p class="card-desc">
               Valore el trabajo realizado durante esta misión diagnóstica.
             </p>
@@ -3063,10 +3063,10 @@
 
           <div style="display: flex; flex-direction: column; gap: 16px;">
             <div class="form-group">
-              <label class="form-label">S1. Gusto por la Precisión y Calidad en las Respuestas:</label>
+              <label class="form-label">S1. Gusto por la precisión y calidad en las respuestas:</label>
               <div class="likert-group">
-                <button class="likert-btn ${AppState.socioafectivo.s1_precision === 1 ? 'selected' : ''}" onclick="setSocio('s1_precision', 1)">1. En Progreso (C)</button>
-                <button class="likert-btn ${AppState.socioafectivo.s1_precision === 2 ? 'selected' : ''}" onclick="setSocio('s1_precision', 2)">2. Con Apoyo (B)</button>
+                <button class="likert-btn ${AppState.socioafectivo.s1_precision === 1 ? 'selected' : ''}" onclick="setSocio('s1_precision', 1)">1. En progreso (C)</button>
+                <button class="likert-btn ${AppState.socioafectivo.s1_precision === 2 ? 'selected' : ''}" onclick="setSocio('s1_precision', 2)">2. Con apoyo (B)</button>
                 <button class="likert-btn ${AppState.socioafectivo.s1_precision === 3 ? 'selected' : ''}" onclick="setSocio('s1_precision', 3)">3. Autónomo (A)</button>
               </div>
             </div>
@@ -3090,7 +3090,7 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label">S4. Perseverancia y Tolerancia a la Frustración:</label>
+              <label class="form-label">S4. Perseverancia y tolerancia a la frustración:</label>
               <div class="likert-group">
                 <button class="likert-btn ${AppState.socioafectivo.s4_frustracion === 1 ? 'selected' : ''}" onclick="setSocio('s4_frustracion', 1)">Inicial</button>
                 <button class="likert-btn ${AppState.socioafectivo.s4_frustracion === 2 ? 'selected' : ''}" onclick="setSocio('s4_frustracion', 2)">Intermedio</button>
@@ -3101,7 +3101,7 @@
 
           <div style="margin-top: 24px; display: flex; justify-content: flex-end;">
             <button class="btn-cyber-lime" onclick="finishQuest()">
-              ${isSolo ? 'Finalizar y Generar Telemetría Oficial ⚡' : 'Finalizar y Generar Telemetría de la Pareja ⚡'}
+              ${isSolo ? 'Finalizar y generar telemetría oficial ⚡' : 'Finalizar y generar telemetría de la pareja ⚡'}
             </button>
           </div>
         </div>
@@ -3132,41 +3132,41 @@
       container.innerHTML = `
         <div class="cyber-card" style="text-align: center;">
           <div class="card-header">
-            <span class="mission-badge badge-psico">MISIÓN CUMPLIDA &bull; EXPEDIENTE DIAGNÓSTICO ${isSolo ? 'INDIVIDUAL' : 'EN PAREJA'}</span>
+            <span class="mission-badge badge-psico">Misión cumplida &bull; Expediente diagnóstico ${isSolo ? '(individual)' : '(en pareja)'}</span>
             <h1 class="card-title" style="font-size: 1.65rem; margin: 10px 0;">
               ${isSolo 
                 ? `🎉 ¡Felicitaciones, Cadete ${AppState.cadet1.avatar} ${AppState.cadet1.name}!`
                 : `🎉 ¡Felicitaciones, Cadetes ${AppState.cadet1.avatar} ${AppState.cadet1.name.split(' ')[0]} y ${AppState.cadet2.avatar} ${AppState.cadet2.name.split(' ')[0]}!`}
             </h1>
             <p class="card-desc">
-              Has completado con éxito la aventura tecnológica de 7.° Año para la <strong>Sección ${AppState.section}</strong> (MEP 2027).
+              Ha completado con éxito la aventura tecnológica de 7.° año para la <strong>Sección ${AppState.section}</strong> (MEP 2027).
             </p>
           </div>
 
           <!-- MEDALLAS Y LOGROS GAMIFICADOS -->
           <div class="summary-grid" style="margin: 18px 0;">
             <div class="stat-card">
-              <span class="stat-card-title">🖐️ Dimensión Psicomotriz</span>
+              <span class="stat-card-title">🖐️ Dimensión psicomotriz</span>
               <span class="stat-card-value" style="font-size: 1.4rem;">🏅 Superada</span>
-              <span class="stat-card-badge badge-level-a">Lateralidad y Pulso</span>
+              <span class="stat-card-badge badge-level-a">Lateralidad y pulso</span>
             </div>
 
             <div class="stat-card">
-              <span class="stat-card-title">🧠 Pensamiento Computacional</span>
-              <span class="stat-card-value" style="font-size: 1.4rem;">⭐ 10 Retos</span>
-              <span class="stat-card-badge badge-level-a">Lógica y Algoritmos</span>
+              <span class="stat-card-title">🧠 Pensamiento computacional</span>
+              <span class="stat-card-value" style="font-size: 1.4rem;">⭐ 10 retos</span>
+              <span class="stat-card-badge badge-level-a">Lógica y algoritmos</span>
             </div>
 
             <div class="stat-card">
-              <span class="stat-card-title">${isSolo ? '🌟 Autonomía Digital' : '❤️ Trabajo en Equipo'}</span>
-              <span class="stat-card-value" style="font-size: 1.4rem;">${isSolo ? '🎯 Misión Individual' : '🤝 Sinergia'}</span>
-              <span class="stat-card-badge badge-level-a">${isSolo ? 'Cadete Titular' : 'Líder & Co-piloto'}</span>
+              <span class="stat-card-title">${isSolo ? '🌟 Autonomía digital' : '❤️ Trabajo en equipo'}</span>
+              <span class="stat-card-value" style="font-size: 1.4rem;">${isSolo ? '🎯 Misión individual' : '🤝 Sinergia'}</span>
+              <span class="stat-card-badge badge-level-a">${isSolo ? 'Cadete titular' : 'Líder y copiloto'}</span>
             </div>
 
             <div class="stat-card">
-              <span class="stat-card-title">⚡ XP de Misión</span>
+              <span class="stat-card-title">⚡ XP de misión</span>
               <span class="stat-card-value" style="color: var(--cyan-neon); font-size: 1.4rem;">${AppState.xp} XP</span>
-              <span class="stat-card-badge badge-level-a">Nivel Cadete Pro</span>
+              <span class="stat-card-badge badge-level-a">Nivel cadete pro</span>
             </div>
           </div>
 
@@ -3178,28 +3178,28 @@
             <div style="font-size: 36px; line-height: 1;">✅</div>
             
             <span class="mep-tag" style="background: rgba(16, 185, 129, 0.25); border: 1px solid var(--lime-neon); color: #34d399; font-size: 12px; padding: 4px 14px; border-radius: 20px; font-weight: 800; letter-spacing: 0.5px;">
-              DIAGNÓSTICO REGISTRADO Y SINCRONIZADO EN LÍNEA
+              Diagnóstico registrado y sincronizado en línea
             </span>
 
             <h3 style="font-size: 17px; color: #ffffff; font-weight: 800; margin: 4px 0 0 0;">
-              ¡Información Transferida con Éxito!
+              ¡Información transferida con éxito!
             </h3>
 
             <p style="font-size: 13px; color: #cbd5e1; max-width: 500px; line-height: 1.5; margin: 0; text-align: center;">
-              Tus respuestas y resultados diagnósticos han sido <strong>transferidos y sincronizados de manera automática</strong> con la <strong>Herramienta de Evaluación del Docente</strong> y con el <strong>Dashboard Institucional Central MEP</strong>.
+              Sus respuestas y resultados diagnósticos han sido <strong>transferidos y sincronizados de manera automática</strong> con la <strong>herramienta de evaluación del docente</strong> y con el <strong>panel institucional central MEP</strong>.
             </p>
 
             <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(0, 240, 255, 0.25); border-radius: 12px; padding: 12px 16px; width: 100%; max-width: 480px; margin: 6px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; text-align: left; font-size: 12px;">
               <div>
-                <span style="color: #94a3b8; font-size: 11px; display: block;">Estado de Evaluación:</span>
+                <span style="color: #94a3b8; font-size: 11px; display: block;">Estado de evaluación:</span>
                 <strong style="color: #34d399;">🟢 Completado (100%)</strong>
               </div>
               <div>
-                <span style="color: #94a3b8; font-size: 11px; display: block;">Sección / Grupo:</span>
+                <span style="color: #94a3b8; font-size: 11px; display: block;">Sección / grupo:</span>
                 <strong style="color: #ffffff;">Sección ${AppState.section}</strong>
               </div>
               <div>
-                <span style="color: #94a3b8; font-size: 11px; display: block;">Docente Asignado:</span>
+                <span style="color: #94a3b8; font-size: 11px; display: block;">Docente asignado:</span>
                 <strong style="color: #38bdf8;">${AppState.teacher?.name || 'Prof. Formación Tecnológica'}</strong>
               </div>
               <div>
@@ -3207,7 +3207,7 @@
                 <strong style="color: #e2e8f0; font-size: 11px;">${AppState.teacher?.institution || 'Colegio MEP'}</strong>
               </div>
               <div style="grid-column: span 2; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 6px;">
-                <span style="color: #94a3b8; font-size: 11px; display: block;">Código Único de Verificación:</span>
+                <span style="color: #94a3b8; font-size: 11px; display: block;">Código único de verificación:</span>
                 <strong style="color: var(--cyan-neon); font-family: monospace; font-size: 11.5px;">${AppState.sessionHash || 'HASH-CYBER2027'}</strong>
               </div>
             </div>
@@ -3219,20 +3219,20 @@
             <!-- ACCIONES EN LÍNEA Y DESCARGAS -->
             <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 10px;">
               <button type="button" class="btn-cyber" style="padding: 8px 14px; font-size: 12px; background: rgba(168, 85, 247, 0.2); border-color: var(--violet-neon); color: #e9d5ff;" onclick="downloadTelemetryJson()" title="Descargar archivo JSON con el desglose de respuestas">
-                💾 Descargar Ficha (.json)
+                💾 Descargar ficha (.json)
               </button>
               <button type="button" class="btn-cyber" style="padding: 8px 14px; font-size: 12px; background: linear-gradient(135deg, #0891b2, #0e7490); border-color: #22d3ee; color: #ffffff;" onclick="downloadTelemetryCsv7mo()" title="Descargar archivo CSV compatible con Excel">
-                📊 Descargar Ficha (.csv)
+                📊 Descargar ficha (.csv)
               </button>
               <button type="button" class="btn-cyber" style="padding: 8px 14px; font-size: 12px; background: rgba(16, 185, 129, 0.2); border-color: var(--lime-neon); color: #a7f3d0;" onclick="window.print()">
-                🖨️ Imprimir Comprobante
+                🖨️ Imprimir comprobante
               </button>
             </div>
           </div>
 
           ${AppState.psicomotriz.p4_dibujo.dataUrl ? `
             <div style="background: #0d1322; border: 1px solid var(--border-dark); border-radius: 12px; padding: 12px; margin: 14px auto; max-width: 360px; text-align: center;">
-              <span style="font-size: 11.5px; color: var(--text-muted); font-weight: 700;">🖥️ Plano de Computadora Diseñado ${isSolo ? 'por el Estudiante' : 'por la Pareja'}:</span><br>
+              <span style="font-size: 11.5px; color: var(--text-muted); font-weight: 700;">🖥️ Plano de computadora diseñado ${isSolo ? 'por el estudiante' : 'por la pareja'}:</span><br>
               <img src="${AppState.psicomotriz.p4_dibujo.dataUrl}" style="max-width: 240px; border-radius: 8px; border: 1px solid var(--border-neon); margin-top: 6px;" alt="Plano P4">
             </div>
           ` : ''}
