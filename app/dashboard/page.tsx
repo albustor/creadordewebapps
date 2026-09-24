@@ -35,6 +35,7 @@ import {
   IdentificationCard,
   ChalkboardTeacher,
   Gauge,
+  HardDrive,
 } from "@phosphor-icons/react";
 
 export default function DashboardAnaliticoPage() {
@@ -178,9 +179,8 @@ export default function DashboardAnaliticoPage() {
     }
   }, [listaCentrosDocente.length, centroActivoIdx]);
 
-  // Helper para generar URL al evaluador de un colegio específico con secciones asignadas
+  // Helper para generar URL al evaluador de un colegio específico (blindada y limpia)
   const getUrlEvaluador = (centro?: typeof listaCentrosDocente[0]) => {
-    const c = centro || centroActivo;
     const baseWebapp =
       nivelActivo === "7mo"
         ? "diagnostico_7mo_modulo01_docente_evaluador.html"
@@ -188,19 +188,7 @@ export default function DashboardAnaliticoPage() {
         ? "diagnostico_8vo_modulo01_docente_evaluador.html"
         : "diagnostico_9no_modulo01_docente_evaluador.html";
 
-    const params = new URLSearchParams();
-    if (docente?.idDocente) {
-      params.set("docenteId", docente.idDocente);
-    }
-    if (docente?.nombreCompleto) params.set("docente", docente.nombreCompleto);
-    if (c?.nombre) params.set("institucion", c.nombre);
-    if (c?.dreCodigo || c?.dreNombre) params.set("dre", c.dreCodigo || c.dreNombre || "");
-    if (c?.circuito) params.set("circuito", c.circuito);
-    if (c?.seccionesAtendidas && c.seccionesAtendidas.length > 0) {
-      params.set("secciones", c.seccionesAtendidas.join(","));
-    }
-
-    return `/webapps/${baseWebapp}?${params.toString()}`;
+    return `/webapps/${baseWebapp}`;
   };
 
   // Reiniciar filtro de grupo al cambiar de nivel para evitar secciones huérfanas
@@ -824,15 +812,27 @@ export default function DashboardAnaliticoPage() {
               {/* Botones de Apertura de la Tarjeta */}
               <div className="shrink-0 flex flex-col gap-2.5">
                 {listaCentrosDocente.length > 0 && centroActivo ? (
-                  <a
-                    href={getUrlEvaluador(centroActivo)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2.5 px-6 py-4 bg-emerald-500 hover:bg-emerald-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-emerald-500/30 hover:scale-[1.02] cursor-pointer text-center"
-                  >
-                    <span>Abrir Herramienta 9.° Año</span>
-                    <ArrowSquareOut size={20} weight="bold" />
-                  </a>
+                  <>
+                    <a
+                      href={getUrlEvaluador(centroActivo)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2.5 px-6 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-emerald-500/30 hover:scale-[1.02] cursor-pointer text-center"
+                    >
+                      <span>Abrir Herramienta 9.° Año (Evaluador)</span>
+                      <ArrowSquareOut size={20} weight="bold" />
+                    </a>
+
+                    <a
+                      href="/webapps/diagnostico_9no_modulo01_desconectado_offline.html"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 px-5 py-3 bg-white/15 hover:bg-white/25 text-emerald-100 hover:text-white border border-emerald-400/40 font-bold text-xs rounded-2xl transition-all hover:scale-[1.02] cursor-pointer text-center"
+                    >
+                      <HardDrive size={18} weight="duotone" />
+                      <span>Herramienta de Evaluación Diagnóstica Docente Sin Conexión o Local</span>
+                    </a>
+                  </>
                 ) : (
                   <div className="flex items-center justify-center px-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-xs text-emerald-200/70 font-medium text-center">
                     Nivel no asignado

@@ -92,15 +92,15 @@ export default function SelectorVersionesDiagnostico({
 
   const urlOnline =
     typeof window !== "undefined"
-      ? `${window.location.origin}${pathOnline}${queryString}`
-      : `${pathOnline}${queryString}`;
+      ? `${window.location.origin}${pathOnline}`
+      : pathOnline;
 
-  const urlOffline = `${pathOffline}${queryString}`;
+  const urlOffline = pathOffline;
 
   const urlDocente =
     typeof window !== "undefined"
-      ? `${window.location.origin}${pathDocente}${queryString}`
-      : `${pathDocente}${queryString}`;
+      ? `${window.location.origin}${pathDocente}`
+      : pathDocente;
 
   const copiarEnlaceOnline = () => {
     navigator.clipboard.writeText(urlOnline);
