@@ -829,13 +829,43 @@ FIN</div>
     <h2>📊 Informe de Resultados Diagnósticos — 8° Año</h2>
     <p><strong>Estudiante:</strong> <span id="res-student">-</span> | <strong>Sección:</strong> <span id="res-section">-</span></p>
     
-    <div class="qr-container-card">
-      <h3 style="color:var(--mep-blue); margin-bottom:6px;">📱 Código QR de Captura Docente</h3>
-      <p style="font-size:0.95rem; color:#475569;">
-        Muestre esta pantalla al docente para que escanee su resultado con su teléfono o laptop en 1 segundo.
+    <div class="qr-container-card" style="background:#ffffff; border:2px solid #0284c7; border-radius:16px; padding:20px; box-shadow:0 10px 25px rgba(2,132,199,0.12);">
+      <span style="background:#0284c7; color:#fff; font-size:11px; font-weight:800; padding:3px 10px; border-radius:20px; display:inline-block; margin-bottom:6px;">OPCIONES OFICIALES DE ENTREGA MEP</span>
+      <h3 style="color:var(--mep-blue); margin-bottom:6px; font-size:1.15rem;">📱 Opciones de Registro y Entrega al Docente</h3>
+      <p style="font-size:0.9rem; color:#475569; margin-bottom: 10px;">
+        Seleccione la opción que mejor se adapte a su entorno escolar:
       </p>
-      <div id="qrcode-target"></div>
-      <p style="font-size:0.85rem; color:#64748b; font-family:monospace;" id="qr-payload-text"></p>
+      
+      <div id="qrcode-target" style="display:inline-block; padding:10px; background:#fff; border:1px solid #cbd5e1; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.05);"></div>
+      <p style="font-size:0.85rem; color:#0369a1; font-family:monospace; font-weight:700; margin-top:8px;" id="qr-payload-text"></p>
+
+      <!-- 4 OPCIONES DE ENTREGA -->
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:14px; margin-top:14px; text-align:left;">
+        <div style="font-size:0.85rem; font-weight:800; color:#0f172a; margin-bottom:8px;">📦 Nuevas Opciones de Entrega:</div>
+        <ol style="font-size:0.82rem; color:#334155; margin-left:18px; line-height:1.5;">
+          <li><strong>📱 Código QR para Escanear:</strong> El docente lo escanea con la cámara de su teléfono o laptop desde el <em>Módulo Docente Evaluador</em> o Dashboard.</li>
+          <li><strong>💾 Descargar Ficha (.json):</strong> El estudiante descarga su archivo de resultados para entregarlo en llave maya USB.</li>
+          <li><strong>📋 Copiar Código QR / Resumen:</strong> Copia los datos para enviarlos por Teams, WhatsApp o correo institucional.</li>
+          <li><strong>🖨️ Imprimir Hoja Diagnóstica:</strong> Imprime el informe detallado con indicadores de logro oficiales.</li>
+        </ol>
+      </div>
+
+      <!-- BOTONES DE ACCIÓN RÁPIDA -->
+      <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 14px;">
+        <button type="button" class="btn" style="background: #0284c7; color: white; font-weight: 800; font-size: 0.85rem; padding: 8px 14px; border-radius: 8px; border: none; cursor: pointer;" onclick="downloadTelemetryJson8vo()">
+          💾 Descargar Ficha (.json)
+        </button>
+        <button type="button" class="btn" style="background: #059669; color: white; font-weight: 800; font-size: 0.85rem; padding: 8px 14px; border-radius: 8px; border: none; cursor: pointer;" onclick="copiarPayloadJson()">
+          📋 Copiar Código QR (JSON)
+        </button>
+        <button type="button" class="btn" style="background: #6366f1; color: white; font-weight: 800; font-size: 0.85rem; padding: 8px 14px; border-radius: 8px; border: none; cursor: pointer;" onclick="copiarResumenTexto()">
+          📝 Copiar Resumen de Texto
+        </button>
+        <button type="button" class="btn" style="background: #0f172a; color: white; font-weight: 800; font-size: 0.85rem; padding: 8px 14px; border-radius: 8px; border: none; cursor: pointer;" onclick="window.print()">
+          🖨️ Imprimir Hoja Diagnóstica
+        </button>
+      </div>
+      <p id="copy-status-msg" style="font-size:0.85rem; color:#059669; font-weight:800; margin-top:8px; display:none;">✅ ¡Copiado al portapapeles! Listo para enviar o pegar al docente.</p>
     </div>
 
     <div class="dimension-score">
@@ -936,7 +966,10 @@ FIN</div>
     document.getElementById('progressBar').style.width = percentage + '%';
   }
 
+  var lastGeneratedPayload = null;
+
   function generateCompactQR(dataObj) {
+    lastGeneratedPayload = dataObj;
     const jsonStr = JSON.stringify(dataObj);
     const container = document.getElementById('qrcode-target');
     container.innerHTML = '';
@@ -953,6 +986,68 @@ FIN</div>
       }
     }
     document.getElementById('qr-payload-text').innerText = "ID: " + dataObj.e + " | Sec: " + dataObj.s + " | Nota: " + dataObj.p + "/14 (" + dataObj.porc + "%)";
+  }
+
+  function copiarResumenTexto() {
+    const txt = document.getElementById('qr-payload-text')?.innerText || '';
+    if (!txt) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(() => {
+        mostrarMensajeCopiado();
+      }).catch(() => {
+        prompt("Copia este texto manualmente para el docente:", txt);
+      });
+    } else {
+      prompt("Copia este texto manualmente para el docente:", txt);
+    }
+  }
+
+  function copiarPayloadJson() {
+    if (!lastGeneratedPayload) return;
+    const jsonStr = JSON.stringify(lastGeneratedPayload);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(jsonStr).then(() => {
+        mostrarMensajeCopiado();
+      }).catch(() => {
+        prompt("Copia este código JSON para el docente:", jsonStr);
+      });
+    } else {
+      prompt("Copia este código JSON para el docente:", jsonStr);
+    }
+  }
+
+  function downloadTelemetryJson8vo() {
+    if (!lastGeneratedPayload) return;
+    const jsonStr = JSON.stringify(lastGeneratedPayload, null, 2);
+    const nomClean = (lastGeneratedPayload.e || "estudiante").toLowerCase().replace(/[^a-z0-9]/g, '_');
+    const secClean = (lastGeneratedPayload.s || "8-1").toLowerCase().replace(/[^a-z0-9]/g, '_');
+    const filename = `ficha_diagnostica_8vo_seccion_${secClean}_${nomClean}.json`;
+    
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    const el = document.getElementById('copy-status-msg');
+    if (el) {
+      el.innerText = `💾 ¡Archivo "${filename}" descargado con éxito! Guárdalo en tu llave maya USB.`;
+      el.style.display = 'block';
+      setTimeout(() => { el.style.display = 'none'; }, 5000);
+    }
+  }
+
+  function mostrarMensajeCopiado() {
+    const el = document.getElementById('copy-status-msg');
+    if (el) {
+      el.innerText = '✅ ¡Copiado al portapapeles! Listo para enviar o pegar al docente.';
+      el.style.display = 'block';
+      setTimeout(() => { el.style.display = 'none'; }, 3500);
+    }
   }
 
   function processResults() {

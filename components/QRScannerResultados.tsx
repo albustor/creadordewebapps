@@ -91,17 +91,54 @@ export default function QRScannerResultados({
 
   const procesarQR = (texto: string) => {
     try {
-      // Intenta parsear JSON estructurado
-      let datos: any;
-      if (texto.startsWith("{")) {
-        datos = JSON.parse(texto);
+      const textoLimpio = texto.trim();
+      if (!textoLimpio) return;
+
+      let datos: any = {};
+
+      if (textoLimpio.startsWith("{")) {
+        try {
+          datos = JSON.parse(textoLimpio);
+        } catch {
+          datos = {};
+        }
       } else {
-        // Formato string directo
-        datos = { estudianteNombre: "Estudiante Escaneado", puntaje: 80 };
+        // Parsear formato texto: "ID: Nombre | Sec: 8-11 | Nota: 6/14 (43%)"
+        // o "Nombre | Sec: 8-1 | 80%"
+        const matchTxt = textoLimpio.match(/(?:ID|Estudiante|Nombre):\s*([^|\n]+)(?:\|\s*(?:Sec|Secci[oó]n|Grupo):\s*([^|\n]+))?(?:\|\s*(?:Nota|Puntaje|Aciertos):\s*(\d+)(?:\/(\d+))?)?(?:.*\(?(\d+)%\)?)?/i);
+        if (matchTxt) {
+          const nom = (matchTxt[1] || "").trim();
+          const sec = (matchTxt[2] || "").trim();
+          const aciertos = matchTxt[3] ? parseInt(matchTxt[3], 10) : undefined;
+          const total = matchTxt[4] ? parseInt(matchTxt[4], 10) : undefined;
+          const porc = matchTxt[5] ? parseInt(matchTxt[5], 10) : (aciertos !== undefined && total ? Math.round((aciertos / total) * 100) : undefined);
+          
+          datos = {
+            e: nom,
+            s: sec,
+            p: aciertos,
+            porc: porc,
+            tot: total,
+            n: sec.startsWith("8-") ? "8°" : sec.startsWith("7-") ? "7°" : sec.startsWith("9-") ? "9°" : "8°"
+          };
+        } else {
+          // Fallback básico separado por tuberías '|' o comas
+          const partes = textoLimpio.split(/[|,\n]/).map(p => p.trim()).filter(Boolean);
+          if (partes.length >= 2) {
+            datos = {
+              e: partes[0].replace(/^(ID|Estudiante|Nombre):\s*/i, ''),
+              s: partes[1].replace(/^(Sec|Sección|Grupo):\s*/i, ''),
+              p: partes[2] ? parseInt(partes[2].replace(/[^0-9]/g, ''), 10) : 80
+            };
+          } else {
+            datos = { estudianteNombre: textoLimpio.slice(0, 40), puntaje: 80 };
+          }
+        }
       }
 
       const es8vo = datos.n === "8°" || datos.t === "MEP8" || (datos.s && typeof datos.s === "string" && datos.s.startsWith("8-")) || (datos.sec && typeof datos.sec === "string" && datos.sec.startsWith("8-"));
       const es7mo = datos.n === "7°" || datos.t === "MEP7" || datos.tipo === "CYBERQUEST_7MO" || (datos.s && typeof datos.s === "string" && datos.s.startsWith("7-")) || (datos.sec && typeof datos.sec === "string" && datos.sec.startsWith("7-")) || Boolean(datos.c1);
+      const es9no = datos.n === "9°" || datos.t === "MEP9" || (datos.s && typeof datos.s === "string" && datos.s.startsWith("9-")) || (datos.sec && typeof datos.sec === "string" && datos.sec.startsWith("9-"));
 
       let estNombre = datos.est || datos.estudianteNombre || datos.e || datos.nom || datos.nombre;
       if (!estNombre && es7mo && datos.c1) {
@@ -111,14 +148,14 @@ export default function QRScannerResultados({
         estNombre = "Estudiante Escaneado";
       }
 
-      let seccion = datos.grp || datos.seccionOGrupo || datos.s || datos.sec || datos.seccion || (es8vo ? "Sección 8-1" : es7mo ? "Sección 7-1" : "General");
+      let seccion = datos.grp || datos.seccionOGrupo || datos.s || datos.sec || datos.seccion || (es8vo ? "Sección 8-1" : es7mo ? "Sección 7-1" : es9no ? "Sección 9-1" : "General");
       if (!seccion.startsWith("Sección ") && /^[789]-/i.test(seccion)) {
         seccion = `Sección ${seccion}`;
       }
 
       let puntaje = 80;
       let porcentaje = 80;
-      let totalReactivos = es8vo ? 14 : 10;
+      let totalReactivos = es8vo ? 14 : es9no ? 15 : 10;
       let aciertos = es8vo ? 11 : 8;
 
       if (es8vo) {
@@ -136,11 +173,11 @@ export default function QRScannerResultados({
         const cogScore = typeof datos.c === "number" ? datos.c : (typeof datos.cogScore === "number" ? datos.cogScore : 80);
         aciertos = Math.round((cogScore / 100) * 10);
       } else {
-        const pRaw = typeof datos.pts === "number" ? datos.pts : (typeof datos.puntaje === "number" ? datos.puntaje : (typeof datos.porcentaje === "number" ? datos.porcentaje : 80));
-        porcentaje = pRaw;
+        const pRaw = typeof datos.pts === "number" ? datos.pts : (typeof datos.p === "number" ? datos.p : (typeof datos.puntaje === "number" ? datos.puntaje : (typeof datos.porcentaje === "number" ? datos.porcentaje : 80)));
+        porcentaje = typeof datos.porc === "number" ? datos.porc : pRaw;
         puntaje = pRaw;
-        totalReactivos = datos.tot || 10;
-        aciertos = datos.ac || Math.round((pRaw / 100) * totalReactivos);
+        totalReactivos = datos.tot || (es9no ? 15 : 10);
+        aciertos = datos.ac !== undefined ? datos.ac : (pRaw <= totalReactivos ? pRaw : Math.round((porcentaje / 100) * totalReactivos));
       }
 
       const subareasDetalle = es8vo ? {
@@ -155,7 +192,7 @@ export default function QRScannerResultados({
         docenteId: datos.dId || datos.docenteId || "DOC-OFFLINE",
         estudianteNombre: estNombre,
         seccionOGrupo: seccion,
-        nivel: es8vo ? "8°" : (es7mo ? "7°" : (datos.nivel || "8°")),
+        nivel: es8vo ? "8°" : (es7mo ? "7°" : (es9no ? "9°" : (datos.nivel || "8°"))),
         puntaje: puntaje,
         puntajeMaximo: es8vo ? 14 : 100,
         porcentaje: porcentaje,
@@ -169,7 +206,7 @@ export default function QRScannerResultados({
         tokenAntiFraude: datos.tok || `TOKEN-${Date.now()}`,
       };
 
-      setUltimoDetectado(payload.estudianteNombre + " - " + payload.porcentaje + "%");
+      setUltimoDetectado(payload.estudianteNombre + " (" + payload.seccionOGrupo + ") - " + payload.porcentaje + "%");
       alDetectarResultado(payload);
 
       // Reproducir sonido beep local
@@ -183,8 +220,29 @@ export default function QRScannerResultados({
           osc.stop(ctx.currentTime + 0.15);
         } catch {}
       }
+      return true;
     } catch (e) {
       console.warn("QR no reconocido como resultado válido:", texto);
+      return false;
+    }
+  };
+
+  const [tabActual, setTabActual] = useState<"camara" | "manual">("camara");
+  const [textoManual, setTextoManual] = useState("");
+  const [mensajeManual, setMensajeManual] = useState<{ tipo: "ok" | "err"; texto: string } | null>(null);
+
+  const procesarManual = () => {
+    setMensajeManual(null);
+    if (!textoManual.trim()) {
+      setMensajeManual({ tipo: "err", texto: "Pega el texto o código del estudiante primero." });
+      return;
+    }
+    const res = procesarQR(textoManual);
+    if (res) {
+      setMensajeManual({ tipo: "ok", texto: "¡Resultado cargado e integrado al Dashboard con éxito!" });
+      setTextoManual("");
+    } else {
+      setMensajeManual({ tipo: "err", texto: "No se pudo interpretar el formato. Asegúrate de copiar el texto completo generado al final de la prueba." });
     }
   };
 
@@ -192,12 +250,12 @@ export default function QRScannerResultados({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
-      <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden flex flex-col">
+      <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-lg overflow-hidden flex flex-col">
         {/* Cabecera */}
         <div className="bg-blue-900 text-white p-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
             <Camera size={22} weight="bold" />
-            <h3 className="font-extrabold text-base">Escáner de Resultados Offline</h3>
+            <h3 className="font-extrabold text-base">Cargar Resultados Diagnósticos (Offline / QR)</h3>
           </div>
           <button
             onClick={() => {
@@ -210,43 +268,141 @@ export default function QRScannerResultados({
           </button>
         </div>
 
-        {/* Visor de Cámara */}
-        <div className="p-5 flex flex-col items-center">
-          <p className="text-xs text-slate-600 text-center mb-4">
-            Apunta la cámara al código QR de la pantalla del estudiante para cargar su puntaje sin necesidad de internet.
-          </p>
-
-          <div
-            id={scannerContainerId}
-            className="w-full max-w-[280px] h-[280px] bg-slate-900 rounded-xl overflow-hidden relative border-2 border-blue-600 flex items-center justify-center text-white"
+        {/* Pestañas: Cámara vs Pegar Texto */}
+        <div className="flex border-b border-slate-200 bg-slate-100 p-1.5 gap-2">
+          <button
+            onClick={() => {
+              setTabActual("camara");
+              setMensajeManual(null);
+            }}
+            className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+              tabActual === "camara"
+                ? "bg-white text-blue-900 shadow-sm border border-slate-200"
+                : "text-slate-600 hover:text-slate-900"
+            }`}
           >
-            {!escaneando && !errorCamara && (
-              <span className="text-xs text-slate-400">Iniciando cámara...</span>
+            <Camera size={16} weight="bold" />
+            Escanear con Cámara
+          </button>
+          <button
+            onClick={() => {
+              detenerEscaneo();
+              setTabActual("manual");
+              setMensajeManual(null);
+            }}
+            className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+              tabActual === "manual"
+                ? "bg-white text-blue-900 shadow-sm border border-slate-200"
+                : "text-slate-600 hover:text-slate-900"
+            }`}
+          >
+            <QrCode size={16} weight="bold" />
+            📋 Pegar Código / Texto
+          </button>
+        </div>
+
+        {/* Contenido según pestaña */}
+        {tabActual === "camara" ? (
+          <div className="p-5 flex flex-col items-center">
+            <p className="text-xs text-slate-600 text-center mb-4">
+              Apunta la cámara al código QR de la pantalla del estudiante para cargar su puntaje sin necesidad de internet.
+            </p>
+
+            <div
+              id={scannerContainerId}
+              className="w-full max-w-[280px] h-[280px] bg-slate-900 rounded-xl overflow-hidden relative border-2 border-blue-600 flex items-center justify-center text-white"
+            >
+              {!escaneando && !errorCamara && (
+                <span className="text-xs text-slate-400">Iniciando cámara...</span>
+              )}
+            </div>
+
+            {errorCamara && (
+              <div className="mt-4 p-3 bg-rose-50 border border-rose-200 text-rose-800 rounded-lg text-xs flex items-start gap-2">
+                <WarningCircle size={18} className="shrink-0 mt-0.5" />
+                <div>
+                  <strong>Error de Cámara:</strong> {errorCamara}
+                  <div className="mt-1">
+                    <button
+                      onClick={() => setTabActual("manual")}
+                      className="underline font-bold text-rose-900"
+                    >
+                      Usa la pestaña &quot;Pegar Código / Texto&quot; aquí
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {ultimoDetectado && (
+              <div className="mt-4 w-full p-3 bg-emerald-50 border border-emerald-300 text-emerald-900 rounded-xl text-xs flex items-center gap-2 font-bold animate-pulse">
+                <CheckCircle size={20} weight="fill" className="text-emerald-600 shrink-0" />
+                <span>¡Resultado guardado: {ultimoDetectado}!</span>
+              </div>
+            )}
+
+            <div className="mt-4 text-center">
+              <span className="text-[11px] text-slate-500 block">
+                💡 Puedes escanear varios estudiantes consecutivamente sin cerrar esta ventana.
+              </span>
+            </div>
+          </div>
+        ) : (
+          <div className="p-5 flex flex-col gap-3">
+            <p className="text-xs text-slate-600">
+              Pega aquí el <strong>código JSON</strong> o el <strong>texto de resumen</strong> generado en la pantalla del estudiante al finalizar la prueba offline (ej. <em>&quot;ID: Luis Rodrigues vasquez | Sec: 8-11 | Nota: 6/14 (43%)&quot;</em>):
+            </p>
+
+            <textarea
+              rows={4}
+              value={textoManual}
+              onChange={(e) => setTextoManual(e.target.value)}
+              placeholder="Pega aquí el texto copiado (ej. ID: Luis Rodrigues vasquez | Sec: 8-11 | Nota: 6/14 (43%) o el JSON)..."
+              className="w-full p-3 text-xs font-mono border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none bg-slate-50"
+            />
+
+            <div className="flex gap-2 justify-end">
+              <button
+                type="button"
+                onClick={() => setTextoManual('ID: Luis Rodrigues vasquez | Sec: 8-11 | Nota: 6/14 (43%)')}
+                className="px-3 py-1.5 text-[11px] font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-300"
+              >
+                🧪 Pegar Ejemplo
+              </button>
+              <button
+                type="button"
+                onClick={procesarManual}
+                className="px-4 py-1.5 text-xs font-extrabold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow-sm"
+              >
+                📥 Procesar e Integrar al Dashboard
+              </button>
+            </div>
+
+            {mensajeManual && (
+              <div
+                className={`p-3 rounded-xl text-xs font-bold flex items-center gap-2 ${
+                  mensajeManual.tipo === "ok"
+                    ? "bg-emerald-50 text-emerald-900 border border-emerald-300"
+                    : "bg-rose-50 text-rose-800 border border-rose-200"
+                }`}
+              >
+                {mensajeManual.tipo === "ok" ? (
+                  <CheckCircle size={18} weight="fill" className="text-emerald-600 shrink-0" />
+                ) : (
+                  <WarningCircle size={18} className="text-rose-600 shrink-0" />
+                )}
+                <span>{mensajeManual.texto}</span>
+              </div>
+            )}
+
+            {ultimoDetectado && !mensajeManual && (
+              <div className="p-3 bg-emerald-50 border border-emerald-300 text-emerald-900 rounded-xl text-xs flex items-center gap-2 font-bold animate-pulse">
+                <CheckCircle size={20} weight="fill" className="text-emerald-600 shrink-0" />
+                <span>¡Resultado guardado: {ultimoDetectado}!</span>
+              </div>
             )}
           </div>
-
-          {errorCamara && (
-            <div className="mt-4 p-3 bg-rose-50 border border-rose-200 text-rose-800 rounded-lg text-xs flex items-start gap-2">
-              <WarningCircle size={18} className="shrink-0 mt-0.5" />
-              <div>
-                <strong>Error de Cámara:</strong> {errorCamara}
-              </div>
-            </div>
-          )}
-
-          {ultimoDetectado && (
-            <div className="mt-4 w-full p-3 bg-emerald-50 border border-emerald-300 text-emerald-900 rounded-xl text-xs flex items-center gap-2 font-bold animate-pulse">
-              <CheckCircle size={20} weight="fill" className="text-emerald-600" />
-              <span>¡Resultado guardado: {ultimoDetectado}!</span>
-            </div>
-          )}
-
-          <div className="mt-4 text-center">
-            <span className="text-[11px] text-slate-500 block">
-              💡 Puedes escanear varios estudiantes consecutivamente sin cerrar esta ventana.
-            </span>
-          </div>
-        </div>
+        )}
 
         <div className="bg-slate-50 p-4 border-t border-slate-200 flex justify-end">
           <button
@@ -256,7 +412,7 @@ export default function QRScannerResultados({
             }}
             className="px-4 py-2 bg-slate-800 text-white text-xs font-bold rounded-lg hover:bg-slate-900"
           >
-            Finalizar Escaneo
+            Cerrar Ventana
           </button>
         </div>
       </div>

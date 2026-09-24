@@ -322,10 +322,394 @@ export const DOCENTE_PRUEBA_2: DocenteData = {
   ],
 };
 
+export const DOCENTE_PRUEBA_3: DocenteData = {
+  idDocente: "DOC-PRUEBA-003",
+  nombreCompleto: "Docente Prueba Cartago",
+  correoInstitucional: "pruebadocente3@mep.go.cr",
+  pin: "3333",
+  contrasena: "3333",
+  cedula: "0-0000-0003",
+  telefono: "+506 0000-0003",
+  tipoRol: "Docente",
+  dreCodigo: "DRE-03",
+  dreNombre: "Cartago",
+  circuito: "Circuito 01",
+  codigoPresupuestario: "MEP-P3-2027",
+  institucionNombre: "Colegio San Luis Gonzaga / Colegio Vicente Lachner Sandoval",
+  rol: "Docente de Formación Tecnológica",
+  asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
+  fechaRegistro: new Date().toISOString(),
+  centrosEducativos: [
+    {
+      id: "CENTRO-P3-01",
+      nombre: "Colegio San Luis Gonzaga",
+      dreCodigo: "DRE-03",
+      dreNombre: "Cartago",
+      circuito: "Circuito 01",
+      codigoPresupuestario: "MEP-CSLG-2027",
+      desgloseNiveles: [
+        { nivel: "7°", activo: true, totalSeccionesColegio: 8, seccionesAtendidasDocente: ["7-1", "7-2", "7-3"] },
+        { nivel: "8°", activo: true, totalSeccionesColegio: 7, seccionesAtendidasDocente: ["8-1", "8-2", "8-3"] },
+        { nivel: "9°", activo: true, totalSeccionesColegio: 7, seccionesAtendidasDocente: ["9-1", "9-2", "9-3", "9-4"] },
+      ],
+    },
+    {
+      id: "CENTRO-P3-02",
+      nombre: "Colegio Vicente Lachner Sandoval",
+      dreCodigo: "DRE-03",
+      dreNombre: "Cartago",
+      circuito: "Circuito 02",
+      codigoPresupuestario: "MEP-CVLS-2027",
+      desgloseNiveles: [
+        { nivel: "7°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["7-1", "7-2"] },
+        { nivel: "8°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["8-1", "8-2"] },
+        { nivel: "9°", activo: true, totalSeccionesColegio: 4, seccionesAtendidasDocente: ["9-1", "9-2"] },
+      ],
+    },
+  ],
+};
+
+export const DOCENTE_PRUEBA_4: DocenteData = {
+  idDocente: "DOC-PRUEBA-004",
+  nombreCompleto: "Docente Prueba Heredia",
+  correoInstitucional: "pruebadocente4@mep.go.cr",
+  pin: "4444",
+  contrasena: "4444",
+  cedula: "0-0000-0004",
+  telefono: "+506 0000-0004",
+  tipoRol: "Docente",
+  dreCodigo: "DRE-05",
+  dreNombre: "Heredia",
+  circuito: "Circuito 01",
+  codigoPresupuestario: "MEP-P4-2027",
+  institucionNombre: "Liceo de Heredia / CTP Mercedes Norte",
+  rol: "Docente de Formación Tecnológica",
+  asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
+  fechaRegistro: new Date().toISOString(),
+  centrosEducativos: [
+    {
+      id: "CENTRO-P4-01",
+      nombre: "Liceo de Heredia",
+      dreCodigo: "DRE-05",
+      dreNombre: "Heredia",
+      circuito: "Circuito 01",
+      codigoPresupuestario: "MEP-LH-2027",
+      desgloseNiveles: [
+        { nivel: "7°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["7-1", "7-2", "7-3"] },
+        { nivel: "8°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["8-1", "8-2"] },
+        { nivel: "9°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["9-1", "9-2", "9-3"] },
+      ],
+    },
+    {
+      id: "CENTRO-P4-02",
+      nombre: "CTP Mercedes Norte",
+      dreCodigo: "DRE-05",
+      dreNombre: "Heredia",
+      circuito: "Circuito 02",
+      codigoPresupuestario: "MEP-CTPMN-2027",
+      desgloseNiveles: [
+        { nivel: "7°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["7-1", "7-2"] },
+        { nivel: "8°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["8-1", "8-2"] },
+        { nivel: "9°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["9-1", "9-2", "9-3"] },
+      ],
+    },
+  ],
+};
+
+export const DOCENTE_PRUEBA_5: DocenteData = {
+  idDocente: "DOC-PRUEBA-005",
+  nombreCompleto: "Docente Prueba Guanacaste",
+  correoInstitucional: "pruebadocente5@mep.go.cr",
+  pin: "5555",
+  contrasena: "5555",
+  cedula: "0-0000-0005",
+  telefono: "+506 0000-0005",
+  tipoRol: "Docente",
+  dreCodigo: "DRE-07",
+  dreNombre: "Liberia",
+  circuito: "Circuito 01",
+  codigoPresupuestario: "MEP-P5-2027",
+  institucionNombre: "Instituto de Guanacaste / Liceo Laboratorio de Liberia",
+  rol: "Docente de Formación Tecnológica",
+  asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
+  fechaRegistro: new Date().toISOString(),
+  centrosEducativos: [
+    {
+      id: "CENTRO-P5-01",
+      nombre: "Instituto de Guanacaste",
+      dreCodigo: "DRE-07",
+      dreNombre: "Liberia",
+      circuito: "Circuito 01",
+      codigoPresupuestario: "MEP-IG-2027",
+      desgloseNiveles: [
+        { nivel: "7°", activo: true, totalSeccionesColegio: 7, seccionesAtendidasDocente: ["7-1", "7-2", "7-3"] },
+        { nivel: "8°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["8-1", "8-2", "8-3"] },
+        { nivel: "9°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["9-1", "9-2"] },
+      ],
+    },
+    {
+      id: "CENTRO-P5-02",
+      nombre: "Liceo Laboratorio de Liberia",
+      dreCodigo: "DRE-07",
+      dreNombre: "Liberia",
+      circuito: "Circuito 02",
+      codigoPresupuestario: "MEP-LLL-2027",
+      desgloseNiveles: [
+        { nivel: "7°", activo: true, totalSeccionesColegio: 4, seccionesAtendidasDocente: ["7-1", "7-2"] },
+        { nivel: "8°", activo: true, totalSeccionesColegio: 4, seccionesAtendidasDocente: ["8-1", "8-2"] },
+        { nivel: "9°", activo: true, totalSeccionesColegio: 4, seccionesAtendidasDocente: ["9-1", "9-2"] },
+      ],
+    },
+  ],
+};
+
+export const DOCENTE_PRUEBA_6: DocenteData = {
+  idDocente: "DOC-PRUEBA-006",
+  nombreCompleto: "Docente Prueba Puntarenas",
+  correoInstitucional: "pruebadocente6@mep.go.cr",
+  pin: "6666",
+  contrasena: "6666",
+  cedula: "0-0000-0006",
+  telefono: "+506 0000-0006",
+  tipoRol: "Docente",
+  dreCodigo: "DRE-09",
+  dreNombre: "Puntarenas",
+  circuito: "Circuito 01",
+  codigoPresupuestario: "MEP-P6-2027",
+  institucionNombre: "Liceo José Martí / CTP de Puntarenas",
+  rol: "Docente de Formación Tecnológica",
+  asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
+  fechaRegistro: new Date().toISOString(),
+  centrosEducativos: [
+    {
+      id: "CENTRO-P6-01",
+      nombre: "Liceo José Martí",
+      dreCodigo: "DRE-09",
+      dreNombre: "Puntarenas",
+      circuito: "Circuito 01",
+      codigoPresupuestario: "MEP-LJM-2027",
+      desgloseNiveles: [
+        { nivel: "7°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["7-1", "7-2", "7-3"] },
+        { nivel: "8°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["8-1", "8-2"] },
+        { nivel: "9°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["9-1", "9-2", "9-3"] },
+      ],
+    },
+    {
+      id: "CENTRO-P6-02",
+      nombre: "Colegio Técnico Profesional de Puntarenas",
+      dreCodigo: "DRE-09",
+      dreNombre: "Puntarenas",
+      circuito: "Circuito 02",
+      codigoPresupuestario: "MEP-CTPP-2027",
+      desgloseNiveles: [
+        { nivel: "7°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["7-1", "7-2"] },
+        { nivel: "8°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["8-1", "8-2"] },
+        { nivel: "9°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["9-1", "9-2"] },
+      ],
+    },
+  ],
+};
+
+export const DOCENTE_PRUEBA_7: DocenteData = {
+  idDocente: "DOC-PRUEBA-007",
+  nombreCompleto: "Docente Prueba Limón",
+  correoInstitucional: "pruebadocente7@mep.go.cr",
+  pin: "7777",
+  contrasena: "7777",
+  cedula: "0-0000-0007",
+  telefono: "+506 0000-0007",
+  tipoRol: "Docente",
+  dreCodigo: "DRE-11",
+  dreNombre: "Limón",
+  circuito: "Circuito 01",
+  codigoPresupuestario: "MEP-P7-2027",
+  institucionNombre: "Liceo Nuevo de Limón / CTP de Limón",
+  rol: "Docente de Formación Tecnológica",
+  asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
+  fechaRegistro: new Date().toISOString(),
+  centrosEducativos: [
+    {
+      id: "CENTRO-P7-01",
+      nombre: "Liceo Nuevo de Limón",
+      dreCodigo: "DRE-11",
+      dreNombre: "Limón",
+      circuito: "Circuito 01",
+      codigoPresupuestario: "MEP-LNL-2027",
+      desgloseNiveles: [
+        { nivel: "7°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["7-1", "7-2", "7-3"] },
+        { nivel: "8°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["8-1", "8-2", "8-3"] },
+        { nivel: "9°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["9-1", "9-2"] },
+      ],
+    },
+    {
+      id: "CENTRO-P7-02",
+      nombre: "Colegio Técnico Profesional de Limón",
+      dreCodigo: "DRE-11",
+      dreNombre: "Limón",
+      circuito: "Circuito 02",
+      codigoPresupuestario: "MEP-CTPL-2027",
+      desgloseNiveles: [
+        { nivel: "7°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["7-1", "7-2"] },
+        { nivel: "8°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["8-1", "8-2"] },
+        { nivel: "9°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["9-1", "9-2", "9-3"] },
+      ],
+    },
+  ],
+};
+
+export const DOCENTE_PRUEBA_8: DocenteData = {
+  idDocente: "DOC-PRUEBA-008",
+  nombreCompleto: "Docente Prueba Pérez Zeledón",
+  correoInstitucional: "pruebadocente8@mep.go.cr",
+  pin: "8888",
+  contrasena: "8888",
+  cedula: "0-0000-0008",
+  telefono: "+506 0000-0008",
+  tipoRol: "Docente",
+  dreCodigo: "DRE-02",
+  dreNombre: "Pérez Zeledón",
+  circuito: "Circuito 01",
+  codigoPresupuestario: "MEP-P8-2027",
+  institucionNombre: "Liceo UNESCO / CTP General Viejo",
+  rol: "Docente de Formación Tecnológica",
+  asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
+  fechaRegistro: new Date().toISOString(),
+  centrosEducativos: [
+    {
+      id: "CENTRO-P8-01",
+      nombre: "Liceo UNESCO",
+      dreCodigo: "DRE-02",
+      dreNombre: "Pérez Zeledón",
+      circuito: "Circuito 01",
+      codigoPresupuestario: "MEP-LUN-2027",
+      desgloseNiveles: [
+        { nivel: "7°", activo: true, totalSeccionesColegio: 7, seccionesAtendidasDocente: ["7-1", "7-2", "7-3"] },
+        { nivel: "8°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["8-1", "8-2"] },
+        { nivel: "9°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["9-1", "9-2", "9-3"] },
+      ],
+    },
+    {
+      id: "CENTRO-P8-02",
+      nombre: "CTP General Viejo",
+      dreCodigo: "DRE-02",
+      dreNombre: "Pérez Zeledón",
+      circuito: "Circuito 03",
+      codigoPresupuestario: "MEP-CTPGV-2027",
+      desgloseNiveles: [
+        { nivel: "7°", activo: true, totalSeccionesColegio: 4, seccionesAtendidasDocente: ["7-1", "7-2"] },
+        { nivel: "8°", activo: true, totalSeccionesColegio: 4, seccionesAtendidasDocente: ["8-1", "8-2"] },
+        { nivel: "9°", activo: true, totalSeccionesColegio: 4, seccionesAtendidasDocente: ["9-1", "9-2"] },
+      ],
+    },
+  ],
+};
+
+export const DOCENTE_PRUEBA_9: DocenteData = {
+  idDocente: "DOC-PRUEBA-009",
+  nombreCompleto: "Docente Prueba San Carlos",
+  correoInstitucional: "pruebadocente9@mep.go.cr",
+  pin: "9999",
+  contrasena: "9999",
+  cedula: "0-0000-0009",
+  telefono: "+506 0000-0009",
+  tipoRol: "Docente",
+  dreCodigo: "DRE-14",
+  dreNombre: "San Carlos",
+  circuito: "Circuito 01",
+  codigoPresupuestario: "MEP-P9-2027",
+  institucionNombre: "Liceo San Carlos / CTP de San Carlos",
+  rol: "Docente de Formación Tecnológica",
+  asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
+  fechaRegistro: new Date().toISOString(),
+  centrosEducativos: [
+    {
+      id: "CENTRO-P9-01",
+      nombre: "Liceo San Carlos",
+      dreCodigo: "DRE-14",
+      dreNombre: "San Carlos",
+      circuito: "Circuito 01",
+      codigoPresupuestario: "MEP-LSC-2027",
+      desgloseNiveles: [
+        { nivel: "7°", activo: true, totalSeccionesColegio: 7, seccionesAtendidasDocente: ["7-1", "7-2", "7-3"] },
+        { nivel: "8°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["8-1", "8-2"] },
+        { nivel: "9°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["9-1", "9-2", "9-3"] },
+      ],
+    },
+    {
+      id: "CENTRO-P9-02",
+      nombre: "CTP de San Carlos",
+      dreCodigo: "DRE-14",
+      dreNombre: "San Carlos",
+      circuito: "Circuito 02",
+      codigoPresupuestario: "MEP-CTPSC-2027",
+      desgloseNiveles: [
+        { nivel: "7°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["7-1", "7-2"] },
+        { nivel: "8°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["8-1", "8-2"] },
+        { nivel: "9°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["9-1", "9-2"] },
+      ],
+    },
+  ],
+};
+
+export const DOCENTE_PRUEBA_10: DocenteData = {
+  idDocente: "DOC-PRUEBA-010",
+  nombreCompleto: "Docente Prueba Occidente",
+  correoInstitucional: "pruebadocente10@mep.go.cr",
+  pin: "1010",
+  contrasena: "1010",
+  cedula: "0-0000-0010",
+  telefono: "+506 0000-0010",
+  tipoRol: "Docente",
+  dreCodigo: "DRE-06",
+  dreNombre: "Occidente",
+  circuito: "Circuito 01",
+  codigoPresupuestario: "MEP-P10-2027",
+  institucionNombre: "Instituto Julio Acosta García / CTP de San Ramón",
+  rol: "Docente de Formación Tecnológica",
+  asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
+  fechaRegistro: new Date().toISOString(),
+  centrosEducativos: [
+    {
+      id: "CENTRO-P10-01",
+      nombre: "Instituto Julio Acosta García",
+      dreCodigo: "DRE-06",
+      dreNombre: "Occidente",
+      circuito: "Circuito 01",
+      codigoPresupuestario: "MEP-IJAG-2027",
+      desgloseNiveles: [
+        { nivel: "7°", activo: true, totalSeccionesColegio: 8, seccionesAtendidasDocente: ["7-1", "7-2", "7-3"] },
+        { nivel: "8°", activo: true, totalSeccionesColegio: 7, seccionesAtendidasDocente: ["8-1", "8-2", "8-3"] },
+        { nivel: "9°", activo: true, totalSeccionesColegio: 7, seccionesAtendidasDocente: ["9-1", "9-2", "9-3", "9-4"] },
+      ],
+    },
+    {
+      id: "CENTRO-P10-02",
+      nombre: "CTP de San Ramón",
+      dreCodigo: "DRE-06",
+      dreNombre: "Occidente",
+      circuito: "Circuito 02",
+      codigoPresupuestario: "MEP-CTPSR-2027",
+      desgloseNiveles: [
+        { nivel: "7°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["7-1", "7-2"] },
+        { nivel: "8°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["8-1", "8-2"] },
+        { nivel: "9°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["9-1", "9-2"] },
+      ],
+    },
+  ],
+};
+
 export const LISTA_DOCENTES_INICIALES: DocenteData[] = [
   DOCENTE_DEFAULT,
   DOCENTE_PRUEBA_1,
   DOCENTE_PRUEBA_2,
+  DOCENTE_PRUEBA_3,
+  DOCENTE_PRUEBA_4,
+  DOCENTE_PRUEBA_5,
+  DOCENTE_PRUEBA_6,
+  DOCENTE_PRUEBA_7,
+  DOCENTE_PRUEBA_8,
+  DOCENTE_PRUEBA_9,
+  DOCENTE_PRUEBA_10,
 ];
 
 export const DOCENTE_MEP_OFICIAL = DOCENTE_DEFAULT;
@@ -1025,58 +1409,33 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       SafeStorage.removeItem(attemptsKey);
     };
 
-    // 1. Verificación Inmediata: Administrador / Asesor Principal (Alberto Bustos Ortega)
-    const esSuperAdminAlberto =
-      credencialLimpia === "alberto.bustos.ortega@mep.go.cr" ||
-      credencialLimpia === "alberto.bustos" ||
-      credencialLimpia === "admin" ||
-      credencialLimpia === "5-0305-0179" ||
-      credencialLimpia === "503050179" ||
-      credencialLimpia === "1-1122-3344" ||
-      credencialLimpia === "111223344";
+    // 1. Verificación Inmediata en LISTA_DOCENTES_INICIALES
+    for (const d of LISTA_DOCENTES_INICIALES) {
+      const cedulaLimpia = d.cedula.replace(/[^0-9]/g, "");
+      const correo = d.correoInstitucional.toLowerCase();
+      const usuario = correo.split("@")[0];
+      const matchCred =
+        credencialLimpia === correo ||
+        credencialLimpia === usuario ||
+        credencialLimpia === d.cedula ||
+        credencialLimpia === cedulaLimpia ||
+        (d.idDocente === "5-0305-0179" && (credencialLimpia === "admin" || credencialLimpia === "alberto.bustos" || credencialLimpia === "1-1122-3344" || credencialLimpia === "111223344"));
+      
+      const pinValido =
+        pinOPassLimpia === d.pin ||
+        pinOPassLimpia === d.contrasena ||
+        (d.idDocente === "DOC-PRUEBA-001" && pinOPassLimpia === "1001") ||
+        (d.idDocente === "DOC-PRUEBA-002" && pinOPassLimpia === "2002") ||
+        (d.idDocente === "5-0305-0179" && (pinOPassLimpia === "1726" || pinOPassLimpia === "1122" || pinOPassLimpia === "EdcRfvTgb2617**" || pinOPassLimpia === "EdcRfvTgb1726**"));
 
-    const esPinValidoAlberto =
-      pinOPassLimpia === "2617" ||
-      pinOPassLimpia === "1726" ||
-      pinOPassLimpia === "EdcRfvTgb2617**" ||
-      pinOPassLimpia === "EdcRfvTgb1726**" ||
-      pinOPassLimpia === "1122";
-
-    if (esSuperAdminAlberto && esPinValidoAlberto) {
-      limpiarFallos();
-      guardarDocente(DOCENTE_DEFAULT);
-      return { exito: true, mensaje: "Sesión iniciada correctamente como Asesor Principal de Formación Tecnológica." };
-    }
-
-    // 2. Verificación Inmediata: Docente Prueba San José (Cédula 0-0000-0001 / PIN 1111)
-    const esDocenteP1 =
-      credencialLimpia === "pruebadocente1@mep.go.cr" ||
-      credencialLimpia === "pruebadocente1" ||
-      credencialLimpia === "docente.sanjose@mep.go.cr" ||
-      credencialLimpia === "0-0000-0001" ||
-      credencialLimpia === "000000001";
-
-    const esPinValidoP1 = pinOPassLimpia === "1111" || pinOPassLimpia === "1001";
-
-    if (esDocenteP1 && esPinValidoP1) {
-      limpiarFallos();
-      guardarDocente(DOCENTE_PRUEBA_1);
-      return { exito: true, mensaje: `Bienvenido(a), ${DOCENTE_PRUEBA_1.nombreCompleto}.` };
-    }
-
-    // 5. Verificación Inmediata: PruebaDocente2 (Cédula 0-0000-0002 / PIN 2222)
-    const esDocenteP2 =
-      credencialLimpia === "pruebadocente2@mep.go.cr" ||
-      credencialLimpia === "pruebadocente2" ||
-      credencialLimpia === "0-0000-0002" ||
-      credencialLimpia === "000000002";
-
-    const esPinValidoP2 = pinOPassLimpia === "2222" || pinOPassLimpia === "2002";
-
-    if (esDocenteP2 && esPinValidoP2) {
-      limpiarFallos();
-      guardarDocente(DOCENTE_PRUEBA_2);
-      return { exito: true, mensaje: `Bienvenido(a), ${DOCENTE_PRUEBA_2.nombreCompleto}.` };
+      if (matchCred && pinValido) {
+        limpiarFallos();
+        guardarDocente(d);
+        const mensajeRol = d.idDocente === "5-0305-0179"
+          ? "Sesión iniciada correctamente como Asesor Principal de Formación Tecnológica."
+          : `Bienvenido(a), ${d.nombreCompleto}.`;
+        return { exito: true, mensaje: mensajeRol };
+      }
     }
 
     // Comprobar bloqueo temporal por intentos fallidos (15 minutos) para intentos erróneos
