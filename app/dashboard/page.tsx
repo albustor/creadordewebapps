@@ -512,8 +512,8 @@ export default function DashboardAnaliticoPage() {
               onClick={() => cambiarNivel("9no")}
               className={`flex items-center justify-center gap-2 py-3 px-3 sm:px-5 rounded-xl font-black text-xs sm:text-sm transition-all cursor-pointer ${
                 nivelActivo === "9no"
-                  ? "bg-emerald-700 text-white shadow-md shadow-emerald-700/20 border border-emerald-800 scale-[1.01]"
-                  : "bg-white/70 hover:bg-white text-slate-700 hover:text-emerald-900 border border-transparent"
+                  ? "bg-purple-700 text-white shadow-md shadow-purple-700/20 border border-purple-800 scale-[1.01]"
+                  : "bg-white/70 hover:bg-white text-slate-700 hover:text-purple-900 border border-transparent"
               }`}
             >
               <Lightbulb size={20} weight={nivelActivo === "9no" ? "fill" : "bold"} />
@@ -735,20 +735,20 @@ export default function DashboardAnaliticoPage() {
         )}
 
         {nivelActivo === "9no" && (
-          <div className="bg-gradient-to-br from-emerald-900 via-emerald-950 to-slate-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-emerald-400 relative overflow-hidden space-y-6">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
+          <div className="bg-gradient-to-br from-purple-900 via-purple-950 to-slate-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-purple-400 relative overflow-hidden space-y-6">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
             
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
               
               <div className="space-y-4 max-w-3xl">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="px-3 py-1 rounded-full bg-emerald-500/30 text-emerald-200 border border-emerald-400/50 text-[11px] font-black uppercase tracking-wider">
+                  <span className="px-3 py-1 rounded-full bg-purple-500/30 text-purple-200 border border-purple-400/50 text-[11px] font-black uppercase tracking-wider">
                     💡 Herramienta Oficial • 9.° Año
                   </span>
                   <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-stone-200 text-[10px] font-bold">
                     Módulo 1: Aula Inteligente (IoT)
                   </span>
-                  <span className="px-2.5 py-0.5 rounded-full bg-emerald-400/20 text-emerald-200 text-[10px] font-bold">
+                  <span className="px-2.5 py-0.5 rounded-full bg-purple-400/20 text-purple-200 text-[10px] font-bold">
                     III Ciclo MEP 2026
                   </span>
                 </div>
@@ -757,21 +757,21 @@ export default function DashboardAnaliticoPage() {
                   Herramienta de evaluación diagnóstica docente: 9.° Año
                 </h3>
 
-                <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed">
+                <p className="text-xs sm:text-sm text-purple-100/90 leading-relaxed">
                   Aplicativo central para la valoración y registro de criterios de logro, observación docente en tiempo real, gestión de enlaces para la aplicación del diagnóstico y generación automática de actas pedagógicas con los datos obtenidos.
                 </p>
 
                 {/* Metadatos del Docente */}
-                <div className="flex flex-wrap items-center gap-3 text-xs text-emerald-200">
+                <div className="flex flex-wrap items-center gap-3 text-xs text-purple-200">
                   <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
-                    <ChalkboardTeacher size={16} className="text-emerald-300" weight="bold" />
+                    <ChalkboardTeacher size={16} className="text-purple-300" weight="bold" />
                     <span>Docente: <strong>{docente?.nombreCompleto || "Docente MEP"}</strong></span>
                   </div>
                 </div>
 
                 {/* SELECTOR DE COLEGIOS REGISTRADOS */}
                 <div className="space-y-2 pt-1">
-                  <label className="text-[11px] font-black uppercase text-emerald-300 tracking-wider flex items-center gap-1.5">
+                  <label className="text-[11px] font-black uppercase text-purple-300 tracking-wider flex items-center gap-1.5">
                     <Buildings size={15} weight="bold" />
                     <span>Centros Educativos Asignados ({listaCentrosDocente.length}):</span>
                   </label>
@@ -798,7 +798,7 @@ export default function DashboardAnaliticoPage() {
                       ))}
                     </div>
                   ) : (
-                    <div className="p-3 bg-white/10 border border-white/20 rounded-xl text-xs text-emerald-200 flex items-center justify-between gap-3">
+                    <div className="p-3 bg-white/10 border border-white/20 rounded-xl text-xs text-purple-200 flex items-center justify-between gap-3">
                       <span>No tienes secciones asignadas para 9.° Año en tu perfil.</span>
                       <Link href="/registro" className="px-2.5 py-1 bg-white text-slate-900 font-bold rounded-lg text-[11px] hover:bg-slate-100">
                         Editar en Mi Perfil
@@ -817,7 +817,7 @@ export default function DashboardAnaliticoPage() {
                       href={getUrlEvaluador(centroActivo)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2.5 px-6 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-emerald-500/30 hover:scale-[1.02] cursor-pointer text-center"
+                      className="flex items-center justify-center gap-2.5 px-6 py-3.5 bg-purple-600 hover:bg-purple-500 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-purple-600/30 hover:scale-[1.02] cursor-pointer text-center"
                     >
                       <span>Abrir Herramienta 9.° Año (Evaluador)</span>
                       <ArrowSquareOut size={20} weight="bold" />
@@ -827,14 +827,14 @@ export default function DashboardAnaliticoPage() {
                       href="/webapps/diagnostico_9no_modulo01_desconectado_offline.html"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 px-5 py-3 bg-white/15 hover:bg-white/25 text-emerald-100 hover:text-white border border-emerald-400/40 font-bold text-xs rounded-2xl transition-all hover:scale-[1.02] cursor-pointer text-center"
+                      className="flex items-center justify-center gap-2 px-5 py-3 bg-white/15 hover:bg-white/25 text-purple-100 hover:text-white border border-purple-400/40 font-bold text-xs rounded-2xl transition-all hover:scale-[1.02] cursor-pointer text-center"
                     >
                       <Desktop size={18} weight="duotone" />
                       <span>Herramienta de Evaluación Diagnóstica Docente Sin Conexión o Local</span>
                     </a>
                   </>
                 ) : (
-                  <div className="flex items-center justify-center px-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-xs text-emerald-200/70 font-medium text-center">
+                  <div className="flex items-center justify-center px-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-xs text-purple-200/70 font-medium text-center">
                     Nivel no asignado
                   </div>
                 )}
