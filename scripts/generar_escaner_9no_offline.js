@@ -335,30 +335,133 @@ button:active {
   text-align: center;
 }
 
-/* Guía de instalación plegable */
+/* Guía de instalación plegable interactiva */
 .guide-box {
-  background: #f8fafc;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 12px 14px;
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
+  border-radius: 18px;
   margin-top: 12px;
-  font-size: 12px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+.guide-box:hover {
+  border-color: #94a3b8;
 }
 .guide-header {
-  font-weight: 800;
+  font-weight: 900;
   color: var(--mep-azul);
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 14px 18px;
+  background: #f8fafc;
   user-select: none;
+  font-size: 13px;
+  border-bottom: 1px solid #e2e8f0;
+}
+.guide-header:hover {
+  background: #f1f5f9;
 }
 .guide-content {
-  margin-top: 10px;
+  padding: 16px;
   line-height: 1.6;
-  color: #334155;
-  border-top: 1px solid #e2e8f0;
-  padding-top: 10px;
+  color: #1e293b;
+  background: #ffffff;
+}
+.guide-tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+.guide-tab-btn {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #475569;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+  height: auto;
+  width: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.guide-tab-btn.active {
+  background: #002b49;
+  color: #ffffff;
+  border-color: #002b49;
+  box-shadow: 0 2px 6px rgba(0,43,73,0.25);
+}
+.guide-step-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+  margin-top: 12px;
+}
+.guide-step-card {
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-col;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.guide-step-header {
+  padding: 12px;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+}
+.guide-step-header h4 {
+  font-size: 13px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-top: 4px;
+}
+.guide-step-header p {
+  font-size: 11.5px;
+  color: #475569;
+  margin-top: 4px;
+  line-height: 1.5;
+}
+.guide-step-img-wrap {
+  padding: 10px;
+  background: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+}
+.guide-img {
+  max-width: 100%;
+  max-height: 220px;
+  border-radius: 8px;
+  object-fit: contain;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.guide-note-box {
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 11.5px;
+  color: #065f46;
+  margin-top: 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.5;
 }
 .step-pill {
   display: inline-block;
@@ -366,9 +469,9 @@ button:active {
   color: #fff;
   font-weight: 800;
   font-size: 10px;
-  padding: 1px 6px;
+  padding: 2px 7px;
   border-radius: 6px;
-  margin-right: 4px;
+  margin-bottom: 4px;
 }
 </style>
 </head>
@@ -382,30 +485,209 @@ button:active {
 
 <div class="container">
 
-  <!-- GUÍA DE INSTALACIÓN RÁPIDA EN IPHONE / ANDROID -->
+  <!-- GUÍA DE INSTALACIÓN RÁPIDA EN IPHONE / ANDROID / HUAWEI (RECURSOS PNFT) -->
   <div class="guide-box">
     <div class="guide-header" onclick="alternarGuiaInstalacion()">
       <span>📲 ¿Cómo usar e instalar en iPhone / Android? (En línea y Sin conexión)</span>
       <span id="guideArrow">▼</span>
     </div>
-    <div id="guideContent" class="guide-content hidden">
-      <p style="margin-bottom: 8px;">
-        <strong>🌐 Modo en línea (Con Internet en el celular):</strong> Abra directamente el enlace en el navegador de su teléfono (HTTPS). La cámara se activará de forma nativa sin requerir instalación previa.
-      </p>
-      <p style="margin-bottom: 8px;">
-        <strong>🍎 Para iPhone / iPad (iOS Safari) sin conexión:</strong><br>
-        <span class="step-pill">1</span> Abra el enlace en <strong>Safari</strong>.<br>
-        <span class="step-pill">2</span> Toque el botón <strong>Compartir (📤)</strong> en la barra inferior.<br>
-        <span class="step-pill">3</span> Seleccione <strong>"Agregar a Inicio" (➕)</strong> y active <em>"Abrir como app web"</em>.<br>
-        <span class="step-pill">4</span> ¡Listo! Queda como app nativa 100% desconectada.
-      </p>
-      <p style="margin-bottom: 8px;">
-        <strong>🤖 Para Android / Huawei:</strong><br>
-        Toque el menú de opciones (<strong>⋮</strong>) y elija <strong>"Instalar aplicación"</strong> o <strong>"Agregar a pantalla principal"</strong>.
-      </p>
-      <p style="font-size: 11px; color: #64748b;">
-        <em>💡 Nota de Contingencia: Si el navegador bloquea la cámara continua, use los botones de abajo para <strong>"Tomar foto con cámara nativa"</strong> o <strong>"Cargar archivos JSON de llave USB"</strong>.</em>
-      </p>
+    <div id="guideContent" class="guide-content">
+      <!-- Selector de Pestañas de SO -->
+      <div class="guide-tabs">
+        <button id="tabBtnIos" class="guide-tab-btn active" onclick="cambiarPestanaGuia('ios')">
+          <span>🍎 iPhone / iPad (iOS Safari)</span>
+        </button>
+        <button id="tabBtnAndroid" class="guide-tab-btn" onclick="cambiarPestanaGuia('android')">
+          <span>🤖 Android (Chrome)</span>
+        </button>
+        <button id="tabBtnHuawei" class="guide-tab-btn" onclick="cambiarPestanaGuia('huawei')">
+          <span>📱 Huawei / HarmonyOS</span>
+        </button>
+        <button id="tabBtnModos" class="guide-tab-btn" onclick="cambiarPestanaGuia('modos')">
+          <span>⚡ En Línea vs Desconectado</span>
+        </button>
+      </div>
+
+      <!-- Pestaña 1: iOS Safari -->
+      <div id="guiaIos" class="guide-pane">
+        <div style="margin-bottom: 10px;">
+          <h3 style="font-size: 14px; font-weight: 900; color: #002b49;">
+            Manual Visual de Instalación en iPhone y iPad (iOS Safari)
+          </h3>
+          <p style="font-size: 12px; color: #475569;">
+            Configura el Escáner en la pantalla de inicio para ejecutarlo a pantalla completa y sin consumo de internet.
+          </p>
+        </div>
+
+        <div class="guide-step-grid">
+          <!-- Paso 1 -->
+          <div class="guide-step-card">
+            <div class="guide-step-header">
+              <span class="step-pill" style="background:#0284c7;">Paso 1: Detección</span>
+              <h4>Apertura y Detección en Safari</h4>
+              <p>
+                Al abrir el enlace en <strong>Safari</strong> de tu iPhone, toca el botón <strong>Compartir (📤 flecha hacia arriba)</strong> en la barra inferior.
+              </p>
+            </div>
+            <div class="guide-step-img-wrap">
+              <img src="/guias/iphone/paso1_instrucciones_ios.png" alt="Paso 1 iOS Safari" class="guide-img" onerror="this.style.display='none'">
+            </div>
+          </div>
+
+          <!-- Paso 2 -->
+          <div class="guide-step-card">
+            <div class="guide-step-header">
+              <span class="step-pill" style="background:#7c3aed;">Paso 2: Menú Compartir</span>
+              <h4>Agregar al Fondo / Pantalla de Inicio</h4>
+              <p>
+                Desliza hacia abajo en las opciones de Safari y selecciona <strong>[+] "Agregar a Inicio"</strong> (o <em>"Agregar a pantalla de inicio"</em>).
+              </p>
+            </div>
+            <div class="guide-step-img-wrap">
+              <img src="/guias/iphone/paso2_menu_compartir.png" alt="Paso 2 Menú Compartir" class="guide-img" onerror="this.style.display='none'">
+            </div>
+          </div>
+
+          <!-- Paso 3 -->
+          <div class="guide-step-card">
+            <div class="guide-step-header">
+              <span class="step-pill" style="background:#059669;">Paso 3: Confirmación</span>
+              <h4>Activar "Abrir como app web"</h4>
+              <p>
+                Verifica que el interruptor <strong>"Abrir como app web"</strong> esté activo (en verde) y pulsa <strong>"Agregar"</strong> arriba a la derecha.
+              </p>
+            </div>
+            <div class="guide-step-img-wrap">
+              <img src="/guias/iphone/paso3_agregar_inicio.png" alt="Paso 3 Agregar a Inicio" class="guide-img" onerror="this.style.display='none'">
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-note-box">
+          <div>
+            <strong>✨ Ventaja para el Docente en el Aula:</strong><br>
+            Al abrir el Escáner desde el icono en la pantalla de inicio, se ocultan las barras de Safari, permitiendo escanear a pantalla completa, con vibración y sonido táctil, sin consumo de datos y guardado automático de todo el grupo.
+          </div>
+        </div>
+      </div>
+
+      <!-- Pestaña 2: Android Chrome -->
+      <div id="guiaAndroid" class="guide-pane hidden">
+        <div style="margin-bottom: 10px;">
+          <h3 style="font-size: 14px; font-weight: 900; color: #002b49;">
+            Instalación en Android (Google Chrome)
+          </h3>
+          <p style="font-size: 12px; color: #475569;">
+            Instalación instantánea con tecnología Progressive Web App (PWA) offline.
+          </p>
+        </div>
+
+        <div class="guide-step-grid">
+          <div class="guide-step-card">
+            <div class="guide-step-header" style="height: 100%;">
+              <span class="step-pill" style="background:#059669;">Paso 1</span>
+              <h4>Abrir en Chrome</h4>
+              <p>Abre el enlace directo del escáner en tu navegador Google Chrome o escanea el QR desde tu teléfono.</p>
+            </div>
+          </div>
+
+          <div class="guide-step-card">
+            <div class="guide-step-header" style="height: 100%;">
+              <span class="step-pill" style="background:#059669;">Paso 2</span>
+              <h4>Menú de 3 Puntos (⋮)</h4>
+              <p>Toca los tres puntos verticales ubicados en la esquina superior derecha del navegador Chrome.</p>
+            </div>
+          </div>
+
+          <div class="guide-step-card">
+            <div class="guide-step-header" style="height: 100%;">
+              <span class="step-pill" style="background:#059669;">Paso 3</span>
+              <h4>Instalar Aplicación</h4>
+              <p>Selecciona <strong>"Instalar aplicación"</strong> o <strong>"Agregar a la pantalla principal"</strong> y confirma.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-note-box">
+          <div>
+            <strong>⚡ Ventaja Android:</strong> El escáner quedará guardado como aplicación independiente y funcionará al 100% incluso con modo avión activado.
+          </div>
+        </div>
+      </div>
+
+      <!-- Pestaña 3: Huawei -->
+      <div id="guiaHuawei" class="guide-pane hidden">
+        <div style="margin-bottom: 10px;">
+          <h3 style="font-size: 14px; font-weight: 900; color: #002b49;">
+            Instalación en Dispositivos Huawei (Huawei Browser / Petal)
+          </h3>
+          <p style="font-size: 12px; color: #475569;">
+            Configuración directa en sistemas operativos EMUI y HarmonyOS.
+          </p>
+        </div>
+
+        <div class="guide-step-grid">
+          <div class="guide-step-card">
+            <div class="guide-step-header" style="height: 100%;">
+              <span class="step-pill" style="background:#dc2626;">Paso 1</span>
+              <h4>Navegador Huawei</h4>
+              <p>Abre el enlace del escáner en el navegador predeterminado de Huawei o Petal Browser.</p>
+            </div>
+          </div>
+
+          <div class="guide-step-card">
+            <div class="guide-step-header" style="height: 100%;">
+              <span class="step-pill" style="background:#dc2626;">Paso 2</span>
+              <h4>Menú de Ajustes (≡ ó ⠇)</h4>
+              <p>Presiona el botón de menú en la barra inferior o superior derecha del navegador.</p>
+            </div>
+          </div>
+
+          <div class="guide-step-card">
+            <div class="guide-step-header" style="height: 100%;">
+              <span class="step-pill" style="background:#dc2626;">Paso 3</span>
+              <h4>Acceso Directo</h4>
+              <p>Selecciona la opción <strong>"Agregar a pantalla de inicio"</strong> o <strong>"Crear acceso directo"</strong>.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-note-box">
+          <div>
+            <strong>🛡️ Compatibilidad Garantizada:</strong> Diseñado con Web APIs universales compatibles con todos los modelos Huawei de los últimos 7 años.
+          </div>
+        </div>
+      </div>
+
+      <!-- Pestaña 4: Modos de Operación -->
+      <div id="guiaModos" class="guide-pane hidden">
+        <div style="margin-bottom: 10px;">
+          <h3 style="font-size: 14px; font-weight: 900; color: #002b49;">
+            Modos de Operación y Protocolo de Contingencia
+          </h3>
+          <p style="font-size: 12px; color: #475569;">
+            Opciones según la conectividad del centro educativo y las restricciones del aula.
+          </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr; gap: 10px;">
+          <div style="padding: 12px; background: #e0f2fe; border: 1px solid #bae6fd; border-radius: 12px; font-size: 12px;">
+            <strong style="color: #0369a1; font-size: 13px;">🌐 1. Modo En Línea (Recomendado si tiene datos o WiFi):</strong><br>
+            Abra el enlace web oficial en HTTPS. La cámara trasera se activará de inmediato con auto-enfoque y lectura instantánea de los QR.
+          </div>
+
+          <div style="padding: 12px; background: #fef3c7; border: 1px solid #fde68a; border-radius: 12px; font-size: 12px;">
+            <strong style="color: #92400e; font-size: 13px;">📸 2. Contingencia por Foto Directa:</strong><br>
+            Si el navegador bloquea la cámara continua en local, toque el botón <strong>"📸 Tomar foto / Cargar QR"</strong> para usar la cámara fotográfica estándar del teléfono.
+          </div>
+
+          <div style="padding: 12px; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 12px; font-size: 12px;">
+            <strong style="color: #065f46; font-size: 13px;">📂 3. Contingencia por Llave Maya / USB:</strong><br>
+            Los estudiantes pueden presionar "Descargar Ficha (.json)" en sus computadoras. El docente reúne los archivos en su USB y los carga en lote con el botón <strong>"📂 Importar JSONs (USB)"</strong>.
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -571,12 +853,41 @@ document.addEventListener("DOMContentLoaded", function() {
 function alternarGuiaInstalacion() {
   var c = document.getElementById("guideContent");
   var a = document.getElementById("guideArrow");
-  if (c.classList.contains("hidden")) {
-    c.classList.remove("hidden");
+  if (c.style.display === "none") {
+    c.style.display = "block";
     a.textContent = "▲";
   } else {
-    c.classList.add("hidden");
+    c.style.display = "none";
     a.textContent = "▼";
+  }
+}
+
+function cambiarPestanaGuia(tab) {
+  var panes = ["guiaIos", "guiaAndroid", "guiaHuawei", "guiaModos"];
+  var btns = ["tabBtnIos", "tabBtnAndroid", "tabBtnHuawei", "tabBtnModos"];
+
+  panes.forEach(function(p) {
+    var el = document.getElementById(p);
+    if (el) el.classList.add("hidden");
+  });
+
+  btns.forEach(function(b) {
+    var el = document.getElementById(b);
+    if (el) el.classList.remove("active");
+  });
+
+  if (tab === "ios") {
+    document.getElementById("guiaIos").classList.remove("hidden");
+    document.getElementById("tabBtnIos").classList.add("active");
+  } else if (tab === "android") {
+    document.getElementById("guiaAndroid").classList.remove("hidden");
+    document.getElementById("tabBtnAndroid").classList.add("active");
+  } else if (tab === "huawei") {
+    document.getElementById("guiaHuawei").classList.remove("hidden");
+    document.getElementById("tabBtnHuawei").classList.add("active");
+  } else if (tab === "modos") {
+    document.getElementById("guiaModos").classList.remove("hidden");
+    document.getElementById("tabBtnModos").classList.add("active");
   }
 }
 
