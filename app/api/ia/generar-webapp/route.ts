@@ -6,6 +6,8 @@ import {
   OpcionesGeneracionWebApp,
 } from "@/lib/generadorWebAppEngine";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest) {
   try {
     const opts: OpcionesGeneracionWebApp = await req.json();

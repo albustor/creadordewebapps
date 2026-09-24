@@ -922,6 +922,7 @@ const ACTITUDES_PENSADOR_COMPUTACIONAL = [
 
 export default function RecursoAprendizajeAutogestionado() {
   const { docente } = useDocente();
+  const [isMounted, setIsMounted] = useState(false);
 
   // Clave de almacenamiento ligada al usuario activo
   const storageKeyTareas = `mep_aprendizaje_tareas_${docente?.idDocente || docente?.cedula || "anonimo"}`;
@@ -935,16 +936,19 @@ export default function RecursoAprendizajeAutogestionado() {
   const [copiadoExitoso, setCopiadoExitoso] = useState<boolean>(false);
   const [guardadoAutomatico, setGuardadoAutomatico] = useState<boolean>(false);
 
-  // Cargar estado guardado al iniciar
+  // Cargar estado guardado al iniciar y marcar montado
   useEffect(() => {
+    setIsMounted(true);
     try {
-      const rawTareas = localStorage.getItem(storageKeyTareas);
-      if (rawTareas) {
-        setTareasCompletadas(JSON.parse(rawTareas));
-      }
-      const rawApuntes = localStorage.getItem(storageKeyApuntes);
-      if (rawApuntes) {
-        setApuntesDocente(rawApuntes);
+      if (typeof window !== "undefined") {
+        const rawTareas = localStorage.getItem(storageKeyTareas);
+        if (rawTareas) {
+          setTareasCompletadas(JSON.parse(rawTareas));
+        }
+        const rawApuntes = localStorage.getItem(storageKeyApuntes);
+        if (rawApuntes) {
+          setApuntesDocente(rawApuntes);
+        }
       }
     } catch (e) {}
   }, [storageKeyTareas, storageKeyApuntes]);
@@ -1004,7 +1008,7 @@ export default function RecursoAprendizajeAutogestionado() {
     handleCambioApuntes(nuevoTexto);
   };
 
-  // Copiar al portapapeles
+  // Copiar al portapapeles con fallback seguro
   const copiarBitacora = () => {
     const textoCompleto = `RESUMEN DE APRENDIZAJE Y VALIDACIÓN DE LA HERRAMIENTA MEP\n` +
       `Docente: ${docente?.nombreCompleto || "Docente MEP"}\n` +
@@ -1014,9 +1018,22 @@ export default function RecursoAprendizajeAutogestionado() {
       `Fecha de Registro: ${new Date().toLocaleString("es-CR")}\n` +
       `Ministerio de Educación Pública • Formación Tecnológica`;
 
-    navigator.clipboard.writeText(textoCompleto);
-    setCopiadoExitoso(true);
-    setTimeout(() => setCopiadoExitoso(false), 2500);
+    try {
+      if (typeof navigator !== "undefined" && navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(textoCompleto);
+      } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = textoCompleto;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+      }
+      setCopiadoExitoso(true);
+      setTimeout(() => setCopiadoExitoso(false), 2500);
+    } catch (e) {
+      console.warn("No se pudo copiar automáticamente al portapapeles:", e);
+    }
   };
 
   // Descargar archivo de texto

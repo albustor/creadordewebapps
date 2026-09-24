@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 // Almacén en memoria global para el servidor
 const webAppsStore = new Map<string, any>();
 

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ejecutarCascadaIA } from "@/lib/aiResilience";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest) {
   try {
     const { textoDocumento, nivelPreferido, observacionesDocente } = await req.json();
