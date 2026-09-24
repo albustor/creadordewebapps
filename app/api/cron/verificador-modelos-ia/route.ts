@@ -17,18 +17,21 @@ export async function GET(req: NextRequest) {
     };
 
     // Formato de reporte para WhatsApp
-    const mensajeWhatsApp = `🩺 *REPORTE DIARIO DE AUDITORÍA Y SALUD IA (5:00 AM)*\n\n📅 *Fecha:* ${new Date().toLocaleString("es-CR", { timeZone: "America/Costa_Rica" })}\n🎯 *Total Modelos Auditados:* ${auditoria.totalModelosAuditados}\n✅ *Operativos:* ${auditoria.operativos}\n⚠️ *Deprecados:* ${auditoria.deprecadosODadosDeBaja}\n\n*Detalles de Proveedores:*\n${auditoria.detalles.map((d) => `• ${d.proveedor} (${d.modelo}): ${d.estado} [${d.latencia}]`).join("\n")}\n\n📋 *Integridad Evaluativa:* ${reglaCompletitud.estado}\n${reglaCompletitud.criterio}\n\n📧 Reporte oficial remitido a: alberto.bustos.ortega@mep.go.cr`;
+    const mensajeWhatsApp = `🩺 *REPORTE DIARIO DE AUDITORÍA Y SALUD IA (5:00 AM)*\n\n📅 *Fecha:* ${new Date().toLocaleString("es-CR", { timeZone: "America/Costa_Rica" })}\n🎯 *Total Niveles Auditados:* ${auditoria.totalModelosAuditados}\n✅ *Operativos:* ${auditoria.operativos}\n⚠️ *Deprecados:* ${auditoria.deprecadosODadosDeBaja}\n\n*Detalles de Capas de Procesamiento:*\n${auditoria.detalles.map((d) => {
+      const capa = d.proveedor.includes("Gemini") || d.proveedor.includes("Google") ? "Capa 1 (Primaria)" : d.proveedor.includes("Groq") ? "Capa 2 (Baja Latencia)" : d.proveedor.includes("OpenRouter") ? "Capa 3 (Redundancia)" : "Capa 4 (Contingencia)";
+      return `• ${capa} (${d.modelo}): ${d.estado} [${d.latencia}]`;
+    }).join("\n")}\n\n📋 *Integridad Evaluativa:* ${reglaCompletitud.estado}\n${reglaCompletitud.criterio}\n\n📧 Reporte oficial remitido a: alberto.bustos.ortega@mep.go.cr`;
 
     // Formato de reporte para Correo Electrónico Oficial
     const reporteEmail = {
       destinatario: "alberto.bustos.ortega@mep.go.cr",
-      asunto: `[AUDITORÍA IA 5:00 AM] Estado de Modelos y Regla de Completitud - ${new Date().toLocaleDateString("es-CR")}`,
+      asunto: `[AUDITORÍA IA 5:00 AM] Estado de Servicios Multicapa y Regla de Completitud - ${new Date().toLocaleDateString("es-CR")}`,
       cuerpoHtml: `
-        <h2>Informe Oficial Diario de Disponibilidad de Modelos de IA y Validación Evaluativa</h2>
+        <h2>Informe Oficial Diario de Disponibilidad de Servicios de IA y Validación Evaluativa</h2>
         <p><strong>Fecha y Hora (Costa Rica):</strong> ${new Date().toLocaleString("es-CR", { timeZone: "America/Costa_Rica" })}</p>
-        <p><strong>Total de Modelos Auditados:</strong> ${auditoria.totalModelosAuditados}</p>
-        <p><strong>Modelos Operativos:</strong> ${auditoria.operativos}</p>
-        <p><strong>Modelos con Errores / Deprecados:</strong> ${auditoria.deprecadosODadosDeBaja}</p>
+        <p><strong>Total de Servicios Auditados:</strong> ${auditoria.totalModelosAuditados}</p>
+        <p><strong>Servicios Operativos:</strong> ${auditoria.operativos}</p>
+        <p><strong>Servicios con Errores / Deprecados:</strong> ${auditoria.deprecadosODadosDeBaja}</p>
         
         <div style="background:#e0f2fe; border-left: 4px solid #0284c7; padding: 12px; margin: 16px 0; border-radius: 4px;">
           <h3 style="margin: 0 0 6px 0; color: #0369a1;">Auditoría de Integridad Evaluativa y Tests Completos</h3>
@@ -42,8 +45,8 @@ export async function GET(req: NextRequest) {
         <table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%;">
           <thead>
             <tr style="background:#003366; color:white;">
-              <th>Proveedor</th>
-              <th>Modelo</th>
+              <th>Capa de Servicio</th>
+              <th>Configuración Evaluada</th>
               <th>Estado</th>
               <th>Latencia</th>
             </tr>
@@ -51,14 +54,17 @@ export async function GET(req: NextRequest) {
           <tbody>
             ${auditoria.detalles
               .map(
-                (d) => `
-              <tr>
-                <td>${d.proveedor}</td>
-                <td><code>${d.modelo}</code></td>
-                <td style="color: ${d.estado === "DISPONIBLE" ? "green" : "red"}; font-weight: bold;">${d.estado}</td>
-                <td>${d.latencia}</td>
-              </tr>
-            `
+                (d) => {
+                  const capa = d.proveedor.includes("Gemini") || d.proveedor.includes("Google") ? "Capa 1 (Primaria)" : d.proveedor.includes("Groq") ? "Capa 2 (Baja Latencia)" : d.proveedor.includes("OpenRouter") ? "Capa 3 (Redundancia)" : "Capa 4 (Contingencia)";
+                  return `
+                  <tr>
+                    <td>${capa}</td>
+                    <td><code>${d.modelo}</code></td>
+                    <td style="color: ${d.estado === "DISPONIBLE" ? "green" : "red"}; font-weight: bold;">${d.estado}</td>
+                    <td>${d.latencia}</td>
+                  </tr>
+                `;
+                }
               )
               .join("")}
           </tbody>

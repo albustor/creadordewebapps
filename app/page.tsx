@@ -868,24 +868,13 @@ export default function HomePage() {
                       <span>Abrir Guía en Pestaña Independiente</span>
                       <ArrowSquareOut size={18} weight="bold" />
                     </a>
-
-                    <button
-                      type="button"
-                      onClick={() => setMostrarGuiaInline(!mostrarGuiaInline)}
-                      className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 bg-white hover:bg-stone-100 text-slate-700 border border-stone-300 font-bold text-xs rounded-xl transition-all"
-                    >
-                      <span>{mostrarGuiaInline ? "Ocultar vista previa aquí" : "Explorar vista previa aquí"}</span>
-                      {mostrarGuiaInline ? <CaretUp size={14} weight="bold" /> : <CaretDown size={14} weight="bold" />}
-                    </button>
                   </div>
                 </div>
 
-                {/* Vista previa desplegable inline */}
-                {mostrarGuiaInline && (
-                  <div className="pt-4 border-t border-emerald-200/80 animate-fadeIn">
-                    <RecursoAprendizajeAutogestionado />
-                  </div>
-                )}
+                {/* Recurso Autogestionado Integrado */}
+                <div className="pt-4 border-t border-emerald-200/80">
+                  <RecursoAprendizajeAutogestionado />
+                </div>
               </div>
             </div>
           </div>

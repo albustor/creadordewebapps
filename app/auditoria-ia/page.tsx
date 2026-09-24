@@ -59,10 +59,10 @@ export default function AuditoriaIAPage() {
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900">
-            Auditoría y Resiliencia de Modelos de IA
+            Auditoría y resiliencia de servicios de IA
           </h1>
           <p className="text-xs sm:text-sm text-slate-500">
-            Verificación automática de disponibilidad y latencia en Google Gemini, Groq, OpenRouter y DashScope
+            Verificación automática de disponibilidad y latencia por niveles de servicio en arquitectura multicapa
           </p>
         </div>
 
@@ -80,37 +80,37 @@ export default function AuditoriaIAPage() {
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-mepCard space-y-4">
         <h2 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-2">
           <Lightning size={18} className="text-amber-500" weight="fill" />
-          <span>Arquitectura de Failover en Cascada (Multicapa)</span>
+          <span>Arquitectura de resiliencia en cascada (multicapa)</span>
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
           <div className="p-3.5 bg-blue-50/70 border border-blue-200 rounded-xl space-y-1">
-            <span className="font-extrabold text-blue-900 block">0. Caché en Memoria (0ms)</span>
-            <p className="text-slate-600 leading-snug">Clave SHA-256 para respuestas idénticas inmediatas y cero consumo de tokens.</p>
+            <span className="font-extrabold text-blue-900 block">0. Caché en memoria SHA-256 (0 ms)</span>
+            <p className="text-slate-600 leading-snug">Clave criptográfica para respuestas idénticas inmediatas y cero consumo de recursos.</p>
           </div>
 
           <div className="p-3.5 bg-sky-50/70 border border-sky-200 rounded-xl space-y-1">
-            <span className="font-extrabold text-sky-950 block">1. Google Gemini (Principal)</span>
-            <p className="text-slate-600 leading-snug"><code>gemini-3.6-flash</code> / <code>gemini-3.5-flash-lite</code> / <code>gemini-3.5-flash</code> con soporte de instrucciones pedagógicas.</p>
+            <span className="font-extrabold text-sky-950 block">1. Capa 1: Inferencia primaria</span>
+            <p className="text-slate-600 leading-snug">Modelos de alta precisión con soporte de instrucciones pedagógicas y formativas.</p>
           </div>
 
           <div className="p-3.5 bg-indigo-50/70 border border-indigo-200 rounded-xl space-y-1">
-            <span className="font-extrabold text-indigo-950 block">2. Groq LPU (Secundario)</span>
-            <p className="text-slate-600 leading-snug"><code>llama-3.3-70b-versatile</code> y <code>llama-3.1-8b-instant</code> para latencias ultra-bajas.</p>
+            <span className="font-extrabold text-indigo-950 block">2. Capa 2: Ultra-baja latencia</span>
+            <p className="text-slate-600 leading-snug">Motor acelerado de respuesta instantánea para alta concurrencia institucional.</p>
           </div>
 
           <div className="p-3.5 bg-purple-50/70 border border-purple-200 rounded-xl space-y-1">
-            <span className="font-extrabold text-purple-950 block">3. OpenRouter / Qwen</span>
-            <p className="text-slate-600 leading-snug"><code>qwen/qwen-2.5-72b-instruct</code> para redundancia internacional.</p>
+            <span className="font-extrabold text-purple-950 block">3. Capa 3: Redundancia distribuida</span>
+            <p className="text-slate-600 leading-snug">Ruteo multi-región para respaldo continuo y tolerancia a fallos.</p>
           </div>
 
           <div className="p-3.5 bg-emerald-50/70 border border-emerald-200 rounded-xl space-y-1">
-            <span className="font-extrabold text-emerald-950 block">4. Alibaba DashScope</span>
-            <p className="text-slate-600 leading-snug"><code>qwen-plus</code> / <code>qwen-turbo</code> (Qwen oficial).</p>
+            <span className="font-extrabold text-emerald-950 block">4. Capa 4: Contingencia especializada</span>
+            <p className="text-slate-600 leading-snug">Nodo de respaldo alternativo para escenarios de alta demanda.</p>
           </div>
 
           <div className="p-3.5 bg-slate-100 border border-slate-300 rounded-xl space-y-1">
-            <span className="font-extrabold text-slate-800 block">5. Degradación Elegante</span>
+            <span className="font-extrabold text-slate-800 block">5. Capa 5: Degradación elegante</span>
             <p className="text-slate-600 leading-snug">Respuesta 503 pedagógica estructurada sin interrumpir la experiencia de usuario.</p>
           </div>
         </div>
@@ -120,7 +120,7 @@ export default function AuditoriaIAPage() {
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-mepCard space-y-4">
         <h3 className="font-extrabold text-base text-slate-900 flex items-center gap-2">
           <Cpu size={20} className="text-blue-700" weight="duotone" />
-          <span>Resultados de la Última Verificación de Salud</span>
+          <span>Resultados de la última verificación de salud</span>
         </h3>
 
         {datosAuditoria?.auditoria?.detalles ? (
@@ -128,26 +128,36 @@ export default function AuditoriaIAPage() {
             <table className="w-full text-left text-xs">
               <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase text-[11px]">
                 <tr>
-                  <th className="py-3 px-4">Proveedor</th>
-                  <th className="py-3 px-4">Modelo Evaluado</th>
+                  <th className="py-3 px-4">Capa de Servicio</th>
+                  <th className="py-3 px-4">Configuración Evaluada</th>
                   <th className="py-3 px-4">Estado</th>
                   <th className="py-3 px-4">Latencia de Respuesta</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 font-medium">
-                {datosAuditoria.auditoria.detalles.map((d: any, i: number) => (
-                  <tr key={i} className="hover:bg-slate-50">
-                    <td className="py-3 px-4 font-bold text-slate-900">{d.proveedor}</td>
-                    <td className="py-3 px-4 font-mono text-blue-900">{d.modelo}</td>
-                    <td className="py-3 px-4">
-                      <span className="inline-flex items-center gap-1 text-emerald-800 bg-emerald-100 font-bold px-2.5 py-0.5 rounded-full text-[11px]">
-                        <CheckCircle size={14} weight="fill" className="text-emerald-600" />
-                        {d.estado}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 font-mono text-slate-600">{d.latencia}</td>
-                  </tr>
-                ))}
+                {datosAuditoria.auditoria.detalles.map((d: any, i: number) => {
+                  const capaNombre =
+                    d.proveedor.includes("Gemini") || d.proveedor.includes("Google")
+                      ? "Capa 1 (Primaria)"
+                      : d.proveedor.includes("Groq")
+                      ? "Capa 2 (Baja Latencia)"
+                      : d.proveedor.includes("OpenRouter")
+                      ? "Capa 3 (Redundancia)"
+                      : "Capa 4 (Contingencia)";
+                  return (
+                    <tr key={i} className="hover:bg-slate-50">
+                      <td className="py-3 px-4 font-bold text-slate-900">{capaNombre}</td>
+                      <td className="py-3 px-4 font-mono text-blue-900">{d.modelo}</td>
+                      <td className="py-3 px-4">
+                        <span className="inline-flex items-center gap-1 text-emerald-800 bg-emerald-100 font-bold px-2.5 py-0.5 rounded-full text-[11px]">
+                          <CheckCircle size={14} weight="fill" className="text-emerald-600" />
+                          {d.estado}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 font-mono text-slate-600">{d.latencia}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
