@@ -35,7 +35,7 @@ import {
   IdentificationCard,
   ChalkboardTeacher,
   Gauge,
-  HardDrive,
+  Desktop,
 } from "@phosphor-icons/react";
 
 export default function DashboardAnaliticoPage() {
@@ -829,7 +829,7 @@ export default function DashboardAnaliticoPage() {
                       rel="noopener noreferrer"
                       className="flex items-center justify-center gap-2 px-5 py-3 bg-white/15 hover:bg-white/25 text-emerald-100 hover:text-white border border-emerald-400/40 font-bold text-xs rounded-2xl transition-all hover:scale-[1.02] cursor-pointer text-center"
                     >
-                      <HardDrive size={18} weight="duotone" />
+                      <Desktop size={18} weight="duotone" />
                       <span>Herramienta de Evaluación Diagnóstica Docente Sin Conexión o Local</span>
                     </a>
                   </>

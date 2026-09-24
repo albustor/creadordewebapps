@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import {
   GlobeHemisphereWest,
-  HardDrive,
   Laptop,
   CheckCircle,
   Copy,
