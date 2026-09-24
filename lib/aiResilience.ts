@@ -109,13 +109,14 @@ export async function ejecutarCascadaIA(prompt: string, systemInstruction?: stri
     }
   }
 
-  // 3. NIVEL 2 (Secundario - Groq LPU): llama-3.3-70b-versatile, llama-3.1-8b-instant, mixtral-8x7b-32768
+  // 3. NIVEL 2 (Secundario - Groq LPU): qwen/qwen3.8-27b, openai/gpt-oss-120b, openai/gpt-oss-20b, allam-2-7b
   const groqApiKey = process.env.GROQ_API_KEY;
   if (groqApiKey) {
     const modelosGroq = [
-      "llama-3.3-70b-versatile",
-      "llama-3.1-8b-instant",
-      "mixtral-8x7b-32768",
+      "qwen/qwen3.8-27b",
+      "openai/gpt-oss-120b",
+      "openai/gpt-oss-20b",
+      "allam-2-7b",
     ];
     for (const mod of modelosGroq) {
       try {
@@ -161,14 +162,14 @@ export async function ejecutarCascadaIA(prompt: string, systemInstruction?: stri
     }
   }
 
-  // 4. NIVEL 3 (Terciario - OpenRouter): qwen/qwen-2.5-72b-instruct, meta-llama/llama-3.3-70b-instruct, deepseek/deepseek-chat, qwen/qwen-2.5-7b-instruct
+  // 4. NIVEL 3 (Terciario - OpenRouter): deepseek/deepseek-chat, qwen/qwen3.8-27b:free, google/gemma-4-26b-a4b-it:free
   const openRouterKey = process.env.OPENROUTER_API_KEY;
   if (openRouterKey) {
     const modelosOpenRouter = [
-      "qwen/qwen-2.5-72b-instruct",
-      "meta-llama/llama-3.3-70b-instruct",
       "deepseek/deepseek-chat",
-      "qwen/qwen-2.5-7b-instruct",
+      "qwen/qwen3.8-27b:free",
+      "google/gemma-4-26b-a4b-it:free",
+      "nvidia/nemotron-3-ultra-550b-a55b:free",
     ];
     for (const mod of modelosOpenRouter) {
       try {
@@ -328,7 +329,7 @@ export async function auditarSaludModelos() {
   }
 
   // 2. Pings Groq LPU
-  const modelosGroq = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "mixtral-8x7b-32768"];
+  const modelosGroq = ["qwen/qwen3.8-27b", "openai/gpt-oss-120b", "openai/gpt-oss-20b", "allam-2-7b"];
   for (const mod of modelosGroq) {
     tareasAuditoria.push(
       (async () => {
@@ -369,10 +370,10 @@ export async function auditarSaludModelos() {
 
   // 3. Pings OpenRouter (Qwen / Meta / DeepSeek)
   const modelosOpenRouter = [
-    "qwen/qwen-2.5-72b-instruct",
-    "meta-llama/llama-3.3-70b-instruct",
     "deepseek/deepseek-chat",
-    "qwen/qwen-2.5-7b-instruct",
+    "qwen/qwen3.8-27b:free",
+    "google/gemma-4-26b-a4b-it:free",
+    "nvidia/nemotron-3-ultra-550b-a55b:free",
   ];
   for (const mod of modelosOpenRouter) {
     tareasAuditoria.push(
