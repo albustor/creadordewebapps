@@ -90,7 +90,7 @@ export default function HomePage() {
   // Lista de usuarios de prueba para acceso y validación temporal
   const USUARIOS_PRUEBA_DEMO = [
     {
-      nombre: "PruebaDocente1",
+      nombre: "Docente Prueba San José",
       tag: "Docente San José",
       correo: "pruebadocente1@mep.go.cr",
       cedula: "0-0000-0001",
@@ -98,7 +98,7 @@ export default function HomePage() {
       colorTag: "bg-teal-100 text-teal-900 border-teal-300 hover:bg-teal-200",
     },
     {
-      nombre: "PruebaDocente2",
+      nombre: "Docente Prueba Alajuela",
       tag: "Docente Alajuela",
       correo: "pruebadocente2@mep.go.cr",
       cedula: "0-0000-0002",

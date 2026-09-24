@@ -140,82 +140,14 @@ export const DOCENTE_DEFAULT: DocenteData = {
   ],
 };
 
-export const DOCENTE_PRUEBA_REGIONAL: DocenteData = {
-  idDocente: "DOC-DRE07-5821",
-  nombreCompleto: "Prof. Esteban Gómez Chinchilla",
-  correoInstitucional: "esteban.gomez.chinchilla@mep.go.cr",
-  pin: "5821",
-  contrasena: "5821",
-  cedula: "5-0345-0891",
-  telefono: "+506 8765-4321",
-  tipoRol: "Docente",
-  dreCodigo: "DRE-07",
-  dreNombre: "Liberia",
-  circuito: "Circuito 01",
-  codigoPresupuestario: "SABER-LIBERIA-2027",
-  institucionNombre: "Liceo Laboratorio de Liberia",
-  rol: "Docente de Formación Tecnológica",
-  asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
-  centrosEducativos: [
-    {
-      id: "CENTRO-01",
-      nombre: "Liceo Laboratorio de Liberia",
-      dreCodigo: "DRE-07",
-      dreNombre: "Liberia",
-      circuito: "Circuito 01",
-      codigoPresupuestario: "SABER-LIBERIA-2027",
-      desgloseNiveles: [
-        {
-          nivel: "7°",
-          activo: true,
-          totalSeccionesColegio: 6,
-          seccionesAtendidasDocente: ["7-1", "7-2", "7-3"],
-        },
-        {
-          nivel: "8°",
-          activo: true,
-          totalSeccionesColegio: 6,
-          seccionesAtendidasDocente: ["8-1", "8-2", "8-3"],
-        },
-        {
-          nivel: "9°",
-          activo: true,
-          totalSeccionesColegio: 8,
-          seccionesAtendidasDocente: ["9-1", "9-2", "9-3", "9-4", "9-5"],
-        },
-      ],
-    },
-  ],
-  fechaRegistro: new Date().toISOString(),
-};
-
-export const DOCENTE_ASESOR_ALLAN: DocenteData = {
-  idDocente: "ASESOR-FT-8841",
-  nombreCompleto: "Allan Morera Araya",
-  correoInstitucional: "allan.morera.araya@mep.go.cr",
-  cedula: "2-0481-0073",
-  telefono: "+506 8888-7777",
-  pin: "7319",
-  contrasena: "7319",
-  tipoRol: "Asesor Nacional",
-  dreCodigo: "DRE-NACIONAL",
-  dreNombre: "Asesoría de Formación Tecnológica",
-  circuito: "Nivel Nacional / Ámbito General",
-  codigoPresupuestario: "FT-NACIONAL-2027",
-  institucionNombre: "Asesoría Nacional de Formación Tecnológica (III Ciclo)",
-  rol: "Asesor de Formación Tecnológica (III Ciclo)",
-  asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
-  fechaRegistro: new Date().toISOString(),
-};
-
 export const DOCENTE_PRUEBA_1: DocenteData = {
   idDocente: "DOC-PRUEBA-001",
-  nombreCompleto: "PruebaDocente1",
+  nombreCompleto: "Docente Prueba San José",
   correoInstitucional: "pruebadocente1@mep.go.cr",
   pin: "1111",
   contrasena: "1111",
   cedula: "0-0000-0001",
-  telefono: "+506 8888-0001",
+  telefono: "+506 0000-0001",
   tipoRol: "Docente",
   dreCodigo: "DRE-01",
   dreNombre: "San José Central",
@@ -315,12 +247,12 @@ export const DOCENTE_PRUEBA_1: DocenteData = {
 
 export const DOCENTE_PRUEBA_2: DocenteData = {
   idDocente: "DOC-PRUEBA-002",
-  nombreCompleto: "PruebaDocente2",
+  nombreCompleto: "Docente Prueba Alajuela",
   correoInstitucional: "pruebadocente2@mep.go.cr",
   pin: "2222",
   contrasena: "2222",
   cedula: "0-0000-0002",
-  telefono: "+506 8888-0002",
+  telefono: "+506 0000-0002",
   tipoRol: "Docente",
   dreCodigo: "DRE-04",
   dreNombre: "Alajuela",
@@ -392,8 +324,6 @@ export const DOCENTE_PRUEBA_2: DocenteData = {
 
 export const LISTA_DOCENTES_INICIALES: DocenteData[] = [
   DOCENTE_DEFAULT,
-  DOCENTE_ASESOR_ALLAN,
-  DOCENTE_PRUEBA_REGIONAL,
   DOCENTE_PRUEBA_1,
   DOCENTE_PRUEBA_2,
 ];
@@ -1118,42 +1048,11 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       return { exito: true, mensaje: "Sesión iniciada correctamente como Asesor Principal de Formación Tecnológica." };
     }
 
-    // 2. Verificación Inmediata: Asesor Nacional (Allan Morera Araya)
-    const esAsesorAllan =
-      credencialLimpia === "allan.morera.araya@mep.go.cr" ||
-      credencialLimpia === "allan.morera" ||
-      credencialLimpia === "2-0481-0073" ||
-      credencialLimpia === "204810073" ||
-      credencialLimpia === "1-0987-0654" ||
-      credencialLimpia === "109870654";
-
-    const esPinValidoAllan = pinOPassLimpia === "7319" || pinOPassLimpia === "2617" || pinOPassLimpia === "1726";
-
-    if (esAsesorAllan && esPinValidoAllan) {
-      limpiarFallos();
-      guardarDocente(DOCENTE_ASESOR_ALLAN);
-      return { exito: true, mensaje: "Sesión iniciada correctamente como Asesor Nacional de Formación Tecnológica." };
-    }
-
-    // 3. Verificación Inmediata: Docente de Prueba Regional (Esteban Gómez Chinchilla)
-    const esDocenteEsteban =
-      credencialLimpia === "esteban.gomez.chinchilla@mep.go.cr" ||
-      credencialLimpia === "esteban.gomez" ||
-      credencialLimpia === "5-0345-0891" ||
-      credencialLimpia === "503450891";
-
-    const esPinValidoEsteban = pinOPassLimpia === "5821" || pinOPassLimpia === "1726" || pinOPassLimpia === "2617";
-
-    if (esDocenteEsteban && esPinValidoEsteban) {
-      limpiarFallos();
-      guardarDocente(DOCENTE_PRUEBA_REGIONAL);
-      return { exito: true, mensaje: `Bienvenido(a), ${DOCENTE_PRUEBA_REGIONAL.nombreCompleto}.` };
-    }
-
-    // 4. Verificación Inmediata: PruebaDocente1 (Cédula 0-0000-0001 / PIN 1111)
+    // 2. Verificación Inmediata: Docente Prueba San José (Cédula 0-0000-0001 / PIN 1111)
     const esDocenteP1 =
       credencialLimpia === "pruebadocente1@mep.go.cr" ||
       credencialLimpia === "pruebadocente1" ||
+      credencialLimpia === "docente.sanjose@mep.go.cr" ||
       credencialLimpia === "0-0000-0001" ||
       credencialLimpia === "000000001";
 

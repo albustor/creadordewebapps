@@ -235,10 +235,10 @@ export default function RegistroDocentePage() {
 
   const cargarPerfilDocentePrueba = (region: "liberia" | "sanjose" | "alajuela") => {
     if (region === "liberia") {
-      setNombre("Prof. Esteban Gómez Chinchilla");
-      setCorreo("esteban.gomez.chinchilla@mep.go.cr");
-      setCedula("5-0345-0891");
-      setTelefono("+506 8765-4321");
+      setNombre("Docente Prueba Liberia");
+      setCorreo("pruebadocente3@mep.go.cr");
+      setCedula("0-0000-0003");
+      setTelefono("0000-0003");
       setPin("5821");
       setPinConfirmar("5821");
       setDreCodigo("DRE-07");
@@ -247,28 +247,28 @@ export default function RegistroDocentePage() {
       setInstitucion("Liceo Laboratorio de Liberia");
       setRol("Docente de Formación Tecnológica");
     } else if (region === "sanjose") {
-      setNombre("Prof. Lucía Navarro Solano");
-      setCorreo("lucia.navarro.solano@mep.go.cr");
-      setCedula("1-1456-0789");
-      setTelefono("+506 8999-1234");
-      setPin("3914");
-      setPinConfirmar("3914");
+      setNombre("Docente Prueba San José");
+      setCorreo("pruebadocente1@mep.go.cr");
+      setCedula("0-0000-0001");
+      setTelefono("0000-0001");
+      setPin("1111");
+      setPinConfirmar("1111");
       setDreCodigo("DRE-01");
-      setCircuito("Circuito 02");
+      setCircuito("Circuito 01");
       setCodigoPresupuestario("SABER-SJ-2027");
       setInstitucion("Liceo de Costa Rica");
       setRol("Docente de Formación Tecnológica");
     } else {
-      setNombre("Prof. Mario Ramírez Varela");
-      setCorreo("mario.ramirez.varela@mep.go.cr");
-      setCedula("2-0890-0123");
-      setTelefono("+506 8456-7890");
-      setPin("7263");
-      setPinConfirmar("7263");
+      setNombre("Docente Prueba Alajuela");
+      setCorreo("pruebadocente2@mep.go.cr");
+      setCedula("0-0000-0002");
+      setTelefono("0000-0002");
+      setPin("2222");
+      setPinConfirmar("2222");
       setDreCodigo("DRE-04");
-      setCircuito("Circuito 01");
+      setCircuito("Circuito 02");
       setCodigoPresupuestario("SABER-ALAJUELA-2027");
-      setInstitucion("Instituto de Alajuela");
+      setInstitucion("Liceo Experimental Bilingüe de Alajuela");
       setRol("Docente de Formación Tecnológica");
     }
     setErrorValidacion(null);
@@ -707,20 +707,11 @@ export default function RegistroDocentePage() {
           {/* Botones de prueba en regiones */}
           <button
             type="button"
-            onClick={() => cargarPerfilDocentePrueba("liberia")}
-            className="px-3 py-2 bg-white hover:bg-stone-100 border border-stone-300 text-slate-700 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 shadow-xs"
-          >
-            <Flask size={15} className="text-emerald-700" />
-            <span>Prueba DRE Liberia (07)</span>
-          </button>
-
-          <button
-            type="button"
             onClick={() => cargarPerfilDocentePrueba("sanjose")}
             className="px-3 py-2 bg-white hover:bg-stone-100 border border-stone-300 text-slate-700 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 shadow-xs"
           >
             <Flask size={15} className="text-sky-700" />
-            <span>Prueba DRE San José (01)</span>
+            <span>Docente Prueba San José (01)</span>
           </button>
 
           <button
@@ -729,7 +720,7 @@ export default function RegistroDocentePage() {
             className="px-3 py-2 bg-white hover:bg-stone-100 border border-stone-300 text-slate-700 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 shadow-xs"
           >
             <Flask size={15} className="text-purple-700" />
-            <span>Prueba DRE Alajuela (04)</span>
+            <span>Docente Prueba Alajuela (04)</span>
           </button>
 
           <Link
