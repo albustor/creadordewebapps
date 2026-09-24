@@ -90,32 +90,8 @@ export default function HomePage() {
   // Lista de usuarios de prueba para acceso y validación temporal
   const USUARIOS_PRUEBA_DEMO = [
     {
-      nombre: "Prof. Alberto Bustos Ortega",
-      tag: "Super Admin",
-      correo: "alberto.bustos.ortega@mep.go.cr",
-      cedula: "5-0305-0179",
-      pin: "2617",
-      colorTag: "bg-purple-100 text-purple-900 border-purple-300 hover:bg-purple-200",
-    },
-    {
-      nombre: "Allan Morera Araya",
-      tag: "Asesor Nal.",
-      correo: "allan.morera.araya@mep.go.cr",
-      cedula: "2-0481-0073",
-      pin: "7319",
-      colorTag: "bg-blue-100 text-blue-900 border-blue-300 hover:bg-blue-200",
-    },
-    {
-      nombre: "Prof. Esteban Gómez Chinchilla",
-      tag: "Docente Liberia",
-      correo: "esteban.gomez.chinchilla@mep.go.cr",
-      cedula: "5-0345-0891",
-      pin: "5821",
-      colorTag: "bg-emerald-100 text-emerald-900 border-emerald-300 hover:bg-emerald-200",
-    },
-    {
       nombre: "PruebaDocente1",
-      tag: "Docente SJ",
+      tag: "Docente San José",
       correo: "pruebadocente1@mep.go.cr",
       cedula: "0-0000-0001",
       pin: "1111",
