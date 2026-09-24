@@ -39,13 +39,13 @@
       flex-direction: column;
     }
 
-    /* HEADER INSTITUCIONAL */
+    /* HEADER INSTITUCIONAL - ESTÁNDAR VISUAL 7.° AÑO */
     header.mep-header {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #0f172a 100%);
       color: #fff;
       padding: 16px 24px;
-      border-bottom: 3px solid #38bdf8;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      border-bottom: 3px solid #818cf8;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
     .header-content {
@@ -487,27 +487,27 @@
     <div class="header-content">
       <div class="mep-brand">
         <div class="mep-titles">
-          <h1>Herramienta de Evaluación Diagnóstica Docente Séptimo Año</h1>
-          <p>Programa Nacional de Formación Tecnológica &bull; Evaluación Diagnóstica Curricular del Tercer Ciclo</p>
+          <h1>🎮 Herramienta de Evaluación Diagnóstica Docente Séptimo Año</h1>
+          <p style="color: #c7d2fe;">Programa Nacional de Formación Tecnológica &bull; Evaluación Diagnóstica Curricular del Tercer Ciclo</p>
         </div>
       </div>
       <div class="top-actions">
         <!-- BOTÓN COMPACTO DE SINCRONIZACIÓN CON ESTADO DE LUZ VERDE/ROJO Y TEXTO FIJO -->
-        <div id="syncIndicatorWrapper" style="display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 88px; height: 32px; padding: 2px 6px; border-radius: 8px; background: #ffffff; border: 1.5px solid #cbd5e1; cursor: pointer; user-select: none; box-sizing: border-box;" onclick="sincronizarTelemetriaOnline(true)" title="Sincronización en vivo con el Dashboard (Clic para sincronizar)">
+        <div id="syncIndicatorWrapper" style="display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 88px; height: 32px; padding: 2px 6px; border-radius: 8px; background: #ffffff; border: 1.5px solid #818cf8; cursor: pointer; user-select: none; box-sizing: border-box;" onclick="sincronizarTelemetriaOnline(true)" title="Sincronización en vivo con el Dashboard (Clic para sincronizar)">
           <div style="display: flex; align-items: center; justify-content: center; gap: 4px; line-height: 1;">
             <span id="syncDotIndicator" style="width: 7.5px; height: 7.5px; border-radius: 50%; background: #10b981; display: inline-block; box-shadow: 0 0 6px rgba(16, 185, 129, 0.8); transition: background 0.3s ease;"></span>
             <span id="syncIconSpin" style="font-size: 11px; display: inline-block; transition: transform 0.3s ease;">🔄</span>
           </div>
-          <span style="font-size: 8.5px; font-weight: 800; color: #0369a1; text-transform: uppercase; letter-spacing: 0.3px; line-height: 1; margin-top: 2px;">
+          <span style="font-size: 8.5px; font-weight: 800; color: #3730a3; text-transform: uppercase; letter-spacing: 0.3px; line-height: 1; margin-top: 2px;">
             Sincronizando
           </span>
         </div>
         <!-- CHIP DE SESIÓN DOCENTE -->
-        <div id="teacherAuthBadge" style="display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); padding: 4px 10px; border-radius: 8px; font-size: 11.5px; color: #f8fafc;">
+        <div id="teacherAuthBadge" style="display: flex; align-items: center; gap: 8px; background: rgba(99, 102, 241, 0.2); border: 1px solid rgba(165, 180, 252, 0.4); padding: 4px 10px; border-radius: 8px; font-size: 11.5px; color: #e0e7ff;">
           <span id="badgeTeacherName">👨‍🏫 Docente no identificado</span>
-          <button class="btn btn-secondary" style="padding: 2px 7px; font-size: 10.5px; min-height: 24px;" onclick="openAuthModal()">🔑 Perfil</button>
+          <button class="btn btn-secondary" style="padding: 2px 7px; font-size: 10.5px; min-height: 24px; background: #4338ca; border-color: #6366f1;" onclick="openAuthModal()">🔑 Perfil</button>
         </div>
-        <button class="btn btn-accent" style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); border-color: #0284c7; color: #ffffff; font-weight:800;" onclick="openStudentLinksModal()" title="Generar enlaces y proyectar QR para computadoras de estudiantes">🔗 Enlaces Estudiantes (PC)</button>
+        <button class="btn btn-accent" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); border-color: #4338ca; color: #ffffff; font-weight:800; box-shadow: 0 2px 8px rgba(99,102,241,0.3);" onclick="openStudentLinksModal()" title="Generar enlaces y proyectar QR para computadoras de estudiantes">🔗 Enlaces Estudiantes (PC)</button>
         <a href="/dashboard" target="_blank" class="btn" style="background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); border-color: #7c3aed; color: #ffffff; text-decoration: none; font-weight: 800; box-shadow: 0 2px 8px rgba(139,92,246,0.3);" title="Abrir Dashboard de Telemetría Nacional (diagnosticosecundaria.vercel.app / dashboard)">📈 Dashboard Web</a>
       </div>
     </div>
@@ -901,17 +901,17 @@
       <div class="modal-body" style="padding: 18px 22px; max-height: 75vh; overflow-y: auto; display: flex; flex-direction: column; gap: 16px;">
         
         <!-- AVISO DE RECOMENDACIÓN GENERAL: COMPUTADORAS DE LABORATORIO Y DISPOSITIVOS MÓVILES -->
-        <div style="background: #eff6ff; border: 2px solid #38bdf8; border-radius: 10px; padding: 14px 16px; display: flex; align-items: flex-start; gap: 12px;">
+        <div style="background: #eff6ff; border: 2px solid #818cf8; border-radius: 10px; padding: 14px 16px; display: flex; align-items: flex-start; gap: 12px;">
           <span style="font-size: 26px; line-height: 1;">💡</span>
           <div>
-            <strong style="font-size: 12.5px; color: #0369a1; display: block; margin-bottom: 4px; text-transform: uppercase;">
-              Recomendación General: Uso en Computadoras de Laboratorio y Formación Tecnológica
+            <strong style="font-size: 12.5px; color: #3730a3; display: block; margin-bottom: 4px; text-transform: uppercase;">
+              Recomendación General: Uso en Computadoras de Laboratorio de Formación Tecnológica
             </strong>
-            <p style="font-size: 11.5px; color: #334155; margin: 0 0 6px 0; line-height: 1.45;">
-              Esta herramienta web interactiva está estandarizada y optimizada principalmente para ejecutarse en <strong>computadoras de escritorio o portátiles (PC / Mac) con conectividad</strong> dentro del laboratorio de formación tecnológica o informática educativa, garantizando una visualización fluida, adecuada interacción y óptimo registro de datos.
+            <p style="font-size: 11.5px; color: #1e293b; margin: 0 0 6px 0; line-height: 1.45;">
+              Esta herramienta web interactiva está estandarizada y optimizada principalmente para ejecutarse en <strong>computadoras de escritorio o portátiles con conectividad</strong> dentro del laboratorio de formación tecnológica, garantizando una visualización fluida, adecuada interacción y óptimo registro de datos.
             </p>
-            <p style="font-size: 11px; color: #64748b; margin: 0; line-height: 1.4;">
-              <em>Nota pedagógica / técnica:</em> El uso de celulares o tabletas es de carácter opcional y queda a criterio del docente según el contexto institucional, debiendo considerar previamente factores técnicos como: estabilidad de conectividad, tamaño de pantalla, sistema operativo actualizado (Android / iOS) y compatibilidad de navegación para la experiencia del estudiante.
+            <p style="font-size: 11px; color: #475569; margin: 0; line-height: 1.4;">
+              <em>Nota pedagógica / técnica:</em> El uso de celulares o tabletas es de carácter opcional y queda a criterio del docente según el contexto institucional, debiendo considerarse factores técnicos como: estabilidad, conectividad, tamaño de pantalla, sistema operativo actualizado y compatibilidad de navegación para el acceso.
             </p>
           </div>
         </div>
@@ -3067,9 +3067,20 @@
       const school = schools[schIdx] || schools[0];
       const baseUrl = getBaseCyberQuestUrl();
 
-      // Params
+      // Generar identificador docente seguro que jamás exponga la cédula
+      let safeDocenteId = profile.id || profile.docenteId;
+      if (!safeDocenteId || safeDocenteId.startsWith('0-') || /^\d{1,2}-\d{4}-\d{4}$/.test(safeDocenteId)) {
+        const dreCode = (school.dreCodigo || profile.dreCodigo || 'DRE01').replace(/[^a-zA-Z0-9]/g, '');
+        let hash = 0;
+        const str = (profile.cedula || profile.correo || profile.nombre || 'doc');
+        for (let i = 0; i < str.length; i++) hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        const pinCode = Math.abs(hash % 9000) + 1000;
+        safeDocenteId = `DOC-${dreCode}-${pinCode}`;
+      }
+
+      // Parámetros seguros
       const baseParams = new URLSearchParams();
-      if (profile.cedula) baseParams.set('docenteId', profile.cedula);
+      baseParams.set('docenteId', safeDocenteId);
       if (profile.nombre) baseParams.set('docente', profile.nombre);
       if (school.colegio) baseParams.set('institucion', school.colegio);
       if (school.dreCodigo || school.dreNombre) baseParams.set('dre', school.dreCodigo || school.dreNombre);
@@ -3103,15 +3114,15 @@
           <html lang="es">
             <head>
               <meta charset="UTF-8">
-              <title>Código QR - Diagnóstico 7.° Año (CyberQuest)</title>
+              <title>Código QR - Herramienta de Evaluación Diagnóstica 7.° Año</title>
             </head>
-            <body style="margin:0; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#001e3d; font-family:system-ui,-apple-system,sans-serif; color:white; padding:24px; text-align:center;">
-              <h1 style="margin:0 0 6px 0; font-size:26px; font-weight:800; color:#38bdf8;">Diagnóstico 7.° Año • «Misión CyberQuest»</h1>
-              <p style="margin:0 0 24px 0; font-size:16px; color:#cbd5e1;">Escanee con la cámara o abra en la PC del laboratorio</p>
-              <div style="background:white; padding:22px; border-radius:20px; box-shadow:0 15px 35px rgba(0,0,0,0.6); display:inline-block;">
+            <body style="margin:0; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; background:linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #0f172a 100%); font-family:system-ui,-apple-system,sans-serif; color:white; padding:24px; text-align:center;">
+              <h1 style="margin:0 0 6px 0; font-size:26px; font-weight:800; color:#818cf8;">🎮 Diagnóstico 7.° Año • «Misión CyberQuest»</h1>
+              <p style="margin:0 0 24px 0; font-size:15px; color:#c7d2fe;">Escanee con la cámara o abra en la computadora del laboratorio de formación tecnológica</p>
+              <div style="background:white; padding:22px; border-radius:20px; box-shadow:0 15px 35px rgba(0,0,0,0.6); display:inline-block; border:3px solid #818cf8;">
                 <img src="${qrUrl}" alt="Código QR 7.° Año" style="width:340px; height:340px; display:block;" />
               </div>
-              <p style="margin-top:24px; font-family:monospace; font-size:13px; color:#7dd3fc; max-width:680px; word-break:break-all; background:rgba(0,0,0,0.3); padding:10px 16px; border-radius:10px; border:1px solid rgba(56,189,248,0.3);">
+              <p style="margin-top:24px; font-family:monospace; font-size:13px; color:#c7d2fe; max-width:720px; word-break:break-all; background:rgba(0,0,0,0.4); padding:10px 16px; border-radius:10px; border:1px solid rgba(129,140,248,0.4);">
                 ${url}
               </p>
             </body>
