@@ -143,9 +143,9 @@ export const DOCENTE_DEFAULT: DocenteData = {
 export const DOCENTE_PRUEBA_1: DocenteData = {
   idDocente: "DOC-PRUEBA-001",
   nombreCompleto: "Docente Prueba San José",
-  correoInstitucional: "pruebadocente1@mep.go.cr",
-  pin: "1111",
-  contrasena: "1111",
+  correoInstitucional: "prueba.docente1.docente.1@mep.go.cr",
+  pin: "110011",
+  contrasena: "110011",
   cedula: "0-0000-0001",
   telefono: "+506 0000-0001",
   tipoRol: "Docente",
@@ -248,9 +248,9 @@ export const DOCENTE_PRUEBA_1: DocenteData = {
 export const DOCENTE_PRUEBA_2: DocenteData = {
   idDocente: "DOC-PRUEBA-002",
   nombreCompleto: "Docente Prueba Alajuela",
-  correoInstitucional: "pruebadocente2@mep.go.cr",
-  pin: "2222",
-  contrasena: "2222",
+  correoInstitucional: "prueba.docente2.docente.2@mep.go.cr",
+  pin: "221111",
+  contrasena: "221111",
   cedula: "0-0000-0002",
   telefono: "+506 0000-0002",
   tipoRol: "Docente",
@@ -325,9 +325,9 @@ export const DOCENTE_PRUEBA_2: DocenteData = {
 export const DOCENTE_PRUEBA_3: DocenteData = {
   idDocente: "DOC-PRUEBA-003",
   nombreCompleto: "Docente Prueba Cartago",
-  correoInstitucional: "pruebadocente3@mep.go.cr",
-  pin: "3333",
-  contrasena: "3333",
+  correoInstitucional: "prueba.docente3.docente.3@mep.go.cr",
+  pin: "332211",
+  contrasena: "332211",
   cedula: "0-0000-0003",
   telefono: "+506 0000-0003",
   tipoRol: "Docente",
@@ -372,9 +372,9 @@ export const DOCENTE_PRUEBA_3: DocenteData = {
 export const DOCENTE_PRUEBA_4: DocenteData = {
   idDocente: "DOC-PRUEBA-004",
   nombreCompleto: "Docente Prueba Heredia",
-  correoInstitucional: "pruebadocente4@mep.go.cr",
-  pin: "4444",
-  contrasena: "4444",
+  correoInstitucional: "prueba.docente4.docente.4@mep.go.cr",
+  pin: "443311",
+  contrasena: "443311",
   cedula: "0-0000-0004",
   telefono: "+506 0000-0004",
   tipoRol: "Docente",
@@ -419,9 +419,9 @@ export const DOCENTE_PRUEBA_4: DocenteData = {
 export const DOCENTE_PRUEBA_5: DocenteData = {
   idDocente: "DOC-PRUEBA-005",
   nombreCompleto: "Docente Prueba Guanacaste",
-  correoInstitucional: "pruebadocente5@mep.go.cr",
-  pin: "5555",
-  contrasena: "5555",
+  correoInstitucional: "prueba.docente5.docente.5@mep.go.cr",
+  pin: "554411",
+  contrasena: "554411",
   cedula: "0-0000-0005",
   telefono: "+506 0000-0005",
   tipoRol: "Docente",
@@ -466,9 +466,9 @@ export const DOCENTE_PRUEBA_5: DocenteData = {
 export const DOCENTE_PRUEBA_6: DocenteData = {
   idDocente: "DOC-PRUEBA-006",
   nombreCompleto: "Docente Prueba Puntarenas",
-  correoInstitucional: "pruebadocente6@mep.go.cr",
-  pin: "6666",
-  contrasena: "6666",
+  correoInstitucional: "prueba.docente6.docente.6@mep.go.cr",
+  pin: "665511",
+  contrasena: "665511",
   cedula: "0-0000-0006",
   telefono: "+506 0000-0006",
   tipoRol: "Docente",
@@ -513,9 +513,9 @@ export const DOCENTE_PRUEBA_6: DocenteData = {
 export const DOCENTE_PRUEBA_7: DocenteData = {
   idDocente: "DOC-PRUEBA-007",
   nombreCompleto: "Docente Prueba Limón",
-  correoInstitucional: "pruebadocente7@mep.go.cr",
-  pin: "7777",
-  contrasena: "7777",
+  correoInstitucional: "prueba.docente7.docente.7@mep.go.cr",
+  pin: "776611",
+  contrasena: "776611",
   cedula: "0-0000-0007",
   telefono: "+506 0000-0007",
   tipoRol: "Docente",
@@ -560,9 +560,9 @@ export const DOCENTE_PRUEBA_7: DocenteData = {
 export const DOCENTE_PRUEBA_8: DocenteData = {
   idDocente: "DOC-PRUEBA-008",
   nombreCompleto: "Docente Prueba Pérez Zeledón",
-  correoInstitucional: "pruebadocente8@mep.go.cr",
-  pin: "8888",
-  contrasena: "8888",
+  correoInstitucional: "prueba.docente8.docente.8@mep.go.cr",
+  pin: "887711",
+  contrasena: "887711",
   cedula: "0-0000-0008",
   telefono: "+506 0000-0008",
   tipoRol: "Docente",
@@ -607,9 +607,9 @@ export const DOCENTE_PRUEBA_8: DocenteData = {
 export const DOCENTE_PRUEBA_9: DocenteData = {
   idDocente: "DOC-PRUEBA-009",
   nombreCompleto: "Docente Prueba San Carlos",
-  correoInstitucional: "pruebadocente9@mep.go.cr",
-  pin: "9999",
-  contrasena: "9999",
+  correoInstitucional: "prueba.docente9.docente.9@mep.go.cr",
+  pin: "998811",
+  contrasena: "998811",
   cedula: "0-0000-0009",
   telefono: "+506 0000-0009",
   tipoRol: "Docente",
@@ -654,9 +654,9 @@ export const DOCENTE_PRUEBA_9: DocenteData = {
 export const DOCENTE_PRUEBA_10: DocenteData = {
   idDocente: "DOC-PRUEBA-010",
   nombreCompleto: "Docente Prueba Occidente",
-  correoInstitucional: "pruebadocente10@mep.go.cr",
-  pin: "1010",
-  contrasena: "1010",
+  correoInstitucional: "prueba.docente10.docente.10@mep.go.cr",
+  pin: "100911",
+  contrasena: "100911",
   cedula: "0-0000-0010",
   telefono: "+506 0000-0010",
   tipoRol: "Docente",
@@ -1492,9 +1492,14 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       const correo = (u.correoInstitucional || "").toLowerCase();
       const usuario = correo.split("@")[0];
 
+      // Normalizaciones adicionales para usuarios de pruebas (ej: prueba.docente3.docente.3 vs pruebadocente3)
+      const correoSinPuntos = correo.replace(/\./g, "");
+      const busqSinPuntos = credencialLimpia.replace(/\./g, "");
+
       return (
         correo === credencialLimpia ||
         usuario === credencialLimpia ||
+        correoSinPuntos === busqSinPuntos ||
         (u.cedula && u.cedula.toLowerCase() === credencialLimpia) ||
         (cedLimpia && busqLimpia && cedLimpia === busqLimpia) ||
         (u.nombreCompleto && u.nombreCompleto.toLowerCase() === credencialLimpia) ||
@@ -1506,8 +1511,16 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       const pinValido =
         (match.pin && match.pin === pinOPassLimpia) ||
         (match.contrasena && match.contrasena === pinOPassLimpia) ||
-        (match.idDocente === "DOC-PRUEBA-001" && (pinOPassLimpia === "1001" || pinOPassLimpia === "1111")) ||
-        (match.idDocente === "DOC-PRUEBA-002" && (pinOPassLimpia === "2002" || pinOPassLimpia === "2222")) ||
+        (match.idDocente === "DOC-PRUEBA-001" && (pinOPassLimpia === "110011" || pinOPassLimpia === "112233" || pinOPassLimpia === "1111" || pinOPassLimpia === "1001")) ||
+        (match.idDocente === "DOC-PRUEBA-002" && (pinOPassLimpia === "221111" || pinOPassLimpia === "221100" || pinOPassLimpia === "2222" || pinOPassLimpia === "2002")) ||
+        (match.idDocente === "DOC-PRUEBA-003" && (pinOPassLimpia === "332211" || pinOPassLimpia === "3333" || pinOPassLimpia === "3003")) ||
+        (match.idDocente === "DOC-PRUEBA-004" && (pinOPassLimpia === "443311" || pinOPassLimpia === "443322" || pinOPassLimpia === "4444" || pinOPassLimpia === "4004")) ||
+        (match.idDocente === "DOC-PRUEBA-005" && (pinOPassLimpia === "554411" || pinOPassLimpia === "554433" || pinOPassLimpia === "5555" || pinOPassLimpia === "5005")) ||
+        (match.idDocente === "DOC-PRUEBA-006" && (pinOPassLimpia === "665511" || pinOPassLimpia === "665544" || pinOPassLimpia === "6666" || pinOPassLimpia === "6006")) ||
+        (match.idDocente === "DOC-PRUEBA-007" && (pinOPassLimpia === "776611" || pinOPassLimpia === "776655" || pinOPassLimpia === "7777" || pinOPassLimpia === "7007")) ||
+        (match.idDocente === "DOC-PRUEBA-008" && (pinOPassLimpia === "887711" || pinOPassLimpia === "887766" || pinOPassLimpia === "8888" || pinOPassLimpia === "8008")) ||
+        (match.idDocente === "DOC-PRUEBA-009" && (pinOPassLimpia === "998811" || pinOPassLimpia === "998877" || pinOPassLimpia === "9999" || pinOPassLimpia === "9009")) ||
+        (match.idDocente === "DOC-PRUEBA-010" && (pinOPassLimpia === "100911" || pinOPassLimpia === "109988" || pinOPassLimpia === "1010" || pinOPassLimpia === "101010")) ||
         (match.idDocente === "5-0305-0179" && (pinOPassLimpia === "2617" || pinOPassLimpia === "1726" || pinOPassLimpia === "1122" || pinOPassLimpia === "EdcRfvTgb2617**" || pinOPassLimpia === "EdcRfvTgb1726**"));
 
       if (pinValido) {
@@ -1518,14 +1531,14 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
           : `Bienvenido(a), ${match.nombreCompleto}.`;
         return { exito: true, mensaje: mensajeRol };
       } else {
-        return registrarFallo("PIN incorrecto. Verifique los 4 dígitos numéricos.");
+        return registrarFallo("PIN incorrecto. Verifique los dígitos numéricos.");
       }
     }
 
     // 3. Si la cuenta no existe en el sistema, indicar que debe registrarse
     return {
       exito: false,
-      mensaje: "⚠️ Esta cuenta no se encuentra registrada en el sistema. Por favor pulse en 'Registrarse' para crear su perfil con su PIN de 4 dígitos.",
+      mensaje: "⚠️ Esta cuenta no se encuentra registrada en el sistema. Por favor pulse en 'Registrarse' para crear su perfil con su PIN de 4 a 6 dígitos.",
     };
   };
 

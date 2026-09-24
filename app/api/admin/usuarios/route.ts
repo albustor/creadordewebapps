@@ -45,7 +45,7 @@ let USUARIOS_DB: UsuarioDocente[] = [
   {
     id: "DOC-PRUEBA-001",
     nombreCompleto: "Docente Prueba San José",
-    correoInstitucional: "pruebadocente1@mep.go.cr",
+    correoInstitucional: "prueba.docente1.docente.1@mep.go.cr",
     cedula: "0-0000-0001",
     telefono: "+506 0000-0001",
     dreCodigo: "DRE-01",
@@ -58,7 +58,7 @@ let USUARIOS_DB: UsuarioDocente[] = [
     fechaAprobacion: "2027-01-20T08:00:00.000Z",
     aprobadoPor: "ADMINISTRADOR PRINCIPAL",
     webAppsCreadas: 3,
-    pin: "1111",
+    pin: "110011",
     centrosEducativos: [
       {
         id: "CENTRO-P1-01",
@@ -104,7 +104,7 @@ let USUARIOS_DB: UsuarioDocente[] = [
   {
     id: "DOC-PRUEBA-002",
     nombreCompleto: "Docente Prueba Alajuela",
-    correoInstitucional: "pruebadocente2@mep.go.cr",
+    correoInstitucional: "prueba.docente2.docente.2@mep.go.cr",
     cedula: "0-0000-0002",
     telefono: "+506 0000-0002",
     dreCodigo: "DRE-04",
@@ -117,7 +117,7 @@ let USUARIOS_DB: UsuarioDocente[] = [
     fechaAprobacion: "2027-01-20T08:00:00.000Z",
     aprobadoPor: "ADMINISTRADOR PRINCIPAL",
     webAppsCreadas: 2,
-    pin: "2222",
+    pin: "221111",
     centrosEducativos: [
       {
         id: "CENTRO-P2-01",
@@ -150,7 +150,7 @@ let USUARIOS_DB: UsuarioDocente[] = [
   {
     id: "DOC-PRUEBA-003",
     nombreCompleto: "Docente Prueba Cartago",
-    correoInstitucional: "pruebadocente3@mep.go.cr",
+    correoInstitucional: "prueba.docente3.docente.3@mep.go.cr",
     cedula: "0-0000-0003",
     telefono: "+506 0000-0003",
     dreCodigo: "DRE-03",
@@ -163,7 +163,7 @@ let USUARIOS_DB: UsuarioDocente[] = [
     fechaAprobacion: "2027-01-22T08:00:00.000Z",
     aprobadoPor: "ADMINISTRADOR PRINCIPAL",
     webAppsCreadas: 4,
-    pin: "3333",
+    pin: "332211",
     centrosEducativos: [
       {
         id: "CENTRO-P3-01",
@@ -196,7 +196,7 @@ let USUARIOS_DB: UsuarioDocente[] = [
   {
     id: "DOC-PRUEBA-004",
     nombreCompleto: "Docente Prueba Heredia",
-    correoInstitucional: "pruebadocente4@mep.go.cr",
+    correoInstitucional: "prueba.docente4.docente.4@mep.go.cr",
     cedula: "0-0000-0004",
     telefono: "+506 0000-0004",
     dreCodigo: "DRE-05",
@@ -209,7 +209,7 @@ let USUARIOS_DB: UsuarioDocente[] = [
     fechaAprobacion: "2027-01-22T08:00:00.000Z",
     aprobadoPor: "ADMINISTRADOR PRINCIPAL",
     webAppsCreadas: 2,
-    pin: "4444",
+    pin: "443311",
     centrosEducativos: [
       {
         id: "CENTRO-P4-01",
@@ -242,7 +242,7 @@ let USUARIOS_DB: UsuarioDocente[] = [
   {
     id: "DOC-PRUEBA-005",
     nombreCompleto: "Docente Prueba Guanacaste",
-    correoInstitucional: "pruebadocente5@mep.go.cr",
+    correoInstitucional: "prueba.docente5.docente.5@mep.go.cr",
     cedula: "0-0000-0005",
     telefono: "+506 0000-0005",
     dreCodigo: "DRE-07",
@@ -255,7 +255,7 @@ let USUARIOS_DB: UsuarioDocente[] = [
     fechaAprobacion: "2027-01-23T08:00:00.000Z",
     aprobadoPor: "ADMINISTRADOR PRINCIPAL",
     webAppsCreadas: 1,
-    pin: "5555",
+    pin: "554411",
     centrosEducativos: [
       {
         id: "CENTRO-P5-01",
@@ -288,7 +288,7 @@ let USUARIOS_DB: UsuarioDocente[] = [
   {
     id: "DOC-PRUEBA-006",
     nombreCompleto: "Docente Prueba Puntarenas",
-    correoInstitucional: "pruebadocente6@mep.go.cr",
+    correoInstitucional: "prueba.docente6.docente.6@mep.go.cr",
     cedula: "0-0000-0006",
     telefono: "+506 0000-0006",
     dreCodigo: "DRE-09",
@@ -301,7 +301,7 @@ let USUARIOS_DB: UsuarioDocente[] = [
     fechaAprobacion: "2027-01-23T08:00:00.000Z",
     aprobadoPor: "ADMINISTRADOR PRINCIPAL",
     webAppsCreadas: 3,
-    pin: "6666",
+    pin: "665511",
     centrosEducativos: [
       {
         id: "CENTRO-P6-01",
@@ -334,7 +334,7 @@ let USUARIOS_DB: UsuarioDocente[] = [
   {
     id: "DOC-PRUEBA-007",
     nombreCompleto: "Docente Prueba Limón",
-    correoInstitucional: "pruebadocente7@mep.go.cr",
+    correoInstitucional: "prueba.docente7.docente.7@mep.go.cr",
     cedula: "0-0000-0007",
     telefono: "+506 0000-0007",
     dreCodigo: "DRE-11",
@@ -347,7 +347,7 @@ let USUARIOS_DB: UsuarioDocente[] = [
     fechaAprobacion: "2027-01-24T08:00:00.000Z",
     aprobadoPor: "ADMINISTRADOR PRINCIPAL",
     webAppsCreadas: 2,
-    pin: "7777",
+    pin: "776611",
     centrosEducativos: [
       {
         id: "CENTRO-P7-01",
@@ -380,7 +380,7 @@ let USUARIOS_DB: UsuarioDocente[] = [
   {
     id: "DOC-PRUEBA-008",
     nombreCompleto: "Docente Prueba Pérez Zeledón",
-    correoInstitucional: "pruebadocente8@mep.go.cr",
+    correoInstitucional: "prueba.docente8.docente.8@mep.go.cr",
     cedula: "0-0000-0008",
     telefono: "+506 0000-0008",
     dreCodigo: "DRE-02",
@@ -393,7 +393,7 @@ let USUARIOS_DB: UsuarioDocente[] = [
     fechaAprobacion: "2027-01-24T08:00:00.000Z",
     aprobadoPor: "ADMINISTRADOR PRINCIPAL",
     webAppsCreadas: 2,
-    pin: "8888",
+    pin: "887711",
     centrosEducativos: [
       {
         id: "CENTRO-P8-01",
@@ -426,7 +426,7 @@ let USUARIOS_DB: UsuarioDocente[] = [
   {
     id: "DOC-PRUEBA-009",
     nombreCompleto: "Docente Prueba San Carlos",
-    correoInstitucional: "pruebadocente9@mep.go.cr",
+    correoInstitucional: "prueba.docente9.docente.9@mep.go.cr",
     cedula: "0-0000-0009",
     telefono: "+506 0000-0009",
     dreCodigo: "DRE-14",
@@ -439,7 +439,7 @@ let USUARIOS_DB: UsuarioDocente[] = [
     fechaAprobacion: "2027-01-25T08:00:00.000Z",
     aprobadoPor: "ADMINISTRADOR PRINCIPAL",
     webAppsCreadas: 1,
-    pin: "9999",
+    pin: "998811",
     centrosEducativos: [
       {
         id: "CENTRO-P9-01",
@@ -472,7 +472,7 @@ let USUARIOS_DB: UsuarioDocente[] = [
   {
     id: "DOC-PRUEBA-010",
     nombreCompleto: "Docente Prueba Occidente",
-    correoInstitucional: "pruebadocente10@mep.go.cr",
+    correoInstitucional: "prueba.docente10.docente.10@mep.go.cr",
     cedula: "0-0000-0010",
     telefono: "+506 0000-0010",
     dreCodigo: "DRE-06",
@@ -485,7 +485,7 @@ let USUARIOS_DB: UsuarioDocente[] = [
     fechaAprobacion: "2027-01-25T08:00:00.000Z",
     aprobadoPor: "ADMINISTRADOR PRINCIPAL",
     webAppsCreadas: 3,
-    pin: "1010",
+    pin: "100911",
     centrosEducativos: [
       {
         id: "CENTRO-P10-01",

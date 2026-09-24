@@ -73,8 +73,8 @@ export default function HomePage() {
       setLoginMensaje({ tipo: "error", texto: "Por favor ingrese su Cédula o Correo Institucional MEP." });
       return;
     }
-    if (!pinLimpio || !/^\d{4}$/.test(pinLimpio)) {
-      setLoginMensaje({ tipo: "error", texto: "El PIN debe tener exactamente 4 dígitos numéricos." });
+    if (!pinLimpio || !/^\d{4,6}$/.test(pinLimpio)) {
+      setLoginMensaje({ tipo: "error", texto: "El PIN debe contener entre 4 y 6 dígitos numéricos." });
       return;
     }
 
@@ -91,81 +91,81 @@ export default function HomePage() {
     {
       nombre: "Docente Prueba San José",
       tag: "Docente San José",
-      correo: "pruebadocente1@mep.go.cr",
+      correo: "prueba.docente1.docente.1@mep.go.cr",
       cedula: "0-0000-0001",
-      pin: "1111",
+      pin: "110011",
       colorTag: "bg-teal-50 text-teal-900 border-teal-300 hover:bg-teal-100",
     },
     {
       nombre: "Docente Prueba Alajuela",
       tag: "Docente Alajuela",
-      correo: "pruebadocente2@mep.go.cr",
+      correo: "prueba.docente2.docente.2@mep.go.cr",
       cedula: "0-0000-0002",
-      pin: "2222",
+      pin: "221111",
       colorTag: "bg-indigo-50 text-indigo-900 border-indigo-300 hover:bg-indigo-100",
     },
     {
       nombre: "Docente Prueba Cartago",
       tag: "Docente Cartago",
-      correo: "pruebadocente3@mep.go.cr",
+      correo: "prueba.docente3.docente.3@mep.go.cr",
       cedula: "0-0000-0003",
-      pin: "3333",
+      pin: "332211",
       colorTag: "bg-amber-50 text-amber-900 border-amber-300 hover:bg-amber-100",
     },
     {
       nombre: "Docente Prueba Heredia",
       tag: "Docente Heredia",
-      correo: "pruebadocente4@mep.go.cr",
+      correo: "prueba.docente4.docente.4@mep.go.cr",
       cedula: "0-0000-0004",
-      pin: "4444",
+      pin: "443311",
       colorTag: "bg-emerald-50 text-emerald-900 border-emerald-300 hover:bg-emerald-100",
     },
     {
       nombre: "Docente Prueba Guanacaste",
       tag: "Docente Guanacaste",
-      correo: "pruebadocente5@mep.go.cr",
+      correo: "prueba.docente5.docente.5@mep.go.cr",
       cedula: "0-0000-0005",
-      pin: "5555",
+      pin: "554411",
       colorTag: "bg-sky-50 text-sky-900 border-sky-300 hover:bg-sky-100",
     },
     {
       nombre: "Docente Prueba Puntarenas",
       tag: "Docente Puntarenas",
-      correo: "pruebadocente6@mep.go.cr",
+      correo: "prueba.docente6.docente.6@mep.go.cr",
       cedula: "0-0000-0006",
-      pin: "6666",
+      pin: "665511",
       colorTag: "bg-orange-50 text-orange-900 border-orange-300 hover:bg-orange-100",
     },
     {
       nombre: "Docente Prueba Limón",
       tag: "Docente Limón",
-      correo: "pruebadocente7@mep.go.cr",
+      correo: "prueba.docente7.docente.7@mep.go.cr",
       cedula: "0-0000-0007",
-      pin: "7777",
+      pin: "776611",
       colorTag: "bg-lime-50 text-lime-900 border-lime-300 hover:bg-lime-100",
     },
     {
       nombre: "Docente Prueba Pérez Zeledón",
       tag: "Docente Pérez Zeledón",
-      correo: "pruebadocente8@mep.go.cr",
+      correo: "prueba.docente8.docente.8@mep.go.cr",
       cedula: "0-0000-0008",
-      pin: "8888",
+      pin: "887711",
       colorTag: "bg-purple-50 text-purple-900 border-purple-300 hover:bg-purple-100",
     },
     {
       nombre: "Docente Prueba San Carlos",
       tag: "Docente San Carlos",
-      correo: "pruebadocente9@mep.go.cr",
+      correo: "prueba.docente9.docente.9@mep.go.cr",
       cedula: "0-0000-0009",
-      pin: "9999",
+      pin: "998811",
       colorTag: "bg-rose-50 text-rose-900 border-rose-300 hover:bg-rose-100",
     },
     {
       nombre: "Docente Prueba Occidente",
       tag: "Docente Occidente",
-      correo: "pruebadocente10@mep.go.cr",
+      correo: "prueba.docente10.docente.10@mep.go.cr",
       cedula: "0-0000-0010",
-      pin: "1010",
+      pin: "100911",
       colorTag: "bg-cyan-50 text-cyan-900 border-cyan-300 hover:bg-cyan-100",
     },
   ];
@@ -189,11 +189,11 @@ export default function HomePage() {
   // Reglas de evaluación del PIN en tiempo real
   const evaluarPIN = (valorPin: string, valorCedula: string) => {
     if (!valorPin) return null;
-    if (!/^\d{4}$/.test(valorPin)) {
-      return "El PIN debe contener exactamente 4 dígitos numéricos (0-9).";
+    if (!/^\d{4,6}$/.test(valorPin)) {
+      return "El PIN debe contener entre 4 y 6 dígitos numéricos (0-9).";
     }
-    if (/^(\d)\1{3}$/.test(valorPin)) {
-      return "⚠️ PIN muy predecible: Evita usar 4 dígitos iguales (ej. 0000 o 1111).";
+    if (/^(\d)\1{3,}$/.test(valorPin)) {
+      return "⚠️ PIN muy predecible: Evita usar todos los dígitos iguales (ej. 0000 o 1111).";
     }
     const consecutivos = ["0123", "1234", "2345", "3456", "4567", "5678", "6789", "9876", "8765", "7654", "6543", "5432", "4321", "3210"];
     if (consecutivos.includes(valorPin)) {
@@ -243,15 +243,15 @@ export default function HomePage() {
       return;
     }
 
-    // 4. Validar PIN de 4 dígitos
+    // 4. Validar PIN de 4 a 6 dígitos
     const pinLimpio = regPin.trim();
-    if (!/^\d{4}$/.test(pinLimpio)) {
-      setRegMensaje({ tipo: "error", texto: "El PIN de acceso rápido debe contener exactamente 4 dígitos numéricos." });
+    if (!/^\d{4,6}$/.test(pinLimpio)) {
+      setRegMensaje({ tipo: "error", texto: "El PIN de acceso rápido debe contener entre 4 y 6 dígitos numéricos." });
       return;
     }
 
     if (pinLimpio !== regPinConfirmar.trim()) {
-      setRegMensaje({ tipo: "error", texto: "La confirmación del PIN no coincide. Ingrese los mismos 4 dígitos." });
+      setRegMensaje({ tipo: "error", texto: "La confirmación del PIN no coincide. Ingrese los mismos dígitos." });
       return;
     }
 
@@ -453,10 +453,10 @@ export default function HomePage() {
                         name="docente_pin_pnft"
                         type={mostrarLoginPin ? "text" : "password"}
                         autoComplete="new-password"
-                        maxLength={4}
+                        maxLength={6}
                         value={loginPin}
                         onChange={(e) => setLoginPin(e.target.value.replace(/[^0-9]/g, ""))}
-                        placeholder="0000"
+                        placeholder="••••••"
                         required
                         className="w-full pl-10 pr-10 py-2.5 bg-[#FCFBF9] border border-stone-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-stone-400 focus:outline-none focus:border-emerald-600 focus:bg-white font-semibold tracking-widest text-center font-mono"
                       />
@@ -702,14 +702,14 @@ export default function HomePage() {
                     <div className="grid grid-cols-2 gap-3">
                       <div>
                         <label className="block text-[11px] font-bold text-slate-700 mb-1">
-                          Crea tu PIN (4 números)
+                          Crea tu PIN (4 a 6 números)
                         </label>
                         <input
                           type={mostrarRegPin ? "text" : "password"}
-                          maxLength={4}
+                          maxLength={6}
                           value={regPin}
                           onChange={(e) => setRegPin(e.target.value.replace(/[^0-9]/g, ""))}
-                          placeholder="0000"
+                          placeholder="••••••"
                           required
                           className="w-full px-3 py-2 bg-white border border-indigo-300 rounded-xl text-center font-mono text-base font-black text-slate-900 focus:outline-none focus:border-indigo-600"
                         />
@@ -721,10 +721,10 @@ export default function HomePage() {
                         </label>
                         <input
                           type={mostrarRegPin ? "text" : "password"}
-                          maxLength={4}
+                          maxLength={6}
                           value={regPinConfirmar}
                           onChange={(e) => setRegPinConfirmar(e.target.value.replace(/[^0-9]/g, ""))}
-                          placeholder="0000"
+                          placeholder="••••••"
                           required
                           className="w-full px-3 py-2 bg-white border border-indigo-300 rounded-xl text-center font-mono text-base font-black text-slate-900 focus:outline-none focus:border-indigo-600"
                         />

@@ -82,8 +82,8 @@ export default function AuthGuard({ children }: AuthGuardProps) {
       setLoginMensaje({ tipo: "error", texto: "Por favor ingrese su Cédula o Correo Institucional MEP." });
       return;
     }
-    if (!pinLimpio || !/^\d{4}$/.test(pinLimpio)) {
-      setLoginMensaje({ tipo: "error", texto: "El PIN debe tener exactamente 4 dígitos numéricos." });
+    if (!pinLimpio || !/^\d{4,6}$/.test(pinLimpio)) {
+      setLoginMensaje({ tipo: "error", texto: "El PIN debe tener entre 4 y 6 dígitos numéricos." });
       return;
     }
 
@@ -133,8 +133,8 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     }
 
     const pinLimpio = regPin.trim();
-    if (!/^\d{4}$/.test(pinLimpio)) {
-      setRegMensaje({ tipo: "error", texto: "El PIN debe tener exactamente 4 dígitos numéricos." });
+    if (!/^\d{4,6}$/.test(pinLimpio)) {
+      setRegMensaje({ tipo: "error", texto: "El PIN debe tener entre 4 y 6 dígitos numéricos." });
       return;
     }
 
@@ -325,10 +325,10 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                     </div>
                     <input
                       type={mostrarPin ? "text" : "password"}
-                      maxLength={4}
+                      maxLength={6}
                       value={loginPin}
                       onChange={(e) => setLoginPin(e.target.value.replace(/[^0-9]/g, ""))}
-                      placeholder="••••"
+                      placeholder="••••••"
                       required
                       className="w-full pl-10 pr-10 py-3 bg-[#FCFBF9] border border-stone-300 rounded-xl text-center text-lg font-mono font-black tracking-widest text-slate-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all"
                     />
@@ -529,7 +529,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                   <div>
                     <div className="flex items-center justify-between mb-1">
                       <label className="block text-[11px] font-black text-indigo-950 uppercase">
-                        PIN (4 dígitos)
+                        PIN (4 a 6 dígitos)
                       </label>
                       <button
                         type="button"
@@ -541,10 +541,10 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                     </div>
                     <input
                       type={mostrarRegPin ? "text" : "password"}
-                      maxLength={4}
+                      maxLength={6}
                       value={regPin}
                       onChange={(e) => setRegPin(e.target.value.replace(/[^0-9]/g, ""))}
-                      placeholder="••••"
+                      placeholder="••••••"
                       required
                       className="w-full px-3 py-2 bg-white border border-indigo-300 rounded-xl text-center font-mono text-base font-black text-slate-900"
                     />
@@ -556,10 +556,10 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                     </label>
                     <input
                       type={mostrarRegPin ? "text" : "password"}
-                      maxLength={4}
+                      maxLength={6}
                       value={regPinConfirmar}
                       onChange={(e) => setRegPinConfirmar(e.target.value.replace(/[^0-9]/g, ""))}
-                      placeholder="••••"
+                      placeholder="••••••"
                       required
                       className="w-full px-3 py-2 bg-white border border-indigo-300 rounded-xl text-center font-mono text-base font-black text-slate-900"
                     />

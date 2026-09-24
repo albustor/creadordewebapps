@@ -295,11 +295,11 @@ export default function RegistroDocentePage() {
   // ==========================================
   const evaluarPIN = (valorPin: string, valorCedula: string) => {
     if (!valorPin) return null;
-    if (!/^\d{4}$/.test(valorPin)) {
-      return "El PIN debe contener exactamente 4 dígitos numéricos (0-9).";
+    if (!/^\d{4,6}$/.test(valorPin)) {
+      return "El PIN debe contener entre 4 y 6 dígitos numéricos (0-9).";
     }
-    if (/^(\d)\1{3}$/.test(valorPin)) {
-      return "⚠️ PIN muy predecible: Evita usar 4 dígitos iguales (ej. 0000 o 1111).";
+    if (/^(\d)\1{3,5}$/.test(valorPin)) {
+      return "⚠️ PIN muy predecible: Evita usar todos los dígitos iguales (ej. 0000 o 111111).";
     }
     const consecutivos = ["0123", "1234", "2345", "3456", "4567", "5678", "6789", "9876", "8765", "7654", "6543", "5432", "4321", "3210"];
     if (consecutivos.includes(valorPin)) {
@@ -461,12 +461,12 @@ export default function RegistroDocentePage() {
 
     const telefonoLimpio = telefono.trim();
     const pinLimpio = pin.trim();
-    if (!/^\d{4}$/.test(pinLimpio)) {
-      setErrorValidacion("El PIN de acceso rápido es obligatorio y debe ser exactamente de 4 dígitos numéricos.");
+    if (!/^\d{4,6}$/.test(pinLimpio)) {
+      setErrorValidacion("El PIN de acceso rápido es obligatorio y debe tener entre 4 y 6 dígitos numéricos.");
       return;
     }
     if (pinLimpio !== pinConfirmar.trim()) {
-      setErrorValidacion("La confirmación del PIN no coincide. Verifique los 4 dígitos ingresados.");
+      setErrorValidacion("La confirmación del PIN no coincide. Verifique los dígitos ingresados.");
       return;
     }
 
@@ -669,8 +669,8 @@ export default function RegistroDocentePage() {
       return;
     }
 
-    if (!/^\d{4}$/.test(otpNuevoPin.trim())) {
-      setRecuperarMensaje({ tipo: "error", texto: "El nuevo PIN debe contener exactamente 4 dígitos numéricos." });
+    if (!/^\d{4,6}$/.test(otpNuevoPin.trim())) {
+      setRecuperarMensaje({ tipo: "error", texto: "El nuevo PIN debe contener entre 4 y 6 dígitos numéricos." });
       return;
     }
 
@@ -997,16 +997,16 @@ export default function RegistroDocentePage() {
               {/* PIN */}
               <div className="space-y-1.5">
                 <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
-                  Crea tu PIN de 4 dígitos <span className="text-rose-600">*</span>
+                  Crea tu PIN (4 a 6 dígitos) <span className="text-rose-600">*</span>
                 </label>
                 <div className="relative">
                   <input
                     type={mostrarPin ? "text" : "password"}
                     required
-                    maxLength={4}
+                    maxLength={6}
                     value={pin}
                     onChange={(e) => setPin(e.target.value.replace(/[^0-9]/g, ""))}
-                    placeholder="••••"
+                    placeholder="••••••"
                     className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-center text-lg font-mono font-black tracking-widest text-slate-900 focus:bg-white focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/20 outline-hidden transition-all"
                   />
                   <button
@@ -1022,15 +1022,15 @@ export default function RegistroDocentePage() {
               {/* Confirmar PIN */}
               <div className="space-y-1.5">
                 <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
-                  Confirma tu PIN de 4 dígitos <span className="text-rose-600">*</span>
+                  Confirma tu PIN <span className="text-rose-600">*</span>
                 </label>
                 <input
                   type={mostrarPin ? "text" : "password"}
                   required
-                  maxLength={4}
+                  maxLength={6}
                   value={pinConfirmar}
                   onChange={(e) => setPinConfirmar(e.target.value.replace(/[^0-9]/g, ""))}
-                  placeholder="••••"
+                  placeholder="••••••"
                   className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-center text-lg font-mono font-black tracking-widest text-slate-900 focus:bg-white focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/20 outline-hidden transition-all"
                 />
               </div>
@@ -1669,10 +1669,10 @@ export default function RegistroDocentePage() {
                 <input
                   type={mostrarLoginPin ? "text" : "password"}
                   required
-                  maxLength={4}
+                  maxLength={6}
                   value={loginPin}
                   onChange={(e) => setLoginPin(e.target.value.replace(/[^0-9]/g, ""))}
-                  placeholder="••••"
+                  placeholder="••••••"
                   className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-center text-xl font-mono font-black tracking-widest text-slate-900 focus:bg-white focus:border-indigo-600 outline-hidden transition-all"
                 />
                 <button
@@ -1818,15 +1818,15 @@ export default function RegistroDocentePage() {
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <label className="block text-[11px] font-black text-slate-800 uppercase">
-                    Nuevo PIN (4 dígitos)
+                    Nuevo PIN (4 a 6 dígitos)
                   </label>
                   <input
                     type="password"
                     required
-                    maxLength={4}
+                    maxLength={6}
                     value={otpNuevoPin}
                     onChange={(e) => setOtpNuevoPin(e.target.value.replace(/[^0-9]/g, ""))}
-                    placeholder="••••"
+                    placeholder="••••••"
                     className="w-full px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-center text-base font-mono font-bold"
                   />
                 </div>
@@ -1837,10 +1837,10 @@ export default function RegistroDocentePage() {
                   <input
                     type="password"
                     required
-                    maxLength={4}
+                    maxLength={6}
                     value={otpNuevoPinConfirmar}
                     onChange={(e) => setOtpNuevoPinConfirmar(e.target.value.replace(/[^0-9]/g, ""))}
-                    placeholder="••••"
+                    placeholder="••••••"
                     className="w-full px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-center text-base font-mono font-bold"
                   />
                 </div>
