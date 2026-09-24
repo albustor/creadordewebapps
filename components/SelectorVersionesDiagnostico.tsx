@@ -331,7 +331,7 @@ export default function SelectorVersionesDiagnostico({
                   Paso 2: Docente
                 </span>
                 <h4 className="text-sm font-black text-purple-950 mt-1">
-                  📱 Escáner QR Celular / Tablet
+                  📱 Escáner de Datos Locales
                 </h4>
                 <p className="text-xs text-slate-600 mt-1 leading-relaxed font-medium">
                   Abre la app en tu teléfono (iPhone / Android) para capturar los códigos QR de las pantallas. No requiere escribir nombres y exporta a Excel (.csv) y JSON.
@@ -351,8 +351,8 @@ export default function SelectorVersionesDiagnostico({
 
                 <div className="grid grid-cols-2 gap-2">
                   <a
-                    href="/webapps/diagnostico_9no_escaner_datos_locales.html"
-                    download="diagnostico_9no_escaner_datos_locales.html"
+                    href="/webapps/diagnostico_escaner_datos_locales.html"
+                    download="diagnostico_escaner_datos_locales.html"
                     className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-white hover:bg-purple-100/60 text-purple-900 text-[11px] font-bold border border-purple-200"
                   >
                     <DownloadSimple size={14} />
