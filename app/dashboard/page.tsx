@@ -602,18 +602,30 @@ export default function DashboardAnaliticoPage() {
               </div>
 
               {/* Botones de Apertura de la Tarjeta */}
-              <div className="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-2.5">
+              <div className="shrink-0 flex flex-col gap-2.5">
                 {listaCentrosDocente.length > 0 && centroActivo ? (
                   <>
                     <a
                       href={getUrlEvaluador(centroActivo)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2.5 px-6 py-4 bg-indigo-500 hover:bg-indigo-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-indigo-500/30 hover:scale-[1.02] cursor-pointer text-center"
+                      className="flex items-center justify-center gap-2.5 px-6 py-3.5 bg-indigo-500 hover:bg-indigo-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-indigo-500/30 hover:scale-[1.02] cursor-pointer text-center"
                     >
-                      <span>Abrir Herramienta 7.° Año</span>
+                      <span>Abrir Herramienta 7.° Año (Evaluador)</span>
                       <ArrowSquareOut size={20} weight="bold" />
                     </a>
+
+                    <a
+                      href="/webapps/diagnostico_7mo_modulo01_cyberquest.html"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 px-5 py-3 bg-white/15 hover:bg-white/25 text-indigo-100 hover:text-white border border-indigo-400/40 font-bold text-xs rounded-2xl transition-all hover:scale-[1.02] cursor-pointer text-center"
+                      title="Abrir la herramienta de evaluación diagnóstica en formato local o sin conexión"
+                    >
+                      <Desktop size={18} weight="duotone" />
+                      <span>Herramienta de Evaluación Diagnóstica Docente Sin Conexión o Local</span>
+                    </a>
+
                     <a
                       href="/docs/GUIA_PEDAGOGICA_EVALUACION_DIAGNOSTICA_MEP.pdf"
                       target="_blank"
@@ -714,15 +726,39 @@ export default function DashboardAnaliticoPage() {
               {/* Botones de Apertura de la Tarjeta */}
               <div className="shrink-0 flex flex-col gap-2.5">
                 {listaCentrosDocente.length > 0 && centroActivo ? (
-                  <a
-                    href={getUrlEvaluador(centroActivo)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2.5 px-6 py-4 bg-teal-500 hover:bg-teal-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-teal-500/30 hover:scale-[1.02] cursor-pointer text-center"
-                  >
-                    <span>Abrir Herramienta 8.° Año</span>
-                    <ArrowSquareOut size={20} weight="bold" />
-                  </a>
+                  <>
+                    <a
+                      href={getUrlEvaluador(centroActivo)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2.5 px-6 py-3.5 bg-teal-500 hover:bg-teal-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-teal-500/30 hover:scale-[1.02] cursor-pointer text-center"
+                    >
+                      <span>Abrir Herramienta 8.° Año (Evaluador)</span>
+                      <ArrowSquareOut size={20} weight="bold" />
+                    </a>
+
+                    <a
+                      href="/webapps/diagnostico_8vo_modulo01_desconectado_offline.html"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 px-5 py-3 bg-white/15 hover:bg-white/25 text-teal-100 hover:text-white border border-teal-400/40 font-bold text-xs rounded-2xl transition-all hover:scale-[1.02] cursor-pointer text-center"
+                      title="Abrir la herramienta de evaluación diagnóstica en formato local o sin conexión"
+                    >
+                      <Desktop size={18} weight="duotone" />
+                      <span>Herramienta de Evaluación Diagnóstica Docente Sin Conexión o Local</span>
+                    </a>
+
+                    <a
+                      href="/docs/GUIA_PEDAGOGICA_DIAGNOSTICO_8VO_MEP.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 px-5 py-3 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs rounded-xl transition-all shadow text-center cursor-pointer"
+                      title="Ver o descargar la Guía Pedagógica y Operativa oficial en PDF"
+                    >
+                      <span>📘 Guía Pedagógica Docente (PDF)</span>
+                      <ArrowSquareOut size={16} weight="bold" />
+                    </a>
+                  </>
                 ) : (
                   <div className="flex items-center justify-center px-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-xs text-teal-200/70 font-medium text-center">
                     Nivel no asignado
@@ -828,9 +864,21 @@ export default function DashboardAnaliticoPage() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center justify-center gap-2 px-5 py-3 bg-white/15 hover:bg-white/25 text-purple-100 hover:text-white border border-purple-400/40 font-bold text-xs rounded-2xl transition-all hover:scale-[1.02] cursor-pointer text-center"
+                      title="Abrir la herramienta de evaluación diagnóstica en formato local o sin conexión"
                     >
                       <Desktop size={18} weight="duotone" />
                       <span>Herramienta de Evaluación Diagnóstica Docente Sin Conexión o Local</span>
+                    </a>
+
+                    <a
+                      href="/docs/GUIA_PEDAGOGICA_DIAGNOSTICO_9NO_MEP.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 px-5 py-3 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs rounded-xl transition-all shadow text-center cursor-pointer"
+                      title="Ver o descargar la Guía Pedagógica y Operativa oficial en PDF"
+                    >
+                      <span>📘 Guía Pedagógica Docente (PDF)</span>
+                      <ArrowSquareOut size={16} weight="bold" />
                     </a>
                   </>
                 ) : (
