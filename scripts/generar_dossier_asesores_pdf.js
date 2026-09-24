@@ -613,13 +613,13 @@ function generarDocumentoAsesoresPDF() {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(11);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("9. Arquitectura tecnológica y protocolo de resiliencia", margin, yPos);
+  doc.text("9. Arquitectura pedagógica y sistema de resiliencia con IA", margin, yPos);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   doc.setTextColor(...COLOR_DARK);
   doc.text(
-    "La infraestructura está construida con tecnologías web de última generación (Next.js 15, TypeScript, Tailwind CSS, Web Audio API y APIs de Inteligencia Artificial con arquitectura de resiliencia en 4 capas):",
+    "La infraestructura integra tecnologías web avanzadas con un sistema de resiliencia multicapa respaldado por múltiples servicios de Inteligencia Artificial a disposición, enfocado en el análisis formativo:",
     margin, yPos + 5, { maxWidth: contentWidth }
   );
 
@@ -632,16 +632,16 @@ function generarDocumentoAsesoresPDF() {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8.5);
   doc.setTextColor(...COLOR_EMERALD);
-  doc.text("Arquitectura de IA multi-proveedor con resiliencia en cascada (Failover)", margin + 4, yPos + 6);
+  doc.text("Sistema de resiliencia multicapa y procesamiento pedagógico formativo", margin + 4, yPos + 6);
   
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(7.5);
+  doc.setFontSize(7.3);
   doc.setTextColor(...COLOR_DARK);
-  doc.text("1. Caché SHA-256 en memoria: Respuestas en 0 ms y ahorro total de tokens ante consultas idénticas.", margin + 4, yPos + 12);
-  doc.text("2. Nivel 1 (Principal): Google Gemini (gemini-2.5-flash) para análisis pedagógico rápido y estructurado.", margin + 4, yPos + 17);
-  doc.text("3. Nivel 2 (Baja latencia): Groq LPU (llama-3.3-70b-versatile, llama-3.1-8b-instant).", margin + 4, yPos + 22);
-  doc.text("4. Nivel 3 (Multi-proveedor): OpenRouter con Qwen 2.5 (qwen/qwen-2.5-72b-instruct) y DeepSeek Chat.", margin + 4, yPos + 27);
-  doc.text("5. Auditoría diaria (5:00 AM): Verificación automatizada con reporte ejecutivo al correo oficial del MEP.", margin + 4, yPos + 32);
+  doc.text("1. Caché inteligente en memoria (SHA-256): Respuestas en 0 ms ante consultas previas para inmediatez docente.", margin + 4, yPos + 12);
+  doc.text("2. Procesamiento reflexivo (3 a 6 segundos): Genera inferencia cualitativa profunda cruzando telemetría con DUA.", margin + 4, yPos + 17);
+  doc.text("3. Red de alta disponibilidad en cascada: Múltiples servicios de IA enrutados automáticamente ante cualquier contingencia.", margin + 4, yPos + 22);
+  doc.text("4. Validación pedagógica continua: Descriptores alineados a los programas de estudio oficiales de III Ciclo del MEP.", margin + 4, yPos + 27);
+  doc.text("5. Auditoría formativa diaria (5:00 AM): Verificación continua de disponibilidad y reporte institucional automatizado.", margin + 4, yPos + 32);
 
   yPos = 74;
   doc.setFont('helvetica', 'bold');

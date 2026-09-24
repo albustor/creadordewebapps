@@ -437,15 +437,15 @@ function generarDocumento8voPDF() {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("4. Asistencia pedagógica y telemetría", margin + cardW + 8, yPos + 6);
+  doc.text("4. Asistencia pedagógica con IA", margin + cardW + 8, yPos + 6);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
-  doc.text("• Identificación de reactivos con mayor índice de error.", margin + cardW + 8, yPos + 12);
-  doc.text("• Recomendaciones metodológicas para el trimestre.", margin + cardW + 8, yPos + 17);
-  doc.text("• Telemetría protegida por aislamiento de cuenta docente.", margin + cardW + 8, yPos + 22);
-  doc.text("• Integración con el ecosistema de IA multi-proveedor.", margin + cardW + 8, yPos + 27);
-  doc.text("• Auditoría continua de salud de los servicios.", margin + cardW + 8, yPos + 32);
+  doc.text("• Análisis cualitativo de brechas en 3 a 6 segundos.", margin + cardW + 8, yPos + 12);
+  doc.text("• Generación de estrategias DUA y planeamiento.", margin + cardW + 8, yPos + 17);
+  doc.text("• Red de resiliencia con múltiples servicios en cascada.", margin + cardW + 8, yPos + 22);
+  doc.text("• Validación continua de descriptores curriculares MEP.", margin + cardW + 8, yPos + 27);
+  doc.text("• Caché de respuesta en 0 ms para consultas repetidas.", margin + cardW + 8, yPos + 32);
 
   // 6. Protocolo Operativo
   yPos = 114;
@@ -478,6 +478,23 @@ function generarDocumento8voPDF() {
       ['5. Consolidación', 'Aparece automáticamente en el panel docente central.', 'Docente escanea el QR con su cámara y se actualiza la nómina al instante.']
     ]
   });
+
+  // Recuadro Pedagógico sobre la IA y tiempo de respuesta
+  yPos = doc.lastAutoTable.finalY + 5;
+  doc.setFillColor(240, 249, 255);
+  doc.setDrawColor(186, 230, 253);
+  doc.roundedRect(margin, yPos, contentWidth, 21, 2, 2, 'FD');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(7.5);
+  doc.setTextColor(3, 105, 161);
+  doc.text("Procesamiento pedagógico de la Inteligencia Artificial y tiempo de respuesta formativo:", margin + 4, yPos + 5);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(6.8);
+  doc.setTextColor(...COLOR_DARK);
+  doc.text(
+    "La generación del análisis con IA toma entre 3 y 6 segundos debido a que realiza una inferencia reflexiva completa y no un cálculo genérico prefabricado. Durante este tiempo, procesa la telemetría grupal, cruza los resultados de las tres dimensiones con los criterios DUA y formula recomendaciones didácticas individualizadas y validadas para el planeamiento. La plataforma cuenta con una arquitectura de resiliencia multicapa respaldada por múltiples servicios de IA de alta disponibilidad, garantizando continuidad operativa constante.",
+    margin + 4, yPos + 9.5, { maxWidth: contentWidth - 8 }
+  );
 
   drawHeaderFooter(4, 5, "Instrumento docente y telemetría de 8.° año");
 

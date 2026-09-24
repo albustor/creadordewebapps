@@ -426,22 +426,22 @@ function generarDocumento9noPDF() {
   doc.text("• Análisis comparativo entre secciones de 9.° año.", margin + 4, yPos + 27);
   doc.text("• Sincronización transparente con base de datos en la nube.", margin + 4, yPos + 32);
 
-  // Card 4: Decisiones Pedagógicas y DUA
+  // Card 4: Decisiones Pedagógicas con IA y DUA
   doc.setFillColor(...COLOR_LIGHT_BG);
   doc.setDrawColor(...COLOR_BORDER);
   doc.roundedRect(margin + cardW + 4, yPos, cardW, 36, 2, 2, 'FD');
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("4. Decisiones pedagógicas y DUA", margin + cardW + 8, yPos + 6);
+  doc.text("4. Decisiones pedagógicas y DUA con IA", margin + cardW + 8, yPos + 6);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
-  doc.text("• Matriz de 6 criterios oficiales de decisión docente.", margin + cardW + 8, yPos + 12);
+  doc.text("• Análisis cualitativo de brechas en 3 a 6 segundos.", margin + cardW + 8, yPos + 12);
   doc.text("• Estrategias de mediación diferenciada según brechas.", margin + cardW + 8, yPos + 17);
-  doc.text("• Ajustes metodológicos para el planeamiento didáctico.", margin + cardW + 8, yPos + 22);
-  doc.text("• Asistente IA multi-proveedor (Gemini, Groq, Qwen).", margin + cardW + 8, yPos + 27);
-  doc.text("• Resumen ejecutivo para comités de evaluación.", margin + cardW + 8, yPos + 32);
+  doc.text("• Red de resiliencia con múltiples servicios en cascada.", margin + cardW + 8, yPos + 22);
+  doc.text("• Validación continua de descriptores curriculares MEP.", margin + cardW + 8, yPos + 27);
+  doc.text("• Caché de respuesta en 0 ms para consultas repetidas.", margin + cardW + 8, yPos + 32);
 
   // 6. Comparativa Operativa
   yPos = 114;
@@ -474,6 +474,23 @@ function generarDocumento9noPDF() {
       ['Seguridad de datos', 'Tokens seguros y aislamiento por cuenta docente.', 'Firma criptográfica SHA-256 en cada código QR.']
     ]
   });
+
+  // Recuadro Pedagógico sobre la IA y tiempo de respuesta
+  yPos = doc.lastAutoTable.finalY + 5;
+  doc.setFillColor(240, 249, 255);
+  doc.setDrawColor(186, 230, 253);
+  doc.roundedRect(margin, yPos, contentWidth, 21, 2, 2, 'FD');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(7.5);
+  doc.setTextColor(3, 105, 161);
+  doc.text("Procesamiento pedagógico de la Inteligencia Artificial y tiempo de respuesta formativo:", margin + 4, yPos + 5);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(6.8);
+  doc.setTextColor(...COLOR_DARK);
+  doc.text(
+    "La generación del análisis con IA toma entre 3 y 6 segundos debido a que realiza una inferencia reflexiva completa y no un cálculo genérico prefabricado. Durante este tiempo, procesa la telemetría grupal, cruza los resultados de las tres dimensiones con los criterios DUA y formula recomendaciones didácticas individualizadas y validadas para el planeamiento. La plataforma cuenta con una arquitectura de resiliencia multicapa respaldada por múltiples servicios de IA de alta disponibilidad, garantizando continuidad operativa constante.",
+    margin + 4, yPos + 9.5, { maxWidth: contentWidth - 8 }
+  );
 
   drawHeaderFooter(4, 5, "Instrumento docente y sistematización de 9.° año");
 

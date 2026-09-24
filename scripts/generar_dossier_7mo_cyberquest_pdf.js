@@ -425,22 +425,22 @@ function generarDocumento7moPDF() {
   doc.text("• Total cobertura para centros educativos rurales.", margin + 4, yPos + 27);
   doc.text("• Cifrado criptográfico que previene fraudes.", margin + 4, yPos + 32);
 
-  // Card 4: Recomendaciones DUA
+  // Card 4: Recomendaciones DUA y mediación con IA
   doc.setFillColor(...COLOR_LIGHT_BG);
   doc.setDrawColor(...COLOR_BORDER);
   doc.roundedRect(margin + cardW + 4, yPos, cardW, 36, 2, 2, 'FD');
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("4. Recomendaciones DUA y mediación", margin + cardW + 8, yPos + 6);
+  doc.text("4. Recomendaciones DUA y mediación con IA", margin + cardW + 8, yPos + 6);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
-  doc.text("• Sugerencias didácticas adaptadas a los resultados.", margin + cardW + 8, yPos + 12);
-  doc.text("• Estrategias de nivelación para saberes iniciales.", margin + cardW + 8, yPos + 17);
-  doc.text("• Orientaciones para el planeamiento curricular.", margin + cardW + 8, yPos + 22);
-  doc.text("• Asistencia de IA multi-proveedor en cascada.", margin + cardW + 8, yPos + 27);
-  doc.text("• Reporte ejecutivo listo para comités evaluadores.", margin + cardW + 8, yPos + 32);
+  doc.text("• Análisis formativo y triada diagnóstica en 3 a 6 s.", margin + cardW + 8, yPos + 12);
+  doc.text("• Sugerencias didácticas y adaptaciones curriculares.", margin + cardW + 8, yPos + 17);
+  doc.text("• Estrategias de nivelación para saberes iniciales.", margin + cardW + 8, yPos + 22);
+  doc.text("• Red de resiliencia multicapa con múltiples servicios.", margin + cardW + 8, yPos + 27);
+  doc.text("• Respuestas en 0 ms para consultas frecuentes en caché.", margin + cardW + 8, yPos + 32);
 
   // 6. Protocolo Operativo
   yPos = 114;
@@ -473,6 +473,23 @@ function generarDocumento7moPDF() {
       ['5. Reporte', 'Aparece automáticamente en el panel docente.', 'Docente escanea el código QR y consolida la sección.']
     ]
   });
+
+  // Recuadro Pedagógico sobre la IA y tiempo de respuesta
+  yPos = doc.lastAutoTable.finalY + 5;
+  doc.setFillColor(240, 249, 255);
+  doc.setDrawColor(186, 230, 253);
+  doc.roundedRect(margin, yPos, contentWidth, 21, 2, 2, 'FD');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(7.5);
+  doc.setTextColor(3, 105, 161);
+  doc.text("Procesamiento pedagógico de la Inteligencia Artificial y tiempo de respuesta formativo:", margin + 4, yPos + 5);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(6.8);
+  doc.setTextColor(...COLOR_DARK);
+  doc.text(
+    "La generación del análisis con IA toma entre 3 y 6 segundos debido a que realiza una inferencia reflexiva completa y no un cálculo genérico prefabricado. Durante este tiempo, procesa la telemetría grupal, cruza los resultados de las tres dimensiones con los criterios DUA y formula recomendaciones didácticas individualizadas y validadas para el planeamiento. La plataforma cuenta con una arquitectura de resiliencia multicapa respaldada por múltiples servicios de IA de alta disponibilidad, garantizando continuidad operativa constante.",
+    margin + 4, yPos + 9.5, { maxWidth: contentWidth - 8 }
+  );
 
   drawHeaderFooter(4, 5, "Instrumento docente y sistematización de 7.° año");
 
