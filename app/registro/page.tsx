@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import {
   useDocente,
   DOCENTE_DEFAULT,
+  LISTA_DOCENTES_INICIALES,
   CentroEducativoDocente,
   DesgloseNivelSecciones,
 } from "@/context/DocenteContext";
@@ -103,10 +104,14 @@ export default function RegistroDocentePage() {
     { nivel: "9°", activo: true, totalSeccionesColegio: 8, seccionesAtendidasDocente: ["9-1", "9-2", "9-3", "9-4", "9-5"] },
   ];
 
+  const clonarCentros = (lista: CentroEducativoDocente[]): CentroEducativoDocente[] => {
+    return JSON.parse(JSON.stringify(lista));
+  };
+
   const CREAR_CENTRO_DEFAULT = (idNum: number, dreDef = "DRE-01", nomDef = ""): CentroEducativoDocente => {
     const dreObj = LISTA_DRE_MEP.find((d) => d.codigo === dreDef) || LISTA_DRE_MEP[0];
     return {
-      id: `CENTRO-${Date.now()}-${idNum}`,
+      id: `CENTRO-${Date.now()}-${Math.random().toString(36).slice(2, 7)}-${idNum}`,
       nombre: nomDef,
       dreCodigo: dreDef,
       dreNombre: dreObj.nombre,
@@ -118,7 +123,7 @@ export default function RegistroDocentePage() {
 
   const [centros, setCentros] = useState<CentroEducativoDocente[]>(() => {
     if (docente?.centrosEducativos && docente.centrosEducativos.length > 0) {
-      return docente.centrosEducativos;
+      return clonarCentros(docente.centrosEducativos);
     }
     return [
       CREAR_CENTRO_DEFAULT(
@@ -225,15 +230,20 @@ export default function RegistroDocentePage() {
     setTelefono("+506 8888-9999");
     setPin("2617");
     setPinConfirmar("2617");
+    setTipoRol("Asesor Nacional");
     setDreCodigo("DRE-NACIONAL");
     setCircuito("Nivel Nacional / Ámbito General");
     setCodigoPresupuestario("FT-NACIONAL-2027");
     setInstitucion("Asesoría Nacional de Formación Tecnológica (Dimensión 1 y 2)");
     setRol("Asesor de Formación Tecnológica & Administrador General (Dimensión 1 y 2)");
+    if (DOCENTE_DEFAULT.centrosEducativos) {
+      setCentros(clonarCentros(DOCENTE_DEFAULT.centrosEducativos));
+    }
     setErrorValidacion(null);
   };
 
   const cargarPerfilDocentePrueba = (region: "liberia" | "sanjose" | "alajuela") => {
+    setTipoRol("Docente");
     if (region === "liberia") {
       setNombre("Docente Prueba Liberia");
       setCorreo("pruebadocente3@mep.go.cr");
@@ -246,6 +256,8 @@ export default function RegistroDocentePage() {
       setCodigoPresupuestario("SABER-LIBERIA-2027");
       setInstitucion("Liceo Laboratorio de Liberia");
       setRol("Docente de Formación Tecnológica");
+      const d3 = LISTA_DOCENTES_INICIALES.find((d) => d.correoInstitucional === "pruebadocente3@mep.go.cr");
+      if (d3?.centrosEducativos) setCentros(clonarCentros(d3.centrosEducativos));
     } else if (region === "sanjose") {
       setNombre("Docente Prueba San José");
       setCorreo("pruebadocente1@mep.go.cr");
@@ -256,8 +268,10 @@ export default function RegistroDocentePage() {
       setDreCodigo("DRE-01");
       setCircuito("Circuito 01");
       setCodigoPresupuestario("SABER-SJ-2027");
-      setInstitucion("Liceo de Costa Rica");
+      setInstitucion("Liceo de Costa Rica / Colegio Superior de Señoritas / Liceo Rodrigo Facio Brenes");
       setRol("Docente de Formación Tecnológica");
+      const d1 = LISTA_DOCENTES_INICIALES.find((d) => d.correoInstitucional === "pruebadocente1@mep.go.cr");
+      if (d1?.centrosEducativos) setCentros(clonarCentros(d1.centrosEducativos));
     } else {
       setNombre("Docente Prueba Alajuela");
       setCorreo("pruebadocente2@mep.go.cr");
@@ -268,8 +282,10 @@ export default function RegistroDocentePage() {
       setDreCodigo("DRE-04");
       setCircuito("Circuito 02");
       setCodigoPresupuestario("SABER-ALAJUELA-2027");
-      setInstitucion("Liceo Experimental Bilingüe de Alajuela");
+      setInstitucion("Liceo Experimental Bilingüe de Alajuela / CTP de Alajuela");
       setRol("Docente de Formación Tecnológica");
+      const d2 = LISTA_DOCENTES_INICIALES.find((d) => d.correoInstitucional === "pruebadocente2@mep.go.cr");
+      if (d2?.centrosEducativos) setCentros(clonarCentros(d2.centrosEducativos));
     }
     setErrorValidacion(null);
   };
@@ -302,7 +318,8 @@ export default function RegistroDocentePage() {
   // HANDLERS PARA CENTROS EDUCATIVOS Y NIVELES
   // ==========================================
   const handleActualizarCentro = (index: number, campo: keyof CentroEducativoDocente, valor: any) => {
-    const nuevos = [...centros];
+    const nuevos = clonarCentros(centros);
+    if (!nuevos[index]) return;
     if (campo === "dreCodigo") {
       const dreFound = LISTA_DRE_MEP.find((d) => d.codigo === valor) || LISTA_DRE_MEP[0];
       nuevos[index] = {
@@ -318,21 +335,38 @@ export default function RegistroDocentePage() {
   };
 
   const handleAgregarCentro = () => {
-    setCentros([...centros, CREAR_CENTRO_DEFAULT(centros.length + 1)]);
+    const nuevos = clonarCentros(centros);
+    nuevos.push(CREAR_CENTRO_DEFAULT(nuevos.length + 1));
+    setCentros(nuevos);
   };
 
   const handleEliminarCentro = (index: number) => {
     if (centros.length <= 1) return;
-    setCentros(centros.filter((_, i) => i !== index));
+    const nuevos = clonarCentros(centros).filter((_, i) => i !== index);
+    setCentros(nuevos);
+  };
+
+  const handleCambiarCantidadCentros = (cantidad: number) => {
+    const totalDeseado = Math.max(1, Math.min(10, cantidad));
+    const nuevos = clonarCentros(centros);
+    if (totalDeseado > nuevos.length) {
+      for (let i = nuevos.length + 1; i <= totalDeseado; i++) {
+        nuevos.push(CREAR_CENTRO_DEFAULT(i));
+      }
+    } else if (totalDeseado < nuevos.length) {
+      nuevos.splice(totalDeseado);
+    }
+    setCentros(nuevos);
   };
 
   const handleToggleNivelActivo = (centroIndex: number, nivelIndex: number) => {
-    const nuevos = [...centros];
+    const nuevos = clonarCentros(centros);
+    if (!nuevos[centroIndex]?.desgloseNiveles?.[nivelIndex]) return;
     const nivelObj = nuevos[centroIndex].desgloseNiveles[nivelIndex];
     nivelObj.activo = !nivelObj.activo;
     if (!nivelObj.activo) {
       nivelObj.seccionesAtendidasDocente = [];
-    } else if (nivelObj.seccionesAtendidasDocente.length === 0) {
+    } else if (!nivelObj.seccionesAtendidasDocente || nivelObj.seccionesAtendidasDocente.length === 0) {
       const numNivel = nivelObj.nivel.replace(/[^0-9]/g, "") || "9";
       const total = nivelObj.totalSeccionesColegio || 6;
       const mitad = Math.max(1, Math.ceil(total / 2));
@@ -347,11 +381,12 @@ export default function RegistroDocentePage() {
 
   const handleCambiarTotalSecciones = (centroIndex: number, nivelIndex: number, nuevoTotal: number) => {
     const totalValido = Math.max(1, Math.min(25, isNaN(nuevoTotal) ? 1 : nuevoTotal));
-    const nuevos = [...centros];
+    const nuevos = clonarCentros(centros);
+    if (!nuevos[centroIndex]?.desgloseNiveles?.[nivelIndex]) return;
     const nivelObj = nuevos[centroIndex].desgloseNiveles[nivelIndex];
     nivelObj.totalSeccionesColegio = totalValido;
     const numNivel = nivelObj.nivel.replace(/[^0-9]/g, "") || "9";
-    nivelObj.seccionesAtendidasDocente = nivelObj.seccionesAtendidasDocente.filter((sec) => {
+    nivelObj.seccionesAtendidasDocente = (nivelObj.seccionesAtendidasDocente || []).filter((sec) => {
       const secNum = parseInt(sec.split("-")[1] || "99", 10);
       return secNum <= totalValido;
     });
@@ -359,13 +394,15 @@ export default function RegistroDocentePage() {
   };
 
   const handleToggleSeccion = (centroIndex: number, nivelIndex: number, seccionCodigo: string) => {
-    const nuevos = [...centros];
+    const nuevos = clonarCentros(centros);
+    if (!nuevos[centroIndex]?.desgloseNiveles?.[nivelIndex]) return;
     const nivelObj = nuevos[centroIndex].desgloseNiveles[nivelIndex];
-    const existe = nivelObj.seccionesAtendidasDocente.includes(seccionCodigo);
+    const lista = nivelObj.seccionesAtendidasDocente || [];
+    const existe = lista.includes(seccionCodigo);
     if (existe) {
-      nivelObj.seccionesAtendidasDocente = nivelObj.seccionesAtendidasDocente.filter((s) => s !== seccionCodigo);
+      nivelObj.seccionesAtendidasDocente = lista.filter((s) => s !== seccionCodigo);
     } else {
-      nivelObj.seccionesAtendidasDocente = [...nivelObj.seccionesAtendidasDocente, seccionCodigo].sort((a, b) => {
+      nivelObj.seccionesAtendidasDocente = [...lista, seccionCodigo].sort((a, b) => {
         const numA = parseInt(a.split("-")[1] || "0", 10);
         const numB = parseInt(b.split("-")[1] || "0", 10);
         return numA - numB;
@@ -375,11 +412,12 @@ export default function RegistroDocentePage() {
   };
 
   const handleSeleccionarTodasSecciones = (centroIndex: number, nivelIndex: number) => {
-    const nuevos = [...centros];
+    const nuevos = clonarCentros(centros);
+    if (!nuevos[centroIndex]?.desgloseNiveles?.[nivelIndex]) return;
     const nivelObj = nuevos[centroIndex].desgloseNiveles[nivelIndex];
     const numNivel = nivelObj.nivel.replace(/[^0-9]/g, "") || "9";
     const todas: string[] = [];
-    for (let i = 1; i <= nivelObj.totalSeccionesColegio; i++) {
+    for (let i = 1; i <= (nivelObj.totalSeccionesColegio || 6); i++) {
       todas.push(`${numNivel}-${i}`);
     }
     nivelObj.seccionesAtendidasDocente = todas;
@@ -387,7 +425,8 @@ export default function RegistroDocentePage() {
   };
 
   const handleLimpiarSecciones = (centroIndex: number, nivelIndex: number) => {
-    const nuevos = [...centros];
+    const nuevos = clonarCentros(centros);
+    if (!nuevos[centroIndex]?.desgloseNiveles?.[nivelIndex]) return;
     nuevos[centroIndex].desgloseNiveles[nivelIndex].seccionesAtendidasDocente = [];
     setCentros(nuevos);
   };
@@ -478,7 +517,8 @@ export default function RegistroDocentePage() {
       dreCodigoFinal = centros[0]?.dreCodigo || dreCodigo;
       dreNombreFinal = centros[0]?.dreNombre || dreSeleccionada.nombre;
       circuitoFinal = centros[0]?.circuito || circuito;
-      institucionFinal = centros[0]?.nombre || institucion || "Liceo / Colegio de Secundaria";
+      const nombresCentros = centros.map((c) => c.nombre.trim()).filter(Boolean);
+      institucionFinal = nombresCentros.length > 0 ? nombresCentros.join(" / ") : (institucion || "Liceo / Colegio de Secundaria");
       rolFinal = "Docente de Formación Tecnológica";
     }
 
@@ -507,6 +547,35 @@ export default function RegistroDocentePage() {
 
     // Sincronizar automáticamente con perfil global de webapps estáticas
     try {
+      const adaptadoCentros = centros.map((c) => ({
+        id: c.id,
+        nombre: c.nombre,
+        colegio: c.nombre,
+        dreCodigo: c.dreCodigo,
+        dreNombre: c.dreNombre,
+        circuito: c.circuito,
+        desgloseNiveles: c.desgloseNiveles,
+        niveles: {
+          '7': (c.desgloseNiveles || []).some((dn) => dn.nivel.includes("7") && dn.activo && (dn.seccionesAtendidasDocente || []).length > 0),
+          '8': (c.desgloseNiveles || []).some((dn) => dn.nivel.includes("8") && dn.activo && (dn.seccionesAtendidasDocente || []).length > 0),
+          '9': (c.desgloseNiveles || []).some((dn) => dn.nivel.includes("9") && dn.activo && (dn.seccionesAtendidasDocente || []).length > 0),
+        },
+        secciones: {
+          '7': {
+            total: (c.desgloseNiveles?.find((dn) => dn.nivel.includes("7"))?.totalSeccionesColegio) || 6,
+            selected: (c.desgloseNiveles?.find((dn) => dn.nivel.includes("7") && dn.activo)?.seccionesAtendidasDocente) || [],
+          },
+          '8': {
+            total: (c.desgloseNiveles?.find((dn) => dn.nivel.includes("8"))?.totalSeccionesColegio) || 6,
+            selected: (c.desgloseNiveles?.find((dn) => dn.nivel.includes("8") && dn.activo)?.seccionesAtendidasDocente) || [],
+          },
+          '9': {
+            total: (c.desgloseNiveles?.find((dn) => dn.nivel.includes("9"))?.totalSeccionesColegio) || 8,
+            selected: (c.desgloseNiveles?.find((dn) => dn.nivel.includes("9") && dn.activo)?.seccionesAtendidasDocente) || [],
+          },
+        },
+      }));
+
       const perfilGlobal = {
         nombre: nombre.trim(),
         cedula: cedulaLimpia,
@@ -516,7 +585,8 @@ export default function RegistroDocentePage() {
         dreCodigo: dreCodigoFinal,
         dreNombre: dreNombreFinal,
         colegio: institucionFinal,
-        centrosEducativos: centros,
+        institucionNombre: institucionFinal,
+        centrosEducativos: adaptadoCentros,
         niveles: ['7° Año', '8° Año', '9° Año'],
         pin: pinLimpio,
         autenticado: true,
@@ -1192,25 +1262,39 @@ export default function RegistroDocentePage() {
                   </div>
 
                   {/* Selector rápido de cantidad */}
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-black text-slate-700 uppercase tracking-wider">Centros:</span>
-                    <div className="flex items-center gap-1.5">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="text-xs font-black text-slate-700 uppercase tracking-wider">Cantidad:</span>
+                    <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-2xl border border-slate-200 shadow-2xs">
+                      <button
+                        type="button"
+                        onClick={() => handleCambiarCantidadCentros(centros.length - 1)}
+                        disabled={centros.length <= 1}
+                        className="w-8 h-8 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed font-black text-sm flex items-center justify-center text-slate-800 transition-all shadow-2xs cursor-pointer"
+                        title="Reducir cantidad de centros"
+                      >
+                        -
+                      </button>
+                      <span className="w-8 text-center text-xs font-black text-slate-900">
+                        {centros.length}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleCambiarCantidadCentros(centros.length + 1)}
+                        disabled={centros.length >= 10}
+                        className="w-8 h-8 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed font-black text-sm flex items-center justify-center text-slate-800 transition-all shadow-2xs cursor-pointer"
+                        title="Aumentar cantidad de centros"
+                      >
+                        +
+                      </button>
+                    </div>
+
+                    <div className="hidden sm:flex items-center gap-1.5">
                       {[1, 2, 3].map((num) => (
                         <button
                           key={num}
                           type="button"
-                          onClick={() => {
-                            if (num > centros.length) {
-                              const extras: CentroEducativoDocente[] = [];
-                              for (let i = centros.length + 1; i <= num; i++) {
-                                extras.push(CREAR_CENTRO_DEFAULT(i));
-                              }
-                              setCentros([...centros, ...extras]);
-                            } else if (num < centros.length) {
-                              setCentros(centros.slice(0, num));
-                            }
-                          }}
-                          className={`w-9 h-9 rounded-xl font-black text-xs transition-all flex items-center justify-center ${
+                          onClick={() => handleCambiarCantidadCentros(num)}
+                          className={`w-8 h-8 rounded-xl font-black text-xs transition-all flex items-center justify-center cursor-pointer ${
                             centros.length === num
                               ? "bg-emerald-700 text-white shadow-sm"
                               : "bg-slate-100 text-slate-700 hover:bg-slate-200"
@@ -1219,15 +1303,16 @@ export default function RegistroDocentePage() {
                           {num}
                         </button>
                       ))}
-                      <button
-                        type="button"
-                        onClick={handleAgregarCentro}
-                        className="px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold text-xs rounded-xl flex items-center gap-1.5 transition-colors"
-                      >
-                        <Plus size={15} weight="bold" />
-                        <span>Agregar Otro</span>
-                      </button>
                     </div>
+
+                    <button
+                      type="button"
+                      onClick={handleAgregarCentro}
+                      className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 transition-all shadow-xs hover:scale-102 cursor-pointer"
+                    >
+                      <Plus size={15} weight="bold" />
+                      <span>Agregar Otro</span>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1241,7 +1326,7 @@ export default function RegistroDocentePage() {
 
                 return (
                   <div
-                    key={centro.id || centroIdx}
+                    key={`centro-card-${centro.id || centroIdx}`}
                     className="bg-white border-2 border-slate-300 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm relative overflow-hidden"
                   >
                     {/* Encabezado del Centro Educativo */}
