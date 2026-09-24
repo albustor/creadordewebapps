@@ -40,7 +40,7 @@ function logError(testName, error = "") {
 }
 
 function generarTokenSHA256(estudiante, puntaje, timestamp) {
-  const secretoDocente = "DOC-DRE01-7729-MEP-CR-2026-SECRET-KEY";
+  const secretoDocente = "DOC-DRE01-7729-MEP-CR-2027-SECRET-KEY";
   const payload = `${estudiante}|${puntaje}|${timestamp}|${secretoDocente}`;
   return crypto.createHash("sha256").update(payload).digest("hex");
 }

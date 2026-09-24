@@ -369,7 +369,7 @@ function obtenerPreguntasContextuales(opts: OpcionesGeneracionWebApp): PreguntaC
       {
         pregunta: `Caso 2: Para proteger tus evidencias académicas y datos personales, ¿cuál de las siguientes es una contraseña robusta y segura?`,
         opciones: [
-          "Una combinación de más de 12 caracteres con letras mayúsculas, minúsculas, números y símbolos (ej: 'T3cn0!2026#F0rm').",
+          "Una combinación de más de 12 caracteres con letras mayúsculas, minúsculas, números y símbolos (ej: 'T3cn0!2027#F0rm').",
           "Tu fecha de nacimiento o tu nombre seguido de '123'.",
           "La palabra 'password' repetida dos veces.",
         ],

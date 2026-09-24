@@ -1,5 +1,5 @@
 # 📘 Manual de Usuario y Guía Metodológica Oficial
-## Plataforma de Evaluación Diagnóstica y Telemetría en Formación Tecnológica (MEP 2026)
+## Plataforma de Evaluación Diagnóstica y Telemetría en Formación Tecnológica (MEP 2027)
 
 ---
 

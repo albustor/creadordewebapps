@@ -65,7 +65,7 @@ export default function RecomendacionesDUA({
   nivel = "todos",
   seccionSeleccionada = "Todas",
 }: RecomendacionesDUAProps) {
-  const [subTabActiva, setSubTabActiva] = useState<"conceptual" | "procedimental" | "actitudinal" | "planeamiento" | "todos">("conceptual");
+  const [subTabActiva, setSubTabActiva] = useState<"conceptual" | "procedimental" | "actitudinal" | "planeamiento" | "decisiones" | "todos">("conceptual");
   const [aiData, setAiData] = useState<AIAnalisisResponse | null>(null);
   const [cargandoIA, setCargandoIA] = useState<boolean>(false);
   const [errorIA, setErrorIA] = useState<string | null>(null);

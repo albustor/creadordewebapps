@@ -103,7 +103,7 @@ export const DOCENTE_DEFAULT: DocenteData = {
   dreCodigo: "DRE-01",
   dreNombre: "DRE-01 - San José Central",
   circuito: "Circuito 01",
-  codigoPresupuestario: "MEP-LCR-2026",
+  codigoPresupuestario: "MEP-LCR-2027",
   institucionNombre: "Liceo de Costa Rica",
   rol: "Docente Evaluador de Formación Tecnológica",
   asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
@@ -115,7 +115,7 @@ export const DOCENTE_DEFAULT: DocenteData = {
       dreCodigo: "DRE-01",
       dreNombre: "DRE-01 - San José Central",
       circuito: "Circuito 01",
-      codigoPresupuestario: "MEP-LCR-2026",
+      codigoPresupuestario: "MEP-LCR-2027",
       desgloseNiveles: [
         {
           nivel: "7°",
@@ -152,7 +152,7 @@ export const DOCENTE_PRUEBA_REGIONAL: DocenteData = {
   dreCodigo: "DRE-07",
   dreNombre: "Liberia",
   circuito: "Circuito 01",
-  codigoPresupuestario: "SABER-LIBERIA-2026",
+  codigoPresupuestario: "SABER-LIBERIA-2027",
   institucionNombre: "Liceo Laboratorio de Liberia",
   rol: "Docente de Formación Tecnológica",
   asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
@@ -163,7 +163,7 @@ export const DOCENTE_PRUEBA_REGIONAL: DocenteData = {
       dreCodigo: "DRE-07",
       dreNombre: "Liberia",
       circuito: "Circuito 01",
-      codigoPresupuestario: "SABER-LIBERIA-2026",
+      codigoPresupuestario: "SABER-LIBERIA-2027",
       desgloseNiveles: [
         {
           nivel: "7°",
@@ -201,7 +201,7 @@ export const DOCENTE_ASESOR_ALLAN: DocenteData = {
   dreCodigo: "DRE-NACIONAL",
   dreNombre: "Asesoría de Formación Tecnológica",
   circuito: "Nivel Nacional / Ámbito General",
-  codigoPresupuestario: "FT-NACIONAL-2026",
+  codigoPresupuestario: "FT-NACIONAL-2027",
   institucionNombre: "Asesoría Nacional de Formación Tecnológica (III Ciclo)",
   rol: "Asesor de Formación Tecnológica (III Ciclo)",
   asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
@@ -726,7 +726,7 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
                 dreCodigo: usr.dreCodigo || "DRE-NACIONAL",
                 dreNombre: usr.dreNombre || "Asesoría de Formación Tecnológica",
                 circuito: usr.circuito || "Circuito 01",
-                codigoPresupuestario: "FT-2026",
+                codigoPresupuestario: "FT-2027",
                 institucionNombre: usr.institucionNombre || "",
                 asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
                 fechaRegistro: usr.fechaSolicitud || new Date().toISOString(),

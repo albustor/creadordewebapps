@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-title" content="Diagnóstico FT 9°">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#003366">
-  <title>Diagnóstico Integrado 9° - «Aula Inteligente» (MEP - Formación Tecnológica 2026)</title>
+  <title>Diagnóstico Integrado 9° - «Aula Inteligente» (MEP - Formación Tecnológica 2027)</title>
   
   <style>
     :root {
@@ -717,7 +717,7 @@
       </div>
       <div>
         <div class="mep-badge" style="background: #e0f2fe; border: 1px solid #7dd3fc; color: #0369a1;">
-          <span>Formación Tecnológica 2026</span>
+          <span>Formación Tecnológica 2027</span>
         </div>
         <h1 style="font-size: 0.95rem; font-weight: 900; letter-spacing: -0.2px; margin-top: 1px; color: #0f172a;">
           Diagnóstico 9°: «Aula Inteligente» (Módulo 1)
@@ -1698,7 +1698,7 @@
   <script>
     var CONFIG = {
       webAppId: "diag-9no-mod01-aula-inteligente",
-      webAppTitulo: "Diagnóstico Integrado 9°: «Aula Inteligente» - Formación Tecnológica 2026",
+      webAppTitulo: "Diagnóstico Integrado 9°: «Aula Inteligente» - Formación Tecnológica 2027",
       docenteId: "DOC-DRE01-7729",
       nivel: "9° Año - Secundaria",
       totalItems: 10,
@@ -2195,7 +2195,7 @@
       var evaluacion = typeof evaluarCircuitoFisico === "function" ? evaluarCircuitoFisico() : { circuitoValido: false };
       var nCables = Array.isArray(estado.cablesList) ? estado.cablesList.length : 0;
 
-      // Cálculo oficial de los 6 Indicadores Procedimentales MEP 2026 (P1 - P6)
+      // Cálculo oficial de los 6 Indicadores Procedimentales MEP 2027 (P1 - P6)
       var procVec = [
         evaluacion.circuitoValido ? "L" : (nCables >= 3 ? "EP" : "RA"), // P1: Diagramación/Conexión E-P-S
         (evaluacion.sensorAlimentado && evaluacion.sensorEnAnalogico) ? "L" : (evaluacion.sensorAlimentado ? "EP" : "RA"), // P2: Datos sensoriales (LDR analógico)
@@ -2205,7 +2205,7 @@
         (estado.actuadorActual && estado.actuadorActual !== "LED") ? "L" : "EP" // P6: Adaptación de solución
       ];
 
-      // Cálculo oficial de las 4 Actitudes Oficiales MEP 2026 (S1 - S4)
+      // Cálculo oficial de las 4 Actitudes Oficiales MEP 2027 (S1 - S4)
       var actVec = [
         (evaluacion.sensorAlimentado && evaluacion.actuadorAlimentado) ? "L" : "EP", // S1: Gusto por la precisión
         (subRetoActual >= 3) ? "L" : "EP", // S2: Aprender del error

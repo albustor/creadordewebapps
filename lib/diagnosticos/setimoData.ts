@@ -50,7 +50,7 @@ export const DIAGNOSTICO_7MO_DATA: ConfiguracionDiagnosticoNivel = {
       puntos: 1,
       opciones: [
         { id: "a", texto: "a) 123456" },
-        { id: "b", texto: "b) MiNombre2026" },
+        { id: "b", texto: "b) MiNombre2027" },
         { id: "c", texto: "c) F0rt@l3za.T3c#26" },
         { id: "d", texto: "d) password" }
       ]

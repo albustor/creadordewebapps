@@ -410,7 +410,7 @@ export default function DashboardAnaliticoPage() {
                 Panel Central del Docente Evaluador
               </span>
               <span className="text-xs font-bold text-stone-500">
-                MEP • Diagnóstico Secundaria 2026
+                MEP • Diagnóstico Secundaria 2027
               </span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mt-2">
@@ -541,7 +541,7 @@ export default function DashboardAnaliticoPage() {
                     Módulo 1: CyberQuest
                   </span>
                   <span className="px-2.5 py-0.5 rounded-full bg-indigo-400/20 text-indigo-200 text-[10px] font-bold">
-                    III Ciclo MEP 2026
+                    III Ciclo MEP 2027
                   </span>
                 </div>
 
@@ -651,7 +651,7 @@ export default function DashboardAnaliticoPage() {
                     Módulo 1: Robótica y Automatización
                   </span>
                   <span className="px-2.5 py-0.5 rounded-full bg-teal-400/20 text-teal-200 text-[10px] font-bold">
-                    III Ciclo MEP 2026
+                    III Ciclo MEP 2027
                   </span>
                 </div>
 
@@ -749,7 +749,7 @@ export default function DashboardAnaliticoPage() {
                     Módulo 1: Aula Inteligente (IoT)
                   </span>
                   <span className="px-2.5 py-0.5 rounded-full bg-purple-400/20 text-purple-200 text-[10px] font-bold">
-                    III Ciclo MEP 2026
+                    III Ciclo MEP 2027
                   </span>
                 </div>
 

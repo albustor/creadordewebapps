@@ -27,7 +27,7 @@ export const CREAR_CENTRO_DEFAULT = (idNum: number, dreCodigoDefault = "DRE-01")
     dreCodigo: dre.codigo,
     dreNombre: dre.nombre,
     circuito: dre.circuitos?.[0] || "Circuito 01",
-    codigoPresupuestario: "SABER-2026",
+    codigoPresupuestario: "SABER-2027",
     desgloseNiveles: CREAR_DESGLOSE_DEFAULT(),
   };
 };

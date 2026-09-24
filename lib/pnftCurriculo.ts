@@ -205,7 +205,7 @@ export const MECANICAS_INTERACTIVAS = [
 ];
 
 // ============================================================================
-// BASE DE DATOS DE SABERES E INDICADORES OFICIALES - GUÍA DOCENTE 2026 (MEP)
+// BASE DE DATOS DE SABERES E INDICADORES OFICIALES - GUÍA DOCENTE 2027 (MEP)
 // ============================================================================
 export const CATALOGO_III_CICLO: EjeCurricularIIICiclo[] = [
   // ==========================================================================

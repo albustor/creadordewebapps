@@ -49,7 +49,7 @@ export interface PayloadTelemetria {
   reflexionParteC?: any;
 }
 
-const SECRET_SALT = "CreadorWebApps-Token-Integridad-2026-Secret";
+const SECRET_SALT = "CreadorWebApps-Token-Integridad-2027-Secret";
 
 /**
  * Genera el hash SHA-256 para el resultado

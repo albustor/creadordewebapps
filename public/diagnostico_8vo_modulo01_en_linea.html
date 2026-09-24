@@ -1134,7 +1134,7 @@ FIN</div>
     }
   }
 
-  // FORMATEO Y VALIDACIÓN ESTRICTA DE NOMBRES MEP 2026 (8VO)
+  // FORMATEO Y VALIDACIÓN ESTRICTA DE NOMBRES MEP 2027 (8VO)
   function formatFullName(str) {
     if (!str) return '';
     var cleaned = str.trim().replace(/\s+/g, ' ');
@@ -1257,7 +1257,7 @@ FIN</div>
     var sec = document.getElementById('sectionGroup')?.value;
     if (name && sec && answered >= 1) {
       var pingProgreso = {
-        webAppId: "diag-8vo-hardware-algoritmos-2026",
+        webAppId: "diag-8vo-hardware-algoritmos-2027",
         webAppTitulo: "Evaluación Diagnóstica — 8° Año (PNFT)",
         docenteId: urlDocenteId || urlDocenteCedula || "5-0305-0179",
         docenteCedula: urlDocenteCedula || urlDocenteId || "",
@@ -1415,7 +1415,7 @@ FIN</div>
 
     // ENVÍO DE TELEMETRÍA AUTOMÁTICA
     var payloadTelemetria = {
-      webAppId: "diag-8vo-hardware-algoritmos-2026",
+      webAppId: "diag-8vo-hardware-algoritmos-2027",
       webAppTitulo: "Evaluación Diagnóstica — 8° Año (PNFT)",
       docenteId: urlDocenteId || urlDocenteCedula || "5-0305-0179",
       docenteCedula: urlDocenteCedula || urlDocenteId || "",

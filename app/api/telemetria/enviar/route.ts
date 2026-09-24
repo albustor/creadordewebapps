@@ -193,7 +193,7 @@ export async function POST(req: NextRequest) {
             : 80;
         body.puntaje = body.puntaje !== undefined ? body.puntaje : body.porcentaje;
         body.nivel = body.nivel || "7°";
-        body.webAppId = body.webAppId || "diag-7mo-cyberquest-2026";
+        body.webAppId = body.webAppId || "diag-7mo-cyberquest-2027";
         body.webAppTitulo = body.webAppTitulo || "CyberQuest 7°: Diagnóstico de Fundamentos Digitales";
         body.tiempoSegundos = body.tiempoSegundos || 60;
       }

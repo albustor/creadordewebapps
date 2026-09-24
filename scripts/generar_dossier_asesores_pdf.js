@@ -36,7 +36,7 @@ function generarDossierPDF() {
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(7.5);
     doc.setTextColor(...COLOR_PRIMARY);
-    doc.text("MINISTERIO DE EDUCACIÓN PÚBLICA DE COSTA RICA • DRTE • PNFT 2026", margin, 12);
+    doc.text("MINISTERIO DE EDUCACIÓN PÚBLICA DE COSTA RICA • DRTE • PNFT 2027", margin, 12);
     
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7);
@@ -89,7 +89,7 @@ function generarDossierPDF() {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9);
   doc.setTextColor(241, 245, 249);
-  doc.text("Programa Nacional de Formación Tecnológica (PNFT) • Guía Curricular Oficial MEP 2026", margin, 43);
+  doc.text("Programa Nacional de Formación Tecnológica (PNFT) • Guía Curricular Oficial MEP 2027", margin, 43);
   doc.text("Simuladores 2D Interactivos • Matriz Tripartita de Saberes • Telemetría Centralizada e IA", margin, 49);
 
   // Tarjeta de Metadatos Ejecutivos
@@ -215,7 +215,7 @@ function generarDossierPDF() {
   drawHeaderFooter(1, 6, "Resumen Ejecutivo y Visión General");
 
   // =========================================================================
-  // PÁGINA 2: FUNDAMENTACIÓN CURRICULAR Y ENFOQUE TRIPARTITO (MEP 2026)
+  // PÁGINA 2: FUNDAMENTACIÓN CURRICULAR Y ENFOQUE TRIPARTITO (MEP 2027)
   // =========================================================================
   doc.addPage();
   
@@ -229,7 +229,7 @@ function generarDossierPDF() {
   doc.setFontSize(8.5);
   doc.setTextColor(...COLOR_DARK);
   doc.text(
-    "El ecosistema diagnostica el aprendizaje de manera integral, respetando la estructura curricular oficial del PNFT MEP 2026 (Páginas 48 a 55). No se limita a pruebas de selección única, sino que evalúa tres dimensiones complementarias:",
+    "El ecosistema diagnostica el aprendizaje de manera integral, respetando la estructura curricular oficial del PNFT MEP 2027 (Páginas 48 a 55). No se limita a pruebas de selección única, sino que evalúa tres dimensiones complementarias:",
     margin, yPos + 6, { maxWidth: contentWidth }
   );
 
@@ -710,7 +710,7 @@ function generarDossierPDF() {
   doc.text("para la Formación Tecnológica en Tercer Ciclo. Diseñado para optimizar la toma de decisiones pedagógicas docentes.", margin + 4, yPos + 16);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(...COLOR_SECONDARY);
-  doc.text("Asesoría Nacional de Formación Tecnológica • Ciclo Lectivo 2026", margin + 4, yPos + 22);
+  doc.text("Asesoría Nacional de Formación Tecnológica • Ciclo Lectivo 2027", margin + 4, yPos + 22);
 
   drawHeaderFooter(6, 6, "Arquitectura Tecnológica y Despliegue");
 

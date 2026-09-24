@@ -89,7 +89,7 @@ export default function RegistroDocentePage() {
   // DRE y Ubicación (Legacy / Principal)
   const [dreCodigo, setDreCodigo] = useState(normalizarDRECodigo(docente?.dreCodigo));
   const [circuito, setCircuito] = useState(docente?.circuito || "Circuito 01");
-  const [codigoPresupuestario, setCodigoPresupuestario] = useState(docente?.codigoPresupuestario || "SABER-2026");
+  const [codigoPresupuestario, setCodigoPresupuestario] = useState(docente?.codigoPresupuestario || "SABER-2027");
   const [institucion, setInstitucion] = useState(docente?.institucionNombre || "");
   const [rol, setRol] = useState(docente?.rol || "Docente de Formación Tecnológica");
   const ASIGNATURA_UNICA = "Formación Tecnológica (Dimensión 1 y 2)";
@@ -111,7 +111,7 @@ export default function RegistroDocentePage() {
       dreCodigo: dreDef,
       dreNombre: dreObj.nombre,
       circuito: dreObj.circuitos[0] || "Circuito 01",
-      codigoPresupuestario: "SABER-2026",
+      codigoPresupuestario: "SABER-2027",
       desgloseNiveles: CREAR_DESGLOSE_NIVELES_DEFAULT(),
     };
   };
@@ -169,7 +169,7 @@ export default function RegistroDocentePage() {
       const dreNorm = normalizarDRECodigo(docente.dreCodigo);
       setDreCodigo(dreNorm);
       setCircuito(docente.circuito || "Circuito 01");
-      setCodigoPresupuestario(docente.codigoPresupuestario || "SABER-2026");
+      setCodigoPresupuestario(docente.codigoPresupuestario || "SABER-2027");
       setInstitucion(docente.institucionNombre || "");
       setRol(docente.rol || "Docente de Formación Tecnológica");
       if (docente.tipoRol) {
@@ -200,14 +200,14 @@ export default function RegistroDocentePage() {
 
     if (codNorm === "DRE-NACIONAL") {
       setCircuito("Nivel Nacional / Ámbito General");
-      setCodigoPresupuestario("FT-NACIONAL-2026");
+      setCodigoPresupuestario("FT-NACIONAL-2027");
       setInstitucion("Asesoría Nacional de Formación Tecnológica (Dimensión 1 y 2)");
       setRol("Asesor de Formación Tecnológica & Administrador General (Dimensión 1 y 2)");
     } else {
       const found = LISTA_DRE_MEP.find((d) => d.codigo === codNorm);
       const primerCircuito = found?.circuitos?.[0] || "Circuito 01";
       setCircuito(primerCircuito);
-      setCodigoPresupuestario("SABER-2026");
+      setCodigoPresupuestario("SABER-2027");
       if (!institucion || institucion.includes("Asesoría Nacional")) {
         setInstitucion("Liceo / Colegio de Secundaria");
       }
@@ -227,7 +227,7 @@ export default function RegistroDocentePage() {
     setPinConfirmar("2617");
     setDreCodigo("DRE-NACIONAL");
     setCircuito("Nivel Nacional / Ámbito General");
-    setCodigoPresupuestario("FT-NACIONAL-2026");
+    setCodigoPresupuestario("FT-NACIONAL-2027");
     setInstitucion("Asesoría Nacional de Formación Tecnológica (Dimensión 1 y 2)");
     setRol("Asesor de Formación Tecnológica & Administrador General (Dimensión 1 y 2)");
     setErrorValidacion(null);
@@ -243,7 +243,7 @@ export default function RegistroDocentePage() {
       setPinConfirmar("5821");
       setDreCodigo("DRE-07");
       setCircuito("Circuito 01");
-      setCodigoPresupuestario("SABER-LIBERIA-2026");
+      setCodigoPresupuestario("SABER-LIBERIA-2027");
       setInstitucion("Liceo Laboratorio de Liberia");
       setRol("Docente de Formación Tecnológica");
     } else if (region === "sanjose") {
@@ -255,7 +255,7 @@ export default function RegistroDocentePage() {
       setPinConfirmar("3914");
       setDreCodigo("DRE-01");
       setCircuito("Circuito 02");
-      setCodigoPresupuestario("SABER-SJ-2026");
+      setCodigoPresupuestario("SABER-SJ-2027");
       setInstitucion("Liceo de Costa Rica");
       setRol("Docente de Formación Tecnológica");
     } else {
@@ -267,7 +267,7 @@ export default function RegistroDocentePage() {
       setPinConfirmar("7263");
       setDreCodigo("DRE-04");
       setCircuito("Circuito 01");
-      setCodigoPresupuestario("SABER-ALAJUELA-2026");
+      setCodigoPresupuestario("SABER-ALAJUELA-2027");
       setInstitucion("Instituto de Alajuela");
       setRol("Docente de Formación Tecnológica");
     }
@@ -495,7 +495,7 @@ export default function RegistroDocentePage() {
       dreCodigo: dreCodigoFinal,
       dreNombre: dreNombreFinal,
       circuito: circuitoFinal,
-      codigoPresupuestario: dreCodigoFinal === "DRE-NACIONAL" ? "FT-NACIONAL-2026" : codigoPresupuestario,
+      codigoPresupuestario: dreCodigoFinal === "DRE-NACIONAL" ? "FT-NACIONAL-2027" : codigoPresupuestario,
       institucionNombre: institucionFinal,
       rol: rolFinal,
       asignaturas: [ASIGNATURA_UNICA],

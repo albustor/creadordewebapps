@@ -40,7 +40,7 @@ function generarDossier7moPDF() {
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(7.5);
     doc.setTextColor(0, 51, 102); // MEP Blue
-    doc.text("MINISTERIO DE EDUCACIÓN PÚBLICA DE COSTA RICA • DRTE • PNFT 2026", margin, 12);
+    doc.text("MINISTERIO DE EDUCACIÓN PÚBLICA DE COSTA RICA • DRTE • PNFT 2027", margin, 12);
     
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7);
@@ -79,7 +79,7 @@ function generarDossier7moPDF() {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8);
   doc.setTextColor(6, 182, 212);
-  doc.text("PROGRAMA NACIONAL DE FORMACIÓN TECNOLÓGICA • MEP 2026", margin + 4, 15);
+  doc.text("PROGRAMA NACIONAL DE FORMACIÓN TECNOLÓGICA • MEP 2027", margin + 4, 15);
 
   // Título Principal
   doc.setFont('helvetica', 'bold');
@@ -619,7 +619,7 @@ function generarDossier7moPDF() {
   doc.text("Dossier técnico y pedagógico de CyberQuest 7.° Año para la Asesoría Nacional y Equipos Docentes.", margin + 4, yPos + 11);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(6, 182, 212);
-  doc.text("Ecosistema de Formación Tecnológica • Ciclo Lectivo 2026", margin + 4, yPos + 18);
+  doc.text("Ecosistema de Formación Tecnológica • Ciclo Lectivo 2027", margin + 4, yPos + 18);
 
   drawHeaderFooter(5, 5, "Protocolo de Aplicación y Enlaces Oficiales");
 

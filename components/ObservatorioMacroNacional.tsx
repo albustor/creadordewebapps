@@ -242,7 +242,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
                 <GlobeHemisphereWest size={24} weight="bold" />
               </span>
               <span className="text-xs font-black uppercase tracking-widest text-emerald-800">
-                Observatorio Nacional • Formación Tecnológica 2026
+                Observatorio Nacional • Formación Tecnológica 2027
               </span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">

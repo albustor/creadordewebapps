@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-title" content="Diagnóstico FT 9°">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#2e1065">
-  <title>Diagnóstico Integrado 9° - «Aula Inteligente» (MEP - Formación Tecnológica 2026)</title>
+  <title>Diagnóstico Integrado 9° - «Aula Inteligente» (MEP - Formación Tecnológica 2027)</title>
   
   <style>
     :root {
@@ -304,7 +304,7 @@
       grid-template-columns: 1fr 1.15fr 1fr;
       gap: 8px;
       align-items: stretch;
-      z-index: 10;
+      z-index: 1;
     }
 
     #svgCablesLayer {
@@ -314,14 +314,14 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 5;
+      z-index: 50;
     }
 
     .svg-wire {
       fill: none;
-      stroke-width: 3.5;
+      stroke-width: 3.8;
       stroke-linecap: round;
-      filter: drop-shadow(0 1px 3px rgba(0,0,0,0.25));
+      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.45));
       transition: stroke-dashoffset 0.5s ease;
     }
 
@@ -405,36 +405,37 @@
       font-weight: 800;
       margin: 2px 0;
       cursor: pointer;
-      background: #f1f5f9;
-      color: #1e293b;
-      border: 1.5px solid #cbd5e1;
+      background: #0f172a;
+      color: #ffffff;
+      border: 1.5px solid #334155;
       transition: all 0.15s;
       user-select: none;
       min-height: 28px;
     }
 
     .pin-terminal:hover {
-      background: #e0f2fe;
-      border-color: #7dd3fc;
+      background: #1e293b;
+      border-color: #64748b;
+      color: #ffffff;
     }
 
     .pin-terminal.connected {
-      background: #dcfce7 !important;
-      color: #15803d !important;
-      border-color: #10b981 !important;
-      box-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
+      background: #0284c7 !important;
+      color: #ffffff !important;
+      border-color: #38bdf8 !important;
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
     }
 
     .pin-terminal.selected-for-wire {
-      background: #fef3c7 !important;
-      color: #b45309 !important;
-      border-color: #f59e0b !important;
+      background: #7c3aed !important;
+      color: #ffffff !important;
+      border-color: #a855f7 !important;
       animation: pulseWirePin 0.8s infinite alternate;
     }
 
     @keyframes pulseWirePin {
       from { transform: scale(1); }
-      to { transform: scale(1.05); box-shadow: 0 0 8px #f59e0b; }
+      to { transform: scale(1.05); box-shadow: 0 0 8px #a855f7; }
     }
 
     .aula-sim-container {
@@ -685,7 +686,7 @@
       </div>
       <div>
         <div class="mep-badge" style="background: #f3e8ff; border: 1px solid #d8b4fe; color: #6b21a8;">
-          <span>Formación Tecnológica 2026</span>
+          <span>Formación Tecnológica 2027</span>
         </div>
         <h1 style="font-size: 0.95rem; font-weight: 900; letter-spacing: -0.2px; margin-top: 1px; color: #ffffff;">
           Diagnóstico 9°: «Aula Inteligente» (Módulo 1)
@@ -1101,9 +1102,9 @@
               </div>
 
               <div style="margin-top: 4px; display: flex; flex-direction: column; gap: 3px;">
-                <div class="pin-terminal" id="pin_sensor_vcc" onclick="clickPin('sensor_vcc')">🔴 VCC (5V)</div>
+                <div class="pin-terminal" id="pin_sensor_vcc" onclick="clickPin('sensor_vcc')">⚫ VCC (5V)</div>
                 <div class="pin-terminal" id="pin_sensor_gnd" onclick="clickPin('sensor_gnd')">⚫ GND</div>
-                <div class="pin-terminal" id="pin_sensor_sig" onclick="clickPin('sensor_sig')">🟢 Pin A0</div>
+                <div class="pin-terminal" id="pin_sensor_sig" onclick="clickPin('sensor_sig')">⚫ Pin A0</div>
               </div>
             </div>
 
@@ -1120,12 +1121,12 @@
 
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin-top: 3px;">
                 <div style="display: flex; flex-direction: column; gap: 3px;">
-                  <div class="pin-terminal" id="pin_mcu_5v" onclick="clickPin('mcu_5v')">🔴 5V</div>
+                  <div class="pin-terminal" id="pin_mcu_5v" onclick="clickPin('mcu_5v')">⚫ 5V</div>
                   <div class="pin-terminal" id="pin_mcu_gnd" onclick="clickPin('mcu_gnd')">⚫ GND</div>
                 </div>
                 <div style="display: flex; flex-direction: column; gap: 3px;">
-                  <div class="pin-terminal" id="pin_mcu_a0" onclick="clickPin('mcu_a0')">🟢 A0</div>
-                  <div class="pin-terminal" id="pin_mcu_d9" onclick="clickPin('mcu_d9')">🟡 D9</div>
+                  <div class="pin-terminal" id="pin_mcu_a0" onclick="clickPin('mcu_a0')">⚫ A0</div>
+                  <div class="pin-terminal" id="pin_mcu_d9" onclick="clickPin('mcu_d9')">⚫ D9</div>
                 </div>
               </div>
 
@@ -1142,7 +1143,7 @@
               </div>
 
               <div style="margin-top: 4px; display: flex; flex-direction: column; gap: 3px;">
-                <div class="pin-terminal" id="pin_act_sig" onclick="clickPin('act_sig')">🟡 Pin D9</div>
+                <div class="pin-terminal" id="pin_act_sig" onclick="clickPin('act_sig')">⚫ Pin D9</div>
                 <div class="pin-terminal" id="pin_act_gnd" onclick="clickPin('act_gnd')">⚫ GND</div>
               </div>
 
@@ -1443,7 +1444,7 @@
 
     var CONFIG = {
       webAppId: "diag-9no-mod01-aula-inteligente",
-      webAppTitulo: "Diagnóstico Integrado 9°: «Aula Inteligente» - Formación Tecnológica 2026",
+      webAppTitulo: "Diagnóstico Integrado 9°: «Aula Inteligente» - Formación Tecnológica 2027",
       docenteId: "1-0892-0456",
       nivel: "9° Año - Secundaria",
       totalItems: 10,
@@ -1476,6 +1477,7 @@
         act_sig: false,
         act_gnd: false
       },
+      conexiones: [],
       subRetoActual: 1,
       reto3Iniciado: false,
       reto3Diagnostico: null,
@@ -1909,10 +1911,7 @@
         return;
       }
 
-      if (num === 4 && (!estado.cables.ldr_vcc || !estado.cables.ldr_gnd || !estado.cables.ldr_sig || !estado.cables.act_sig || !estado.cables.act_gnd)) {
-        alert("⚠️ Debes completar las conexiones del simulador en la Parte B (5/5 terminales conectados) antes de generar el informe final.");
-        return;
-      }
+
 
       estado.seccionActual = num;
       for (var i = 1; i <= 4; i++) {
@@ -2120,6 +2119,34 @@
       document.getElementById("badgeProgresoHeader").innerText = "Progreso: " + prog + "%";
     }
 
+    function formatPinName(pinId) {
+      var map = {
+        "sensor_vcc": "Sensor VCC (5V)",
+        "sensor_gnd": "Sensor GND",
+        "sensor_sig": "Sensor Pin A0",
+        "mcu_5v": "MCU 5V",
+        "mcu_gnd": "MCU GND",
+        "mcu_a0": "MCU A0",
+        "mcu_d9": "MCU D9",
+        "act_sig": "Actuador Pin D9",
+        "act_gnd": "Actuador GND"
+      };
+      return map[pinId] || (pinId ? pinId.toUpperCase() : "");
+    }
+
+    function getCableColor(p1, p2) {
+      var pair = [p1, p2].sort().join("__");
+      if (pair.includes("sensor_vcc") && pair.includes("mcu_5v")) return "#ef4444";
+      if ((pair.includes("sensor_gnd") && pair.includes("mcu_gnd")) || (pair.includes("act_gnd") && pair.includes("mcu_gnd"))) return "#38bdf8";
+      if (pair.includes("sensor_sig") && pair.includes("mcu_a0")) return "#10b981";
+      if (pair.includes("act_sig") && pair.includes("mcu_d9")) return "#f59e0b";
+      if (pair.includes("vcc") || pair.includes("5v")) return "#f87171";
+      if (pair.includes("gnd")) return "#7dd3fc";
+      if (pair.includes("a0") || pair.includes("sig")) return "#34d399";
+      if (pair.includes("d9")) return "#fbbf24";
+      return "#c084fc";
+    }
+
     function clickPin(pinId) {
       playBeep(600, "triangle", 0.05);
 
@@ -2127,7 +2154,7 @@
         estado.pinSeleccionado = pinId;
         var el = document.getElementById("pin_" + pinId);
         if (el) el.classList.add("selected-for-wire");
-        logSerial("🔌 Pin seleccionado: [" + pinId.toUpperCase() + "]. Haz clic en el pin de destino en la otra tarjeta.", "info");
+        logSerial("🔌 Pin seleccionado: [" + formatPinName(pinId) + "]. Haz clic en el pin de destino para trazar la conexión.", "info");
       } else {
         var p1 = estado.pinSeleccionado;
         var p2 = pinId;
@@ -2138,33 +2165,62 @@
 
         if (p1 === p2) return;
 
-        var match = CONEXIONES_VALIDAS.find(function(c) {
+        if (!Array.isArray(estado.conexiones)) estado.conexiones = [];
+
+        var existeIdx = estado.conexiones.findIndex(function(c) {
           return (c.p1 === p1 && c.p2 === p2) || (c.p1 === p2 && c.p2 === p1);
         });
 
-        if (match) {
-          estado.cables[match.cableId] = true;
-          playBeep(1000, "sine", 0.15);
-          logSerial("✅ Conexión establecida: " + match.nombre, "ok");
+        if (existeIdx >= 0) {
+          // Si ya existe, desconectar el cable
+          estado.conexiones.splice(existeIdx, 1);
+          playBeep(350, "sawtooth", 0.12);
+          logSerial("✂️ Cable desconectado entre [" + formatPinName(p1) + " ↔ " + formatPinName(p2) + "].", "warn");
         } else {
-          playBeep(200, "sawtooth", 0.2);
-          logSerial("⚠️ Pines incompatibles: [" + p1 + " ↔ " + p2 + "]. Revisa polaridad o tipo de señal.", "warn");
+          // Conectar libremente los dos pines
+          var nuevoCable = {
+            p1: p1,
+            p2: p2,
+            id: "c_" + p1 + "_" + p2,
+            color: getCableColor(p1, p2)
+          };
+          estado.conexiones.push(nuevoCable);
+          playBeep(950, "sine", 0.12);
+
+          var match = CONEXIONES_VALIDAS.find(function(c) {
+            return (c.p1 === p1 && c.p2 === p2) || (c.p1 === p2 && c.p2 === p1);
+          });
+
+          if (match) {
+            logSerial("✅ Conexión establecida: " + match.nombre, "ok");
+          } else {
+            logSerial("🔌 Cable conectado: [" + formatPinName(p1) + " ↔ " + formatPinName(p2) + "].", "info");
+            if ((p1.includes("5v") || p1.includes("vcc")) && (p2.includes("gnd"))) {
+              logSerial("⚠️ Aviso de circuito: Conexión entre terminal positivo y masa GND.", "warn");
+            }
+          }
         }
 
         verificarEstadoCircuito();
         redibujarCablesSVG();
+        guardarProgresoEnLocalStorage();
+        enviarProgresoEnTiempoReal();
       }
     }
 
     function limpiarCables() {
+      estado.conexiones = [];
       for (var k in estado.cables) estado.cables[k] = false;
       playBeep(300, "sine", 0.15);
       verificarEstadoCircuito();
       redibujarCablesSVG();
       logSerial("🧹 Todos los cables desconectados.", "warn");
+      guardarProgresoEnLocalStorage();
+      enviarProgresoEnTiempoReal();
     }
 
     function restaurarCircuitoValores() {
+      estado.conexiones = [];
       for (var k in estado.cables) estado.cables[k] = false;
       estado.fallaInyectada = 0;
       estado.luzActual = 180;
@@ -2174,87 +2230,73 @@
       verificarEstadoCircuito();
       redibujarCablesSVG();
       logSerial("🔄 Circuito restaurado al estado inicial.", "info");
+      guardarProgresoEnLocalStorage();
+      enviarProgresoEnTiempoReal();
     }
 
     function sincronizarYValidarConexion() {
-      var conectados = 0;
-      for (var k in estado.cables) {
-        if (estado.cables[k]) conectados++;
-      }
-
+      var numConexiones = Array.isArray(estado.conexiones) ? estado.conexiones.length : 0;
       var faltaLDR = !estado.cables.ldr_sig || !estado.cables.ldr_vcc || !estado.cables.ldr_gnd;
       var faltaAct = !estado.cables.act_sig || !estado.cables.act_gnd;
 
-      if (conectados === 5 && !faltaLDR && !faltaAct) {
+      if (!faltaLDR && !faltaAct) {
         playBeep(1200, "sine", 0.25);
         logSerial("🎉 ¡VALIDACIÓN EXITOSA! Conexiones (E-P-S) y polaridades 100% correctas.", "ok");
-        alert("¡Excelente! Circuito 100% verificado y enlazado. Ahora continúa con la Parte C (Reflexión).");
+        alert("🎉 ¡Excelente! Circuito 100% verificado y enlazado. Puedes continuar a la siguiente parte cuando lo desees.");
       } else {
-        playBeep(300, "sawtooth", 0.2);
-        var detalle = [];
-        if (faltaLDR) detalle.push("Sensor LDR incompleto (revisa 5V, GND y Señal A0)");
-        if (faltaAct) detalle.push("Actuador incompleto (revisa Pin D9 y GND)");
-        logSerial("⚠️ Conexión Incompleta (" + conectados + "/5 cables).", "warn");
-        alert("Conexión incompleta (" + conectados + " de 5 conexiones realizadas).\n\n" + detalle.join("\n") + "\n\nRevisa el monitor serial para completar el reto.");
+        playBeep(450, "triangle", 0.15);
+        logSerial("ℹ️ Diagnóstico registrado (" + numConexiones + " conexiones en el banco de hardware).", "info");
+        alert("ℹ️ Conexiones registradas en el diagnóstico (" + numConexiones + " cables trazados).\n\nPuedes continuar con tu diagnóstico o ajustar los cables según tu análisis.");
       }
     }
 
     function verificarEstadoCircuito() {
-      var conectados = 0;
-      var total = Object.keys(estado.cables).length;
-      for (var k in estado.cables) {
-        if (estado.cables[k]) conectados++;
+      if (!Array.isArray(estado.conexiones)) estado.conexiones = [];
+
+      function hasConn(pa, pb) {
+        return estado.conexiones.some(function(c) {
+          return (c.p1 === pa && c.p2 === pb) || (c.p1 === pb && c.p2 === pa);
+        });
       }
 
-      document.getElementById("labelCablesConteo").innerText = "Cables: " + conectados + " / " + total;
+      estado.cables.ldr_vcc = hasConn('sensor_vcc', 'mcu_5v');
+      estado.cables.ldr_gnd = hasConn('sensor_gnd', 'mcu_gnd');
+      estado.cables.ldr_sig = hasConn('sensor_sig', 'mcu_a0');
+      estado.cables.act_sig = hasConn('act_sig', 'mcu_d9');
+      estado.cables.act_gnd = hasConn('act_gnd', 'mcu_gnd');
 
-      var pinSensorVcc = document.getElementById("pin_sensor_vcc");
-      if (pinSensorVcc) pinSensorVcc.className = "pin-terminal" + (estado.cables.ldr_vcc ? " connected" : "");
+      var totalConex = estado.conexiones.length;
+      var labelConteo = document.getElementById("labelCablesConteo");
+      if (labelConteo) labelConteo.innerText = "Cables: " + totalConex + " / 5";
 
-      var pinSensorGnd = document.getElementById("pin_sensor_gnd");
-      if (pinSensorGnd) pinSensorGnd.className = "pin-terminal" + (estado.cables.ldr_gnd ? " connected" : "");
-
-      var pinSensorSig = document.getElementById("pin_sensor_sig");
-      if (pinSensorSig) pinSensorSig.className = "pin-terminal" + (estado.cables.ldr_sig ? " connected" : "");
-
-      var pinMcu5v = document.getElementById("pin_mcu_5v");
-      if (pinMcu5v) pinMcu5v.className = "pin-terminal" + (estado.cables.ldr_vcc ? " connected" : "");
-
-      var pinMcuGnd = document.getElementById("pin_mcu_gnd");
-      if (pinMcuGnd) pinMcuGnd.className = "pin-terminal" + ((estado.cables.ldr_gnd || estado.cables.act_gnd) ? " connected" : "");
-
-      var pinMcuA0 = document.getElementById("pin_mcu_a0");
-      if (pinMcuA0) pinMcuA0.className = "pin-terminal" + (estado.cables.ldr_sig ? " connected" : "");
-
-      var pinMcuD9 = document.getElementById("pin_mcu_d9");
-      if (pinMcuD9) pinMcuD9.className = "pin-terminal" + (estado.cables.act_sig ? " connected" : "");
-
-      var pinActSig = document.getElementById("pin_act_sig");
-      if (pinActSig) pinActSig.className = "pin-terminal" + (estado.cables.act_sig ? " connected" : "");
-
-      var pinActGnd = document.getElementById("pin_act_gnd");
-      if (pinActGnd) pinActGnd.className = "pin-terminal" + (estado.cables.act_gnd ? " connected" : "");
+      var allPinIds = ["sensor_vcc", "sensor_gnd", "sensor_sig", "mcu_5v", "mcu_gnd", "mcu_a0", "mcu_d9", "act_sig", "act_gnd"];
+      allPinIds.forEach(function(pid) {
+        var el = document.getElementById("pin_" + pid);
+        if (el) {
+          var isConn = estado.conexiones.some(function(c) { return c.p1 === pid || c.p2 === pid; });
+          if (isConn) el.classList.add("connected");
+          else el.classList.remove("connected");
+        }
+      });
 
       var status = document.getElementById("mcuStatusBadge");
-      var circuitoCompleto = (conectados >= 5);
+      var circuitoValido = (estado.cables.ldr_sig && estado.cables.ldr_vcc && estado.cables.ldr_gnd && estado.cables.act_sig && estado.cables.act_gnd);
 
-      if (circuitoCompleto) {
-        status.innerText = "✅ Enlazado (5/5)";
-        status.style.color = "#15803d";
-      } else {
-        status.innerText = "Conexiones: " + conectados + "/" + total;
-        status.style.color = "#0369a1";
-      }
-
-      if (subRetoActual === 3 && estado.cables.ldr_sig) {
-        var status3 = document.getElementById("statusCorreccionReto3");
-        if (status3) {
-          status3.innerHTML = "✅ Conexión física actualizada en el simulador.";
-          status3.style.color = "#15803d";
+      if (status) {
+        if (circuitoValido) {
+          status.innerText = "✅ Enlazado (5/5 Correcto)";
+          status.style.color = "#15803d";
+        } else if (totalConex > 0) {
+          status.innerText = "Conexiones activas: " + totalConex + " cable(s)";
+          status.style.color = "#0369a1";
+        } else {
+          status.innerText = "Sin cablear";
+          status.style.color = "#64748b";
         }
       }
 
-      actualizarSimulador(document.getElementById("sliderLuz").value);
+      var slider = document.getElementById("sliderLuz");
+      if (slider) actualizarSimulador(slider.value);
     }
 
     function redibujarCablesSVG() {
@@ -2265,35 +2307,30 @@
       var bRect = board.getBoundingClientRect();
       svg.innerHTML = "";
 
-      var cablesADibujar = [
-        { cId: "ldr_vcc", pA: "pin_sensor_vcc", pB: "pin_mcu_5v", color: "#ef4444" },
-        { cId: "ldr_gnd", pA: "pin_sensor_gnd", pB: "pin_mcu_gnd", color: "#38bdf8" },
-        { cId: "ldr_sig", pA: "pin_sensor_sig", pB: "pin_mcu_a0", color: "#10b981" },
-        { cId: "act_sig", pA: "pin_mcu_d9", pB: "pin_act_sig", color: "#f59e0b" },
-        { cId: "act_gnd", pA: "pin_act_gnd", pB: "pin_mcu_gnd", color: "#38bdf8" }
-      ];
+      if (!Array.isArray(estado.conexiones)) estado.conexiones = [];
 
-      cablesADibujar.forEach(function(item) {
-        if (estado.cables[item.cId]) {
-          var elA = document.getElementById(item.pA);
-          var elB = document.getElementById(item.pB);
-          if (elA && elB) {
-            var rA = elA.getBoundingClientRect();
-            var rB = elB.getBoundingClientRect();
+      estado.conexiones.forEach(function(item) {
+        var elA = document.getElementById("pin_" + item.p1);
+        var elB = document.getElementById("pin_" + item.p2);
+        if (elA && elB) {
+          var rA = elA.getBoundingClientRect();
+          var rB = elB.getBoundingClientRect();
 
-            var x1 = (rA.left + rA.width / 2) - bRect.left;
-            var y1 = (rA.top + rA.height / 2) - bRect.top;
-            var x2 = (rB.left + rB.width / 2) - bRect.left;
-            var y2 = (rB.top + rB.height / 2) - bRect.top;
+          var x1 = (rA.left + rA.width / 2) - bRect.left;
+          var y1 = (rA.top + rA.height / 2) - bRect.top;
+          var x2 = (rB.left + rB.width / 2) - bRect.left;
+          var y2 = (rB.top + rB.height / 2) - bRect.top;
 
-            var dx = (x2 - x1) * 0.4;
-            var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-            var d = "M " + x1 + " " + y1 + " C " + (x1 + dx) + " " + (y1 - 25) + ", " + (x2 - dx) + " " + (y2 - 25) + ", " + x2 + " " + y2;
-            path.setAttribute("d", d);
-            path.setAttribute("class", "svg-wire wire-active-pulse");
-            path.setAttribute("stroke", item.color);
-            svg.appendChild(path);
-          }
+          var dist = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+          var archHeight = Math.min(50, Math.max(25, dist * 0.22));
+
+          var dx = (x2 - x1) * 0.35;
+          var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+          var d = "M " + x1 + " " + y1 + " C " + (x1 + dx) + " " + (y1 - archHeight) + ", " + (x2 - dx) + " " + (y2 - archHeight) + ", " + x2 + " " + y2;
+          path.setAttribute("d", d);
+          path.setAttribute("class", "svg-wire wire-active-pulse");
+          path.setAttribute("stroke", item.color || "#c084fc");
+          svg.appendChild(path);
         }
       });
     }

@@ -268,7 +268,7 @@ async function auditBrowserPages() {
         dreCodigo: "DRE-NACIONAL",
         dreNombre: "Asesoría de Formación Tecnológica",
         circuito: "Nivel Nacional / Ámbito General",
-        codigoPresupuestario: "FT-NACIONAL-2026",
+        codigoPresupuestario: "FT-NACIONAL-2027",
         institucionNombre: "Asesoría Nacional de Formación Tecnológica (Dimensión 1 y 2)",
         rol: "Asesor de Formación Tecnológica & Administrador General (Dimensión 1 y 2)",
         asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],

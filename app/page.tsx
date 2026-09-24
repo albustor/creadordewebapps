@@ -166,7 +166,7 @@ export default function HomePage() {
     let circuitoFinal = "Circuito 01";
     let institucionFinal = regInstitucion.trim() || "Liceo / Colegio de Secundaria";
     let rolFinal = "Docente de Formación Tecnológica";
-    let codigoPresupuestarioFinal = "SABER-2026";
+    let codigoPresupuestarioFinal = "SABER-2027";
     let centrosFinales = regCentros;
 
     const esSuperAdminAlberto = correoLimpio === "alberto.bustos.ortega@mep.go.cr";
@@ -179,7 +179,7 @@ export default function HomePage() {
       rolFinal = esSuperAdminAlberto
         ? "Super Administrador & Asesor Nacional"
         : "Asesor de Formación Tecnológica";
-      codigoPresupuestarioFinal = "FT-NACIONAL-2026";
+      codigoPresupuestarioFinal = "FT-NACIONAL-2027";
     } else if (tipoRol === "Asesor Regional") {
       const dreEncontrada = LISTA_DRE_REGIONALES.find((d) => d.codigo === regDRE) || LISTA_DRE_REGIONALES[0];
       dreCodigoFinal = dreEncontrada.codigo;
@@ -187,7 +187,7 @@ export default function HomePage() {
       circuitoFinal = dreEncontrada.circuitos[0] || "Circuito 01";
       institucionFinal = `Asesoría Regional de Educación - ${dreEncontrada.nombre}`;
       rolFinal = "Asesor Regional de Educación";
-      codigoPresupuestarioFinal = `REG-${dreEncontrada.codigo}-2026`;
+      codigoPresupuestarioFinal = `REG-${dreEncontrada.codigo}-2027`;
     } else {
       const centrosConNombre = regCentros.filter((c) => c.nombre && c.nombre.trim().length > 0);
       if (centrosConNombre.length === 0) {

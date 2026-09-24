@@ -148,7 +148,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     let circuitoFinal = "Circuito 01";
     let institucionFinal = regInstitucion.trim() || "Liceo / Colegio de Secundaria";
     let rolFinal = "Docente de Formación Tecnológica";
-    let codigoPresupuestarioFinal = "SABER-2026";
+    let codigoPresupuestarioFinal = "SABER-2027";
     let centrosFinales = regCentros;
 
     if (tipoRol === "Asesor Nacional" || correoLimpio === "alberto.bustos.ortega@mep.go.cr") {
@@ -157,7 +157,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
       circuitoFinal = "Nivel Nacional / Ámbito General";
       institucionFinal = "Asesoría Nacional de Formación Tecnológica (Dimensión 1 y 2)";
       rolFinal = "Asesor de Formación Tecnológica & Administrador General (Dimensión 1 y 2)";
-      codigoPresupuestarioFinal = "FT-NACIONAL-2026";
+      codigoPresupuestarioFinal = "FT-NACIONAL-2027";
     } else if (tipoRol === "Asesor Regional") {
       const dreEncontrada = LISTA_DRE_REGIONALES.find((d) => d.codigo === regDRE) || LISTA_DRE_REGIONALES[0];
       dreCodigoFinal = dreEncontrada.codigo;
@@ -165,7 +165,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
       circuitoFinal = dreEncontrada.circuitos[0] || "Circuito 01";
       institucionFinal = `Asesoría Regional de Educación - ${dreEncontrada.nombre}`;
       rolFinal = "Asesor Regional de Educación";
-      codigoPresupuestarioFinal = `REG-${dreEncontrada.codigo}-2026`;
+      codigoPresupuestarioFinal = `REG-${dreEncontrada.codigo}-2027`;
     } else {
       const centrosConNombre = regCentros.filter((c) => c.nombre && c.nombre.trim().length > 0);
       if (centrosConNombre.length === 0) {
