@@ -66,12 +66,72 @@ export async function GET(req: NextRequest) {
       `,
     };
 
+    // 1. Despacho real de Correo Electrónico Oficial por Resend
+    let envioEmailReal = false;
+    const resendApiKey = process.env.RESEND_API_KEY;
+    if (resendApiKey) {
+      try {
+        const resCorreo = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${resendApiKey}`,
+            "Content-Type": "application/json",
+          },
+          signal: AbortSignal.timeout(6000),
+          body: JSON.stringify({
+            from: "Auditoría IA MEP <onboarding@resend.dev>",
+            to: ["alberto.bustos.ortega@mep.go.cr"],
+            subject: `[AUDITORÍA IA 5:00 AM] Estado de Modelos y Regla de Completitud - ${new Date().toLocaleDateString("es-CR")}`,
+            html: reporteEmail.cuerpoHtml,
+          }),
+        });
+        if (resCorreo.ok) envioEmailReal = true;
+      } catch (e) {
+        console.error("Error despachando correo de auditoría:", e);
+      }
+    }
+
+    // 2. Despacho real de WhatsApp por Evolution API
+    let envioWhatsAppReal = false;
+    const evolutionUrl = process.env.EVOLUTION_URL?.replace(/\/$/, "");
+    const evolutionApiKey = process.env.EVOLUTION_API_KEY;
+    const evolutionInstance = process.env.EVOLUTION_INSTANCE_NAME;
+    const adminPhone = process.env.ADMIN_WHATSAPP_NUMBER || "50688887777";
+
+    if (evolutionUrl && evolutionApiKey && evolutionInstance) {
+      try {
+        const resWp = await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
+          method: "POST",
+          headers: {
+            apikey: evolutionApiKey,
+            apiKey: evolutionApiKey,
+            "Content-Type": "application/json",
+          },
+          signal: AbortSignal.timeout(6000),
+          body: JSON.stringify({
+            number: adminPhone,
+            text: mensajeWhatsApp,
+            textMessage: { text: mensajeWhatsApp },
+          }),
+        });
+        if (resWp.ok) envioWhatsAppReal = true;
+      } catch (e) {
+        console.error("Error despachando WhatsApp de auditoría:", e);
+      }
+    }
+
     return NextResponse.json({
       success: true,
       timestamp: new Date().toISOString(),
       zonaHoraria: "America/Costa_Rica (UTC-6)",
       auditoria,
       reglaCompletitud,
+      despachoReal: {
+        emailEnviado: envioEmailReal,
+        destinatarioEmail: reporteEmail.destinatario,
+        whatsAppEnviado: envioWhatsAppReal,
+        numeroWhatsApp: adminPhone,
+      },
       reporteEmail,
       payloadWhatsApp: mensajeWhatsApp,
     });

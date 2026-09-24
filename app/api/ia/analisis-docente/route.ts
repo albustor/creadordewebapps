@@ -192,15 +192,20 @@ ${JSON.stringify(
   2
 )}
 
-INSTRUCCIÓN ESPECIAL:
-Si observas estudiantes con calificaciones bajas en el área socioafectiva (Nivel C en S1-S7) o cognitiva (RA en Ind 1-10), DEBES DESTACARLO EXPLÍCITAMENTE y proponer acciones pedagógicas y socioemocionales concretas para atender esa debilidad en la síntesis y en el plan individual.
+INSTRUCCIÓN ESPECIAL Y DIRECTRICES CURRICULARES:
+1. Si observas estudiantes con calificaciones bajas en el área socioafectiva (Nivel C en S1-S7) o cognitiva (RA en Ind 1-10), DEBES DESTACARLO EXPLÍCITAMENTE y proponer acciones pedagógicas y socioemocionales concretas para atender esa debilidad en la síntesis y en el plan individual.
+2. Todas las recomendaciones deben articularse en la tríada oficial:
+   - Saber (conceptual): Comprensión y lenguaje técnico.
+   - Saber hacer (procedimental): Ejecución de tareas, conexiones físicas y algoritmos.
+   - Saber ser / Saber convivir (actitudinal): Autorregulación, perseverancia, empatía y resiliencia ante el error.
+3. PROHIBICIÓN ABSOLUTA: No utilices fórmulas mecanicistas ni anglicismos como "(I do, We do, You do)" o "Yo hago, Nosotros hacemos, Tú haces". Basa toda recomendación en el Diseño Universal para el Aprendizaje (DUA) y mediación activa formativa.
 
 Responde ÚNICAMENTE con un JSON válido con esta estructura exacta:
 {
   "resumenEjecutivo": "Síntesis formal del desempeño global del grupo en las 3 dimensiones (2-3 oraciones).",
-  "sintesisCognitiva": "Diagnóstico específico de la dimensión cognitiva con porcentajes reales y acciones concretas de nivelación.",
-  "sintesisPsicomotora": "Diagnóstico específico de la dimensión psicomotora con destrezas observadas y estrategias de taller.",
-  "sintesisSocioafectiva": "Diagnóstico específico de la dimensión socioafectiva reflejando con exactitud si hubo niveles bajos (C) o altos (A) en gestión de frustración, resiliencia y actitud.",
+  "sintesisCognitiva": "Diagnóstico específico del Saber (conceptual) con porcentajes reales y acciones concretas de nivelación.",
+  "sintesisPsicomotora": "Diagnóstico específico del Saber Hacer (procedimental y psicomotor) con destrezas observadas y estrategias de taller.",
+  "sintesisSocioafectiva": "Diagnóstico específico del Saber Ser (actitudinal y socioafectivo) reflejando con exactitud si hubo niveles bajos (C) o altos (A) en gestión de frustración, resiliencia y actitud.",
   "orientacionDUA": "Orientación para el Planeamiento Didáctico Oficial MEP aplicando principios DUA según las brechas detectadas.",
   "estudiantesAcompaniamiento": [
     {
@@ -214,7 +219,7 @@ Responde ÚNICAMENTE con un JSON válido con esta estructura exacta:
   }
 }`;
 
-    const systemInstruction = `Eres un Asesor Pedagógico Especialista en Formación Tecnológica y Evaluación Formativa del MEP. Tu misión es analizar datos reales de evaluación en 3 dimensiones (cognitiva, psicomotora y socioafectiva) y emitir diagnósticos y planes de acompañamiento pedagógico de alta precisión, respetando los datos numéricos reales. Devuelve SIEMPRE JSON puro sin formato markdown.`;
+    const systemInstruction = `Eres un Asesor Pedagógico Especialista en Formación Tecnológica y Evaluación Formativa del MEP. Tu misión es analizar datos reales de evaluación en las 3 dimensiones de saberes: Saber (conceptual), Saber hacer (procedimental) y Saber ser (actitudinal) y emitir diagnósticos y planes de acompañamiento pedagógico de alta precisión. Queda estrictamente prohibido el uso de esquemas foráneos como "(I do, We do, You do)". Devuelve SIEMPRE JSON puro sin formato markdown.`;
 
     const aiRes = await ejecutarCascadaIA(prompt, systemInstruction);
 

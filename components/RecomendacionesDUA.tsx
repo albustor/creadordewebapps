@@ -425,7 +425,7 @@ export default function RecomendacionesDUA({
             }`}
           >
             <BookOpen size={16} weight={subTabActiva === "conceptual" ? "fill" : "bold"} />
-            <span>1. Saber Conceptual (Cognitivo)</span>
+            <span>1. Saber (conceptual)</span>
           </button>
 
           <button
@@ -438,7 +438,7 @@ export default function RecomendacionesDUA({
             }`}
           >
             <Gear size={16} weight={subTabActiva === "procedimental" ? "fill" : "bold"} />
-            <span>2. Saber Procedimental (Psicomotor)</span>
+            <span>2. Saber hacer (procedimental)</span>
           </button>
 
           <button
@@ -451,7 +451,7 @@ export default function RecomendacionesDUA({
             }`}
           >
             <Handshake size={16} weight={subTabActiva === "actitudinal" ? "fill" : "bold"} />
-            <span>3. Saber Actitudinal (Socioafectivo)</span>
+            <span>3. Saber ser (actitudinal)</span>
           </button>
 
           <button
@@ -464,7 +464,7 @@ export default function RecomendacionesDUA({
             }`}
           >
             <FileText size={16} weight={subTabActiva === "planeamiento" ? "fill" : "bold"} />
-            <span>4. Integración al Planeamiento MEP</span>
+            <span>4. Integración al planeamiento MEP</span>
           </button>
 
           <button
@@ -477,7 +477,7 @@ export default function RecomendacionesDUA({
             }`}
           >
             <Lightbulb size={16} weight={subTabActiva === "decisiones" ? "fill" : "bold"} />
-            <span>5. Decisiones Pedagógicas (Matriz MEP)</span>
+            <span>5. Criterios de decisión docente</span>
           </button>
 
           <button

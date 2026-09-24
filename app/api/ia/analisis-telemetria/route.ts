@@ -148,14 +148,21 @@ MUESTRA DE TELEMETRÍA DETALLADA:
 ${JSON.stringify(registros.slice(0, 15), null, 2)}
 
 INSTRUCCIONES OBLIGATORIAS:
-Como Asesor Pedagógico Especialista en Formación Tecnológica y Evaluación Diagnóstica para 9° Año de Secundaria, debes generar un ANÁLISIS PEDAGÓGICO PROFUNDO Y NO PREDETERMINADO, basado ESTRICTAMENTE en los números y desempeños reportados arriba.
+Como Asesor Pedagógico Especialista en Formación Tecnológica y Evaluación Diagnóstica para Educación Secundaria del MEP, debes generar un ANÁLISIS PEDAGÓGICO PROFUNDO Y NO PREDETERMINADO, basado ESTRICTAMENTE en los números y desempeños reportados arriba.
+
+DIRECTRICES CURRICULARES ESTRICTAS:
+1. Toda la mediación didáctica debe estar vinculada explícitamente a la tríada oficial de saberes:
+   - Saber (conceptual): Comprensión lógica, abstracción y vocabulario técnico.
+   - Saber hacer (procedimental): Formulación de algoritmos, destreza de taller, simulación y depuración paso a paso.
+   - Saber ser / Saber convivir (actitudinal): Gestión constructiva del error, perseverancia, resiliencia y trabajo colaborativo.
+2. PROHIBICIÓN ABSOLUTA: No utilices bajo ninguna circunstancia fórmulas mecanicistas o anglicismos foráneos como "(I do, We do, You do)", "Yo hago, Nosotros hacemos, Tú haces" ni esquemas instruccionales rígidos no contextualizados. Toda propuesta debe sustentarse en el Diseño Universal para el Aprendizaje (DUA) y la mediación formativa de aula.
 
 Debes responder ÚNICAMENTE con un objeto JSON válido (sin explicaciones adicionales ni bloques markdown) con la siguiente estructura exacta:
 {
   "resumenEjecutivo": "Síntesis clara de 2-3 oraciones que interprete lo que los datos del grupo revelan pedagógicamente.",
   "nivelGlobal": "${promedio >= 80 ? "Consolidado" : promedio >= 60 ? "En Desarrollo" : "Requiere Acompañamiento Prioritario"}",
   "ajustesSaberConceptual": {
-    "titulo": "Ajustes al Saber Conceptual (${indicador})",
+    "titulo": "Ajustes al Saber (Conceptual: ${indicador})",
     "descripcion": "Diagnóstico de brechas conceptuales detectadas según los datos de ${seccion}:",
     "accionesConcretas": [
       "Acción concreta 1 adaptada al ${promedio}% obtenido",
@@ -164,7 +171,7 @@ Debes responder ÚNICAMENTE con un objeto JSON válido (sin explicaciones adicio
     ]
   },
   "ajustesSaberProcedimental": {
-    "titulo": "Ajustes al Saber Procedimental (Formulación de Algoritmos y Simulación 2D)",
+    "titulo": "Ajustes al Saber Hacer (Procedimental: Algoritmos y Simulación 2D)",
     "descripcion": "Estrategias de mediación en laboratorio y andamiaje práctico:",
     "accionesConcretas": [
       "Acción práctica 1 para nivelar a los ${estudiantesAcompaniamiento.length} estudiantes en rezago",
@@ -174,8 +181,8 @@ Debes responder ÚNICAMENTE con un objeto JSON válido (sin explicaciones adicio
     ]
   },
   "ajustesSaberActitudinal": {
-    "titulo": "Ajustes al Saber Actitudinal (Pensamiento Crítico, Perseverancia y Aprendizaje del Error)",
-    "descripcion": "Promoción de cultura de aprendizaje y gestión positiva del error:",
+    "titulo": "Ajustes al Saber Ser (Actitudinal: Perseverancia, Resiliencia y Gestión del Error)",
+    "descripcion": "Promoción de cultura formativa y gestión positiva del error:",
     "accionesConcretas": [
       "Estrategia socioemocional 1",
       "Estrategia socioemocional 2",
@@ -201,7 +208,7 @@ Debes responder ÚNICAMENTE con un objeto JSON válido (sin explicaciones adicio
   ]
 }`;
 
-    const systemInstruction = `Eres un Asesor Pedagógico Senior en Educación Secundaria (9° año) y Formación Tecnológica del MEP. Generas diagnósticos pedagógicos adaptativos basados estrictamente en datos reales de telemetría de aula. Devuelves SIEMPRE un objeto JSON puro válido sin delimitadores de markdown ni texto introductorio.`;
+    const systemInstruction = `Eres un Asesor Pedagógico Senior en Educación Secundaria y Formación Tecnológica del MEP. Generas diagnósticos pedagógicos adaptativos basados estrictamente en datos reales de telemetría de aula y en la tríada oficial de saberes: Saber (conceptual), Saber hacer (procedimental) y Saber ser (actitudinal). Queda estrictamente prohibido el uso de esquemas foráneos como "(I do, We do, You do)". Devuelves SIEMPRE un objeto JSON puro válido sin delimitadores de markdown ni texto introductorio.`;
 
     const aiRes = await ejecutarCascadaIA(prompt, systemInstruction);
 

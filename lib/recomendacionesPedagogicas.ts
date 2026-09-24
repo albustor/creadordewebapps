@@ -130,17 +130,17 @@ export function generarRecomendacionesPedagogicas(
 
   return {
     ajustesSaberConceptual: {
-      titulo: `Ajustes al Saber Conceptual (${saberConcept})`,
+      titulo: `Ajustes al Saber (conceptual: ${saberConcept})`,
       descripcion: `Orientaciones pedagógicas para afianzar el dominio conceptual en ${nivelLimpio}:`,
       accionesConcretas: conceptualAcciones,
     },
     ajustesSaberProcedimental: {
-      titulo: `Ajustes al Saber Procedimental (${saberProc})`,
+      titulo: `Ajustes al Saber hacer (procedimental: ${saberProc})`,
       descripcion: "Estrategias de mediación práctica, modelado y andamiaje:",
       accionesConcretas: procedimentalAcciones,
     },
     ajustesSaberActitudinal: {
-      titulo: `Ajustes al Saber Actitudinal (${saberAct})`,
+      titulo: `Ajustes al Saber ser (actitudinal: ${saberAct})`,
       descripcion: "Promoción de habilidades socioemocionales y cultura de aprendizaje:",
       accionesConcretas: actitudinalAcciones,
     },
