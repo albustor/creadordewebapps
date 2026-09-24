@@ -39,6 +39,7 @@ export default function SelectorVersionesDiagnostico({
   const [copiadoDocente, setCopiadoDocente] = useState(false);
   const [modalQROnline, setModalQROnline] = useState(false);
   const [modalQRDocente, setModalQRDocente] = useState(false);
+  const [modalQREscaner, setModalQREscaner] = useState(false);
   const [guiaAbierta, setGuiaAbierta] = useState(false);
 
   const diagConfig = obtenerDiagnosticoPorNivel(nivel);
@@ -100,6 +101,11 @@ export default function SelectorVersionesDiagnostico({
     typeof window !== "undefined"
       ? `${window.location.origin}${pathDocente}`
       : pathDocente;
+
+  const urlEscaner =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/diagnostico_9no_escaner_datos_locales.html`
+      : "/diagnostico_9no_escaner_datos_locales.html";
 
   const copiarEnlaceOnline = () => {
     navigator.clipboard.writeText(urlOnline);
@@ -276,6 +282,59 @@ export default function SelectorVersionesDiagnostico({
           </div>
         </div>
 
+        {/* TARJETA 3: ESCÁNER DE DATOS LOCALES 9.° AÑO (CELULARES) */}
+        {nivel === "9°" && (
+          <div className="bg-white border-2 border-purple-200/90 rounded-3xl p-6 text-slate-900 shadow-softPastel flex flex-col justify-between hover:border-purple-400 transition-all md:col-span-2">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="px-3 py-1 rounded-full bg-purple-50 text-purple-900 border border-purple-200 text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-purple-600 animate-pulse" />
+                  <span>Escáner Celular / Tablet</span>
+                </span>
+                <span className="text-xs font-bold text-purple-700">Android • iPhone • Huawei</span>
+              </div>
+
+              <div>
+                <h3 className="text-base font-black text-slate-900 tracking-tight">
+                  📱 ESCÁNER DE DATOS LOCALES 9.° AÑO
+                </h3>
+                <p className="text-xs text-slate-600 mt-1 leading-relaxed font-medium">
+                  App docente para teléfono móvil que captura los códigos QR generados en las computadoras sin conexión a internet. Úsalo directamente en línea (HTTPS con cámara nativa) o instálalo como Web App en la pantalla de inicio de tu iPhone / Android.
+                </p>
+              </div>
+            </div>
+
+            <div className="pt-4 grid grid-cols-1 sm:grid-cols-3 gap-2">
+              <a
+                href="/diagnostico_9no_escaner_datos_locales.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-purple-700 hover:bg-purple-800 text-white text-xs font-black transition-all shadow-xs"
+              >
+                <ArrowSquareOut size={16} weight="bold" />
+                <span>Abrir Escáner en Celular</span>
+              </a>
+
+              <a
+                href="/webapps/diagnostico_9no_escaner_datos_locales.html"
+                download="diagnostico_9no_escaner_datos_locales.html"
+                className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-black transition-all border border-slate-300 shadow-xs"
+              >
+                <DownloadSimple size={16} weight="bold" />
+                <span>Descargar Escáner (.html)</span>
+              </a>
+
+              <button
+                onClick={() => setModalQREscaner(true)}
+                className="flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-900 text-xs font-bold border border-purple-200"
+              >
+                <QrCode size={16} />
+                <span>Proyectar QR para Teléfono</span>
+              </button>
+            </div>
+          </div>
+        )}
+
       </div>
 
       {/* MODAL PROYECCIÓN QR ESTUDIANTE */}
@@ -329,6 +388,35 @@ export default function SelectorVersionesDiagnostico({
             <button
               onClick={() => setModalQRDocente(false)}
               className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-bold"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL PROYECCIÓN QR ESCÁNER DE DATOS LOCALES */}
+      {modalQREscaner && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fadeIn">
+          <div className="bg-white rounded-3xl p-8 max-w-md w-full text-center space-y-4 border border-purple-200 shadow-2xl">
+            <h3 className="text-lg font-black text-purple-950">
+              📱 Escáner de Datos Locales 9.° Año
+            </h3>
+            <p className="text-xs text-slate-600">
+              Escanea este código con la cámara de tu teléfono móvil (iPhone, Android o Huawei) para abrir la Web App del Escáner.
+            </p>
+
+            <div className="p-4 bg-purple-50/50 border border-purple-200 rounded-2xl flex justify-center">
+              <QRCodeSVG value={urlEscaner} size={220} />
+            </div>
+
+            <div className="text-[11px] font-mono bg-purple-50 p-2 rounded-lg break-all text-purple-900">
+              {urlEscaner}
+            </div>
+
+            <button
+              onClick={() => setModalQREscaner(false)}
+              className="w-full py-2.5 rounded-xl bg-purple-900 hover:bg-purple-950 text-white text-xs font-bold"
             >
               Cerrar
             </button>
