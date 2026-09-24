@@ -15,6 +15,7 @@ import { exportarAExcel, exportarAPDF } from "@/lib/exportUtils";
 import { PayloadTelemetria } from "@/lib/antiFraude";
 import AuthGuard from "@/components/AuthGuard";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import ModalGuiaPWA from "@/components/ModalGuiaPWA";
 import {
   ChartBar,
   FileXls,
@@ -37,6 +38,10 @@ import {
   Gauge,
   Desktop,
   DownloadSimple,
+  WifiSlash,
+  DeviceMobileCamera,
+  BookOpen,
+  Info,
 } from "@phosphor-icons/react";
 
 export default function DashboardAnaliticoPage() {
@@ -68,6 +73,9 @@ export default function DashboardAnaliticoPage() {
   const [editNombre, setEditNombre] = useState("");
   const [editGrupo, setEditGrupo] = useState("");
   const [editPuntaje, setEditPuntaje] = useState<number>(100);
+
+  // Modal Guía de Instalación PWA y Celulares
+  const [modalGuiaPWA, setModalGuiaPWA] = useState(false);
 
   // Configuración del Instrumento Docente
   const [configuracion, setConfiguracion] = useState<ConfiguracionDashboardDocente>(CONFIGURACION_DEFAULT);
@@ -531,120 +539,188 @@ export default function DashboardAnaliticoPage() {
           <div className="bg-gradient-to-br from-indigo-900 via-indigo-950 to-slate-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-indigo-400 relative overflow-hidden space-y-6">
             <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
             
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
-              
-              <div className="space-y-4 max-w-3xl">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="px-3 py-1 rounded-full bg-indigo-500/30 text-indigo-200 border border-indigo-400/50 text-[11px] font-black uppercase tracking-wider">
-                    🎮 Herramienta Oficial • 7.° Año
-                  </span>
-                  <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-stone-200 text-[10px] font-bold">
-                    Módulo 1: CyberQuest
-                  </span>
-                  <span className="px-2.5 py-0.5 rounded-full bg-indigo-400/20 text-indigo-200 text-[10px] font-bold">
-                    III Ciclo MEP 2027
-                  </span>
-                </div>
-
-                <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-snug">
-                  Herramienta de evaluación diagnóstica docente: 7.° Año
-                </h3>
-
-                <p className="text-xs sm:text-sm text-indigo-100/90 leading-relaxed">
-                  Aplicativo central para la valoración y registro de criterios de logro, observación docente en tiempo real, gestión de enlaces para la aplicación del diagnóstico y generación automática de actas pedagógicas con los datos obtenidos.
-                </p>
-
-                {/* Metadatos del Docente */}
-                <div className="flex flex-wrap items-center gap-3 text-xs text-indigo-200">
-                  <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
-                    <ChalkboardTeacher size={16} className="text-indigo-300" weight="bold" />
-                    <span>Docente: <strong>{docente?.nombreCompleto || "Docente MEP"}</strong></span>
-                  </div>
-                </div>
-
-                {/* SELECTOR DE COLEGIOS REGISTRADOS */}
-                <div className="space-y-2 pt-1">
-                  <label className="text-[11px] font-black uppercase text-indigo-300 tracking-wider flex items-center gap-1.5">
-                    <Buildings size={15} weight="bold" />
-                    <span>Centros Educativos Asignados ({listaCentrosDocente.length}):</span>
-                  </label>
-                  {listaCentrosDocente.length > 0 ? (
-                    <div className="flex flex-wrap gap-2">
-                      {listaCentrosDocente.map((c, idx) => (
-                        <button
-                          key={c.id || idx}
-                          type="button"
-                          onClick={() => setCentroActivoIdx(idx)}
-                          className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs transition-all cursor-pointer border ${
-                            centroActivoIdx === idx
-                              ? "bg-white text-slate-900 border-white shadow-md font-black scale-[1.02]"
-                              : "bg-white/10 hover:bg-white/20 text-white border-white/20 font-semibold"
-                          }`}
-                        >
-                          <span>🏫 {c.nombre}</span>
-                          <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
-                            centroActivoIdx === idx ? "bg-slate-200 text-slate-800" : "bg-black/30 text-stone-200"
-                          }`}>
-                            {c.dreCodigo || c.dreNombre}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="p-3 bg-white/10 border border-white/20 rounded-xl text-xs text-indigo-200 flex items-center justify-between gap-3">
-                      <span>No tienes secciones asignadas para 7.° Año en tu perfil.</span>
-                      <Link href="/registro" className="px-2.5 py-1 bg-white text-slate-900 font-bold rounded-lg text-[11px] hover:bg-slate-100">
-                        Editar en Mi Perfil
-                      </Link>
-                    </div>
-                  )}
-                </div>
-
+            {/* Cabecera y Selección de Colegio */}
+            <div className="space-y-4 max-w-4xl relative z-10">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="px-3 py-1 rounded-full bg-indigo-500/30 text-indigo-200 border border-indigo-400/50 text-[11px] font-black uppercase tracking-wider">
+                  🎮 Herramienta Oficial • 7.° Año
+                </span>
+                <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-stone-200 text-[10px] font-bold">
+                  Módulo 1: CyberQuest
+                </span>
+                <span className="px-2.5 py-0.5 rounded-full bg-indigo-400/20 text-indigo-200 text-[10px] font-bold">
+                  III Ciclo MEP 2027
+                </span>
               </div>
 
-              {/* Botones de Apertura de la Tarjeta */}
-              <div className="shrink-0 flex flex-col gap-2.5">
-                {listaCentrosDocente.length > 0 && centroActivo ? (
-                  <>
+              <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-snug">
+                Herramienta de evaluación diagnóstica docente: 7.° Año
+              </h3>
+
+              <p className="text-xs sm:text-sm text-indigo-100/90 leading-relaxed">
+                Instrumento formativo para la valoración de reactivos cognitivos, observación docente en vivo, recopilación mediante QR sin conexión y generación automática de actas pedagógicas.
+              </p>
+
+              {/* Metadatos del Docente */}
+              <div className="flex flex-wrap items-center gap-3 text-xs text-indigo-200">
+                <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
+                  <ChalkboardTeacher size={16} className="text-indigo-300" weight="bold" />
+                  <span>Docente: <strong>{docente?.nombreCompleto || "Docente MEP"}</strong></span>
+                </div>
+              </div>
+
+              {/* SELECTOR DE COLEGIOS REGISTRADOS */}
+              <div className="space-y-2 pt-1">
+                <label className="text-[11px] font-black uppercase text-indigo-300 tracking-wider flex items-center gap-1.5">
+                  <Buildings size={15} weight="bold" />
+                  <span>Centros Educativos Asignados ({listaCentrosDocente.length}):</span>
+                </label>
+                {listaCentrosDocente.length > 0 ? (
+                  <div className="flex flex-wrap gap-2">
+                    {listaCentrosDocente.map((c, idx) => (
+                      <button
+                        key={c.id || idx}
+                        type="button"
+                        onClick={() => setCentroActivoIdx(idx)}
+                        className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs transition-all cursor-pointer border ${
+                          centroActivoIdx === idx
+                            ? "bg-white text-slate-900 border-white shadow-md font-black scale-[1.02]"
+                            : "bg-white/10 hover:bg-white/20 text-white border-white/20 font-semibold"
+                        }`}
+                      >
+                        <span>🏫 {c.nombre}</span>
+                        <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
+                          centroActivoIdx === idx ? "bg-slate-200 text-slate-800" : "bg-black/30 text-stone-200"
+                        }`}>
+                          {c.dreCodigo || c.dreNombre}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="p-3 bg-white/10 border border-white/20 rounded-xl text-xs text-indigo-200 flex items-center justify-between gap-3">
+                    <span>No tienes secciones asignadas para 7.° Año en tu perfil.</span>
+                    <Link href="/registro" className="px-2.5 py-1 bg-white text-slate-900 font-bold rounded-lg text-[11px] hover:bg-slate-100">
+                      Editar en Mi Perfil
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* DOS PILARES DE ACCIÓN OPERATIVA */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-white/15 relative z-10">
+              
+              {/* BLOQUE 1: MODALIDAD EN LÍNEA */}
+              <div className="bg-black/25 backdrop-blur-sm border border-emerald-400/40 rounded-2xl p-5 flex flex-col justify-between space-y-4 hover:border-emerald-400/70 transition-all">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[11px] font-black uppercase tracking-wider">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                      <span>Modalidad en Línea</span>
+                    </span>
+                    <span className="text-[11px] font-bold text-emerald-300">Con Internet</span>
+                  </div>
+                  <h4 className="text-sm sm:text-base font-black text-white">
+                    Aplicación Directa y Telemetría en Vivo
+                  </h4>
+                  <p className="text-xs text-emerald-100/80 leading-relaxed font-medium">
+                    Para laboratorios con acceso a internet. Los estudiantes completan la evaluación en la nube y los resultados llegan inmediatamente al Dashboard.
+                  </p>
+                </div>
+
+                <div className="pt-2">
+                  {listaCentrosDocente.length > 0 && centroActivo ? (
                     <a
                       href={getUrlEvaluador(centroActivo)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2.5 px-6 py-3.5 bg-indigo-500 hover:bg-indigo-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-indigo-500/30 hover:scale-[1.02] cursor-pointer text-center"
+                      className="w-full flex items-center justify-center gap-2 px-5 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs sm:text-sm rounded-xl transition-all shadow-lg hover:shadow-emerald-500/30 hover:scale-[1.01] cursor-pointer text-center"
                     >
-                      <span>Abrir Herramienta 7.° Año (Evaluador)</span>
-                      <ArrowSquareOut size={20} weight="bold" />
+                      <span>Abrir Evaluador 7.° Año (En Línea)</span>
+                      <ArrowSquareOut size={18} weight="bold" />
                     </a>
+                  ) : (
+                    <div className="text-center text-xs text-white/50 py-2">Nivel no asignado</div>
+                  )}
+                </div>
+              </div>
 
-                    <a
-                      href="/webapps/diagnostico_7mo_modulo01_desconectado_offline.html"
-                      download="diagnostico_7mo_modulo01_desconectado_offline.html"
-                      className="flex items-center justify-center gap-2 px-5 py-3 bg-white/15 hover:bg-white/25 text-indigo-100 hover:text-white border border-indigo-400/40 font-bold text-xs rounded-2xl transition-all hover:scale-[1.02] cursor-pointer text-center"
-                      title="Descargar la herramienta de evaluación diagnóstica en formato local o sin conexión (HTML)"
-                    >
-                      <DownloadSimple size={18} weight="bold" />
-                      <span>Descargar Herramienta Diagnóstica Sin Conexión o Local (.html)</span>
-                    </a>
-
-                    <a
-                      href="/docs/GUIA_PEDAGOGICA_EVALUACION_DIAGNOSTICA_MEP.pdf"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 px-5 py-3 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs rounded-xl transition-all shadow text-center cursor-pointer"
-                      title="Ver o descargar la Guía Pedagógica y Operativa oficial en PDF"
-                    >
-                      <span>📘 Guía Pedagógica Docente (PDF)</span>
-                      <ArrowSquareOut size={16} weight="bold" />
-                    </a>
-                  </>
-                ) : (
-                  <div className="flex items-center justify-center px-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-xs text-indigo-200/70 font-medium text-center">
-                    Nivel no asignado
+              {/* BLOQUE 2: MODALIDAD DESCONECTADA */}
+              <div className="bg-black/25 backdrop-blur-sm border border-amber-400/40 rounded-2xl p-5 flex flex-col justify-between space-y-4 hover:border-amber-400/70 transition-all">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30 text-[11px] font-black uppercase tracking-wider">
+                      <WifiSlash size={14} weight="bold" />
+                      <span>Modalidad Desconectada</span>
+                    </span>
+                    <span className="text-[11px] font-bold text-amber-300">Sin Internet (Offline)</span>
                   </div>
-                )}
+                  <h4 className="text-sm sm:text-base font-black text-white">
+                    Laboratorios Aislados y Captura QR
+                  </h4>
+                  <p className="text-xs text-amber-100/80 leading-relaxed font-medium">
+                    Ejecución local en computadoras sin conexión. Los estudiantes generan su QR con datos ya incluidos y el docente los escanea con el celular.
+                  </p>
+                </div>
+
+                <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <a
+                    href="/webapps/diagnostico_7mo_modulo01_desconectado_offline.html"
+                    download="diagnostico_7mo_modulo01_desconectado_offline.html"
+                    className="flex items-center justify-center gap-1.5 px-3.5 py-2.5 bg-white/15 hover:bg-white/25 text-white font-bold text-xs rounded-xl border border-white/20 transition-all text-center"
+                    title="Descargar archivo .html para instalar en computadoras de los estudiantes vía llave maya"
+                  >
+                    <DownloadSimple size={16} weight="bold" />
+                    <span>1. Descargar para PCs (.html)</span>
+                  </a>
+
+                  <a
+                    href="/diagnostico_9no_escaner_datos_locales.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-1.5 px-3.5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl transition-all shadow-md text-center"
+                    title="Abrir el Escáner QR en tu teléfono móvil para registrar los códigos de las computadoras"
+                  >
+                    <DeviceMobileCamera size={16} weight="bold" />
+                    <span>2. Abrir Escáner QR Celular</span>
+                  </a>
+                </div>
               </div>
 
             </div>
+
+            {/* BARRA INFERIOR DE RECURSOS Y GUÍAS OFICIALES */}
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs relative z-10">
+              <div className="flex items-center gap-2 text-white/90">
+                <BookOpen size={18} className="text-indigo-300 shrink-0" weight="bold" />
+                <span className="font-semibold">Centro de Recursos y Documentación Oficial:</span>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2">
+                <a
+                  href="/docs/GUIA_PEDAGOGICA_EVALUACION_DIAGNOSTICA_MEP.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-lg border border-white/15 font-bold transition-all text-[11px]"
+                >
+                  <FilePdf size={14} className="text-rose-300" weight="bold" />
+                  <span>Guía Pedagógica 7.° Año (PDF)</span>
+                  <ArrowSquareOut size={12} />
+                </a>
+
+                <button
+                  type="button"
+                  onClick={() => setModalGuiaPWA(true)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-lg border border-white/15 font-bold transition-all text-[11px] cursor-pointer"
+                >
+                  <DeviceMobileCamera size={14} className="text-sky-300" weight="bold" />
+                  <span>Manual PWA Móvil (iOS / Android)</span>
+                  <Info size={12} />
+                </button>
+              </div>
+            </div>
+
           </div>
         )}
 
@@ -652,120 +728,188 @@ export default function DashboardAnaliticoPage() {
           <div className="bg-gradient-to-br from-teal-900 via-teal-950 to-slate-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-teal-400 relative overflow-hidden space-y-6">
             <div className="absolute top-0 right-0 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
             
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
-              
-              <div className="space-y-4 max-w-3xl">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="px-3 py-1 rounded-full bg-teal-500/30 text-teal-200 border border-teal-400/50 text-[11px] font-black uppercase tracking-wider">
-                    🤖 Herramienta Oficial • 8.° Año
-                  </span>
-                  <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-stone-200 text-[10px] font-bold">
-                    Módulo 1: Robótica y Automatización
-                  </span>
-                  <span className="px-2.5 py-0.5 rounded-full bg-teal-400/20 text-teal-200 text-[10px] font-bold">
-                    III Ciclo MEP 2027
-                  </span>
-                </div>
-
-                <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-snug">
-                  Herramienta de evaluación diagnóstica docente: 8.° Año
-                </h3>
-
-                <p className="text-xs sm:text-sm text-teal-100/90 leading-relaxed">
-                  Aplicativo central para la valoración y registro de criterios de logro, observación docente en tiempo real, gestión de enlaces para la aplicación del diagnóstico y generación automática de actas pedagógicas con los datos obtenidos.
-                </p>
-
-                {/* Metadatos del Docente */}
-                <div className="flex flex-wrap items-center gap-3 text-xs text-teal-200">
-                  <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
-                    <ChalkboardTeacher size={16} className="text-teal-300" weight="bold" />
-                    <span>Docente: <strong>{docente?.nombreCompleto || "Docente MEP"}</strong></span>
-                  </div>
-                </div>
-
-                {/* SELECTOR DE COLEGIOS REGISTRADOS */}
-                <div className="space-y-2 pt-1">
-                  <label className="text-[11px] font-black uppercase text-teal-300 tracking-wider flex items-center gap-1.5">
-                    <Buildings size={15} weight="bold" />
-                    <span>Centros Educativos Asignados ({listaCentrosDocente.length}):</span>
-                  </label>
-                  {listaCentrosDocente.length > 0 ? (
-                    <div className="flex flex-wrap gap-2">
-                      {listaCentrosDocente.map((c, idx) => (
-                        <button
-                          key={c.id || idx}
-                          type="button"
-                          onClick={() => setCentroActivoIdx(idx)}
-                          className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs transition-all cursor-pointer border ${
-                            centroActivoIdx === idx
-                              ? "bg-white text-slate-900 border-white shadow-md font-black scale-[1.02]"
-                              : "bg-white/10 hover:bg-white/20 text-white border-white/20 font-semibold"
-                          }`}
-                        >
-                          <span>🏫 {c.nombre}</span>
-                          <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
-                            centroActivoIdx === idx ? "bg-slate-200 text-slate-800" : "bg-black/30 text-stone-200"
-                          }`}>
-                            {c.dreCodigo || c.dreNombre}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="p-3 bg-white/10 border border-white/20 rounded-xl text-xs text-teal-200 flex items-center justify-between gap-3">
-                      <span>No tienes secciones asignadas para 8.° Año en tu perfil.</span>
-                      <Link href="/registro" className="px-2.5 py-1 bg-white text-slate-900 font-bold rounded-lg text-[11px] hover:bg-slate-100">
-                        Editar en Mi Perfil
-                      </Link>
-                    </div>
-                  )}
-                </div>
-
+            {/* Cabecera y Selección de Colegio */}
+            <div className="space-y-4 max-w-4xl relative z-10">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="px-3 py-1 rounded-full bg-teal-500/30 text-teal-200 border border-teal-400/50 text-[11px] font-black uppercase tracking-wider">
+                  🤖 Herramienta Oficial • 8.° Año
+                </span>
+                <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-stone-200 text-[10px] font-bold">
+                  Módulo 1: Robótica y Automatización
+                </span>
+                <span className="px-2.5 py-0.5 rounded-full bg-teal-400/20 text-teal-200 text-[10px] font-bold">
+                  III Ciclo MEP 2027
+                </span>
               </div>
 
-              {/* Botones de Apertura de la Tarjeta */}
-              <div className="shrink-0 flex flex-col gap-2.5">
-                {listaCentrosDocente.length > 0 && centroActivo ? (
-                  <>
+              <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-snug">
+                Herramienta de evaluación diagnóstica docente: 8.° Año
+              </h3>
+
+              <p className="text-xs sm:text-sm text-teal-100/90 leading-relaxed">
+                Instrumento formativo para la valoración de reactivos cognitivos, observación docente en vivo, recopilación mediante QR sin conexión y generación automática de actas pedagógicas.
+              </p>
+
+              {/* Metadatos del Docente */}
+              <div className="flex flex-wrap items-center gap-3 text-xs text-teal-200">
+                <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
+                  <ChalkboardTeacher size={16} className="text-teal-300" weight="bold" />
+                  <span>Docente: <strong>{docente?.nombreCompleto || "Docente MEP"}</strong></span>
+                </div>
+              </div>
+
+              {/* SELECTOR DE COLEGIOS REGISTRADOS */}
+              <div className="space-y-2 pt-1">
+                <label className="text-[11px] font-black uppercase text-teal-300 tracking-wider flex items-center gap-1.5">
+                  <Buildings size={15} weight="bold" />
+                  <span>Centros Educativos Asignados ({listaCentrosDocente.length}):</span>
+                </label>
+                {listaCentrosDocente.length > 0 ? (
+                  <div className="flex flex-wrap gap-2">
+                    {listaCentrosDocente.map((c, idx) => (
+                      <button
+                        key={c.id || idx}
+                        type="button"
+                        onClick={() => setCentroActivoIdx(idx)}
+                        className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs transition-all cursor-pointer border ${
+                          centroActivoIdx === idx
+                            ? "bg-white text-slate-900 border-white shadow-md font-black scale-[1.02]"
+                            : "bg-white/10 hover:bg-white/20 text-white border-white/20 font-semibold"
+                        }`}
+                      >
+                        <span>🏫 {c.nombre}</span>
+                        <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
+                          centroActivoIdx === idx ? "bg-slate-200 text-slate-800" : "bg-black/30 text-stone-200"
+                        }`}>
+                          {c.dreCodigo || c.dreNombre}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="p-3 bg-white/10 border border-white/20 rounded-xl text-xs text-teal-200 flex items-center justify-between gap-3">
+                    <span>No tienes secciones asignadas para 8.° Año en tu perfil.</span>
+                    <Link href="/registro" className="px-2.5 py-1 bg-white text-slate-900 font-bold rounded-lg text-[11px] hover:bg-slate-100">
+                      Editar en Mi Perfil
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* DOS PILARES DE ACCIÓN OPERATIVA */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-white/15 relative z-10">
+              
+              {/* BLOQUE 1: MODALIDAD EN LÍNEA */}
+              <div className="bg-black/25 backdrop-blur-sm border border-emerald-400/40 rounded-2xl p-5 flex flex-col justify-between space-y-4 hover:border-emerald-400/70 transition-all">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[11px] font-black uppercase tracking-wider">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                      <span>Modalidad en Línea</span>
+                    </span>
+                    <span className="text-[11px] font-bold text-emerald-300">Con Internet</span>
+                  </div>
+                  <h4 className="text-sm sm:text-base font-black text-white">
+                    Aplicación Directa y Telemetría en Vivo
+                  </h4>
+                  <p className="text-xs text-emerald-100/80 leading-relaxed font-medium">
+                    Para laboratorios con acceso a internet. Los estudiantes completan la evaluación en la nube y los resultados llegan inmediatamente al Dashboard.
+                  </p>
+                </div>
+
+                <div className="pt-2">
+                  {listaCentrosDocente.length > 0 && centroActivo ? (
                     <a
                       href={getUrlEvaluador(centroActivo)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2.5 px-6 py-3.5 bg-teal-500 hover:bg-teal-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-teal-500/30 hover:scale-[1.02] cursor-pointer text-center"
+                      className="w-full flex items-center justify-center gap-2 px-5 py-3 bg-teal-500 hover:bg-teal-400 text-slate-950 font-black text-xs sm:text-sm rounded-xl transition-all shadow-lg hover:shadow-teal-500/30 hover:scale-[1.01] cursor-pointer text-center"
                     >
-                      <span>Abrir Herramienta 8.° Año (Evaluador)</span>
-                      <ArrowSquareOut size={20} weight="bold" />
+                      <span>Abrir Evaluador 8.° Año (En Línea)</span>
+                      <ArrowSquareOut size={18} weight="bold" />
                     </a>
+                  ) : (
+                    <div className="text-center text-xs text-white/50 py-2">Nivel no asignado</div>
+                  )}
+                </div>
+              </div>
 
-                    <a
-                      href="/webapps/diagnostico_8vo_modulo01_desconectado_offline.html"
-                      download="diagnostico_8vo_modulo01_desconectado_offline.html"
-                      className="flex items-center justify-center gap-2 px-5 py-3 bg-white/15 hover:bg-white/25 text-teal-100 hover:text-white border border-teal-400/40 font-bold text-xs rounded-2xl transition-all hover:scale-[1.02] cursor-pointer text-center"
-                      title="Descargar la herramienta de evaluación diagnóstica en formato local o sin conexión (HTML)"
-                    >
-                      <DownloadSimple size={18} weight="bold" />
-                      <span>Descargar Herramienta Diagnóstica Sin Conexión o Local (.html)</span>
-                    </a>
-
-                    <a
-                      href="/docs/GUIA_PEDAGOGICA_DIAGNOSTICO_8VO_MEP.pdf"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 px-5 py-3 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs rounded-xl transition-all shadow text-center cursor-pointer"
-                      title="Ver o descargar la Guía Pedagógica y Operativa oficial en PDF"
-                    >
-                      <span>📘 Guía Pedagógica Docente (PDF)</span>
-                      <ArrowSquareOut size={16} weight="bold" />
-                    </a>
-                  </>
-                ) : (
-                  <div className="flex items-center justify-center px-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-xs text-teal-200/70 font-medium text-center">
-                    Nivel no asignado
+              {/* BLOQUE 2: MODALIDAD DESCONECTADA */}
+              <div className="bg-black/25 backdrop-blur-sm border border-amber-400/40 rounded-2xl p-5 flex flex-col justify-between space-y-4 hover:border-amber-400/70 transition-all">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30 text-[11px] font-black uppercase tracking-wider">
+                      <WifiSlash size={14} weight="bold" />
+                      <span>Modalidad Desconectada</span>
+                    </span>
+                    <span className="text-[11px] font-bold text-amber-300">Sin Internet (Offline)</span>
                   </div>
-                )}
+                  <h4 className="text-sm sm:text-base font-black text-white">
+                    Laboratorios Aislados y Captura QR
+                  </h4>
+                  <p className="text-xs text-amber-100/80 leading-relaxed font-medium">
+                    Ejecución local en computadoras sin conexión. Los estudiantes generan su QR con datos ya incluidos y el docente los escanea con el celular.
+                  </p>
+                </div>
+
+                <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <a
+                    href="/webapps/diagnostico_8vo_modulo01_desconectado_offline.html"
+                    download="diagnostico_8vo_modulo01_desconectado_offline.html"
+                    className="flex items-center justify-center gap-1.5 px-3.5 py-2.5 bg-white/15 hover:bg-white/25 text-white font-bold text-xs rounded-xl border border-white/20 transition-all text-center"
+                    title="Descargar archivo .html para instalar en computadoras de los estudiantes vía llave maya"
+                  >
+                    <DownloadSimple size={16} weight="bold" />
+                    <span>1. Descargar para PCs (.html)</span>
+                  </a>
+
+                  <a
+                    href="/diagnostico_9no_escaner_datos_locales.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-1.5 px-3.5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl transition-all shadow-md text-center"
+                    title="Abrir el Escáner QR en tu teléfono móvil para registrar los códigos de las computadoras"
+                  >
+                    <DeviceMobileCamera size={16} weight="bold" />
+                    <span>2. Abrir Escáner QR Celular</span>
+                  </a>
+                </div>
               </div>
 
             </div>
+
+            {/* BARRA INFERIOR DE RECURSOS Y GUÍAS OFICIALES */}
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs relative z-10">
+              <div className="flex items-center gap-2 text-white/90">
+                <BookOpen size={18} className="text-teal-300 shrink-0" weight="bold" />
+                <span className="font-semibold">Centro de Recursos y Documentación Oficial:</span>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2">
+                <a
+                  href="/docs/GUIA_PEDAGOGICA_DIAGNOSTICO_8VO_MEP.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-lg border border-white/15 font-bold transition-all text-[11px]"
+                >
+                  <FilePdf size={14} className="text-rose-300" weight="bold" />
+                  <span>Guía Pedagógica 8.° Año (PDF)</span>
+                  <ArrowSquareOut size={12} />
+                </a>
+
+                <button
+                  type="button"
+                  onClick={() => setModalGuiaPWA(true)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-lg border border-white/15 font-bold transition-all text-[11px] cursor-pointer"
+                >
+                  <DeviceMobileCamera size={14} className="text-sky-300" weight="bold" />
+                  <span>Manual PWA Móvil (iOS / Android)</span>
+                  <Info size={12} />
+                </button>
+              </div>
+            </div>
+
           </div>
         )}
 
@@ -773,131 +917,188 @@ export default function DashboardAnaliticoPage() {
           <div className="bg-gradient-to-br from-purple-900 via-purple-950 to-slate-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-purple-400 relative overflow-hidden space-y-6">
             <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
             
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
-              
-              <div className="space-y-4 max-w-3xl">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="px-3 py-1 rounded-full bg-purple-500/30 text-purple-200 border border-purple-400/50 text-[11px] font-black uppercase tracking-wider">
-                    💡 Herramienta Oficial • 9.° Año
-                  </span>
-                  <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-stone-200 text-[10px] font-bold">
-                    Módulo 1: Aula Inteligente (IoT)
-                  </span>
-                  <span className="px-2.5 py-0.5 rounded-full bg-purple-400/20 text-purple-200 text-[10px] font-bold">
-                    III Ciclo MEP 2027
-                  </span>
-                </div>
-
-                <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-snug">
-                  Herramienta de evaluación diagnóstica docente: 9.° Año
-                </h3>
-
-                <p className="text-xs sm:text-sm text-purple-100/90 leading-relaxed">
-                  Aplicativo central para la valoración y registro de criterios de logro, observación docente en tiempo real, gestión de enlaces para la aplicación del diagnóstico y generación automática de actas pedagógicas con los datos obtenidos.
-                </p>
-
-                {/* Metadatos del Docente */}
-                <div className="flex flex-wrap items-center gap-3 text-xs text-purple-200">
-                  <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
-                    <ChalkboardTeacher size={16} className="text-purple-300" weight="bold" />
-                    <span>Docente: <strong>{docente?.nombreCompleto || "Docente MEP"}</strong></span>
-                  </div>
-                </div>
-
-                {/* SELECTOR DE COLEGIOS REGISTRADOS */}
-                <div className="space-y-2 pt-1">
-                  <label className="text-[11px] font-black uppercase text-purple-300 tracking-wider flex items-center gap-1.5">
-                    <Buildings size={15} weight="bold" />
-                    <span>Centros Educativos Asignados ({listaCentrosDocente.length}):</span>
-                  </label>
-                  {listaCentrosDocente.length > 0 ? (
-                    <div className="flex flex-wrap gap-2">
-                      {listaCentrosDocente.map((c, idx) => (
-                        <button
-                          key={c.id || idx}
-                          type="button"
-                          onClick={() => setCentroActivoIdx(idx)}
-                          className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs transition-all cursor-pointer border ${
-                            centroActivoIdx === idx
-                              ? "bg-white text-slate-900 border-white shadow-md font-black scale-[1.02]"
-                              : "bg-white/10 hover:bg-white/20 text-white border-white/20 font-semibold"
-                          }`}
-                        >
-                          <span>🏫 {c.nombre}</span>
-                          <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
-                            centroActivoIdx === idx ? "bg-slate-200 text-slate-800" : "bg-black/30 text-stone-200"
-                          }`}>
-                            {c.dreCodigo || c.dreNombre}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="p-3 bg-white/10 border border-white/20 rounded-xl text-xs text-purple-200 flex items-center justify-between gap-3">
-                      <span>No tienes secciones asignadas para 9.° Año en tu perfil.</span>
-                      <Link href="/registro" className="px-2.5 py-1 bg-white text-slate-900 font-bold rounded-lg text-[11px] hover:bg-slate-100">
-                        Editar en Mi Perfil
-                      </Link>
-                    </div>
-                  )}
-                </div>
-
+            {/* Cabecera y Selección de Colegio */}
+            <div className="space-y-4 max-w-4xl relative z-10">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="px-3 py-1 rounded-full bg-purple-500/30 text-purple-200 border border-purple-400/50 text-[11px] font-black uppercase tracking-wider">
+                  💡 Herramienta Oficial • 9.° Año
+                </span>
+                <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-stone-200 text-[10px] font-bold">
+                  Módulo 1: Aula Inteligente (IoT)
+                </span>
+                <span className="px-2.5 py-0.5 rounded-full bg-purple-400/20 text-purple-200 text-[10px] font-bold">
+                  III Ciclo MEP 2027
+                </span>
               </div>
 
-              {/* Botones de Apertura de la Tarjeta */}
-              <div className="shrink-0 flex flex-col gap-2.5">
-                {listaCentrosDocente.length > 0 && centroActivo ? (
-                  <>
+              <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-snug">
+                Herramienta de evaluación diagnóstica docente: 9.° Año
+              </h3>
+
+              <p className="text-xs sm:text-sm text-purple-100/90 leading-relaxed">
+                Instrumento formativo para la valoración de reactivos cognitivos, observación docente en vivo, recopilación mediante QR sin conexión y generación automática de actas pedagógicas.
+              </p>
+
+              {/* Metadatos del Docente */}
+              <div className="flex flex-wrap items-center gap-3 text-xs text-purple-200">
+                <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
+                  <ChalkboardTeacher size={16} className="text-purple-300" weight="bold" />
+                  <span>Docente: <strong>{docente?.nombreCompleto || "Docente MEP"}</strong></span>
+                </div>
+              </div>
+
+              {/* SELECTOR DE COLEGIOS REGISTRADOS */}
+              <div className="space-y-2 pt-1">
+                <label className="text-[11px] font-black uppercase text-purple-300 tracking-wider flex items-center gap-1.5">
+                  <Buildings size={15} weight="bold" />
+                  <span>Centros Educativos Asignados ({listaCentrosDocente.length}):</span>
+                </label>
+                {listaCentrosDocente.length > 0 ? (
+                  <div className="flex flex-wrap gap-2">
+                    {listaCentrosDocente.map((c, idx) => (
+                      <button
+                        key={c.id || idx}
+                        type="button"
+                        onClick={() => setCentroActivoIdx(idx)}
+                        className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs transition-all cursor-pointer border ${
+                          centroActivoIdx === idx
+                            ? "bg-white text-slate-900 border-white shadow-md font-black scale-[1.02]"
+                            : "bg-white/10 hover:bg-white/20 text-white border-white/20 font-semibold"
+                        }`}
+                      >
+                        <span>🏫 {c.nombre}</span>
+                        <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
+                          centroActivoIdx === idx ? "bg-slate-200 text-slate-800" : "bg-black/30 text-stone-200"
+                        }`}>
+                          {c.dreCodigo || c.dreNombre}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="p-3 bg-white/10 border border-white/20 rounded-xl text-xs text-purple-200 flex items-center justify-between gap-3">
+                    <span>No tienes secciones asignadas para 9.° Año en tu perfil.</span>
+                    <Link href="/registro" className="px-2.5 py-1 bg-white text-slate-900 font-bold rounded-lg text-[11px] hover:bg-slate-100">
+                      Editar en Mi Perfil
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* DOS PILARES DE ACCIÓN OPERATIVA */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-white/15 relative z-10">
+              
+              {/* BLOQUE 1: MODALIDAD EN LÍNEA */}
+              <div className="bg-black/25 backdrop-blur-sm border border-emerald-400/40 rounded-2xl p-5 flex flex-col justify-between space-y-4 hover:border-emerald-400/70 transition-all">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[11px] font-black uppercase tracking-wider">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                      <span>Modalidad en Línea</span>
+                    </span>
+                    <span className="text-[11px] font-bold text-emerald-300">Con Internet</span>
+                  </div>
+                  <h4 className="text-sm sm:text-base font-black text-white">
+                    Aplicación Directa y Telemetría en Vivo
+                  </h4>
+                  <p className="text-xs text-emerald-100/80 leading-relaxed font-medium">
+                    Para laboratorios con acceso a internet. Los estudiantes completan la evaluación en la nube y los resultados llegan inmediatamente al Dashboard.
+                  </p>
+                </div>
+
+                <div className="pt-2">
+                  {listaCentrosDocente.length > 0 && centroActivo ? (
                     <a
                       href={getUrlEvaluador(centroActivo)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2.5 px-6 py-3.5 bg-purple-600 hover:bg-purple-500 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-purple-600/30 hover:scale-[1.02] cursor-pointer text-center"
+                      className="w-full flex items-center justify-center gap-2 px-5 py-3 bg-purple-600 hover:bg-purple-500 text-white font-black text-xs sm:text-sm rounded-xl transition-all shadow-lg hover:shadow-purple-600/30 hover:scale-[1.01] cursor-pointer text-center"
                     >
-                      <span>Abrir Herramienta 9.° Año (Evaluador)</span>
-                      <ArrowSquareOut size={20} weight="bold" />
+                      <span>Abrir Evaluador 9.° Año (En Línea)</span>
+                      <ArrowSquareOut size={18} weight="bold" />
                     </a>
+                  ) : (
+                    <div className="text-center text-xs text-white/50 py-2">Nivel no asignado</div>
+                  )}
+                </div>
+              </div>
 
-                    <a
-                      href="/webapps/diagnostico_9no_modulo01_desconectado_offline.html"
-                      download="diagnostico_9no_modulo01_desconectado_offline.html"
-                      className="flex items-center justify-center gap-2 px-5 py-3 bg-white/15 hover:bg-white/25 text-purple-100 hover:text-white border border-purple-400/40 font-bold text-xs rounded-2xl transition-all hover:scale-[1.02] cursor-pointer text-center"
-                      title="Descargar la herramienta de evaluación diagnóstica en formato local o sin conexión (HTML)"
-                    >
-                      <DownloadSimple size={18} weight="bold" />
-                      <span>Descargar Herramienta Diagnóstica Sin Conexión o Local (.html)</span>
-                    </a>
-
-                    <a
-                      href="/webapps/diagnostico_9no_escaner_datos_locales.html"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 px-5 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-2xl transition-all shadow-md hover:shadow-emerald-600/30 hover:scale-[1.02] cursor-pointer text-center"
-                      title="Abrir el Escáner de Códigos QR para celulares (Android, iOS Safari, Huawei) sin conexión"
-                    >
-                      <span>📱 Escáner de Datos Locales 9.° Año</span>
-                      <ArrowSquareOut size={16} weight="bold" />
-                    </a>
-
-                    <a
-                      href="/docs/GUIA_PEDAGOGICA_DIAGNOSTICO_9NO_MEP.pdf"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 px-5 py-3 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs rounded-xl transition-all shadow text-center cursor-pointer"
-                      title="Ver o descargar la Guía Pedagógica y Operativa oficial en PDF"
-                    >
-                      <span>📘 Guía Pedagógica Docente (PDF)</span>
-                      <ArrowSquareOut size={16} weight="bold" />
-                    </a>
-                  </>
-                ) : (
-                  <div className="flex items-center justify-center px-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-xs text-purple-200/70 font-medium text-center">
-                    Nivel no asignado
+              {/* BLOQUE 2: MODALIDAD DESCONECTADA */}
+              <div className="bg-black/25 backdrop-blur-sm border border-amber-400/40 rounded-2xl p-5 flex flex-col justify-between space-y-4 hover:border-amber-400/70 transition-all">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30 text-[11px] font-black uppercase tracking-wider">
+                      <WifiSlash size={14} weight="bold" />
+                      <span>Modalidad Desconectada</span>
+                    </span>
+                    <span className="text-[11px] font-bold text-amber-300">Sin Internet (Offline)</span>
                   </div>
-                )}
+                  <h4 className="text-sm sm:text-base font-black text-white">
+                    Laboratorios Aislados y Captura QR
+                  </h4>
+                  <p className="text-xs text-amber-100/80 leading-relaxed font-medium">
+                    Ejecución local en computadoras sin conexión. Los estudiantes generan su QR con datos ya incluidos y el docente los escanea con el celular.
+                  </p>
+                </div>
+
+                <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <a
+                    href="/webapps/diagnostico_9no_modulo01_desconectado_offline.html"
+                    download="diagnostico_9no_modulo01_desconectado_offline.html"
+                    className="flex items-center justify-center gap-1.5 px-3.5 py-2.5 bg-white/15 hover:bg-white/25 text-white font-bold text-xs rounded-xl border border-white/20 transition-all text-center"
+                    title="Descargar archivo .html para instalar en computadoras de los estudiantes vía llave maya"
+                  >
+                    <DownloadSimple size={16} weight="bold" />
+                    <span>1. Descargar para PCs (.html)</span>
+                  </a>
+
+                  <a
+                    href="/diagnostico_9no_escaner_datos_locales.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-1.5 px-3.5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl transition-all shadow-md text-center"
+                    title="Abrir el Escáner QR en tu teléfono móvil para registrar los códigos de las computadoras"
+                  >
+                    <DeviceMobileCamera size={16} weight="bold" />
+                    <span>2. Abrir Escáner QR Celular</span>
+                  </a>
+                </div>
               </div>
 
             </div>
+
+            {/* BARRA INFERIOR DE RECURSOS Y GUÍAS OFICIALES */}
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs relative z-10">
+              <div className="flex items-center gap-2 text-white/90">
+                <BookOpen size={18} className="text-purple-300 shrink-0" weight="bold" />
+                <span className="font-semibold">Centro de Recursos y Documentación Oficial:</span>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2">
+                <a
+                  href="/docs/GUIA_PEDAGOGICA_DIAGNOSTICO_9NO_MEP.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-lg border border-white/15 font-bold transition-all text-[11px]"
+                >
+                  <FilePdf size={14} className="text-rose-300" weight="bold" />
+                  <span>Guía Pedagógica 9.° Año (PDF)</span>
+                  <ArrowSquareOut size={12} />
+                </a>
+
+                <button
+                  type="button"
+                  onClick={() => setModalGuiaPWA(true)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-lg border border-white/15 font-bold transition-all text-[11px] cursor-pointer"
+                >
+                  <DeviceMobileCamera size={14} className="text-sky-300" weight="bold" />
+                  <span>Manual PWA Móvil (iOS / Android)</span>
+                  <Info size={12} />
+                </button>
+              </div>
+            </div>
+
           </div>
         )}
 
@@ -1263,6 +1464,13 @@ export default function DashboardAnaliticoPage() {
             </div>
           </div>
         )}
+
+        {/* MODAL GUÍA DE INSTALACIÓN PWA Y CELULARES */}
+        <ModalGuiaPWA
+          isOpen={modalGuiaPWA}
+          onClose={() => setModalGuiaPWA(false)}
+          nivel={nivelActivo === "7mo" ? "7.° Año" : nivelActivo === "8vo" ? "8.° Año" : "9.° Año"}
+        />
 
       </div>
     </AuthGuard>

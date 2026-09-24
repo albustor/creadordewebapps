@@ -3,8 +3,7 @@ var STORAGE_KEY = "mep_diagnostico_escaner_universal_v2";
 var sesionActiva = {
   centro: "Colegio de Secundaria MEP",
   nivel: "9.° año",
-  seccion: "9-1",
-  estudianteInicial: ""
+  seccion: "9-1"
 };
 
 var html5QrCodeInstance = null;
@@ -93,12 +92,10 @@ function iniciarSesionDocente() {
   var centro = (document.getElementById("inputCentro").value || "").trim() || "Colegio de Secundaria MEP";
   var nivel = document.getElementById("inputNivel").value || "9.° año";
   var seccion = (document.getElementById("inputSeccion").value || "").trim() || "9-1";
-  var estudianteInicial = (document.getElementById("inputEstudianteInicial") ? document.getElementById("inputEstudianteInicial").value : "").trim();
 
   sesionActiva.centro = centro;
   sesionActiva.nivel = nivel;
   sesionActiva.seccion = seccion;
-  sesionActiva.estudianteInicial = estudianteInicial;
 
   document.getElementById("sessionInfo").innerHTML =
     "<strong>🏫 Centro:</strong> " + escaparHTML(sesionActiva.centro) + "<br>" +

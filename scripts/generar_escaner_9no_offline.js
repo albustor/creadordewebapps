@@ -701,13 +701,14 @@ input:focus, select:focus {
         </select>
       </div>
       <div>
-        <label for="inputSeccion">Sección:</label>
+        <label for="inputSeccion">Sección por Defecto:</label>
         <input id="inputSeccion" type="text" placeholder="Ej. 9-1, 8-2, 7-3" value="9-1">
       </div>
     </div>
 
-    <label for="inputEstudianteInicial">Nombre del Estudiante (Opcional para registro manual o búsqueda):</label>
-    <input id="inputEstudianteInicial" type="text" placeholder="Ej. Ana María Rojas (o dejar vacío para escanear QR)">
+    <div style="margin-top: 12px; padding: 10px 12px; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 10px; font-size: 11.5px; color: #065f46; line-height: 1.45;">
+      ✨ <strong>Detección Automática:</strong> No es necesario escribir nombres de estudiantes. Cada código QR generado en las computadoras contiene automáticamente el nombre del estudiante, su sección y todas sus respuestas.
+    </div>
 
     <div style="margin-top: 18px;">
       <button type="button" class="btn-emerald" onclick="iniciarSesionDocente()">

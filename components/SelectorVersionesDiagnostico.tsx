@@ -17,10 +17,15 @@ import {
   ShieldCheck,
   Lightning,
   ChalkboardTeacher,
+  WifiSlash,
+  DeviceMobileCamera,
+  BookOpen,
+  Info,
+  FilePdf,
 } from "@phosphor-icons/react";
 import { QRCodeSVG } from "qrcode.react";
 import { NivelEducativo, obtenerDiagnosticoPorNivel } from "@/lib/diagnosticos";
-
+import ModalGuiaPWA from "@/components/ModalGuiaPWA";
 import { useDocente } from "@/context/DocenteContext";
 
 interface SelectorVersionesDiagnosticoProps {
@@ -40,6 +45,7 @@ export default function SelectorVersionesDiagnostico({
   const [modalQROnline, setModalQROnline] = useState(false);
   const [modalQRDocente, setModalQRDocente] = useState(false);
   const [modalQREscaner, setModalQREscaner] = useState(false);
+  const [modalGuiaPWA, setModalGuiaPWA] = useState(false);
   const [guiaAbierta, setGuiaAbierta] = useState(false);
 
   const diagConfig = obtenerDiagnosticoPorNivel(nivel);
@@ -175,163 +181,233 @@ export default function SelectorVersionesDiagnostico({
         </div>
       )}
 
-      {/* 3. TARJETAS DE ACCESO DIRECTO A LAS VERSIONES */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* 3. MODALIDADES DE APLICACIÓN: EN LÍNEA VS DESCONECTADA */}
+      <div className="space-y-6">
         
-        {/* TARJETA 1: VERSIÓN EN LÍNEA (ESTUDIANTE) */}
-        <div className="bg-white border-2 border-emerald-200/90 rounded-3xl p-6 text-slate-900 shadow-softPastel flex flex-col justify-between hover:border-emerald-400 transition-all">
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
+        {/* MODALIDAD 1: APLICACIÓN EN LÍNEA (CON INTERNET) */}
+        <div className="bg-white border-2 border-emerald-200/90 rounded-3xl p-6 shadow-softPastel space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-emerald-100 pb-3">
+            <div className="flex items-center gap-2">
               <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-900 border border-emerald-200 text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
-                <span>Aplicación en Línea</span>
+                <span>Modalidad en Línea (Con Conexión)</span>
               </span>
               <span className="text-xs font-bold text-emerald-700">{nivel} Año</span>
             </div>
-
-            <div>
-              <h3 className="text-base font-black text-slate-900 tracking-tight">
-                ESTUDIANTES EN LÍNEA
-              </h3>
-              <p className="text-xs text-slate-600 mt-1 leading-relaxed font-medium">
-                Ejecución directa desde el navegador. Envía los resultados y los indicadores cognitivos en tiempo real a tu sistema.
-              </p>
-            </div>
+            <span className="text-xs text-emerald-800 font-semibold">Telemetría en Vivo al Dashboard</span>
           </div>
 
-          <div className="pt-4 space-y-2">
-            <a
-              href={urlOnline}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-black transition-all shadow-xs"
-            >
-              <ArrowSquareOut size={16} weight="bold" />
-              <span>Abrir en Nueva Pestaña</span>
-            </a>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* TARJETA ESTUDIANTES EN LÍNEA */}
+            <div className="bg-emerald-50/50 border border-emerald-200/80 rounded-2xl p-5 flex flex-col justify-between space-y-3">
+              <div>
+                <h4 className="text-sm font-black text-emerald-950">
+                  🌐 ESTUDIANTES EN LÍNEA
+                </h4>
+                <p className="text-xs text-slate-600 mt-1 leading-relaxed font-medium">
+                  Enlace oficial para que los estudiantes realicen la prueba en sus PCs conectadas a internet. Envía los reactivos resueltos en tiempo real.
+                </p>
+              </div>
 
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                onClick={copiarEnlaceOnline}
-                className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-900 text-[11px] font-bold border border-emerald-200"
-              >
-                {copiadoOnline ? <Check size={14} className="text-emerald-700" /> : <Copy size={14} />}
-                <span>{copiadoOnline ? "¡Copiado!" : "Copiar Enlace"}</span>
-              </button>
+              <div className="space-y-2 pt-2">
+                <a
+                  href={urlOnline}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-black transition-all shadow-xs"
+                >
+                  <ArrowSquareOut size={16} weight="bold" />
+                  <span>Abrir Instrumento Estudiantes</span>
+                </a>
 
-              <button
-                onClick={() => setModalQROnline(true)}
-                className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-900 text-[11px] font-bold border border-emerald-200"
-              >
-                <QrCode size={14} />
-                <span>Proyectar QR</span>
-              </button>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={copiarEnlaceOnline}
+                    className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-white hover:bg-emerald-100/60 text-emerald-900 text-[11px] font-bold border border-emerald-200 cursor-pointer"
+                  >
+                    {copiadoOnline ? <Check size={14} className="text-emerald-700" /> : <Copy size={14} />}
+                    <span>{copiadoOnline ? "¡Copiado!" : "Copiar Enlace"}</span>
+                  </button>
+
+                  <button
+                    onClick={() => setModalQROnline(true)}
+                    className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-white hover:bg-emerald-100/60 text-emerald-900 text-[11px] font-bold border border-emerald-200 cursor-pointer"
+                  >
+                    <QrCode size={14} />
+                    <span>Proyectar QR</span>
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        {/* TARJETA 2: MÓDULO DOCENTE EVALUADOR */}
-        <div className="bg-white border-2 border-indigo-200/90 rounded-3xl p-6 text-slate-900 shadow-softPastel flex flex-col justify-between hover:border-indigo-400 transition-all">
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-900 border border-indigo-200 text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5">
-                <ChalkboardTeacher size={14} className="text-indigo-700" />
-                <span>Herramienta Docente</span>
-              </span>
-              <span className="text-xs font-bold text-indigo-700">Rúbricas + Telemetría</span>
-            </div>
+            {/* TARJETA MÓDULO DOCENTE EVALUADOR */}
+            <div className="bg-indigo-50/50 border border-indigo-200/80 rounded-2xl p-5 flex flex-col justify-between space-y-3">
+              <div>
+                <h4 className="text-sm font-black text-indigo-950">
+                  👨‍🏫 MÓDULO EVALUADOR DOCENTE
+                </h4>
+                <p className="text-xs text-slate-600 mt-1 leading-relaxed font-medium">
+                  Panel docente para monitorear reactivos cognitivos en vivo, evaluar rubricas socioafectiva/psicomotora y generar actas MEP.
+                </p>
+              </div>
 
-            <div>
-              <h3 className="text-base font-black text-slate-900 tracking-tight">
-                MÓDULO EVALUADOR {nivel}
-              </h3>
-              <p className="text-xs text-slate-600 mt-1 leading-relaxed font-medium">
-                Visualiza los resultados en tiempo real, evalúa las dimensiones socioafectiva y psicomotora, y exporta a Excel oficial MEP.
-              </p>
-            </div>
-          </div>
+              <div className="space-y-2 pt-2">
+                <a
+                  href={urlDocente}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-indigo-700 hover:bg-indigo-800 text-white text-xs font-black transition-all shadow-xs"
+                >
+                  <ArrowSquareOut size={16} weight="bold" />
+                  <span>Abrir Módulo Evaluador</span>
+                </a>
 
-          <div className="pt-4 space-y-2">
-            <a
-              href={urlDocente}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-indigo-700 hover:bg-indigo-800 text-white text-xs font-black transition-all shadow-xs"
-            >
-              <ArrowSquareOut size={16} weight="bold" />
-              <span>Abrir Módulo Evaluador</span>
-            </a>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={copiarEnlaceDocente}
+                    className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-white hover:bg-indigo-100/60 text-indigo-900 text-[11px] font-bold border border-indigo-200 cursor-pointer"
+                  >
+                    {copiadoDocente ? <Check size={14} className="text-indigo-700" /> : <Copy size={14} />}
+                    <span>{copiadoDocente ? "¡Copiado!" : "Copiar Enlace"}</span>
+                  </button>
 
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                onClick={copiarEnlaceDocente}
-                className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-900 text-[11px] font-bold border border-indigo-200"
-              >
-                {copiadoDocente ? <Check size={14} className="text-indigo-700" /> : <Copy size={14} />}
-                <span>{copiadoDocente ? "¡Copiado!" : "Copiar Enlace"}</span>
-              </button>
-
-              <button
-                onClick={() => setModalQRDocente(true)}
-                className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-900 text-[11px] font-bold border border-indigo-200"
-              >
-                <QrCode size={14} />
-                <span>Proyectar QR</span>
-              </button>
+                  <button
+                    onClick={() => setModalQRDocente(true)}
+                    className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-white hover:bg-indigo-100/60 text-indigo-900 text-[11px] font-bold border border-indigo-200 cursor-pointer"
+                  >
+                    <QrCode size={14} />
+                    <span>Proyectar QR</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* TARJETA 3: ESCÁNER DE DATOS LOCALES (CELULARES) */}
-        <div className="bg-white border-2 border-purple-200/90 rounded-3xl p-6 text-slate-900 shadow-softPastel flex flex-col justify-between hover:border-purple-400 transition-all md:col-span-2">
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="px-3 py-1 rounded-full bg-purple-50 text-purple-900 border border-purple-200 text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-purple-600 animate-pulse" />
-                <span>Escáner Celular / Tablet</span>
+        {/* MODALIDAD 2: APLICACIÓN DESCONECTADA / LOCAL (SIN INTERNET) */}
+        <div className="bg-white border-2 border-amber-200/90 rounded-3xl p-6 shadow-softPastel space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-100 pb-3">
+            <div className="flex items-center gap-2">
+              <span className="px-3 py-1 rounded-full bg-amber-50 text-amber-900 border border-amber-200 text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5">
+                <WifiSlash size={14} weight="bold" className="text-amber-700" />
+                <span>Modalidad Desconectada (Sin Internet)</span>
               </span>
-              <span className="text-xs font-bold text-purple-700">7.°, 8.° y 9.° Año • iOS / Android</span>
+              <span className="text-xs font-bold text-amber-800">Laboratorios Aislados</span>
             </div>
-
-            <div>
-              <h3 className="text-base font-black text-slate-900 tracking-tight">
-                📱 ESCÁNER DE DATOS LOCALES ({nivel} AÑO Y SECUNDARIA)
-              </h3>
-              <p className="text-xs text-slate-600 mt-1 leading-relaxed font-medium">
-                App docente para teléfono móvil que captura los códigos QR generados en las computadoras sin conexión a internet. Úsalo directamente en línea (HTTPS con cámara nativa) o instálalo como Web App en la pantalla de inicio de tu iPhone / Android. Permite exportar a Excel (.csv) y JSON.
-              </p>
-            </div>
+            <span className="text-xs text-amber-800 font-semibold">Captura Rápida vía QR Móvil</span>
           </div>
 
-            <div className="pt-4 grid grid-cols-1 sm:grid-cols-3 gap-2">
-              <a
-                href="/diagnostico_9no_escaner_datos_locales.html"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-purple-700 hover:bg-purple-800 text-white text-xs font-black transition-all shadow-xs"
-              >
-                <ArrowSquareOut size={16} weight="bold" />
-                <span>Abrir Escáner en Celular</span>
-              </a>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* PASO 1: DESCARGA LOCAL PARA COMPUTADORAS */}
+            <div className="bg-amber-50/40 border border-amber-200/80 rounded-2xl p-5 flex flex-col justify-between space-y-3">
+              <div>
+                <span className="px-2 py-0.5 rounded bg-amber-200/70 text-amber-900 text-[10px] font-black uppercase">
+                  Paso 1: Estudiantes
+                </span>
+                <h4 className="text-sm font-black text-amber-950 mt-1">
+                  💾 Archivo Local para PCs (.html)
+                </h4>
+                <p className="text-xs text-slate-600 mt-1 leading-relaxed font-medium">
+                  Copia este archivo en las computadoras del laboratorio vía llave maya USB. Al finalizar, genera el código QR con el nombre y resultados del estudiante ya integrados.
+                </p>
+              </div>
 
-              <a
-                href="/webapps/diagnostico_9no_escaner_datos_locales.html"
-                download="diagnostico_9no_escaner_datos_locales.html"
-                className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-black transition-all border border-slate-300 shadow-xs"
-              >
-                <DownloadSimple size={16} weight="bold" />
-                <span>Descargar Escáner (.html)</span>
-              </a>
+              <div className="pt-2">
+                <a
+                  href={urlOffline}
+                  download={`diagnostico_${nivelNum}mo_modulo01_desconectado_offline.html`}
+                  className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-black transition-all shadow-xs"
+                >
+                  <DownloadSimple size={16} weight="bold" />
+                  <span>Descargar Diagnóstico (.html)</span>
+                </a>
+              </div>
+            </div>
 
-              <button
-                onClick={() => setModalQREscaner(true)}
-                className="flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-900 text-xs font-bold border border-purple-200"
-              >
-                <QrCode size={16} />
-                <span>Proyectar QR para Teléfono</span>
-              </button>
+            {/* PASO 2: ESCÁNER QR EN CELULAR */}
+            <div className="bg-purple-50/40 border border-purple-200/80 rounded-2xl p-5 flex flex-col justify-between space-y-3">
+              <div>
+                <span className="px-2 py-0.5 rounded bg-purple-200/70 text-purple-900 text-[10px] font-black uppercase">
+                  Paso 2: Docente
+                </span>
+                <h4 className="text-sm font-black text-purple-950 mt-1">
+                  📱 Escáner QR Celular / Tablet
+                </h4>
+                <p className="text-xs text-slate-600 mt-1 leading-relaxed font-medium">
+                  Abre la app en tu teléfono (iPhone / Android) para capturar los códigos QR de las pantallas. No requiere escribir nombres y exporta a Excel (.csv) y JSON.
+                </p>
+              </div>
+
+              <div className="space-y-2 pt-2">
+                <a
+                  href={urlEscaner}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-purple-700 hover:bg-purple-800 text-white text-xs font-black transition-all shadow-xs"
+                >
+                  <ArrowSquareOut size={16} weight="bold" />
+                  <span>Abrir Escáner en Teléfono</span>
+                </a>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <a
+                    href="/webapps/diagnostico_9no_escaner_datos_locales.html"
+                    download="diagnostico_9no_escaner_datos_locales.html"
+                    className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-white hover:bg-purple-100/60 text-purple-900 text-[11px] font-bold border border-purple-200"
+                  >
+                    <DownloadSimple size={14} />
+                    <span>Descargar .html</span>
+                  </a>
+
+                  <button
+                    onClick={() => setModalQREscaner(true)}
+                    className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-white hover:bg-purple-100/60 text-purple-900 text-[11px] font-bold border border-purple-200 cursor-pointer"
+                  >
+                    <QrCode size={14} />
+                    <span>Proyectar QR</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
+        </div>
+
+        {/* 4. BARRA DE RECURSOS Y GUÍAS OFICIALES */}
+        <div className="bg-stone-50 border border-stone-200 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+          <div className="flex items-center gap-2 text-slate-700">
+            <BookOpen size={18} className="text-sky-700 shrink-0" weight="bold" />
+            <span className="font-bold">Centro de Recursos y Documentación Oficial:</span>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
+            <a
+              href={
+                nivel === "7°"
+                  ? "/docs/GUIA_PEDAGOGICA_EVALUACION_DIAGNOSTICA_MEP.pdf"
+                  : nivel === "8°"
+                  ? "/docs/GUIA_PEDAGOGICA_DIAGNOSTICO_8VO_MEP.pdf"
+                  : "/docs/GUIA_PEDAGOGICA_DIAGNOSTICO_9NO_MEP.pdf"
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-stone-100 text-slate-800 rounded-xl border border-stone-300 font-bold transition-all text-xs"
+            >
+              <FilePdf size={14} className="text-rose-600" weight="bold" />
+              <span>Guía Pedagógica {nivel} Año (PDF)</span>
+              <ArrowSquareOut size={12} />
+            </a>
+
+            <button
+              type="button"
+              onClick={() => setModalGuiaPWA(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-stone-100 text-slate-800 rounded-xl border border-stone-300 font-bold transition-all text-xs cursor-pointer"
+            >
+              <DeviceMobileCamera size={14} className="text-purple-600" weight="bold" />
+              <span>Manual PWA Móvil (iOS / Android)</span>
+              <Info size={12} />
+            </button>
+          </div>
+        </div>
 
       </div>
 
@@ -421,6 +497,13 @@ export default function SelectorVersionesDiagnostico({
           </div>
         </div>
       )}
+
+      {/* MODAL GUÍA DE INSTALACIÓN PWA Y CELULARES */}
+      <ModalGuiaPWA
+        isOpen={modalGuiaPWA}
+        onClose={() => setModalGuiaPWA(false)}
+        nivel={`${nivel} Año`}
+      />
     </div>
   );
 }
