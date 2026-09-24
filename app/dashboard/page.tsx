@@ -1063,10 +1063,12 @@ export default function DashboardAnaliticoPage() {
                             <span>{logroDinamico}</span>
                           </span>
                         </td>
-                        <td className="p-3 text-right text-stone-400 text-[11px] font-mono">
-                          {item.timestamp && !isNaN(new Date(item.timestamp).getTime())
-                            ? new Date(item.timestamp).toLocaleString("es-CR")
-                            : "—"}
+                        <td className="p-3 text-right text-stone-600 text-[11px] font-mono font-medium whitespace-nowrap">
+                          {item.fechaIngreso ||
+                            item.fechaHoraRegistro ||
+                            (item.timestamp && !isNaN(new Date(item.timestamp).getTime())
+                              ? new Date(item.timestamp).toLocaleString("es-CR")
+                              : "—")}
                         </td>
                         <td className="p-3 text-center">
                           <div className="flex items-center justify-center gap-1.5">

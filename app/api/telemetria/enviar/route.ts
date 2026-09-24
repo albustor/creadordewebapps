@@ -233,14 +233,22 @@ export async function POST(req: NextRequest) {
 
       const esRegistroInicial = (body as any).estadoProgreso === "iniciado" || (body as any).tipoActividad === "inicio_diagnostico";
       const secNormalizada = normalizarSeccionServidor(body.seccionOGrupo);
+      const now = new Date();
+      const fechaLocalCR = now.toLocaleString("es-CR", { timeZone: "America/Costa_Rica" });
+      const fechaCorta = now.toLocaleDateString("es-CR", { timeZone: "America/Costa_Rica" });
+      const horaCorta = now.toLocaleTimeString("es-CR", { timeZone: "America/Costa_Rica" });
 
       const resultadoProcesado = {
         ...body,
         seccionOGrupo: secNormalizada,
         idResultado: body.idResultado || "res-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6),
         timestamp: body.timestamp || Date.now(),
+        fechaIngreso: body.fechaIngreso || fechaLocalCR,
+        fechaHoraRegistro: body.fechaHoraRegistro || `${fechaCorta}, ${horaCorta}`,
+        fechaEntrega: body.fechaEntrega || fechaCorta,
+        horaEntrega: body.horaEntrega || horaCorta,
         integridadVerificada: true,
-        recibidoEnServidor: new Date().toISOString(),
+        recibidoEnServidor: now.toISOString(),
         estadoProgreso: (body as any).estadoProgreso || (esRegistroInicial ? "iniciado" : "completado"),
       };
 
@@ -334,31 +342,30 @@ export async function GET(req: NextRequest) {
   const cedula = searchParams.get("cedula");
   const correo = searchParams.get("correo");
   const nombre = searchParams.get("docenteNombre");
+  const verTodos = searchParams.get("verTodos") === "true";
 
   let datos = registrosTelemetriaMemoria;
-  const esSuperAdminGlobal =
-    correo === "alberto.bustos.ortega@mep.go.cr" ||
-    correo === "allan.morera.araya@mep.go.cr" ||
-    docenteId === "SUPERADMIN-01";
 
-  if (!esSuperAdminGlobal && (docenteId || cedula || correo || nombre)) {
+  if (!verTodos && (docenteId || cedula || correo || nombre)) {
     const docIdNorm = (docenteId || "").trim().toLowerCase();
     const cedNorm = (cedula || "").trim().toLowerCase();
     const corNorm = (correo || "").trim().toLowerCase();
     const nomNorm = (nombre || "").trim().toLowerCase();
+    const cedClean = cedNorm.replace(/\D/g, "");
 
     datos = registrosTelemetriaMemoria.filter((r) => {
       const rDocId = (r.docenteId || "").trim().toLowerCase();
       const rDocCed = (r.docenteCedula || "").trim().toLowerCase();
       const rDocEmail = (r.docenteEmail || "").trim().toLowerCase();
       const rDocNom = (r.docenteNombre || "").trim().toLowerCase();
+      const rDocCedClean = rDocCed.replace(/\D/g, "");
 
-      const matchId = docIdNorm && (rDocId === docIdNorm || rDocId.includes(docIdNorm) || docIdNorm.includes(rDocId));
-      const matchCed = cedNorm && (rDocCed === cedNorm || rDocId === cedNorm || rDocCed.replace(/\D/g, "") === cedNorm.replace(/\D/g, ""));
+      const matchId = docIdNorm && (rDocId === docIdNorm || rDocId.includes(docIdNorm));
+      const matchCed = cedClean && (rDocCedClean === cedClean || rDocId === cedClean);
       const matchEmail = corNorm && (rDocEmail === corNorm || rDocEmail.includes(corNorm));
-      const matchNom = nomNorm && (rDocNom === nomNorm || rDocNom.includes(nomNorm) || nomNorm.includes(rDocNom));
+      const matchNom = nomNorm && (rDocNom === nomNorm || rDocNom.includes(nomNorm));
 
-      return matchId || matchCed || matchEmail || matchNom;
+      return Boolean(matchId || matchCed || matchEmail || matchNom);
     });
   }
 

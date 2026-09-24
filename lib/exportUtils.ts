@@ -51,7 +51,7 @@ export async function exportarAExcel(
       "Docente Evaluador": meta.docente || "Docente MEP",
       "Centro Educativo": meta.institucion || "Centro Educativo MEP",
       "Dirección Regional": meta.dre || "DRE",
-      "Fecha y Hora": new Date(r.timestamp).toLocaleString("es-CR"),
+      "Fecha y Hora": r.fechaIngreso || r.fechaHoraRegistro || (r.timestamp ? new Date(r.timestamp).toLocaleString("es-CR") : "—"),
       "Hash de Telemetría": r.tokenAntiFraude || r.idResultado || `REG-${Date.now()}`
     };
   });

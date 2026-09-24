@@ -714,93 +714,7 @@ export const LISTA_DOCENTES_INICIALES: DocenteData[] = [
 
 export const DOCENTE_MEP_OFICIAL = DOCENTE_DEFAULT;
 
-const SAMPLE_TELEMETRIA: PayloadTelemetria[] = [
-  {
-    webAppId: "com-7-algoritmos-sim",
-    webAppTitulo: "Laboratorio de Algoritmos y Condicionales (7°)",
-    docenteId: "DOC-DRE01-7729",
-    estudianteNombre: "Valeria Montero Jiménez",
-    seccionOGrupo: "Sección 7-1",
-    puntaje: 100,
-    puntajeMaximo: 100,
-    porcentaje: 100,
-    nivelLogro: "Avanzado",
-    tiempoSegundos: 45,
-    totalReactivos: 4,
-    aciertos: 4,
-    fallos: 0,
-    timestamp: Date.now() - 1000 * 60 * 30,
-    tokenAntiFraude: "token-demo-valid-sha256-valeria",
-  },
-  {
-    webAppId: "com-7-algoritmos-sim",
-    webAppTitulo: "Laboratorio de Algoritmos y Condicionales (7°)",
-    docenteId: "DOC-DRE01-7729",
-    estudianteNombre: "Gabriel Segura Castillo",
-    seccionOGrupo: "Sección 7-1",
-    puntaje: 75,
-    puntajeMaximo: 100,
-    porcentaje: 75,
-    nivelLogro: "Intermedio",
-    tiempoSegundos: 68,
-    totalReactivos: 4,
-    aciertos: 3,
-    fallos: 1,
-    timestamp: Date.now() - 1000 * 60 * 25,
-    tokenAntiFraude: "token-demo-valid-sha256-gabriel",
-  },
-  {
-    webAppId: "com-7-algoritmos-sim",
-    webAppTitulo: "Laboratorio de Algoritmos y Condicionales (7°)",
-    docenteId: "DOC-DRE01-7729",
-    estudianteNombre: "Felipe Araya Mora",
-    seccionOGrupo: "Sección 7-1",
-    puntaje: 50,
-    puntajeMaximo: 100,
-    porcentaje: 50,
-    nivelLogro: "Inicial",
-    tiempoSegundos: 92,
-    totalReactivos: 4,
-    aciertos: 2,
-    fallos: 2,
-    timestamp: Date.now() - 1000 * 60 * 15,
-    tokenAntiFraude: "token-demo-valid-sha256-felipe",
-  },
-  {
-    webAppId: "com-8-circuitos-sim",
-    webAppTitulo: "Simulador de Circuitos Eléctricos y Microcontroladores (8°)",
-    docenteId: "DOC-DRE01-7729",
-    estudianteNombre: "Jimena Solano Castro",
-    seccionOGrupo: "Sección 8-2",
-    puntaje: 100,
-    puntajeMaximo: 100,
-    porcentaje: 100,
-    nivelLogro: "Avanzado",
-    tiempoSegundos: 38,
-    totalReactivos: 4,
-    aciertos: 4,
-    fallos: 0,
-    timestamp: Date.now() - 1000 * 60 * 10,
-    tokenAntiFraude: "token-demo-valid-sha256-jimena",
-  },
-  {
-    webAppId: "com-9-domotica-sim",
-    webAppTitulo: "Simulador de Casa Domótica y Ahorro Energético (9°)",
-    docenteId: "DOC-DRE01-7729",
-    estudianteNombre: "Santiago Vargas Pérez",
-    seccionOGrupo: "Sección 9-3",
-    puntaje: 75,
-    puntajeMaximo: 100,
-    porcentaje: 75,
-    nivelLogro: "Intermedio",
-    tiempoSegundos: 110,
-    totalReactivos: 4,
-    aciertos: 3,
-    fallos: 1,
-    timestamp: Date.now() - 1000 * 60 * 5,
-    tokenAntiFraude: "token-demo-valid-sha256-santiago",
-  },
-];
+const SAMPLE_TELEMETRIA: PayloadTelemetria[] = [];
 
 export function DocenteProvider({ children }: { children: React.ReactNode }) {
   const [docente, setDocente] = useState<DocenteData | null>(null);
@@ -855,10 +769,9 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
 
     const mapa = new Map<string, PayloadTelemetria>();
 
-    // 1. Cargar evaluaciones locales de 7mo
+    // 1. Cargar evaluaciones locales de 7mo vinculadas estrictamente a este docente
     try {
-      const raw7mo = (cedClean ? SafeStorage.getItem(`MEP_DOCENTE_7MO_EVALUATIONS_${cedClean}`) : null) ||
-        (esAdmin ? SafeStorage.getItem("MEP_DOCENTE_7MO_EVALUATIONS") : null);
+      const raw7mo = cedClean ? SafeStorage.getItem(`MEP_DOCENTE_7MO_EVALUATIONS_${cedClean}`) : null;
       if (raw7mo) {
         const list7mo = JSON.parse(raw7mo);
         if (Array.isArray(list7mo)) {
@@ -866,12 +779,12 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
             const evDocId = (ev.docenteId || ev.raw?.docenteId || "").trim().toLowerCase();
             const evDocCed = (ev.docenteCedula || ev.raw?.docenteCedula || "").trim().toLowerCase();
             const evDocNom = (ev.docenteNombre || ev.raw?.docenteNombre || "").trim().toLowerCase();
+            const evDocCedClean = evDocCed.replace(/\D/g, "");
 
             const pertenece =
-              esAdmin ||
-              (docenteId && evDocId === docenteId.toLowerCase()) ||
-              (cedClean && evDocCed.replace(/\D/g, "") === cedClean) ||
-              (nombreDoc && evDocNom === nombreDoc) ||
+              (docenteId && (evDocId === docenteId.toLowerCase() || evDocId.includes(docenteId.toLowerCase()))) ||
+              (cedClean && (evDocCedClean === cedClean || evDocId === cedClean)) ||
+              (nombreDoc && (evDocNom === nombreDoc || evDocNom.includes(nombreDoc))) ||
               Boolean(cedClean && SafeStorage.getItem(`MEP_DOCENTE_7MO_EVALUATIONS_${cedClean}`));
 
             if (!pertenece) return;
@@ -882,8 +795,15 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
             const estNombre = isIndiv ? n1 : `${n1} & ${n2}`;
             const sec = normalizarSeccion(ev.section);
             const score = ev.globalAvg ?? ev.porcentaje ?? ev.puntaje ?? 80;
+
+            const ts = ev.raw?.timestamp || ev.timestamp || Date.now();
+            const d = new Date(ts);
+            const fechaLocalCR = !isNaN(d.getTime()) ? d.toLocaleString("es-CR", { timeZone: "America/Costa_Rica" }) : new Date().toLocaleString("es-CR");
+            const fechaCorta = !isNaN(d.getTime()) ? d.toLocaleDateString("es-CR", { timeZone: "America/Costa_Rica" }) : new Date().toLocaleDateString("es-CR");
+            const horaCorta = !isNaN(d.getTime()) ? d.toLocaleTimeString("es-CR", { timeZone: "America/Costa_Rica" }) : new Date().toLocaleTimeString("es-CR");
+
             const rec: PayloadTelemetria = {
-              idResultado: ev.id || `eval-7mo-${Date.now()}`,
+              idResultado: ev.id || `eval-7mo-${ts}`,
               webAppId: "diagnostico_7mo_modulo01_cyberquest",
               webAppTitulo: "CyberQuest 7°: Diagnóstico de Fundamentos Digitales",
               docenteId: ev.docenteId || docenteId || doc.idDocente,
@@ -902,8 +822,12 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
               nivelLogro: ev.globalLevel === "A" || score >= 80 ? "Avanzado" : (ev.globalLevel === "C" || score <= 59 ? "Inicial" : "Intermedio"),
               tiempoSegundos: 120,
               estadoProgreso: "completado",
-              timestamp: ev.raw?.timestamp || Date.now(),
-              tokenAntiFraude: `TOKEN-7MO-${Date.now()}`,
+              timestamp: ts,
+              fechaIngreso: ev.fechaIngreso || fechaLocalCR,
+              fechaHoraRegistro: ev.fechaHoraRegistro || `${fechaCorta}, ${horaCorta}`,
+              fechaEntrega: ev.fechaEntrega || fechaCorta,
+              horaEntrega: ev.horaEntrega || horaCorta,
+              tokenAntiFraude: `TOKEN-7MO-${ts}`,
             };
             mapa.set(normalizarClave(rec), rec);
           });
@@ -911,10 +835,9 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       }
     } catch {}
 
-    // 2. Cargar evaluaciones locales de 8vo
+    // 2. Cargar evaluaciones locales de 8vo vinculadas estrictamente a este docente
     try {
-      const raw8vo = (cedClean ? SafeStorage.getItem(`MEP_DOCENTE_8VO_EVALUATIONS_${cedClean}`) : null) ||
-        (esAdmin ? (SafeStorage.getItem("MEP_DOCENTE_8VO_EVALUATIONS") || SafeStorage.getItem("evaluacion_docente_8vo")) : null);
+      const raw8vo = cedClean ? SafeStorage.getItem(`MEP_DOCENTE_8VO_EVALUATIONS_${cedClean}`) : null;
       if (raw8vo) {
         const list8vo = JSON.parse(raw8vo);
         if (Array.isArray(list8vo)) {
@@ -922,12 +845,12 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
             const evDocId = (ev.docenteId || "").trim().toLowerCase();
             const evDocCed = (ev.docenteCedula || "").trim().toLowerCase();
             const evDocNom = (ev.docenteNombre || "").trim().toLowerCase();
+            const evDocCedClean = evDocCed.replace(/\D/g, "");
 
             const pertenece =
-              esAdmin ||
-              (docenteId && evDocId === docenteId.toLowerCase()) ||
-              (cedClean && evDocCed.replace(/\D/g, "") === cedClean) ||
-              (nombreDoc && evDocNom === nombreDoc) ||
+              (docenteId && (evDocId === docenteId.toLowerCase() || evDocId.includes(docenteId.toLowerCase()))) ||
+              (cedClean && (evDocCedClean === cedClean || evDocId === cedClean)) ||
+              (nombreDoc && (evDocNom === nombreDoc || evDocNom.includes(nombreDoc))) ||
               Boolean(cedClean && SafeStorage.getItem(`MEP_DOCENTE_8VO_EVALUATIONS_${cedClean}`));
 
             if (!pertenece) return;
@@ -941,8 +864,14 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
             const sub2Val = ev.sub2 !== undefined ? ev.sub2 : (ev.subareasDetalle?.sub2_algoritmos ?? Math.min(7, Math.round((puntos / 14) * 7)));
             const sub3Val = ev.sub3 !== undefined ? ev.sub3 : (ev.subareasDetalle?.sub3_robotica ?? Math.min(2, Math.max(0, puntos - sub1Val - sub2Val)));
 
+            const ts = ev.timestamp || Date.now();
+            const d = new Date(ts);
+            const fechaLocalCR = !isNaN(d.getTime()) ? d.toLocaleString("es-CR", { timeZone: "America/Costa_Rica" }) : new Date().toLocaleString("es-CR");
+            const fechaCorta = !isNaN(d.getTime()) ? d.toLocaleDateString("es-CR", { timeZone: "America/Costa_Rica" }) : new Date().toLocaleDateString("es-CR");
+            const horaCorta = !isNaN(d.getTime()) ? d.toLocaleTimeString("es-CR", { timeZone: "America/Costa_Rica" }) : new Date().toLocaleTimeString("es-CR");
+
             const rec: PayloadTelemetria = {
-              idResultado: ev.id || `eval-8vo-${Date.now()}`,
+              idResultado: ev.id || `eval-8vo-${ts}`,
               webAppId: "diagnostico_8vo_modulo01_docente_evaluador",
               webAppTitulo: "Evaluación Diagnóstica — 8° Año (PNFT)",
               docenteId: ev.docenteId || docenteId || doc.idDocente,
@@ -971,8 +900,12 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
               psicomotor: ev.psicomotor || { psi1: "Demostrado", psi2: "Demostrado", psi3: "Demostrado", psi4: "Demostrado" },
               tiempoSegundos: 120,
               estadoProgreso: "completado",
-              timestamp: ev.timestamp || Date.now(),
-              tokenAntiFraude: `TOKEN-8VO-${Date.now()}`,
+              timestamp: ts,
+              fechaIngreso: ev.fechaIngreso || fechaLocalCR,
+              fechaHoraRegistro: ev.fechaHoraRegistro || `${fechaCorta}, ${horaCorta}`,
+              fechaEntrega: ev.fechaEntrega || fechaCorta,
+              horaEntrega: ev.horaEntrega || horaCorta,
+              tokenAntiFraude: `TOKEN-8VO-${ts}`,
             };
             mapa.set(normalizarClave(rec), rec);
           });
@@ -997,6 +930,8 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
 
     // Actualizar estado inicial antes de llamar al servidor
     const registrosIniciales = Array.from(mapa.values()).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+    setTelemetria(registrosIniciales);
+    SafeStorage.setItem("telemetria_registros", JSON.stringify(registrosIniciales));
     setTelemetria(registrosIniciales);
     SafeStorage.setItem("telemetria_registros", JSON.stringify(registrosIniciales));
 
@@ -1754,6 +1689,22 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
   };
 
   const agregarResultadoTelemetria = (res: PayloadTelemetria) => {
+    const ts = res.timestamp || Date.now();
+    const d = new Date(ts);
+    const fechaLocalCR = !isNaN(d.getTime()) ? d.toLocaleString("es-CR", { timeZone: "America/Costa_Rica" }) : new Date().toLocaleString("es-CR");
+    const fechaCorta = !isNaN(d.getTime()) ? d.toLocaleDateString("es-CR", { timeZone: "America/Costa_Rica" }) : new Date().toLocaleDateString("es-CR");
+    const horaCorta = !isNaN(d.getTime()) ? d.toLocaleTimeString("es-CR", { timeZone: "America/Costa_Rica" }) : new Date().toLocaleTimeString("es-CR");
+
+    const itemEnriquecido: PayloadTelemetria = {
+      ...res,
+      timestamp: ts,
+      fechaIngreso: res.fechaIngreso || fechaLocalCR,
+      fechaHoraRegistro: res.fechaHoraRegistro || `${fechaCorta}, ${horaCorta}`,
+      fechaEntrega: res.fechaEntrega || fechaCorta,
+      horaEntrega: res.horaEntrega || horaCorta,
+      seccionOGrupo: normalizarSeccionTexto(res.seccionOGrupo),
+    };
+
     setTelemetria((prev) => {
       const mapa = new Map<string, PayloadTelemetria>();
       prev.forEach((p) => {
@@ -1761,9 +1712,8 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
           mapa.set(normalizarClaveItem(p), p);
         }
       });
-      const key = normalizarClaveItem(res);
-      const resNorm = { ...res, seccionOGrupo: normalizarSeccionTexto(res.seccionOGrupo) };
-      mapa.set(key, resNorm);
+      const key = normalizarClaveItem(itemEnriquecido);
+      mapa.set(key, itemEnriquecido);
       const updated = Array.from(mapa.values()).sort((a, b) => b.timestamp - a.timestamp);
       SafeStorage.setItem("telemetria_registros", JSON.stringify(updated));
       return updated;
@@ -1779,6 +1729,11 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
   };
 
   const importarLoteResultados = (lote: PayloadTelemetria[]) => {
+    const now = new Date();
+    const fechaLocalCR = now.toLocaleString("es-CR", { timeZone: "America/Costa_Rica" });
+    const fechaCorta = now.toLocaleDateString("es-CR", { timeZone: "America/Costa_Rica" });
+    const horaCorta = now.toLocaleTimeString("es-CR", { timeZone: "America/Costa_Rica" });
+
     setTelemetria((prev) => {
       const mapa = new Map<string, PayloadTelemetria>();
       prev.forEach((p) => {
@@ -1788,8 +1743,22 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       });
       lote.forEach((item) => {
         if (item.estudianteNombre) {
+          const ts = item.timestamp || Date.now();
+          const d = new Date(ts);
+          const fCR = !isNaN(d.getTime()) ? d.toLocaleString("es-CR", { timeZone: "America/Costa_Rica" }) : fechaLocalCR;
+          const fCorta = !isNaN(d.getTime()) ? d.toLocaleDateString("es-CR", { timeZone: "America/Costa_Rica" }) : fechaCorta;
+          const hCorta = !isNaN(d.getTime()) ? d.toLocaleTimeString("es-CR", { timeZone: "America/Costa_Rica" }) : horaCorta;
+
           const key = normalizarClaveItem(item);
-          const itemNorm = { ...item, seccionOGrupo: normalizarSeccionTexto(item.seccionOGrupo) };
+          const itemNorm: PayloadTelemetria = {
+            ...item,
+            timestamp: ts,
+            fechaIngreso: item.fechaIngreso || fCR,
+            fechaHoraRegistro: item.fechaHoraRegistro || `${fCorta}, ${hCorta}`,
+            fechaEntrega: item.fechaEntrega || fCorta,
+            horaEntrega: item.horaEntrega || hCorta,
+            seccionOGrupo: normalizarSeccionTexto(item.seccionOGrupo),
+          };
           mapa.set(key, itemNorm);
         }
       });

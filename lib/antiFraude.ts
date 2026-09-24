@@ -41,6 +41,8 @@ export interface PayloadTelemetria {
   horaInicio?: string;
   horaEntrega?: string;
   fechaEntrega?: string;
+  fechaIngreso?: string;
+  fechaHoraRegistro?: string;
   cog?: string[];
   subareasDetalle?: Record<string, number>;
   socioafectivo?: Record<string, string>;
