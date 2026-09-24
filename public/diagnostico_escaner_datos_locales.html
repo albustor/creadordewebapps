@@ -310,7 +310,7 @@ input:focus, select:focus {
 .file-upload-wrapper {
   margin-top: 10px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   gap: 8px;
 }
 .file-upload-btn {
@@ -328,7 +328,120 @@ input:focus, select:focus {
   cursor: pointer;
   width: 100%;
   text-align: center;
+  transition: all 0.15s ease;
+  user-select: none;
 }
+.file-upload-btn:hover {
+  background: #e0f2fe;
+  border-color: #0369a1;
+}
+
+/* Tarjeta de Métricas y Estadísticas DUA */
+.metrics-card {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 1.5px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 14px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+}
+.metrics-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e2e8f0;
+}
+.metrics-title {
+  font-size: 13px;
+  font-weight: 900;
+  color: #002b49;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.metrics-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.kpi-box {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 8px 6px;
+  text-align: center;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
+.kpi-val {
+  font-size: 16px;
+  font-weight: 900;
+  color: #002b49;
+}
+.kpi-label {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+.dua-semaphore {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.dua-bar-wrap {
+  display: flex;
+  height: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #e2e8f0;
+  margin: 6px 0;
+}
+.dua-seg-logrado { background: #16a34a; transition: width 0.3s ease; }
+.dua-seg-desarrollo { background: #ca8a04; transition: width 0.3s ease; }
+.dua-seg-refuerzo { background: #dc2626; transition: width 0.3s ease; }
+.dua-legend {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4px;
+  font-size: 10.5px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+.dua-tag {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.tag-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.chips-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 5px;
+}
+.chip {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.chip-green { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+.chip-amber { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
 
 /* Acordeón de Guía Plegable (Cerrado por defecto) */
 .guide-accordion {
@@ -721,15 +834,19 @@ input:focus, select:focus {
     <!-- Contenedor del video con playsinline para iOS -->
     <div id="reader" class="hidden" playsinline webkit-playsinline></div>
 
-    <!-- Opciones de respaldo: Foto de cámara nativa y Carga de archivos JSON -->
+    <!-- Opciones de respaldo: Foto de cámara nativa, Carga de JSONs y Carga de CSV -->
     <div class="file-upload-wrapper">
       <label class="file-upload-btn">
-        <span>📸 Tomar foto / Cargar QR</span>
+        <span>📸 Tomar foto / QR</span>
         <input type="file" id="qrFileInput" accept="image/*" capture="environment" style="display: none;" onchange="procesarArchivoImagen(event)">
       </label>
       <label class="file-upload-btn">
-        <span>📂 Importar JSONs (USB)</span>
+        <span>📂 Cargar JSONs (USB)</span>
         <input type="file" id="jsonBatchInput" accept=".json" multiple style="display: none;" onchange="importarArchivosJSON(event)">
+      </label>
+      <label class="file-upload-btn" style="background: #f0fdf4; border-color: #16a34a; color: #16a34a;">
+        <span>📊 Subir CSV (Padrón)</span>
+        <input type="file" id="csvBatchInput" accept=".csv,.txt" multiple style="display: none;" onchange="importarArchivosCSV(event)">
       </label>
     </div>
 
@@ -738,7 +855,7 @@ input:focus, select:focus {
     <!-- Botones de descarga y padrón directos -->
     <div class="button-grid-3" style="margin-top: 16px;">
       <button type="button" class="btn-secondary" onclick="alternarVistaRegistros()">
-        <span>📋 Ver Padrón</span>
+        <span>📋 Ver Padrón & Métricas</span>
       </button>
       <button type="button" class="btn-emerald" onclick="exportarCSV()">
         <span>📊 Exportar Excel (.csv)</span>
@@ -770,9 +887,18 @@ input:focus, select:focus {
     </button>
   </section>
 
-  <!-- PASO 4: PADRÓN DE REGISTROS ALMACENADOS -->
+  <!-- PASO 4: PADRÓN DE REGISTROS Y ANÁLISIS DE MÉTRICAS -->
   <section id="vistaRegistros" class="card hidden">
-    <h2>📋 Padrón de Estudiantes Registrados</h2>
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
+      <h2 style="margin: 0;">📋 Padrón y Métricas Consolidadas</h2>
+      <label class="file-upload-btn" style="width: auto; padding: 6px 12px; background: #f0fdf4; border-color: #16a34a; color: #16a34a;">
+        <span>📊 Subir CSV / Padrón</span>
+        <input type="file" id="csvPadronInput" accept=".csv,.txt" multiple style="display: none;" onchange="importarArchivosCSV(event)">
+      </label>
+    </div>
+
+    <!-- Contenedor dinámico de métricas consolidadas -->
+    <div id="contenedorMetricas"></div>
 
     <div id="listaRegistros"></div>
 
@@ -1063,6 +1189,8 @@ async function importarArchivosJSON(e) {
     }
   }
 
+  e.target.value = "";
+
   if (importados > 0) {
     guardarRegistros(registrosActuales);
     actualizarContador();
@@ -1071,6 +1199,272 @@ async function importarArchivosJSON(e) {
   } else {
     alert("No se pudieron importar registros válidos de los archivos seleccionados.");
   }
+}
+
+// Fallback 3: Importación y Análisis Masivo de Archivos CSV (Excel / Padrón)
+async function importarArchivosCSV(e) {
+  var files = e.target.files;
+  if (!files || files.length === 0) return;
+
+  var totalNuevos = 0;
+  var registrosActuales = obtenerRegistros();
+  var logImportacion = [];
+
+  for (var i = 0; i < files.length; i++) {
+    var file = files[i];
+    try {
+      var text = await file.text();
+      var procesados = procesarTextoCSV(text, file.name);
+      if (procesados && procesados.length > 0) {
+        procesados.forEach(function(reg) {
+          registrosActuales.push(reg);
+          totalNuevos++;
+        });
+        logImportacion.push("• " + file.name + ": " + procesados.length + " estudiantes.");
+      }
+    } catch (err) {
+      console.warn("Error al procesar archivo CSV:", file.name, err);
+    }
+  }
+
+  // Reset del input file para permitir seleccionar el mismo archivo nuevamente
+  e.target.value = "";
+
+  if (totalNuevos > 0) {
+    guardarRegistros(registrosActuales);
+    actualizarContador();
+    
+    // Calcular métricas para el mensaje
+    var met = calcularMetricasPadron(registrosActuales);
+    var mensajeAlerta = "✅ ¡Importación y Análisis Completado!\n\n" +
+      "Se procesaron " + totalNuevos + " registros de estudiantes.\n" +
+      logImportacion.join("\n") + "\n\n" +
+      "📊 Métricas Globales del Padrón:\n" +
+      "• Total Estudiantes: " + met.total + "\n" +
+      "• Promedio Cognitivo: " + met.promedio + "%\n" +
+      "• 🟢 Logrado (≥80%): " + met.logrado + " (" + met.pctLogrado + "%)\n" +
+      "• 🟡 En Desarrollo (60-79%): " + met.desarrollo + " (" + met.pctDesarrollo + "%)\n" +
+      "• 🔴 Reforzamiento (<60%): " + met.refuerzo + " (" + met.pctRefuerzo + "%)\n" +
+      "• ⚙️ Psicomotor Completo: " + met.psicoCompleto + " (" + met.pctPsico + "%)\n\n" +
+      "Los datos han sido incorporados a las métricas del padrón.";
+
+    alert(mensajeAlerta);
+
+    // Si no estábamos en la vista de registros, cambiar a ella para ver las métricas
+    var vReg = document.getElementById("vistaRegistros");
+    var vSes = document.getElementById("vistaSesion");
+    if (vReg && vReg.classList.contains("hidden")) {
+      detenerCamara();
+      vSes.classList.add("hidden");
+      vReg.classList.remove("hidden");
+    }
+    renderizarListaPadron();
+  } else {
+    alert("⚠️ No se pudieron extraer datos válidos de los archivos CSV seleccionados.\nPor favor verifique que contenga columnas como: Estudiante, Sección, Cognoscitiva, etc.");
+  }
+}
+
+function parsearLineaCSV(linea, sep) {
+  var res = [];
+  var cur = "";
+  var inQuotes = false;
+  for (var i = 0; i < linea.length; i++) {
+    var c = linea[i];
+    if (c === '"') {
+      if (inQuotes && linea[i + 1] === '"') {
+        cur += '"';
+        i++;
+      } else {
+        inQuotes = !inQuotes;
+      }
+    } else if (c === sep && !inQuotes) {
+      res.push(cur.trim());
+      cur = "";
+    } else {
+      cur += c;
+    }
+  }
+  res.push(cur.trim());
+  return res;
+}
+
+function detectarSeparadorCSV(linea) {
+  var counts = { ';': 0, ',': 0, '\t': 0, '|': 0 };
+  var inQuotes = false;
+  for (var i = 0; i < linea.length; i++) {
+    var c = linea[i];
+    if (c === '"') {
+      if (inQuotes && linea[i + 1] === '"') i++;
+      else inQuotes = !inQuotes;
+    } else if (!inQuotes && counts[c] !== undefined) {
+      counts[c]++;
+    }
+  }
+  var sep = ';';
+  var max = -1;
+  for (var k in counts) {
+    if (counts[k] > max) {
+      max = counts[k];
+      sep = k;
+    }
+  }
+  return max > 0 ? sep : ';';
+}
+
+function procesarTextoCSV(texto, nombreArchivo) {
+  if (!texto || !texto.trim()) return [];
+
+  // Eliminar BOM UTF-8 si existe
+  var raw = texto.replace(/^\uFEFF/, "").trim();
+  var lineas = raw.split(/\r?\n/).map(function(l) { return l.trim(); }).filter(Boolean);
+  if (lineas.length < 2) return [];
+
+  var sep = detectarSeparadorCSV(lineas[0]);
+  var headers = parsearLineaCSV(lineas[0], sep).map(function(h) {
+    return h.replace(/^["']|["']$/g, "").trim().toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Quitar acentos
+  });
+
+  // Mapeo inteligente de encabezados
+  var colIdx = {
+    centro: -1,
+    nivel: -1,
+    seccion: -1,
+    estudiante: -1,
+    cedula: -1,
+    fecha: -1,
+    cognoscitiva: -1,
+    nivelCognoscitivo: -1,
+    tarjetas: -1,
+    puertos: -1,
+    ejecucion: -1,
+    socioafectiva: -1,
+    fortalezas: -1,
+    prioridades: -1
+  };
+
+  headers.forEach(function(h, idx) {
+    if (h.includes("centro") || h.includes("colegio") || h.includes("escuela") || h.includes("institucion")) colIdx.centro = idx;
+    else if (h === "nivel" || h.includes("nivel educ") || h.includes("grado")) colIdx.nivel = idx;
+    else if (h.includes("seccion") || h.includes("grupo") || h === "sec") colIdx.seccion = idx;
+    else if (h.includes("estudiante") || h.includes("nombre") || h.includes("alumno") || h.includes("cadete")) colIdx.estudiante = idx;
+    else if (h.includes("cedula") || h.includes("identificacion") || h === "id" || h === "docid") colIdx.cedula = idx;
+    else if (h.includes("fecha") || h.includes("timestamp") || h === "fec") colIdx.fecha = idx;
+    else if (h.includes("nivel cogn") || h.includes("nivel general") || h.includes("nivel de")) colIdx.nivelCognoscitivo = idx;
+    else if (h.includes("cognoscitiva") || h.includes("cognitivo") || h.includes("puntaje") || h.includes("nota") || h.includes("porcentaje") || h === "cog") colIdx.cognoscitiva = idx;
+    else if (h.includes("tarjeta") || h.includes("hw") || h.includes("misiones")) colIdx.tarjetas = idx;
+    else if (h.includes("puerto") || h.includes("algo") || h.includes("conexion")) colIdx.puertos = idx;
+    else if (h.includes("ejecucion") || h.includes("psicomot") || h === "psi") colIdx.ejecucion = idx;
+    else if (h.includes("socioafect") || h.includes("actitud") || h.includes("indicador") || h === "soc") colIdx.socioafectiva = idx;
+    else if (h.includes("fortaleza") || h.includes("dominio")) colIdx.fortalezas = idx;
+    else if (h.includes("prioridad") || h.includes("apoyo") || h.includes("reforzamiento")) colIdx.prioridades = idx;
+  });
+
+  // Si no se detectó estudiante, asumir columna 0 o 3
+  if (colIdx.estudiante === -1) {
+    if (headers.length > 3 && colIdx.centro !== -1) colIdx.estudiante = 3;
+    else colIdx.estudiante = 0;
+  }
+
+  var registros = [];
+
+  for (var i = 1; i < lineas.length; i++) {
+    var valores = parsearLineaCSV(lineas[i], sep).map(function(v) {
+      return v.replace(/^["']|["']$/g, "").trim();
+    });
+
+    if (valores.length === 0 || (valores.length === 1 && !valores[0])) continue;
+
+    var nomEstudiante = (colIdx.estudiante !== -1 && valores[colIdx.estudiante]) ? valores[colIdx.estudiante] : ("Estudiante " + i);
+    if (!nomEstudiante || nomEstudiante.toLowerCase() === "estudiante" || nomEstudiante.toLowerCase() === "nombre") continue;
+
+    var centroVal = (colIdx.centro !== -1 && valores[colIdx.centro]) ? valores[colIdx.centro] : (sesionActiva.centro || "Colegio de Secundaria MEP");
+    var nivelVal = (colIdx.nivel !== -1 && valores[colIdx.nivel]) ? valores[colIdx.nivel] : (sesionActiva.nivel || "9.° año");
+    var seccionVal = (colIdx.seccion !== -1 && valores[colIdx.seccion]) ? valores[colIdx.seccion] : (sesionActiva.seccion || "9-1");
+    var cedulaVal = (colIdx.cedula !== -1 && valores[colIdx.cedula]) ? valores[colIdx.cedula] : "";
+    var fechaVal = (colIdx.fecha !== -1 && valores[colIdx.fecha]) ? valores[colIdx.fecha] : new Date().toLocaleDateString("es-CR");
+
+    var rawCog = (colIdx.cognoscitiva !== -1 && valores[colIdx.cognoscitiva]) ? valores[colIdx.cognoscitiva] : "8/10";
+    var rawNivCog = (colIdx.nivelCognoscitivo !== -1 && valores[colIdx.nivelCognoscitivo]) ? valores[colIdx.nivelCognoscitivo] : "";
+
+    // Normalizar datos cognitivos y nivel DUA
+    var infoCog = normalizarCognitivo(rawCog, rawNivCog);
+
+    var tarjetasVal = (colIdx.tarjetas !== -1 && valores[colIdx.tarjetas]) ? valores[colIdx.tarjetas] : "3/3";
+    var puertosVal = (colIdx.puertos !== -1 && valores[colIdx.puertos]) ? valores[colIdx.puertos] : "9/9";
+    var ejecucionVal = (colIdx.ejecucion !== -1 && valores[colIdx.ejecucion]) ? valores[colIdx.ejecucion] : "Completa";
+    var socioVal = (colIdx.socioafectiva !== -1 && valores[colIdx.socioafectiva]) ? valores[colIdx.socioafectiva] : "5/5 indicadores favorables";
+    var fortalezasVal = (colIdx.fortalezas !== -1 && valores[colIdx.fortalezas]) ? valores[colIdx.fortalezas] : "Pensamiento computacional y lógica";
+    var prioridadesVal = (colIdx.prioridades !== -1 && valores[colIdx.prioridades]) ? valores[colIdx.prioridades] : (infoCog.nivel === "Logrado" ? "Ninguna" : "Reforzamiento conceptual");
+
+    var nuevo = {
+      id: Date.now().toString(36) + Math.random().toString(36).substring(2, 6) + "_" + i,
+      centro: centroVal,
+      nivel: nivelVal,
+      seccion: seccionVal,
+      estudiante: nomEstudiante,
+      cedula: cedulaVal,
+      fecha: fechaVal,
+      cognoscitiva: infoCog.texto,
+      nivelCognoscitivo: infoCog.nivel,
+      tarjetas: tarjetasVal,
+      puertos: puertosVal,
+      ejecucion: ejecucionVal,
+      socioafectiva: socioVal,
+      fortalezas: fortalezasVal,
+      prioridades: prioridadesVal,
+      qrOriginal: "CSV_IMPORT:" + (nombreArchivo || "archivo.csv") + " | " + nomEstudiante,
+      timestamp: new Date().toISOString()
+    };
+
+    registros.push(nuevo);
+  }
+
+  return registros;
+}
+
+function normalizarCognitivo(rawCog, rawNivCog) {
+  var texto = String(rawCog).trim();
+  var nivel = rawNivCog ? String(rawNivCog).trim() : "";
+  var porcentaje = 80;
+
+  // Extraer porcentaje o fracción
+  var matchFrac = texto.match(/(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)/);
+  var matchPct = texto.match(/(\d+(?:\.\d+)?)\s*%/);
+
+  if (matchFrac) {
+    var num = parseFloat(matchFrac[1]);
+    var den = parseFloat(matchFrac[2]) || 1;
+    porcentaje = Math.round((num / den) * 100);
+  } else if (matchPct) {
+    porcentaje = Math.round(parseFloat(matchPct[1]));
+  } else {
+    var numPuro = parseFloat(texto);
+    if (!isNaN(numPuro)) {
+      if (numPuro <= 10) {
+        porcentaje = Math.round((numPuro / 10) * 100);
+        texto = numPuro + "/10 (" + porcentaje + "%)";
+      } else if (numPuro <= 14 && sesionActiva.nivel && sesionActiva.nivel.includes("8")) {
+        porcentaje = Math.round((numPuro / 14) * 100);
+        texto = numPuro + "/14 (" + porcentaje + "%)";
+      } else if (numPuro <= 100) {
+        porcentaje = Math.round(numPuro);
+        texto = porcentaje + "%";
+      }
+    }
+  }
+
+  if (!nivel) {
+    if (porcentaje >= 80) nivel = "Logrado";
+    else if (porcentaje >= 60) nivel = "En Desarrollo";
+    else nivel = "Reforzamiento conceptual";
+  }
+
+  return {
+    texto: texto.includes("%") ? texto : (texto + " (" + porcentaje + "%)"),
+    nivel: nivel,
+    porcentaje: porcentaje
+  };
 }
 
 function interpretarPayloadQR(raw) {
@@ -1355,16 +1749,24 @@ function alternarVistaRegistros() {
 }
 
 function renderizarListaPadron() {
-  var registros = obtenerRegistros().slice().reverse();
+  var registros = obtenerRegistros();
   var cont = document.getElementById("listaRegistros");
+  var contMetricas = document.getElementById("contenedorMetricas");
 
   if (registros.length === 0) {
-    cont.innerHTML = '<div class="alert alert-info">No hay estudiantes registrados aún en este dispositivo.</div>';
+    if (contMetricas) contMetricas.innerHTML = "";
+    cont.innerHTML = '<div class="alert alert-info">No hay estudiantes registrados aún en este dispositivo.<br>Puede escanear códigos QR con la cámara, o pulsar <strong>"📊 Subir CSV / Padrón"</strong> para cargar y analizar las respuestas del grupo.</div>';
     return;
   }
 
+  // 1. Calcular y Renderizar Dashboard de Métricas
+  var metricas = calcularMetricasPadron(registros);
+  renderizarMetricasDashboard(metricas);
+
+  // 2. Renderizar Tarjetas Individuales (más recientes primero)
+  var listaReversa = registros.slice().reverse();
   var html = "";
-  registros.forEach(function(r) {
+  listaReversa.forEach(function(r) {
     html +=
       '<div class="record-card">' +
       '  <div class="record-header">' +
@@ -1382,6 +1784,155 @@ function renderizarListaPadron() {
       '  </button>' +
       '</div>';
   });
+
+  cont.innerHTML = html;
+}
+
+function calcularMetricasPadron(registros) {
+  if (!registros || registros.length === 0) {
+    return {
+      total: 0,
+      promedio: 0,
+      logrado: 0,
+      pctLogrado: 0,
+      desarrollo: 0,
+      pctDesarrollo: 0,
+      refuerzo: 0,
+      pctRefuerzo: 0,
+      psicoCompleto: 0,
+      pctPsico: 0,
+      topFortalezas: [],
+      topPrioridades: []
+    };
+  }
+
+  var total = registros.length;
+  var sumPct = 0;
+  var logrado = 0;
+  var desarrollo = 0;
+  var refuerzo = 0;
+  var psicoCompleto = 0;
+  var frecFortalezas = {};
+  var frecPrioridades = {};
+
+  registros.forEach(function(r) {
+    var cogStr = r.cognoscitiva || "";
+    var pct = 80;
+    var mPct = cogStr.match(/(\d+)%/);
+    var mFrac = cogStr.match(/(\d+)\s*\/\s*(\d+)/);
+    if (mPct) pct = parseInt(mPct[1], 10);
+    else if (mFrac) pct = Math.round((parseInt(mFrac[1], 10) / parseInt(mFrac[2], 10)) * 100);
+
+    sumPct += pct;
+
+    var niv = (r.nivelCognoscitivo || "").toLowerCase();
+    if (niv.includes("logrado") || pct >= 80) logrado++;
+    else if (niv.includes("desarrollo") || pct >= 60) desarrollo++;
+    else refuerzo++;
+
+    var psi = (r.ejecucion || r.tarjetas || "").toLowerCase();
+    if (psi.includes("completa") || psi.includes("3/3") || psi.includes("4/4") || psi.includes("100%")) psicoCompleto++;
+
+    if (r.fortalezas && r.fortalezas !== "Ninguna") {
+      r.fortalezas.split(/[,•;-]/).map(function(s) { return s.trim(); }).filter(Boolean).forEach(function(f) {
+        frecFortalezas[f] = (frecFortalezas[f] || 0) + 1;
+      });
+    }
+
+    if (r.prioridades && r.prioridades !== "Ninguna") {
+      r.prioridades.split(/[,•;-]/).map(function(s) { return s.trim(); }).filter(Boolean).forEach(function(p) {
+        frecPrioridades[p] = (frecPrioridades[p] || 0) + 1;
+      });
+    }
+  });
+
+  var topFort = Object.keys(frecFortalezas).sort(function(a, b) { return frecFortalezas[b] - frecFortalezas[a]; }).slice(0, 4);
+  var topPri = Object.keys(frecPrioridades).sort(function(a, b) { return frecPrioridades[b] - frecPrioridades[a]; }).slice(0, 4);
+
+  return {
+    total: total,
+    promedio: Math.round(sumPct / total),
+    logrado: logrado,
+    pctLogrado: Math.round((logrado / total) * 100),
+    desarrollo: desarrollo,
+    pctDesarrollo: Math.round((desarrollo / total) * 100),
+    refuerzo: refuerzo,
+    pctRefuerzo: Math.round((refuerzo / total) * 100),
+    psicoCompleto: psicoCompleto,
+    pctPsico: Math.round((psicoCompleto / total) * 100),
+    topFortalezas: topFort,
+    topPrioridades: topPri
+  };
+}
+
+function renderizarMetricasDashboard(met) {
+  var cont = document.getElementById("contenedorMetricas");
+  if (!cont) return;
+
+  if (met.total === 0) {
+    cont.innerHTML = "";
+    return;
+  }
+
+  var html =
+    '<div class="metrics-card">' +
+    '  <div class="metrics-header">' +
+    '    <span class="metrics-title">📊 Métricas del Grupo (Semáforo DUA)</span>' +
+    '    <span style="font-size: 11px; font-weight: 800; color: #0284c7; background: #e0f2fe; padding: 2px 8px; border-radius: 999px;">' +
+    '      ' + met.total + ' Estudiantes' +
+    '    </span>' +
+    '  </div>' +
+    '  <div class="metrics-kpis">' +
+    '    <div class="kpi-box">' +
+    '      <div class="kpi-val" style="color: #0284c7;">' + met.promedio + '%</div>' +
+    '      <div class="kpi-label">Promedio Cog.</div>' +
+    '    </div>' +
+    '    <div class="kpi-box">' +
+    '      <div class="kpi-val" style="color: #16a34a;">' + met.logrado + ' <span style="font-size:10px; font-weight:700;">(' + met.pctLogrado + '%)</span></div>' +
+    '      <div class="kpi-label">Logrado</div>' +
+    '    </div>' +
+    '    <div class="kpi-box">' +
+    '      <div class="kpi-val" style="color: #ca8a04;">' + met.desarrollo + ' <span style="font-size:10px; font-weight:700;">(' + met.pctDesarrollo + '%)</span></div>' +
+    '      <div class="kpi-label">En Desarrollo</div>' +
+    '    </div>' +
+    '    <div class="kpi-box">' +
+    '      <div class="kpi-val" style="color: #dc2626;">' + met.refuerzo + ' <span style="font-size:10px; font-weight:700;">(' + met.pctRefuerzo + '%)</span></div>' +
+    '      <div class="kpi-label">Reforzamiento</div>' +
+    '    </div>' +
+    '  </div>' +
+    '  <div class="dua-semaphore">' +
+    '    <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:800; color:#334155;">' +
+    '      <span>Distribución DUA de Dominio Cognitivo:</span>' +
+    '      <span>Psicomotor: ' + met.pctPsico + '%</span>' +
+    '    </div>' +
+    '    <div class="dua-bar-wrap">' +
+    '      <div class="dua-seg-logrado" style="width: ' + met.pctLogrado + '%;" title="Logrado: ' + met.pctLogrado + '%"></div>' +
+    '      <div class="dua-seg-desarrollo" style="width: ' + met.pctDesarrollo + '%;" title="En Desarrollo: ' + met.pctDesarrollo + '%"></div>' +
+    '      <div class="dua-seg-refuerzo" style="width: ' + met.pctRefuerzo + '%;" title="Refuerzo: ' + met.pctRefuerzo + '%"></div>' +
+    '    </div>' +
+    '    <div class="dua-legend">' +
+    '      <div class="dua-tag" style="color:#16a34a;"><span class="tag-dot" style="background:#16a34a;"></span> Logrado: ' + met.pctLogrado + '%</div>' +
+    '      <div class="dua-tag" style="color:#ca8a04;"><span class="tag-dot" style="background:#ca8a04;"></span> Desarrollo: ' + met.pctDesarrollo + '%</div>' +
+    '      <div class="dua-tag" style="color:#dc2626;"><span class="tag-dot" style="background:#dc2626;"></span> Refuerzo: ' + met.pctRefuerzo + '%</div>' +
+    '    </div>' +
+    '  </div>' +
+    (met.topFortalezas.length > 0 ? (
+      '  <div style="margin-top: 8px;">' +
+      '    <strong style="font-size: 11px; color: #166534;">🌟 Fortalezas Recurrentes del Grupo:</strong>' +
+      '    <div class="chips-cloud">' +
+      met.topFortalezas.map(function(f) { return '<span class="chip chip-green">✓ ' + escaparHTML(f) + '</span>'; }).join('') +
+      '    </div>' +
+      '  </div>'
+    ) : '') +
+    (met.topPrioridades.length > 0 ? (
+      '  <div style="margin-top: 8px;">' +
+      '    <strong style="font-size: 11px; color: #92400e;">🎯 Prioridades de Apoyo y Refuerzo:</strong>' +
+      '    <div class="chips-cloud">' +
+      met.topPrioridades.map(function(p) { return '<span class="chip chip-amber">⚠️ ' + escaparHTML(p) + '</span>'; }).join('') +
+      '    </div>' +
+      '  </div>'
+    ) : '') +
+    '</div>';
 
   cont.innerHTML = html;
 }
