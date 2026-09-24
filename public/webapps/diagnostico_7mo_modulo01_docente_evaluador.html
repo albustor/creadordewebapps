@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Tablero de Control y Rúbrica Evaluadora MEP 7° 2026 | Informática Educativa</title>
+  <title>Herramienta de Evaluación Diagnóstica Docente Séptimo Año | MEP</title>
   <script src="/vendor/html5-qrcode.min.js"></script>
   <script src="/vendor/qrcode.min.js"></script>
   
@@ -486,20 +486,12 @@
   <header class="mep-header">
     <div class="header-content">
       <div class="mep-brand">
-        <span class="mep-shield">MEP 2026</span>
         <div class="mep-titles">
-          <h1>Rúbrica y Consolidado Diagnóstico 7.° Año (Parejas)</h1>
+          <h1>Herramienta de Evaluación Diagnóstica Docente Séptimo Año</h1>
           <p>Dirección de Informática Educativa &bull; Evaluación Diagnóstica Curricular III Ciclo</p>
         </div>
       </div>
       <div class="top-actions">
-        <!-- CHIP DE SESIÓN DOCENTE -->
-        <div id="teacherAuthBadge" style="display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); padding: 4px 10px; border-radius: 8px; font-size: 11.5px; color: #f8fafc;">
-          <span id="badgeTeacherName">👨‍🏫 Docente no identificado</span>
-          <button class="btn btn-secondary" style="padding: 2px 7px; font-size: 10.5px; min-height: 24px;" onclick="openAuthModal()">🔑 Perfil</button>
-        </div>
-        <button class="btn btn-accent" style="background:#0284c7; border-color:#0369a1; font-weight:800; color:#fff;" onclick="openQrScannerModal()">📷 Escanear QR Parejas</button>
-        <button class="btn btn-accent" style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); border-color: #0284c7; color: #ffffff; font-weight:800;" onclick="openStudentLinksModal()" title="Generar enlaces y proyectar QR para computadoras de estudiantes">🔗 Enlaces Estudiantes (PC)</button>
         <!-- BOTÓN COMPACTO DE SINCRONIZACIÓN CON ESTADO DE LUZ VERDE/ROJO Y TEXTO FIJO -->
         <div id="syncIndicatorWrapper" style="display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 88px; height: 32px; padding: 2px 6px; border-radius: 8px; background: #ffffff; border: 1.5px solid #cbd5e1; cursor: pointer; user-select: none; box-sizing: border-box;" onclick="sincronizarTelemetriaOnline(true)" title="Sincronización en vivo con el Dashboard (Clic para sincronizar)">
           <div style="display: flex; align-items: center; justify-content: center; gap: 4px; line-height: 1;">
@@ -510,10 +502,13 @@
             Sincronizando
           </span>
         </div>
+        <!-- CHIP DE SESIÓN DOCENTE -->
+        <div id="teacherAuthBadge" style="display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); padding: 4px 10px; border-radius: 8px; font-size: 11.5px; color: #f8fafc;">
+          <span id="badgeTeacherName">👨‍🏫 Docente no identificado</span>
+          <button class="btn btn-secondary" style="padding: 2px 7px; font-size: 10.5px; min-height: 24px;" onclick="openAuthModal()">🔑 Perfil</button>
+        </div>
+        <button class="btn btn-accent" style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); border-color: #0284c7; color: #ffffff; font-weight:800;" onclick="openStudentLinksModal()" title="Generar enlaces y proyectar QR para computadoras de estudiantes">🔗 Enlaces Estudiantes (PC)</button>
         <a href="/dashboard" target="_blank" class="btn" style="background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); border-color: #7c3aed; color: #ffffff; text-decoration: none; font-weight: 800; box-shadow: 0 2px 8px rgba(139,92,246,0.3);" title="Abrir Dashboard de Telemetría Nacional (diagnosticosecundaria.vercel.app / dashboard)">📈 Dashboard Web</a>
-        <button class="btn" style="background: #ffffff; color: #0284c7; border: 1.5px solid #ffffff; font-weight: 800;" onclick="loadSampleCadets()">🧪 Muestra Demo</button>
-        <button class="btn" style="background: #ffffff; color: #0284c7; border: 1.5px solid #ffffff; font-weight: 800;" onclick="exportToExcel()">📊 Exportar Excel</button>
-        <button class="btn" style="background: #ffffff; color: #0f172a; border: 1.5px solid #ffffff; font-weight: 800;" onclick="window.print()">🖨️ Imprimir Acta</button>
       </div>
     </div>
   </header>
@@ -637,7 +632,7 @@
         <tbody id="cadetsTableBody">
           <tr>
             <td colspan="9" style="text-align: center; color: var(--text-muted); padding: 30px;">
-              No hay evaluaciones registradas. Escanea códigos QR con el botón <strong>«📷 Escanear QR Parejas»</strong> o presiona <strong>«🧪 Muestra Demo»</strong> arriba.
+              No hay evaluaciones registradas para esta sección. Esperando recepción de registros de estudiantes.
             </td>
           </tr>
         </tbody>
