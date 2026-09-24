@@ -3282,16 +3282,33 @@
               Hash de Seguridad: <strong style="color: var(--cyan-neon);">${AppState.sessionHash || 'HASH-CYBER2027'}</strong> &bull; Sección: <strong style="color: #fff;">${AppState.section}</strong>
             </div>
 
+            <!-- 4 OPCIONES DE ENTREGA -->
+            <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 14px; margin: 12px auto; max-width: 480px; text-align: left;">
+              <div style="font-size: 12px; font-weight: 800; color: #38bdf8; margin-bottom: 6px;">📦 Opciones Oficiales de Entrega de Resultados:</div>
+              <ol style="font-size: 11.5px; color: #cbd5e1; margin-left: 18px; line-height: 1.5;">
+                <li><strong>📱 Código QR para Escanear:</strong> El docente escanea este código directamente con su cámara.</li>
+                <li><strong>💾 Descargar Ficha (.json):</strong> Guarda el archivo para entregarlo en llave maya USB.</li>
+                <li><strong>📋 Copiar Código QR / Resumen:</strong> Copia los datos para enviarlos por Teams, WhatsApp o correo.</li>
+                <li><strong>🖨️ Imprimir Hoja Diagnóstica:</strong> Imprime el reporte físico oficial.</li>
+              </ol>
+            </div>
+
             <!-- BOTONES DE EXPORTACIÓN Y RESPALDO OFFLINE -->
             <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 8px;">
-              <button type="button" class="btn-cyber" style="padding: 9px 14px; font-size: 12px; background: linear-gradient(135deg, #0284c7, #0369a1); border-color: #38bdf8;" onclick="downloadTelemetryJson()">
+              <button type="button" class="btn-cyber" style="padding: 9px 14px; font-size: 12px; background: linear-gradient(135deg, #0284c7, #0369a1); border-color: #38bdf8;" onclick="downloadTelemetryJson()" title="Descargar archivo JSON para llave maya USB">
                 💾 Descargar Ficha (.json)
               </button>
+              <button type="button" class="btn-cyber" style="padding: 9px 14px; font-size: 12px; background: linear-gradient(135deg, #0891b2, #0e7490); border-color: #22d3ee;" onclick="downloadTelemetryCsv7mo()" title="Descargar archivo CSV compatible con Excel">
+                📊 Descargar Ficha (.csv)
+              </button>
               <button type="button" class="btn-cyber" style="padding: 9px 14px; font-size: 12px; background: rgba(168, 85, 247, 0.2); border-color: var(--violet-neon); color: #e9d5ff;" onclick="copyTelemetryJson()">
-                📋 Copiar Código QR
+                📋 Copiar Código QR (JSON)
+              </button>
+              <button type="button" class="btn-cyber" style="padding: 9px 14px; font-size: 12px; background: rgba(59, 130, 246, 0.2); border-color: #60a5fa; color: #bfdbfe;" onclick="copyResumenTexto7mo()">
+                📝 Copiar Resumen de Texto
               </button>
               <button type="button" class="btn-cyber" style="padding: 9px 14px; font-size: 12px; background: rgba(16, 185, 129, 0.2); border-color: var(--lime-neon); color: #a7f3d0;" onclick="window.print()">
-                🖨️ Imprimir Hoja
+                🖨️ Imprimir Hoja Diagnóstica
               </button>
             </div>
           </div>
@@ -3420,7 +3437,57 @@
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      showNotification('💾 Ficha diagnóstica descargada con éxito');
+      showNotification('💾 Ficha diagnóstica (.json) descargada con éxito');
+    }
+
+    function downloadTelemetryCsv7mo() {
+      const data = get7moTelemetryData();
+      const safeName = (data.c1 || 'estudiante').toLowerCase().replace(/[^a-z0-9]/g, '_');
+      const filename = `ficha_diagnostica_7mo_seccion_${data.sec}_${safeName}.csv`;
+
+      const headers = [
+        "Estudiante_1",
+        "Avatar_1",
+        "Estudiante_2",
+        "Avatar_2",
+        "Seccion",
+        "Nivel",
+        "Dim_Psicomotriz",
+        "Dim_Cognitiva",
+        "Dim_Socioafectiva",
+        "Promedio_Global",
+        "Nivel_Logro",
+        "Hash_Seguridad",
+        "Fecha_Hora"
+      ];
+
+      const row = [
+        `"${(data.c1 || '').replace(/"/g, '""')}"`,
+        `"${data.a1 || ''}"`,
+        `"${(data.c2 || 'Individual').replace(/"/g, '""')}"`,
+        `"${data.a2 || ''}"`,
+        `"${data.sec || '7-1'}"`,
+        `"7°"`,
+        data.p !== undefined ? data.p : 0,
+        data.c !== undefined ? data.c : 0,
+        data.s !== undefined ? data.s : 0,
+        data.g !== undefined ? data.g : 0,
+        `"${data.lvl || 'A'}"`,
+        `"${data.h || 'HASH-CYBER2027'}"`,
+        `"${new Date().toLocaleString('es-CR')}"`
+      ];
+
+      const csvContent = "\uFEFF" + headers.join(",") + "\n" + row.join(",") + "\n";
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showNotification('📊 Ficha diagnóstica (.csv) descargada con éxito');
     }
 
     function copyTelemetryJson() {
@@ -3447,6 +3514,33 @@
         });
       } else {
         prompt('Copia el siguiente código de telemetría:', compactPayload);
+      }
+    }
+
+    function copyResumenTexto7mo() {
+      const data = get7moTelemetryData();
+      const txt = `=====================================\n` +
+        `MINISTERIO DE EDUCACIÓN PÚBLICA\n` +
+        `INFORME DIAGNÓSTICO 7.° AÑO - 2026\n` +
+        `=====================================\n` +
+        `Estudiante 1: ${data.c1 || 'N/A'}\n` +
+        (data.c2 && data.c2 !== 'Individual' ? `Estudiante 2: ${data.c2}\n` : '') +
+        `Sección: ${data.sec || 'N/A'}\n` +
+        `Puntaje Global: ${data.g}%\n` +
+        `Nivel de Logro: ${data.lvl}\n` +
+        `Dimensión Psicomotriz: ${data.p}%\n` +
+        `Dimensión Cognitiva: ${data.c}%\n` +
+        `Dimensión Socioafectiva: ${data.s}%\n` +
+        `Hash Verificación: ${data.h}\n` +
+        `=====================================`;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(txt).then(() => {
+          showNotification('📝 Resumen de texto copiado al portapapeles');
+        }).catch(() => {
+          prompt('Copia el siguiente resumen:', txt);
+        });
+      } else {
+        prompt('Copia el siguiente resumen:', txt);
       }
     }
 

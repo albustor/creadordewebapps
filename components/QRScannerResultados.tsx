@@ -227,9 +227,10 @@ export default function QRScannerResultados({
     }
   };
 
-  const [tabActual, setTabActual] = useState<"camara" | "manual">("camara");
+  const [tabActual, setTabActual] = useState<"camara" | "manual" | "archivo">("camara");
   const [textoManual, setTextoManual] = useState("");
   const [mensajeManual, setMensajeManual] = useState<{ tipo: "ok" | "err"; texto: string } | null>(null);
+  const [mensajeArchivo, setMensajeArchivo] = useState<{ tipo: "ok" | "err"; texto: string } | null>(null);
 
   const procesarManual = () => {
     setMensajeManual(null);
@@ -244,6 +245,96 @@ export default function QRScannerResultados({
     } else {
       setMensajeManual({ tipo: "err", texto: "No se pudo interpretar el formato. Asegúrate de copiar el texto completo generado al final de la prueba." });
     }
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    setMensajeArchivo(null);
+    let exitosos = 0;
+
+    Array.from(files).forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const content = event.target?.result as string;
+          if (!content) return;
+
+          if (file.name.toLowerCase().endsWith(".csv") || (!content.trim().startsWith("{") && content.includes(","))) {
+            const clean = content.replace(/^\uFEFF/, "").trim();
+            const lines = clean.split(/\r?\n/).filter((l) => l.trim().length > 0);
+            if (lines.length >= 2) {
+              const parseLine = (line: string) => {
+                const res: string[] = [];
+                let cur = "";
+                let inQuotes = false;
+                for (let i = 0; i < line.length; i++) {
+                  const c = line[i];
+                  if (c === '"') {
+                    if (inQuotes && line[i + 1] === '"') {
+                      cur += '"';
+                      i++;
+                    } else {
+                      inQuotes = !inQuotes;
+                    }
+                  } else if ((c === "," || c === ";") && !inQuotes) {
+                    res.push(cur.trim());
+                    cur = "";
+                  } else {
+                    cur += c;
+                  }
+                }
+                res.push(cur.trim());
+                return res;
+              };
+
+              const headers = parseLine(lines[0]).map((h) => h.toLowerCase().replace(/[^a-z0-9]/g, ""));
+              for (let i = 1; i < lines.length; i++) {
+                const vals = parseLine(lines[i]);
+                if (vals.length === 0 || (vals.length === 1 && !vals[0])) continue;
+                const r: any = {};
+                headers.forEach((h, idx) => {
+                  r[h] = vals[idx] !== undefined ? vals[idx] : "";
+                });
+                const nom = r.estudiante || r.estudiante1 || r.nombre || r.nom || "Estudiante CSV";
+                const sec = r.seccion || r.sec || r.grupo || "8-1";
+                const puntajeRaw = r.puntaje14 || r.puntaje || r.dimcognitiva || r.p || r.aciertos || 6;
+                const pVal = parseInt(String(puntajeRaw).replace(/[^0-9]/g, ""), 10) || 6;
+                const porcRaw = r.porcentaje || r.promedioglobal || r.porc || 60;
+                const porcVal = parseInt(String(porcRaw).replace(/[^0-9]/g, ""), 10) || 60;
+
+                const payload = {
+                  n: r.nivel || (sec.startsWith("7-") ? "7°" : sec.startsWith("9-") ? "9°" : "8°"),
+                  e: nom,
+                  s: sec,
+                  p: pVal,
+                  porc: porcVal,
+                  ts: Date.now(),
+                };
+                procesarQR(JSON.stringify(payload));
+                exitosos++;
+              }
+            }
+          } else {
+            const parsed = JSON.parse(content);
+            procesarQR(JSON.stringify(parsed));
+            exitosos++;
+          }
+
+          setMensajeArchivo({
+            tipo: "ok",
+            texto: `¡${exitosos} registro(s) procesado(s) e integrado(s) al Dashboard con éxito!`,
+          });
+        } catch (err) {
+          console.warn("Error al procesar archivo:", file.name, err);
+          setMensajeArchivo({
+            tipo: "err",
+            texto: `Error al leer ${file.name}. Asegúrate de que sea un JSON o CSV válido.`,
+          });
+        }
+      };
+      reader.readAsText(file);
+    });
   };
 
   if (!abierto) return null;
@@ -268,36 +359,54 @@ export default function QRScannerResultados({
           </button>
         </div>
 
-        {/* Pestañas: Cámara vs Pegar Texto */}
+        {/* Pestañas: Cámara vs Pegar Texto vs Archivo USB */}
         <div className="flex border-b border-slate-200 bg-slate-100 p-1.5 gap-2">
           <button
             onClick={() => {
               setTabActual("camara");
               setMensajeManual(null);
+              setMensajeArchivo(null);
             }}
-            className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+            className={`flex-1 py-2 px-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
               tabActual === "camara"
                 ? "bg-white text-blue-900 shadow-sm border border-slate-200"
                 : "text-slate-600 hover:text-slate-900"
             }`}
           >
             <Camera size={16} weight="bold" />
-            Escanear con Cámara
+            Cámara
           </button>
           <button
             onClick={() => {
               detenerEscaneo();
               setTabActual("manual");
               setMensajeManual(null);
+              setMensajeArchivo(null);
             }}
-            className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+            className={`flex-1 py-2 px-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
               tabActual === "manual"
                 ? "bg-white text-blue-900 shadow-sm border border-slate-200"
                 : "text-slate-600 hover:text-slate-900"
             }`}
           >
             <QrCode size={16} weight="bold" />
-            📋 Pegar Código / Texto
+            Pegar Texto
+          </button>
+          <button
+            onClick={() => {
+              detenerEscaneo();
+              setTabActual("archivo");
+              setMensajeManual(null);
+              setMensajeArchivo(null);
+            }}
+            className={`flex-1 py-2 px-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+              tabActual === "archivo"
+                ? "bg-white text-blue-900 shadow-sm border border-slate-200"
+                : "text-slate-600 hover:text-slate-900"
+            }`}
+          >
+            <span className="text-sm">💾</span>
+            Ficha .JSON / .CSV
           </button>
         </div>
 
@@ -347,7 +456,7 @@ export default function QRScannerResultados({
               </span>
             </div>
           </div>
-        ) : (
+        ) : tabActual === "manual" ? (
           <div className="p-5 flex flex-col gap-3">
             <p className="text-xs text-slate-600">
               Pega aquí el <strong>código JSON</strong> o el <strong>texto de resumen</strong> generado en la pantalla del estudiante al finalizar la prueba offline (ej. <em>&quot;ID: Luis Rodrigues vasquez | Sec: 8-11 | Nota: 6/14 (43%)&quot;</em>):
@@ -399,6 +508,58 @@ export default function QRScannerResultados({
               <div className="p-3 bg-emerald-50 border border-emerald-300 text-emerald-900 rounded-xl text-xs flex items-center gap-2 font-bold animate-pulse">
                 <CheckCircle size={20} weight="fill" className="text-emerald-600 shrink-0" />
                 <span>¡Resultado guardado: {ultimoDetectado}!</span>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="p-5 flex flex-col gap-3">
+            <p className="text-xs text-slate-600">
+              Carga uno o varios archivos <strong>.JSON</strong> o <strong>.CSV</strong> descargados por tus estudiantes en llaves maya USB:
+            </p>
+
+            <div className="border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center bg-slate-50 flex flex-col items-center gap-3">
+              <span className="text-3xl">💾</span>
+              <div>
+                <p className="text-xs font-bold text-slate-800">
+                  Seleccionar archivos .JSON o .CSV
+                </p>
+                <p className="text-[11px] text-slate-500">
+                  Compatible con descargas individuales de 7.°, 8.° y 9.° Año
+                </p>
+              </div>
+
+              <input
+                type="file"
+                id="fileUploadInput"
+                accept=".json,.csv,text/csv,application/json"
+                multiple
+                className="hidden"
+                onChange={handleFileUpload}
+              />
+
+              <button
+                type="button"
+                onClick={() => document.getElementById("fileUploadInput")?.click()}
+                className="px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white text-xs font-extrabold rounded-xl shadow-sm"
+              >
+                📁 Explorar Llave Maya USB (.json / .csv)
+              </button>
+            </div>
+
+            {mensajeArchivo && (
+              <div
+                className={`p-3 rounded-xl text-xs font-bold flex items-center gap-2 ${
+                  mensajeArchivo.tipo === "ok"
+                    ? "bg-emerald-50 text-emerald-900 border border-emerald-300"
+                    : "bg-rose-50 text-rose-800 border border-rose-200"
+                }`}
+              >
+                {mensajeArchivo.tipo === "ok" ? (
+                  <CheckCircle size={18} weight="fill" className="text-emerald-600 shrink-0" />
+                ) : (
+                  <WarningCircle size={18} className="text-rose-600 shrink-0" />
+                )}
+                <span>{mensajeArchivo.texto}</span>
               </div>
             )}
           </div>

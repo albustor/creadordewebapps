@@ -661,7 +661,7 @@
     <div style="display: flex; gap: 6px; justify-content: center; padding: 10px; background: #f1f5f9; border-bottom: 1px solid #e2e8f0; flex-wrap: wrap;">
       <button class="btn btn-accent" id="tabBtnCamera8vo" style="padding: 6px 12px; font-size: 11.5px; font-weight: 800;" onclick="switchQrTab('camara')">📷 Usar Cámara</button>
       <button class="btn btn-secondary" id="tabBtnManual8vo" style="padding: 6px 12px; font-size: 11.5px; font-weight: 800;" onclick="switchQrTab('manual')">📋 Pegar Código / Texto</button>
-      <button class="btn btn-secondary" id="tabBtnFile8vo" style="padding: 6px 12px; font-size: 11.5px; font-weight: 800;" onclick="switchQrTab('archivo')">💾 Cargar Ficha .JSON (USB)</button>
+      <button class="btn btn-secondary" id="tabBtnFile8vo" style="padding: 6px 12px; font-size: 11.5px; font-weight: 800;" onclick="switchQrTab('archivo')">💾 Cargar Fichas .JSON / .CSV (USB)</button>
     </div>
 
     <div class="modal-body" style="padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 12px;">
@@ -688,17 +688,17 @@
         </div>
       </div>
 
-      <!-- VISTA ARCHIVO .JSON (LLAVE MAYA USB) -->
+      <!-- VISTA ARCHIVO .JSON / .CSV (LLAVE MAYA USB) -->
       <div id="qrFileView8vo" style="width: 100%; display: none; flex-direction: column; gap: 12px; text-align: center; padding: 12px 0;">
         <div style="border: 2px dashed #94a3b8; border-radius: 12px; padding: 20px 14px; background: #f8fafc; display: flex; flex-direction: column; align-items: center; gap: 8px;">
           <span style="font-size: 32px;">💾</span>
-          <strong style="font-size: 13px; color: #1e293b;">Seleccionar Fichas Diagnósticas (.json)</strong>
+          <strong style="font-size: 13px; color: #1e293b;">Seleccionar Fichas Diagnósticas (.json / .csv)</strong>
           <p style="font-size: 11.5px; color: #64748b; margin: 0; max-width: 380px;">
-            El estudiante descargó su archivo (ej. <code>ficha_diagnostica_8vo_...json</code>) en una llave maya USB. Puedes seleccionar uno o varios archivos a la vez.
+            El estudiante descargó su archivo (ej. <code>ficha_diagnostica_8vo_...json</code> o <code>.csv</code>) en una llave maya USB. Puedes seleccionar uno o varios archivos a la vez.
           </p>
-          <input type="file" id="jsonFileInput8vo" accept=".json" multiple style="display: none;" onchange="handleJsonFileSelect(event)">
+          <input type="file" id="jsonFileInput8vo" accept=".json,.csv,text/csv,application/json" multiple style="display: none;" onchange="handleJsonFileSelect(event)">
           <button type="button" class="btn btn-accent" style="background: #0284c7; font-weight: 800; font-size: 12px; margin-top: 6px;" onclick="document.getElementById('jsonFileInput8vo').click()">
-            📁 Explorar Archivos USB (.json)
+            📁 Explorar Archivos USB (.json / .csv)
           </button>
         </div>
         <div id="fileImportStatus8vo" style="font-size: 12px; font-weight: 700; color: #059669; display: none;"></div>
@@ -2087,6 +2087,50 @@
     }
   }
 
+  function parseCsvContent8vo(csvText) {
+    const clean = csvText.replace(/^\uFEFF/, '').trim();
+    const lines = clean.split(/\r?\n/).filter(l => l.trim().length > 0);
+    if (lines.length < 2) return [];
+
+    const parseLine = (line) => {
+      const result = [];
+      let cur = '';
+      let inQuotes = false;
+      for (let i = 0; i < line.length; i++) {
+        const c = line[i];
+        if (c === '"') {
+          if (inQuotes && line[i+1] === '"') {
+            cur += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if ((c === ',' || c === ';') && !inQuotes) {
+          result.push(cur.trim());
+          cur = '';
+        } else {
+          cur += c;
+        }
+      }
+      result.push(cur.trim());
+      return result;
+    };
+
+    const headers = parseLine(lines[0]).map(h => h.toLowerCase().replace(/[^a-z0-9]/g, ''));
+    const rows = [];
+
+    for (let i = 1; i < lines.length; i++) {
+      const values = parseLine(lines[i]);
+      if (values.length === 0 || (values.length === 1 && !values[0])) continue;
+      const rowObj = {};
+      headers.forEach((h, idx) => {
+        rowObj[h] = values[idx] !== undefined ? values[idx] : '';
+      });
+      rows.push(rowObj);
+    }
+    return rows;
+  }
+
   function handleJsonFileSelect(event) {
     const files = event.target.files;
     if (!files || files.length === 0) return;
@@ -2099,15 +2143,47 @@
       reader.onload = (e) => {
         try {
           const content = e.target.result;
-          const parsed = JSON.parse(content);
-          procesarPayloadQR(parsed);
-          cargados++;
+          if (file.name.toLowerCase().endsWith('.csv') || (!content.trim().startsWith('{') && content.includes(','))) {
+            const rows = parseCsvContent8vo(content);
+            rows.forEach(r => {
+              const nom = r.estudiante || r.nombre || r.nom || 'Estudiante CSV';
+              const sec = r.seccion || r.sec || r.grupo || '8-1';
+              const puntajeRaw = r.puntaje14 || r.puntaje || r.p || r.aciertos || 6;
+              const pVal = parseInt(String(puntajeRaw).replace(/[^0-9]/g, ''), 10) || 6;
+              const porcRaw = r.porcentaje || r.porc || Math.round((pVal / 14) * 100);
+              const porcVal = parseInt(String(porcRaw).replace(/[^0-9]/g, ''), 10) || Math.round((pVal / 14) * 100);
+              
+              const s1 = r.subarea1hwsw ? parseInt(String(r.subarea1hwsw).replace(/[^0-9]/g, ''), 10) : Math.min(pVal, 4);
+              const s2 = r.subarea2algoritmos ? parseInt(String(r.subarea2algoritmos).replace(/[^0-9]/g, ''), 10) : Math.min(Math.max(0, pVal - 4), 7);
+              const s3 = r.subarea3robotica ? parseInt(String(r.subarea3robotica).replace(/[^0-9]/g, ''), 10) : Math.max(0, pVal - 11);
+
+              const payload = {
+                n: r.nivel || "8°",
+                e: nom,
+                s: sec,
+                p: pVal,
+                porc: porcVal,
+                s1: s1,
+                s2: s2,
+                s3: s3,
+                doc: r.docente || '',
+                inst: r.institucion || '',
+                ts: Date.now()
+              };
+              procesarPayloadQR(payload);
+              cargados++;
+            });
+          } else {
+            const parsed = JSON.parse(content);
+            procesarPayloadQR(parsed);
+            cargados++;
+          }
           if (statusEl) {
             statusEl.style.display = 'block';
-            statusEl.innerHTML = `✅ ¡${cargados} archivo(s) procesado(s) e integrado(s) a la tabla con éxito!`;
+            statusEl.innerHTML = `✅ ¡${cargados} archivo(s)/registro(s) integrado(s) a la tabla con éxito!`;
           }
         } catch (err) {
-          console.warn('Error al leer archivo JSON:', file.name, err);
+          console.warn('Error al leer archivo:', file.name, err);
         }
       };
       reader.readAsText(file);

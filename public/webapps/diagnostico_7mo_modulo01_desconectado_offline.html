@@ -3295,8 +3295,11 @@
 
             <!-- BOTONES DE EXPORTACIÓN Y RESPALDO OFFLINE -->
             <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 8px;">
-              <button type="button" class="btn-cyber" style="padding: 9px 14px; font-size: 12px; background: linear-gradient(135deg, #0284c7, #0369a1); border-color: #38bdf8;" onclick="downloadTelemetryJson()">
+              <button type="button" class="btn-cyber" style="padding: 9px 14px; font-size: 12px; background: linear-gradient(135deg, #0284c7, #0369a1); border-color: #38bdf8;" onclick="downloadTelemetryJson()" title="Descargar archivo JSON para llave maya USB">
                 💾 Descargar Ficha (.json)
+              </button>
+              <button type="button" class="btn-cyber" style="padding: 9px 14px; font-size: 12px; background: linear-gradient(135deg, #0891b2, #0e7490); border-color: #22d3ee;" onclick="downloadTelemetryCsv7mo()" title="Descargar archivo CSV compatible con Excel">
+                📊 Descargar Ficha (.csv)
               </button>
               <button type="button" class="btn-cyber" style="padding: 9px 14px; font-size: 12px; background: rgba(168, 85, 247, 0.2); border-color: var(--violet-neon); color: #e9d5ff;" onclick="copyTelemetryJson()">
                 📋 Copiar Código QR (JSON)
@@ -3434,7 +3437,57 @@
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      showNotification('💾 Ficha diagnóstica descargada con éxito');
+      showNotification('💾 Ficha diagnóstica (.json) descargada con éxito');
+    }
+
+    function downloadTelemetryCsv7mo() {
+      const data = get7moTelemetryData();
+      const safeName = (data.c1 || 'estudiante').toLowerCase().replace(/[^a-z0-9]/g, '_');
+      const filename = `ficha_diagnostica_7mo_seccion_${data.sec}_${safeName}.csv`;
+
+      const headers = [
+        "Estudiante_1",
+        "Avatar_1",
+        "Estudiante_2",
+        "Avatar_2",
+        "Seccion",
+        "Nivel",
+        "Dim_Psicomotriz",
+        "Dim_Cognitiva",
+        "Dim_Socioafectiva",
+        "Promedio_Global",
+        "Nivel_Logro",
+        "Hash_Seguridad",
+        "Fecha_Hora"
+      ];
+
+      const row = [
+        `"${(data.c1 || '').replace(/"/g, '""')}"`,
+        `"${data.a1 || ''}"`,
+        `"${(data.c2 || 'Individual').replace(/"/g, '""')}"`,
+        `"${data.a2 || ''}"`,
+        `"${data.sec || '7-1'}"`,
+        `"7°"`,
+        data.p !== undefined ? data.p : 0,
+        data.c !== undefined ? data.c : 0,
+        data.s !== undefined ? data.s : 0,
+        data.g !== undefined ? data.g : 0,
+        `"${data.lvl || 'A'}"`,
+        `"${data.h || 'HASH-CYBER2027'}"`,
+        `"${new Date().toLocaleString('es-CR')}"`
+      ];
+
+      const csvContent = "\uFEFF" + headers.join(",") + "\n" + row.join(",") + "\n";
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showNotification('📊 Ficha diagnóstica (.csv) descargada con éxito');
     }
 
     function copyTelemetryJson() {
