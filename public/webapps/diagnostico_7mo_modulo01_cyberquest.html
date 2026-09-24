@@ -983,7 +983,7 @@
   <header class="hud-header">
     <div class="hud-brand">
       <span class="mep-tag">MEP 2027</span>
-      <div class="cyber-title">⚡ CyberQuest 7° &bull; Misión en Parejas</div>
+      <div class="cyber-title" id="hudCyberTitle">⚡ CyberQuest 7° &bull; Misión en Parejas</div>
     </div>
     <div class="hud-stats">
       <div class="stat-pill leader" id="hudCadet1Pill" style="display: none;">
@@ -1906,9 +1906,12 @@
             cell.innerHTML = '🔥';
           }
           if (x === p1State.robotX && y === p1State.robotY) {
-            const rot = p1State.dir * 90;
             const avatarShow = AppState.cadet1.avatar || '🤖';
-            cell.innerHTML = `<span class="robot-sprite" style="display:inline-block; transform: rotate(${rot}deg);">${avatarShow}</span>`;
+            // Orientación calibrada: al arrancar hacia el Este (90° hacia la derecha)
+            let baseAngle = 0;
+            if (avatarShow === '🚀') baseAngle = 45; // El emoji 🚀 apunta en diagonal (+45°); con +45° queda alineado a 90° hacia la derecha (Este)
+            const rot = (p1State.dir * 90) + baseAngle;
+            cell.innerHTML = `<span class="robot-sprite" style="display:inline-block; font-size:24px; transform: rotate(${rot}deg); transition: transform 0.15s ease;">${avatarShow}</span>`;
           }
           board.appendChild(cell);
         }
@@ -1951,7 +1954,7 @@
       if (p1State.obstacles.some(o => o.x === nx && o.y === ny)) {
         p1State.pathErrors++;
         AudioEngine.playBeep();
-        showToast('⚠️ ¡Colisión con Firewall! Busca otro camino');
+        showToast('⚠️ ¡Colisión con obstáculo de fuego! Busque otro camino');
         renderP1Board();
         return;
       }
@@ -2423,6 +2426,13 @@
         }
       }
 
+      const cyberTitleEl = document.getElementById('hudCyberTitle');
+      if (cyberTitleEl) {
+        cyberTitleEl.innerHTML = isIndiv 
+          ? '⚡ CyberQuest 7° &bull; Misión Individual' 
+          : '⚡ CyberQuest 7° &bull; Misión en Parejas';
+      }
+
       const pill1 = document.getElementById('hudCadet1Pill');
       const pill2 = document.getElementById('hudCadet2Pill');
 
@@ -2518,7 +2528,7 @@
           <div class="card-header">
             <span class="mission-badge badge-psico" id="phase0Badge">FASE INICIAL &bull; DATOS DEL ESTUDIANTE${isSolo ? ' (INDIVIDUAL)' : ' (MISIÓN EN PAREJAS)'}</span>
             <h1 class="card-title">Bienvenido a CyberQuest 7.° Año</h1>
-            <p class="card-desc">Evaluación Diagnóstica Oficial MEP 2027 - III Ciclo. Registra la información del estudiante para iniciar la aventura diagnóstica.</p>
+            <p class="card-desc">Evaluación Diagnóstica Oficial MEP 2027 - III Ciclo.</p>
           </div>
 
           <div style="background: rgba(0, 240, 255, 0.08); border: 1.5px solid var(--cyan-neon); border-radius: 12px; padding: 12px 16px; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; box-shadow: 0 4px 15px rgba(0, 240, 255, 0.08);">
@@ -2564,6 +2574,14 @@
             </div>
           </div>
 
+          <!-- INSTRUCCIÓN DIRECTA PARA EL ESTUDIANTE -->
+          <div style="background: rgba(0, 240, 255, 0.08); border-left: 4px solid var(--cyan-neon); border-radius: 8px; padding: 12px 16px; margin: 18px 0 14px 0; display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 20px;">✍️</span>
+            <span style="font-size: 13.5px; color: #f1f5f9; font-weight: 700;">
+              Registre sus datos para iniciar el diagnóstico.
+            </span>
+          </div>
+
           <div class="pair-grid ${isSolo ? 'solo-mode' : ''}" id="pairGridContainer">
             
             <div class="cadet-box leader-box" id="cadetBox1">
@@ -2581,7 +2599,7 @@
                 <div class="avatar-grid" id="avatarGrid1">
                   ${avatars.map(a => `
                     <div class="avatar-card ${AppState.cadet1.avatar === a.icon ? 'selected' : ''}" data-target="1" data-icon="${a.icon}" data-name="${a.name}">
-                      <span class="avatar-icon">${a.icon}</span>
+                      <span class="avatar-icon" style="display:inline-block; font-size: 2rem; ${a.icon === '🚀' ? 'transform: rotate(-45deg);' : ''}">${a.icon}</span>
                       <span class="avatar-name">${a.name}</span>
                     </div>
                   `).join('')}
@@ -2602,7 +2620,7 @@
                 <div class="avatar-grid" id="avatarGrid2">
                   ${avatars.map(a => `
                     <div class="avatar-card ${AppState.cadet2.avatar === a.icon ? 'selected-purple' : ''}" data-target="2" data-icon="${a.icon}" data-name="${a.name}">
-                      <span class="avatar-icon">${a.icon}</span>
+                      <span class="avatar-icon" style="display:inline-block; font-size: 2rem; ${a.icon === '🚀' ? 'transform: rotate(-45deg);' : ''}">${a.icon}</span>
                       <span class="avatar-name">${a.name}</span>
                     </div>
                   `).join('')}
@@ -2637,6 +2655,7 @@
           if (pairGridContainer) pairGridContainer.classList.remove('solo-mode');
           if (cadet1RoleTag) cadet1RoleTag.innerHTML = '🚀 Estudiante 1 &bull; Líder de Misión';
           if (phase0Badge) phase0Badge.innerHTML = 'FASE INICIAL &bull; DATOS DEL ESTUDIANTE (MISIÓN EN PAREJAS)';
+          updateProgressHUD();
           AudioEngine.playClick();
         });
 
@@ -2648,6 +2667,7 @@
           if (pairGridContainer) pairGridContainer.classList.add('solo-mode');
           if (cadet1RoleTag) cadet1RoleTag.innerHTML = '🚀 Estudiante &bull; Datos del Estudiante';
           if (phase0Badge) phase0Badge.innerHTML = 'FASE INICIAL &bull; DATOS DEL ESTUDIANTE (INDIVIDUAL)';
+          updateProgressHUD();
           AudioEngine.playClick();
         });
       }
@@ -2796,7 +2816,7 @@
       if (activeSubP === 'p1') {
         subContainer.innerHTML = `
           <h2 class="card-title">P1. Lateralidad y Orientación Espacial (Mando en Tiempo Real)</h2>
-          <p class="card-desc">Conduzcan al robot en tiempo real hasta el <strong>Servidor Central 🖥️</strong> en la esquina inferior derecha (4,4), evitando chocar con los firewalls 🔥 o salir del circuito.</p>
+          <p class="card-desc">Conduzca el robot en tiempo real hasta el <strong>Servidor Central 🖥️</strong> en la esquina inferior derecha (4,4), evitando chocar con los obstáculos de fuego 🔥 o salir del circuito.</p>
           
           <div class="p1-controls-wrapper" style="margin: 16px 0;">
             
@@ -2835,8 +2855,8 @@
         subContainer.innerHTML = `
           <h2 class="card-title">P2. Ritmo, Tempo e Inhibición Motriz</h2>
           <p class="card-desc">
-            <strong>Instrucción del Sensor:</strong> Pulsa el botón de captura rápida <strong>ÚNICAMENTE</strong> cuando la luz central se encienda en <strong>VERDE 🟢</strong>.
-            Si se enciende en <strong>ROJO 🔴</strong> o está en espera, <strong>NO DEBES TOCAR EL BOTÓN</strong> (evaluación de control de impulsos e inhibición motriz).
+            <strong>Instrucción del Sensor:</strong> Pulse el botón <strong>CAPTURAR PULSO</strong> únicamente cuando la luz central se encienda en <strong>VERDE 🟢</strong>.
+            Si se enciende en <strong>ROJO 🔴</strong> o está en espera, <strong>NO DEBE TOCAR EL BOTÓN</strong>.
           </p>
           
           <div class="semaphore-box">
@@ -2867,7 +2887,7 @@
       } else if (activeSubP === 'p3') {
         subContainer.innerHTML = `
           <h2 class="card-title">P3. Coordinación Viso-Manual y Pulso Digital</h2>
-          <p class="card-desc">Guíen el cursor o trazo con pulso firme desde la zona <strong>INICIO</strong> hasta la <strong>META</strong> dentro del canal continuo sin tocar los bordes.</p>
+          <p class="card-desc">Guíe el cursor o trazo con pulso firme desde la zona <strong>INICIO</strong> hasta la <strong>META</strong> dentro del canal continuo sin tocar los bordes.</p>
           
           <div class="canvas-wrapper" style="margin: 20px 0;">
             <canvas id="p3Canvas" class="game-canvas"></canvas>
@@ -2884,13 +2904,13 @@
         subContainer.innerHTML = `
           <h2 class="card-title">P4. Motricidad Fina y Ergonomía: Dibujo de Computadora</h2>
           <p class="card-desc">
-            Dibujen en el lienzo digital una <strong>Computadora de Escritorio Completa</strong>. 
-            El dibujo debe incluir sus 4 partes fundamentales: 
+            Dibuje en el lienzo digital una <strong>computadora de escritorio</strong>. 
+            El dibujo debe incluir estas 4 partes: 
             <strong>1. Monitor/Pantalla 🖥️</strong>, 
             <strong>2. Teclado ⌨️</strong>, 
             <strong>3. Ratón/Mouse 🖱️</strong> y 
-            <strong>4. Torre/CPU 🖲️</strong>.
-            Utilicen los diferentes colores de la paleta para identificar cada componente.
+            <strong>4. Torre/CPU 🗄️</strong>.
+            Utilice los diferentes colores de la paleta para identificar cada componente.
           </p>
           
           <div class="canvas-wrapper" style="margin: 20px 0;">
