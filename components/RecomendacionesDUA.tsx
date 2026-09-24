@@ -469,6 +469,19 @@ export default function RecomendacionesDUA({
 
           <button
             type="button"
+            onClick={() => setSubTabActiva("decisiones")}
+            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
+              subTabActiva === "decisiones"
+                ? "bg-purple-900 text-white shadow-sm scale-[1.01]"
+                : "bg-white/80 hover:bg-white text-purple-900 hover:text-purple-950 border border-transparent"
+            }`}
+          >
+            <Lightbulb size={16} weight={subTabActiva === "decisiones" ? "fill" : "bold"} />
+            <span>5. Decisiones Pedagógicas (Matriz MEP)</span>
+          </button>
+
+          <button
+            type="button"
             onClick={() => setSubTabActiva("todos")}
             className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ml-auto ${
               subTabActiva === "todos"
@@ -478,7 +491,6 @@ export default function RecomendacionesDUA({
           >
             <span>Ver Todos</span>
           </button>
-
         </div>
 
         {/* ========================================================================= */}
@@ -650,6 +662,147 @@ export default function RecomendacionesDUA({
                   <span className="leading-relaxed">{paso}</span>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {/* 5. MATRIZ OFICIAL DE DECISIONES PEDAGÓGICAS (MEP PÁG. 10) */}
+        {(subTabActiva === "decisiones" || subTabActiva === "todos") && (
+          <div className="bg-gradient-to-br from-purple-950/5 via-indigo-950/5 to-slate-900/5 border-2 border-purple-300/80 rounded-2xl p-5 space-y-4 shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-purple-200 pb-3">
+              <div className="flex items-center gap-2 text-purple-950 font-black text-sm uppercase tracking-wide">
+                <Lightbulb size={20} className="text-purple-700" weight="fill" />
+                <span>5. Criterios de Decisión Docente y Estrategias de Mediación ({nivelEtiqueta})</span>
+              </div>
+              <span className="px-2.5 py-1 bg-purple-100 text-purple-900 text-[11px] font-bold rounded-lg border border-purple-200">
+                Protocolo Oficial MEP • Formación Tecnológica
+              </span>
+            </div>
+
+            <p className="text-xs text-slate-600 leading-relaxed font-medium bg-white p-3.5 rounded-xl border border-purple-100">
+              Con base en los datos de telemetría y observación directa, el docente aplica la siguiente matriz de decisiones pedagógicas para ajustar las experiencias de mediación en el aula:
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-1">
+              {/* Criterio 1 */}
+              <div className="bg-white p-4 rounded-xl border border-purple-100 shadow-2xs flex flex-col justify-between space-y-3 hover:border-purple-300 transition-all">
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="px-2 py-0.5 bg-blue-100 text-blue-800 text-[10px] font-black rounded-md uppercase">C1 • Lógica</span>
+                    <span className="text-[10px] font-semibold text-slate-400">Algoritmos</span>
+                  </div>
+                  <h5 className="font-extrabold text-xs text-slate-900 leading-snug">
+                    Dificultad en Algoritmo y Lógica de Control
+                  </h5>
+                  <p className="text-[11.5px] text-slate-500 leading-relaxed">
+                    <strong>Hallazgo:</strong> Confusión en condiciones booleanas (`LDR &lt; 300`), condicionales dobles o bucles.
+                  </p>
+                </div>
+                <div className="p-2.5 bg-blue-50/70 border border-blue-200/60 rounded-lg text-[11px] text-blue-950 space-y-1">
+                  <span className="font-bold block text-blue-900">🎯 Mediación Recomendada:</span>
+                  <span>Descomposición con pseudocódigo guiado y diagramas de flujo interactivos previo al bloque de código.</span>
+                </div>
+              </div>
+
+              {/* Criterio 2 */}
+              <div className="bg-white p-4 rounded-xl border border-purple-100 shadow-2xs flex flex-col justify-between space-y-3 hover:border-purple-300 transition-all">
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="px-2 py-0.5 bg-amber-100 text-amber-800 text-[10px] font-black rounded-md uppercase">C2 • Sensores</span>
+                    <span className="text-[10px] font-semibold text-slate-400">Entradas / Salidas</span>
+                  </div>
+                  <h5 className="font-extrabold text-xs text-slate-900 leading-snug">
+                    Dificultad en Sensores y Actuadores
+                  </h5>
+                  <p className="text-[11.5px] text-slate-500 leading-relaxed">
+                    <strong>Hallazgo:</strong> Error al interpretar la lectura analógica (0-1023) del LDR o el disparo del relevador.
+                  </p>
+                </div>
+                <div className="p-2.5 bg-amber-50/70 border border-amber-200/60 rounded-lg text-[11px] text-amber-950 space-y-1">
+                  <span className="font-bold block text-amber-900">🎯 Mediación Recomendada:</span>
+                  <span>Prácticas con multímetro/voltaje virtual, curvas luz vs resistencia y tablas de estados de actuador.</span>
+                </div>
+              </div>
+
+              {/* Criterio 3 */}
+              <div className="bg-white p-4 rounded-xl border border-purple-100 shadow-2xs flex flex-col justify-between space-y-3 hover:border-purple-300 transition-all">
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="px-2 py-0.5 bg-rose-100 text-rose-800 text-[10px] font-black rounded-md uppercase">C3 • Depuración</span>
+                    <span className="text-[10px] font-semibold text-slate-400">Conexionado</span>
+                  </div>
+                  <h5 className="font-extrabold text-xs text-slate-900 leading-snug">
+                    Dificultad en Depuración de Circuitos
+                  </h5>
+                  <p className="text-[11.5px] text-slate-500 leading-relaxed">
+                    <strong>Hallazgo:</strong> Inversión de terminales VCC/GND, líneas flotantes o ausencia de tierra común.
+                  </p>
+                </div>
+                <div className="p-2.5 bg-rose-50/70 border border-rose-200/60 rounded-lg text-[11px] text-rose-950 space-y-1">
+                  <span className="font-bold block text-rose-900">🎯 Mediación Recomendada:</span>
+                  <span>Protocolo de cableado ordenado (VCC → GND → Señal), simulador 2D libre y aislamiento metódico de fallas.</span>
+                </div>
+              </div>
+
+              {/* Criterio 4 */}
+              <div className="bg-white p-4 rounded-xl border border-purple-100 shadow-2xs flex flex-col justify-between space-y-3 hover:border-purple-300 transition-all">
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="px-2 py-0.5 bg-purple-100 text-purple-800 text-[10px] font-black rounded-md uppercase">C4 • Socioafectivo</span>
+                    <span className="text-[10px] font-semibold text-slate-400">Persistencia</span>
+                  </div>
+                  <h5 className="font-extrabold text-xs text-slate-900 leading-snug">
+                    Dificultad Socioafectiva y Resiliencia
+                  </h5>
+                  <p className="text-[11.5px] text-slate-500 leading-relaxed">
+                    <strong>Hallazgo:</strong> Frustración rápida ante el error o múltiples reintentos ciegos sin análisis previo.
+                  </p>
+                </div>
+                <div className="p-2.5 bg-purple-50/70 border border-purple-200/60 rounded-lg text-[11px] text-purple-950 space-y-1">
+                  <span className="font-bold block text-purple-900">🎯 Mediación Recomendada:</span>
+                  <span>Trabajo en parejas colaborativas, gamificación y validación pedagógica del error como fuente de aprendizaje.</span>
+                </div>
+              </div>
+
+              {/* Criterio 5 */}
+              <div className="bg-white p-4 rounded-xl border border-purple-100 shadow-2xs flex flex-col justify-between space-y-3 hover:border-purple-300 transition-all">
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-black rounded-md uppercase">C5 • Psicomotor</span>
+                    <span className="text-[10px] font-semibold text-slate-400">Motricidad Fina</span>
+                  </div>
+                  <h5 className="font-extrabold text-xs text-slate-900 leading-snug">
+                    Dificultad Psicomotora y Ensamblaje
+                  </h5>
+                  <p className="text-[11.5px] text-slate-500 leading-relaxed">
+                    <strong>Hallazgo:</strong> Imprecisión en el puntero, lentitud en trazado o fatiga de manipulación visomotriz.
+                  </p>
+                </div>
+                <div className="p-2.5 bg-emerald-50/70 border border-emerald-200/60 rounded-lg text-[11px] text-emerald-950 space-y-1">
+                  <span className="font-bold block text-emerald-900">🎯 Mediación Recomendada:</span>
+                  <span>Ajustes DUA de accesibilidad (alto contraste, terminales agrandadas) y ejercicios progresivos de precisión.</span>
+                </div>
+              </div>
+
+              {/* Criterio 6 */}
+              <div className="bg-white p-4 rounded-xl border border-purple-100 shadow-2xs flex flex-col justify-between space-y-3 hover:border-purple-300 transition-all">
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="px-2 py-0.5 bg-teal-100 text-teal-800 text-[10px] font-black rounded-md uppercase">C6 • Avanzado</span>
+                    <span className="text-[10px] font-semibold text-slate-400">Enriquecimiento</span>
+                  </div>
+                  <h5 className="font-extrabold text-xs text-slate-900 leading-snug">
+                    Alto Desempeño y Dominio Inicial
+                  </h5>
+                  <p className="text-[11.5px] text-slate-500 leading-relaxed">
+                    <strong>Hallazgo:</strong> Dominio conceptual y conexionado rápido sin errores, alta autonomía técnica.
+                  </p>
+                </div>
+                <div className="p-2.5 bg-teal-50/70 border border-teal-200/60 rounded-lg text-[11px] text-teal-950 space-y-1">
+                  <span className="font-bold block text-teal-900">🎯 Mediación Recomendada:</span>
+                  <span>Retos de ampliación (control PWM de luz, histéresis anti-rebote) y designación como monitor tutor de aula.</span>
+                </div>
+              </div>
             </div>
           </div>
         )}
