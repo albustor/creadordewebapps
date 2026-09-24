@@ -8,8 +8,8 @@ import Footer from "@/components/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Diagnóstico Secundaria - Tecnologías de la Información",
-  description: "Recurso para el desarrollo del diagnóstico formativo en 7°, 8° y 9° año con base en el Programa de Estudios de Tecnologías de la Información.",
+  title: "Diagnóstico Secundaria PNFT - Tecnologías de la Información",
+  description: "Recurso oficial para el desarrollo del diagnóstico formativo en 7°, 8° y 9° año con base en el Programa Nacional de Formación Tecnológica (PNFT).",
 };
 
 export default function RootLayout({

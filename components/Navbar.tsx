@@ -71,11 +71,11 @@ export default function Navbar() {
             </div>
             <div className="flex flex-col justify-center">
               <span className="font-black text-base sm:text-lg tracking-tight text-slate-900 leading-none whitespace-nowrap">
-                Diagnóstico Secundaria
+                Diagnóstico Secundaria PNFT
               </span>
               <span className="text-[11px] font-extrabold text-emerald-700 tracking-wider uppercase leading-none mt-1.5 whitespace-nowrap flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
-                Evaluación Diagnóstica MEP • 7°, 8° y 9°
+                Evaluación Diagnóstica MEP • PNFT • 7°, 8° y 9°
               </span>
             </div>
           </Link>

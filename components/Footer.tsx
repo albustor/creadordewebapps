@@ -15,10 +15,10 @@ export default function Footer() {
               <div className="w-8 h-8 rounded-lg bg-emerald-100 border border-emerald-300 text-emerald-800 flex items-center justify-center">
                 <Lightning size={18} weight="fill" className="text-amber-600" />
               </div>
-              <span className="font-extrabold text-base sm:text-lg">Diagnóstico Secundaria</span>
+              <span className="font-extrabold text-base sm:text-lg">Diagnóstico Secundaria PNFT</span>
             </div>
             <p className="text-xs text-stone-500 leading-relaxed font-medium">
-              Recurso para desarrollar el diagnóstico basándose en la información relacionada con el Programa de Estudios de Tecnologías de la Información de la materia de Tecnología.
+              Recurso oficial para desarrollar el diagnóstico formativo basándose en el Programa Nacional de Formación Tecnológica (PNFT) de la materia de Tecnología.
             </p>
           </div>
 

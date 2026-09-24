@@ -250,11 +250,11 @@ export default function HomePage() {
               </div>
 
               <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-                Diagnóstico Secundaria
+                Diagnóstico Secundaria PNFT
               </h1>
 
               <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto font-medium leading-relaxed">
-                Recurso para el desarrollo del diagnóstico formativo en <strong>7.°, 8.° y 9.° Año</strong> con base en el Programa de Estudios de Tecnologías de la Información.
+                Recurso oficial para el desarrollo del diagnóstico formativo en <strong>7.°, 8.° y 9.° Año</strong> con base en el Programa Nacional de Formación Tecnológica (PNFT).
               </p>
             </div>
 
