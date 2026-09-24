@@ -507,6 +507,233 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
+  const sincronizarTelemetriaParaDocente = async (doc: DocenteData | null) => {
+    if (!doc) {
+      setTelemetria([]);
+      SafeStorage.setItem("telemetria_registros", JSON.stringify([]));
+      return;
+    }
+
+    const docenteId = doc.idDocente || doc.cedula || "";
+    const cedulaDoc = doc.cedula || "";
+    const cedClean = cedulaDoc.replace(/[^a-zA-Z0-9]/g, "");
+    const nombreDoc = doc.nombreCompleto?.toLowerCase()?.trim() || "";
+    const correoDoc = doc.correoInstitucional?.toLowerCase()?.trim() || "";
+
+    const esSuperAdmin = correoDoc === "alberto.bustos.ortega@mep.go.cr";
+    const esAsesorNacional = correoDoc === "allan.morera.araya@mep.go.cr" || doc.tipoRol === "Asesor Nacional";
+    const esAdmin = esSuperAdmin || esAsesorNacional;
+
+    const normalizarSeccion = (sec?: string): string => {
+      if (!sec) return "Sección 7-1";
+      const limpia = sec.replace(/^secci[oó]n\s*/i, "").trim();
+      if (/^[789]-/i.test(limpia)) {
+        return `Sección ${limpia}`;
+      }
+      return `Sección ${limpia}`;
+    };
+
+    const normalizarClave = (item: PayloadTelemetria): string => {
+      const nom = (item.estudianteNombre || "").toLowerCase().trim();
+      const sec = normalizarSeccion(item.seccionOGrupo).toLowerCase().trim();
+      return `${nom}::${sec}`;
+    };
+
+    const mapa = new Map<string, PayloadTelemetria>();
+
+    // 1. Cargar evaluaciones locales de 7mo
+    try {
+      const raw7mo = (cedClean ? SafeStorage.getItem(`MEP_DOCENTE_7MO_EVALUATIONS_${cedClean}`) : null) ||
+        (esAdmin ? SafeStorage.getItem("MEP_DOCENTE_7MO_EVALUATIONS") : null);
+      if (raw7mo) {
+        const list7mo = JSON.parse(raw7mo);
+        if (Array.isArray(list7mo)) {
+          list7mo.forEach((ev: any) => {
+            const evDocId = (ev.docenteId || ev.raw?.docenteId || "").trim().toLowerCase();
+            const evDocCed = (ev.docenteCedula || ev.raw?.docenteCedula || "").trim().toLowerCase();
+            const evDocNom = (ev.docenteNombre || ev.raw?.docenteNombre || "").trim().toLowerCase();
+
+            const pertenece =
+              esAdmin ||
+              (docenteId && evDocId === docenteId.toLowerCase()) ||
+              (cedClean && evDocCed.replace(/\D/g, "") === cedClean) ||
+              (nombreDoc && evDocNom === nombreDoc) ||
+              Boolean(cedClean && SafeStorage.getItem(`MEP_DOCENTE_7MO_EVALUATIONS_${cedClean}`));
+
+            if (!pertenece) return;
+
+            const n1 = typeof ev.name1 === "object" ? ev.name1?.name || "Estudiante 1" : ev.name1 || "Estudiante 1";
+            const n2 = typeof ev.name2 === "object" ? ev.name2?.name || "" : ev.name2 || "";
+            const isIndiv = !n2 || n2 === "Individual" || n2 === "N/A" || n2 === "Sin Pareja";
+            const estNombre = isIndiv ? n1 : `${n1} & ${n2}`;
+            const sec = normalizarSeccion(ev.section);
+            const score = ev.globalAvg ?? ev.porcentaje ?? ev.puntaje ?? 80;
+            const rec: PayloadTelemetria = {
+              idResultado: ev.id || `eval-7mo-${Date.now()}`,
+              webAppId: "diagnostico_7mo_modulo01_cyberquest",
+              webAppTitulo: "CyberQuest 7°: Diagnóstico de Fundamentos Digitales",
+              docenteId: ev.docenteId || docenteId || doc.idDocente,
+              docenteNombre: ev.docenteNombre || doc.nombreCompleto || "Docente Evaluador",
+              institucionNombre: ev.raw?.institucionNombre || doc.institucionNombre || "Centro Educativo MEP",
+              dreCodigo: ev.raw?.dreCodigo || doc.dreCodigo || "DRE-01",
+              estudianteNombre: estNombre,
+              seccionOGrupo: sec,
+              nivel: "7°",
+              puntaje: score,
+              puntajeMaximo: 100,
+              porcentaje: score,
+              totalReactivos: 10,
+              aciertos: Math.round((score / 100) * 10),
+              fallos: Math.max(0, 10 - Math.round((score / 100) * 10)),
+              nivelLogro: ev.globalLevel === "A" || score >= 80 ? "Avanzado" : (ev.globalLevel === "C" || score <= 59 ? "Inicial" : "Intermedio"),
+              tiempoSegundos: 120,
+              estadoProgreso: "completado",
+              timestamp: ev.raw?.timestamp || Date.now(),
+              tokenAntiFraude: `TOKEN-7MO-${Date.now()}`,
+            };
+            mapa.set(normalizarClave(rec), rec);
+          });
+        }
+      }
+    } catch {}
+
+    // 2. Cargar evaluaciones locales de 8vo
+    try {
+      const raw8vo = (cedClean ? SafeStorage.getItem(`MEP_DOCENTE_8VO_EVALUATIONS_${cedClean}`) : null) ||
+        (esAdmin ? (SafeStorage.getItem("MEP_DOCENTE_8VO_EVALUATIONS") || SafeStorage.getItem("evaluacion_docente_8vo")) : null);
+      if (raw8vo) {
+        const list8vo = JSON.parse(raw8vo);
+        if (Array.isArray(list8vo)) {
+          list8vo.forEach((ev: any) => {
+            const evDocId = (ev.docenteId || "").trim().toLowerCase();
+            const evDocCed = (ev.docenteCedula || "").trim().toLowerCase();
+            const evDocNom = (ev.docenteNombre || "").trim().toLowerCase();
+
+            const pertenece =
+              esAdmin ||
+              (docenteId && evDocId === docenteId.toLowerCase()) ||
+              (cedClean && evDocCed.replace(/\D/g, "") === cedClean) ||
+              (nombreDoc && evDocNom === nombreDoc) ||
+              Boolean(cedClean && SafeStorage.getItem(`MEP_DOCENTE_8VO_EVALUATIONS_${cedClean}`));
+
+            if (!pertenece) return;
+
+            const estNombre = ev.nombre || ev.estudianteNombre || "Estudiante 8°";
+            const sec = normalizarSeccion(ev.seccion || ev.seccionOGrupo || "8-1");
+            const puntos = ev.puntaje !== undefined && ev.puntaje <= 14 ? ev.puntaje : (ev.totalPuntos !== undefined && ev.totalPuntos <= 14 ? ev.totalPuntos : Math.round(((ev.porcentaje || 80) / 100) * 14));
+            const score = ev.porcentaje ?? Math.round((puntos / 14) * 100);
+
+            const sub1Val = ev.sub1 !== undefined ? ev.sub1 : (ev.subareasDetalle?.sub1_apropiacion ?? Math.min(5, Math.round((puntos / 14) * 5)));
+            const sub2Val = ev.sub2 !== undefined ? ev.sub2 : (ev.subareasDetalle?.sub2_algoritmos ?? Math.min(7, Math.round((puntos / 14) * 7)));
+            const sub3Val = ev.sub3 !== undefined ? ev.sub3 : (ev.subareasDetalle?.sub3_robotica ?? Math.min(2, Math.max(0, puntos - sub1Val - sub2Val)));
+
+            const rec: PayloadTelemetria = {
+              idResultado: ev.id || `eval-8vo-${Date.now()}`,
+              webAppId: "diagnostico_8vo_modulo01_docente_evaluador",
+              webAppTitulo: "Evaluación Diagnóstica — 8° Año (PNFT)",
+              docenteId: ev.docenteId || docenteId || doc.idDocente,
+              docenteNombre: ev.docenteNombre || doc.nombreCompleto || "Docente Evaluador",
+              docenteCedula: ev.docenteCedula || cedulaDoc || doc.cedula || "—",
+              docenteEmail: ev.docenteEmail || correoDoc || "",
+              institucionNombre: ev.institucionNombre || doc.institucionNombre || "Centro Educativo MEP",
+              dreCodigo: ev.dreCodigo || doc.dreCodigo || "DRE-01",
+              estudianteNombre: estNombre,
+              estudianteCedula: ev.cedula || "—",
+              seccionOGrupo: sec,
+              nivel: "8°",
+              puntaje: puntos,
+              puntajeMaximo: 14,
+              porcentaje: score,
+              totalReactivos: 14,
+              aciertos: puntos,
+              fallos: Math.max(0, 14 - puntos),
+              nivelLogro: score >= 80 ? "Avanzado" : score <= 59 ? "Inicial" : "Intermedio",
+              subareasDetalle: {
+                sub1_apropiacion: sub1Val,
+                sub2_algoritmos: sub2Val,
+                sub3_robotica: sub3Val,
+              },
+              socioafectivo: ev.socioafectivo || { soc1: "Demostrado", soc2: "Demostrado", soc3: "Demostrado", soc4: "Demostrado" },
+              psicomotor: ev.psicomotor || { psi1: "Demostrado", psi2: "Demostrado", psi3: "Demostrado", psi4: "Demostrado" },
+              tiempoSegundos: 120,
+              estadoProgreso: "completado",
+              timestamp: ev.timestamp || Date.now(),
+              tokenAntiFraude: `TOKEN-8VO-${Date.now()}`,
+            };
+            mapa.set(normalizarClave(rec), rec);
+          });
+        }
+      }
+    } catch {}
+
+    // 3. Cargar telemetría del caché local si pertenece
+    try {
+      const rawTeleCache = cedClean ? SafeStorage.getItem(`telemetria_registros_${cedClean}`) : null;
+      if (rawTeleCache) {
+        const listTele = JSON.parse(rawTeleCache);
+        if (Array.isArray(listTele)) {
+          listTele.forEach((item: PayloadTelemetria) => {
+            if (item && item.estudianteNombre) {
+              mapa.set(normalizarClave(item), item);
+            }
+          });
+        }
+      }
+    } catch {}
+
+    // Actualizar estado inicial antes de llamar al servidor
+    const registrosIniciales = Array.from(mapa.values()).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+    setTelemetria(registrosIniciales);
+    SafeStorage.setItem("telemetria_registros", JSON.stringify(registrosIniciales));
+
+    // 4. Sincronizar con el endpoint del servidor
+    try {
+      const queryParams = new URLSearchParams();
+      if (docenteId) queryParams.set("docenteId", docenteId);
+      if (cedulaDoc) queryParams.set("cedula", cedulaDoc);
+      if (correoDoc) queryParams.set("correo", correoDoc);
+      if (nombreDoc) queryParams.set("docenteNombre", nombreDoc);
+
+      const res = await fetch(`/api/telemetria/enviar?${queryParams.toString()}`);
+      if (res.ok) {
+        const json = await res.json();
+        if (json.registros && Array.isArray(json.registros)) {
+          json.registros.forEach((item: PayloadTelemetria) => {
+            const estNom = item.estudianteNombre?.toLowerCase()?.trim() || "";
+            const estCor = item.estudianteCorreo?.toLowerCase()?.trim() || "";
+            const esDocente = (nombreDoc && estNom === nombreDoc) || (correoDoc && estCor === correoDoc);
+            if (!esDocente && estNom) {
+              const key = normalizarClave(item);
+              const existente = mapa.get(key);
+              const secNorm = normalizarSeccion(item.seccionOGrupo);
+              const itemNorm = { ...item, seccionOGrupo: secNorm };
+              if (!existente) {
+                mapa.set(key, itemNorm);
+              } else {
+                const puntajeNuevo = item.porcentaje ?? item.puntaje ?? 0;
+                const puntajeExistente = existente.porcentaje ?? existente.puntaje ?? 0;
+                if (item.estadoProgreso === "completado" && existente.estadoProgreso !== "completado") {
+                  mapa.set(key, itemNorm);
+                } else if (puntajeNuevo > puntajeExistente) {
+                  mapa.set(key, itemNorm);
+                } else if (puntajeNuevo === puntajeExistente && (item.timestamp || 0) >= (existente.timestamp || 0)) {
+                  mapa.set(key, itemNorm);
+                }
+              }
+            }
+          });
+
+          const unificados = Array.from(mapa.values()).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+          setTelemetria(unificados);
+          SafeStorage.setItem("telemetria_registros", JSON.stringify(unificados));
+          if (cedClean) {
+            SafeStorage.setItem(`telemetria_registros_${cedClean}`, JSON.stringify(unificados));
+          }
+        }
+      }
+    } catch {}
+  };
+
   useEffect(() => {
     // Cargar datos persistidos
     const savedDocente = SafeStorage.getItem("docente_activo");
@@ -573,317 +800,19 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       SafeStorage.setItem("webapps_comunidad", JSON.stringify(PRODUCCIONES_COMUNIDAD_INICIALES));
     }
 
-    if (savedTelemetria) {
+    // Sincronizar telemetría aislada por docente (local y remota)
+    if (savedDocente) {
       try {
-        const parsedTele = JSON.parse(savedTelemetria);
-        if (Array.isArray(parsedTele)) {
-          const limpiosTele = parsedTele.filter(
-            (t: any) =>
-              !esUsuarioBloqueado(t.estudianteNombre, t.estudianteCorreo) &&
-              !esUsuarioBloqueado(t.docenteNombre, t.docenteEmail)
-          );
-          // Deduplicación estricta al cargar: 1 único registro por estudiante y sección
-          const mapa = new Map<string, PayloadTelemetria>();
-          limpiosTele.forEach((item: any) => {
-            const nom = (item.estudianteNombre || "").toLowerCase().trim();
-            const sec = (item.seccionOGrupo || "").toLowerCase().trim();
-            const clave = `${nom}::${sec}`;
-            if (!mapa.has(clave)) {
-              mapa.set(clave, item);
-            } else {
-              const exist = mapa.get(clave)!;
-              if (item.estadoProgreso === "completado" && exist.estadoProgreso !== "completado") {
-                mapa.set(clave, item);
-              } else if ((item.timestamp || 0) >= (exist.timestamp || 0)) {
-                mapa.set(clave, item);
-              }
-            }
-          });
-          const deduplicados = Array.from(mapa.values()).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-          setTelemetria(deduplicados);
-          SafeStorage.setItem("telemetria_registros", JSON.stringify(deduplicados));
-        } else {
-          setTelemetria([]);
-        }
+        const parsedDoc = JSON.parse(savedDocente);
+        sincronizarTelemetriaParaDocente(parsedDoc);
       } catch {
         setTelemetria([]);
+        SafeStorage.setItem("telemetria_registros", JSON.stringify([]));
       }
     } else {
       setTelemetria([]);
       SafeStorage.setItem("telemetria_registros", JSON.stringify([]));
     }
-
-    // Sincronizar con el endpoint del servidor y llaves locales con deduplicación por estudiante y sección
-    const sincronizarTelemetriaServidor = async () => {
-      try {
-        const docenteGuardadoRaw = SafeStorage.getItem("docente_activo");
-        const docenteActivoObj = docenteGuardadoRaw ? JSON.parse(docenteGuardadoRaw) : null;
-        const docenteId = docenteActivoObj?.idDocente || docenteActivoObj?.cedula;
-        const cedulaDoc = docenteActivoObj?.cedula || "";
-        const nombreDoc = docenteActivoObj?.nombreCompleto?.toLowerCase()?.trim() || "";
-        const correoDoc = docenteActivoObj?.correoInstitucional?.toLowerCase()?.trim() || "";
-
-        const normalizarSeccion = (sec?: string): string => {
-          if (!sec) return "Sección 7-1";
-          const limpia = sec.replace(/^secci[oó]n\s*/i, "").trim();
-          if (/^[789]-/i.test(limpia)) {
-            return `Sección ${limpia}`;
-          }
-          return `Sección ${limpia}`;
-        };
-
-        const normalizarClave = (item: PayloadTelemetria): string => {
-          const nom = (item.estudianteNombre || "").toLowerCase().trim();
-          const sec = normalizarSeccion(item.seccionOGrupo).toLowerCase().trim();
-          return `${nom}::${sec}`;
-        };
-
-        // 1. Cargar evaluaciones locales de 7mo si existen y pertenecen al docente
-        const evaluacionesLocales7mo: PayloadTelemetria[] = [];
-        try {
-          const cedClean = cedulaDoc.replace(/[^a-zA-Z0-9]/g, "");
-          const raw7mo =
-            (cedClean ? SafeStorage.getItem(`MEP_DOCENTE_7MO_EVALUATIONS_${cedClean}`) : null) ||
-            SafeStorage.getItem("MEP_DOCENTE_7MO_EVALUATIONS");
-          if (raw7mo) {
-            const list7mo = JSON.parse(raw7mo);
-            if (Array.isArray(list7mo)) {
-              list7mo.forEach((ev: any) => {
-                // Verificar pertenencia al docente
-                const evDocId = (ev.docenteId || ev.raw?.docenteId || "").trim().toLowerCase();
-                const evDocCed = (ev.docenteCedula || ev.raw?.docenteCedula || "").trim().toLowerCase();
-                const evDocNom = (ev.docenteNombre || ev.raw?.docenteNombre || "").trim().toLowerCase();
-                
-                const pertenece =
-                  !docenteId ||
-                  evDocId === docenteId.toLowerCase() ||
-                  (cedClean && evDocCed.replace(/\D/g, "") === cedClean) ||
-                  (nombreDoc && evDocNom === nombreDoc) ||
-                  Boolean(cedClean && SafeStorage.getItem(`MEP_DOCENTE_7MO_EVALUATIONS_${cedClean}`));
-
-                if (!pertenece) return;
-
-                const n1 = typeof ev.name1 === "object" ? ev.name1?.name || "Estudiante 1" : ev.name1 || "Estudiante 1";
-                const n2 = typeof ev.name2 === "object" ? ev.name2?.name || "" : ev.name2 || "";
-                const isIndiv = !n2 || n2 === "Individual" || n2 === "N/A" || n2 === "Sin Pareja";
-                const estNombre = isIndiv ? n1 : `${n1} & ${n2}`;
-                const sec = normalizarSeccion(ev.section);
-                const score = ev.globalAvg ?? ev.porcentaje ?? ev.puntaje ?? 80;
-                const rec: PayloadTelemetria = {
-                  idResultado: ev.id || `eval-7mo-${Date.now()}`,
-                  webAppId: "diagnostico_7mo_modulo01_cyberquest",
-                  webAppTitulo: "CyberQuest 7°: Diagnóstico de Fundamentos Digitales",
-                  docenteId: ev.docenteId || docenteId || "5-0305-0179",
-                  docenteNombre: ev.docenteNombre || docenteActivoObj?.nombreCompleto || "Docente Evaluador",
-                  institucionNombre: ev.raw?.institucionNombre || docenteActivoObj?.institucionNombre || "Centro Educativo MEP",
-                  dreCodigo: ev.raw?.dreCodigo || docenteActivoObj?.dreCodigo || "DRE-01",
-                  estudianteNombre: estNombre,
-                  seccionOGrupo: sec,
-                  nivel: "7°",
-                  puntaje: score,
-                  puntajeMaximo: 100,
-                  porcentaje: score,
-                  totalReactivos: 10,
-                  aciertos: Math.round((score / 100) * 10),
-                  fallos: Math.max(0, 10 - Math.round((score / 100) * 10)),
-                  nivelLogro: ev.globalLevel === "A" || score >= 80 ? "Avanzado" : (ev.globalLevel === "C" || score <= 59 ? "Inicial" : "Intermedio"),
-                  tiempoSegundos: 120,
-                  estadoProgreso: "completado",
-                  timestamp: ev.raw?.timestamp || Date.now(),
-                  tokenAntiFraude: `TOKEN-7MO-${Date.now()}`,
-                };
-                evaluacionesLocales7mo.push(rec);
-              });
-            }
-          }
-        } catch (e) {}
-
-        // 2. Cargar evaluaciones locales de 8vo si existen y pertenecen al docente
-        const evaluacionesLocales8vo: PayloadTelemetria[] = [];
-        try {
-          const cedClean = cedulaDoc.replace(/[^a-zA-Z0-9]/g, "");
-          const raw8vo =
-            (cedClean ? SafeStorage.getItem(`MEP_DOCENTE_8VO_EVALUATIONS_${cedClean}`) : null) ||
-            SafeStorage.getItem("MEP_DOCENTE_8VO_EVALUATIONS") ||
-            SafeStorage.getItem("evaluacion_docente_8vo");
-          if (raw8vo) {
-            const list8vo = JSON.parse(raw8vo);
-            if (Array.isArray(list8vo)) {
-              list8vo.forEach((ev: any) => {
-                const evDocId = (ev.docenteId || "").trim().toLowerCase();
-                const evDocCed = (ev.docenteCedula || "").trim().toLowerCase();
-                const evDocNom = (ev.docenteNombre || "").trim().toLowerCase();
-
-                const pertenece =
-                  !docenteId ||
-                  evDocId === docenteId.toLowerCase() ||
-                  (cedClean && evDocCed.replace(/\D/g, "") === cedClean) ||
-                  (nombreDoc && evDocNom === nombreDoc) ||
-                  Boolean(cedClean && SafeStorage.getItem(`MEP_DOCENTE_8VO_EVALUATIONS_${cedClean}`));
-
-                if (!pertenece) return;
-
-                const estNombre = ev.nombre || ev.estudianteNombre || "Estudiante 8°";
-                const sec = normalizarSeccion(ev.seccion || ev.seccionOGrupo || "8-1");
-                const puntos = ev.puntaje !== undefined && ev.puntaje <= 14 ? ev.puntaje : (ev.totalPuntos !== undefined && ev.totalPuntos <= 14 ? ev.totalPuntos : Math.round(((ev.porcentaje || 80) / 100) * 14));
-                const score = ev.porcentaje ?? Math.round((puntos / 14) * 100);
-
-                const sub1Val = ev.sub1 !== undefined ? ev.sub1 : (ev.subareasDetalle?.sub1_apropiacion ?? Math.min(5, Math.round((puntos / 14) * 5)));
-                const sub2Val = ev.sub2 !== undefined ? ev.sub2 : (ev.subareasDetalle?.sub2_algoritmos ?? Math.min(7, Math.round((puntos / 14) * 7)));
-                const sub3Val = ev.sub3 !== undefined ? ev.sub3 : (ev.subareasDetalle?.sub3_robotica ?? Math.min(2, Math.max(0, puntos - sub1Val - sub2Val)));
-
-                const rec: PayloadTelemetria = {
-                  idResultado: ev.id || `eval-8vo-${Date.now()}`,
-                  webAppId: "diagnostico_8vo_modulo01_docente_evaluador",
-                  webAppTitulo: "Evaluación Diagnóstica — 8° Año (PNFT)",
-                  docenteId: ev.docenteId || docenteId || "5-0305-0179",
-                  docenteNombre: ev.docenteNombre || docenteActivoObj?.nombreCompleto || "Docente Evaluador",
-                  docenteCedula: ev.docenteCedula || cedulaDoc || docenteId || "5-0305-0179",
-                  docenteEmail: ev.docenteEmail || correoDoc || "",
-                  institucionNombre: ev.institucionNombre || docenteActivoObj?.institucionNombre || "Centro Educativo MEP",
-                  dreCodigo: ev.dreCodigo || docenteActivoObj?.dreCodigo || "DRE-01",
-                  estudianteNombre: estNombre,
-                  estudianteCedula: ev.cedula || "—",
-                  seccionOGrupo: sec,
-                  nivel: "8°",
-                  puntaje: puntos,
-                  puntajeMaximo: 14,
-                  porcentaje: score,
-                  totalReactivos: 14,
-                  aciertos: puntos,
-                  fallos: Math.max(0, 14 - puntos),
-                  nivelLogro: score >= 80 ? "Avanzado" : score <= 59 ? "Inicial" : "Intermedio",
-                  subareasDetalle: {
-                    sub1_apropiacion: sub1Val,
-                    sub2_algoritmos: sub2Val,
-                    sub3_robotica: sub3Val,
-                  },
-                  socioafectivo: ev.socioafectivo || { soc1: "Demostrado", soc2: "Demostrado", soc3: "Demostrado", soc4: "Demostrado" },
-                  psicomotor: ev.psicomotor || { psi1: "Demostrado", psi2: "Demostrado", psi3: "Demostrado", psi4: "Demostrado" },
-                  tiempoSegundos: 120,
-                  estadoProgreso: "completado",
-                  timestamp: ev.timestamp || Date.now(),
-                  tokenAntiFraude: `TOKEN-8VO-${Date.now()}`,
-                };
-                evaluacionesLocales8vo.push(rec);
-              });
-            }
-          }
-        } catch (e) {}
-
-        const queryParams = new URLSearchParams();
-        if (docenteId) queryParams.set("docenteId", docenteId);
-        if (cedulaDoc) queryParams.set("cedula", cedulaDoc);
-        if (correoDoc) queryParams.set("correo", correoDoc);
-        if (nombreDoc) queryParams.set("docenteNombre", nombreDoc);
-
-        const url = `/api/telemetria/enviar?${queryParams.toString()}`;
-        const res = await fetch(url);
-        let remotos: PayloadTelemetria[] = [];
-        if (res.ok) {
-          const json = await res.json();
-          if (json.registros && Array.isArray(json.registros)) {
-            remotos = json.registros;
-          }
-        }
-
-        setTelemetria((prev) => {
-          const mapa = new Map<string, PayloadTelemetria>();
-          // Agregar previos ÚNICAMENTE si pertenecen al docente autenticado
-          const correoDocLimpio = (correoDoc || "").toLowerCase().trim();
-          const esSuperAdmin = correoDocLimpio === "alberto.bustos.ortega@mep.go.cr";
-          const esAsesorNacional = correoDocLimpio === "allan.morera.araya@mep.go.cr" || docenteActivoObj?.tipoRol === "Asesor Nacional";
-
-          prev.forEach((item) => {
-            const estNom = item.estudianteNombre?.toLowerCase()?.trim() || "";
-            const estCor = item.estudianteCorreo?.toLowerCase()?.trim() || "";
-            const esDocente = (nombreDoc && estNom === nombreDoc) || (correoDoc && estCor === correoDoc);
-
-            if (!esDocente && estNom) {
-              if (esSuperAdmin || esAsesorNacional) {
-                const key = normalizarClave(item);
-                mapa.set(key, { ...item, seccionOGrupo: normalizarSeccion(item.seccionOGrupo) });
-              } else {
-                const rDocId = (item.docenteId || "").trim().toLowerCase();
-                const rDocCed = ((item as any).docenteCedula || "").trim().toLowerCase();
-                const rDocEmail = ((item as any).docenteEmail || "").trim().toLowerCase();
-                const rDocNom = ((item as any).docenteNombre || "").trim().toLowerCase();
-
-                const cedDocClean = (cedulaDoc || "").replace(/\D/g, "");
-                const rDocIdClean = rDocId.replace(/\D/g, "");
-                const rDocCedClean = rDocCed.replace(/\D/g, "");
-
-                const matchId = docenteId && (rDocId === (docenteId || "").toLowerCase() || rDocId.includes((docenteId || "").toLowerCase()));
-                const matchCed = cedDocClean && (rDocIdClean === cedDocClean || rDocCedClean === cedDocClean);
-                const matchEmail = correoDoc && (rDocEmail === correoDoc || rDocEmail.includes(correoDoc));
-                const matchNom = nombreDoc && rDocNom && (rDocNom === nombreDoc || rDocNom.includes(nombreDoc));
-
-                if (matchId || matchCed || matchEmail || matchNom) {
-                  const key = normalizarClave(item);
-                  mapa.set(key, { ...item, seccionOGrupo: normalizarSeccion(item.seccionOGrupo) });
-                }
-              }
-            }
-          });
-
-          // Agregar locales de 7mo
-          evaluacionesLocales7mo.forEach((item) => {
-            const key = normalizarClave(item);
-            if (!mapa.has(key)) {
-              mapa.set(key, item);
-            }
-          });
-
-          // Agregar locales de 8vo
-          evaluacionesLocales8vo.forEach((item) => {
-            const key = normalizarClave(item);
-            if (!mapa.has(key)) {
-              mapa.set(key, item);
-            }
-          });
-
-          // Mezclar con los del servidor
-          remotos.forEach((item: PayloadTelemetria) => {
-            const estNom = item.estudianteNombre?.toLowerCase()?.trim() || "";
-            const estCor = item.estudianteCorreo?.toLowerCase()?.trim() || "";
-            const esDocente = (nombreDoc && estNom === nombreDoc) || (correoDoc && estCor === correoDoc);
-            if (!esDocente && estNom) {
-              const key = normalizarClave(item);
-              const existente = mapa.get(key);
-              const secNorm = normalizarSeccion(item.seccionOGrupo);
-              const itemNorm = { ...item, seccionOGrupo: secNorm };
-              
-              if (!existente) {
-                mapa.set(key, itemNorm);
-              } else {
-                const puntajeNuevo = item.porcentaje ?? item.puntaje ?? 0;
-                const puntajeExistente = existente.porcentaje ?? existente.puntaje ?? 0;
-                if (
-                  item.estadoProgreso === "completado" &&
-                  existente.estadoProgreso !== "completado"
-                ) {
-                  mapa.set(key, itemNorm);
-                } else if (puntajeNuevo > puntajeExistente) {
-                  mapa.set(key, itemNorm);
-                } else if (puntajeNuevo === puntajeExistente && item.timestamp >= existente.timestamp) {
-                  mapa.set(key, itemNorm);
-                }
-              }
-            }
-          });
-
-          const unificados = Array.from(mapa.values()).sort((a, b) => b.timestamp - a.timestamp);
-          SafeStorage.setItem("telemetria_registros", JSON.stringify(unificados));
-          if (cedulaDoc) {
-            const cleanKey = `telemetria_registros_${cedulaDoc.replace(/\D/g, "")}`;
-            SafeStorage.setItem(cleanKey, JSON.stringify(unificados));
-          }
-          return unificados;
-        });
-      } catch (err) {
-        // Modo offline
-      }
-    };
 
     // Sincronizar usuarios registrados desde el servidor para acceso multi-navegador
     const sincronizarUsuariosServidor = async () => {
@@ -934,10 +863,19 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       } catch {}
     };
 
+    const sincronizarTelemetriaActual = () => {
+      const rawDoc = SafeStorage.getItem("docente_activo");
+      if (rawDoc) {
+        try {
+          sincronizarTelemetriaParaDocente(JSON.parse(rawDoc));
+        } catch {}
+      }
+    };
+
     sincronizarUsuariosServidor();
-    sincronizarTelemetriaServidor();
+    sincronizarTelemetriaActual();
     const interval = setInterval(() => {
-      sincronizarTelemetriaServidor();
+      sincronizarTelemetriaActual();
       sincronizarUsuariosServidor();
     }, 4000);
 
@@ -992,6 +930,7 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
   const guardarDocente = (data: DocenteData) => {
     setDocente(data);
     SafeStorage.setItem("docente_activo", JSON.stringify(data));
+    sincronizarTelemetriaParaDocente(data);
     try {
       if (typeof window !== "undefined") {
         const adaptado = {
@@ -1465,6 +1404,12 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
     setDocente(null);
     setTelemetria([]);
     SafeStorage.removeItem("docente_activo");
+    SafeStorage.removeItem("telemetria_registros");
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("docente_activo");
+      localStorage.removeItem("MEP_DOCENTE_PERFIL_GLOBAL");
+      localStorage.removeItem("telemetria_registros");
+    }
   };
 
   const guardarWebApp = (webapp: WebAppInfo) => {
