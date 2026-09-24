@@ -440,7 +440,10 @@ export default function HomePage() {
                         <IdentificationCard size={18} />
                       </div>
                       <input
+                        id="loginCredencial"
+                        name="loginCredencial"
                         type="text"
+                        autoComplete="username"
                         value={loginCredencial}
                         onChange={(e) => setLoginCredencial(e.target.value)}
                         placeholder="Ej: X-XXXX-XXXX o nombre.apellido.apellido@mep.go.cr"
@@ -467,7 +470,10 @@ export default function HomePage() {
                         <LockKey size={18} />
                       </div>
                       <input
+                        id="loginPin"
+                        name="loginPin"
                         type={mostrarLoginPin ? "text" : "password"}
+                        autoComplete="current-password"
                         maxLength={4}
                         value={loginPin}
                         onChange={(e) => setLoginPin(e.target.value.replace(/[^0-9]/g, ""))}
