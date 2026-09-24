@@ -188,6 +188,84 @@ input:focus, select:focus {
 .btn-secondary { background: #f1f5f9; color: var(--mep-texto); border: 1px solid #cbd5e1; }
 .btn-secondary:hover { background: #e2e8f0; }
 
+.pwa-install-banner {
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+  border: 1.5px solid #6366f1;
+  border-radius: 16px;
+  padding: 14px 16px;
+  color: #ffffff;
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.25);
+}
+
+@media (min-width: 600px) {
+  .pwa-install-banner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.pwa-install-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.pwa-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #a5b4fc;
+}
+
+.pwa-title {
+  font-size: 14px;
+  font-weight: 900;
+  color: #ffffff;
+}
+
+.pwa-desc {
+  font-size: 11px;
+  color: #c7d2fe;
+  line-height: 1.4;
+}
+
+.btn-install-pwa {
+  background: #22c55e;
+  color: #052e16;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 18px;
+  font-size: 12.5px;
+  font-weight: 900;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4);
+}
+
+.btn-install-pwa:hover {
+  background: #16a34a;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.btn-install-pwa:active {
+  transform: scale(0.97);
+}
+
 .session-box {
   background: #f0f9ff;
   border-left: 4px solid #0284c7;
@@ -520,6 +598,18 @@ input:focus, select:focus {
 </header>
 
 <div class="container">
+
+  <!-- BANNER DE INTEGRACIÓN E INSTALACIÓN TIPO APP (PWA) -->
+  <div class="pwa-install-banner">
+    <div class="pwa-install-info">
+      <div class="pwa-badge">📱 APLICACIÓN WEB PROGRESIVA (PWA) • MEP</div>
+      <div class="pwa-title">Instalar Escáner en la Pantalla de Inicio</div>
+      <div class="pwa-desc">Úsalo como App nativa en tu celular con acceso directo y 100% sin internet. Recuerda consultar la guía para tu modelo de teléfono.</div>
+    </div>
+    <button type="button" id="btnInstalarPWA" class="btn-install-pwa" onclick="solicitarInstalacionPWA()">
+      <span>📲 Instalar en Celular</span>
+    </button>
+  </div>
 
   <!-- ACORDEÓN PLEGABLE: GUÍA DE CELULARES (CERRADO POR DEFECTO PARA NO QUITAR VISIBILIDAD) -->
   <div class="guide-accordion">

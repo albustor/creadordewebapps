@@ -170,6 +170,84 @@ input:focus, select:focus {
 .btn-secondary { background: #f1f5f9; color: var(--mep-texto); border: 1px solid #cbd5e1; }
 .btn-secondary:hover { background: #e2e8f0; }
 
+.pwa-install-banner {
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+  border: 1.5px solid #6366f1;
+  border-radius: 16px;
+  padding: 14px 16px;
+  color: #ffffff;
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.25);
+}
+
+@media (min-width: 600px) {
+  .pwa-install-banner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.pwa-install-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.pwa-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #a5b4fc;
+}
+
+.pwa-title {
+  font-size: 14px;
+  font-weight: 900;
+  color: #ffffff;
+}
+
+.pwa-desc {
+  font-size: 11px;
+  color: #c7d2fe;
+  line-height: 1.4;
+}
+
+.btn-install-pwa {
+  background: #22c55e;
+  color: #052e16;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 18px;
+  font-size: 12.5px;
+  font-weight: 900;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4);
+}
+
+.btn-install-pwa:hover {
+  background: #16a34a;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.btn-install-pwa:active {
+  transform: scale(0.97);
+}
+
 .session-box {
   background: #f0f9ff;
   border-left: 4px solid #0284c7;
@@ -503,6 +581,18 @@ input:focus, select:focus {
 
 <div class="container">
 
+  <!-- BANNER DE INTEGRACIÓN E INSTALACIÓN TIPO APP (PWA) -->
+  <div class="pwa-install-banner">
+    <div class="pwa-install-info">
+      <div class="pwa-badge">📱 APLICACIÓN WEB PROGRESIVA (PWA) • MEP</div>
+      <div class="pwa-title">Instalar Escáner en la Pantalla de Inicio</div>
+      <div class="pwa-desc">Úsalo como App nativa en tu celular con acceso directo y 100% sin internet. Recuerda consultar la guía para tu modelo de teléfono.</div>
+    </div>
+    <button type="button" id="btnInstalarPWA" class="btn-install-pwa" onclick="solicitarInstalacionPWA()">
+      <span>📲 Instalar en Celular</span>
+    </button>
+  </div>
+
   <!-- ACORDEÓN PLEGABLE: GUÍA DE CELULARES (CERRADO POR DEFECTO PARA NO QUITAR VISIBILIDAD) -->
   <div class="guide-accordion">
     <div class="guide-accordion-header" onclick="alternarGuiaInstalacion()">
@@ -834,6 +924,68 @@ function emitirBeepExito() {
   }
 }
 
+var deferredPrompt = null;
+
+// Escuchar evento de instalacion PWA
+window.addEventListener("beforeinstallprompt", function(e) {
+  e.preventDefault();
+  deferredPrompt = e;
+  var btn = document.getElementById("btnInstalarPWA");
+  if (btn) {
+    btn.innerHTML = "<span>📲 Instalar Ahora en Celular</span>";
+  }
+});
+
+// Función de instalación / integración tipo APP en celular
+function solicitarInstalacionPWA() {
+  // Verificar si ya se ejecuta instalada (modo standalone)
+  var isStandalone = window.matchMedia("(display-mode: standalone)").matches || (window.navigator && window.navigator.standalone);
+  if (isStandalone) {
+    alert("✅ El Escáner ya está instalado y ejecutándose como App independiente.");
+    return;
+  }
+
+  var ua = (navigator.userAgent || "").toLowerCase();
+  var isIos = /iphone|ipad|ipod/.test(ua);
+  var isHuawei = /huawei|honor/.test(ua);
+
+  // Si el navegador soporta el prompt nativo PWA (Android / Chrome)
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function(choiceResult) {
+      if (choiceResult.outcome === "accepted") {
+        alert("🎉 ¡Listo! El Escáner se instaló correctamente en tu pantalla de inicio.");
+      }
+      deferredPrompt = null;
+    });
+    return;
+  }
+
+  // Desplegar automáticamente la guía acordeón y enfocar la pestaña del SO
+  var body = document.getElementById("guideContentBody");
+  var arrow = document.getElementById("guideArrow");
+  if (body) {
+    body.style.display = "block";
+    if (arrow) arrow.textContent = "▲ Ocultar Instrucciones";
+  }
+
+  if (isIos) {
+    cambiarPestanaGuia("ios");
+    alert("🍎 Instalación en iPhone / iPad (Safari):\n\n1. En Safari, toca el botón Compartir (icono de cuadrado con flecha hacia arriba ↑ en la barra inferior).\n2. Desplázate hacia abajo y selecciona 'Agregar a inicio' (Add to Home Screen).\n3. Toca 'Agregar' arriba a la derecha.\n\n💡 Recuerda revisar las capturas de pantalla en la guía desplegable.");
+  } else if (isHuawei) {
+    cambiarPestanaGuia("huawei");
+    alert("📱 Instalación en Huawei (Huawei Browser):\n\n1. Abre el menú de opciones (⋮ o ≡).\n2. Selecciona 'Agregar a pantalla de inicio'.\n\n💡 Revisa las instrucciones en la guía desplegable.");
+  } else {
+    cambiarPestanaGuia("android");
+    alert("🤖 Instalación en Android (Google Chrome):\n\n1. Toca los tres puntos (⋮) arriba a la derecha.\n2. Selecciona 'Instalar aplicación' o 'Agregar a pantalla principal'.\n3. Confirma la instalación.\n\n💡 Revisa las instrucciones en la guía desplegable.");
+  }
+
+  var guideEl = document.querySelector(".guide-accordion");
+  if (guideEl) {
+    guideEl.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function() {
   actualizarContador();
 });
@@ -1084,75 +1236,27 @@ function interpretarPayloadQR(raw) {
   if (texto.startsWith("{") && texto.endsWith("}")) {
     try {
       var obj = JSON.parse(texto);
-      
-      // Soporte 7.° Año (MEP7 / CYBERQUEST_7MO)
-      if (obj.t === "MEP7" || obj.tipo === "CYBERQUEST_7MO") {
-        var nom7 = obj.estudianteNombre || (obj.c1 ? (obj.c1 + (obj.c2 && obj.c2 !== 'Individual' ? ' & ' + obj.c2 : '')) : "Cadete 7mo");
-        var porc7 = obj.g !== undefined ? obj.g : 80;
-        var niv7 = obj.lvl === 'A' ? "Logrado" : (obj.lvl === 'B' ? "En Desarrollo" : "Reforzamiento conceptual");
-        return {
-          estudiante: nom7,
-          cedula: "",
-          seccionQR: obj.sec || sesionActiva.seccion,
-          fecha: new Date().toLocaleDateString("es-CR"),
-          cognoscitiva: (obj.c !== undefined ? obj.c + "%" : porc7 + "%"),
-          nivelCognoscitivo: niv7,
-          tarjetas: "Misiones 4/4",
-          puertos: "9/9",
-          ejecucion: (obj.p !== undefined ? obj.p + "% (Psicomotriz)" : "Completa"),
-          socioafectiva: (obj.s !== undefined ? obj.s + "% (Socioafectiva)" : "5/5 indicadores favorables"),
-          fortalezas: "Apropiación digital, Destreza psicomotriz y Pensamiento Lógico",
-          prioridades: niv7 === "Logrado" ? "Ninguna" : "Refuerzo en conceptos básicos",
-          textoOriginal: raw
-        };
-      }
-
-      // Soporte 8.° Año
-      if (obj.n === "8°" || obj.v === 1 || obj.s1 !== undefined) {
-        var nom8 = obj.e || obj.estudiante || "Estudiante 8vo";
-        var punt8 = obj.p !== undefined ? obj.p : 0;
-        var porc8 = obj.porc !== undefined ? obj.porc : Math.round((punt8 / 14) * 100);
-        var niv8 = obj.nivelCog || (porc8 >= 80 ? "Logrado" : (porc8 >= 60 ? "En Desarrollo" : "Reforzamiento conceptual"));
-        return {
-          estudiante: nom8,
-          cedula: obj.docId || "",
-          seccionQR: obj.s || obj.sec || sesionActiva.seccion,
-          fecha: new Date(obj.ts || Date.now()).toLocaleDateString("es-CR"),
-          cognoscitiva: (obj.numCog || (punt8 + "/14")) + " (" + porc8 + "%)",
-          nivelCognoscitivo: niv8,
-          tarjetas: "HW/SW " + (obj.s1 || 0) + "/5",
-          puertos: "Algoritmos " + (obj.s2 || 0) + "/7",
-          ejecucion: "Robótica " + (obj.s3 || 0) + "/2 (Completa)",
-          socioafectiva: "5/5 indicadores favorables",
-          fortalezas: obj.fortalezas || ((obj.s1 >= 4 ? "Hardware/Software, " : "") + (obj.s2 >= 5 ? "Algoritmos, " : "") + (obj.s3 >= 1 ? "Robótica" : "") || "Pensamiento estructurado"),
-          prioridades: obj.prioridades || ((obj.s1 < 4 ? "Hardware/Software, " : "") + (obj.s2 < 5 ? "Algoritmos, " : "") + (obj.s3 < 1 ? "Robótica" : "") || "Ninguna"),
-          textoOriginal: raw
-        };
-      }
-
-      // Soporte 9.° Año / Estándar General
       var porc = obj.porc !== undefined ? obj.porc : (obj.notaCognitiva !== undefined ? obj.notaCognitiva * 10 : (obj.puntaje || 0));
-      var numCog = obj.numCog || (Math.round(porc / 10) + "/10");
-      var niv = obj.nivelCog || obj.nivel || (porc >= 80 ? "Logrado" : (porc >= 60 ? "En Desarrollo" : "Reforzamiento conceptual"));
+      var niv = obj.nivel || (porc >= 80 ? "Logrado" : (porc >= 60 ? "En Desarrollo" : "Acompañamiento"));
       return {
         estudiante: obj.nom || obj.estudiante || obj.nombre || "Estudiante",
         cedula: obj.cedula || obj.ced || "",
         seccionQR: obj.sec || obj.seccion || sesionActiva.seccion,
         fecha: obj.fec || obj.fecha || new Date().toLocaleDateString("es-CR"),
-        cognoscitiva: numCog + " (" + porc + "%)",
+        cognoscitiva: obj.cog ? (porc + "%") : (obj.cognoscitiva || (porc + "%")),
         nivelCognoscitivo: niv,
-        tarjetas: obj.tarjetas || "3/3",
-        puertos: obj.puertos || "9/9",
-        ejecucion: obj.ejecucion || obj.psicomotora || "Completa",
-        socioafectiva: obj.socTexto || obj.socioafectiva || "5/5 indicadores favorables",
+        tarjetas: obj.tarjetas || "E-P-S",
+        puertos: obj.puertos || "Conectados",
+        ejecucion: obj.ejecucion || obj.psicomotora || "Autónomo",
+        socioafectiva: obj.socioafectiva || "5 actitudes computacionales",
         fortalezas: obj.fortalezas || "Pensamiento computacional y lógica",
-        prioridades: obj.prioridades || "Ninguna",
+        prioridades: obj.prioridades || "Estructuras algorítmicas y circuitos",
         textoOriginal: raw
       };
     } catch (e) {}
   }
 
-  // 2. Parseo por líneas de texto plano (Formato unificado < 300 caracteres)
+  // 2. Parseo por líneas de texto plano
   var lineas = texto.split(/\r?\n/).map(function(l) { return l.trim(); }).filter(Boolean);
 
   var datos = {
@@ -1160,65 +1264,28 @@ function interpretarPayloadQR(raw) {
     cedula: "",
     seccionQR: lineas[1] || sesionActiva.seccion,
     fecha: lineas[2] || new Date().toLocaleDateString("es-CR"),
-    cognoscitiva: "8/10",
+    cognoscitiva: "80%",
     nivelCognoscitivo: "Logrado",
-    tarjetas: "3/3",
-    puertos: "9/9",
-    ejecucion: "Completa",
-    socioafectiva: "5/5 indicadores favorables",
-    fortalezas: "",
-    prioridades: "",
+    tarjetas: "E-P-S",
+    puertos: "Conectados",
+    ejecucion: "Autónomo",
+    socioafectiva: "5 actitudes computacionales",
+    fortalezas: "Pensamiento computacional y lógica",
+    prioridades: "Estructuras algorítmicas",
     textoOriginal: raw
   };
 
   for (var i = 0; i < lineas.length; i++) {
     var l = lineas[i];
     var upper = l.toUpperCase();
-
-    if (upper.startsWith("COGNOSCITIVA:") || upper.startsWith("COG:")) {
-      var partesCog = l.substring(l.indexOf(":") + 1).trim();
-      datos.cognoscitiva = partesCog;
-      if (partesCog.includes("(") && partesCog.includes(")")) {
-        datos.nivelCognoscitivo = partesCog.substring(partesCog.indexOf("(") + 1, partesCog.indexOf(")")).trim();
-      }
-    }
-    else if (upper.startsWith("NIVEL:")) {
-      datos.nivelCognoscitivo = l.substring(6).trim();
-    }
-    else if (upper.startsWith("PSICOMOTORA:") || upper.startsWith("PSI:")) {
-      var partesPsi = l.substring(l.indexOf(":") + 1).trim();
-      var mTarjetas = partesPsi.match(/Tarjetas\s*:?\s*(\d+\/\d+)/i) || partesPsi.match(/HW\s*:?\s*(\d+\/\d+)/i);
-      if (mTarjetas) datos.tarjetas = mTarjetas[1];
-      var mPuertos = partesPsi.match(/Puertos\s*:?\s*(\d+\/\d+)/i) || partesPsi.match(/Algo\s*:?\s*(\d+\/\d+)/i);
-      if (mPuertos) datos.puertos = mPuertos[1];
-      if (partesPsi.includes("(") && partesPsi.includes(")")) {
-        datos.ejecucion = partesPsi.substring(partesPsi.indexOf("(") + 1, partesPsi.indexOf(")")).trim();
-      } else if (partesPsi.toLowerCase().includes("completa")) {
-        datos.ejecucion = "Completa";
-      }
-    }
-    else if (upper.startsWith("TARJETAS:")) {
-      datos.tarjetas = l.substring(9).trim();
-    }
-    else if (upper.startsWith("PUERTOS:")) {
-      datos.puertos = l.substring(8).trim();
-    }
-    else if (upper.startsWith("EJECUCIÓN:") || upper.startsWith("EJECUCION:")) {
-      datos.ejecucion = l.substring(10).trim();
-    }
-    else if (upper.startsWith("SOCIOAFECTIVA:") || upper.startsWith("SOC:") || l.toLowerCase().includes("indicadores favorables") || l.toLowerCase().includes("actitudes")) {
-      datos.socioafectiva = l.includes(":") ? l.substring(l.indexOf(":") + 1).trim() : l;
-    }
-    else if (upper.startsWith("FORTALEZAS:")) {
-      var fVal = l.substring(11).trim();
-      if (fVal) datos.fortalezas = fVal;
-      else if (lineas[i + 1] && !lineas[i + 1].includes(":")) datos.fortalezas = lineas[i + 1];
-    }
-    else if (upper.startsWith("PRIORIDADES:")) {
-      var pVal = l.substring(12).trim();
-      if (pVal) datos.prioridades = pVal;
-      else if (lineas[i + 1] && !lineas[i + 1].includes(":")) datos.prioridades = lineas[i + 1];
-    }
+    if (upper.startsWith("COGNOSCITIVA:")) datos.cognoscitiva = l.substring(13).trim();
+    else if (upper.startsWith("NIVEL:")) datos.nivelCognoscitivo = l.substring(6).trim();
+    else if (upper.startsWith("TARJETAS:")) datos.tarjetas = l.substring(9).trim();
+    else if (upper.startsWith("PUERTOS:")) datos.puertos = l.substring(8).trim();
+    else if (upper.startsWith("EJECUCIÓN:") || upper.startsWith("EJECUCION:")) datos.ejecucion = l.substring(10).trim();
+    else if (l.toLowerCase().includes("actitudes") || l.toLowerCase().includes("indicadores favorables")) datos.socioafectiva = l;
+    else if (upper === "FORTALEZAS:" && lineas[i + 1]) datos.fortalezas = lineas[i + 1];
+    else if (upper === "PRIORIDADES:" && lineas[i + 1]) datos.prioridades = lineas[i + 1];
   }
 
   return datos;
@@ -1237,26 +1304,20 @@ function renderizarResultado(datos) {
     '  </div>' +
     '  <div class="result-item">' +
     '    <strong>Dimensión Cognoscitiva:</strong>' +
-    '    <span>' + escaparHTML(datos.cognoscitiva || "8/10") + ' [' + escaparHTML(datos.nivelCognoscitivo || "Logrado") + ']</span>' +
+    '    <span>' + escaparHTML(datos.cognoscitiva || "80%") + ' (' + escaparHTML(datos.nivelCognoscitivo || "Logrado") + ')</span>' +
     '  </div>' +
     '  <div class="result-item">' +
     '    <strong>Dimensión Psicomotora:</strong>' +
-    '    <span>Tarjetas/HW: ' + escaparHTML(datos.tarjetas || "3/3") + ' • Puertos/Algo: ' + escaparHTML(datos.puertos || "9/9") + ' (' + escaparHTML(datos.ejecucion || "Completa") + ')</span>' +
+    '    <span>' + escaparHTML(datos.ejecucion || datos.tarjetas || "Completado") + '</span>' +
     '  </div>' +
     '  <div class="result-item result-wide">' +
     '    <strong>Dimensión Socioafectiva:</strong>' +
-    '    <span>' + escaparHTML(datos.socioafectiva || "5/5 indicadores favorables") + '</span>' +
+    '    <span>' + escaparHTML(datos.socioafectiva || "Favorable") + '</span>' +
     '  </div>' +
     (datos.fortalezas ? (
-      '  <div class="result-item result-wide" style="background:#f0fdf4; border-color:#bbf7d0;">' +
-      '    <strong style="color:#15803d;">🌟 Fortalezas Observadas:</strong>' +
-      '    <span style="color:#166534; font-weight:600;">' + escaparHTML(datos.fortalezas) + '</span>' +
-      '  </div>'
-    ) : '') +
-    (datos.prioridades ? (
-      '  <div class="result-item result-wide" style="background:#fffbeb; border-color:#fde68a;">' +
-      '    <strong style="color:#b45309;">🎯 Prioridades de Apoyo:</strong>' +
-      '    <span style="color:#92400e; font-weight:600;">' + escaparHTML(datos.prioridades) + '</span>' +
+      '  <div class="result-item result-wide">' +
+      '    <strong>Fortalezas Observadas:</strong>' +
+      '    <span>' + escaparHTML(datos.fortalezas) + '</span>' +
       '  </div>'
     ) : '') +
     '</div>';

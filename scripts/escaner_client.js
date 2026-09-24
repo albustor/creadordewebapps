@@ -31,6 +31,68 @@ function emitirBeepExito() {
   }
 }
 
+var deferredPrompt = null;
+
+// Escuchar evento de instalacion PWA
+window.addEventListener("beforeinstallprompt", function(e) {
+  e.preventDefault();
+  deferredPrompt = e;
+  var btn = document.getElementById("btnInstalarPWA");
+  if (btn) {
+    btn.innerHTML = "<span>📲 Instalar Ahora en Celular</span>";
+  }
+});
+
+// Función de instalación / integración tipo APP en celular
+function solicitarInstalacionPWA() {
+  // Verificar si ya se ejecuta instalada (modo standalone)
+  var isStandalone = window.matchMedia("(display-mode: standalone)").matches || (window.navigator && window.navigator.standalone);
+  if (isStandalone) {
+    alert("✅ El Escáner ya está instalado y ejecutándose como App independiente.");
+    return;
+  }
+
+  var ua = (navigator.userAgent || "").toLowerCase();
+  var isIos = /iphone|ipad|ipod/.test(ua);
+  var isHuawei = /huawei|honor/.test(ua);
+
+  // Si el navegador soporta el prompt nativo PWA (Android / Chrome)
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function(choiceResult) {
+      if (choiceResult.outcome === "accepted") {
+        alert("🎉 ¡Listo! El Escáner se instaló correctamente en tu pantalla de inicio.");
+      }
+      deferredPrompt = null;
+    });
+    return;
+  }
+
+  // Desplegar automáticamente la guía acordeón y enfocar la pestaña del SO
+  var body = document.getElementById("guideContentBody");
+  var arrow = document.getElementById("guideArrow");
+  if (body) {
+    body.style.display = "block";
+    if (arrow) arrow.textContent = "▲ Ocultar Instrucciones";
+  }
+
+  if (isIos) {
+    cambiarPestanaGuia("ios");
+    alert("🍎 Instalación en iPhone / iPad (Safari):\n\n1. En Safari, toca el botón Compartir (icono de cuadrado con flecha hacia arriba ↑ en la barra inferior).\n2. Desplázate hacia abajo y selecciona 'Agregar a inicio' (Add to Home Screen).\n3. Toca 'Agregar' arriba a la derecha.\n\n💡 Recuerda revisar las capturas de pantalla en la guía desplegable.");
+  } else if (isHuawei) {
+    cambiarPestanaGuia("huawei");
+    alert("📱 Instalación en Huawei (Huawei Browser):\n\n1. Abre el menú de opciones (⋮ o ≡).\n2. Selecciona 'Agregar a pantalla de inicio'.\n\n💡 Revisa las instrucciones en la guía desplegable.");
+  } else {
+    cambiarPestanaGuia("android");
+    alert("🤖 Instalación en Android (Google Chrome):\n\n1. Toca los tres puntos (⋮) arriba a la derecha.\n2. Selecciona 'Instalar aplicación' o 'Agregar a pantalla principal'.\n3. Confirma la instalación.\n\n💡 Revisa las instrucciones en la guía desplegable.");
+  }
+
+  var guideEl = document.querySelector(".guide-accordion");
+  if (guideEl) {
+    guideEl.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function() {
   actualizarContador();
 });
