@@ -45,7 +45,7 @@
       color: #fff;
       padding: 16px 24px;
       border-bottom: 3px solid #818cf8;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
     }
 
     .header-content {
@@ -55,7 +55,7 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 14px;
     }
 
     .mep-brand {
@@ -64,32 +64,110 @@
       gap: 14px;
     }
 
-    .mep-shield {
-      background: #0284c7;
-      color: #fff;
-      font-weight: 900;
-      font-size: 14px;
-      padding: 6px 12px;
-      border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.3);
-      letter-spacing: 0.5px;
-    }
-
     .mep-titles h1 {
       font-size: 1.25rem;
       font-weight: 800;
       letter-spacing: -0.3px;
+      color: #ffffff;
     }
 
     .mep-titles p {
       font-size: 12px;
-      color: #94a3b8;
+      color: #c7d2fe;
     }
 
     .top-actions {
       display: flex;
-      gap: 8px;
+      align-items: center;
+      gap: 10px;
       flex-wrap: wrap;
+    }
+
+    /* ANIMACIÓN Y EFECTOS HEADER INSTITUCIONAL */
+    @keyframes live-pulse {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+      }
+      50% {
+        transform: scale(1.15);
+        opacity: 0.85;
+        box-shadow: 0 0 0 5px rgba(16, 185, 129, 0);
+      }
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .sync-live-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(129, 140, 248, 0.35);
+      backdrop-filter: blur(8px);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .sync-live-pill:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(165, 180, 252, 0.6);
+      transform: translateY(-1px);
+    }
+
+    .sync-live-dot {
+      width: 8.5px;
+      height: 8.5px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
+      animation: live-pulse 2s infinite ease-in-out;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .teacher-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(129, 140, 248, 0.35);
+      backdrop-filter: blur(8px);
+      font-size: 12px;
+      font-weight: 700;
+      color: #f8fafc;
+      transition: all 0.2s ease;
+    }
+    .teacher-badge-pill:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(165, 180, 252, 0.5);
+    }
+
+    .btn-header-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #ffffff;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      letter-spacing: -0.1px;
+    }
+    .btn-header-action:hover {
+      transform: translateY(-1.5px);
     }
 
     /* BUTTONS */
@@ -488,27 +566,34 @@
       <div class="mep-brand">
         <div class="mep-titles">
           <h1>🎮 Herramienta de Evaluación Diagnóstica Docente Séptimo Año</h1>
-          <p style="color: #c7d2fe;">Programa Nacional de Formación Tecnológica &bull; Evaluación Diagnóstica Curricular del Tercer Ciclo</p>
+          <p>Programa Nacional de Formación Tecnológica &bull; Evaluación Diagnóstica Curricular del Tercer Ciclo</p>
         </div>
       </div>
       <div class="top-actions">
-        <!-- BOTÓN COMPACTO DE SINCRONIZACIÓN CON ESTADO DE LUZ VERDE/ROJO Y TEXTO FIJO -->
-        <div id="syncIndicatorWrapper" style="display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 88px; height: 32px; padding: 2px 6px; border-radius: 8px; background: #ffffff; border: 1.5px solid #818cf8; cursor: pointer; user-select: none; box-sizing: border-box;" onclick="sincronizarTelemetriaOnline(true)" title="Sincronización en vivo con el Dashboard (Clic para sincronizar)">
-          <div style="display: flex; align-items: center; justify-content: center; gap: 4px; line-height: 1;">
-            <span id="syncDotIndicator" style="width: 7.5px; height: 7.5px; border-radius: 50%; background: #10b981; display: inline-block; box-shadow: 0 0 6px rgba(16, 185, 129, 0.8); transition: background 0.3s ease;"></span>
-            <span id="syncIconSpin" style="font-size: 11px; display: inline-block; transition: transform 0.3s ease;">🔄</span>
-          </div>
-          <span style="font-size: 8.5px; font-weight: 800; color: #3730a3; text-transform: uppercase; letter-spacing: 0.3px; line-height: 1; margin-top: 2px;">
-            Sincronizando
-          </span>
+        <!-- INDICADOR EN VIVO DE TELEMETRÍA Y SINCRONIZACIÓN -->
+        <div id="syncIndicatorWrapper" class="sync-live-pill" onclick="sincronizarTelemetriaOnline(true)" title="Estado de telemetría en tiempo real (Clic para forzar sincronización)">
+          <span id="syncDotIndicator" class="sync-live-dot"></span>
+          <span id="syncStatusLabel" style="font-size: 11.5px; font-weight: 800; color: #e0e7ff; letter-spacing: 0.2px;">Sincronizado</span>
+          <span id="syncIconSpin" style="font-size: 10.5px; opacity: 0.75; display: none;">🔄</span>
         </div>
+
         <!-- CHIP DE SESIÓN DOCENTE -->
-        <div id="teacherAuthBadge" style="display: flex; align-items: center; gap: 8px; background: rgba(99, 102, 241, 0.2); border: 1px solid rgba(165, 180, 252, 0.4); padding: 4px 10px; border-radius: 8px; font-size: 11.5px; color: #e0e7ff;">
-          <span id="badgeTeacherName">👨‍🏫 Docente no identificado</span>
-          <button class="btn btn-secondary" style="padding: 2px 7px; font-size: 10.5px; min-height: 24px; background: #4338ca; border-color: #6366f1;" onclick="openAuthModal()">🔑 Perfil</button>
+        <div id="teacherAuthBadge" class="teacher-badge-pill">
+          <span id="badgeTeacherName">👨‍🏫 Docente</span>
+          <button type="button" class="btn" style="padding: 3px 9px; font-size: 11px; min-height: 22px; border-radius: 8px; background: rgba(99, 102, 241, 0.4); border: 1px solid rgba(165, 180, 252, 0.5); color: #ffffff; font-weight: 800;" onclick="openAuthModal()">🔑 Perfil</button>
         </div>
-        <button class="btn btn-accent" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); border-color: #4338ca; color: #ffffff; font-weight:800; box-shadow: 0 2px 8px rgba(99,102,241,0.3);" onclick="openStudentLinksModal()" title="Generar enlaces y proyectar QR para computadoras de estudiantes">🔗 Enlaces Estudiantes (PC)</button>
-        <a href="/dashboard" target="_blank" class="btn" style="background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); border-color: #7c3aed; color: #ffffff; text-decoration: none; font-weight: 800; box-shadow: 0 2px 8px rgba(139,92,246,0.3);" title="Abrir Dashboard de Telemetría Nacional (diagnosticosecundaria.vercel.app / dashboard)">📈 Dashboard Web</a>
+
+        <!-- BOTÓN DE APLICACIÓN DIAGNÓSTICA PARA ESTUDIANTES -->
+        <button type="button" class="btn-header-action" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); border-color: #818cf8; box-shadow: 0 2px 10px rgba(99,102,241,0.35);" onclick="openStudentLinksModal()" title="Generar enlaces y proyectar QR para computadoras de estudiantes">
+          <span style="font-size: 14px;">🚀</span>
+          <span>Aplicación Diagnóstica Estudiantes</span>
+        </button>
+
+        <!-- BOTÓN DE RETORNO AL DASHBOARD CENTRAL -->
+        <a href="/dashboard" target="_blank" class="btn-header-action" style="background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); border-color: #a78bfa; box-shadow: 0 2px 10px rgba(139,92,246,0.3);" title="Abrir Dashboard de Telemetría Nacional (diagnosticosecundaria.vercel.app / dashboard)">
+          <span style="font-size: 14px;">📊</span>
+          <span>Dashboard Web</span>
+        </a>
       </div>
     </div>
   </header>
@@ -1094,12 +1179,18 @@
     async function sincronizarTelemetriaOnline(esManual) {
       const dot = document.getElementById('syncDotIndicator');
       const spin = document.getElementById('syncIconSpin');
+      const label = document.getElementById('syncStatusLabel');
+
       if (dot) {
         dot.style.background = '#f59e0b';
-        dot.style.boxShadow = '0 0 6px rgba(245, 158, 11, 0.8)';
+        dot.style.boxShadow = '0 0 8px rgba(245, 158, 11, 0.8)';
       }
       if (spin) {
+        spin.style.display = 'inline-block';
         spin.style.animation = 'spin 0.8s linear infinite';
+      }
+      if (label) {
+        label.textContent = 'Sincronizando...';
       }
 
       let syncExitosa = true;
@@ -1107,7 +1198,8 @@
         const profile = getStoredProfile();
         if (!profile || !profile.autenticado) {
           if (dot) dot.style.background = '#64748b';
-          if (spin) spin.style.animation = 'none';
+          if (spin) { spin.style.display = 'none'; spin.style.animation = 'none'; }
+          if (label) label.textContent = 'Sin sesión';
           return;
         }
 
@@ -1188,10 +1280,14 @@
 
         if (dot) {
           dot.style.background = syncExitosa ? '#10b981' : '#ef4444';
-          dot.style.boxShadow = syncExitosa ? '0 0 6px rgba(16, 185, 129, 0.8)' : '0 0 6px rgba(239, 68, 68, 0.8)';
+          dot.style.boxShadow = syncExitosa ? '0 0 8px rgba(16, 185, 129, 0.8)' : '0 0 8px rgba(239, 68, 68, 0.8)';
         }
         if (spin) {
+          spin.style.display = 'none';
           spin.style.animation = 'none';
+        }
+        if (label) {
+          label.textContent = syncExitosa ? 'Sincronizado' : 'Sin conexión';
         }
 
         if (esManual) {
@@ -1200,10 +1296,14 @@
       } catch(e) {
         if (dot) {
           dot.style.background = '#ef4444';
-          dot.style.boxShadow = '0 0 6px rgba(239, 68, 68, 0.8)';
+          dot.style.boxShadow = '0 0 8px rgba(239, 68, 68, 0.8)';
         }
         if (spin) {
+          spin.style.display = 'none';
           spin.style.animation = 'none';
+        }
+        if (label) {
+          label.textContent = 'Sin conexión';
         }
         if (esManual) {
           alert('⚠️ Error durante la sincronización: ' + (e.message || 'Verifique la conexión.'));
