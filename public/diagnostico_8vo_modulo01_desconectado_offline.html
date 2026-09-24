@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evaluación Diagnóstica — Formación Tecnológica 8° Año (Desconectada / Offline)</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+  <style>
+    :root {
+      --mep-blue: #003366;
+      --mep-gold: #f39c12;
+      --mep-light-bg: #f4f6f9;
+      --text-color: #2c3e50;
+      --card-bg: #ffffff;
+      --success: #2ecc71;
+      --error: #e74c3c;
+      --font-size-base: 18px;
+    }
+
+    body.high-contrast {
+      --mep-blue: #ffff00;
+      --mep-light-bg: #000000;
+      --text-color: #ffffff;
+      --card-bg: #111111;
+      --success: #00ff00;
+      --error: #ff0000;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: var(--font-size-base);
+      background-color: var(--mep-light-bg);
+      color: var(--text-color);
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    header {
+      border-bottom: 3px solid var(--mep-gold);
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    h1 {
+      color: var(--mep-blue);
+      margin-bottom: 5px;
+      font-size: 1.8rem;
+    }
+
+    .accessibility-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .offline-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    .offline-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #d97706;
+      border-radius: 50%;
+    }
+
+    .btn-acc-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-acc {
+      background: #e0e0e0;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    .btn-acc:hover { background: #d0d0d0; }
+
+    .progress-bar-container {
+      width: 100%;
+      background-color: #e0e0e0;
+      border-radius: 10px;
+      height: 15px;
+      margin-bottom: 25px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background-color: var(--mep-gold);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"], select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+
+    .item-card {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-left: 5px solid var(--mep-blue);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+
+    body.high-contrast .item-card {
+      border-color: #ffff00;
+    }
+
+    .item-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .options-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .option-item {
+      margin-bottom: 10px;
+    }
+
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      padding: 12px 15px;
+      background: #f8f9fa;
+      border: 2px solid #e9ecef;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      color: inherit;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    body.high-contrast .option-btn {
+      background: #222;
+      border-color: #444;
+    }
+
+    .option-btn:hover, .option-btn:focus {
+      border-color: var(--mep-blue);
+      background: #eef4fb;
+      outline: none;
+    }
+
+    .option-btn.selected {
+      border-color: var(--mep-blue);
+      background: #d0e1f9;
+      font-weight: bold;
+    }
+
+    .matching-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .matching-table th, .matching-table td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+
+    .btn-submit {
+      background-color: var(--mep-blue);
+      color: white;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      width: 100%;
+      font-weight: bold;
+      margin-top: 20px;
+      transition: opacity 0.2s;
+    }
+
+    .btn-submit:hover { opacity: 0.9; }
+
+    .results-section {
+      display: none;
+      margin-top: 30px;
+      padding: 20px;
+      background: #eef9f2;
+      border: 2px solid var(--success);
+      border-radius: 8px;
+    }
+
+    body.high-contrast .results-section {
+      background: #002200;
+    }
+
+    .qr-container-card {
+      background: #ffffff;
+      border: 2px dashed var(--mep-blue);
+      border-radius: 12px;
+      padding: 25px;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    body.high-contrast .qr-container-card {
+      background: #111111;
+      border-color: #ffff00;
+    }
+
+    #qrcode-target {
+      margin: 15px auto;
+      display: inline-block;
+      padding: 12px;
+      background: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .dimension-score {
+      margin-bottom: 15px;
+      padding: 10px;
+      background: rgba(255,255,255,0.7);
+      border-radius: 5px;
+    }
+
+    .feedback-box {
+      padding: 15px;
+      border-radius: 6px;
+      margin-top: 10px;
+      background: #ffffff;
+      border-left: 4px solid var(--mep-blue);
+    }
+
+    .btn-tts {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2rem;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+
+    /* Alto contraste */
+    body.high-contrast .container,
+    body.high-contrast .item-card,
+    body.high-contrast .dimension-score,
+    body.high-contrast .feedback-box {
+      background: #000000 !important;
+      color: #ffffff !important;
+      border-color: #ffff00 !important;
+    }
+    body.high-contrast h1,
+    body.high-contrast h2,
+    body.high-contrast h3,
+    body.high-contrast h4,
+    body.high-contrast .item-title,
+    body.high-contrast label,
+    body.high-contrast p,
+    body.high-contrast td,
+    body.high-contrast th {
+      color: #ffffff !important;
+    }
+    body.high-contrast .btn-acc {
+      background: #000000 !important;
+      color: #ffff00 !important;
+      border: 2px solid #ffff00 !important;
+    }
+    body.high-contrast .option-btn {
+      background: #000000 !important;
+      color: #ffffff !important;
+      border: 2px solid #ffff00 !important;
+    }
+    body.high-contrast .option-btn:hover,
+    body.high-contrast .option-btn:focus {
+      background: #222222 !important;
+      color: #ffff00 !important;
+      outline: 3px solid #ffff00 !important;
+    }
+    body.high-contrast .option-btn.selected {
+      background: #ffff00 !important;
+      color: #000000 !important;
+      border-color: #ffffff !important;
+    }
+    body.high-contrast input[type="text"],
+    body.high-contrast select,
+    body.high-contrast textarea {
+      background: #000000 !important;
+      color: #ffffff !important;
+      border: 2px solid #ffff00 !important;
+    }
+    body.high-contrast select option {
+      background: #000000;
+      color: #ffffff;
+    }
+    body.high-contrast .matching-table th {
+      background: #000000 !important;
+      color: #ffff00 !important;
+    }
+    body.high-contrast .progress-bar-container {
+      background: #444444 !important;
+      border: 1px solid #ffff00;
+    }
+    body.high-contrast .results-section {
+      background: #000000 !important;
+      color: #ffffff !important;
+    }
+
+    .option-illustration {
+      width: 78px;
+      height: 58px;
+      flex: 0 0 78px;
+      border-radius: 6px;
+      background: #ffffff;
+      border: 1px solid #d7dde3;
+      object-fit: contain;
+    }
+
+    .pseudo-code {
+      font-family: Consolas, "Courier New", monospace;
+      background: #f3f5f7;
+      border-left: 5px solid var(--mep-blue);
+      padding: 16px 18px;
+      margin: 12px 0 16px;
+      white-space: pre-wrap;
+      font-size: 1rem;
+      line-height: 1.55;
+    }
+
+    body.high-contrast .pseudo-code {
+      background: #000000 !important;
+      color: #ffffff !important;
+      border: 2px solid #ffff00 !important;
+      border-left-width: 5px !important;
+    }
+
+    .indicator-report {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      font-size: .94rem;
+    }
+
+    .indicator-report th, .indicator-report td {
+      border: 1px solid #cbd3db;
+      padding: 10px;
+      vertical-align: top;
+    }
+
+    .indicator-report th {
+      background: var(--mep-blue);
+      color: #ffffff;
+    }
+
+    body.high-contrast .indicator-report th {
+      background: #000000 !important;
+      color: #ffff00 !important;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="accessibility-bar">
+    <div class="offline-badge">
+      <span class="offline-dot"></span>
+      <span>Versión Desconectada (Offline) — Con Código QR</span>
+    </div>
+    <div class="btn-acc-group">
+      <button class="btn-acc" onclick="toggleHighContrast()" aria-label="Alto Contraste">🎨 Alto Contraste</button>
+      <button class="btn-acc" onclick="changeFontSize(1)" aria-label="Aumentar Letra">A+</button>
+      <button class="btn-acc" onclick="changeFontSize(-1)" aria-label="Disminuir Letra">A-</button>
+    </div>
+  </div>
+
+  <header>
+    <h1>Evaluación Diagnóstica — 8° Año (PNFT)</h1>
+    <p><strong>Asignatura:</strong> Formación Tecnológica (Informática Educativa)</p>
+    <p><em>Ministerio de Educación Pública — Costa Rica</em></p>
+  </header>
+
+  <div class="progress-bar-container" aria-hidden="true">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- Parte Administrativa -->
+  <section class="item-card" id="admin-section">
+    <div class="item-title">I. Datos Administrativos</div>
+    <div class="form-group">
+      <label for="studentName">Nombre del / de la Estudiante:</label>
+      <input type="text" id="studentName" placeholder="Escriba su nombre completo" required>
+    </div>
+    <div class="form-group">
+      <label for="sectionGroup">Sección:</label>
+      <select id="sectionGroup" required>
+        <option value="">-- Seleccione su sección --</option>
+        <option value="8-1">8-1</option>
+        <option value="8-2">8-2</option>
+        <option value="8-3">8-3</option>
+        <option value="8-4">8-4</option>
+        <option value="8-5">8-5</option>
+        <option value="8-6">8-6</option>
+        <option value="8-7">8-7</option>
+        <option value="8-8">8-8</option>
+        <option value="8-9">8-9</option>
+        <option value="8-10">8-10</option>
+        <option value="8-11">8-11</option>
+        <option value="8-12">8-12</option>
+        <option value="8-13">8-13</option>
+        <option value="8-14">8-14</option>
+        <option value="8-15">8-15</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- Dimensión Cognoscitiva -->
+  <section id="quiz-section">
+    <div class="item-title" style="font-size:1.3rem; color:var(--mep-blue);">II. Dimensión Cognoscitiva y Pensamiento Computacional</div>
+
+    <!-- Ítem 1: Asociación Hardware -->
+    <div class="item-card" id="item-1">
+      <div class="item-title">
+        1. Asocie cada componente de Hardware (Columna A) con su función correspondiente (Columna B).
+        <button class="btn-tts" onclick="speakText('Item 1. Asocie cada componente de Hardware con su función correspondiente.')">🔊</button>
+      </div>
+      <table class="matching-table">
+        <thead>
+          <tr>
+            <th>Componente</th>
+            <th>Función Asignada</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>⌨️ Teclado</td>
+            <td>
+              <select class="match-select" data-correct="C" onchange="updateProgress()">
+                <option value="">--Seleccione--</option>
+                <option value="A">A. Visualizar información</option>
+                <option value="B">B. Almacenar/transportar archivos</option>
+                <option value="C">C. Ingresar texto, números y comandos</option>
+                <option value="D">D. Escuchar sonidos</option>
+                <option value="E">E. Capturar imágenes o video</option>
+                <option value="F">F. Señalar, seleccionar y desplazarse</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>🖥️ Monitor</td>
+            <td>
+              <select class="match-select" data-correct="A" onchange="updateProgress()">
+                <option value="">--Seleccione--</option>
+                <option value="A">A. Visualizar información</option>
+                <option value="B">B. Almacenar/transportar archivos</option>
+                <option value="C">C. Ingresar texto, números y comandos</option>
+                <option value="D">D. Escuchar sonidos</option>
+                <option value="E">E. Capturar imágenes o video</option>
+                <option value="F">F. Señalar, seleccionar y desplazarse</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>🖱️ Mouse</td>
+            <td>
+              <select class="match-select" data-correct="F" onchange="updateProgress()">
+                <option value="">--Seleccione--</option>
+                <option value="A">A. Visualizar información</option>
+                <option value="B">B. Almacenar/transportar archivos</option>
+                <option value="C">C. Ingresar texto, números y comandos</option>
+                <option value="D">D. Escuchar sonidos</option>
+                <option value="E">E. Capturar imágenes o video</option>
+                <option value="F">F. Señalar, seleccionar y desplazarse</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>💾 Memoria USB</td>
+            <td>
+              <select class="match-select" data-correct="B" onchange="updateProgress()">
+                <option value="">--Seleccione--</option>
+                <option value="A">A. Visualizar información</option>
+                <option value="B">B. Almacenar/transportar archivos</option>
+                <option value="C">C. Ingresar texto, números y comandos</option>
+                <option value="D">D. Escuchar sonidos</option>
+                <option value="E">E. Capturar imágenes o video</option>
+                <option value="F">F. Señalar, seleccionar y desplazarse</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>🔊 Parlantes</td>
+            <td>
+              <select class="match-select" data-correct="D" onchange="updateProgress()">
+                <option value="">--Seleccione--</option>
+                <option value="A">A. Visualizar información</option>
+                <option value="B">B. Almacenar/transportar archivos</option>
+                <option value="C">C. Ingresar texto, números y comandos</option>
+                <option value="D">D. Escuchar sonidos</option>
+                <option value="E">E. Capturar imágenes o video</option>
+                <option value="F">F. Señalar, seleccionar y desplazarse</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>📷 Cámara web</td>
+            <td>
+              <select class="match-select" data-correct="E" onchange="updateProgress()">
+                <option value="">--Seleccione--</option>
+                <option value="A">A. Visualizar información</option>
+                <option value="B">B. Almacenar/transportar archivos</option>
+                <option value="C">C. Ingresar texto, números y comandos</option>
+                <option value="D">D. Escuchar sonidos</option>
+                <option value="E">E. Capturar imágenes o video</option>
+                <option value="F">F. Señalar, seleccionar y desplazarse</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Ítems 2 al 14 -->
+    <div class="item-card" data-q="2" data-ans="b">
+      <div class="item-title">
+        2. El conjunto de programas como el sistema operativo, que gestionan los recursos del sistema y permiten que las aplicaciones funcionen, corresponde al software de:
+      </div>
+      <div class="options-list">
+        <button class="option-btn" onclick="selectOption(this, 'a')">
+          <img class="option-illustration" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCAxMjAgODAiPgogICAgPHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSI4MCIgZmlsbD0id2hpdGUiLz48cmVjdCB4PSIxOCIgeT0iMTQiIHdpZHRoPSI4NCIgaGVpZ2h0PSI1MiIgcng9IjUiIGZpbGw9IiNlOGYxZmIiIHN0cm9rZT0iIzE3NDA2ZiIgc3Ryb2tlLXdpZHRoPSIzIi8+PHJlY3QgeD0iMjciIHk9IjI0IiB3aWR0aD0iMjIiIGhlaWdodD0iMjIiIHJ4PSIzIiBmaWxsPSIjZjM5YzEyIi8+PHJlY3QgeD0iNTYiIHk9IjI0IiB3aWR0aD0iMzYiIGhlaWdodD0iNiIgZmlsbD0iIzE3NDA2ZiIvPjxyZWN0IHg9IjU2IiB5PSIzNiIgd2lkdGg9IjI4IiBoZWlnaHQ9IjUiIGZpbGw9IiM3Mzg3OWMiLz4KICAgIDx0ZXh0IHg9IjYwIiB5PSI3OCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjgiIGZpbGw9IiMyYzNlNTAiPkFwbGljYWNpw7NuPC90ZXh0Pjwvc3ZnPg==" alt="Aplicación">
+          <span>a) Aplicación</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this, 'b')">
+          <img class="option-illustration" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCAxMjAgODAiPgogICAgPHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSI4MCIgZmlsbD0id2hpdGUiLz48cmVjdCB4PSIyMiIgeT0iMTMiIHdpZHRoPSI3NiIgaGVpZ2h0PSI1NCIgcng9IjUiIGZpbGw9IiNlOGYxZmIiIHN0cm9rZT0iIzE3NDA2ZiIgc3Ryb2tlLXdpZHRoPSIzIi8+PGNpcmNsZSBjeD0iNjAiIGN5PSI0MCIgcj0iMTMiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2YzOWMxMiIgc3Ryb2tlLXdpZHRoPSI1Ii8+PGNpcmNsZSBjeD0iNjAiIGN5PSI0MCIgcj0iNCIgZmlsbD0iIzE3NDA2ZiIvPgogICAgPHRleHQgeD0iNjAiIHk9Ijc4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iOCIgZmlsbD0iIzJjM2U1MCI+U2lzdGVtYTwvdGV4dD48L3N2Zz4=" alt="Sistema">
+          <span>b) Sistema</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this, 'c')">
+          <img class="option-illustration" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCAxMjAgODAiPgogICAgPHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSI4MCIgZmlsbD0id2hpdGUiLz48cmVjdCB4PSIxNyIgeT0iMTMiIHdpZHRoPSI4NiIgaGVpZ2h0PSI1NCIgcng9IjUiIGZpbGw9IiMxNzIwMmEiLz48cGF0aCBkPSJNNDUgMjggTDM0IDQwIEw0NSA1MiBNNzUgMjggTDg2IDQwIEw3NSA1MiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZjM5YzEyIiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNNjcgMjQgTDU0IDU2IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMyIvPgogICAgPHRleHQgeD0iNjAiIHk9Ijc4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iOCIgZmlsbD0iIzJjM2U1MCI+UHJvZ3JhbWFjacOzbjwvdGV4dD48L3N2Zz4=" alt="Programación">
+          <span>c) Programación</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this, 'd')">
+          <img class="option-illustration" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCAxMjAgODAiPgogICAgPHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSI4MCIgZmlsbD0id2hpdGUiLz48cmVjdCB4PSIxOCIgeT0iMTMiIHdpZHRoPSI4NCIgaGVpZ2h0PSI1NCIgcng9IjUiIGZpbGw9IiNmZmY1ZGYiIHN0cm9rZT0iIzE3NDA2ZiIgc3Ryb2tlLXdpZHRoPSIzIi8+PGNpcmNsZSBjeD0iNDUiIGN5PSIzNSIgcj0iMTEiIGZpbGw9IiNmMzljMTIiLz48cGF0aCBkPSJNMjkgNTggTDQ4IDQzIEw2MSA1MiBMNzMgMzkgTDkyIDU4IFoiIGZpbGw9IiM2YWEzZDgiLz4KICAgIDx0ZXh0IHg9IjYwIiB5PSI3OCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjgiIGZpbGw9IiMyYzNlNTAiPkRpc2XDsW8gZ3LDoWZpY288L3RleHQ+PC9zdmc+" alt="Diseño">
+          <span>d) Diseño gráfico</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Ítem 3 -->
+    <div class="item-card" data-q="3" data-ans="a">
+      <div class="item-title">
+        3. ¿Cuál es el dispositivo de red encargado de recibir la señal del proveedor de Internet y traducirla para distribuirla mediante redes locales (físicas o inalámbricas)?
+      </div>
+      <div class="options-list">
+        <button class="option-btn" onclick="selectOption(this, 'a')">
+          <img class="option-illustration" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCAxMjAgODAiPgogICAgPHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSI4MCIgZmlsbD0id2hpdGUiLz48cmVjdCB4PSIyMyIgeT0iMzkiIHdpZHRoPSI3NCIgaGVpZ2h0PSIyMiIgcng9IjUiIGZpbGw9IiNlOGYxZmIiIHN0cm9rZT0iIzE3NDA2ZiIgc3Ryb2tlLXdpZHRoPSIzIi8+PGNpcmNsZSBjeD0iNDAiIGN5PSI1MCIgcj0iMyIgZmlsbD0iIzJlY2M3MSIvPjxjaXJjbGUgY3g9IjUxIiBjeT0iNTAiIHI9IjMiIGZpbGw9IiNmMzljMTIiLz48cGF0aCBkPSJNNjAgMzMgUTYwIDIxIDcyIDIxIFE4NCAyMSA4NCAzMyBNNTQgMjcgUTcyIDggOTAgMjciIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzE3NDA2ZiIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgICA8dGV4dCB4PSI2MCIgeT0iNzgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI4IiBmaWxsPSIjMmMzZTUwIj5Nw7NkZW0gLyBSb3V0ZXI8L3RleHQ+PC9zdmc+" alt="Módem / Router">
+          <span>a) Módem / Router</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this, 'b')">
+          <img class="option-illustration" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCAxMjAgODAiPgogICAgPHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSI4MCIgZmlsbD0id2hpdGUiLz48cmVjdCB4PSIyOCIgeT0iMzAiIHdpZHRoPSI2NCIgaGVpZ2h0PSIzMCIgcng9IjUiIGZpbGw9IiNlOGYxZmIiIHN0cm9rZT0iIzE3NDA2ZiIgc3Ryb2tlLXdpZHRoPSIzIi8+PHJlY3QgeD0iMzkiIHk9IjEyIiB3aWR0aD0iNDIiIGhlaWdodD0iMjQiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzE3NDA2ZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PHJlY3QgeD0iMzkiIHk9IjUxIiB3aWR0aD0iNDIiIGhlaWdodD0iMjUiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzE3NDA2ZiIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgICA8dGV4dCB4PSI2MCIgeT0iNzgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI4IiBmaWxsPSIjMmMzZTUwIj5JbXByZXNvcmEgZW4gcmVkPC90ZXh0Pjwvc3ZnPg==" alt="Impresora">
+          <span>b) Impresora en red</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this, 'c')">
+          <img class="option-illustration" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCAxMjAgODAiPgogICAgPHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSI4MCIgZmlsbD0id2hpdGUiLz48cmVjdCB4PSIxOCIgeT0iMjUiIHdpZHRoPSI4NCIgaGVpZ2h0PSIzNSIgcng9IjQiIGZpbGw9IiNlOWY2ZWQiIHN0cm9rZT0iIzE3NDA2ZiIgc3Ryb2tlLXdpZHRoPSIzIi8+PGNpcmNsZSBjeD0iNDciIGN5PSI0MiIgcj0iMTIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzE3NDA2ZiIgc3Ryb2tlLXdpZHRoPSIzIi8+PGNpcmNsZSBjeD0iNzgiIGN5PSI0MiIgcj0iMTIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzE3NDA2ZiIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgICA8dGV4dCB4PSI2MCIgeT0iNzgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI4IiBmaWxsPSIjMmMzZTUwIj5UYXJqZXRhIGdyw6FmaWNhPC90ZXh0Pjwvc3ZnPg==" alt="Tarjeta">
+          <span>c) Tarjeta gráfica</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this, 'd')">
+          <img class="option-illustration" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCAxMjAgODAiPgogICAgPHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSI4MCIgZmlsbD0id2hpdGUiLz48cmVjdCB4PSIyOCIgeT0iMTIiIHdpZHRoPSI2NCIgaGVpZ2h0PSI1OCIgcng9IjciIGZpbGw9IiNlZWYwZjIiIHN0cm9rZT0iIzE3NDA2ZiIgc3Ryb2tlLXdpZHRoPSIzIi8+PGNpcmNsZSBjeD0iNjAiIGN5PSIzOSIgcj0iMTUiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzE3NDA2ZiIgc3Ryb2tlLXdpZHRoPSIzIi8+PGNpcmNsZSBjeD0iNjAiIGN5PSIzOSIgcj0iNCIgZmlsbD0iI2YzOWMxMiIvPgogICAgPHRleHQgeD0iNjAiIHk9Ijc4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iOCIgZmlsbD0iIzJjM2U1MCI+RGlzY28gZHVybyBleHRlcm5vPC90ZXh0Pjwvc3ZnPg==" alt="Disco">
+          <span>d) Disco duro externo</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Ítem 4 al 14 -->
+    <div class="item-card" data-q="4" data-ans="b">
+      <div class="item-title">
+        4. Si eliminas accidentalmente un documento en un sistema operativo de escritorio y necesitas recuperarlo inmediatamente, ¿a cuál herramienta debes acudir?
+      </div>
+      <div class="options-list">
+        <button class="option-btn" onclick="selectOption(this, 'a')">
+          <img class="option-illustration" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCAxMjAgODAiPgogICAgPHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSI4MCIgZmlsbD0id2hpdGUiLz48cGF0aCBkPSJNMTggMjggSDQ5IEw1NyAzNiBIMTAyIFY2NyBIMTggWiIgZmlsbD0iI2Y3YzY1YiIgc3Ryb2tlPSIjMTc0MDZmIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgIDx0ZXh0IHg9IjYwIiB5PSI3OCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjgiIGZpbGw9IiMyYzNlNTAiPkV4cGxvcmFkb3IgZGUgY2FycGV0YXM8L3RleHQ+PC9zdmc+" alt="Explorador">
+          <span>a) Explorador de carpetas</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this, 'b')">
+          <img class="option-illustration" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCAxMjAgODAiPgogICAgPHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSI4MCIgZmlsbD0id2hpdGUiLz48cGF0aCBkPSJNMzYgMjUgSDg0IEw4MCA3MCBINDAgWiIgZmlsbD0iI2U4ZjFmYiIgc3Ryb2tlPSIjMTc0MDZmIiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMzEgMjUgSDg5IE00NyAxOSBINzMiIHN0cm9rZT0iIzE3NDA2ZiIgc3Ryb2tlLXdpZHRoPSI0Ii8+CiAgICA8dGV4dCB4PSI2MCIgeT0iNzgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI4IiBmaWxsPSIjMmMzZTUwIj5QYXBlbGVyYSBkZSByZWNpY2xhamU8L3RleHQ+PC9zdmc+" alt="Papelera">
+          <span>b) Papelera de reciclaje</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this, 'c')">
+          <img class="option-illustration" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCAxMjAgODAiPgogICAgPHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSI4MCIgZmlsbD0id2hpdGUiLz48cmVjdCB4PSIyMSIgeT0iMTUiIHdpZHRoPSI3OCIgaGVpZ2h0PSI1NSIgcng9IjYiIGZpbGw9IiNlOGYxZmIiIHN0cm9rZT0iIzE3NDA2ZiIgc3Ryb2tlLXdpZHRoPSIzIi8+PGNpcmNsZSBjeD0iNDQiIGN5PSI0MSIgcj0iMTAiIGZpbGw9IiNmMzljMTIiLz48cGF0aCBkPSJNNjggMjkgSDg4IE02OCA0MSBIODggTTY4IDUzIEg4OCIgc3Ryb2tlPSIjMTc0MDZmIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgIDx0ZXh0IHg9IjYwIiB5PSI3OCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjgiIGZpbGw9IiMyYzNlNTAiPlBhbmVsIGRlIGNvbnRyb2w8L3RleHQ+PC9zdmc+" alt="Panel">
+          <span>c) Panel de control</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this, 'd')">
+          <img class="option-illustration" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCAxMjAgODAiPgogICAgPHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSI4MCIgZmlsbD0id2hpdGUiLz48cmVjdCB4PSIxNiIgeT0iMTQiIHdpZHRoPSI4OCIgaGVpZ2h0PSI1NiIgcng9IjYiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzE3NDA2ZiIgc3Ryb2tlLXdpZHRoPSIzIi8+PHBhdGggZD0iTTE2IDI3IEgxMDQiIHN0cm9rZT0iIzE3NDA2ZiIgc3Ryb2tlLXdpZHRoPSIzIi8+PGNpcmNsZSBjeD0iMjUiIGN5PSIyMSIgcj0iMyIgZmlsbD0iI2U3NGMzYyIvPjxjaXJjbGUgY3g9IjM0IiBjeT0iMjEiIHI9IjMiIGZpbGw9IiNmMzljMTIiLz48Y2lyY2xlIGN4PSI0MyIgY3k9IjIxIiByPSIzIiBmaWxsPSIjMmVjYzcxIi8+PGNpcmNsZSBjeD0iNjAiIGN5PSI0OCIgcj0iMTUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzZhYTNkOCIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgICA8dGV4dCB4PSI2MCIgeT0iNzgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI4IiBmaWxsPSIjMmMzZTUwIj5OYXZlZ2Fkb3Igd2ViPC90ZXh0Pjwvc3ZnPg==" alt="Navegador">
+          <span>d) Navegador web</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Ítem 5 -->
+    <div class="item-card" data-q="5" data-ans="b">
+      <div class="item-title">
+        5. Observe los siguientes archivos: Documento (2 MB), Imagen (5 MB), Video (80 MB). ¿Cuál archivo ocupa más espacio?
+      </div>
+      <div class="options-list">
+        <button class="option-btn" onclick="selectOption(this, 'a')">
+          <img class="option-illustration" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCAxMjAgODAiPgogICAgPHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSI4MCIgZmlsbD0id2hpdGUiLz48cGF0aCBkPSJNMzUgMTAgSDcyIEw4NyAyNSBWNzIgSDM1IFoiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzE3NDA2ZiIgc3Ryb2tlLXdpZHRoPSIzIi8+PHBhdGggZD0iTTcyIDEwIFYyNSBIODciIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzE3NDA2ZiIgc3Ryb2tlLXdpZHRoPSIzIi8+PHBhdGggZD0iTTQ1IDM4IEg3NyBNNDUgNDggSDc3IE00NSA1OCBINjgiIHN0cm9rZT0iIzZhYTNkOCIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgICA8dGV4dCB4PSI2MCIgeT0iNzgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI4IiBmaWxsPSIjMmMzZTUwIj5Eb2N1bWVudG8gMiBNQjwvdGV4dD48L3N2Zz4=" alt="Doc">
+          <span>a) Documento — 2 MB</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this, 'b')">
+          <img class="option-illustration" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCAxMjAgODAiPgogICAgPHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSI4MCIgZmlsbD0id2hpdGUiLz48cmVjdCB4PSIyMCIgeT0iMTgiIHdpZHRoPSI4MCIgaGVpZ2h0PSI0OCIgcng9IjYiIGZpbGw9IiMxNzIwMmEiIHN0cm9rZT0iIzE3NDA2ZiIgc3Ryb2tlLXdpZHRoPSIzIi8+PHBhdGggZD0iTTUyIDMxIEw1MiA1MyBMNzMgNDIgWiIgZmlsbD0iI2YzOWMxMiIvPgogICAgPHRleHQgeD0iNjAiIHk9Ijc4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iOCIgZmlsbD0iIzJjM2U1MCI+VmlkZW8gODAgTUI8L3RleHQ+PC9zdmc+" alt="Video">
+          <span>b) Video — 80 MB</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this, 'c')">
+          <img class="option-illustration" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCAxMjAgODAiPgogICAgPHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSI4MCIgZmlsbD0id2hpdGUiLz48cmVjdCB4PSIxOCIgeT0iMTUiIHdpZHRoPSI4NCIgaGVpZ2h0PSI1NCIgcng9IjUiIGZpbGw9IiNmZmY1ZGYiIHN0cm9rZT0iIzE3NDA2ZiIgc3Ryb2tlLXdpZHRoPSIzIi8+PGNpcmNsZSBjeD0iNDMiIGN5PSIzNCIgcj0iOCIgZmlsbD0iI2YzOWMxMiIvPjxwYXRoIGQ9Ik0yNiA2MSBMNDggNDMgTDYxIDUzIEw3NSAzOCBMOTUgNjEgWiIgZmlsbD0iIzZhYTNkOCIvPgogICAgPHRleHQgeD0iNjAiIHk9Ijc4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iOCIgZmlsbD0iIzJjM2U1MCI+SW1hZ2VuIDUgTUI8L3RleHQ+PC9zdmc+" alt="Imagen">
+          <span>c) Imagen — 5 MB</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Ítem 6 -->
+    <div class="item-card" id="item-6">
+      <div class="item-title">
+        6. Asocie las etapas de la estructura de un algoritmo con el ejemplo de la preparación de un jugo de frutas:
+      </div>
+      <table class="matching-table">
+        <thead>
+          <tr>
+            <th>Concepto / Estructura</th>
+            <th>Acción del Ejemplo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1. Entrada (Recursos iniciales)</td>
+            <td>
+              <select class="match-select-algo" data-correct="B" onchange="updateProgress()">
+                <option value="">--Seleccione--</option>
+                <option value="A">A. Licuar las frutas con el agua y azúcar durante 1 min.</option>
+                <option value="B">B. Disponer de las frutas, agua, azúcar y licuadora.</option>
+                <option value="C">C. Obtener el vaso de jugo listo para servir.</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>2. Proceso (Pasos para transformar)</td>
+            <td>
+              <select class="match-select-algo" data-correct="A" onchange="updateProgress()">
+                <option value="">--Seleccione--</option>
+                <option value="A">A. Licuar las frutas con el agua y azúcar durante 1 min.</option>
+                <option value="B">B. Disponer de las frutas, agua, azúcar y licuadora.</option>
+                <option value="C">C. Obtener el vaso de jugo listo para servir.</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>3. Salida (Resultado final)</td>
+            <td>
+              <select class="match-select-algo" data-correct="C" onchange="updateProgress()">
+                <option value="">--Seleccione--</option>
+                <option value="A">A. Licuar las frutas con el agua y azúcar durante 1 min.</option>
+                <option value="B">B. Disponer de las frutas, agua, azúcar y licuadora.</option>
+                <option value="C">C. Obtener el vaso de jugo listo para servir.</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Ítems 7 al 14 -->
+    <div class="item-card" data-q="7" data-ans="c">
+      <div class="item-title">7. En un programa que registra el estado del tiempo, el dato que almacena si "¿Está lloviendo?" con valores de Verdadero o Falso es un tipo de dato:</div>
+      <div class="options-list">
+        <button class="option-btn" onclick="selectOption(this, 'a')"><span>a) Texto / Cadena</span></button>
+        <button class="option-btn" onclick="selectOption(this, 'b')"><span>b) Numérico entero</span></button>
+        <button class="option-btn" onclick="selectOption(this, 'c')"><span>c) Booleano / Lógico</span></button>
+        <button class="option-btn" onclick="selectOption(this, 'd')"><span>d) Decimal</span></button>
+      </div>
+    </div>
+
+    <div class="item-card" data-q="8" data-ans="c">
+      <div class="item-title">8. ¿Qué acción ocurre cuando a una variable llamada "puntos" con valor inicial de 0 se le aplica la instrucción: puntos = puntos + 10?</div>
+      <div class="options-list">
+        <button class="option-btn" onclick="selectOption(this, 'a')"><span>a) Se borra la variable.</span></button>
+        <button class="option-btn" onclick="selectOption(this, 'b')"><span>b) Se declara un nuevo tipo de dato.</span></button>
+        <button class="option-btn" onclick="selectOption(this, 'c')"><span>c) Se le asigna un nuevo valor actualizado de 10.</span></button>
+        <button class="option-btn" onclick="selectOption(this, 'd')"><span>d) La variable se convierte en una constante fija.</span></button>
+      </div>
+    </div>
+
+    <div class="item-card" data-q="9" data-ans="b">
+      <div class="item-title">9. Analice el siguiente pseudocódigo. Si el sensor marca 25 °C, ¿qué acción se ejecuta?</div>
+      <div class="pseudo-code">INICIO
+    LEER temperatura
+    SI temperatura &gt; 30 ENTONCES
+        ENCENDER ventilador
+    SI NO
+        MANTENER ventilador apagado
+    FIN SI
+FIN</div>
+      <div class="options-list">
+        <button class="option-btn" onclick="selectOption(this, 'a')"><span>a) El ventilador se enciende.</span></button>
+        <button class="option-btn" onclick="selectOption(this, 'b')"><span>b) El ventilador se mantiene apagado.</span></button>
+        <button class="option-btn" onclick="selectOption(this, 'c')"><span>c) El sensor se destruye.</span></button>
+        <button class="option-btn" onclick="selectOption(this, 'd')"><span>d) Se repite el conteo indefinidamente.</span></button>
+      </div>
+    </div>
+
+    <div class="item-card" data-q="10" data-ans="b">
+      <div class="item-title">10. Un personaje debe avanzar en línea recta hasta llegar a una pared. ¿Cuál estructura de control es la más adecuada para evitar repetir el comando "Avanzar 1 paso" 50 veces seguidas?</div>
+      <div class="options-list">
+        <button class="option-btn" onclick="selectOption(this, 'a')"><span>a) Evento de clic</span></button>
+        <button class="option-btn" onclick="selectOption(this, 'b')"><span>b) Estructura repetitiva (Ciclo/Bucle)</span></button>
+        <button class="option-btn" onclick="selectOption(this, 'c')"><span>c) Asignación de variable</span></button>
+        <button class="option-btn" onclick="selectOption(this, 'd')"><span>d) Operador relacional</span></button>
+      </div>
+    </div>
+
+    <div class="item-card" data-q="11" data-ans="c">
+      <div class="item-title">11. ¿Cuál es el resultado final de la variable “total” tras ejecutar: precio = 500, descuento = 100, total = precio - descuento?</div>
+      <div class="options-list">
+        <button class="option-btn" onclick="selectOption(this, 'a')"><span>a) 600</span></button>
+        <button class="option-btn" onclick="selectOption(this, 'b')"><span>b) 50000</span></button>
+        <button class="option-btn" onclick="selectOption(this, 'c')"><span>c) 400</span></button>
+        <button class="option-btn" onclick="selectOption(this, 'd')"><span>d) 50</span></button>
+      </div>
+    </div>
+
+    <div class="item-card" data-q="12" data-ans="b">
+      <div class="item-title">12. ¿Cuál operador relacional debe colocarse en el espacio para que la comparación sea VERDADERA? Cantidad_Estudiantes (28) _____ Límite_Aula (30)</div>
+      <div class="options-list">
+        <button class="option-btn" onclick="selectOption(this, 'a')"><span>a) > (Mayor que)</span></button>
+        <button class="option-btn" onclick="selectOption(this, 'b')"><span>b) < (Menor que)</span></button>
+        <button class="option-btn" onclick="selectOption(this, 'c')"><span>c) == (Igual a)</span></button>
+        <button class="option-btn" onclick="selectOption(this, 'd')"><span>d) >= (Mayor o igual que)</span></button>
+      </div>
+    </div>
+
+    <div class="item-card" data-q="13" data-ans="b">
+      <div class="item-title">13. Al presionar la barra espaciadora en el teclado y lograr que un personaje en pantalla salte, la acción de presionar la tecla funciona como un:</div>
+      <div class="options-list">
+        <button class="option-btn" onclick="selectOption(this, 'a')"><span>a) Algoritmo de salida</span></button>
+        <button class="option-btn" onclick="selectOption(this, 'b')"><span>b) Evento (Causa)</span></button>
+        <button class="option-btn" onclick="selectOption(this, 'c')"><span>c) Variable de sistema</span></button>
+        <button class="option-btn" onclick="selectOption(this, 'd')"><span>d) Periférico de salida</span></button>
+      </div>
+    </div>
+
+    <div class="item-card" data-q="14" data-ans="b">
+      <div class="item-title">14. ¿Cuál de los siguientes dispositivos se clasifica como un robot, al contar con sistema sensorial, sistema de control y capacidad de actuar de forma autónoma?</div>
+      <div class="options-list">
+        <button class="option-btn" onclick="selectOption(this, 'a')">
+          <img class="option-illustration" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCAxMjAgODAiPgogICAgPHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSI4MCIgZmlsbD0id2hpdGUiLz48cGF0aCBkPSJNNDIgMTIgSDc4IEw3MyA0NSBINDcgWiIgZmlsbD0iI2RmZjNlNSIgc3Ryb2tlPSIjMTc0MDZmIiBzdHJva2Utd2lkdGg9IjMiLz48cmVjdCB4PSI0NSIgeT0iNDUiIHdpZHRoPSIzMCIgaGVpZ2h0PSIyNCIgcng9IjQiIGZpbGw9IiNlZWYwZjIiIHN0cm9rZT0iIzE3NDA2ZiIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgICA8dGV4dCB4PSI2MCIgeT0iNzgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI4IiBmaWxsPSIjMmMzZTUwIj5MaWN1YWRvcmE8L3RleHQ+PC9zdmc+" alt="Licuadora">
+          <span>a) Licuadora manual de cocina</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this, 'b')">
+          <img class="option-illustration" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCAxMjAgODAiPgogICAgPHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSI4MCIgZmlsbD0id2hpdGUiLz48ZWxsaXBzZSBjeD0iNjAiIGN5PSI0NCIgcng9IjM4IiByeT0iMjUiIGZpbGw9IiNlOGYxZmIiIHN0cm9rZT0iIzE3NDA2ZiIgc3Ryb2tlLXdpZHRoPSIzIi8+PGNpcmNsZSBjeD0iNjAiIGN5PSIzOSIgcj0iOCIgZmlsbD0iI2YzOWMxMiIvPjxjaXJjbGUgY3g9IjM0IiBjeT0iNDciIHI9IjMiIGZpbGw9IiMyZWNjNzEiLz48Y2lyY2xlIGN4PSI4NiIgY3k9IjQ3IiByPSIzIiBmaWxsPSIjMmVjYzcxIi8+CiAgICA8dGV4dCB4PSI2MCIgeT0iNzgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI4IiBmaWxsPSIjMmMzZTUwIj5Bc3BpcmFkb3IgYXV0w7Nub21vPC90ZXh0Pjwvc3ZnPg==" alt="Aspirador">
+          <span>b) Aspirador autónomo que esquiva obstáculos mediante sensores</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this, 'c')">
+          <img class="option-illustration" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCAxMjAgODAiPgogICAgPHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSI4MCIgZmlsbD0id2hpdGUiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjM1IiByPSI4IiBmaWxsPSIjMTc0MDZmIi8+PHBhdGggZD0iTTYwIDM1IEMzOCA5IDMxIDMxIDUyIDM4IE02MCAzNSBDODggMjAgODIgNDggNjUgNDMgTTYwIDM1IEM1NiA2OCAzNCA1NCA1NCA0MiIgZmlsbD0iIzZhYTNkOCIvPjxwYXRoIGQ9Ik02MCA0MyBWNjggTTQ1IDcwIEg3NSIgc3Ryb2tlPSIjMTc0MDZmIiBzdHJva2Utd2lkdGg9IjQiLz4KICAgIDx0ZXh0IHg9IjYwIiB5PSI3OCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjgiIGZpbGw9IiMyYzNlNTAiPlZlbnRpbGFkb3I8L3RleHQ+PC9zdmc+" alt="Ventilador">
+          <span>c) Ventilador de pedestal encendido manualmente</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this, 'd')">
+          <img class="option-illustration" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCAxMjAgODAiPgogICAgPHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSI4MCIgZmlsbD0id2hpdGUiLz48cmVjdCB4PSIxOCIgeT0iMTMiIHdpZHRoPSI4NCIgaGVpZ2h0PSI1MCIgcng9IjQiIGZpbGw9IiMxNzIwMmEiIHN0cm9rZT0iIzE3NDA2ZiIgc3Ryb2tlLXdpZHRoPSIzIi8+PHBhdGggZD0iTTYwIDYzIFY3MiBNNDMgNzMgSDc3IiBzdHJva2U9IiMxNzQwNmYiIHN0cm9rZS13aWR0aD0iNCIvPgogICAgPHRleHQgeD0iNjAiIHk9Ijc4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iOCIgZmlsbD0iIzJjM2U1MCI+VGVsZXZpc29yPC90ZXh0Pjwvc3ZnPg==" alt="Televisor">
+          <span>d) Televisor LED convencional</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mini-reto socioafectivo -->
+    <div class="item-card" id="socio-estudiante-section">
+      <div class="item-title">III. Reflexión y Trabajo en Equipo (Dimensión Socioafectiva)</div>
+      <p style="font-size:0.95rem; margin-bottom:12px;">Mini-reto: <em>"Cuidemos nuestro equipo"</em> — Escriba 3 normas acordadas con sus compañeros para cuidar el equipo:</p>
+      <textarea id="studentRules" rows="3" placeholder="1. No consumir alimentos cerca del teclado.&#10;2. Tratar con suavidad el mouse y cables.&#10;3. Pedir ayuda ante cualquier fallo."></textarea>
+    </div>
+
+    <button class="btn-submit" onclick="processResults()">Finalizar y Generar Código QR de Calificación</button>
+  </section>
+
+  <!-- Resultados y Generador QR -->
+  <section class="results-section" id="results-section">
+    <h2>📊 Informe de Resultados Diagnósticos — 8° Año</h2>
+    <p><strong>Estudiante:</strong> <span id="res-student">-</span> | <strong>Sección:</strong> <span id="res-section">-</span></p>
+    
+    <div class="qr-container-card" style="background:#ffffff; border:2px solid #0284c7; border-radius:16px; padding:20px; box-shadow:0 10px 25px rgba(2,132,199,0.12);">
+      <span style="background:#0284c7; color:#fff; font-size:11px; font-weight:800; padding:3px 10px; border-radius:20px; display:inline-block; margin-bottom:6px;">OPCIONES OFICIALES DE ENTREGA MEP</span>
+      <h3 style="color:var(--mep-blue); margin-bottom:6px; font-size:1.15rem;">📱 Opciones de Registro y Entrega al Docente</h3>
+      <p style="font-size:0.9rem; color:#475569; margin-bottom: 10px;">
+        Seleccione la opción que mejor se adapte a su entorno escolar:
+      </p>
+      
+      <div id="qrcode-target" style="display:inline-block; padding:10px; background:#fff; border:1px solid #cbd5e1; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.05);"></div>
+      <p style="font-size:0.85rem; color:#0369a1; font-family:monospace; font-weight:700; margin-top:8px;" id="qr-payload-text"></p>
+
+      <!-- 4 OPCIONES DE ENTREGA -->
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:14px; margin-top:14px; text-align:left;">
+        <div style="font-size:0.85rem; font-weight:800; color:#0f172a; margin-bottom:8px;">📦 Nuevas Opciones de Entrega:</div>
+        <ol style="font-size:0.82rem; color:#334155; margin-left:18px; line-height:1.5;">
+          <li><strong>📱 Código QR para Escanear:</strong> El docente lo escanea con la cámara de su teléfono o laptop desde el <em>Módulo Docente Evaluador</em> o Dashboard.</li>
+          <li><strong>💾 Descargar Ficha (.json):</strong> El estudiante descarga su archivo de resultados para entregarlo en llave maya USB.</li>
+          <li><strong>📋 Copiar Código QR / Resumen:</strong> Copia los datos para enviarlos por Teams, WhatsApp o correo institucional.</li>
+          <li><strong>🖨️ Imprimir Hoja Diagnóstica:</strong> Imprime el informe detallado con indicadores de logro oficiales.</li>
+        </ol>
+      </div>
+
+      <!-- BOTONES DE ACCIÓN RÁPIDA -->
+      <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 14px;">
+        <button type="button" class="btn" style="background: #0284c7; color: white; font-weight: 800; font-size: 0.85rem; padding: 8px 14px; border-radius: 8px; border: none; cursor: pointer;" onclick="downloadTelemetryJson8vo()">
+          💾 Descargar Ficha (.json)
+        </button>
+        <button type="button" class="btn" style="background: #059669; color: white; font-weight: 800; font-size: 0.85rem; padding: 8px 14px; border-radius: 8px; border: none; cursor: pointer;" onclick="copiarPayloadJson()">
+          📋 Copiar Código QR (JSON)
+        </button>
+        <button type="button" class="btn" style="background: #6366f1; color: white; font-weight: 800; font-size: 0.85rem; padding: 8px 14px; border-radius: 8px; border: none; cursor: pointer;" onclick="copiarResumenTexto()">
+          📝 Copiar Resumen de Texto
+        </button>
+        <button type="button" class="btn" style="background: #0f172a; color: white; font-weight: 800; font-size: 0.85rem; padding: 8px 14px; border-radius: 8px; border: none; cursor: pointer;" onclick="window.print()">
+          🖨️ Imprimir Hoja Diagnóstica
+        </button>
+      </div>
+      <p id="copy-status-msg" style="font-size:0.85rem; color:#059669; font-weight:800; margin-top:8px; display:none;">✅ ¡Copiado al portapapeles! Listo para enviar o pegar al docente.</p>
+    </div>
+
+    <div class="dimension-score">
+      <h3>Subárea 1: Apropiación Tecnológica y Hardware / Software</h3>
+      <p>Aciertos: <strong id="score-sub1">0</strong> / 5</p>
+      <div class="feedback-box" id="fb-sub1"></div>
+    </div>
+
+    <div class="dimension-score">
+      <h3>Subárea 2: Pensamiento Computacional y Algoritmos</h3>
+      <p>Aciertos: <strong id="score-sub2">0</strong> / 7</p>
+      <div class="feedback-box" id="fb-sub2"></div>
+    </div>
+
+    <div class="dimension-score">
+      <h3>Subárea 3: Robótica y Computación Física</h3>
+      <p>Aciertos: <strong id="score-sub3">0</strong> / 2</p>
+      <div class="feedback-box" id="fb-sub3"></div>
+    </div>
+
+    <div class="feedback-box" style="border-left-color: var(--mep-blue);">
+      <h3>📋 Análisis por Indicador de Logro Oficial MEP</h3>
+      <div id="indicator-report"></div>
+    </div>
+
+    <button class="btn-submit" style="background-color:var(--success);" onclick="window.print()">🖨️ Imprimir / Guardar Informe PDF</button>
+  </section>
+</div>
+
+<script>
+  let currentFontSize = 18;
+  const startTime = Date.now();
+  const selectedAnswers = {};
+  const diagnosticIndicators = [
+    "Clasificar tipos de computadoras y sus componentes principales de hardware.",
+    "Distinguir los tipos de software relacionándolos con sus funciones y usos.",
+    "Identificar tipos de redes de comunicación y sus dispositivos principales (módem/router).",
+    "Identificar las categorías de los SO y uso de la papelera de reciclaje.",
+    "Aplicar las propiedades (tamaño, tipo y extensión) en la gestión de archivos.",
+    "Reconocer el algoritmo identificando su estructura (entrada, proceso, salida).",
+    "Identificar tipos de dato y formas de almacenamiento en algoritmos.",
+    "Identificar tipos de variable y su gestión mediante asignaciones.",
+    "Aplicar estructuras condicionales para la toma de decisiones lógicas.",
+    "Aplicar estructuras repetitivas para resolver desafíos cíclicos.",
+    "Aplicar operadores aritméticos para resolver cálculos en programación.",
+    "Aplicar operadores relacionales para comparaciones lógicas.",
+    "Aplicar un evento como acción que se detona mediante causa y efecto.",
+    "Reconocer qué es un robot, sus tipos y componentes diferenciándolo de otros artefactos."
+  ];
+
+  function toggleHighContrast() {
+    document.body.classList.toggle('high-contrast');
+  }
+
+  function changeFontSize(delta) {
+    currentFontSize += delta * 2;
+    if(currentFontSize < 14) currentFontSize = 14;
+    if(currentFontSize > 26) currentFontSize = 26;
+    document.body.style.fontSize = currentFontSize + 'px';
+  }
+
+  function speakText(text) {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'es-CR';
+      window.speechSynthesis.speak(utterance);
+    }
+  }
+
+  function selectOption(btn, choice) {
+    const parentCard = btn.closest('.item-card');
+    const qNum = parentCard.getAttribute('data-q');
+    
+    const buttons = parentCard.querySelectorAll('.option-btn');
+    buttons.forEach(b => b.classList.remove('selected'));
+    
+    btn.classList.add('selected');
+    selectedAnswers[qNum] = choice;
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const totalItems = 14;
+    let answered = Object.keys(selectedAnswers).length;
+    
+    const match1 = document.querySelectorAll('.match-select');
+    let m1Complete = true;
+    match1.forEach(s => { if(!s.value) m1Complete = false; });
+    if(m1Complete) answered++;
+
+    const match2 = document.querySelectorAll('.match-select-algo');
+    let m2Complete = true;
+    match2.forEach(s => { if(!s.value) m2Complete = false; });
+    if(m2Complete) answered++;
+
+    let percentage = Math.min(Math.round((answered / totalItems) * 100), 100);
+    document.getElementById('progressBar').style.width = percentage + '%';
+  }
+
+  var lastGeneratedPayload = null;
+
+  function generateCompactQR(dataObj) {
+    lastGeneratedPayload = dataObj;
+    const jsonStr = JSON.stringify(dataObj);
+    const container = document.getElementById('qrcode-target');
+    container.innerHTML = '';
+
+    if (typeof qrcode !== 'undefined') {
+      try {
+        const qr = qrcode(0, 'M');
+        qr.addData(jsonStr);
+        qr.make();
+        container.innerHTML = qr.createImgTag(6, 12);
+      } catch (e) {
+        // Fallback básico
+        container.innerHTML = '<p style="color:var(--error)">No se pudo renderizar la imagen QR, pero el código de texto es válido.</p>';
+      }
+    }
+    document.getElementById('qr-payload-text').innerText = "ID: " + dataObj.e + " | Sec: " + dataObj.s + " | Nota: " + dataObj.p + "/14 (" + dataObj.porc + "%)";
+  }
+
+  function copiarResumenTexto() {
+    const txt = document.getElementById('qr-payload-text')?.innerText || '';
+    if (!txt) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(() => {
+        mostrarMensajeCopiado();
+      }).catch(() => {
+        prompt("Copia este texto manualmente para el docente:", txt);
+      });
+    } else {
+      prompt("Copia este texto manualmente para el docente:", txt);
+    }
+  }
+
+  function copiarPayloadJson() {
+    if (!lastGeneratedPayload) return;
+    const jsonStr = JSON.stringify(lastGeneratedPayload);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(jsonStr).then(() => {
+        mostrarMensajeCopiado();
+      }).catch(() => {
+        prompt("Copia este código JSON para el docente:", jsonStr);
+      });
+    } else {
+      prompt("Copia este código JSON para el docente:", jsonStr);
+    }
+  }
+
+  function downloadTelemetryJson8vo() {
+    if (!lastGeneratedPayload) return;
+    const jsonStr = JSON.stringify(lastGeneratedPayload, null, 2);
+    const nomClean = (lastGeneratedPayload.e || "estudiante").toLowerCase().replace(/[^a-z0-9]/g, '_');
+    const secClean = (lastGeneratedPayload.s || "8-1").toLowerCase().replace(/[^a-z0-9]/g, '_');
+    const filename = `ficha_diagnostica_8vo_seccion_${secClean}_${nomClean}.json`;
+    
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    const el = document.getElementById('copy-status-msg');
+    if (el) {
+      el.innerText = `💾 ¡Archivo "${filename}" descargado con éxito! Guárdalo en tu llave maya USB.`;
+      el.style.display = 'block';
+      setTimeout(() => { el.style.display = 'none'; }, 5000);
+    }
+  }
+
+  function mostrarMensajeCopiado() {
+    const el = document.getElementById('copy-status-msg');
+    if (el) {
+      el.innerText = '✅ ¡Copiado al portapapeles! Listo para enviar o pegar al docente.';
+      el.style.display = 'block';
+      setTimeout(() => { el.style.display = 'none'; }, 3500);
+    }
+  }
+
+  function processResults() {
+    const name = document.getElementById('studentName').value.trim();
+    const sec = document.getElementById('sectionGroup').value;
+    const rules = document.getElementById('studentRules').value.trim();
+
+    if(!name || !sec) {
+      alert("Por favor complete su Nombre y Sección en la parte administrativa.");
+      document.getElementById('admin-section').scrollIntoView({behavior: 'smooth'});
+      return;
+    }
+
+    // Subárea 1
+    let sub1Score = 0;
+    const match1 = document.querySelectorAll('.match-select');
+    let m1Correct = 0;
+    match1.forEach(s => { if(s.value === s.getAttribute('data-correct')) m1Correct++; });
+    if(m1Correct === 6) sub1Score++;
+
+    if(selectedAnswers['2'] === 'b') sub1Score++;
+    if(selectedAnswers['3'] === 'a') sub1Score++;
+    if(selectedAnswers['4'] === 'b') sub1Score++;
+    if(selectedAnswers['5'] === 'b') sub1Score++;
+
+    // Subárea 2
+    let sub2Score = 0;
+    const match2 = document.querySelectorAll('.match-select-algo');
+    let m2Correct = 0;
+    match2.forEach(s => { if(s.value === s.getAttribute('data-correct')) m2Correct++; });
+    if(m2Correct === 3) sub2Score++;
+
+    if(selectedAnswers['7'] === 'c') sub2Score++;
+    if(selectedAnswers['8'] === 'c') sub2Score++;
+    if(selectedAnswers['9'] === 'b') sub2Score++;
+    if(selectedAnswers['10'] === 'b') sub2Score++;
+    if(selectedAnswers['11'] === 'c') sub2Score++;
+    if(selectedAnswers['12'] === 'b') sub2Score++;
+
+    // Subárea 3
+    let sub3Score = 0;
+    if(selectedAnswers['13'] === 'b') sub3Score++;
+    if(selectedAnswers['14'] === 'b') sub3Score++;
+
+    const totalPuntaje = sub1Score + sub2Score + sub3Score;
+    const porcentaje = Math.round((totalPuntaje / 14) * 100);
+    const tiempoSegundos = Math.round((Date.now() - startTime) / 1000);
+
+    const itemEvidence = [
+      m1Correct === 6 ? 1 : 0,
+      selectedAnswers['2'] === 'b' ? 1 : 0,
+      selectedAnswers['3'] === 'a' ? 1 : 0,
+      selectedAnswers['4'] === 'b' ? 1 : 0,
+      selectedAnswers['5'] === 'b' ? 1 : 0,
+      m2Correct === 3 ? 1 : 0,
+      selectedAnswers['7'] === 'c' ? 1 : 0,
+      selectedAnswers['8'] === 'c' ? 1 : 0,
+      selectedAnswers['9'] === 'b' ? 1 : 0,
+      selectedAnswers['10'] === 'b' ? 1 : 0,
+      selectedAnswers['11'] === 'c' ? 1 : 0,
+      selectedAnswers['12'] === 'b' ? 1 : 0,
+      selectedAnswers['13'] === 'b' ? 1 : 0,
+      selectedAnswers['14'] === 'b' ? 1 : 0
+    ];
+
+    document.getElementById('res-student').innerText = name;
+    document.getElementById('res-section').innerText = sec;
+    document.getElementById('score-sub1').innerText = sub1Score;
+    document.getElementById('score-sub2').innerText = sub2Score;
+    document.getElementById('score-sub3').innerText = sub3Score;
+
+    document.getElementById('fb-sub1').innerHTML = sub1Score >= 4 
+      ? "<strong>Mayor evidencia en esta subárea:</strong> Dominio sólido en hardware, software y archivos."
+      : "<strong>Aspectos por fortalecer:</strong> Reforzar conceptos de hardware y gestión de almacenamiento.";
+
+    document.getElementById('fb-sub2').innerHTML = sub2Score >= 5 
+      ? "<strong>Mayor evidencia en esta subárea:</strong> Pensamiento algorítmico estructurado."
+      : "<strong>Aspectos por fortalecer:</strong> Afianzar variables y condicionales antes de programar.";
+
+    document.getElementById('fb-sub3').innerHTML = sub3Score >= 1 
+      ? "<strong>Mayor evidencia en esta subárea:</strong> Claridad en eventos y definición robótica."
+      : "<strong>Aspectos por fortalecer:</strong> Repasar diferencia entre artefactos convencionales y robots.";
+
+    let reportHTML = '<table class="indicator-report"><thead><tr><th>Ítem</th><th>Indicador</th><th>Evidencia</th></tr></thead><tbody>';
+    itemEvidence.forEach((val, i) => {
+      const ok = val === 1;
+      reportHTML += `<tr><td>${i+1}</td><td>${diagnosticIndicators[i]}</td><td><strong>${ok ? 'Evidenciado' : 'Por fortalecer'}</strong></td></tr>`;
+    });
+    reportHTML += '</tbody></table>';
+    document.getElementById('indicator-report').innerHTML = reportHTML;
+
+    // GENERAR QR CONDENSADO OFFLINE
+    const qrPayload = {
+      v: 1,
+      n: "8°",
+      e: name,
+      s: sec,
+      p: totalPuntaje,
+      porc: porcentaje,
+      s1: sub1Score,
+      s2: sub2Score,
+      s3: sub3Score,
+      ind: itemEvidence,
+      t: tiempoSegundos,
+      ts: Date.now(),
+      inst: urlInstitucion || "",
+      doc: urlDocente || "",
+      docId: urlDocenteId || urlDocenteCedula || ""
+    };
+
+    generateCompactQR(qrPayload);
+
+    document.getElementById('quiz-section').style.display = 'none';
+    document.getElementById('results-section').style.display = 'block';
+    document.getElementById('results-section').scrollIntoView({behavior: 'smooth'});
+  }
+
+  // Variables globales del contexto docente e institucional
+  var urlDocenteId = '';
+  var urlDocenteCedula = '';
+  var urlDocente = '';
+  var urlInstitucion = '';
+  var urlDre = '';
+  var urlCircuito = '';
+  var urlSeccionesPermitidas = [];
+
+  function parseUrlParams8vo() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var token = params.get('token');
+      urlDocenteId = params.get('docenteId') || params.get('docId') || '';
+      urlDocenteCedula = params.get('cedula') || '';
+      urlDocente = params.get('docente') || params.get('doc') || '';
+      urlInstitucion = params.get('institucion') || params.get('inst') || '';
+      urlDre = params.get('dre') || '';
+      urlCircuito = params.get('circuito') || '';
+      var seccion = params.get('seccion') || params.get('sec') || '';
+      var seccionesParam = params.get('secciones') || '';
+
+      if (token) {
+        try {
+          var decoded = JSON.parse(decodeURIComponent(escape(atob(token))));
+          if (decoded) {
+            if (decoded.docId) urlDocenteId = decoded.docId;
+            if (decoded.cedula) urlDocenteCedula = decoded.cedula;
+            if (decoded.doc) urlDocente = decoded.doc;
+            if (decoded.inst) urlInstitucion = decoded.inst;
+            if (decoded.dre) urlDre = decoded.dre;
+            if (decoded.circuito) urlCircuito = decoded.circuito;
+            if (decoded.sec) seccion = decoded.sec;
+            if (decoded.secciones) seccionesParam = decoded.secciones;
+          }
+        } catch(e) {}
+      }
+
+      if (seccionesParam) {
+        if (Array.isArray(seccionesParam)) {
+          urlSeccionesPermitidas = seccionesParam;
+        } else if (typeof seccionesParam === 'string') {
+          urlSeccionesPermitidas = seccionesParam.split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+        }
+      }
+
+      if (urlDocente || urlInstitucion || urlDocenteId) {
+        var badge = document.getElementById('teacherInfoBadge8vo');
+        var nameEl = document.getElementById('badgeTeacherName8vo');
+        var metaEl = document.getElementById('badgeTeacherMeta8vo');
+        if (badge) badge.style.display = 'block';
+        if (nameEl) nameEl.textContent = '👨‍🏫 Docente: Prof. ' + (urlDocente || 'Evaluador Asignado');
+        if (metaEl) metaEl.textContent = '🏫 ' + (urlInstitucion || 'Centro Educativo') + ' • 📍 ' + (urlDre || 'DRE');
+      }
+
+      var secSelect = document.getElementById('sectionGroup');
+      if (secSelect) {
+        if (urlSeccionesPermitidas && urlSeccionesPermitidas.length > 0) {
+          secSelect.innerHTML = '<option value="">-- Seleccione su sección --</option>';
+          urlSeccionesPermitidas.forEach(function(s) {
+            var sClean = s.replace(/^secci[oó]n\s*/i, '').trim();
+            var opt = document.createElement('option');
+            opt.value = 'Sección ' + sClean;
+            opt.textContent = 'Sección ' + sClean;
+            secSelect.appendChild(opt);
+          });
+        }
+
+        if (seccion) {
+          var targetSec = seccion.includes('Sección') ? seccion : ('Sección ' + seccion);
+          secSelect.value = targetSec;
+          secSelect.style.borderColor = '#0284c7';
+          secSelect.style.fontWeight = '800';
+        }
+      }
+    } catch (e) {
+      console.warn('Error al procesar parámetros URL:', e);
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', function() {
+    parseUrlParams8vo();
+  });
+</script>
+
+</body>
+</html>

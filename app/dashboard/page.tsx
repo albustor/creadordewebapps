@@ -869,6 +869,17 @@ export default function DashboardAnaliticoPage() {
                     </a>
 
                     <a
+                      href="/webapps/diagnostico_9no_escaner_datos_locales.html"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 px-5 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-2xl transition-all shadow-md hover:shadow-emerald-600/30 hover:scale-[1.02] cursor-pointer text-center"
+                      title="Abrir el Escáner de Códigos QR para celulares (Android, iOS Safari, Huawei) sin conexión"
+                    >
+                      <span>📱 Escáner de Datos Locales 9.° Año</span>
+                      <ArrowSquareOut size={16} weight="bold" />
+                    </a>
+
+                    <a
                       href="/docs/GUIA_PEDAGOGICA_DIAGNOSTICO_9NO_MEP.pdf"
                       target="_blank"
                       rel="noopener noreferrer"

@@ -1,0 +1,3371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<title>Diagnóstico FT — App Docente</title>
+
+<!--
+==========================================================
+LECTOR QR
+==========================================================
+
+Esta librería permite utilizar la cámara del teléfono
+para leer códigos QR.
+
+NO modifica el contenido del QR.
+==========================================================
+-->
+
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+
+<style>
+
+/* ======================================================
+   VARIABLES
+====================================================== */
+
+:root{
+
+    --azul:#17365D;
+    --azul2:#24558C;
+
+    --celeste:#EAF3FB;
+
+    --verde:#198754;
+    --verde-claro:#E8F7EE;
+
+    --rojo:#C0392B;
+    --rojo-claro:#FDECEA;
+
+    --gris:#F4F6F8;
+    --gris2:#E5E9ED;
+
+    --texto:#263238;
+
+    --blanco:#FFFFFF;
+
+    --borde:#D7DDE3;
+
+}
+
+
+/* ======================================================
+   GENERAL
+====================================================== */
+
+*{
+    box-sizing:border-box;
+}
+
+
+html,
+body{
+
+    margin:0;
+    padding:0;
+
+    width:100%;
+    min-height:100%;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:var(--gris);
+
+    color:var(--texto);
+
+}
+
+
+body{
+
+    padding-bottom:40px;
+
+}
+
+
+/* ======================================================
+   ENCABEZADO
+====================================================== */
+
+.header{
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--azul),
+            var(--azul2)
+        );
+
+    color:white;
+
+    padding:
+        22px
+        16px
+        20px
+        16px;
+
+    text-align:center;
+
+}
+
+
+.header h1{
+
+    margin:0;
+
+    font-size:24px;
+
+    font-weight:700;
+
+}
+
+
+.header p{
+
+    margin:
+        7px
+        0
+        0
+        0;
+
+    font-size:14px;
+
+    opacity:.92;
+
+}
+
+
+/* ======================================================
+   CONTENEDOR
+====================================================== */
+
+.container{
+
+    width:100%;
+
+    max-width:900px;
+
+    margin:
+        20px
+        auto;
+
+    padding:
+        0
+        15px;
+
+}
+
+
+/* ======================================================
+   TARJETAS
+====================================================== */
+
+.card{
+
+    background:white;
+
+    border-radius:16px;
+
+    padding:20px;
+
+    margin-bottom:18px;
+
+    box-shadow:
+        0 3px 14px
+        rgba(0,0,0,.08);
+
+}
+
+
+.card h2{
+
+    margin:
+        0
+        0
+        18px
+        0;
+
+    color:var(--azul);
+
+    font-size:20px;
+
+}
+
+
+/* ======================================================
+   CAMPOS
+====================================================== */
+
+label{
+
+    display:block;
+
+    font-weight:bold;
+
+    margin:
+        14px
+        0
+        7px
+        0;
+
+}
+
+
+input,
+select{
+
+    width:100%;
+
+    min-height:48px;
+
+    padding:
+        12px
+        14px;
+
+    border:
+        1px solid
+        var(--borde);
+
+    border-radius:9px;
+
+    font-size:16px;
+
+    background:white;
+
+    color:var(--texto);
+
+}
+
+
+input:focus,
+select:focus{
+
+    outline:none;
+
+    border-color:
+        var(--azul2);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(36,85,140,.12);
+
+}
+
+
+/* ======================================================
+   BOTONES
+====================================================== */
+
+button{
+
+    width:100%;
+
+    min-height:48px;
+
+    border:0;
+
+    border-radius:9px;
+
+    padding:
+        12px
+        16px;
+
+    margin-top:14px;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.15s;
+
+}
+
+
+button:active{
+
+    transform:scale(.98);
+
+}
+
+
+button:disabled{
+
+    opacity:.5;
+
+    cursor:not-allowed;
+
+}
+
+
+.btn-primary{
+
+    background:var(--azul2);
+
+    color:white;
+
+}
+
+
+.btn-success{
+
+    background:var(--verde);
+
+    color:white;
+
+}
+
+
+.btn-danger{
+
+    background:var(--rojo);
+
+    color:white;
+
+}
+
+
+.btn-secondary{
+
+    background:var(--gris2);
+
+    color:var(--texto);
+
+}
+
+
+/* ======================================================
+   INFORMACIÓN DE SESIÓN
+====================================================== */
+
+.session-box{
+
+    background:var(--celeste);
+
+    border-left:
+        5px solid
+        var(--azul2);
+
+    border-radius:9px;
+
+    padding:15px;
+
+    line-height:1.7;
+
+}
+
+
+.session-box strong{
+
+    color:var(--azul);
+
+}
+
+
+/* ======================================================
+   CONTADOR
+====================================================== */
+
+.counter{
+
+    text-align:center;
+
+    color:var(--azul);
+
+    font-size:19px;
+
+    font-weight:bold;
+
+    margin:
+        15px
+        0;
+
+}
+
+
+/* ======================================================
+   ESCÁNER
+====================================================== */
+
+#reader{
+
+    width:100%;
+
+    max-width:500px;
+
+    margin:
+        20px
+        auto;
+
+    border-radius:12px;
+
+    overflow:hidden;
+
+}
+
+
+.scanner-message{
+
+    text-align:center;
+
+    padding:10px;
+
+}
+
+
+/* ======================================================
+   RESULTADO
+====================================================== */
+
+.result-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(
+                220px,
+                1fr
+            )
+        );
+
+    gap:10px;
+
+}
+
+
+.result-item{
+
+    background:#F7F9FA;
+
+    border:
+        1px solid
+        var(--borde);
+
+    border-radius:9px;
+
+    padding:12px;
+
+}
+
+
+.result-item strong{
+
+    display:block;
+
+    color:var(--azul);
+
+    margin-bottom:5px;
+
+}
+
+
+.result-wide{
+
+    grid-column:
+        1 /
+        -1;
+
+}
+
+
+/* ======================================================
+   MENSAJES
+====================================================== */
+
+.alert{
+
+    padding:13px;
+
+    border-radius:9px;
+
+    margin-top:12px;
+
+    line-height:1.5;
+
+}
+
+
+.alert-success{
+
+    background:
+        var(--verde-claro);
+
+    color:#176B3A;
+
+}
+
+
+.alert-error{
+
+    background:
+        var(--rojo-claro);
+
+    color:#922B21;
+
+}
+
+
+.alert-info{
+
+    background:
+        var(--celeste);
+
+    color:var(--azul);
+
+}
+
+
+/* ======================================================
+   TABLA
+====================================================== */
+
+.table-container{
+
+    width:100%;
+
+    overflow-x:auto;
+
+}
+
+
+table{
+
+    width:100%;
+
+    min-width:1000px;
+
+    border-collapse:
+        collapse;
+
+}
+
+
+th,
+td{
+
+    border:
+        1px solid
+        var(--borde);
+
+    padding:9px;
+
+    text-align:left;
+
+    vertical-align:top;
+
+}
+
+
+th{
+
+    background:
+        var(--azul);
+
+    color:white;
+
+    white-space:nowrap;
+
+}
+
+
+tr:nth-child(even){
+
+    background:#F8F9FA;
+
+}
+
+
+/* ======================================================
+   REGISTRO INDIVIDUAL MÓVIL
+====================================================== */
+
+.mobile-record{
+
+    border:
+        1px solid
+        var(--borde);
+
+    border-radius:10px;
+
+    padding:14px;
+
+    margin-bottom:10px;
+
+    background:#FAFBFC;
+
+}
+
+
+.mobile-record-title{
+
+    font-weight:bold;
+
+    color:var(--azul);
+
+    font-size:17px;
+
+}
+
+
+.mobile-record-line{
+
+    margin-top:5px;
+
+    font-size:14px;
+
+}
+
+
+/* ======================================================
+   BOTONERA
+====================================================== */
+
+.button-group{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(
+                180px,
+                1fr
+            )
+        );
+
+    gap:10px;
+
+}
+
+
+.button-group button{
+
+    margin-top:0;
+
+}
+
+
+/* ======================================================
+   UTILIDADES
+====================================================== */
+
+.hidden{
+
+    display:none !important;
+
+}
+
+
+.center{
+
+    text-align:center;
+
+}
+
+
+.small{
+
+    font-size:13px;
+
+    color:#667;
+
+}
+
+
+/* ======================================================
+   FOOTER
+====================================================== */
+
+.footer{
+
+    text-align:center;
+
+    color:#667;
+
+    font-size:12px;
+
+    padding:20px;
+
+}
+
+
+/* ======================================================
+   MÓVIL
+====================================================== */
+
+@media(max-width:600px){
+
+    .header h1{
+
+        font-size:20px;
+
+    }
+
+
+    .container{
+
+        margin:
+            12px
+            auto;
+
+        padding:
+            0
+            10px;
+
+    }
+
+
+    .card{
+
+        padding:16px;
+
+    }
+
+
+    .result-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .result-wide{
+
+        grid-column:auto;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     ENCABEZADO
+====================================================== -->
+
+<header class="header">
+
+    <h1>
+        DIAGNÓSTICO FT
+    </h1>
+
+    <p>
+        Registro de resultados — 9.º año
+    </p>
+
+</header>
+
+
+<div class="container">
+
+
+<!-- =====================================================
+     PASO 1
+     CONFIGURACIÓN
+====================================================== -->
+
+<section
+    id="configuracion"
+    class="card"
+>
+
+    <h2>
+        Configurar diagnóstico
+    </h2>
+
+
+    <label for="centro">
+        Centro Educativo
+    </label>
+
+
+    <input
+        id="centro"
+        type="text"
+        placeholder="Ingrese el Centro Educativo"
+        autocomplete="off"
+    >
+
+
+    <label for="nivel">
+        Nivel
+    </label>
+
+
+    <select id="nivel">
+
+        <option value="9.º año">
+            9.º año
+        </option>
+
+    </select>
+
+
+    <label for="seccion">
+        Sección
+    </label>
+
+
+    <input
+        id="seccion"
+        type="text"
+        placeholder="Ejemplo: 9-4"
+        autocomplete="off"
+    >
+
+
+    <button
+        id="btnIniciar"
+        class="btn-primary"
+        onclick="iniciarDiagnostico()"
+    >
+        INICIAR DIAGNÓSTICO
+    </button>
+
+
+</section>
+
+
+<!-- =====================================================
+     PASO 2
+     SESIÓN
+====================================================== -->
+
+<section
+    id="sesion"
+    class="card hidden"
+>
+
+    <h2>
+        Diagnóstico activo
+    </h2>
+
+
+    <div
+        id="sessionInfo"
+        class="session-box"
+    ></div>
+
+
+    <div
+        id="contador"
+        class="counter"
+    >
+        Estudiantes registrados: 0
+    </div>
+
+
+    <button
+        id="btnEscanear"
+        class="btn-primary"
+        onclick="iniciarEscaner()"
+    >
+        📷 ESCANEAR CÓDIGO QR
+    </button>
+
+
+    <div
+        id="reader"
+        class="hidden"
+    ></div>
+
+
+    <div
+        id="scannerMessage"
+        class="scanner-message"
+    ></div>
+
+
+    <div class="button-group">
+
+        <button
+            class="btn-secondary"
+            onclick="mostrarRegistros()"
+        >
+            VER REGISTROS
+        </button>
+
+
+        <button
+            class="btn-success"
+            onclick="exportarCSV()"
+        >
+            EXPORTAR CSV
+        </button>
+
+
+        <button
+            class="btn-danger"
+            onclick="finalizarDiagnostico()"
+        >
+            FINALIZAR DIAGNÓSTICO
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     PASO 3
+     RESULTADO
+====================================================== -->
+
+<section
+    id="resultado"
+    class="card hidden"
+>
+
+    <h2>
+        Resultado detectado
+    </h2>
+
+
+    <div
+        id="resultadoContenido"
+    ></div>
+
+
+    <button
+        class="btn-success"
+        onclick="guardarRegistro()"
+    >
+        GUARDAR REGISTRO
+    </button>
+
+
+    <button
+        class="btn-secondary"
+        onclick="descartarResultado()"
+    >
+        DESCARTAR Y VOLVER A ESCANEAR
+    </button>
+
+</section>
+
+
+<!-- =====================================================
+     PASO 4
+     REGISTROS
+====================================================== -->
+
+<section
+    id="registros"
+    class="card hidden"
+>
+
+    <h2>
+        Registros almacenados
+    </h2>
+
+
+    <div
+        id="listaRegistros"
+    ></div>
+
+
+    <button
+        class="btn-success"
+        onclick="exportarCSV()"
+    >
+        📊 EXPORTAR CSV
+    </button>
+
+
+    <button
+        class="btn-danger"
+        onclick="borrarTodosLosRegistros()"
+    >
+        ELIMINAR TODOS LOS REGISTROS
+    </button>
+
+</section>
+
+
+</div>
+
+
+<footer class="footer">
+
+    Diagnóstico de Formación Tecnológica — 9.º año
+
+</footer>
+
+
+<script>
+
+/* ==========================================================
+   CONFIGURACIÓN GENERAL
+========================================================== */
+
+
+/*
+    Clave utilizada para guardar los registros
+    en el almacenamiento local del teléfono.
+*/
+
+const STORAGE_KEY =
+    "diagnostico_ft_registros_v1";
+
+
+/*
+    Sesión actual.
+
+    El docente solamente indica:
+    - Centro Educativo
+    - Nivel
+    - Sección
+
+    NO se solicita:
+    - docente
+    - fecha
+
+    La fecha viene en el QR.
+*/
+
+let sesion = {
+
+    centro:"",
+    nivel:"9.º año",
+    seccion:""
+
+};
+
+
+/*
+    Resultado QR pendiente
+    antes de guardarlo.
+*/
+
+let resultadoPendiente = null;
+
+
+/*
+    Objeto del lector QR.
+*/
+
+let qrScanner = null;
+
+
+/*
+    Evita leer varias veces
+    el mismo QR.
+*/
+
+let procesandoQR = false;
+
+
+/* ==========================================================
+   INICIO
+========================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        actualizarContador();
+
+    }
+);
+
+
+/* ==========================================================
+   INICIAR DIAGNÓSTICO
+========================================================== */
+
+function iniciarDiagnostico(){
+
+    const centro =
+        document
+            .getElementById("centro")
+            .value
+            .trim();
+
+
+    const nivel =
+        document
+            .getElementById("nivel")
+            .value;
+
+
+    const seccion =
+        document
+            .getElementById("seccion")
+            .value
+            .trim();
+
+
+    /*
+        Validación
+    */
+
+    if(!centro){
+
+        alert(
+            "Debe indicar el Centro Educativo."
+        );
+
+        return;
+
+    }
+
+
+    if(!seccion){
+
+        alert(
+            "Debe indicar la sección."
+        );
+
+        return;
+
+    }
+
+
+    /*
+        Guardar sesión
+    */
+
+    sesion = {
+
+        centro:centro,
+
+        nivel:nivel,
+
+        seccion:seccion
+
+    };
+
+
+    /*
+        Mostrar sesión
+    */
+
+    document
+        .getElementById("sessionInfo")
+        .innerHTML = `
+
+            <strong>
+                Centro Educativo:
+            </strong>
+
+            ${escaparHTML(sesion.centro)}
+
+            <br>
+
+            <strong>
+                Nivel:
+            </strong>
+
+            ${escaparHTML(sesion.nivel)}
+
+            <br>
+
+            <strong>
+                Sección:
+            </strong>
+
+            ${escaparHTML(sesion.seccion)}
+
+        `;
+
+
+    /*
+        Cambiar pantalla
+    */
+
+    document
+        .getElementById("configuracion")
+        .classList
+        .add("hidden");
+
+
+    document
+        .getElementById("sesion")
+        .classList
+        .remove("hidden");
+
+
+    document
+        .getElementById("registros")
+        .classList
+        .remove("hidden");
+
+
+    actualizarContador();
+
+
+    window.scrollTo({
+
+        top:0,
+
+        behavior:"smooth"
+
+    });
+
+}
+
+
+/* ==========================================================
+   INICIAR ESCÁNER
+========================================================== */
+
+async function iniciarEscaner(){
+
+    /*
+        Evitar dos lectores simultáneos.
+    */
+
+    if(qrScanner){
+
+        return;
+
+    }
+
+
+    procesandoQR = false;
+
+
+    document
+        .getElementById("reader")
+        .classList
+        .remove("hidden");
+
+
+    document
+        .getElementById("scannerMessage")
+        .innerHTML = `
+
+            <div class="alert alert-info">
+
+                Apunte la cámara del teléfono
+                al código QR del estudiante.
+
+            </div>
+
+        `;
+
+
+    try{
+
+        qrScanner =
+            new Html5Qrcode("reader");
+
+
+        const configuracion = {
+
+            fps:10,
+
+            qrbox:{
+
+                width:250,
+
+                height:250
+
+            },
+
+            aspectRatio:1.0
+
+        };
+
+
+        await qrScanner.start(
+
+            {
+                facingMode:"environment"
+            },
+
+            configuracion,
+
+            qrDetectado,
+
+            errorDeLectura
+
+        );
+
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+
+        qrScanner = null;
+
+
+        document
+            .getElementById("reader")
+            .classList
+            .add("hidden");
+
+
+        document
+            .getElementById("scannerMessage")
+            .innerHTML = `
+
+                <div class="alert alert-error">
+
+                    <strong>
+                        No fue posible activar la cámara.
+                    </strong>
+
+                    <br><br>
+
+                    Compruebe que:
+
+                    <br>
+                    • El navegador tenga permiso
+                    para utilizar la cámara.
+
+                    <br>
+                    • La aplicación esté abierta
+                    mediante HTTPS.
+
+                    <br>
+                    • Ninguna otra aplicación esté
+                    utilizando la cámara.
+
+                </div>
+
+            `;
+
+    }
+
+}
+
+
+/* ==========================================================
+   QR DETECTADO
+========================================================== */
+
+async function qrDetectado(texto){
+
+    /*
+        Evitar lecturas repetidas.
+    */
+
+    if(procesandoQR){
+
+        return;
+
+    }
+
+
+    procesandoQR = true;
+
+
+    console.log(
+        "QR detectado:",
+        texto
+    );
+
+
+    await detenerEscaner();
+
+
+    try{
+
+        const resultado =
+            interpretarQR(texto);
+
+
+        resultadoPendiente =
+            resultado;
+
+
+        mostrarResultado(
+            resultado
+        );
+
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+
+        resultadoPendiente = null;
+
+
+        procesandoQR = false;
+
+
+        document
+            .getElementById("scannerMessage")
+            .innerHTML = `
+
+                <div class="alert alert-error">
+
+                    <strong>
+                        QR leído, pero no reconocido.
+                    </strong>
+
+                    <br><br>
+
+                    ${escaparHTML(
+                        error.message
+                    )}
+
+                </div>
+
+            `;
+
+    }
+
+}
+
+
+/* ==========================================================
+   ERROR DURANTE ESCANEO
+========================================================== */
+
+function errorDeLectura(error){
+
+    /*
+        No mostramos estos errores.
+
+        El lector genera muchos mensajes mientras
+        busca un código QR.
+
+    */
+
+}
+
+
+/* ==========================================================
+   DETENER ESCÁNER
+========================================================== */
+
+async function detenerEscaner(){
+
+    if(!qrScanner){
+
+        return;
+
+    }
+
+
+    try{
+
+        await qrScanner.stop();
+
+    }
+
+    catch(error){
+
+        console.log(
+            "El escáner ya estaba detenido."
+        );
+
+    }
+
+
+    try{
+
+        await qrScanner.clear();
+
+    }
+
+    catch(error){
+
+        console.log(
+            "No fue necesario limpiar el lector."
+        );
+
+    }
+
+
+    qrScanner = null;
+
+
+    document
+        .getElementById("reader")
+        .classList
+        .add("hidden");
+
+}
+
+
+/* ==========================================================
+   INTERPRETAR QR
+==========================================================
+
+   IMPORTANTE:
+
+   Esta función NO modifica el QR.
+
+   Solamente interpreta el texto existente.
+
+========================================================== */
+
+function interpretarQR(texto){
+
+    if(
+        !texto ||
+        !texto.trim()
+    ){
+
+        throw new Error(
+            "El código QR está vacío."
+        );
+
+    }
+
+
+    /*
+        Convertimos el contenido en líneas.
+    */
+
+    const lineas =
+        texto
+            .split(/\r?\n/)
+            .map(
+                linea =>
+                    linea.trim()
+            );
+
+
+    /*
+        Eliminamos únicamente líneas
+        completamente vacías al inicio
+        y al final.
+
+        NO alteramos el contenido.
+    */
+
+    while(
+        lineas.length &&
+        lineas[0] === ""
+    ){
+
+        lineas.shift();
+
+    }
+
+
+    while(
+        lineas.length &&
+        lineas[lineas.length - 1] === ""
+    ){
+
+        lineas.pop();
+
+    }
+
+
+    /*
+        Objeto resultado.
+    */
+
+    const datos = {
+
+        estudiante:"",
+
+        seccionQR:"",
+
+        fecha:"",
+
+        cognoscitiva:"",
+
+        nivelCognoscitivo:"",
+
+        tarjetas:"",
+
+        puertos:"",
+
+        ejecucion:"",
+
+        socioafectiva:"",
+
+        fortalezas:"",
+
+        prioridades:"",
+
+        textoOriginal:texto
+
+    };
+
+
+    /*
+        =====================================================
+        PRIMERAS TRES LÍNEAS
+        =====================================================
+
+        Allan
+        9-4
+        23/09/2026
+    */
+
+    if(lineas.length >= 3){
+
+        datos.estudiante =
+            lineas[0];
+
+        datos.seccionQR =
+            lineas[1];
+
+        datos.fecha =
+            lineas[2];
+
+    }
+
+
+    /*
+        =====================================================
+        RESTO DE CAMPOS
+        =====================================================
+    */
+
+    for(
+        let i=0;
+        i<lineas.length;
+        i++
+    ){
+
+        const linea =
+            lineas[i];
+
+
+        /*
+            COGNOSCITIVA
+        */
+
+        if(
+            linea
+            .toUpperCase()
+            .startsWith(
+                "COGNOSCITIVA:"
+            )
+        ){
+
+            datos.cognoscitiva =
+                quitarPrefijo(
+                    linea,
+                    "COGNOSCITIVA:"
+                );
+
+        }
+
+
+        /*
+            NIVEL
+        */
+
+        else if(
+            linea
+            .toUpperCase()
+            .startsWith(
+                "NIVEL:"
+            )
+        ){
+
+            datos.nivelCognoscitivo =
+                quitarPrefijo(
+                    linea,
+                    "Nivel:"
+                );
+
+        }
+
+
+        /*
+            TARJETAS
+        */
+
+        else if(
+            linea
+            .toUpperCase()
+            .startsWith(
+                "TARJETAS:"
+            )
+        ){
+
+            datos.tarjetas =
+                quitarPrefijo(
+                    linea,
+                    "Tarjetas:"
+                );
+
+        }
+
+
+        /*
+            PUERTOS
+        */
+
+        else if(
+            linea
+            .toUpperCase()
+            .startsWith(
+                "PUERTOS:"
+            )
+        ){
+
+            datos.puertos =
+                quitarPrefijo(
+                    linea,
+                    "Puertos:"
+                );
+
+        }
+
+
+        /*
+            EJECUCIÓN
+        */
+
+        else if(
+            linea
+            .toUpperCase()
+            .startsWith(
+                "EJECUCIÓN:"
+            )
+        ){
+
+            datos.ejecucion =
+                quitarPrefijo(
+                    linea,
+                    "Ejecución:"
+                );
+
+        }
+
+
+        /*
+            SOCIOAFECTIVA
+        */
+
+        else if(
+            linea
+                .toLowerCase()
+                .includes(
+                    "indicadores favorables"
+                )
+        ){
+
+            datos.socioafectiva =
+                linea;
+
+        }
+
+
+        /*
+            FORTALEZAS
+        */
+
+        else if(
+            linea
+                .toUpperCase()
+                ===
+                "FORTALEZAS:"
+        ){
+
+            datos.fortalezas =
+                obtenerContenidoSiguiente(
+                    lineas,
+                    i
+                );
+
+        }
+
+
+        /*
+            PRIORIDADES
+        */
+
+        else if(
+            linea
+                .toUpperCase()
+                ===
+                "PRIORIDADES:"
+        ){
+
+            datos.prioridades =
+                obtenerContenidoSiguiente(
+                    lineas,
+                    i
+                );
+
+        }
+
+    }
+
+
+    /*
+        Validación mínima.
+
+        No exigimos que todos los campos existan,
+        para evitar rechazar un QR válido si en
+        el futuro cambia alguna línea.
+
+    */
+
+    if(
+        !datos.estudiante
+    ){
+
+        throw new Error(
+            "No se encontró el nombre del estudiante."
+        );
+
+    }
+
+
+    return datos;
+
+}
+
+
+/* ==========================================================
+   QUITAR PREFIJO
+========================================================== */
+
+function quitarPrefijo(
+    texto,
+    prefijo
+){
+
+    return texto
+        .substring(
+            prefijo.length
+        )
+        .trim();
+
+}
+
+
+/* ==========================================================
+   OBTENER SIGUIENTE CONTENIDO
+========================================================== */
+
+function obtenerContenidoSiguiente(
+    lineas,
+    indice
+){
+
+    for(
+        let i=indice + 1;
+        i<lineas.length;
+        i++
+    ){
+
+        if(
+            lineas[i].trim() !== ""
+        ){
+
+            return lineas[i].trim();
+
+        }
+
+    }
+
+
+    return "";
+
+}
+
+
+/* ==========================================================
+   MOSTRAR RESULTADO
+========================================================== */
+
+function mostrarResultado(
+    datos
+){
+
+    const html = `
+
+        <div class="result-grid">
+
+
+            <div class="result-item">
+
+                <strong>
+                    Estudiante
+                </strong>
+
+                ${escaparHTML(
+                    datos.estudiante
+                )}
+
+            </div>
+
+
+            <div class="result-item">
+
+                <strong>
+                    Fecha
+                </strong>
+
+                ${escaparHTML(
+                    datos.fecha
+                )}
+
+            </div>
+
+
+            <div class="result-item">
+
+                <strong>
+                    Centro Educativo
+                </strong>
+
+                ${escaparHTML(
+                    sesion.centro
+                )}
+
+            </div>
+
+
+            <div class="result-item">
+
+                <strong>
+                    Nivel
+                </strong>
+
+                ${escaparHTML(
+                    sesion.nivel
+                )}
+
+            </div>
+
+
+            <div class="result-item">
+
+                <strong>
+                    Sección
+                </strong>
+
+                ${escaparHTML(
+                    sesion.seccion
+                )}
+
+            </div>
+
+
+            <div class="result-item">
+
+                <strong>
+                    Sección del QR
+                </strong>
+
+                ${escaparHTML(
+                    datos.seccionQR
+                )}
+
+            </div>
+
+
+            <div class="result-item">
+
+                <strong>
+                    Cognoscitiva
+                </strong>
+
+                ${escaparHTML(
+                    datos.cognoscitiva
+                )}
+
+            </div>
+
+
+            <div class="result-item">
+
+                <strong>
+                    Nivel cognoscitivo
+                </strong>
+
+                ${escaparHTML(
+                    datos.nivelCognoscitivo
+                )}
+
+            </div>
+
+
+            <div class="result-item">
+
+                <strong>
+                    Tarjetas
+                </strong>
+
+                ${escaparHTML(
+                    datos.tarjetas
+                )}
+
+            </div>
+
+
+            <div class="result-item">
+
+                <strong>
+                    Puertos
+                </strong>
+
+                ${escaparHTML(
+                    datos.puertos
+                )}
+
+            </div>
+
+
+            <div class="result-item">
+
+                <strong>
+                    Ejecución
+                </strong>
+
+                ${escaparHTML(
+                    datos.ejecucion
+                )}
+
+            </div>
+
+
+            <div class="result-item">
+
+                <strong>
+                    Socioafectiva
+                </strong>
+
+                ${escaparHTML(
+                    datos.socioafectiva
+                )}
+
+            </div>
+
+
+            <div class="result-item result-wide">
+
+                <strong>
+                    Fortalezas
+                </strong>
+
+                ${escaparHTML(
+                    datos.fortalezas
+                )}
+
+            </div>
+
+
+            <div class="result-item result-wide">
+
+                <strong>
+                    Prioridades
+                </strong>
+
+                ${escaparHTML(
+                    datos.prioridades
+                )}
+
+            </div>
+
+
+        </div>
+
+    `;
+
+
+    document
+        .getElementById(
+            "resultadoContenido"
+        )
+        .innerHTML = html;
+
+
+    document
+        .getElementById(
+            "resultado"
+        )
+        .classList
+        .remove("hidden");
+
+
+    window.scrollTo({
+
+        top:
+            document
+                .getElementById(
+                    "resultado"
+                )
+                .offsetTop - 10,
+
+        behavior:"smooth"
+
+    });
+
+}
+
+
+/* ==========================================================
+   GUARDAR REGISTRO
+========================================================== */
+
+function guardarRegistro(){
+
+    if(
+        !resultadoPendiente
+    ){
+
+        alert(
+            "No hay ningún resultado pendiente."
+        );
+
+        return;
+
+    }
+
+
+    /*
+        Obtener registros actuales.
+    */
+
+    const registros =
+        obtenerRegistros();
+
+
+    /*
+        Evitar duplicado exacto.
+    */
+
+    const duplicado =
+        registros.some(
+            registro =>
+
+                registro.estudiante
+                ===
+                resultadoPendiente.estudiante
+
+                &&
+
+                registro.fecha
+                ===
+                resultadoPendiente.fecha
+
+                &&
+
+                registro.seccion
+                ===
+                sesion.seccion
+
+        );
+
+
+    if(duplicado){
+
+        const continuar =
+            confirm(
+
+                "Este estudiante ya tiene un registro " +
+                "con la misma fecha y sección.\n\n" +
+
+                "¿Desea guardarlo nuevamente?"
+
+            );
+
+
+        if(!continuar){
+
+            procesandoQR = false;
+
+            return;
+
+        }
+
+    }
+
+
+    /*
+        Crear registro completo.
+    */
+
+    const registro = {
+
+        id:
+            generarID(),
+
+
+        centro:
+            sesion.centro,
+
+
+        nivel:
+            sesion.nivel,
+
+
+        seccion:
+            sesion.seccion,
+
+
+        estudiante:
+            resultadoPendiente.estudiante,
+
+
+        fecha:
+            resultadoPendiente.fecha,
+
+
+        cognoscitiva:
+            resultadoPendiente.cognoscitiva,
+
+
+        nivelCognoscitivo:
+            resultadoPendiente.nivelCognoscitivo,
+
+
+        tarjetas:
+            resultadoPendiente.tarjetas,
+
+
+        puertos:
+            resultadoPendiente.puertos,
+
+
+        ejecucion:
+            resultadoPendiente.ejecucion,
+
+
+        socioafectiva:
+            resultadoPendiente.socioafectiva,
+
+
+        fortalezas:
+            resultadoPendiente.fortalezas,
+
+
+        prioridades:
+            resultadoPendiente.prioridades,
+
+
+        /*
+            Guardamos también el QR original.
+
+            Esto es útil para auditoría y para
+            corregir posteriormente el interpretador
+            si fuese necesario.
+        */
+
+        qrOriginal:
+            resultadoPendiente.textoOriginal,
+
+
+        fechaRegistroLocal:
+            new Date().toISOString()
+
+    };
+
+
+    /*
+        Agregar al arreglo.
+    */
+
+    registros.push(
+        registro
+    );
+
+
+    /*
+        Guardar en localStorage.
+    */
+
+    guardarRegistros(
+        registros
+    );
+
+
+    /*
+        Limpiar resultado pendiente.
+    */
+
+    resultadoPendiente =
+        null;
+
+
+    /*
+        Ocultar resultado.
+    */
+
+    document
+        .getElementById(
+            "resultado"
+        )
+        .classList
+        .add("hidden");
+
+
+    /*
+        Actualizar contador.
+    */
+
+    actualizarContador();
+
+
+    /*
+        Mensaje.
+    */
+
+    document
+        .getElementById(
+            "scannerMessage"
+        )
+        .innerHTML = `
+
+            <div class="alert alert-success">
+
+                <strong>
+                    Registro guardado correctamente.
+                </strong>
+
+                <br>
+
+                El estudiante quedó almacenado
+                en este dispositivo.
+
+            </div>
+
+        `;
+
+
+    /*
+        Permitir próximo QR.
+    */
+
+    procesandoQR =
+        false;
+
+
+    /*
+        Volver a la sección activa.
+    */
+
+    window.scrollTo({
+
+        top:
+            document
+                .getElementById(
+                    "sesion"
+                )
+                .offsetTop - 10,
+
+        behavior:"smooth"
+
+    });
+
+}
+
+
+/* ==========================================================
+   DESCARTAR RESULTADO
+========================================================== */
+
+async function descartarResultado(){
+
+    resultadoPendiente =
+        null;
+
+
+    document
+        .getElementById(
+            "resultado"
+        )
+        .classList
+        .add("hidden");
+
+
+    procesandoQR =
+        false;
+
+
+    document
+        .getElementById(
+            "scannerMessage"
+        )
+        .innerHTML = `
+
+            <div class="alert alert-info">
+
+                Resultado descartado.
+                Puede escanear nuevamente.
+
+            </div>
+
+        `;
+
+
+    window.scrollTo({
+
+        top:
+            document
+                .getElementById(
+                    "sesion"
+                )
+                .offsetTop - 10,
+
+        behavior:"smooth"
+
+    });
+
+}
+
+
+/* ==========================================================
+   OBTENER REGISTROS
+========================================================== */
+
+function obtenerRegistros(){
+
+    try{
+
+        const datos =
+            localStorage.getItem(
+                STORAGE_KEY
+            );
+
+
+        if(!datos){
+
+            return [];
+
+        }
+
+
+        const registros =
+            JSON.parse(datos);
+
+
+        if(
+            !Array.isArray(
+                registros
+            )
+        ){
+
+            return [];
+
+        }
+
+
+        return registros;
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Error leyendo registros:",
+            error
+        );
+
+
+        return [];
+
+    }
+
+}
+
+
+/* ==========================================================
+   GUARDAR REGISTROS
+========================================================== */
+
+function guardarRegistros(
+    registros
+){
+
+    try{
+
+        localStorage.setItem(
+
+            STORAGE_KEY,
+
+            JSON.stringify(
+                registros
+            )
+
+        );
+
+
+        return true;
+
+    }
+
+    catch(error){
+
+        console.error(
+            "No se pudieron guardar los registros:",
+            error
+        );
+
+
+        alert(
+            "No fue posible guardar el registro " +
+            "en el dispositivo."
+        );
+
+
+        return false;
+
+    }
+
+}
+
+
+/* ==========================================================
+   CONTADOR
+========================================================== */
+
+function actualizarContador(){
+
+    const registros =
+        obtenerRegistros();
+
+
+    document
+        .getElementById(
+            "contador"
+        )
+        .textContent =
+
+        "Estudiantes registrados: "
+        +
+        registros.length;
+
+}
+
+
+/* ==========================================================
+   MOSTRAR REGISTROS
+========================================================== */
+
+function mostrarRegistros(){
+
+    const registros =
+        obtenerRegistros();
+
+
+    const contenedor =
+        document
+            .getElementById(
+                "listaRegistros"
+            );
+
+
+    document
+        .getElementById(
+            "registros"
+        )
+        .classList
+        .remove("hidden");
+
+
+    if(
+        registros.length === 0
+    ){
+
+        contenedor.innerHTML = `
+
+            <div class="alert alert-info">
+
+                No hay registros almacenados
+                en este dispositivo.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    /*
+        Más recientes primero.
+    */
+
+    const ordenados =
+        [...registros]
+        .reverse();
+
+
+    let html = "";
+
+
+    ordenados.forEach(
+        function(
+            registro
+        ){
+
+            html += `
+
+                <div
+                    class="mobile-record"
+                >
+
+                    <div
+                        class="mobile-record-title"
+                    >
+
+                        ${escaparHTML(
+                            registro.estudiante
+                        )}
+
+                    </div>
+
+
+                    <div
+                        class="mobile-record-line"
+                    >
+
+                        <strong>
+                            Centro:
+                        </strong>
+
+                        ${escaparHTML(
+                            registro.centro
+                        )}
+
+                    </div>
+
+
+                    <div
+                        class="mobile-record-line"
+                    >
+
+                        <strong>
+                            Nivel:
+                        </strong>
+
+                        ${escaparHTML(
+                            registro.nivel
+                        )}
+
+                    </div>
+
+
+                    <div
+                        class="mobile-record-line"
+                    >
+
+                        <strong>
+                            Sección:
+                        </strong>
+
+                        ${escaparHTML(
+                            registro.seccion
+                        )}
+
+                    </div>
+
+
+                    <div
+                        class="mobile-record-line"
+                    >
+
+                        <strong>
+                            Fecha:
+                        </strong>
+
+                        ${escaparHTML(
+                            registro.fecha
+                        )}
+
+                    </div>
+
+
+                    <div
+                        class="mobile-record-line"
+                    >
+
+                        <strong>
+                            Cognoscitiva:
+                        </strong>
+
+                        ${escaparHTML(
+                            registro.cognoscitiva
+                        )}
+
+                    </div>
+
+
+                    <div
+                        class="mobile-record-line"
+                    >
+
+                        <strong>
+                            Psicomotora:
+                        </strong>
+
+                        Tarjetas:
+                        ${escaparHTML(
+                            registro.tarjetas
+                        )}
+
+                        ·
+
+                        Puertos:
+                        ${escaparHTML(
+                            registro.puertos
+                        )}
+
+                        ·
+
+                        ${escaparHTML(
+                            registro.ejecucion
+                        )}
+
+                    </div>
+
+
+                    <div
+                        class="mobile-record-line"
+                    >
+
+                        <strong>
+                            Socioafectiva:
+                        </strong>
+
+                        ${escaparHTML(
+                            registro.socioafectiva
+                        )}
+
+                    </div>
+
+
+                    <div
+                        class="mobile-record-line"
+                    >
+
+                        <strong>
+                            Fortalezas:
+                        </strong>
+
+                        ${escaparHTML(
+                            registro.fortalezas
+                        )}
+
+                    </div>
+
+
+                    <div
+                        class="mobile-record-line"
+                    >
+
+                        <strong>
+                            Prioridades:
+                        </strong>
+
+                        ${escaparHTML(
+                            registro.prioridades
+                        )}
+
+                    </div>
+
+
+                    <button
+                        class="btn-danger"
+                        onclick="eliminarRegistro(
+                            '${registro.id}'
+                        )"
+                    >
+
+                        ELIMINAR REGISTRO
+
+                    </button>
+
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    contenedor.innerHTML =
+        html;
+
+}
+
+
+/* ==========================================================
+   ELIMINAR UN REGISTRO
+========================================================== */
+
+function eliminarRegistro(
+    id
+){
+
+    const confirmar =
+        confirm(
+
+            "¿Desea eliminar este registro?"
+
+        );
+
+
+    if(!confirmar){
+
+        return;
+
+    }
+
+
+    const registros =
+        obtenerRegistros();
+
+
+    const nuevos =
+        registros.filter(
+            registro =>
+                String(
+                    registro.id
+                )
+                !==
+                String(id)
+        );
+
+
+    guardarRegistros(
+        nuevos
+    );
+
+
+    actualizarContador();
+
+    mostrarRegistros();
+
+}
+
+
+/* ==========================================================
+   ELIMINAR TODOS
+========================================================== */
+
+function borrarTodosLosRegistros(){
+
+    const registros =
+        obtenerRegistros();
+
+
+    if(
+        registros.length === 0
+    ){
+
+        alert(
+            "No hay registros almacenados."
+        );
+
+        return;
+
+    }
+
+
+    const confirmar =
+        confirm(
+
+            "ADVERTENCIA\n\n" +
+
+            "Se eliminarán TODOS los registros " +
+            "almacenados en este dispositivo.\n\n" +
+
+            "Esta acción no se puede deshacer.\n\n" +
+
+            "¿Desea continuar?"
+
+        );
+
+
+    if(!confirmar){
+
+        return;
+
+    }
+
+
+    localStorage.removeItem(
+        STORAGE_KEY
+    );
+
+
+    actualizarContador();
+
+    mostrarRegistros();
+
+
+    alert(
+        "Todos los registros fueron eliminados."
+    );
+
+}
+
+
+/* ==========================================================
+   EXPORTAR CSV
+========================================================== */
+
+function exportarCSV(){
+
+    const registros =
+        obtenerRegistros();
+
+
+    if(
+        registros.length === 0
+    ){
+
+        alert(
+            "No hay registros para exportar."
+        );
+
+        return;
+
+    }
+
+
+    /*
+        Encabezados.
+    */
+
+    const encabezados = [
+
+        "Centro Educativo",
+
+        "Nivel",
+
+        "Sección",
+
+        "Estudiante",
+
+        "Fecha",
+
+        "Cognoscitiva",
+
+        "Nivel cognoscitivo",
+
+        "Tarjetas",
+
+        "Puertos",
+
+        "Ejecución",
+
+        "Socioafectiva",
+
+        "Fortalezas",
+
+        "Prioridades"
+
+    ];
+
+
+    /*
+        Crear CSV.
+    */
+
+    let csv = "";
+
+
+    csv += encabezados
+        .map(
+            campo =>
+                '"' +
+                csvEscapar(
+                    campo
+                ) +
+                '"'
+        )
+        .join(";");
+
+
+    csv += "\n";
+
+
+    registros.forEach(
+        function(
+            registro
+        ){
+
+            const fila = [
+
+                registro.centro,
+
+                registro.nivel,
+
+                registro.seccion,
+
+                registro.estudiante,
+
+                registro.fecha,
+
+                registro.cognoscitiva,
+
+                registro.nivelCognoscitivo,
+
+                registro.tarjetas,
+
+                registro.puertos,
+
+                registro.ejecucion,
+
+                registro.socioafectiva,
+
+                registro.fortalezas,
+
+                registro.prioridades
+
+            ];
+
+
+            csv += fila
+                .map(
+                    campo =>
+                        '"' +
+                        csvEscapar(
+                            campo
+                        ) +
+                        '"'
+                )
+                .join(";");
+
+
+            csv += "\n";
+
+        }
+    );
+
+
+    /*
+        BOM para Excel.
+    */
+
+    const contenido =
+        "\uFEFF" +
+        csv;
+
+
+    const blob =
+        new Blob(
+
+            [contenido],
+
+            {
+                type:
+                    "text/csv;charset=utf-8;"
+            }
+
+        );
+
+
+    const url =
+        URL.createObjectURL(
+            blob
+        );
+
+
+    const enlace =
+        document.createElement(
+            "a"
+        );
+
+
+    enlace.href =
+        url;
+
+
+    enlace.download =
+        "diagnostico_FT_9no.csv";
+
+
+    document
+        .body
+        .appendChild(
+            enlace
+        );
+
+
+    enlace.click();
+
+
+    document
+        .body
+        .removeChild(
+            enlace
+        );
+
+
+    URL.revokeObjectURL(
+        url
+    );
+
+
+    /*
+        Confirmación.
+    */
+
+    alert(
+        "Archivo CSV generado correctamente."
+    );
+
+}
+
+
+/* ==========================================================
+   ESCAPAR CSV
+========================================================== */
+
+function csvEscapar(
+    valor
+){
+
+    if(
+        valor === null ||
+        valor === undefined
+    ){
+
+        return "";
+
+    }
+
+
+    return String(
+        valor
+    )
+    .replace(
+        /"/g,
+        '""'
+    )
+    .replace(
+        /\r?\n/g,
+        " "
+    );
+
+}
+
+
+/* ==========================================================
+   ESCAPAR HTML
+========================================================== */
+
+function escaparHTML(
+    valor
+){
+
+    if(
+        valor === null ||
+        valor === undefined
+    ){
+
+        return "";
+
+    }
+
+
+    return String(
+        valor
+    )
+
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+
+    .replace(
+        /</g,
+        "&lt;"
+    )
+
+    .replace(
+        />/g,
+        "&gt;"
+    )
+
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* ==========================================================
+   GENERAR ID
+========================================================== */
+
+function generarID(){
+
+    return (
+
+        Date.now()
+        .toString(36)
+
+        +
+
+        Math.random()
+            .toString(36)
+            .substring(2,8)
+
+    );
+
+}
+
+
+/* ==========================================================
+   FINALIZAR DIAGNÓSTICO
+========================================================== */
+
+async function finalizarDiagnostico(){
+
+    const confirmar =
+        confirm(
+
+            "¿Desea finalizar la sesión actual?\n\n" +
+
+            "Los registros guardados NO se eliminarán."
+
+        );
+
+
+    if(!confirmar){
+
+        return;
+
+    }
+
+
+    await detenerEscaner();
+
+
+    /*
+        Limpiar sesión.
+    */
+
+    sesion = {
+
+        centro:"",
+
+        nivel:"9.º año",
+
+        seccion:""
+
+    };
+
+
+    resultadoPendiente =
+        null;
+
+
+    procesandoQR =
+        false;
+
+
+    /*
+        Limpiar campos.
+    */
+
+    document
+        .getElementById(
+            "centro"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "seccion"
+        )
+        .value = "";
+
+
+    /*
+        Cambiar pantalla.
+    */
+
+    document
+        .getElementById(
+            "sesion"
+        )
+        .classList
+        .add("hidden");
+
+
+    document
+        .getElementById(
+            "resultado"
+        )
+        .classList
+        .add("hidden");
+
+
+    document
+        .getElementById(
+            "registros"
+        )
+        .classList
+        .add("hidden");
+
+
+    document
+        .getElementById(
+            "configuracion"
+        )
+        .classList
+        .remove("hidden");
+
+
+    window.scrollTo({
+
+        top:0,
+
+        behavior:"smooth"
+
+    });
+
+}
+
+
+/* ==========================================================
+   PREVENIR SALIDA ACCIDENTAL
+========================================================== */
+
+window.addEventListener(
+    "beforeunload",
+    function(event){
+
+        /*
+            No bloqueamos la salida.
+            Los registros ya están guardados
+            en localStorage.
+
+        */
+
+    }
+);
+
+</script>
+
+
+</body>
+</html>

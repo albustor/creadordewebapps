@@ -1300,14 +1300,15 @@
       </table>
     </div>
 
-    <!-- TARJETA DEL CÓDIGO QR OFFLINE -->
-    <div class="qr-box-card">
-      <h3 style="margin: 0 0 6px 0; color: var(--azul);">📲 Código QR de Entrega Inmediata</h3>
-      <p style="font-size: 13px; color: var(--gris); max-width: 540px; margin: 0 auto;">
-        Muestre esta pantalla al docente para que escanee este código QR desde su teléfono o tableta con la <strong>Herramienta Docente Evaluadora</strong> (funciona 100% sin internet).
+    <!-- TARJETA DEL CÓDIGO QR OFFLINE Y 4 OPCIONES DE ENTREGA -->
+    <div class="qr-box-card" style="background:#ffffff; border:2px solid #0284c7; border-radius:16px; padding:20px; box-shadow:0 10px 25px rgba(2,132,199,0.12);">
+      <span style="background:#0284c7; color:#fff; font-size:11px; font-weight:800; padding:3px 10px; border-radius:20px; display:inline-block; margin-bottom:6px;">OPCIONES OFICIALES DE ENTREGA MEP</span>
+      <h3 style="margin: 0 0 6px 0; color: var(--azul); font-size:1.15rem;">📱 Opciones de Registro y Entrega al Docente</h3>
+      <p style="font-size: 13px; color: var(--gris); max-width: 540px; margin: 0 auto 10px;">
+        Seleccione la opción que mejor se adapte a su entorno escolar:
       </p>
 
-      <div style="margin: 16px 0;">
+      <div style="margin: 14px 0;">
         <canvas id="qrCanvas" width="250" height="250"></canvas>
       </div>
 
@@ -1315,9 +1316,33 @@
         <span class="hash-code" id="resHashSeguridad">HASH-MEP9-XXXXXXXX</span>
       </div>
 
-      <p style="font-size: 12px; color: var(--gris); margin-top: 10px;">
-        Código autónomo generado localmente mediante renderizado matemático Canvas.
-      </p>
+      <!-- 4 OPCIONES DE ENTREGA -->
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:14px; margin-top:14px; text-align:left;">
+        <div style="font-size:0.85rem; font-weight:800; color:#0f172a; margin-bottom:8px;">📦 Opciones Oficiales de Entrega:</div>
+        <ol style="font-size:0.82rem; color:#334155; margin-left:18px; line-height:1.6;">
+          <li><strong>📱 Código QR para Escanear:</strong> El docente lo escanea con la cámara de su teléfono móvil o laptop desde el <em>Módulo Docente Evaluador</em> o <em>Escáner de Datos Locales 9.°</em>.</li>
+          <li><strong>💾 Descargar Ficha (.json):</strong> El estudiante presiona el botón 💾 Descargar Ficha (.json) y genera el archivo (ej. <code style="background:#e2e8f0; padding:1px 4px; border-radius:4px; font-size:11px;">ficha_diagnostica_9no_seccion_9_1_estudiante.json</code>) para entregarlo en su llave maya USB.</li>
+          <li><strong>📋 Copiar Código QR / Resumen (Texto):</strong> Permite copiar al portapapeles en 1 clic el resumen en texto o el código JSON para pegarlo o enviarlo por Microsoft Teams, WhatsApp o Correo MEP.</li>
+          <li><strong>🖨️ Imprimir Hoja Diagnóstica:</strong> Imprime el informe oficial con desglose por indicador de logro MEP.</li>
+        </ol>
+      </div>
+
+      <!-- BOTONES DE ACCIÓN RÁPIDA -->
+      <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 14px;">
+        <button type="button" class="btn-nav" style="background: #0284c7; color: white; font-weight: 800; font-size: 0.85rem; padding: 8px 14px; border-radius: 8px; border: none; cursor: pointer;" onclick="downloadTelemetryJson9no()">
+          💾 Descargar Ficha (.json)
+        </button>
+        <button type="button" class="btn-nav" style="background: #059669; color: white; font-weight: 800; font-size: 0.85rem; padding: 8px 14px; border-radius: 8px; border: none; cursor: pointer;" onclick="copiarPayloadJson9no()">
+          📋 Copiar Código QR (JSON)
+        </button>
+        <button type="button" class="btn-nav" style="background: #6366f1; color: white; font-weight: 800; font-size: 0.85rem; padding: 8px 14px; border-radius: 8px; border: none; cursor: pointer;" onclick="copiarResumenTexto9no()">
+          📝 Copiar Resumen de Texto
+        </button>
+        <button type="button" class="btn-nav" style="background: #0f172a; color: white; font-weight: 800; font-size: 0.85rem; padding: 8px 14px; border-radius: 8px; border: none; cursor: pointer;" onclick="window.print()">
+          🖨️ Imprimir Hoja Diagnóstica
+        </button>
+      </div>
+      <p id="copy-status-msg-9no" style="font-size:0.85rem; color:#059669; font-weight:800; margin-top:8px; display:none;">✅ ¡Copiado al portapapeles! Listo para enviar o pegar al docente.</p>
     </div>
 
     <div class="nav-actions" style="justify-content: center; gap: 14px;">
@@ -2326,20 +2351,85 @@
       console.error("Error al generar QR Canvas:", err);
     }
 
-    // Guardar copia local de respaldo en el dispositivo del estudiante
-    try {
-      var registrosPrevios = JSON.parse(localStorage.getItem("diagnosticos_locales_9no") || "[]");
-      registrosPrevios.push(payloadQR);
-      localStorage.setItem("diagnosticos_locales_9no", JSON.stringify(registrosPrevios));
-    } catch(e) {}
+    // Variable global para descarga y copiado
+    window._ultimoResultado9no = payloadQR;
 
     irAEtapa(4);
+  }
+
+  function downloadTelemetryJson9no() {
+    var p = window._ultimoResultado9no;
+    if (!p) {
+      alert("No hay resultados generados para exportar.");
+      return;
+    }
+    var jsonStr = JSON.stringify(p, null, 2);
+    var blob = new Blob([jsonStr], { type: "application/json;charset=utf-8;" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    var safeNom = (p.nom || "estudiante").toLowerCase().replace(/[^a-z0-9]/g, "_");
+    var safeSec = (p.sec || "9_1").toLowerCase().replace(/[^a-z0-9]/g, "_");
+    a.href = url;
+    a.download = "ficha_diagnostica_9no_seccion_" + safeSec + "_" + safeNom + ".json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function copiarPayloadJson9no() {
+    var p = window._ultimoResultado9no;
+    if (!p) return;
+    var jsonStr = JSON.stringify(p);
+    navigator.clipboard.writeText(jsonStr).then(function() {
+      mostrarMensajeCopiado9no();
+    }).catch(function() {
+      var ta = document.createElement("textarea");
+      ta.value = jsonStr;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      mostrarMensajeCopiado9no();
+    });
+  }
+
+  function copiarResumenTexto9no() {
+    var p = window._ultimoResultado9no;
+    if (!p) return;
+    var texto = "--- INFORME DIAGNÓSTICO MEP 9.° AÑO ---\\n" +
+      "Estudiante: " + p.nom + "\\n" +
+      "Sección: " + p.sec + "\\n" +
+      "Centro Educativo: " + p.inst + "\\n" +
+      "Porcentaje Cognitivo: " + p.porc + "%\\n" +
+      "Fecha: " + p.fec + " " + p.hor + "\\n" +
+      "Firma Digital: " + p.h + "\\n" +
+      "Datos JSON: " + JSON.stringify(p);
+
+    navigator.clipboard.writeText(texto).then(function() {
+      mostrarMensajeCopiado9no();
+    }).catch(function() {
+      var ta = document.createElement("textarea");
+      ta.value = texto;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      mostrarMensajeCopiado9no();
+    });
+  }
+
+  function mostrarMensajeCopiado9no() {
+    var el = document.getElementById("copy-status-msg-9no");
+    if (el) {
+      el.style.display = "block";
+      setTimeout(function() { el.style.display = "none"; }, 3000);
+    }
   }
 
   function cerrarVentanaOReiniciar() {
     if (confirm("¿Desea finalizar y cerrar esta sesión de diagnóstico?")) {
       window.close();
-      // Si el navegador bloquea window.close(), recargar la página limpia
       setTimeout(function() {
         window.location.reload();
       }, 300);

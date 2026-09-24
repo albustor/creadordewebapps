@@ -1,0 +1,931 @@
+import fs from "fs";
+import path from "path";
+
+const VENDOR_PATH = path.join(process.cwd(), "public", "vendor", "html5-qrcode.min.js");
+const OUTPUT_WEBAPPS = path.join(process.cwd(), "public", "webapps", "diagnostico_9no_escaner_datos_locales.html");
+const OUTPUT_PUBLIC = path.join(process.cwd(), "public", "diagnostico_9no_escaner_datos_locales.html");
+
+const html5QrcodeSource = fs.existsSync(VENDOR_PATH)
+  ? fs.readFileSync(VENDOR_PATH, "utf8")
+  : "";
+
+const HTML_CONTENT = `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Escáner de Datos Locales 9.° Año — Formación Tecnológica MEP</title>
+
+<!-- LIBRERÍA QR EMBEBIDA 100% OFFLINE (CERO DEPENDENCIAS EXTERNAS) -->
+<script>
+${html5QrcodeSource}
+</script>
+
+<style>
+:root {
+  --mep-azul: #002b49;
+  --mep-azul-card: #0f3d63;
+  --mep-verde: #059669;
+  --mep-verde-dark: #047857;
+  --mep-verde-light: #ecfdf5;
+  --mep-amber: #d97706;
+  --mep-amber-light: #fef3c7;
+  --mep-rojo: #dc2626;
+  --mep-rojo-light: #fee2e2;
+  --mep-bg: #f8fafc;
+  --mep-card: #ffffff;
+  --mep-texto: #0f172a;
+  --mep-subtexto: #475569;
+  --mep-borde: #cbd5e1;
+  --mep-borde-focus: #0284c7;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--mep-bg);
+  color: var(--mep-texto);
+  line-height: 1.5;
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
+
+header {
+  background: linear-gradient(135deg, var(--mep-azul) 0%, var(--mep-azul-card) 100%);
+  color: white;
+  padding: 20px 16px 18px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.badge-header {
+  display: inline-block;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #f1f5f9;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  margin-bottom: 8px;
+}
+
+header h1 {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: -0.3px;
+  margin-bottom: 4px;
+}
+
+header p {
+  font-size: 12px;
+  color: #cbd5e1;
+  font-weight: 500;
+}
+
+.container {
+  max-width: 700px;
+  margin: 16px auto;
+  padding: 0 14px;
+}
+
+.card {
+  background: var(--mep-card);
+  border: 1px solid var(--mep-borde);
+  border-radius: 20px;
+  padding: 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.card h2 {
+  font-size: 17px;
+  font-weight: 900;
+  color: var(--mep-azul);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--mep-texto);
+  margin-top: 12px;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+input, select {
+  width: 100%;
+  height: 46px;
+  padding: 10px 14px;
+  border: 1.5px solid var(--mep-borde);
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  background: #ffffff;
+  color: var(--mep-texto);
+  transition: all 0.2s;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--mep-borde-focus);
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}
+
+button {
+  width: 100%;
+  height: 48px;
+  border: none;
+  border-radius: 14px;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+.btn-primary { background: #0284c7; color: #ffffff; }
+.btn-primary:hover { background: #0369a1; }
+.btn-emerald { background: var(--mep-verde); color: #ffffff; }
+.btn-emerald:hover { background: var(--mep-verde-dark); }
+.btn-danger { background: var(--mep-rojo); color: #ffffff; }
+.btn-secondary { background: #f1f5f9; color: var(--mep-texto); border: 1px solid #cbd5e1; }
+.btn-secondary:hover { background: #e2e8f0; }
+
+.session-box {
+  background: #f0f9ff;
+  border-left: 4px solid #0284c7;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.counter-badge {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--mep-azul);
+  padding: 10px;
+  background: #f8fafc;
+  border: 1px dashed var(--mep-borde);
+  border-radius: 12px;
+  margin-bottom: 14px;
+}
+
+#reader {
+  width: 100%;
+  max-width: 460px;
+  margin: 14px auto;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid var(--mep-azul);
+  background: #000000;
+}
+
+#reader video {
+  width: 100% !important;
+  height: auto !important;
+  border-radius: 14px;
+}
+
+.alert {
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.5;
+  margin-top: 10px;
+}
+.alert-info { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+.alert-success { background: var(--mep-verde-light); color: #065f46; border: 1px solid #a7f3d0; }
+.alert-error { background: var(--mep-rojo-light); color: #991b1b; border: 1px solid #fecaca; }
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.result-item {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 12px;
+}
+
+.result-item strong {
+  display: block;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 3px;
+  letter-spacing: 0.3px;
+}
+
+.result-item span {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--mep-texto);
+}
+
+.result-wide { grid-column: 1 / -1; }
+
+.record-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+
+.record-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+}
+
+.record-name {
+  font-size: 14px;
+  font-weight: 900;
+  color: var(--mep-azul);
+}
+
+.record-badge {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.record-details {
+  font-size: 12px;
+  color: var(--mep-subtexto);
+  line-height: 1.6;
+}
+
+.button-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.hidden { display: none !important; }
+
+.file-upload-wrapper {
+  margin-top: 10px;
+  text-align: center;
+}
+.file-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #0284c7;
+  padding: 8px 12px;
+  background: #f0f9ff;
+  border: 1px dashed #0284c7;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100%;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="badge-header">MEP • III Ciclo 2027</span>
+  <h1>Escáner de Datos Locales 9.° Año</h1>
+  <p>Captura de resultados QR sin conexión para computadoras de aula</p>
+</header>
+
+<div class="container">
+
+  <!-- PASO 1: CONFIGURACIÓN INICIAL -->
+  <section id="vistaConfig" class="card">
+    <h2>⚙️ Configuración del Grupo</h2>
+    
+    <label for="inputCentro">Centro Educativo:</label>
+    <input id="inputCentro" type="text" placeholder="Ej. Liceo de Costa Rica" value="Colegio de Secundaria MEP">
+
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+      <div>
+        <label for="inputNivel">Nivel:</label>
+        <select id="inputNivel" disabled>
+          <option value="9.° año" selected>9.° Año</option>
+        </select>
+      </div>
+      <div>
+        <label for="inputSeccion">Sección:</label>
+        <input id="inputSeccion" type="text" placeholder="Ej. 9-1" value="9-1">
+      </div>
+    </div>
+
+    <div style="margin-top: 18px;">
+      <button class="btn-emerald" onclick="iniciarSesionDocente()">
+        <span>🚀 Iniciar Sesión de Escaneo</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- PASO 2: SESIÓN ACTIVA Y CÁMARA -->
+  <section id="vistaSesion" class="card hidden">
+    <h2>📷 Escaneo de QR Estudiantes</h2>
+
+    <div id="sessionInfo" class="session-box"></div>
+
+    <div id="contadorEstudiantes" class="counter-badge">
+      Estudiantes Registrados: 0
+    </div>
+
+    <!-- Botón de apertura de cámara -->
+    <button id="btnActivarCamara" class="btn-primary" onclick="iniciarCamaraUniversal()">
+      <span>📷 Activar Cámara para Escanear</span>
+    </button>
+
+    <button id="btnDetenerCamara" class="btn-secondary hidden" onclick="detenerCamara()" style="margin-top: 8px;">
+      <span>⏹️ Pausar Cámara</span>
+    </button>
+
+    <!-- Contenedor del video con playsinline para iOS -->
+    <div id="reader" class="hidden" playsinline webkit-playsinline></div>
+
+    <!-- Opción de respaldo: Foto desde galería / archivo -->
+    <div class="file-upload-wrapper">
+      <label class="file-upload-btn">
+        <span>📁 ¿Problemas con la cámara en vivo? Cargar foto de QR</span>
+        <input type="file" id="qrFileInput" accept="image/*" capture="environment" style="display: none;" onchange="procesarArchivoImagen(event)">
+      </label>
+    </div>
+
+    <div id="mensajeCamara"></div>
+
+    <div class="button-grid" style="margin-top: 16px;">
+      <button class="btn-secondary" onclick="alternarVistaRegistros()">
+        <span>📋 Ver Padrón</span>
+      </button>
+      <button class="btn-emerald" onclick="exportarCSV()">
+        <span>📊 Exportar Excel</span>
+      </button>
+    </div>
+
+    <div style="margin-top: 8px;">
+      <button class="btn-secondary" onclick="finalizarSesion()" style="color: #64748b; font-size: 12px; height: 38px;">
+        <span>🔄 Cambiar de Sección / Centro</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- PASO 3: CONFIRMACIÓN DE RESULTADO DETECTADO -->
+  <section id="vistaResultado" class="card hidden">
+    <h2>✅ Resultado Detectado</h2>
+
+    <div id="contenidoResultado"></div>
+
+    <button class="btn-emerald" onclick="guardarRegistroActual()">
+      <span>💾 Guardar Registro de Estudiante</span>
+    </button>
+
+    <button class="btn-secondary" onclick="descartarYReanudar()" style="margin-top: 8px;">
+      <span>🔄 Descartar y Continuar Escaneando</span>
+    </button>
+  </section>
+
+  <!-- PASO 4: PADRÓN DE REGISTROS ALMACENADOS -->
+  <section id="vistaRegistros" class="card hidden">
+    <h2>📋 Padrón de Estudiantes Registrados</h2>
+
+    <div id="listaRegistros"></div>
+
+    <div class="button-grid" style="margin-top: 14px;">
+      <button class="btn-emerald" onclick="exportarCSV()">
+        <span>📊 Descargar CSV Oficial</span>
+      </button>
+      <button class="btn-danger" onclick="eliminarTodosRegistros()">
+        <span>🗑️ Limpiar Todo</span>
+      </button>
+    </div>
+
+    <button class="btn-secondary" onclick="alternarVistaRegistros()" style="margin-top: 8px;">
+      <span>⬅️ Volver al Escáner</span>
+    </button>
+  </section>
+
+</div>
+
+<script>
+const STORAGE_KEY = "mep_diagnostico_9no_escaner_v1";
+
+let sesionActiva = {
+  centro: "",
+  nivel: "9.° año",
+  seccion: ""
+};
+
+let html5QrCodeInstance = null;
+let resultadoPendiente = null;
+let procesandoLectura = false;
+
+// Audio Beep Feedback (Web Audio API)
+function emitirBeepExito() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    gain.gain.setValueAtTime(0.2, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.15);
+  } catch (e) {}
+
+  if (typeof navigator !== "undefined" && navigator.vibrate) {
+    try { navigator.vibrate(150); } catch (e) {}
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  actualizarContador();
+});
+
+function iniciarSesionDocente() {
+  const centro = document.getElementById("inputCentro").value.trim();
+  const seccion = document.getElementById("inputSeccion").value.trim();
+
+  if (!centro) {
+    alert("Por favor ingrese el Centro Educativo.");
+    return;
+  }
+  if (!seccion) {
+    alert("Por favor ingrese la sección.");
+    return;
+  }
+
+  sesionActiva.centro = centro;
+  sesionActiva.seccion = seccion;
+
+  document.getElementById("sessionInfo").innerHTML = \`
+    <strong>🏫 Centro:</strong> \${escaparHTML(sesionActiva.centro)}<br>
+    <strong>📚 Nivel:</strong> 9.° Año &nbsp;|&nbsp; <strong>👥 Sección:</strong> \${escaparHTML(sesionActiva.seccion)}
+  \`;
+
+  document.getElementById("vistaConfig").classList.add("hidden");
+  document.getElementById("vistaSesion").classList.remove("hidden");
+  actualizarContador();
+}
+
+async function iniciarCamaraUniversal() {
+  if (html5QrCodeInstance) return;
+  procesandoLectura = false;
+
+  const readerEl = document.getElementById("reader");
+  readerEl.classList.remove("hidden");
+  document.getElementById("btnActivarCamara").classList.add("hidden");
+  document.getElementById("btnDetenerCamara").classList.remove("hidden");
+
+  document.getElementById("mensajeCamara").innerHTML = \`
+    <div class="alert alert-info">
+      📸 Apunte la cámara hacia el código QR en la pantalla de la computadora del estudiante.
+    </div>
+  \`;
+
+  try {
+    if (typeof Html5Qrcode === "undefined") {
+      throw new Error("Librería QR no disponible en este entorno.");
+    }
+
+    html5QrCodeInstance = new Html5Qrcode("reader");
+
+    const qrConfig = {
+      fps: 15,
+      qrbox: function(viewWidth, viewHeight) {
+        const edge = Math.min(viewWidth, viewHeight);
+        return { width: Math.floor(edge * 0.8), height: Math.floor(edge * 0.8) };
+      },
+      aspectRatio: 1.0,
+      experimentalFeatures: {
+        useBarCodeDetectorIfSupported: true
+      }
+    };
+
+    // Cascada de permisos: 1) FacingMode environment -> 2) enumerateDevices fallback
+    try {
+      await html5QrCodeInstance.start(
+        { facingMode: "environment" },
+        qrConfig,
+        onQRDetectado,
+        () => {}
+      );
+    } catch (errFacing) {
+      console.warn("Fallo con facingMode environment, intentando con lista de cámaras...", errFacing);
+      const cameras = await Html5Qrcode.getCameras();
+      if (cameras && cameras.length > 0) {
+        const backCam = cameras[cameras.length - 1];
+        await html5QrCodeInstance.start(backCam.id, qrConfig, onQRDetectado, () => {});
+      } else {
+        throw new Error("No se detectaron cámaras en este dispositivo móvil.");
+      }
+    }
+  } catch (error) {
+    console.error("Error al activar cámara:", error);
+    await detenerCamara();
+    document.getElementById("mensajeCamara").innerHTML = \`
+      <div class="alert alert-error">
+        <strong>⚠️ No fue posible activar la cámara en vivo.</strong><br>
+        • Asegúrate de haber otorgado permisos de cámara en tu navegador.<br>
+        • Puedes usar el botón de abajo <strong>"Cargar foto de QR"</strong> para tomar una foto directamente con tu cámara nativa.
+      </div>
+    \`;
+  }
+}
+
+async function detenerCamara() {
+  if (html5QrCodeInstance) {
+    try {
+      await html5QrCodeInstance.stop();
+    } catch (e) {}
+    try {
+      await html5QrCodeInstance.clear();
+    } catch (e) {}
+    html5QrCodeInstance = null;
+  }
+  document.getElementById("reader").classList.add("hidden");
+  document.getElementById("btnActivarCamara").classList.remove("hidden");
+  document.getElementById("btnDetenerCamara").classList.add("hidden");
+}
+
+async function onQRDetectado(textoQR) {
+  if (procesandoLectura) return;
+  procesandoLectura = true;
+
+  emitirBeepExito();
+  await detenerCamara();
+
+  try {
+    const datos = interpretarPayloadQR(textoQR);
+    resultadoPendiente = datos;
+    renderizarResultado(datos);
+  } catch (e) {
+    procesandoLectura = false;
+    document.getElementById("mensajeCamara").innerHTML = \`
+      <div class="alert alert-error">
+        <strong>⚠️ Código QR leído pero no reconocido:</strong> \${escaparHTML(e.message)}
+      </div>
+    \`;
+  }
+}
+
+// Fallback: Escaneo de foto cargada desde galería o app de cámara
+async function procesarArchivoImagen(e) {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+
+  document.getElementById("mensajeCamara").innerHTML = \`
+    <div class="alert alert-info">⌛ Procesando imagen del código QR...</div>
+  \`;
+
+  try {
+    const html5QrCode = new Html5Qrcode("reader");
+    const decodedText = await html5QrCode.scanFile(file, true);
+    await html5QrCode.clear();
+    onQRDetectado(decodedText);
+  } catch (err) {
+    document.getElementById("mensajeCamara").innerHTML = \`
+      <div class="alert alert-error">
+        <strong>⚠️ No se detectó un código QR legible en la imagen.</strong> Intente tomar una foto más nítida y centrada.
+      </div>
+    \`;
+  }
+}
+
+function interpretarPayloadQR(raw) {
+  if (!raw || !raw.trim()) {
+    throw new Error("El código QR está vacío.");
+  }
+
+  // Si viene en formato JSON estructurado
+  if (raw.trim().startsWith("{") && raw.trim().endsWith("}")) {
+    try {
+      const obj = JSON.parse(raw);
+      return {
+        estudiante: obj.estudiante || obj.nombre || "Estudiante",
+        cedula: obj.cedula || "",
+        seccionQR: obj.seccion || sesionActiva.seccion,
+        fecha: obj.fecha || new Date().toLocaleDateString("es-CR"),
+        cognoscitiva: obj.cognoscitiva || (obj.notaCognitiva ? \`\${obj.notaCognitiva}/10\` : "N/D"),
+        nivelCognoscitivo: obj.nivelCognoscitivo || obj.nivel || "Inicial",
+        tarjetas: obj.tarjetas || obj.simulacionTarjetas || "Correcto",
+        puertos: obj.puertos || "Correcto",
+        ejecucion: obj.ejecucion || "Completado",
+        socioafectiva: obj.socioafectiva || "Favorable",
+        fortalezas: obj.fortalezas || "Participación activa",
+        prioridades: obj.prioridades || "Reforzar algoritmos",
+        textoOriginal: raw
+      };
+    } catch (e) {}
+  }
+
+  // Parseo por líneas de texto plano (Formato estándar)
+  const lineas = raw.split(/\\r?\\n/).map(l => l.trim()).filter(Boolean);
+
+  const datos = {
+    estudiante: lineas[0] || "Estudiante",
+    seccionQR: lineas[1] || sesionActiva.seccion,
+    fecha: lineas[2] || new Date().toLocaleDateString("es-CR"),
+    cognoscitiva: "",
+    nivelCognoscitivo: "",
+    tarjetas: "",
+    puertos: "",
+    ejecucion: "",
+    socioafectiva: "",
+    fortalezas: "",
+    prioridades: "",
+    textoOriginal: raw
+  };
+
+  for (let i = 0; i < lineas.length; i++) {
+    const l = lineas[i];
+    const upper = l.toUpperCase();
+    if (upper.startsWith("COGNOSCITIVA:")) datos.cognoscitiva = l.substring(13).trim();
+    else if (upper.startsWith("NIVEL:")) datos.nivelCognoscitivo = l.substring(6).trim();
+    else if (upper.startsWith("TARJETAS:")) datos.tarjetas = l.substring(9).trim();
+    else if (upper.startsWith("PUERTOS:")) datos.puertos = l.substring(8).trim();
+    else if (upper.startsWith("EJECUCIÓN:") || upper.startsWith("EJECUCION:")) datos.ejecucion = l.substring(10).trim();
+    else if (l.toLowerCase().includes("indicadores favorables")) datos.socioafectiva = l;
+    else if (upper === "FORTALEZAS:" && lineas[i + 1]) datos.fortalezas = lineas[i + 1];
+    else if (upper === "PRIORIDADES:" && lineas[i + 1]) datos.prioridades = lineas[i + 1];
+  }
+
+  if (!datos.estudiante) {
+    throw new Error("No se pudo identificar el nombre del estudiante.");
+  }
+
+  return datos;
+}
+
+function renderizarResultado(datos) {
+  document.getElementById("contenidoResultado").innerHTML = \`
+    <div class="result-grid">
+      <div class="result-item">
+        <strong>Estudiante</strong>
+        <span>\${escaparHTML(datos.estudiante)}</span>
+      </div>
+      <div class="result-item">
+        <strong>Sección QR</strong>
+        <span>\${escaparHTML(datos.seccionQR || sesionActiva.seccion)}</span>
+      </div>
+      <div class="result-item">
+        <strong>Dimensión Cognoscitiva</strong>
+        <span>\${escaparHTML(datos.cognoscitiva || "Registrado")} (\${escaparHTML(datos.nivelCognoscitivo || "Nivel")})</span>
+      </div>
+      <div class="result-item">
+        <strong>Dimensión Psicomotora</strong>
+        <span>\${escaparHTML(datos.ejecucion || datos.tarjetas || "Completado")}</span>
+      </div>
+      <div class="result-item result-wide">
+        <strong>Dimensión Socioafectiva</strong>
+        <span>\${escaparHTML(datos.socioafectiva || "Favorable")}</span>
+      </div>
+      \${datos.fortalezas ? \`
+        <div class="result-item result-wide">
+          <strong>Fortalezas Observadas</strong>
+          <span>\${escaparHTML(datos.fortalezas)}</span>
+        </div>
+      \` : ""}
+    </div>
+  \`;
+
+  document.getElementById("vistaSesion").classList.add("hidden");
+  document.getElementById("vistaResultado").classList.remove("hidden");
+}
+
+function guardarRegistroActual() {
+  if (!resultadoPendiente) return;
+
+  const registros = obtenerRegistros();
+
+  const registroNuevo = {
+    id: Date.now().toString(36) + Math.random().toString(36).substring(2, 6),
+    centro: sesionActiva.centro,
+    nivel: sesionActiva.nivel,
+    seccion: sesionActiva.seccion,
+    estudiante: resultadoPendiente.estudiante,
+    fecha: resultadoPendiente.fecha,
+    cognoscitiva: resultadoPendiente.cognoscitiva,
+    nivelCognoscitivo: resultadoPendiente.nivelCognoscitivo,
+    tarjetas: resultadoPendiente.tarjetas,
+    puertos: resultadoPendiente.puertos,
+    ejecucion: resultadoPendiente.ejecucion,
+    socioafectiva: resultadoPendiente.socioafectiva,
+    fortalezas: resultadoPendiente.fortalezas,
+    prioridades: resultadoPendiente.prioridades,
+    qrOriginal: resultadoPendiente.textoOriginal,
+    timestamp: new Date().toISOString()
+  };
+
+  registros.push(registroNuevo);
+  guardarRegistros(registros);
+
+  resultadoPendiente = null;
+  procesandoLectura = false;
+
+  document.getElementById("vistaResultado").classList.add("hidden");
+  document.getElementById("vistaSesion").classList.remove("hidden");
+  actualizarContador();
+
+  document.getElementById("mensajeCamara").innerHTML = \`
+    <div class="alert alert-success">
+      ✅ Registro de <strong>\${escaparHTML(registroNuevo.estudiante)}</strong> guardado exitosamente.
+    </div>
+  \`;
+}
+
+function descartarYReanudar() {
+  resultadoPendiente = null;
+  procesandoLectura = false;
+  document.getElementById("vistaResultado").classList.add("hidden");
+  document.getElementById("vistaSesion").classList.remove("hidden");
+}
+
+function obtenerRegistros() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function guardarRegistros(list) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+  } catch (e) {
+    alert("Error al guardar en el almacenamiento local del teléfono.");
+  }
+}
+
+function actualizarContador() {
+  const count = obtenerRegistros().length;
+  const el = document.getElementById("contadorEstudiantes");
+  if (el) el.textContent = \`Estudiantes Registrados: \${count}\`;
+}
+
+function alternarVistaRegistros() {
+  const vReg = document.getElementById("vistaRegistros");
+  const vSes = document.getElementById("vistaSesion");
+
+  if (vReg.classList.contains("hidden")) {
+    detenerCamara();
+    vSes.classList.add("hidden");
+    vReg.classList.remove("hidden");
+    renderizarListaPadrón();
+  } else {
+    vReg.classList.add("hidden");
+    vSes.classList.remove("hidden");
+  }
+}
+
+function renderizarListaPadrón() {
+  const registros = obtenerRegistros().reverse();
+  const cont = document.getElementById("listaRegistros");
+
+  if (registros.length === 0) {
+    cont.innerHTML = \`<div class="alert alert-info">No hay estudiantes registrados aún en este dispositivo.</div>\`;
+    return;
+  }
+
+  let html = "";
+  registros.forEach((r) => {
+    html += \`
+      <div class="record-card">
+        <div class="record-header">
+          <span class="record-name">\${escaparHTML(r.estudiante)}</span>
+          <span class="record-badge">\${escaparHTML(r.seccion)}</span>
+        </div>
+        <div class="record-details">
+          <strong>🏫 Centro:</strong> \${escaparHTML(r.centro)}<br>
+          <strong>🧠 Cognitivo:</strong> \${escaparHTML(r.cognoscitiva || "Completado")} (\${escaparHTML(r.nivelCognoscitivo || "Inicial")})<br>
+          <strong>⚙️ Psicomotor:</strong> \${escaparHTML(r.ejecucion || "Completado")}<br>
+          <strong>📅 Fecha:</strong> \${escaparHTML(r.fecha)}
+        </div>
+        <button class="btn-secondary" onclick="eliminarRegistroIndividual('\${r.id}')" style="margin-top: 8px; color: #dc2626; height: 34px; font-size: 11px;">
+          🗑️ Eliminar Registro
+        </button>
+      </div>
+    \`;
+  });
+
+  cont.innerHTML = html;
+}
+
+function eliminarRegistroIndividual(id) {
+  if (!confirm("¿Desea eliminar el registro de este estudiante?")) return;
+  const list = obtenerRegistros().filter(r => r.id !== id);
+  guardarRegistros(list);
+  actualizarContador();
+  renderizarListaPadrón();
+}
+
+function eliminarTodosRegistros() {
+  if (!confirm("⚠️ ¿Está seguro de eliminar TODOS los registros de este dispositivo? Esta acción no se puede deshacer.")) return;
+  localStorage.removeItem(STORAGE_KEY);
+  actualizarContador();
+  renderizarListaPadrón();
+}
+
+function exportarCSV() {
+  const registros = obtenerRegistros();
+  if (registros.length === 0) {
+    alert("No hay registros para exportar.");
+    return;
+  }
+
+  const encabezados = [
+    "Centro Educativo", "Nivel", "Sección", "Estudiante", "Fecha",
+    "Cognoscitiva", "Nivel Cognoscitivo", "Tarjetas", "Puertos", "Ejecución", "Socioafectiva", "Fortalezas", "Prioridades"
+  ];
+
+  let csv = "\uFEFF" + encabezados.map(c => \`"\${csvEscapar(c)}"\`).join(";") + "\\n";
+
+  registros.forEach((r) => {
+    const fila = [
+      r.centro, r.nivel, r.seccion, r.estudiante, r.fecha,
+      r.cognoscitiva, r.nivelCognoscitivo, r.tarjetas, r.puertos, r.ejecucion, r.socioafectiva, r.fortalezas, r.prioridades
+    ];
+    csv += fila.map(c => \`"\${csvEscapar(c)}"\`).join(";") + "\\n";
+  });
+
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = \`diagnostico_FT_9no_\${new Date().toISOString().slice(0, 10)}.csv\`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function csvEscapar(val) {
+  if (val === null || val === undefined) return "";
+  return String(val).replace(/"/g, '""').replace(/\\r?\\n/g, " ");
+}
+
+function escaparHTML(val) {
+  if (val === null || val === undefined) return "";
+  return String(val).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function finalizarSesion() {
+  detenerCamara();
+  document.getElementById("vistaSesion").classList.add("hidden");
+  document.getElementById("vistaResultado").classList.add("hidden");
+  document.getElementById("vistaRegistros").classList.add("hidden");
+  document.getElementById("vistaConfig").classList.remove("hidden");
+}
+</script>
+</body>
+</html>`;
+
+fs.writeFileSync(OUTPUT_WEBAPPS, HTML_CONTENT, "utf8");
+fs.writeFileSync(OUTPUT_PUBLIC, HTML_CONTENT, "utf8");
+console.log("✅ Escáner 9.° Año compilado 100% offline con éxito en:");
+console.log(" - " + OUTPUT_WEBAPPS);
+console.log(" - " + OUTPUT_PUBLIC);
