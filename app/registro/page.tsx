@@ -883,10 +883,12 @@ export default function RegistroDocentePage() {
               </div>
 
               {/* Teléfono de Contacto */}
-              <div className="space-y-1.5 md:col-span-2">
+              <div className="space-y-2 md:col-span-2">
                 <label className="block text-xs font-black text-slate-800 uppercase tracking-wider flex items-center justify-between">
-                  <span>Teléfono de Contacto (Opcional)</span>
-                  <span className="text-[11px] font-bold text-slate-500 lowercase">para avisos o asistencia complementaria</span>
+                  <span>Teléfono Móvil de Contacto (Opcional)</span>
+                  <span className="text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                    Opcional • Apoyo Docente
+                  </span>
                 </label>
                 <div className="relative">
                   <input
@@ -898,11 +900,14 @@ export default function RegistroDocentePage() {
                   />
                   <Phone size={18} className="absolute right-4 top-3.5 text-slate-400" />
                 </div>
-                <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-[11.5px] text-slate-700 font-medium flex items-start gap-2 mt-2">
-                  <Info size={16} className="text-slate-500 shrink-0 mt-0.5" weight="bold" />
-                  <span>
-                    <strong>Canal Opcional:</strong> Se utilizará como medio complementario para avisos de gestión, soporte técnico o asistencia pedagógica. Toda la comunicación formal y oficial se mantendrá siempre por Correo Institucional MEP (@mep.go.cr).
-                  </span>
+                <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-[11.5px] text-slate-700 font-medium space-y-1.5 mt-1.5 shadow-2xs">
+                  <div className="flex items-center gap-2 font-bold text-slate-900">
+                    <ShieldCheck size={16} className="text-emerald-700 shrink-0" weight="bold" />
+                    <span>Compromiso de Privacidad y Finalidad Exclusivamente Educativa</span>
+                  </div>
+                  <p className="text-slate-600 leading-relaxed text-[11px]">
+                    El registro de su número telefónico es <strong>completamente opcional</strong>. Los datos de contacto suministrados son de carácter confidencial y se custodian bajo estricto principio de protección institucional: <strong>su uso es único y exclusivo para fines de apoyo pedagógico, laboral y asistencia técnica</strong> entre el personal docente y la Asesoría de Formación Tecnológica. No existe ningún tipo de uso comercial ni divulgación externa a terceros. Al facilitarlo, usted habilita este medio ágil para la recuperación de accesos y coordinación educativa.
+                  </p>
                 </div>
               </div>
             </div>
@@ -1688,9 +1693,12 @@ export default function RegistroDocentePage() {
                     }`}
                   >
                     <Phone size={18} className="text-emerald-600" />
-                    <span>Mensajería Móvil</span>
+                    <span>Mensajería Móvil (WhatsApp)</span>
                   </button>
                 </div>
+                <p className="text-[11px] text-slate-500 font-medium leading-relaxed">
+                  * El canal de mensajería móvil es opcional y de uso estrictamente profesional para facilitar el restablecimiento ágil de credenciales docentes.
+                </p>
               </div>
 
               <button
