@@ -35,11 +35,11 @@ function generarDocumento9noPDF() {
     doc.setFillColor(...COLOR_PURPLE);
     doc.rect(0, 5, pageWidth, 1.5, 'F');
 
-    // Texto de cabecera
+    // Texto de cabecera oficial
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(7.5);
     doc.setTextColor(...COLOR_PRIMARY);
-    doc.text("MINISTERIO DE EDUCACIÓN PÚBLICA DE COSTA RICA • DRTE • PNFT 2027", margin, 11.5);
+    doc.text("MINISTERIO DE EDUCACIÓN PÚBLICA DE COSTA RICA • DRTE • PNFT • GUÍA DOCENTE 2026", margin, 11.5);
     
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7);
@@ -58,7 +58,7 @@ function generarDocumento9noPDF() {
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7);
     doc.setTextColor(...COLOR_MUTED);
-    doc.text("Evaluación diagnóstica de 9.° año: «Aula Inteligente», simulación 2D y sistemas embebidos (saberes del PNFT)", margin, pageHeight - 8);
+    doc.text("Evaluación diagnóstica de 9.° año: «Aula Inteligente», simulación 2D y sistemas embebidos • PNFT Guía Docente 2026", margin, pageHeight - 8);
     doc.text(`Página ${pageNum} de ${totalPages}`, pageWidth - margin, pageHeight - 8, { align: 'right' });
   }
 
@@ -74,11 +74,11 @@ function generarDocumento9noPDF() {
 
   // Distintivo superior
   doc.setFillColor(126, 34, 206);
-  doc.roundedRect(margin, 10, 145, 6.5, 1.5, 1.5, 'F');
+  doc.roundedRect(margin, 10, 160, 6.5, 1.5, 1.5, 'F');
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7.5);
   doc.setTextColor(255, 255, 255);
-  doc.text("PROGRAMA NACIONAL DE FORMACIÓN TECNOLÓGICA • 9.° AÑO (NOVENO)", margin + 4, 14.5);
+  doc.text("PROGRAMA NACIONAL DE FORMACIÓN TECNOLÓGICA • 9.° AÑO • GUÍA DOCENTE 2026", margin + 4, 14.5);
 
   // Título principal en formato gramatical hispanoamericano
   doc.setFont('helvetica', 'bold');
@@ -93,13 +93,13 @@ function generarDocumento9noPDF() {
   doc.setFontSize(8);
   doc.setTextColor(241, 245, 249);
   doc.text("Evaluación integral de sistemas embebidos: simulador 2D de circuitos, 10 reactivos cognitivos y saberes PNFT.", margin, 42);
-  doc.text("Arquitectura de doble código QR: estudiante autónomo y docente evaluador con sistematización en tiempo real.", margin, 48);
+  doc.text("Arquitectura de doble código QR: estudiante autónomo y docente con escáner móvil PWA para sistematización en tiempo real.", margin, 48);
 
   // Tarjeta de Ficha Técnica
   let yPos = 67;
   doc.setFillColor(...COLOR_LIGHT_BG);
   doc.setDrawColor(...COLOR_BORDER);
-  doc.roundedRect(margin, yPos, contentWidth, 32, 2.5, 2.5, 'FD');
+  doc.roundedRect(margin, yPos, contentWidth, 34, 2.5, 2.5, 'FD');
 
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8.5);
@@ -110,12 +110,13 @@ function generarDocumento9noPDF() {
   doc.setFontSize(7.5);
   doc.setTextColor(...COLOR_DARK);
   doc.text("• Población meta: Estudiantes de 9.° año (noveno de secundaria / cierre del Tercer Ciclo de la EGB).", margin + 6, yPos + 12);
-  doc.text("• Enfoque de la misión: «Aula Inteligente» — Domótica, sensores LDR, microcontroladores y lógica IoT.", margin + 6, yPos + 17);
-  doc.text("• Componentes evaluativos: Parte A (10 reactivos cognitivos) + Parte B (simulador 2D) + observación docente.", margin + 6, yPos + 22);
-  doc.text("• Acceso web en producción: https://diagnosticosecundaria.vercel.app/diagnostico (pestaña 9.° año).", margin + 6, yPos + 27);
+  doc.text("• Enfoque de la misión: «Aula Inteligente» — Domótica, sensores LDR, microcontroladores ATmega328P y lógica IoT.", margin + 6, yPos + 17);
+  doc.text("• Componentes evaluativos: Parte A (10 reactivos) + Parte B (simulador 2D) + observación docente + reflexión metacognitiva.", margin + 6, yPos + 22);
+  doc.text("• Registro cronológico: Marca temporal con fecha y hora de Costa Rica (UTC-6) y base inicial limpia de registro.", margin + 6, yPos + 27);
+  doc.text("• Acceso web en producción: https://diagnosticosecundaria.vercel.app/diagnostico (pestaña 9.° año).", margin + 6, yPos + 32);
 
   // 1. Fundamentación Pedagógica
-  yPos = 105;
+  yPos = 107;
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10.5);
   doc.setTextColor(...COLOR_PRIMARY);
@@ -125,11 +126,11 @@ function generarDocumento9noPDF() {
   doc.setFontSize(8);
   doc.setTextColor(...COLOR_DARK);
   doc.text(
-    "El diagnóstico de 9.° año representa la culminación del Tercer Ciclo en Formación Tecnológica. Integra los saberes de computación física, automatización y pensamiento computacional en un reto situado de «Aula Inteligente» que evalúa tres dimensiones de aprendizaje formativo:",
+    "El diagnóstico de 9.° año representa la culminación del Tercer Ciclo en Formación Tecnológica. Integra los saberes de computación física, automatización y pensamiento computacional en un reto situado de «Aula Inteligente» alineado a la Guía Docente 2026:",
     margin, yPos + 5, { maxWidth: contentWidth }
   );
 
-  yPos = 123;
+  yPos = 125;
   const colW = (contentWidth - 6) / 3;
 
   // Dimensión 1: Cognitiva
@@ -181,7 +182,7 @@ function generarDocumento9noPDF() {
   doc.text("• Colaboración y diálogo constructivo.", margin + (colW + 3) * 2 + 4, yPos + 35);
 
   // 2. Arquitectura de Doble Código QR
-  yPos = 177;
+  yPos = 179;
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10);
   doc.setTextColor(...COLOR_PRIMARY);
@@ -203,14 +204,14 @@ function generarDocumento9noPDF() {
       cellPadding: 2.2
     },
     columnStyles: {
-      0: { cellWidth: 36, fontStyle: 'bold' },
+      0: { cellWidth: 34, fontStyle: 'bold' },
       1: { cellWidth: 72 },
-      2: { cellWidth: 74 }
+      2: { cellWidth: 72 }
     },
     head: [['Canal de acceso', 'Función y mecanismo en pantalla', 'Beneficio operativo en el aula']],
     body: [
       ['Canal QR 1: Estudiante (autónomo)', 'Abre la WebApp de Aula Inteligente con los 10 reactivos, simulador 2D y reflexión. Al finalizar genera su QR individual cifrado.', 'Permite que cada alumno trabaje a su propio ritmo sin requerir cuenta previa ni conexión a internet.'],
-      ['Canal QR 2: Docente (evaluador)', 'Abre el aplicativo evaluador del profesor para configurar nómina, escanear códigos QR estudiantiles y registrar observación psicomotriz.', 'Consolida la sección en menos de 2 minutos y genera el acta oficial del MEP al instante.'],
+      ['Canal QR 2: Docente (Escáner Móvil PWA)', 'Abre el aplicativo evaluador o escáner PWA en el celular para escanear códigos QR de pantallas de laboratorio y registrar observación.', 'Consolida la sección en menos de 2 minutos, con cero consumo de datos y acta oficial al instante.'],
       ['Firma de seguridad SHA-256', 'Firma criptográfica incluida en el QR individual que garantiza la autenticidad e inmutabilidad de los resultados obtenidos.', 'Elimina fraudes o alteraciones de datos en entornos desconectados.'],
       ['Modalidad dual (en línea / local)', 'Transición transparente entre base de datos remota (cuando hay red) y almacenamiento local con escaneo QR (sin red).', 'Garantiza cobertura del 100% de centros educativos del país.']
     ]
@@ -233,7 +234,7 @@ function generarDocumento9noPDF() {
   doc.setFontSize(8);
   doc.setTextColor(...COLOR_DARK);
   doc.text(
-    "Estructura de la Parte A (conocimientos conceptuales) y Parte B (simulación práctica 2D) del diagnóstico de 9.° año:",
+    "Estructura de la Parte A (conocimientos conceptuales) y Parte B (simulación práctica 2D) del diagnóstico de 9.° año según la Guía Docente 2026:",
     margin, yPos + 5, { maxWidth: contentWidth }
   );
 
@@ -256,11 +257,11 @@ function generarDocumento9noPDF() {
     },
     columnStyles: {
       0: { cellWidth: 16, fontStyle: 'bold', halign: 'center' },
-      1: { cellWidth: 32, fontStyle: 'bold' },
-      2: { cellWidth: 70 },
+      1: { cellWidth: 30, fontStyle: 'bold' },
+      2: { cellWidth: 68 },
       3: { cellWidth: 64 }
     },
-    head: [['Reactivo', 'Saber curricular', 'Descripción de la situación problema', 'Criterio de evaluación']],
+    head: [['Reactivo', 'Saber curricular oficial', 'Descripción de la situación problema', 'Criterio de evaluación']],
     body: [
       ['Ítem 1', 'Energía y conversión', 'Transformación de energía solar a eléctrica y cinética en actuadores.', 'Logrado: Reconoce principio de conservación.'],
       ['Ítem 2', 'Circuito eléctrico simple', 'Función de fuente, interruptor, carga o actuador y trayectoria cerrada.', 'Logrado: Identifica los 3 componentes esenciales.'],
@@ -353,7 +354,7 @@ function generarDocumento9noPDF() {
   drawHeaderFooter(3, 5, "Rúbricas psicomotrices y socioafectivas de 9.° año");
 
   // =========================================================================
-  // PÁGINA 4: EL INSTRUMENTO DOCENTE EVALUADOR Y SISTEMATIZACIÓN (9.° AÑO)
+  // PÁGINA 4: EL INSTRUMENTO DOCENTE EVALUADOR, ESCÁNER MÓVIL Y SISTEMATIZACIÓN
   // =========================================================================
   doc.addPage();
   
@@ -361,13 +362,13 @@ function generarDocumento9noPDF() {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(11);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("5. El instrumento docente evaluador y sistematizador de 9.° año", margin, yPos);
+  doc.text("5. El instrumento docente evaluador y módulo de escaneo móvil de 9.° año", margin, yPos);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   doc.setTextColor(...COLOR_DARK);
   doc.text(
-    "El aplicativo del docente para 9.° año integra un potente sistematizador grupal que procesa nóminas completas con escaneo QR y telemetría centralizada:",
+    "El aplicativo del docente para 9.° año integra un potente sistematizador grupal que procesa nóminas completas con escaneo móvil QR y telemetría centralizada:",
     margin, yPos + 5, { maxWidth: contentWidth }
   );
 
@@ -387,8 +388,8 @@ function generarDocumento9noPDF() {
   doc.setTextColor(...COLOR_DARK);
   doc.text("• Carga ágil de nómina de estudiantes (9-1 a 9-20).", margin + 4, yPos + 12);
   doc.text("• Asistente de primer ingreso y configuración rápida.", margin + 4, yPos + 17);
-  doc.text("• Escáner de códigos QR con cámara web o móvil.", margin + 4, yPos + 22);
-  doc.text("• Marcado directo de indicadores psicomotores.", margin + 4, yPos + 27);
+  doc.text("• Base inicial en blanco (0 registros) para nuevos docentes.", margin + 4, yPos + 22);
+  doc.text("• Marca temporal con fecha y hora de Costa Rica (UTC-6).", margin + 4, yPos + 27);
   doc.text("• Almacenamiento local blindado sin fugas de datos.", margin + 4, yPos + 32);
 
   // Card 2: Sistematización Grupal
@@ -403,12 +404,12 @@ function generarDocumento9noPDF() {
   doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
   doc.text("• Cálculo instantáneo de porcentajes de logro (L / ED / RA).", margin + cardW + 8, yPos + 12);
-  doc.text("• Consolidado de los saberes del PNFT (Saber, Saber hacer, Saber ser).", margin + cardW + 8, yPos + 17);
+  doc.text("• Consolidado de saberes (Saber, Saber hacer, Saber ser).", margin + cardW + 8, yPos + 17);
   doc.text("• Exportación de actas completas en formatos CSV y Excel.", margin + cardW + 8, yPos + 22);
   doc.text("• Generación de PDF institucional con sello del MEP.", margin + cardW + 8, yPos + 27);
   doc.text("• Respaldo local y recuperación de registros previos.", margin + cardW + 8, yPos + 32);
 
-  // Card 3: Monitoreo en Tiempo Real
+  // Card 3: Escáner QR Móvil PWA
   yPos = 73;
   doc.setFillColor(...COLOR_LIGHT_BG);
   doc.setDrawColor(...COLOR_BORDER);
@@ -416,15 +417,15 @@ function generarDocumento9noPDF() {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("3. Monitoreo en tiempo real (Telemetría)", margin + 4, yPos + 6);
+  doc.text("3. Escáner QR móvil PWA (100% offline)", margin + 4, yPos + 6);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
-  doc.text("• Recepción instantánea (0 ms) de entregas estudiantiles.", margin + 4, yPos + 12);
-  doc.text("• Módulo de validación antifraude con token criptográfico.", margin + 4, yPos + 17);
-  doc.text("• Identificación de reactivos con mayor índice de error.", margin + 4, yPos + 22);
-  doc.text("• Análisis comparativo entre secciones de 9.° año.", margin + 4, yPos + 27);
-  doc.text("• Sincronización transparente con base de datos en la nube.", margin + 4, yPos + 32);
+  doc.text("• El docente abre el escáner PWA en su celular o tableta.", margin + 4, yPos + 12);
+  doc.text("• Apunta la cámara a la pantalla del alumno sin internet.", margin + 4, yPos + 17);
+  doc.text("• Decodificación instantánea del token seguro SHA-256.", margin + 4, yPos + 22);
+  doc.text("• Cero consumo de datos móviles en el teléfono.", margin + 4, yPos + 27);
+  doc.text("• Sincronización transparente cuando regrese la red.", margin + 4, yPos + 32);
 
   // Card 4: Decisiones Pedagógicas con IA y DUA
   doc.setFillColor(...COLOR_LIGHT_BG);
@@ -470,7 +471,7 @@ function generarDocumento9noPDF() {
       ['Requisitos de red', 'Conexión a internet estable en el laboratorio.', 'Cero conexión a internet requerida (100% local).'],
       ['Ejecución estudiantil', 'Abre la WebApp en línea desde el navegador.', 'Abre el archivo autónomo .html desde red local o USB.'],
       ['Transmisión de datos', 'Envío automático por telemetría a la base de datos.', 'Generación de código QR cifrado en pantalla al finalizar.'],
-      ['Consolidación docente', 'Los resultados aparecen al instante en el panel.', 'El docente escanea los códigos QR con su cámara.'],
+      ['Consolidación docente', 'Los resultados aparecen al instante en el panel.', 'El docente escanea los códigos QR con su móvil PWA.'],
       ['Seguridad de datos', 'Tokens seguros y aislamiento por cuenta docente.', 'Firma criptográfica SHA-256 en cada código QR.']
     ]
   });
@@ -532,8 +533,8 @@ function generarDocumento9noPDF() {
     },
     columnStyles: {
       0: { cellWidth: 30, fontStyle: 'bold' },
-      1: { cellWidth: 74 },
-      2: { cellWidth: 78 }
+      1: { cellWidth: 72 },
+      2: { cellWidth: 76 }
     },
     head: [['Fase de aplicación', 'Acciones del docente en el aula', 'Acciones de las personas estudiantes']],
     body: [
@@ -572,8 +573,8 @@ function generarDocumento9noPDF() {
       cellPadding: 2
     },
     columnStyles: {
-      0: { cellWidth: 52, fontStyle: 'bold' },
-      1: { cellWidth: 90 },
+      0: { cellWidth: 50, fontStyle: 'bold' },
+      1: { cellWidth: 88 },
       2: { cellWidth: 40, halign: 'center' }
     },
     head: [['Recurso de 9.° año', 'URL oficial en producción', 'Modo de acceso']],
@@ -606,7 +607,7 @@ function generarDocumento9noPDF() {
   doc.text("Guía pedagógica y documento técnico oficial de 9.° año para asesorías y equipos docentes.", margin + 4, yPos + 11);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(...COLOR_PURPLE);
-  doc.text("Ecosistema de Formación Tecnológica • Ciclo Lectivo 2027", margin + 4, yPos + 17);
+  doc.text("Ecosistema de Formación Tecnológica • Guía Docente 2026", margin + 4, yPos + 17);
 
   drawHeaderFooter(5, 5, "Protocolo de aplicación y enlaces oficiales (9.° año)");
 
@@ -622,10 +623,12 @@ if (!fs.existsSync(outputDirDocumentos)) fs.mkdirSync(outputDirDocumentos, { rec
 
 const outputPathGuia = path.join(outputDirDocs, 'GUIA_PEDAGOGICA_DIAGNOSTICO_9NO_MEP.pdf');
 const outputPathDocTecnico = path.join(outputDirDocumentos, 'Documento_Tecnico_Pedagogico_MEP_9no_Domotica.pdf');
+const outputPathDossier = path.join(outputDirDocumentos, 'Dossier_Diagnostico_MEP_9no_Aula_Inteligente.pdf');
 
 const doc = generarDocumento9noPDF();
 const pdfBuffer = Buffer.from(doc.output('arraybuffer'));
 
 fs.writeFileSync(outputPathGuia, pdfBuffer);
 fs.writeFileSync(outputPathDocTecnico, pdfBuffer);
-console.log(`✅ PDF de 9.° año generado con éxito en:\n - ${outputPathGuia}\n - ${outputPathDocTecnico}`);
+fs.writeFileSync(outputPathDossier, pdfBuffer);
+console.log(`✅ PDF de 9.° año generado con éxito en:\n - ${outputPathGuia}\n - ${outputPathDocTecnico}\n - ${outputPathDossier}`);

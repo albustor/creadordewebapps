@@ -36,11 +36,11 @@ function generarDocumento7moPDF() {
     doc.setFillColor(...COLOR_CYAN);
     doc.rect(0, 5, pageWidth, 1.5, 'F');
 
-    // Texto de cabecera
+    // Texto de cabecera oficial
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(7.5);
     doc.setTextColor(...COLOR_PRIMARY);
-    doc.text("MINISTERIO DE EDUCACIÓN PÚBLICA DE COSTA RICA • DRTE • PNFT 2027", margin, 11.5);
+    doc.text("MINISTERIO DE EDUCACIÓN PÚBLICA DE COSTA RICA • DRTE • PNFT • GUÍA DOCENTE 2026", margin, 11.5);
     
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7);
@@ -59,7 +59,7 @@ function generarDocumento7moPDF() {
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7);
     doc.setTextColor(...COLOR_MUTED);
-    doc.text("CyberQuest 7.° año: misión tecnológica de saberes integrados (motriz, procedimental y actitudinal)", margin, pageHeight - 8);
+    doc.text("CyberQuest 7.° año • Guía pedagógica oficial • PNFT Guía Docente 2026", margin, pageHeight - 8);
     doc.text(`Página ${pageNum} de ${totalPages}`, pageWidth - margin, pageHeight - 8, { align: 'right' });
   }
 
@@ -75,11 +75,11 @@ function generarDocumento7moPDF() {
 
   // Distintivo superior con nivel explícito
   doc.setFillColor(8, 145, 178);
-  doc.roundedRect(margin, 10, 145, 6.5, 1.5, 1.5, 'F');
+  doc.roundedRect(margin, 10, 160, 6.5, 1.5, 1.5, 'F');
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7.5);
   doc.setTextColor(255, 255, 255);
-  doc.text("PROGRAMA NACIONAL DE FORMACIÓN TECNOLÓGICA • 7.° AÑO", margin + 4, 14.5);
+  doc.text("PROGRAMA NACIONAL DE FORMACIÓN TECNOLÓGICA • 7.° AÑO • GUÍA DOCENTE 2026", margin + 4, 14.5);
 
   // Títulos principales en formato gramatical hispanoamericano
   doc.setFont('helvetica', 'bold');
@@ -88,19 +88,19 @@ function generarDocumento7moPDF() {
   doc.text("CyberQuest 7.° año: misión tecnológica", margin, 26);
   doc.setFontSize(13);
   doc.setTextColor(103, 232, 249); // Cyan claro
-  doc.text("Guía pedagógica y documento técnico oficial • 7.° año", margin, 34);
+  doc.text("Guía pedagógica y documento técnico oficial • 7.° año de secundaria", margin, 34);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   doc.setTextColor(241, 245, 249);
   doc.text("Evaluación formativa tripartita: desarrollo psicomotor, saberes procedimentales y actitudes computacionales.", margin, 42);
-  doc.text("Diseñado para la transición a la educación secundaria • Formato individual o parejas colaborativas.", margin, 48);
+  doc.text("Articulación con las 4 áreas oficiales de la Guía Docente 2026 • Modo en línea y lector QR offline móvil.", margin, 48);
 
   // Tarjeta de Ficha Técnica
   let yPos = 67;
   doc.setFillColor(...COLOR_LIGHT_BG);
   doc.setDrawColor(...COLOR_BORDER);
-  doc.roundedRect(margin, yPos, contentWidth, 32, 2.5, 2.5, 'FD');
+  doc.roundedRect(margin, yPos, contentWidth, 34, 2.5, 2.5, 'FD');
 
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8.5);
@@ -111,12 +111,13 @@ function generarDocumento7moPDF() {
   doc.setFontSize(7.5);
   doc.setTextColor(...COLOR_DARK);
   doc.text("• Población meta: Estudiantes de 7.° año (Tercer Ciclo de la Educación General Básica).", margin + 6, yPos + 12);
-  doc.text("• Modalidad de aplicación: Parejas de ciber-agentes (líder de consola y co-piloto) o individual.", margin + 6, yPos + 17);
-  doc.text("• Enfoque de evaluación: Formativo, diagnóstico y cualitativo (identificación de brechas sin nota punitiva).", margin + 6, yPos + 22);
-  doc.text("• Acceso web en producción: https://diagnosticosecundaria.vercel.app/diagnostico (pestaña 7.° año).", margin + 6, yPos + 27);
+  doc.text("• Modalidad de aplicación: Parejas de ciber-agentes (líder de consola y co-piloto) o individual en laboratorio.", margin + 6, yPos + 17);
+  doc.text("• Enfoque de evaluación: Formativo, diagnóstico y cualitativo (identificación de brechas de primaria sin nota punitiva).", margin + 6, yPos + 22);
+  doc.text("• Registro cronológico: Marca temporal con fecha y hora de Costa Rica (UTC-6) y base inicial en blanco para nuevos ingresos.", margin + 6, yPos + 27);
+  doc.text("• Acceso web en producción: https://diagnosticosecundaria.vercel.app/diagnostico (pestaña 7.° año).", margin + 6, yPos + 32);
 
   // 1. Fundamentación Pedagógica
-  yPos = 105;
+  yPos = 107;
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10.5);
   doc.setTextColor(...COLOR_PRIMARY);
@@ -126,11 +127,11 @@ function generarDocumento7moPDF() {
   doc.setFontSize(8);
   doc.setTextColor(...COLOR_DARK);
   doc.text(
-    "El ingreso a sétimo año representa un hito crítico en el desarrollo de los estudiantes. Por ello, CyberQuest 7° sustituye la prueba tradicional por una «Misión Tecnológica Gamificada» que evalúa los aprendizajes previos de primaria sin generar ansiedad evaluativa, estructurada en tres dimensiones oficiales:",
+    "El ingreso a sétimo año representa un hito crítico en el desarrollo de los estudiantes. Por ello, CyberQuest 7° sustituye la prueba tradicional por una «Misión Tecnológica Gamificada» alineada a la Guía Docente 2026, evaluando saberes de primaria sin generar ansiedad evaluativa, estructurada en tres dimensiones oficiales:",
     margin, yPos + 5, { maxWidth: contentWidth }
   );
 
-  yPos = 123;
+  yPos = 125;
   const colW = (contentWidth - 6) / 3;
 
   // Dimensión 1: Psicomotriz
@@ -182,7 +183,7 @@ function generarDocumento7moPDF() {
   doc.text("• Escala Likert de motivación y agrado.", margin + (colW + 3) * 2 + 4, yPos + 35);
 
   // 2. Principios DUA y Accesibilidad
-  yPos = 177;
+  yPos = 179;
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10);
   doc.setTextColor(...COLOR_PRIMARY);
@@ -204,16 +205,16 @@ function generarDocumento7moPDF() {
       cellPadding: 2.2
     },
     columnStyles: {
-      0: { cellWidth: 34, fontStyle: 'bold' },
-      1: { cellWidth: 74 },
-      2: { cellWidth: 74 }
+      0: { cellWidth: 32, fontStyle: 'bold' },
+      1: { cellWidth: 73 },
+      2: { cellWidth: 73 }
     },
     head: [['Principio DUA', 'Mecanismo en CyberQuest 7.° año', 'Impacto inclusivo']],
     body: [
       ['Múltiples formas de representación', 'Contraste reforzado, iconos descriptivos, audio de apoyo y lectura facilitada.', 'Garantiza acceso pleno a estudiantes con baja visión o diversidad sensorial.'],
       ['Múltiples formas de acción y expresión', 'Interacción táctil, teclado, mouse y tiempos adaptativos sin límite punitivo.', 'Flexibilidad de interacción para estudiantes con diversas preferencias psicomotrices.'],
       ['Múltiples formas de implicación', 'Narrativa gamificada, misiones por niveles y retroalimentación inmediata sin nota roja.', 'Fomenta la motivación intrínseca y reduce la ansiedad ante la evaluación diagnóstica.'],
-      ['Resiliencia sin conexión (Offline-first)', 'Archivo autónomo ejecutable sin internet y transmisión de datos vía código QR cifrado.', 'Equidad absoluta para colegios y liceos rurales sin acceso estable a la red.']
+      ['Resiliencia sin conexión (Offline-first)', 'Archivo autónomo ejecutable sin internet y transmisión de datos vía código QR cifrado con escáner móvil.', 'Equidad absoluta para colegios y liceos rurales sin acceso estable a la red.']
     ]
   });
 
@@ -234,7 +235,7 @@ function generarDocumento7moPDF() {
   doc.setFontSize(8);
   doc.setTextColor(...COLOR_DARK);
   doc.text(
-    "Distribución de los retos y saberes evaluados en CyberQuest 7.° año según el programa de Formación Tecnológica del MEP:",
+    "Distribución de los retos y saberes evaluados en CyberQuest 7.° año según las 4 áreas oficiales de la Guía Docente 2026:",
     margin, yPos + 5, { maxWidth: contentWidth }
   );
 
@@ -257,11 +258,11 @@ function generarDocumento7moPDF() {
     },
     columnStyles: {
       0: { cellWidth: 16, fontStyle: 'bold', halign: 'center' },
-      1: { cellWidth: 32, fontStyle: 'bold' },
-      2: { cellWidth: 70 },
+      1: { cellWidth: 30, fontStyle: 'bold' },
+      2: { cellWidth: 68 },
       3: { cellWidth: 64 }
     },
-    head: [['Reto / Misión', 'Saber curricular', 'Descripción de la actividad en la WebApp', 'Criterio de desempeño']],
+    head: [['Reto / Misión', 'Saber curricular oficial', 'Descripción de la actividad en la WebApp', 'Criterio de desempeño']],
     body: [
       ['Misión 1', 'Periféricos y hardware', 'Clasificación de dispositivos de entrada, salida y almacenamiento.', 'Logrado: 5/5 componentes correctos.'],
       ['Misión 2', 'Clasificación de software', 'Diferenciación entre software de sistema y aplicaciones de usuario.', 'Logrado: Identifica los roles de software.'],
@@ -272,7 +273,7 @@ function generarDocumento7moPDF() {
       ['Misión 7', 'Bucles simples', 'Identificación de patrones y repetición controlada de acciones.', 'Logrado: Optimiza repeticiones en bucles.'],
       ['Misión 8', 'Ciberseguridad y ética', 'Buenas prácticas de contraseñas, privacidad y respeto en línea.', 'Logrado: Reconoce medidas de protección digital.'],
       ['Misión 9', 'Resolución de problemas', 'Descomposición de un reto complejo en tareas pequeñas manejables.', 'Logrado: Aplica descomposición analítica.'],
-      ['Misión 10', 'Pensamiento crítico', 'Evaluación de fuentes de información y veracidad de contenidos web.', 'Logrado: Discrimina información confiable.']
+      ['Misión 10', 'Pensamiento crítico e IA', 'Evaluación de fuentes de información y nociones introductorias de IA.', 'Logrado: Discrimina información y reflexiona.']
     ]
   });
 
@@ -352,7 +353,7 @@ function generarDocumento7moPDF() {
   drawHeaderFooter(3, 5, "Rúbricas psicomotrices y socioafectivas de 7.° año");
 
   // =========================================================================
-  // PÁGINA 4: EL INSTRUMENTO DOCENTE EVALUADOR (7.° AÑO)
+  // PÁGINA 4: EL INSTRUMENTO DOCENTE EVALUADOR, ESCÁNER MÓVIL Y TELEMETRÍA
   // =========================================================================
   doc.addPage();
   
@@ -360,7 +361,7 @@ function generarDocumento7moPDF() {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(11);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("5. El instrumento docente evaluador de 7.° año", margin, yPos);
+  doc.text("5. El instrumento docente evaluador y módulo de escaneo móvil de 7.° año", margin, yPos);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
@@ -387,8 +388,8 @@ function generarDocumento7moPDF() {
   doc.text("• Nómina para todas las secciones de 7.° (7-1 a 7-20).", margin + 4, yPos + 12);
   doc.text("• Registro rápido con nombre y dos apellidos.", margin + 4, yPos + 17);
   doc.text("• Asignación automática de roles en parejas.", margin + 4, yPos + 22);
-  doc.text("• Estado de avance en tiempo real por estudiante.", margin + 4, yPos + 27);
-  doc.text("• Sincronización transparente con el panel central.", margin + 4, yPos + 32);
+  doc.text("• Base inicial en blanco (0 registros) para nuevos docentes.", margin + 4, yPos + 27);
+  doc.text("• Marca temporal con fecha y hora de Costa Rica (UTC-6).", margin + 4, yPos + 32);
 
   // Card 2: Sistematización y Reportes
   doc.setFillColor(...COLOR_LIGHT_BG);
@@ -401,13 +402,13 @@ function generarDocumento7moPDF() {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
-  doc.text("• Consolidado automático de niveles de logro.", margin + cardW + 8, yPos + 12);
+  doc.text("• Consolidado automático de niveles de logro (L / ED / RA).", margin + cardW + 8, yPos + 12);
   doc.text("• Identificación de brechas de entrada de primaria.", margin + cardW + 8, yPos + 17);
   doc.text("• Exportación a formatos oficiales de Excel y PDF.", margin + cardW + 8, yPos + 22);
   doc.text("• Generación de actas diagnósticas institucionales.", margin + cardW + 8, yPos + 27);
   doc.text("• Respaldo local seguro sin riesgo de pérdida.", margin + cardW + 8, yPos + 32);
 
-  // Card 3: Escaneo QR sin Conexión
+  // Card 3: Escáner QR Móvil PWA
   yPos = 73;
   doc.setFillColor(...COLOR_LIGHT_BG);
   doc.setDrawColor(...COLOR_BORDER);
@@ -415,15 +416,15 @@ function generarDocumento7moPDF() {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("3. Escaneo QR en modo sin conexión", margin + 4, yPos + 6);
+  doc.text("3. Escáner QR móvil PWA (100% offline)", margin + 4, yPos + 6);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
   doc.text("• En laboratorios sin internet, cada alumno genera QR.", margin + 4, yPos + 12);
-  doc.text("• El docente escanea con cámara web o teléfono.", margin + 4, yPos + 17);
+  doc.text("• El docente escanea con su teléfono móvil o tableta.", margin + 4, yPos + 17);
   doc.text("• Carga instantánea de resultados sin digitar.", margin + 4, yPos + 22);
-  doc.text("• Total cobertura para centros educativos rurales.", margin + 4, yPos + 27);
-  doc.text("• Cifrado criptográfico que previene fraudes.", margin + 4, yPos + 32);
+  doc.text("• Cero consumo de datos móviles en el celular.", margin + 4, yPos + 27);
+  doc.text("• Cifrado criptográfico SHA-256 que previene fraudes.", margin + 4, yPos + 32);
 
   // Card 4: Recomendaciones DUA y mediación con IA
   doc.setFillColor(...COLOR_LIGHT_BG);
@@ -470,7 +471,7 @@ function generarDocumento7moPDF() {
       ['2. Registro', 'Estudiantes eligen trabajar individual o en pareja.', 'Estudiantes abren la WebApp localmente en sus equipos.'],
       ['3. Misión', 'Completan las 10 misiones y pruebas psicomotrices.', 'Completan las 10 misiones con validación interactiva.'],
       ['4. Cierre', 'Los datos se sincronizan al instante en la nube.', 'La WebApp genera un código QR cifrado en pantalla.'],
-      ['5. Reporte', 'Aparece automáticamente en el panel docente.', 'Docente escanea el código QR y consolida la sección.']
+      ['5. Reporte', 'Aparece automáticamente en el panel docente.', 'Docente escanea el código QR con su móvil y consolida la sección.']
     ]
   });
 
@@ -531,14 +532,14 @@ function generarDocumento7moPDF() {
     },
     columnStyles: {
       0: { cellWidth: 30, fontStyle: 'bold' },
-      1: { cellWidth: 74 },
-      2: { cellWidth: 78 }
+      1: { cellWidth: 72 },
+      2: { cellWidth: 76 }
     },
     head: [['Fase de aplicación', 'Acciones del docente en el laboratorio', 'Acciones de las personas estudiantes']],
     body: [
       [
         'Fase 1: Preparación\n(5 a 10 min)',
-        '• Abrir el módulo evaluador de 7.° año en su equipo.\n• Proyectar el enlace o distribuir el archivo offline.',
+        '• Abrir el módulo evaluador de 7.° año en su equipo o celular.\n• Proyectar el enlace o distribuir el archivo offline.',
         '• Ingresar a la WebApp desde sus computadoras.\n• Ingresar nombre con dos apellidos y sección (ej. 7-1).'
       ],
       [
@@ -548,7 +549,7 @@ function generarDocumento7moPDF() {
       ],
       [
         'Fase 3: Cierre y traspaso\n(10 min)',
-        '• En modo online: verificar recepción de telemetría.\n• En modo offline: escanear el QR generado en cada PC.',
+        '• En modo online: verificar recepción de telemetría.\n• En modo offline: escanear el QR generado en cada PC con móvil.',
         '• Visualizar su retroalimentación y nivel alcanzado.\n• Presentar su código QR o comprobante digital final.'
       ],
       [
@@ -581,8 +582,8 @@ function generarDocumento7moPDF() {
       cellPadding: 2
     },
     columnStyles: {
-      0: { cellWidth: 52, fontStyle: 'bold' },
-      1: { cellWidth: 90 },
+      0: { cellWidth: 50, fontStyle: 'bold' },
+      1: { cellWidth: 88 },
       2: { cellWidth: 40, halign: 'center' }
     },
     head: [['Recurso de 7.° año', 'URL oficial en producción', 'Modo de acceso']],
@@ -615,26 +616,34 @@ function generarDocumento7moPDF() {
   doc.text("Guía pedagógica y documento técnico oficial de 7.° año para asesorías y equipos docentes.", margin + 4, yPos + 11);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(...COLOR_CYAN_DARK);
-  doc.text("Ecosistema de Formación Tecnológica • Ciclo Lectivo 2027", margin + 4, yPos + 17);
+  doc.text("Ecosistema de Formación Tecnológica • Guía Docente 2026", margin + 4, yPos + 17);
 
   drawHeaderFooter(5, 5, "Protocolo de aplicación y enlaces oficiales (7.° año)");
 
   return doc;
 }
 
-// 1. Guardar en public/docs/ y public/documentos/
+// 1. Guardar en public/docs/, docs/ y public/documentos/
 const outputDirDocs = path.join(__dirname, '..', 'public', 'docs');
+const outputDirDocsRoot = path.join(__dirname, '..', 'docs');
 const outputDirDocumentos = path.join(__dirname, '..', 'public', 'documentos');
 
 if (!fs.existsSync(outputDirDocs)) fs.mkdirSync(outputDirDocs, { recursive: true });
+if (!fs.existsSync(outputDirDocsRoot)) fs.mkdirSync(outputDirDocsRoot, { recursive: true });
 if (!fs.existsSync(outputDirDocumentos)) fs.mkdirSync(outputDirDocumentos, { recursive: true });
 
 const outputPathGuia = path.join(outputDirDocs, 'GUIA_PEDAGOGICA_DIAGNOSTICO_7MO_MEP.pdf');
+const outputPathGuiaGen = path.join(outputDirDocs, 'GUIA_PEDAGOGICA_EVALUACION_DIAGNOSTICA_MEP.pdf');
+const outputPathGuiaRoot = path.join(outputDirDocsRoot, 'GUIA_PEDAGOGICA_EVALUACION_DIAGNOSTICA_MEP.pdf');
 const outputPathDocTecnico = path.join(outputDirDocumentos, 'Documento_Tecnico_Pedagogico_MEP_7mo_CyberQuest.pdf');
+const outputPathDossier = path.join(outputDirDocumentos, 'Dossier_Diagnostico_MEP_7mo_CyberQuest.pdf');
 
 const doc = generarDocumento7moPDF();
 const pdfBuffer = Buffer.from(doc.output('arraybuffer'));
 
 fs.writeFileSync(outputPathGuia, pdfBuffer);
+fs.writeFileSync(outputPathGuiaGen, pdfBuffer);
+fs.writeFileSync(outputPathGuiaRoot, pdfBuffer);
 fs.writeFileSync(outputPathDocTecnico, pdfBuffer);
-console.log(`✅ PDF de 7.° año generado con éxito en:\n - ${outputPathGuia}\n - ${outputPathDocTecnico}`);
+fs.writeFileSync(outputPathDossier, pdfBuffer);
+console.log(`✅ PDF de 7.° año generado con éxito en:\n - ${outputPathGuia}\n - ${outputPathGuiaGen}\n - ${outputPathDocTecnico}`);

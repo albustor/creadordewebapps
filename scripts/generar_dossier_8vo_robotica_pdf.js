@@ -35,11 +35,11 @@ function generarDocumento8voPDF() {
     doc.setFillColor(...COLOR_TEAL);
     doc.rect(0, 5, pageWidth, 1.5, 'F');
 
-    // Texto de cabecera
+    // Texto de cabecera oficial
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(7.5);
     doc.setTextColor(...COLOR_PRIMARY);
-    doc.text("MINISTERIO DE EDUCACIÓN PÚBLICA DE COSTA RICA • DRTE • PNFT 2027", margin, 11.5);
+    doc.text("MINISTERIO DE EDUCACIÓN PÚBLICA DE COSTA RICA • DRTE • PNFT • GUÍA DOCENTE 2026", margin, 11.5);
     
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7);
@@ -58,7 +58,7 @@ function generarDocumento8voPDF() {
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7);
     doc.setTextColor(...COLOR_MUTED);
-    doc.text("Evaluación diagnóstica de 8.° año: robótica, algoritmos y apropiación tecnológica (saberes del PNFT)", margin, pageHeight - 8);
+    doc.text("Evaluación diagnóstica de 8.° año: robótica, algoritmos y apropiación tecnológica • PNFT Guía Docente 2026", margin, pageHeight - 8);
     doc.text(`Página ${pageNum} de ${totalPages}`, pageWidth - margin, pageHeight - 8, { align: 'right' });
   }
 
@@ -74,11 +74,11 @@ function generarDocumento8voPDF() {
 
   // Distintivo superior con nivel explícito
   doc.setFillColor(13, 148, 136);
-  doc.roundedRect(margin, 10, 145, 6.5, 1.5, 1.5, 'F');
+  doc.roundedRect(margin, 10, 160, 6.5, 1.5, 1.5, 'F');
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7.5);
   doc.setTextColor(255, 255, 255);
-  doc.text("PROGRAMA NACIONAL DE FORMACIÓN TECNOLÓGICA • 8.° AÑO (OCTAVO)", margin + 4, 14.5);
+  doc.text("PROGRAMA NACIONAL DE FORMACIÓN TECNOLÓGICA • 8.° AÑO • GUÍA DOCENTE 2026", margin + 4, 14.5);
 
   // Títulos principales en formato gramatical hispanoamericano
   doc.setFont('helvetica', 'bold');
@@ -92,14 +92,14 @@ function generarDocumento8voPDF() {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   doc.setTextColor(241, 245, 249);
-  doc.text("Evaluación formativa articulada: 14 indicadores de logro, 3 subáreas curriculares y observación docente.", margin, 42);
-  doc.text("Operatividad dual: en línea con telemetría reactiva o 100% desconectado con códigos QR cifrados.", margin, 48);
+  doc.text("Evaluación formativa articulada: 14 indicadores de logro, 4 áreas curriculares oficiales y observación docente.", margin, 42);
+  doc.text("Operatividad dual: en línea con telemetría reactiva o 100% desconectado con códigos QR cifrados y escáner móvil.", margin, 48);
 
   // Tarjeta de Ficha Técnica
   let yPos = 67;
   doc.setFillColor(...COLOR_LIGHT_BG);
   doc.setDrawColor(...COLOR_BORDER);
-  doc.roundedRect(margin, yPos, contentWidth, 32, 2.5, 2.5, 'FD');
+  doc.roundedRect(margin, yPos, contentWidth, 34, 2.5, 2.5, 'FD');
 
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8.5);
@@ -110,12 +110,13 @@ function generarDocumento8voPDF() {
   doc.setFontSize(7.5);
   doc.setTextColor(...COLOR_DARK);
   doc.text("• Población meta: Estudiantes de 8.° año (octavo de secundaria / Tercer Ciclo de la EGB).", margin + 6, yPos + 12);
-  doc.text("• Estructura curricular: 3 subáreas (HW/SW, algoritmos, robótica) más dimensiones socioafectiva y psicomotora.", margin + 6, yPos + 17);
+  doc.text("• Estructura curricular: 14 indicadores cognitivos, dimensiones psicomotriz y socioafectiva alineadas a la Guía Docente 2026.", margin + 6, yPos + 17);
   doc.text("• Enfoque de evaluación: Formativo, diagnóstico y cualitativo (identificación de brechas de entrada sin nota punitiva).", margin + 6, yPos + 22);
-  doc.text("• Acceso web en producción: https://diagnosticosecundaria.vercel.app/diagnostico (pestaña 8.° año).", margin + 6, yPos + 27);
+  doc.text("• Registro cronológico: Marca temporal en hora local de Costa Rica (UTC-6) y base inicial limpia para nuevos docentes.", margin + 6, yPos + 27);
+  doc.text("• Acceso web en producción: https://diagnosticosecundaria.vercel.app/diagnostico (pestaña 8.° año).", margin + 6, yPos + 32);
 
   // 1. Fundamentación Pedagógica
-  yPos = 105;
+  yPos = 107;
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10.5);
   doc.setTextColor(...COLOR_PRIMARY);
@@ -125,11 +126,11 @@ function generarDocumento8voPDF() {
   doc.setFontSize(8);
   doc.setTextColor(...COLOR_DARK);
   doc.text(
-    "El nivel de 8.° año consolida el pensamiento algorítmico y avanza hacia la computación física y robótica educativa. La prueba diagnóstica articula los aprendizajes del año previo para diagnosticar tres subáreas curriculares clave mediante situaciones contextualizadas y retos prácticos:",
+    "El nivel de 8.° año consolida el pensamiento algorítmico y avanza hacia la computación física y robótica educativa. La prueba diagnóstica articula los aprendizajes del año previo para diagnosticar subáreas curriculares clave mediante situaciones contextualizadas y retos prácticos:",
     margin, yPos + 5, { maxWidth: contentWidth }
   );
 
-  yPos = 123;
+  yPos = 125;
   const colW = (contentWidth - 6) / 3;
 
   // Subárea 1: Apropiación y HW/SW
@@ -181,7 +182,7 @@ function generarDocumento8voPDF() {
   doc.text("• Lista de cotejo psicomotora docente.", margin + (colW + 3) * 2 + 4, yPos + 35);
 
   // 2. Principios DUA y Accesibilidad
-  yPos = 177;
+  yPos = 179;
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10);
   doc.setTextColor(...COLOR_PRIMARY);
@@ -212,7 +213,7 @@ function generarDocumento8voPDF() {
       ['Múltiples formas de representación', 'Barra de accesibilidad con alto contraste, ajuste de tamaño de fuente (A+ / A-) y lectura facilitada.', 'Garantiza acceso pleno a estudiantes con baja visión o diversidad sensorial.'],
       ['Múltiples formas de acción y expresión', 'Navegación intuitiva por teclado y mouse, confirmación de respuestas y simulador interactivo.', 'Flexibilidad de interacción para estudiantes con diversas preferencias psicomotrices.'],
       ['Múltiples formas de implicación', 'Retroalimentación formativa inmediata, barras de progreso y comprobante digital final.', 'Fomenta la motivación intrínseca y reduce la ansiedad ante la evaluación diagnóstica.'],
-      ['Resiliencia sin conexión (Offline-first)', 'Archivo autónomo ejecutable sin conexión a internet y transmisión de datos vía código QR cifrado.', 'Equidad absoluta para colegios y liceos rurales sin acceso estable a la red.']
+      ['Resiliencia sin conexión (Offline-first)', 'Archivo autónomo ejecutable sin conexión a internet y transmisión de datos vía código QR cifrado y escáner móvil PWA.', 'Equidad absoluta para colegios y liceos rurales sin acceso estable a la red.']
     ]
   });
 
@@ -233,7 +234,7 @@ function generarDocumento8voPDF() {
   doc.setFontSize(8);
   doc.setTextColor(...COLOR_DARK);
   doc.text(
-    "Distribución detallada de los reactivos y saberes evaluados en la prueba diagnóstica de 8.° año según el programa oficial del MEP:",
+    "Distribución detallada de los reactivos y saberes evaluados en la prueba diagnóstica de 8.° año según la Guía Docente 2026 del MEP:",
     margin, yPos + 5, { maxWidth: contentWidth }
   );
 
@@ -358,7 +359,7 @@ function generarDocumento8voPDF() {
   drawHeaderFooter(3, 5, "Rúbricas psicomotrices y socioafectivas de 8.° año");
 
   // =========================================================================
-  // PÁGINA 4: EL INSTRUMENTO DOCENTE EVALUADOR Y TELEMETRÍA (8.° AÑO)
+  // PÁGINA 4: EL INSTRUMENTO DOCENTE EVALUADOR, ESCÁNER MÓVIL Y TELEMETRÍA (8.° AÑO)
   // =========================================================================
   doc.addPage();
   
@@ -366,7 +367,7 @@ function generarDocumento8voPDF() {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(11);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("5. El instrumento docente evaluador de 8.° año", margin, yPos);
+  doc.text("5. El instrumento docente evaluador y módulo de escaneo móvil de 8.° año", margin, yPos);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
@@ -392,8 +393,8 @@ function generarDocumento8voPDF() {
   doc.setTextColor(...COLOR_DARK);
   doc.text("• Gestión de nóminas para todas las secciones de 8.° año.", margin + 4, yPos + 12);
   doc.text("• Registro de estudiantes por nombre y cédula.", margin + 4, yPos + 17);
-  doc.text("• Visualización de progreso y semáforos de logro.", margin + 4, yPos + 22);
-  doc.text("• Asignación rápida de niveles formativos (A / B / C).", margin + 4, yPos + 27);
+  doc.text("• Base inicial en blanco (0 registros) para nuevos docentes.", margin + 4, yPos + 22);
+  doc.text("• Marca temporal con fecha y hora de Costa Rica (UTC-6).", margin + 4, yPos + 27);
   doc.text("• Sincronización instantánea con el panel central.", margin + 4, yPos + 32);
 
   // Card 2: Sistematización y Actas
@@ -413,7 +414,7 @@ function generarDocumento8voPDF() {
   doc.text("• Exportación a Excel y PDF con formato institucional MEP.", margin + cardW + 8, yPos + 27);
   doc.text("• Respaldo local seguro y descarga de informes.", margin + cardW + 8, yPos + 32);
 
-  // Card 3: Escáner QR y Modo Offline
+  // Card 3: Escáner QR y Modo Offline Móvil PWA
   yPos = 73;
   doc.setFillColor(...COLOR_LIGHT_BG);
   doc.setDrawColor(...COLOR_BORDER);
@@ -421,14 +422,14 @@ function generarDocumento8voPDF() {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("3. Escáner QR y modo sin conexión", margin + 4, yPos + 6);
+  doc.text("3. Escáner QR móvil PWA (100% offline)", margin + 4, yPos + 6);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
   doc.text("• En laboratorios sin internet, el alumno genera su código QR.", margin + 4, yPos + 12);
   doc.text("• El docente escanea el código con su teléfono o tableta.", margin + 4, yPos + 17);
   doc.text("• Carga instantánea de puntajes sin digitar manualmente.", margin + 4, yPos + 22);
-  doc.text("• Cero pérdida de datos y total equidad territorial.", margin + 4, yPos + 27);
+  doc.text("• Cero consumo de datos móviles en el dispositivo.", margin + 4, yPos + 27);
   doc.text("• Token criptográfico SHA-256 antifraude.", margin + 4, yPos + 32);
 
   // Card 4: Asistencia Pedagógica y Telemetría
@@ -476,7 +477,7 @@ function generarDocumento8voPDF() {
       ['2. Registro', 'Estudiante ingresa sus datos y selecciona sección.', 'Estudiante trabaja de forma 100% local en su PC del laboratorio.'],
       ['3. Ejecución', 'Responde 14 ítems y reflexiona sobre el proceso.', 'Responde los 14 ítems con validación inmediata en su pantalla.'],
       ['4. Traspaso', 'Resultados viajan en tiempo real a la base de datos.', 'La WebApp genera un código QR cifrado en pantalla con sus resultados.'],
-      ['5. Consolidación', 'Aparece automáticamente en el panel docente central.', 'Docente escanea el QR con su cámara y se actualiza la nómina al instante.']
+      ['5. Consolidación', 'Aparece automáticamente en el panel docente central.', 'Docente escanea el QR con su cámara móvil y se actualiza la nómina.']
     ]
   });
 
@@ -544,17 +545,17 @@ function generarDocumento8voPDF() {
     body: [
       [
         'Fase 1: Preparación\n(5 a 10 min)',
-        '• Abrir el módulo evaluador docente de 8.° año en su equipo.\n• Proyectar el enlace o distribuir el archivo offline a los alumnos.',
+        '• Abrir el módulo evaluador docente de 8.° año en PC o móvil.\n• Proyectar el enlace o distribuir el archivo offline a los alumnos.',
         '• Ingresar a la WebApp desde sus computadoras.\n• Verificar nombre completo, cédula y sección correspondiente (ej. 8-1).'
       ],
       [
         'Fase 2: Ejecución\n(25 a 35 min)',
         '• Observar el desenvolvimiento psicomotor y socioafectivo en el taller.\n• Registrar conductas observables (coordinación, perseverancia).',
-        '• Responder los 14 ítems cognitivos de las 3 subáreas.\n• Analizar con detenimiento las opciones y comprobar la lógica.'
+        '• Responder los 14 ítems cognitivos de las subáreas curriculares.\n• Analizar con detenimiento las opciones y comprobar la lógica.'
       ],
       [
         'Fase 3: Cierre y traspaso\n(10 min)',
-        '• En modo en línea: verificar la recepción de la telemetría.\n• En modo sin conexión: escanear el código QR generado en cada PC.',
+        '• En modo en línea: verificar la recepción de la telemetría.\n• En modo sin conexión: escanear el código QR con el celular docente.',
         '• Visualizar su puntaje de desempeño y retroalimentación formativa.\n• Generar y presentar su código QR o comprobante digital.'
       ],
       [
@@ -621,26 +622,34 @@ function generarDocumento8voPDF() {
   doc.text("Guía pedagógica y documento técnico oficial de 8.° año para asesorías y equipos docentes.", margin + 4, yPos + 11);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(...COLOR_TEAL_DARK);
-  doc.text("Ecosistema de Formación Tecnológica • Ciclo Lectivo 2027", margin + 4, yPos + 17);
+  doc.text("Ecosistema de Formación Tecnológica • Guía Docente 2026", margin + 4, yPos + 17);
 
   drawHeaderFooter(5, 5, "Protocolo de aplicación y enlaces oficiales (8.° año)");
 
   return doc;
 }
 
-// 1. Guardar en public/docs/ y public/documentos/
+// 1. Guardar en public/docs/, public/documentos/ y Recursos/
 const outputDirDocs = path.join(__dirname, '..', 'public', 'docs');
 const outputDirDocumentos = path.join(__dirname, '..', 'public', 'documentos');
+const outputDirRecursos8vo = path.join(__dirname, '..', 'Recursos', 'octavo');
 
 if (!fs.existsSync(outputDirDocs)) fs.mkdirSync(outputDirDocs, { recursive: true });
 if (!fs.existsSync(outputDirDocumentos)) fs.mkdirSync(outputDirDocumentos, { recursive: true });
+if (!fs.existsSync(outputDirRecursos8vo)) fs.mkdirSync(outputDirRecursos8vo, { recursive: true });
 
 const outputPathGuia = path.join(outputDirDocs, 'GUIA_PEDAGOGICA_DIAGNOSTICO_8VO_MEP.pdf');
 const outputPathDocTecnico = path.join(outputDirDocumentos, 'Documento_Tecnico_Pedagogico_MEP_8vo_Robotica.pdf');
+const outputPathDossier = path.join(outputDirDocumentos, 'Dossier_Diagnostico_MEP_8vo_Robotica.pdf');
+const outputPathInforme = path.join(outputDirDocumentos, 'Informe_Analisis_y_Plan_Diagnostico_8vo_MEP.pdf');
+const outputPathInformeRec = path.join(outputDirRecursos8vo, 'Informe_Analisis_y_Plan_Diagnostico_8vo_MEP.pdf');
 
 const doc = generarDocumento8voPDF();
 const pdfBuffer = Buffer.from(doc.output('arraybuffer'));
 
 fs.writeFileSync(outputPathGuia, pdfBuffer);
 fs.writeFileSync(outputPathDocTecnico, pdfBuffer);
-console.log(`✅ PDF de 8.° año generado con éxito en:\n - ${outputPathGuia}\n - ${outputPathDocTecnico}`);
+fs.writeFileSync(outputPathDossier, pdfBuffer);
+fs.writeFileSync(outputPathInforme, pdfBuffer);
+fs.writeFileSync(outputPathInformeRec, pdfBuffer);
+console.log(`✅ PDF de 8.° año generado con éxito en:\n - ${outputPathGuia}\n - ${outputPathDocTecnico}\n - ${outputPathInforme}`);
