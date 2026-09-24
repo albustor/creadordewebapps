@@ -21,6 +21,10 @@ import {
   WarningCircle,
   Key,
   ArrowRight,
+  ArrowSquareOut,
+  BookOpen,
+  CaretDown,
+  CaretUp,
   ShieldCheck,
   Buildings,
   GraduationCap,
@@ -36,6 +40,7 @@ export default function HomePage() {
 
   // Estado del formulario de autenticación
   const [tabAuth, setTabAuth] = useState<"login" | "registro">("login");
+  const [mostrarGuiaInline, setMostrarGuiaInline] = useState(false);
 
   // Formulario Login con PIN
   const [loginCredencial, setLoginCredencial] = useState("");
@@ -810,9 +815,78 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Recurso Autogestionado de Aprendizaje y Validación con Barra de Progreso y Apuntes */}
+            {/* Tarjeta Alusiva: GUÍA INTERACTIVA AUTOGESTIONADA DE APRENDIZAJE Y VALIDACIÓN */}
             <div className="pt-4">
-              <RecursoAprendizajeAutogestionado />
+              <div className="bg-gradient-to-br from-white via-emerald-50/40 to-teal-50/50 border-2 border-emerald-300 rounded-3xl p-6 sm:p-8 shadow-md relative overflow-hidden space-y-6">
+                {/* Decoración de fondo */}
+                <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-200/20 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
+
+                <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                  <div className="space-y-3 max-w-3xl">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-100 text-emerald-900 border border-emerald-300 rounded-full text-xs font-black">
+                      <GraduationCap size={16} weight="bold" />
+                      <span>Recurso Oficial Autogestionado • PNFT MEP</span>
+                    </div>
+
+                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight leading-tight">
+                      GUÍA INTERACTIVA AUTOGESTIONADA DE APRENDIZAJE Y VALIDACIÓN
+                    </h3>
+
+                    <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
+                      Ruta sistemática en <strong>7 etapas pedagógicas</strong> para el aseguramiento de calidad diagnóstica, glosario interactivo de las <strong>4 áreas curriculares (7.°, 8.° y 9.° Año)</strong> y bitácora docente con autoguardado y plantillas DUA.
+                    </p>
+
+                    {/* Píldoras de características */}
+                    <div className="flex flex-wrap gap-2 pt-1">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-emerald-200 rounded-xl text-xs font-bold text-emerald-800 shadow-2xs">
+                        <CheckCircle size={14} weight="bold" className="text-emerald-700" />
+                        7 Etapas de Validación
+                      </span>
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-teal-200 rounded-xl text-xs font-bold text-teal-800 shadow-2xs">
+                        <BookOpen size={14} weight="bold" className="text-teal-700" />
+                        4 Áreas Curriculares PNFT
+                      </span>
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-indigo-200 rounded-xl text-xs font-bold text-indigo-800 shadow-2xs">
+                        <Sparkle size={14} weight="bold" className="text-indigo-700" />
+                        Bitácora con Autoguardado
+                      </span>
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-amber-200 rounded-xl text-xs font-bold text-amber-800 shadow-2xs">
+                        <ShieldCheck size={14} weight="bold" className="text-amber-700" />
+                        Plan de Apoyo DUA
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Botones de acción */}
+                  <div className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0 lg:min-w-[280px]">
+                    <a
+                      href="/guia-aprendizaje"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full inline-flex items-center justify-center gap-2.5 py-3.5 px-6 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs sm:text-sm rounded-2xl shadow-md hover:shadow-lg transition-all transform active:scale-98 text-center"
+                    >
+                      <span>Abrir Guía en Pestaña Independiente</span>
+                      <ArrowSquareOut size={18} weight="bold" />
+                    </a>
+
+                    <button
+                      type="button"
+                      onClick={() => setMostrarGuiaInline(!mostrarGuiaInline)}
+                      className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 bg-white hover:bg-stone-100 text-slate-700 border border-stone-300 font-bold text-xs rounded-xl transition-all"
+                    >
+                      <span>{mostrarGuiaInline ? "Ocultar vista previa aquí" : "Explorar vista previa aquí"}</span>
+                      {mostrarGuiaInline ? <CaretUp size={14} weight="bold" /> : <CaretDown size={14} weight="bold" />}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Vista previa desplegable inline */}
+                {mostrarGuiaInline && (
+                  <div className="pt-4 border-t border-emerald-200/80 animate-fadeIn">
+                    <RecursoAprendizajeAutogestionado />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </section>

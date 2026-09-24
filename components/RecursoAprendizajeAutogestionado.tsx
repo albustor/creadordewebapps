@@ -365,13 +365,13 @@ export default function RecursoAprendizajeAutogestionado() {
         <div className="space-y-1.5">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-100 text-emerald-900 border border-emerald-300 rounded-full text-xs font-black">
             <GraduationCap size={16} weight="bold" />
-            <span>Guía Interactiva Autogestionada de Aprendizaje</span>
+            <span>Recurso Oficial Autogestionado • PNFT MEP</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
-            Ruta Sistemática de Validación & Bitácora Docente
+          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+            GUÍA INTERACTIVA AUTOGESTIONADA DE APRENDIZAJE Y VALIDACIÓN
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 font-medium max-w-2xl leading-relaxed">
-            Siga paso a paso las 7 etapas del ciclo de evaluación, consulte el glosario de las 4 áreas oficiales de la <strong>Guía Docente 2026</strong> y conserve sus apuntes pedagógicos con guardado automático en su cuenta.
+            Ruta Sistemática de Validación & Bitácora Docente: Siga paso a paso las 7 etapas del ciclo de evaluación, consulte el glosario de las 4 áreas oficiales de la <strong>Guía Docente 2026</strong> y conserve sus apuntes pedagógicos con guardado automático en su cuenta.
           </p>
         </div>
 
