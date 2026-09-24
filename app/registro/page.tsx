@@ -900,13 +900,16 @@ export default function RegistroDocentePage() {
                   />
                   <Phone size={18} className="absolute right-4 top-3.5 text-slate-400" />
                 </div>
-                <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-[11.5px] text-slate-700 font-medium space-y-1.5 mt-1.5 shadow-2xs">
+                <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-[11.5px] text-slate-700 font-medium space-y-2 mt-1.5 shadow-2xs">
                   <div className="flex items-center gap-2 font-bold text-slate-900">
                     <ShieldCheck size={16} className="text-emerald-700 shrink-0" weight="bold" />
-                    <span>Compromiso de Privacidad y Finalidad Exclusivamente Educativa</span>
+                    <span>Compromiso de Privacidad y Apoyo Pedagógico Sincrónico</span>
                   </div>
                   <p className="text-slate-600 leading-relaxed text-[11px]">
-                    El registro de su número telefónico es <strong>completamente opcional</strong>. Los datos de contacto suministrados son de carácter confidencial y se custodian bajo estricto principio de protección institucional: <strong>su uso es único y exclusivo para fines de apoyo pedagógico, laboral y asistencia técnica</strong> entre el personal docente y la Asesoría de Formación Tecnológica. No existe ningún tipo de uso comercial ni divulgación externa a terceros. Al facilitarlo, usted habilita este medio ágil para la recuperación de accesos y coordinación educativa.
+                    El canal de mensajería móvil es <strong>opcional</strong> y de uso estrictamente profesional para facilitar el restablecimiento ágil de credenciales docentes, así como una <strong>forma de comunicación adicional desde la Asesoría con el docente para brindar apoyo pedagógico sincrónico</strong> y acompañamiento en su labor educativa.
+                  </p>
+                  <p className="text-slate-600 leading-relaxed text-[11px]">
+                    Los datos son tratados bajo rigurosa confidencialidad institucional para fines de apoyo educativo y laboral, <strong>sin ninguna exposición comercial ni de otra índole</strong>. Al suministrar su número, el docente otorga su visto bueno para su utilización exclusiva en este marco de soporte profesional.
                   </p>
                 </div>
               </div>
@@ -1697,7 +1700,7 @@ export default function RegistroDocentePage() {
                   </button>
                 </div>
                 <p className="text-[11px] text-slate-500 font-medium leading-relaxed">
-                  * El canal de mensajería móvil es opcional y de uso estrictamente profesional para facilitar el restablecimiento ágil de credenciales docentes.
+                  * El canal de mensajería móvil es opcional y de uso estrictamente profesional para facilitar el restablecimiento ágil de credenciales docentes y como forma de comunicación adicional desde la Asesoría para apoyo pedagógico sincrónico (el docente da el visto bueno para su uso educativo).
                 </p>
               </div>
 
