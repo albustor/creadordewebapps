@@ -329,7 +329,7 @@ export default function HomePage() {
 
               {tabAuth === "login" ? (
                 /* Formulario Login con PIN */
-                <form onSubmit={handleLogin} className="space-y-4">
+                <form onSubmit={handleLogin} autoComplete="off" className="space-y-4">
                   {loginMensaje && (
                     <div
                       className={`p-3.5 rounded-xl text-xs font-bold flex items-center gap-2.5 ${
@@ -357,12 +357,12 @@ export default function HomePage() {
                       </div>
                       <input
                         id="loginCredencial"
-                        name="loginCredencial"
+                        name="docente_identificacion_pnft"
                         type="text"
-                        autoComplete="username"
+                        autoComplete="off"
                         value={loginCredencial}
                         onChange={(e) => setLoginCredencial(e.target.value)}
-                        placeholder="Ej: X-XXXX-XXXX o nombre.apellido.apellido@mep.go.cr"
+                        placeholder="0-0000-0000 (o correo@mep.go.cr)"
                         required
                         className="w-full pl-10 pr-3.5 py-2.5 bg-[#FCFBF9] border border-stone-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-stone-400 focus:outline-none focus:border-emerald-600 focus:bg-white font-semibold"
                       />
@@ -387,15 +387,15 @@ export default function HomePage() {
                       </div>
                       <input
                         id="loginPin"
-                        name="loginPin"
+                        name="docente_pin_pnft"
                         type={mostrarLoginPin ? "text" : "password"}
-                        autoComplete="current-password"
+                        autoComplete="new-password"
                         maxLength={4}
                         value={loginPin}
                         onChange={(e) => setLoginPin(e.target.value.replace(/[^0-9]/g, ""))}
-                        placeholder="••••"
+                        placeholder="0000"
                         required
-                        className="w-full pl-10 pr-10 py-2.5 bg-[#FCFBF9] border border-stone-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-stone-400 focus:outline-none focus:border-emerald-600 focus:bg-white font-semibold tracking-widest text-center"
+                        className="w-full pl-10 pr-10 py-2.5 bg-[#FCFBF9] border border-stone-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-stone-400 focus:outline-none focus:border-emerald-600 focus:bg-white font-semibold tracking-widest text-center font-mono"
                       />
                       <button
                         type="button"
@@ -483,7 +483,7 @@ export default function HomePage() {
                           type="text"
                           value={regCedula}
                           onChange={(e) => setRegCedula(e.target.value)}
-                          placeholder="X-XXXX-XXXX"
+                          placeholder="0-0000-0000"
                           required
                           className="w-full pl-10 pr-3.5 py-2.5 bg-[#FCFBF9] border border-stone-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-stone-400 focus:outline-none focus:border-emerald-600 focus:bg-white font-semibold"
                         />
@@ -502,7 +502,7 @@ export default function HomePage() {
                           type="tel"
                           value={regTelefono}
                           onChange={(e) => setRegTelefono(e.target.value)}
-                          placeholder="8888-9999"
+                          placeholder="0000-0000"
                           className="w-full pl-10 pr-3.5 py-2.5 bg-[#FCFBF9] border border-stone-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-stone-400 focus:outline-none focus:border-emerald-600 focus:bg-white font-semibold"
                         />
                       </div>
@@ -646,7 +646,7 @@ export default function HomePage() {
                           maxLength={4}
                           value={regPin}
                           onChange={(e) => setRegPin(e.target.value.replace(/[^0-9]/g, ""))}
-                          placeholder="••••"
+                          placeholder="0000"
                           required
                           className="w-full px-3 py-2 bg-white border border-indigo-300 rounded-xl text-center font-mono text-base font-black text-slate-900 focus:outline-none focus:border-indigo-600"
                         />
@@ -661,7 +661,7 @@ export default function HomePage() {
                           maxLength={4}
                           value={regPinConfirmar}
                           onChange={(e) => setRegPinConfirmar(e.target.value.replace(/[^0-9]/g, ""))}
-                          placeholder="••••"
+                          placeholder="0000"
                           required
                           className="w-full px-3 py-2 bg-white border border-indigo-300 rounded-xl text-center font-mono text-base font-black text-slate-900 focus:outline-none focus:border-indigo-600"
                         />
