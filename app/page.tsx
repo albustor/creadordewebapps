@@ -87,15 +87,69 @@ export default function HomePage() {
     }
   };
 
+  // Lista de usuarios de prueba para acceso y validación temporal
+  const USUARIOS_PRUEBA_DEMO = [
+    {
+      nombre: "Prof. Alberto Bustos Ortega",
+      rol: "Super Administrador & Asesor Nacional",
+      correo: "alberto.bustos.ortega@mep.go.cr",
+      cedula: "5-0305-0179",
+      pin: "2617",
+      tag: "Super Admin",
+      colorTag: "bg-purple-100 text-purple-900 border-purple-300",
+    },
+    {
+      nombre: "Allan Morera Araya",
+      rol: "Asesor Nacional de Formación Tecnológica",
+      correo: "allan.morera.araya@mep.go.cr",
+      cedula: "2-0481-0073",
+      pin: "7319",
+      tag: "Asesor Nacional",
+      colorTag: "bg-blue-100 text-blue-900 border-blue-300",
+    },
+    {
+      nombre: "Prof. Esteban Gómez Chinchilla",
+      rol: "Docente de Secundaria (DRE Liberia)",
+      correo: "esteban.gomez.chinchilla@mep.go.cr",
+      cedula: "5-0345-0891",
+      pin: "5821",
+      tag: "Docente Regional",
+      colorTag: "bg-emerald-100 text-emerald-900 border-emerald-300",
+    },
+    {
+      nombre: "PruebaDocente1",
+      rol: "Docente de Secundaria (San José Central)",
+      correo: "pruebadocente1@mep.go.cr",
+      cedula: "0-0000-0001",
+      pin: "1111",
+      tag: "Docente Prueba 1",
+      colorTag: "bg-teal-100 text-teal-900 border-teal-300",
+    },
+    {
+      nombre: "PruebaDocente2",
+      rol: "Docente de Secundaria (Alajuela / Heredia)",
+      correo: "pruebadocente2@mep.go.cr",
+      cedula: "0-0000-0002",
+      pin: "2222",
+      tag: "Docente Prueba 2",
+      colorTag: "bg-indigo-100 text-indigo-900 border-indigo-300",
+    },
+  ];
+
+  const seleccionarUsuarioPrueba = (correo: string, pin: string) => {
+    try {
+      localStorage.removeItem(`auth_lock_${correo.toLowerCase()}`);
+      localStorage.removeItem(`auth_attempts_${correo.toLowerCase()}`);
+    } catch (e) {}
+    setTabAuth("login");
+    setLoginCredencial(correo);
+    setLoginPin(pin);
+    setLoginMensaje(null);
+  };
+
   // Autocompletar demo de pruebas
   const usarDemo = () => {
-    try {
-      localStorage.removeItem("auth_lock_alberto.bustos.ortega@mep.go.cr");
-      localStorage.removeItem("auth_attempts_alberto.bustos.ortega@mep.go.cr");
-    } catch (e) {}
-    setLoginCredencial("alberto.bustos.ortega@mep.go.cr");
-    setLoginPin("2617");
-    setLoginMensaje(null);
+    seleccionarUsuarioPrueba("alberto.bustos.ortega@mep.go.cr", "2617");
   };
 
   // Reglas de evaluación del PIN en tiempo real
@@ -262,6 +316,61 @@ export default function HomePage() {
               <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto font-medium leading-relaxed">
                 Recurso oficial para el desarrollo del diagnóstico formativo en <strong>7.°, 8.° y 9.° Año</strong> con base en el Programa Nacional de Formación Tecnológica (PNFT).
               </p>
+            </div>
+
+            {/* Panel de Cuentas y Usuarios de Prueba (Acceso Rápido Temporal) */}
+            <div className="bg-gradient-to-br from-amber-50/80 via-white to-blue-50/70 border-2 border-amber-300/90 rounded-3xl p-5 sm:p-6 shadow-sm space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-200/80 pb-3">
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 bg-amber-500 text-white rounded-lg shadow-2xs">
+                    <Key size={18} weight="fill" />
+                  </div>
+                  <div>
+                    <h2 className="text-sm sm:text-base font-black text-slate-900 tracking-tight">
+                      Cuentas y Usuarios de Prueba (Acceso Rápido)
+                    </h2>
+                    <span className="text-[11px] font-bold text-amber-900">
+                      Disponibles para validación inmediata sin registro previo
+                    </span>
+                  </div>
+                </div>
+
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 text-amber-900 border border-amber-300 w-fit">
+                  ⚡ Modo Prueba Activo
+                </span>
+              </div>
+
+              <div className="space-y-2.5">
+                {USUARIOS_PRUEBA_DEMO.map((u) => (
+                  <div
+                    key={u.correo}
+                    className="p-3 bg-white/90 border border-stone-200/90 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-emerald-400 hover:shadow-2xs transition-all"
+                  >
+                    <div className="space-y-0.5">
+                      <div className="flex items-center gap-2">
+                        <span className="font-extrabold text-xs text-slate-900">{u.nombre}</span>
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${u.colorTag}`}>
+                          {u.tag}
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-stone-600 font-medium flex flex-wrap items-center gap-x-3 gap-y-0.5">
+                        <span><strong>Cédula:</strong> <code className="font-mono text-slate-800 bg-stone-100 px-1 rounded">{u.cedula}</code></span>
+                        <span><strong>PIN:</strong> <code className="font-mono text-emerald-800 font-bold bg-emerald-50 px-1 rounded">{u.pin}</code></span>
+                        <span className="text-stone-500 truncate max-w-[200px]">{u.correo}</span>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => seleccionarUsuarioPrueba(u.correo, u.pin)}
+                      className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shadow-2xs transition-all shrink-0 active:scale-95"
+                    >
+                      <span>Usar Cuenta</span>
+                      <ArrowRight size={13} weight="bold" />
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* Tarjeta de Autenticación en Blanco Cálido y Pastel */}
