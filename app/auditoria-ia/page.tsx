@@ -91,7 +91,7 @@ export default function AuditoriaIAPage() {
 
           <div className="p-3.5 bg-sky-50/70 border border-sky-200 rounded-xl space-y-1">
             <span className="font-extrabold text-sky-950 block">1. Google Gemini (Principal)</span>
-            <p className="text-slate-600 leading-snug"><code>gemini-2.5-flash</code> / <code>gemini-1.5-flash</code> con soporte de instrucciones pedagógicas.</p>
+            <p className="text-slate-600 leading-snug"><code>gemini-3.6-flash</code> / <code>gemini-3.5-flash-lite</code> / <code>gemini-3.5-flash</code> con soporte de instrucciones pedagógicas.</p>
           </div>
 
           <div className="p-3.5 bg-indigo-50/70 border border-indigo-200 rounded-xl space-y-1">
