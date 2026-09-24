@@ -1071,20 +1071,20 @@
     <div id="cardsTray" class="cards-tray">
       <div class="component-card" draggable="true" id="cardLed" data-id="salida" onclick="seleccionarTarjeta(this)">
         <div class="card-icon">💡</div>
-        <strong>Lámpara LED</strong>
-        <small style="color: var(--gris);">Actuador de luz</small>
+        <strong>LED</strong>
+        <small style="color: var(--gris);">Actuador</small>
       </div>
 
       <div class="component-card" draggable="true" id="cardSensor" data-id="entrada" onclick="seleccionarTarjeta(this)">
         <div class="card-icon">☀️</div>
-        <strong>Sensor LDR</strong>
-        <small style="color: var(--gris);">Captura iluminación</small>
+        <strong>Sensor de luz</strong>
+        <small style="color: var(--gris);">Sensor</small>
       </div>
 
       <div class="component-card" draggable="true" id="cardMicro" data-id="proceso" onclick="seleccionarTarjeta(this)">
         <div class="card-icon">🧠</div>
         <strong>Microcontrolador</strong>
-        <small style="color: var(--gris);">Unidad de proceso</small>
+        <small style="color: var(--gris);">Proceso</small>
       </div>
     </div>
 
@@ -1124,15 +1124,15 @@
         <!-- DISPOSITIVO 1: SENSOR -->
         <div class="device-box" id="devSensor">
           <div class="device-icon">☀️</div>
-          <h4>Sensor LDR</h4>
+          <h4>Sensor de luz</h4>
           <div class="port-btn" data-dev="sensor" data-port="VCC" onclick="tocarPuerto(this)">
-            <span>VCC (5V)</span> <span class="port-dot"></span>
+            <span>VCC</span> <span class="port-dot"></span>
           </div>
           <div class="port-btn" data-dev="sensor" data-port="GND" onclick="tocarPuerto(this)">
-            <span>GND (Masa)</span> <span class="port-dot"></span>
+            <span>GND</span> <span class="port-dot"></span>
           </div>
           <div class="port-btn" data-dev="sensor" data-port="SIG" onclick="tocarPuerto(this)">
-            <span>SIG (Señal A0)</span> <span class="port-dot"></span>
+            <span>SIG</span> <span class="port-dot"></span>
           </div>
         </div>
 
@@ -1157,9 +1157,9 @@
         <!-- DISPOSITIVO 3: LED ACTUADOR -->
         <div class="device-box" id="devLed">
           <div class="device-icon">💡</div>
-          <h4>Lámpara LED</h4>
+          <h4>LED – Actuador</h4>
           <div class="port-btn" data-dev="led" data-port="SIG" onclick="tocarPuerto(this)">
-            <span>Pin D9 (Ánodo)</span> <span class="port-dot"></span>
+            <span>SIG (Ánodo)</span> <span class="port-dot"></span>
           </div>
           <div class="port-btn" data-dev="led" data-port="GND" onclick="tocarPuerto(this)">
             <span>GND (Cátodo)</span> <span class="port-dot"></span>
@@ -2148,8 +2148,8 @@
 
     var html = "";
     estadoApp.conexiones.forEach(function(c, idx) {
-      var nomDev1 = c.from.dev === "sensor" ? "Sensor LDR" : (c.from.dev === "micro" ? "Microcontrolador" : "Lámpara LED");
-      var nomDev2 = c.to.dev === "sensor" ? "Sensor LDR" : (c.to.dev === "micro" ? "Microcontrolador" : "Lámpara LED");
+      var nomDev1 = c.from.dev === "sensor" ? "Sensor de luz" : (c.from.dev === "micro" ? "Microcontrolador" : "Lámpara LED");
+      var nomDev2 = c.to.dev === "sensor" ? "Sensor de luz" : (c.to.dev === "micro" ? "Microcontrolador" : "Lámpara LED");
       html += '<span class="connection-pill">' +
         '⚡ ' + nomDev1 + ' (' + c.from.port + ') ⇄ ' + nomDev2 + ' (' + c.to.port + ')' +
         '</span> ';
