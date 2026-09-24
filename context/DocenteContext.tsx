@@ -208,10 +208,194 @@ export const DOCENTE_ASESOR_ALLAN: DocenteData = {
   fechaRegistro: new Date().toISOString(),
 };
 
+export const DOCENTE_PRUEBA_1: DocenteData = {
+  idDocente: "DOC-PRUEBA-001",
+  nombreCompleto: "PruebaDocente1",
+  correoInstitucional: "pruebadocente1@mep.go.cr",
+  pin: "1111",
+  contrasena: "1111",
+  cedula: "0-0000-0001",
+  telefono: "+506 8888-0001",
+  tipoRol: "Docente",
+  dreCodigo: "DRE-01",
+  dreNombre: "San José Central",
+  circuito: "Circuito 01",
+  codigoPresupuestario: "MEP-P1-2027",
+  institucionNombre: "Liceo de Costa Rica / Colegio Superior de Señoritas / Liceo Rodrigo Facio Brenes",
+  rol: "Docente de Formación Tecnológica",
+  asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
+  fechaRegistro: new Date().toISOString(),
+  centrosEducativos: [
+    {
+      id: "CENTRO-P1-01",
+      nombre: "Liceo de Costa Rica",
+      dreCodigo: "DRE-01",
+      dreNombre: "San José Central",
+      circuito: "Circuito 01",
+      codigoPresupuestario: "MEP-LCR-2027",
+      desgloseNiveles: [
+        {
+          nivel: "7°",
+          activo: true,
+          totalSeccionesColegio: 6,
+          seccionesAtendidasDocente: ["7-1", "7-2", "7-3"],
+        },
+        {
+          nivel: "8°",
+          activo: true,
+          totalSeccionesColegio: 6,
+          seccionesAtendidasDocente: ["8-1", "8-2"],
+        },
+        {
+          nivel: "9°",
+          activo: true,
+          totalSeccionesColegio: 6,
+          seccionesAtendidasDocente: ["9-1", "9-2", "9-3", "9-4"],
+        },
+      ],
+    },
+    {
+      id: "CENTRO-P1-02",
+      nombre: "Colegio Superior de Señoritas",
+      dreCodigo: "DRE-01",
+      dreNombre: "San José Central",
+      circuito: "Circuito 02",
+      codigoPresupuestario: "MEP-CSS-2027",
+      desgloseNiveles: [
+        {
+          nivel: "7°",
+          activo: true,
+          totalSeccionesColegio: 5,
+          seccionesAtendidasDocente: ["7-1", "7-2"],
+        },
+        {
+          nivel: "8°",
+          activo: true,
+          totalSeccionesColegio: 5,
+          seccionesAtendidasDocente: ["8-1", "8-2", "8-3"],
+        },
+        {
+          nivel: "9°",
+          activo: true,
+          totalSeccionesColegio: 5,
+          seccionesAtendidasDocente: ["9-1", "9-2"],
+        },
+      ],
+    },
+    {
+      id: "CENTRO-P1-03",
+      nombre: "Liceo Rodrigo Facio Brenes",
+      dreCodigo: "DRE-01",
+      dreNombre: "San José Central",
+      circuito: "Circuito 03",
+      codigoPresupuestario: "MEP-LRF-2027",
+      desgloseNiveles: [
+        {
+          nivel: "7°",
+          activo: true,
+          totalSeccionesColegio: 6,
+          seccionesAtendidasDocente: ["7-4", "7-5", "7-6"],
+        },
+        {
+          nivel: "8°",
+          activo: true,
+          totalSeccionesColegio: 4,
+          seccionesAtendidasDocente: ["8-3", "8-4"],
+        },
+        {
+          nivel: "9°",
+          activo: true,
+          totalSeccionesColegio: 5,
+          seccionesAtendidasDocente: ["9-4", "9-5"],
+        },
+      ],
+    },
+  ],
+};
+
+export const DOCENTE_PRUEBA_2: DocenteData = {
+  idDocente: "DOC-PRUEBA-002",
+  nombreCompleto: "PruebaDocente2",
+  correoInstitucional: "pruebadocente2@mep.go.cr",
+  pin: "2222",
+  contrasena: "2222",
+  cedula: "0-0000-0002",
+  telefono: "+506 8888-0002",
+  tipoRol: "Docente",
+  dreCodigo: "DRE-04",
+  dreNombre: "Alajuela",
+  circuito: "Circuito 02",
+  codigoPresupuestario: "MEP-P2-2027",
+  institucionNombre: "Liceo Experimental Bilingüe de Alajuela / CTP de Heredia",
+  rol: "Docente de Formación Tecnológica",
+  asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
+  fechaRegistro: new Date().toISOString(),
+  centrosEducativos: [
+    {
+      id: "CENTRO-P2-01",
+      nombre: "Liceo Experimental Bilingüe de Alajuela",
+      dreCodigo: "DRE-04",
+      dreNombre: "Alajuela",
+      circuito: "Circuito 02",
+      codigoPresupuestario: "MEP-LEBA-2027",
+      desgloseNiveles: [
+        {
+          nivel: "7°",
+          activo: true,
+          totalSeccionesColegio: 6,
+          seccionesAtendidasDocente: ["7-1", "7-2", "7-3", "7-4"],
+        },
+        {
+          nivel: "8°",
+          activo: true,
+          totalSeccionesColegio: 5,
+          seccionesAtendidasDocente: ["8-1", "8-2"],
+        },
+        {
+          nivel: "9°",
+          activo: true,
+          totalSeccionesColegio: 6,
+          seccionesAtendidasDocente: ["9-1", "9-2", "9-3"],
+        },
+      ],
+    },
+    {
+      id: "CENTRO-P2-02",
+      nombre: "Colegio Técnico Profesional de Heredia",
+      dreCodigo: "DRE-05",
+      dreNombre: "Heredia",
+      circuito: "Circuito 01",
+      codigoPresupuestario: "MEP-CTPH-2027",
+      desgloseNiveles: [
+        {
+          nivel: "7°",
+          activo: true,
+          totalSeccionesColegio: 8,
+          seccionesAtendidasDocente: ["7-1", "7-2", "7-3"],
+        },
+        {
+          nivel: "8°",
+          activo: true,
+          totalSeccionesColegio: 8,
+          seccionesAtendidasDocente: ["8-1", "8-2", "8-3", "8-4"],
+        },
+        {
+          nivel: "9°",
+          activo: true,
+          totalSeccionesColegio: 10,
+          seccionesAtendidasDocente: ["9-1", "9-2", "9-3", "9-4", "9-5"],
+        },
+      ],
+    },
+  ],
+};
+
 export const LISTA_DOCENTES_INICIALES: DocenteData[] = [
   DOCENTE_DEFAULT,
   DOCENTE_ASESOR_ALLAN,
   DOCENTE_PRUEBA_REGIONAL,
+  DOCENTE_PRUEBA_1,
+  DOCENTE_PRUEBA_2,
 ];
 
 export const DOCENTE_MEP_OFICIAL = DOCENTE_DEFAULT;
@@ -1025,6 +1209,36 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       limpiarFallos();
       guardarDocente(DOCENTE_PRUEBA_REGIONAL);
       return { exito: true, mensaje: `Bienvenido(a), ${DOCENTE_PRUEBA_REGIONAL.nombreCompleto}.` };
+    }
+
+    // 4. Verificación Inmediata: PruebaDocente1 (Cédula 0-0000-0001 / PIN 1111)
+    const esDocenteP1 =
+      credencialLimpia === "pruebadocente1@mep.go.cr" ||
+      credencialLimpia === "pruebadocente1" ||
+      credencialLimpia === "0-0000-0001" ||
+      credencialLimpia === "000000001";
+
+    const esPinValidoP1 = pinOPassLimpia === "1111" || pinOPassLimpia === "1001";
+
+    if (esDocenteP1 && esPinValidoP1) {
+      limpiarFallos();
+      guardarDocente(DOCENTE_PRUEBA_1);
+      return { exito: true, mensaje: `Bienvenido(a), ${DOCENTE_PRUEBA_1.nombreCompleto}.` };
+    }
+
+    // 5. Verificación Inmediata: PruebaDocente2 (Cédula 0-0000-0002 / PIN 2222)
+    const esDocenteP2 =
+      credencialLimpia === "pruebadocente2@mep.go.cr" ||
+      credencialLimpia === "pruebadocente2" ||
+      credencialLimpia === "0-0000-0002" ||
+      credencialLimpia === "000000002";
+
+    const esPinValidoP2 = pinOPassLimpia === "2222" || pinOPassLimpia === "2002";
+
+    if (esDocenteP2 && esPinValidoP2) {
+      limpiarFallos();
+      guardarDocente(DOCENTE_PRUEBA_2);
+      return { exito: true, mensaje: `Bienvenido(a), ${DOCENTE_PRUEBA_2.nombreCompleto}.` };
     }
 
     // Comprobar bloqueo temporal por intentos fallidos (15 minutos) para intentos erróneos
