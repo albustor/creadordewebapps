@@ -333,19 +333,19 @@ function generarDocumento7moPDF() {
     ]
   });
 
-  // Triada Evaluativa
+  // Articulación diagnóstica del PNFT
   yPos = doc.lastAutoTable.finalY + 6;
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(9);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("Consolidación de la triada formativa en CyberQuest 7.° año", margin, yPos);
+  doc.text("Articulación diagnóstica del PNFT: saberes y dimensiones formativas (7.° año)", margin, yPos);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7.5);
   doc.setTextColor(...COLOR_DARK);
   doc.text(
-    "El informe docente consolida: 1) Rendimiento en misiones conceptuales • 2) Métricas psicomotrices (P1, P2, P3) • " +
-    "3) Observación socioafectiva (S1, S2, S3). Permitiendo al docente planificar estrategias de nivelación formativa.",
+    "El informe docente consolida la relación pedagógica del PNFT: 1) Saberes conceptuales (Saber: rendimiento cognitivo) • 2) Saberes procedimentales (Saber hacer: métricas psicomotrices P1, P2, P3) • " +
+    "3) Saberes actitudinales (Saber ser / convivir: observación socioafectiva S1, S2, S3), facilitando el planeamiento formativo.",
     margin, yPos + 4, { maxWidth: contentWidth }
   );
 

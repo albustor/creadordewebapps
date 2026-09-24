@@ -150,12 +150,12 @@ ${JSON.stringify(registros.slice(0, 15), null, 2)}
 INSTRUCCIONES OBLIGATORIAS:
 Como Asesor Pedagógico Especialista en Formación Tecnológica y Evaluación Diagnóstica para Educación Secundaria del MEP, debes generar un ANÁLISIS PEDAGÓGICO PROFUNDO Y NO PREDETERMINADO, basado ESTRICTAMENTE en los números y desempeños reportados arriba.
 
-DIRECTRICES CURRICULARES ESTRICTAS:
-1. Toda la mediación didáctica debe estar vinculada explícitamente a la tríada oficial de saberes:
-   - Saber (conceptual): Comprensión lógica, abstracción y vocabulario técnico.
-   - Saber hacer (procedimental): Formulación de algoritmos, destreza de taller, simulación y depuración paso a paso.
-   - Saber ser / Saber convivir (actitudinal): Gestión constructiva del error, perseverancia, resiliencia y trabajo colaborativo.
-2. PROHIBICIÓN ABSOLUTA: No utilices bajo ninguna circunstancia fórmulas mecanicistas o anglicismos foráneos como "(I do, We do, You do)", "Yo hago, Nosotros hacemos, Tú haces" ni esquemas instruccionales rígidos no contextualizados. Toda propuesta debe sustentarse en el Diseño Universal para el Aprendizaje (DUA) y la mediación formativa de aula.
+DIRECTRICES CURRICULARES DEL PNFT (EVALUACIÓN DIAGNÓSTICA):
+1. En el marco diagnóstico del Programa Nacional de Formación Tecnológica (PNFT), la mediación se articula mediante la relación pedagógica entre dimensiones observadas y saberes:
+   - Dimensión Cognitiva ⟷ Saber (conceptual): Comprensión de conceptos lógicos, hardware, software, sensórica y abstracción computacional.
+   - Dimensión Psicomotora ⟷ Saber hacer (procedimental): Formulación de algoritmos, destreza de taller, conexionado de pines, simulación interactiva, depuración paso a paso y resolución práctica de fallas.
+   - Dimensión Socioafectiva ⟷ Saber ser / Saber convivir (actitudinal): Autorregulación, perseverancia, gestión positiva y reflexiva del error, trabajo colaborativo en parejas y resiliencia ante retos complejos.
+2. PROHIBICIÓN ABSOLUTA: No utilices fórmulas mecanicistas o anglicismos foráneos como "(I do, We do, You do)", "Yo hago, Nosotros hacemos, Tú haces" ni esquemas instruccionales rígidos no contextualizados. Toda propuesta debe sustentarse en el Diseño Universal para el Aprendizaje (DUA) y la mediación formativa de aula.
 
 Debes responder ÚNICAMENTE con un objeto JSON válido (sin explicaciones adicionales ni bloques markdown) con la siguiente estructura exacta:
 {

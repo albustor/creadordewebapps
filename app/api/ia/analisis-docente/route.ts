@@ -192,12 +192,12 @@ ${JSON.stringify(
   2
 )}
 
-INSTRUCCIÓN ESPECIAL Y DIRECTRICES CURRICULARES:
+INSTRUCCIÓN ESPECIAL Y DIRECTRICES CURRICULARES DEL PNFT (DIAGNÓSTICO):
 1. Si observas estudiantes con calificaciones bajas en el área socioafectiva (Nivel C en S1-S7) o cognitiva (RA en Ind 1-10), DEBES DESTACARLO EXPLÍCITAMENTE y proponer acciones pedagógicas y socioemocionales concretas para atender esa debilidad en la síntesis y en el plan individual.
-2. Todas las recomendaciones deben articularse en la tríada oficial:
-   - Saber (conceptual): Comprensión y lenguaje técnico.
-   - Saber hacer (procedimental): Ejecución de tareas, conexiones físicas y algoritmos.
-   - Saber ser / Saber convivir (actitudinal): Autorregulación, perseverancia, empatía y resiliencia ante el error.
+2. En el marco del PNFT, se establece una articulación directa entre las dimensiones diagnósticas y los saberes:
+   - Dimensión Cognitiva ⟷ Saber (conceptual): Comprensión de conceptos lógicos, hardware, software, sensórica y abstracción computacional.
+   - Dimensión Psicomotora ⟷ Saber hacer (procedimental): Formulación de algoritmos, destreza de taller, conexionado de pines, simulación interactiva, depuración paso a paso y resolución práctica de fallas.
+   - Dimensión Socioafectiva ⟷ Saber ser / Saber convivir (actitudinal): Autorregulación, perseverancia, gestión positiva y reflexiva del error, trabajo colaborativo en parejas y resiliencia ante retos complejos.
 3. PROHIBICIÓN ABSOLUTA: No utilices fórmulas mecanicistas ni anglicismos como "(I do, We do, You do)" o "Yo hago, Nosotros hacemos, Tú haces". Basa toda recomendación en el Diseño Universal para el Aprendizaje (DUA) y mediación activa formativa.
 
 Responde ÚNICAMENTE con un JSON válido con esta estructura exacta:

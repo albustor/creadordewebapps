@@ -58,7 +58,7 @@ function generarDocumento9noPDF() {
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7);
     doc.setTextColor(...COLOR_MUTED);
-    doc.text("Evaluación diagnóstica de 9.° año: «Aula Inteligente», simulación 2D y sistemas embebidos (triada formativa)", margin, pageHeight - 8);
+    doc.text("Evaluación diagnóstica de 9.° año: «Aula Inteligente», simulación 2D y sistemas embebidos (saberes del PNFT)", margin, pageHeight - 8);
     doc.text(`Página ${pageNum} de ${totalPages}`, pageWidth - margin, pageHeight - 8, { align: 'right' });
   }
 
@@ -92,7 +92,7 @@ function generarDocumento9noPDF() {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   doc.setTextColor(241, 245, 249);
-  doc.text("Evaluación integral de sistemas embebidos: simulador 2D de circuitos, 10 reactivos cognitivos y triada DUA.", margin, 42);
+  doc.text("Evaluación integral de sistemas embebidos: simulador 2D de circuitos, 10 reactivos cognitivos y saberes PNFT.", margin, 42);
   doc.text("Arquitectura de doble código QR: estudiante autónomo y docente evaluador con sistematización en tiempo real.", margin, 48);
 
   // Tarjeta de Ficha Técnica
@@ -403,7 +403,7 @@ function generarDocumento9noPDF() {
   doc.setFontSize(7);
   doc.setTextColor(...COLOR_DARK);
   doc.text("• Cálculo instantáneo de porcentajes de logro (L / ED / RA).", margin + cardW + 8, yPos + 12);
-  doc.text("• Consolidado tripartito de la triada formativa oficial.", margin + cardW + 8, yPos + 17);
+  doc.text("• Consolidado de los saberes del PNFT (Saber, Saber hacer, Saber ser).", margin + cardW + 8, yPos + 17);
   doc.text("• Exportación de actas completas en formatos CSV y Excel.", margin + cardW + 8, yPos + 22);
   doc.text("• Generación de PDF institucional con sello del MEP.", margin + cardW + 8, yPos + 27);
   doc.text("• Respaldo local y recuperación de registros previos.", margin + cardW + 8, yPos + 32);

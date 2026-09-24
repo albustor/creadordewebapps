@@ -338,19 +338,20 @@ function generarDocumento8voPDF() {
     ]
   });
 
-  // Triada Evaluativa
+  // Articulación diagnóstica del PNFT
   yPos = doc.lastAutoTable.finalY + 6;
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(9);
   doc.setTextColor(...COLOR_PRIMARY);
-  doc.text("Consolidación de la triada formativa en el aplicativo docente (8.° año)", margin, yPos);
+  doc.text("Articulación diagnóstica del PNFT: saberes y dimensiones formativas (8.° año)", margin, yPos);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7.5);
   doc.setTextColor(...COLOR_DARK);
   doc.text(
-    "La herramienta docente integra automáticamente: 1) Puntaje de los 14 reactivos cognitivos (0 a 100%) • 2) Observación psicomotriz (escala A-B-C) • " +
-    "3) Observación socioafectiva (escala A-B-C). Generando una síntesis individual y grupal con sugerencias pedagógicas para el planeamiento didáctico.",
+    "La herramienta docente consolida la relación diagnóstica del PNFT: 1) Saberes conceptuales (Saber: puntaje de reactivos cognitivos) • " +
+    "2) Saberes procedimentales (Saber hacer: observación psicomotriz P1-P4) • 3) Saberes actitudinales (Saber ser / convivir: observación socioafectiva S1-S3), " +
+    "generando una síntesis con sugerencias pedagógicas para el planeamiento didáctico.",
     margin, yPos + 4, { maxWidth: contentWidth }
   );
 
