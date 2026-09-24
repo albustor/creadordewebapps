@@ -6,7 +6,6 @@ import { useDocente, CentroEducativoDocente } from "@/context/DocenteContext";
 import { LISTA_DRE_MEP, LISTA_DRE_REGIONALES } from "@/lib/dreCircuitos";
 import { formatearCedulaCR } from "@/lib/cedulaUtils";
 import SelectorCentrosYSecciones, { CREAR_CENTRO_DEFAULT } from "@/components/SelectorCentrosYSecciones";
-import RecursoAprendizajeAutogestionado from "@/components/RecursoAprendizajeAutogestionado";
 import {
   Lightning,
   ChartBar,
@@ -926,11 +925,6 @@ export default function HomePage() {
                       <ArrowSquareOut size={18} weight="bold" />
                     </a>
                   </div>
-                </div>
-
-                {/* Recurso Autogestionado Integrado */}
-                <div className="pt-4 border-t border-emerald-200/80">
-                  <RecursoAprendizajeAutogestionado />
                 </div>
               </div>
             </div>

@@ -36,6 +36,7 @@ import {
   ChalkboardTeacher,
   Gauge,
   Desktop,
+  DownloadSimple,
 } from "@phosphor-icons/react";
 
 export default function DashboardAnaliticoPage() {
@@ -616,14 +617,13 @@ export default function DashboardAnaliticoPage() {
                     </a>
 
                     <a
-                      href="/webapps/diagnostico_7mo_modulo01_cyberquest.html"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href="/webapps/diagnostico_7mo_modulo01_desconectado_offline.html"
+                      download="diagnostico_7mo_modulo01_desconectado_offline.html"
                       className="flex items-center justify-center gap-2 px-5 py-3 bg-white/15 hover:bg-white/25 text-indigo-100 hover:text-white border border-indigo-400/40 font-bold text-xs rounded-2xl transition-all hover:scale-[1.02] cursor-pointer text-center"
-                      title="Abrir la herramienta de evaluación diagnóstica en formato local o sin conexión"
+                      title="Descargar la herramienta de evaluación diagnóstica en formato local o sin conexión (HTML)"
                     >
-                      <Desktop size={18} weight="duotone" />
-                      <span>Herramienta de Evaluación Diagnóstica Docente Sin Conexión o Local</span>
+                      <DownloadSimple size={18} weight="bold" />
+                      <span>Descargar Herramienta Diagnóstica Sin Conexión o Local (.html)</span>
                     </a>
 
                     <a
@@ -739,13 +739,12 @@ export default function DashboardAnaliticoPage() {
 
                     <a
                       href="/webapps/diagnostico_8vo_modulo01_desconectado_offline.html"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      download="diagnostico_8vo_modulo01_desconectado_offline.html"
                       className="flex items-center justify-center gap-2 px-5 py-3 bg-white/15 hover:bg-white/25 text-teal-100 hover:text-white border border-teal-400/40 font-bold text-xs rounded-2xl transition-all hover:scale-[1.02] cursor-pointer text-center"
-                      title="Abrir la herramienta de evaluación diagnóstica en formato local o sin conexión"
+                      title="Descargar la herramienta de evaluación diagnóstica en formato local o sin conexión (HTML)"
                     >
-                      <Desktop size={18} weight="duotone" />
-                      <span>Herramienta de Evaluación Diagnóstica Docente Sin Conexión o Local</span>
+                      <DownloadSimple size={18} weight="bold" />
+                      <span>Descargar Herramienta Diagnóstica Sin Conexión o Local (.html)</span>
                     </a>
 
                     <a
@@ -861,13 +860,12 @@ export default function DashboardAnaliticoPage() {
 
                     <a
                       href="/webapps/diagnostico_9no_modulo01_desconectado_offline.html"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      download="diagnostico_9no_modulo01_desconectado_offline.html"
                       className="flex items-center justify-center gap-2 px-5 py-3 bg-white/15 hover:bg-white/25 text-purple-100 hover:text-white border border-purple-400/40 font-bold text-xs rounded-2xl transition-all hover:scale-[1.02] cursor-pointer text-center"
-                      title="Abrir la herramienta de evaluación diagnóstica en formato local o sin conexión"
+                      title="Descargar la herramienta de evaluación diagnóstica en formato local o sin conexión (HTML)"
                     >
-                      <Desktop size={18} weight="duotone" />
-                      <span>Herramienta de Evaluación Diagnóstica Docente Sin Conexión o Local</span>
+                      <DownloadSimple size={18} weight="bold" />
+                      <span>Descargar Herramienta Diagnóstica Sin Conexión o Local (.html)</span>
                     </a>
 
                     <a

@@ -931,6 +931,7 @@ export default function RecursoAprendizajeAutogestionado() {
   const [tareasCompletadas, setTareasCompletadas] = useState<Record<string, boolean>>({});
   const [apuntesDocente, setApuntesDocente] = useState<string>("");
   const [etapaAbierta, setEtapaAbierta] = useState<number>(1);
+  const [glosarioDesplegado, setGlosarioDesplegado] = useState<boolean>(true);
   const [areaGlosarioAbierta, setAreaGlosarioAbierta] = useState<number>(1);
   const [casoContingenciaAbierto, setCasoContingenciaAbierto] = useState<number | null>(null);
   const [copiadoExitoso, setCopiadoExitoso] = useState<boolean>(false);
@@ -1129,231 +1130,256 @@ export default function RecursoAprendizajeAutogestionado() {
       </div>
 
       {/* Glosario Didáctico de las Cuatro Áreas Oficiales (Guía Docente 2026) */}
-      <div className="bg-stone-50/90 border border-stone-300 rounded-2xl p-5 space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-3">
-          <div className="flex items-center gap-2">
-            <BookOpen size={20} className="text-emerald-700" weight="bold" />
-            <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider">
-              Glosario oficial de las cuatro áreas curriculares (Guía Docente 2026)
-            </h3>
+      <div className="bg-stone-50/90 border border-stone-300 rounded-2xl p-5 space-y-4 shadow-2xs transition-all">
+        <button
+          type="button"
+          onClick={() => setGlosarioDesplegado(!glosarioDesplegado)}
+          className="w-full flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-left group cursor-pointer focus:outline-none"
+        >
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 bg-emerald-100/70 text-emerald-800 rounded-xl group-hover:bg-emerald-200 transition-colors">
+              <BookOpen size={20} weight="bold" />
+            </div>
+            <div>
+              <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider group-hover:text-emerald-900 transition-colors">
+                Glosario oficial de las cuatro áreas curriculares (Guía Docente 2026)
+              </h3>
+              <p className="text-[11px] font-bold text-stone-500">
+                Marco curricular oficial para 7.°, 8.° y 9.° año (III Ciclo)
+              </p>
+            </div>
           </div>
-          <span className="text-[11px] font-bold text-stone-500">
-            Marco curricular oficial para 7.°, 8.° y 9.° año (III Ciclo)
-          </span>
-        </div>
 
-        {/* Selector de Pestañas del Glosario */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
-          {AREAS_OFICIALES_GUIA_2026.map((area) => {
-            const iconos = [DeviceMobile, Code, Robot, Database];
-            const IconoComp = iconos[area.id - 1] || DeviceMobile;
-            const colores = [
-              "text-emerald-700",
-              "text-blue-700",
-              "text-amber-700",
-              "text-purple-700",
-            ];
-            const bgs = [
-              "bg-emerald-700 text-white",
-              "bg-blue-700 text-white",
-              "bg-amber-700 text-white",
-              "bg-purple-700 text-white",
-            ];
-            return (
+          <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
+            <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-stone-200/80 text-stone-700 group-hover:bg-emerald-100 group-hover:text-emerald-900 transition-colors">
+              {glosarioDesplegado ? "Acoplar glosario" : "Desacoplar glosario (Ver contenido)"}
+            </span>
+            <div
+              className={`p-1.5 rounded-lg bg-white border border-stone-200 text-stone-600 group-hover:border-emerald-400 group-hover:text-emerald-700 transition-transform duration-200 ${
+                glosarioDesplegado ? "rotate-180" : ""
+              }`}
+            >
+              <CaretDown size={16} weight="bold" />
+            </div>
+          </div>
+        </button>
+
+        {glosarioDesplegado && (
+          <div className="space-y-4 pt-2 border-t border-stone-200 animate-fadeIn">
+            {/* Selector de Pestañas del Glosario */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
+              {AREAS_OFICIALES_GUIA_2026.map((area) => {
+                const iconos = [DeviceMobile, Code, Robot, Database];
+                const IconoComp = iconos[area.id - 1] || DeviceMobile;
+                const colores = [
+                  "text-emerald-700",
+                  "text-blue-700",
+                  "text-amber-700",
+                  "text-purple-700",
+                ];
+                const bgs = [
+                  "bg-emerald-700 text-white",
+                  "bg-blue-700 text-white",
+                  "bg-amber-700 text-white",
+                  "bg-purple-700 text-white",
+                ];
+                return (
+                  <button
+                    key={area.id}
+                    type="button"
+                    onClick={() => setAreaGlosarioAbierta(area.id)}
+                    className={`p-2.5 rounded-xl text-xs font-bold text-left transition-all flex items-center gap-2 ${
+                      areaGlosarioAbierta === area.id
+                        ? bgs[area.id - 1] + " shadow-xs ring-2 ring-stone-400/20"
+                        : "bg-white border border-stone-200 text-slate-700 hover:bg-stone-100"
+                    }`}
+                  >
+                    <IconoComp
+                      size={16}
+                      weight="bold"
+                      className={areaGlosarioAbierta === area.id ? "text-white" : colores[area.id - 1]}
+                    />
+                    <span className="truncate">{area.nombreCorto}</span>
+                  </button>
+                );
+              })}
               <button
-                key={area.id}
                 type="button"
-                onClick={() => setAreaGlosarioAbierta(area.id)}
+                onClick={() => setAreaGlosarioAbierta(5)}
                 className={`p-2.5 rounded-xl text-xs font-bold text-left transition-all flex items-center gap-2 ${
-                  areaGlosarioAbierta === area.id
-                    ? bgs[area.id - 1] + " shadow-xs ring-2 ring-stone-400/20"
+                  areaGlosarioAbierta === 5
+                    ? "bg-slate-800 text-white shadow-xs ring-2 ring-stone-400/20"
                     : "bg-white border border-stone-200 text-slate-700 hover:bg-stone-100"
                 }`}
               >
-                <IconoComp
+                <Lightbulb
                   size={16}
                   weight="bold"
-                  className={areaGlosarioAbierta === area.id ? "text-white" : colores[area.id - 1]}
+                  className={areaGlosarioAbierta === 5 ? "text-white" : "text-slate-700"}
                 />
-                <span className="truncate">{area.nombreCorto}</span>
+                <span className="truncate">5. Ejes transversales</span>
               </button>
-            );
-          })}
-          <button
-            type="button"
-            onClick={() => setAreaGlosarioAbierta(5)}
-            className={`p-2.5 rounded-xl text-xs font-bold text-left transition-all flex items-center gap-2 ${
-              areaGlosarioAbierta === 5
-                ? "bg-slate-800 text-white shadow-xs ring-2 ring-stone-400/20"
-                : "bg-white border border-stone-200 text-slate-700 hover:bg-stone-100"
-            }`}
-          >
-            <Lightbulb
-              size={16}
-              weight="bold"
-              className={areaGlosarioAbierta === 5 ? "text-white" : "text-slate-700"}
-            />
-            <span className="truncate">5. Ejes transversales</span>
-          </button>
-        </div>
-
-        {/* Contenido Oficial según Área Seleccionada */}
-        {areaGlosarioAbierta >= 1 && areaGlosarioAbierta <= 4 && (() => {
-          const areaActiva = AREAS_OFICIALES_GUIA_2026.find((a) => a.id === areaGlosarioAbierta)!;
-          return (
-            <div className="bg-white border border-stone-200 rounded-xl p-5 shadow-2xs space-y-4 animate-fadeIn">
-              {/* Encabezado del Área */}
-              <div className="border-b border-stone-100 pb-3">
-                <span className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-800">
-                  Área de Conocimiento Oficial • PNFT
-                </span>
-                <h4 className="text-base sm:text-lg font-black text-slate-900">
-                  {areaActiva.nombre}
-                </h4>
-              </div>
-
-              {/* Competencia Específica y Resultado de Aprendizaje */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div className="p-3.5 bg-emerald-50/60 border border-emerald-200 rounded-xl space-y-1">
-                  <span className="text-[11px] font-black uppercase text-emerald-950 block">
-                    Competencia específica del PNFT por área:
-                  </span>
-                  <p className="text-xs text-slate-700 leading-relaxed font-medium">
-                    «{areaActiva.competenciaEspecifica}»
-                  </p>
-                </div>
-
-                <div className="p-3.5 bg-sky-50/60 border border-sky-200 rounded-xl space-y-1">
-                  <span className="text-[11px] font-black uppercase text-sky-950 block">
-                    Resultado de aprendizaje (RdA):
-                  </span>
-                  <p className="text-xs text-slate-700 leading-relaxed font-medium">
-                    «{areaActiva.resultadoAprendizaje}»
-                  </p>
-                </div>
-              </div>
-
-              {/* Subáreas y Perfiles de Salida */}
-              <div className="space-y-2 pt-2">
-                <h5 className="text-xs font-black text-slate-900 uppercase tracking-wider">
-                  Subáreas oficiales y perfiles de salida de estudiantes:
-                </h5>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  {areaActiva.subareas.map((sub, idx) => (
-                    <div
-                      key={idx}
-                      className="p-3 bg-stone-50 border border-stone-200 rounded-xl space-y-1.5"
-                    >
-                      <span className="text-xs font-bold text-slate-900 block border-b border-stone-200 pb-1">
-                        Subárea: {sub.nombre}
-                      </span>
-                      <p className="text-[11px] text-slate-600 leading-relaxed">
-                        {sub.perfilSalida}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Saberes Conceptuales e Indicadores de Logro */}
-              <div className="space-y-2 pt-2">
-                <h5 className="text-xs font-black text-slate-900 uppercase tracking-wider">
-                  Saberes conceptuales e indicadores de logro del III Ciclo:
-                </h5>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 max-h-80 overflow-y-auto pr-1">
-                  {areaActiva.saberesIndicadores.map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="p-2.5 bg-white border border-stone-200 rounded-lg hover:border-emerald-300 transition-colors space-y-1 shadow-2xs"
-                    >
-                      <strong className="text-xs text-slate-900 block font-bold">
-                        {item.saber}:
-                      </strong>
-                      <p className="text-[11px] text-slate-600 leading-snug">
-                        {item.indicador}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          );
-        })()}
-
-        {/* Pestaña 5: Ejes Transversales, Prácticas y Actitudes */}
-        {areaGlosarioAbierta === 5 && (
-          <div className="bg-white border border-stone-200 rounded-xl p-5 shadow-2xs space-y-5 animate-fadeIn">
-            <div>
-              <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-600">
-                Componentes Integradores del PNFT
-              </span>
-              <h4 className="text-base sm:text-lg font-black text-slate-900">
-                Ejes transversales y pensador computacional
-              </h4>
             </div>
 
-            {/* Ejes Transversales */}
-            <div className="space-y-2">
-              <h5 className="text-xs font-black text-slate-900 uppercase tracking-wider">
-                Ejes transversales oficiales:
-              </h5>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                {EJES_TRANSVERSALES_OFICIALES.map((eje, idx) => (
-                  <div
-                    key={idx}
-                    className="p-3.5 bg-stone-50 border border-stone-200 rounded-xl space-y-2"
-                  >
-                    <span className="text-xs font-bold text-slate-900 block border-b border-stone-200 pb-1">
-                      {eje.eje}
+            {/* Contenido Oficial según Área Seleccionada */}
+            {areaGlosarioAbierta >= 1 && areaGlosarioAbierta <= 4 && (() => {
+              const areaActiva = AREAS_OFICIALES_GUIA_2026.find((a) => a.id === areaGlosarioAbierta)!;
+              return (
+                <div className="bg-white border border-stone-200 rounded-xl p-5 shadow-2xs space-y-4 animate-fadeIn">
+                  {/* Encabezado del Área */}
+                  <div className="border-b border-stone-100 pb-3">
+                    <span className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-800">
+                      Área de Conocimiento Oficial • PNFT
                     </span>
-                    <div className="space-y-1.5 text-[11px]">
-                      {eje.componentes.map((c, cIdx) => (
-                        <div key={cIdx}>
-                          <strong className="text-slate-800">{c.nombre}: </strong>
-                          <span className="text-slate-600 leading-snug">{c.detalle}</span>
+                    <h4 className="text-base sm:text-lg font-black text-slate-900">
+                      {areaActiva.nombre}
+                    </h4>
+                  </div>
+
+                  {/* Competencia Específica y Resultado de Aprendizaje */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div className="p-3.5 bg-emerald-50/60 border border-emerald-200 rounded-xl space-y-1">
+                      <span className="text-[11px] font-black uppercase text-emerald-950 block">
+                        Competencia específica del PNFT por área:
+                      </span>
+                      <p className="text-xs text-slate-700 leading-relaxed font-medium">
+                        «{areaActiva.competenciaEspecifica}»
+                      </p>
+                    </div>
+
+                    <div className="p-3.5 bg-sky-50/60 border border-sky-200 rounded-xl space-y-1">
+                      <span className="text-[11px] font-black uppercase text-sky-950 block">
+                        Resultado de aprendizaje (RdA):
+                      </span>
+                      <p className="text-xs text-slate-700 leading-relaxed font-medium">
+                        «{areaActiva.resultadoAprendizaje}»
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Subáreas y Perfiles de Salida */}
+                  <div className="space-y-2 pt-2">
+                    <h5 className="text-xs font-black text-slate-900 uppercase tracking-wider">
+                      Subáreas oficiales y perfiles de salida de estudiantes:
+                    </h5>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      {areaActiva.subareas.map((sub, idx) => (
+                        <div
+                          key={idx}
+                          className="p-3 bg-stone-50 border border-stone-200 rounded-xl space-y-1.5"
+                        >
+                          <span className="text-xs font-bold text-slate-900 block border-b border-stone-200 pb-1">
+                            Subárea: {sub.nombre}
+                          </span>
+                          <p className="text-[11px] text-slate-600 leading-relaxed">
+                            {sub.perfilSalida}
+                          </p>
                         </div>
                       ))}
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
 
-            {/* Prácticas Observables */}
-            <div className="space-y-2 pt-2">
-              <h5 className="text-xs font-black text-slate-900 uppercase tracking-wider">
-                Prácticas observables del pensador computacional (Saber hacer):
-              </h5>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 max-h-64 overflow-y-auto pr-1">
-                {PRACTICAS_PENSADOR_COMPUTACIONAL.map((p, idx) => (
-                  <div
-                    key={idx}
-                    className="p-2.5 bg-stone-50/70 border border-stone-200 rounded-lg space-y-1 text-xs"
-                  >
-                    <strong className="text-emerald-950 font-bold block">{p.practica}</strong>
-                    <p className="text-[11px] text-slate-600 leading-snug">{p.detalle}</p>
+                  {/* Saberes Conceptuales e Indicadores de Logro */}
+                  <div className="space-y-2 pt-2">
+                    <h5 className="text-xs font-black text-slate-900 uppercase tracking-wider">
+                      Saberes conceptuales e indicadores de logro del III Ciclo:
+                    </h5>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 max-h-80 overflow-y-auto pr-1">
+                      {areaActiva.saberesIndicadores.map((item, idx) => (
+                        <div
+                          key={idx}
+                          className="p-2.5 bg-white border border-stone-200 rounded-lg hover:border-emerald-300 transition-colors space-y-1 shadow-2xs"
+                        >
+                          <strong className="text-xs text-slate-900 block font-bold">
+                            {item.saber}:
+                          </strong>
+                          <p className="text-[11px] text-slate-600 leading-snug">
+                            {item.indicador}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                ))}
-              </div>
-            </div>
+                </div>
+              );
+            })()}
 
-            {/* Actitudes Observables */}
-            <div className="space-y-2 pt-2">
-              <h5 className="text-xs font-black text-slate-900 uppercase tracking-wider">
-                Actitudes observables del pensador computacional (Saber ser):
-              </h5>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                {ACTITUDES_PENSADOR_COMPUTACIONAL.map((a, idx) => (
-                  <div
-                    key={idx}
-                    className="p-2.5 bg-amber-50/50 border border-amber-200 rounded-lg space-y-1 text-xs"
-                  >
-                    <strong className="text-amber-950 font-bold block">{a.actitud}</strong>
-                    <p className="text-[11px] text-slate-600 leading-snug">{a.detalle}</p>
+            {/* Pestaña 5: Ejes Transversales, Prácticas y Actitudes */}
+            {areaGlosarioAbierta === 5 && (
+              <div className="bg-white border border-stone-200 rounded-xl p-5 shadow-2xs space-y-5 animate-fadeIn">
+                <div>
+                  <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-600">
+                    Componentes Integradores del PNFT
+                  </span>
+                  <h4 className="text-base sm:text-lg font-black text-slate-900">
+                    Ejes transversales y pensador computacional
+                  </h4>
+                </div>
+
+                {/* Ejes Transversales */}
+                <div className="space-y-2">
+                  <h5 className="text-xs font-black text-slate-900 uppercase tracking-wider">
+                    Ejes transversales oficiales:
+                  </h5>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    {EJES_TRANSVERSALES_OFICIALES.map((eje, idx) => (
+                      <div
+                        key={idx}
+                        className="p-3.5 bg-stone-50 border border-stone-200 rounded-xl space-y-2"
+                      >
+                        <span className="text-xs font-bold text-slate-900 block border-b border-stone-200 pb-1">
+                          {eje.eje}
+                        </span>
+                        <div className="space-y-1.5 text-[11px]">
+                          {eje.componentes.map((c, cIdx) => (
+                            <div key={cIdx}>
+                              <strong className="text-slate-800">{c.nombre}: </strong>
+                              <span className="text-slate-600 leading-snug">{c.detalle}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+
+                {/* Prácticas Observables */}
+                <div className="space-y-2 pt-2">
+                  <h5 className="text-xs font-black text-slate-900 uppercase tracking-wider">
+                    Prácticas observables del pensador computacional (Saber hacer):
+                  </h5>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 max-h-64 overflow-y-auto pr-1">
+                    {PRACTICAS_PENSADOR_COMPUTACIONAL.map((p, idx) => (
+                      <div
+                        key={idx}
+                        className="p-2.5 bg-stone-50/70 border border-stone-200 rounded-lg space-y-1 text-xs"
+                      >
+                        <strong className="text-emerald-950 font-bold block">{p.practica}</strong>
+                        <p className="text-[11px] text-slate-600 leading-snug">{p.detalle}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Actitudes Observables */}
+                <div className="space-y-2 pt-2">
+                  <h5 className="text-xs font-black text-slate-900 uppercase tracking-wider">
+                    Actitudes observables del pensador computacional (Saber ser):
+                  </h5>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                    {ACTITUDES_PENSADOR_COMPUTACIONAL.map((a, idx) => (
+                      <div
+                        key={idx}
+                        className="p-2.5 bg-amber-50/50 border border-amber-200 rounded-lg space-y-1 text-xs"
+                      >
+                        <strong className="text-amber-950 font-bold block">{a.actitud}</strong>
+                        <p className="text-[11px] text-slate-600 leading-snug">{a.detalle}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
       </div>

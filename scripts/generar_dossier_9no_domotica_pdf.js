@@ -543,19 +543,9 @@ function generarDocumento9noPDF() {
         '• Ingresar a la WebApp desde sus equipos de cómputo.\n• Ingresar nombre completo, cédula y sección (ej. 9-1).'
       ],
       [
-        'Fase 2: Ejecución\n(25 a 35 min)',
-        '• Observar la manipulación del simulador 2D y protoboard.\n• Calificar indicadores psicomotores en la rúbrica docente.',
-        '• Responder 10 reactivos cognitivos (Parte A).\n• Realizar el cableado en el simulador 2D (Parte B).'
-      ],
-      [
-        'Fase 3: Reflexión\n(10 min)',
-        '• Guiar la reflexión sobre eficiencia energética y domótica.\n• Verificar recepción de telemetría o escanear códigos QR.',
-        '• Responder las 3 preguntas metacognitivas (Parte C).\n• Presentar su código QR o comprobante digital final.'
-      ],
-      [
-        'Fase 4: Toma de decisiones\n(Posterior a la clase)',
-        '• Consultar la matriz de decisiones en el panel central.\n• Aplicar mediación pedagógica diferenciada según brechas.',
-        '• Participar en las actividades de nivelación o retos avanzados programados por el docente.'
+        'Fase 2: Ejecución y Valoración\n(35 a 45 min)',
+        '• Observar la manipulación del simulador 2D y protoboard.\n• Calificar indicadores psicomotores en la rúbrica docente.\n• Monitorear la recepción de telemetría y resultados en vivo.',
+        '• Responder 10 reactivos cognitivos (Parte A).\n• Realizar el reto interactivo y cableado en el simulador 2D (Parte B).\n• Finalizar la prueba y registrar los resultados automáticos.'
       ]
     ]
   });
