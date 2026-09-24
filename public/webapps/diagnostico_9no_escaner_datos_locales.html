@@ -1087,20 +1087,21 @@ function interpretarPayloadQR(raw) {
     try {
       var obj = JSON.parse(texto);
       var porc = obj.porc !== undefined ? obj.porc : (obj.notaCognitiva !== undefined ? obj.notaCognitiva * 10 : (obj.puntaje || 0));
-      var niv = obj.nivel || (porc >= 80 ? "Logrado" : (porc >= 60 ? "En Desarrollo" : "Acompañamiento"));
+      var numCog = obj.numCog || (Math.round(porc / 10) + "/10");
+      var niv = obj.nivelCog || obj.nivel || (porc >= 80 ? "Logrado" : (porc >= 60 ? "En Desarrollo" : "Reforzamiento conceptual"));
       return {
         estudiante: obj.nom || obj.estudiante || obj.nombre || "Estudiante",
         cedula: obj.cedula || obj.ced || "",
         seccionQR: obj.sec || obj.seccion || sesionActiva.seccion,
         fecha: obj.fec || obj.fecha || new Date().toLocaleDateString("es-CR"),
-        cognoscitiva: obj.cog ? (porc + "%") : (obj.cognoscitiva || (porc + "%")),
+        cognoscitiva: numCog + " (" + porc + "%)",
         nivelCognoscitivo: niv,
-        tarjetas: obj.tarjetas || "E-P-S",
-        puertos: obj.puertos || "Conectados",
-        ejecucion: obj.ejecucion || obj.psicomotora || "Autónomo",
-        socioafectiva: obj.socioafectiva || "5 actitudes computacionales",
+        tarjetas: obj.tarjetas || "3/3",
+        puertos: obj.puertos || "9/9",
+        ejecucion: obj.ejecucion || obj.psicomotora || "Completa",
+        socioafectiva: obj.socTexto || obj.socioafectiva || "5/5 indicadores favorables",
         fortalezas: obj.fortalezas || "Pensamiento computacional y lógica",
-        prioridades: obj.prioridades || "Estructuras algorítmicas y circuitos",
+        prioridades: obj.prioridades || "Ninguna",
         textoOriginal: raw
       };
     } catch (e) {}
@@ -1114,28 +1115,65 @@ function interpretarPayloadQR(raw) {
     cedula: "",
     seccionQR: lineas[1] || sesionActiva.seccion,
     fecha: lineas[2] || new Date().toLocaleDateString("es-CR"),
-    cognoscitiva: "80%",
+    cognoscitiva: "8/10",
     nivelCognoscitivo: "Logrado",
-    tarjetas: "E-P-S",
-    puertos: "Conectados",
-    ejecucion: "Autónomo",
-    socioafectiva: "5 actitudes computacionales",
-    fortalezas: "Pensamiento computacional y lógica",
-    prioridades: "Estructuras algorítmicas",
+    tarjetas: "3/3",
+    puertos: "9/9",
+    ejecucion: "Completa",
+    socioafectiva: "5/5 indicadores favorables",
+    fortalezas: "",
+    prioridades: "",
     textoOriginal: raw
   };
 
   for (var i = 0; i < lineas.length; i++) {
     var l = lineas[i];
     var upper = l.toUpperCase();
-    if (upper.startsWith("COGNOSCITIVA:")) datos.cognoscitiva = l.substring(13).trim();
-    else if (upper.startsWith("NIVEL:")) datos.nivelCognoscitivo = l.substring(6).trim();
-    else if (upper.startsWith("TARJETAS:")) datos.tarjetas = l.substring(9).trim();
-    else if (upper.startsWith("PUERTOS:")) datos.puertos = l.substring(8).trim();
-    else if (upper.startsWith("EJECUCIÓN:") || upper.startsWith("EJECUCION:")) datos.ejecucion = l.substring(10).trim();
-    else if (l.toLowerCase().includes("actitudes") || l.toLowerCase().includes("indicadores favorables")) datos.socioafectiva = l;
-    else if (upper === "FORTALEZAS:" && lineas[i + 1]) datos.fortalezas = lineas[i + 1];
-    else if (upper === "PRIORIDADES:" && lineas[i + 1]) datos.prioridades = lineas[i + 1];
+
+    if (upper.startsWith("COGNOSCITIVA:") || upper.startsWith("COG:")) {
+      var partesCog = l.substring(l.indexOf(":") + 1).trim();
+      datos.cognoscitiva = partesCog;
+      if (partesCog.includes("(") && partesCog.includes(")")) {
+        datos.nivelCognoscitivo = partesCog.substring(partesCog.indexOf("(") + 1, partesCog.indexOf(")")).trim();
+      }
+    }
+    else if (upper.startsWith("NIVEL:")) {
+      datos.nivelCognoscitivo = l.substring(6).trim();
+    }
+    else if (upper.startsWith("PSICOMOTORA:") || upper.startsWith("PSI:")) {
+      var partesPsi = l.substring(l.indexOf(":") + 1).trim();
+      var mTarjetas = partesPsi.match(/Tarjetas\s*:?\s*(\d+\/\d+)/i);
+      if (mTarjetas) datos.tarjetas = mTarjetas[1];
+      var mPuertos = partesPsi.match(/Puertos\s*:?\s*(\d+\/\d+)/i);
+      if (mPuertos) datos.puertos = mPuertos[1];
+      if (partesPsi.includes("(") && partesPsi.includes(")")) {
+        datos.ejecucion = partesPsi.substring(partesPsi.indexOf("(") + 1, partesPsi.indexOf(")")).trim();
+      } else if (partesPsi.toLowerCase().includes("completa")) {
+        datos.ejecucion = "Completa";
+      }
+    }
+    else if (upper.startsWith("TARJETAS:")) {
+      datos.tarjetas = l.substring(9).trim();
+    }
+    else if (upper.startsWith("PUERTOS:")) {
+      datos.puertos = l.substring(8).trim();
+    }
+    else if (upper.startsWith("EJECUCIÓN:") || upper.startsWith("EJECUCION:")) {
+      datos.ejecucion = l.substring(10).trim();
+    }
+    else if (upper.startsWith("SOCIOAFECTIVA:") || upper.startsWith("SOC:") || l.toLowerCase().includes("indicadores favorables") || l.toLowerCase().includes("actitudes")) {
+      datos.socioafectiva = l.includes(":") ? l.substring(l.indexOf(":") + 1).trim() : l;
+    }
+    else if (upper.startsWith("FORTALEZAS:")) {
+      var fVal = l.substring(11).trim();
+      if (fVal) datos.fortalezas = fVal;
+      else if (lineas[i + 1] && !lineas[i + 1].includes(":")) datos.fortalezas = lineas[i + 1];
+    }
+    else if (upper.startsWith("PRIORIDADES:")) {
+      var pVal = l.substring(12).trim();
+      if (pVal) datos.prioridades = pVal;
+      else if (lineas[i + 1] && !lineas[i + 1].includes(":")) datos.prioridades = lineas[i + 1];
+    }
   }
 
   return datos;
@@ -1154,20 +1192,26 @@ function renderizarResultado(datos) {
     '  </div>' +
     '  <div class="result-item">' +
     '    <strong>Dimensión Cognoscitiva:</strong>' +
-    '    <span>' + escaparHTML(datos.cognoscitiva || "80%") + ' (' + escaparHTML(datos.nivelCognoscitivo || "Logrado") + ')</span>' +
+    '    <span>' + escaparHTML(datos.cognoscitiva || "8/10") + ' [' + escaparHTML(datos.nivelCognoscitivo || "Logrado") + ']</span>' +
     '  </div>' +
     '  <div class="result-item">' +
     '    <strong>Dimensión Psicomotora:</strong>' +
-    '    <span>' + escaparHTML(datos.ejecucion || datos.tarjetas || "Completado") + '</span>' +
+    '    <span>Tarjetas: ' + escaparHTML(datos.tarjetas || "3/3") + ' • Puertos: ' + escaparHTML(datos.puertos || "9/9") + ' (' + escaparHTML(datos.ejecucion || "Completa") + ')</span>' +
     '  </div>' +
     '  <div class="result-item result-wide">' +
     '    <strong>Dimensión Socioafectiva:</strong>' +
-    '    <span>' + escaparHTML(datos.socioafectiva || "Favorable") + '</span>' +
+    '    <span>' + escaparHTML(datos.socioafectiva || "5/5 indicadores favorables") + '</span>' +
     '  </div>' +
     (datos.fortalezas ? (
-      '  <div class="result-item result-wide">' +
-      '    <strong>Fortalezas Observadas:</strong>' +
-      '    <span>' + escaparHTML(datos.fortalezas) + '</span>' +
+      '  <div class="result-item result-wide" style="background:#f0fdf4; border-color:#bbf7d0;">' +
+      '    <strong style="color:#15803d;">🌟 Fortalezas Observadas:</strong>' +
+      '    <span style="color:#166534; font-weight:600;">' + escaparHTML(datos.fortalezas) + '</span>' +
+      '  </div>'
+    ) : '') +
+    (datos.prioridades ? (
+      '  <div class="result-item result-wide" style="background:#fffbeb; border-color:#fde68a;">' +
+      '    <strong style="color:#b45309;">🎯 Prioridades de Apoyo:</strong>' +
+      '    <span style="color:#92400e; font-weight:600;">' + escaparHTML(datos.prioridades) + '</span>' +
       '  </div>'
     ) : '') +
     '</div>';
