@@ -134,6 +134,7 @@ export default function RegistroDocentePage() {
   // Estados de validación
   const [errorValidacion, setErrorValidacion] = useState<string | null>(null);
   const [guardadoExitoso, setGuardadoExitoso] = useState(false);
+  const [guardando, setGuardando] = useState(false);
   const [copiadoID, setCopiadoID] = useState(false);
 
   // ==========================================
@@ -501,13 +502,38 @@ export default function RegistroDocentePage() {
       fechaRegistro: docente?.fechaRegistro || new Date().toISOString(),
     };
 
+    setGuardando(true);
     const res = registrarDocente(datosDocente);
-    if (res.exito) {
-      setGuardadoExitoso(true);
-      setTimeout(() => setGuardadoExitoso(false), 4000);
-    } else {
-      setErrorValidacion(res.mensaje);
-    }
+
+    // Sincronizar automáticamente con perfil global de webapps estáticas
+    try {
+      const perfilGlobal = {
+        nombre: nombre.trim(),
+        cedula: cedulaLimpia,
+        telefono: telefonoLimpio,
+        correo: correoLimpio,
+        tipoRol,
+        dreCodigo: dreCodigoFinal,
+        dreNombre: dreNombreFinal,
+        colegio: institucionFinal,
+        centrosEducativos: centros,
+        niveles: ['7° Año', '8° Año', '9° Año'],
+        pin: pinLimpio,
+        autenticado: true,
+        registradoEl: new Date().toISOString()
+      };
+      localStorage.setItem('MEP_DOCENTE_PERFIL_GLOBAL', JSON.stringify(perfilGlobal));
+    } catch (e) {}
+
+    setTimeout(() => {
+      setGuardando(false);
+      if (res.exito) {
+        setGuardadoExitoso(true);
+        setTimeout(() => setGuardadoExitoso(false), 5000);
+      } else {
+        setErrorValidacion(res.mensaje);
+      }
+    }, 450);
   };
 
   // ==========================================
@@ -1455,14 +1481,41 @@ export default function RegistroDocentePage() {
             </div>
           )}
 
-          {/* Botón de Guardar */}
-          <div className="flex items-center justify-end gap-3 pt-4">
+          {/* Botón de Guardar con Feedback Interactivo */}
+          <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-6 border-t border-slate-200">
+            {guardadoExitoso && (
+              <span className="text-xs font-black text-emerald-800 bg-emerald-50 border border-emerald-300 px-4 py-2.5 rounded-xl flex items-center gap-2 animate-bounce">
+                <Check size={16} weight="bold" className="text-emerald-700" />
+                <span>¡Cambios y perfil sincronizados con éxito!</span>
+              </span>
+            )}
             <button
               type="submit"
-              className="px-8 py-3.5 bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs rounded-xl shadow-md hover:shadow-lg transition-all flex items-center gap-2"
+              disabled={guardando}
+              className={`px-8 py-3.5 text-white font-black text-xs rounded-xl shadow-md hover:shadow-lg transition-all flex items-center gap-2 active:scale-95 cursor-pointer ${
+                guardadoExitoso
+                  ? "bg-emerald-600 hover:bg-emerald-700 ring-4 ring-emerald-400/40"
+                  : guardando
+                  ? "bg-slate-600 cursor-wait opacity-80"
+                  : "bg-emerald-700 hover:bg-emerald-800"
+              }`}
             >
-              <FloppyDisk size={18} weight="bold" />
-              <span>{docente ? "Actualizar Perfil & Guardar Cambios" : "Guardar Perfil & Habilitar PIN"}</span>
+              {guardando ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <span>Guardando y Sincronizando...</span>
+                </>
+              ) : guardadoExitoso ? (
+                <>
+                  <Check size={18} weight="bold" className="text-white" />
+                  <span>¡Perfil Actualizado con Éxito!</span>
+                </>
+              ) : (
+                <>
+                  <FloppyDisk size={18} weight="bold" />
+                  <span>{docente ? "Actualizar Perfil & Guardar Cambios" : "Guardar Perfil & Habilitar PIN"}</span>
+                </>
+              )}
             </button>
           </div>
         </form>
@@ -1723,6 +1776,28 @@ export default function RegistroDocentePage() {
               </button>
             </form>
           )}
+        </div>
+      )}
+
+      {/* TOAST FLOTANTE DE CONFIRMACIÓN GLOBAL */}
+      {guardadoExitoso && (
+        <div className="fixed bottom-6 right-6 z-50 max-w-md bg-slate-900/95 backdrop-blur-md text-white p-4 rounded-2xl shadow-2xl border-2 border-emerald-400 flex items-center gap-3.5 animate-bounce">
+          <div className="w-10 h-10 rounded-xl bg-emerald-700 text-white flex items-center justify-center font-bold shrink-0 shadow-md">
+            <Check size={22} weight="bold" />
+          </div>
+          <div className="flex-1">
+            <h4 className="text-xs font-black text-emerald-400 uppercase tracking-wider">¡Información Guardada!</h4>
+            <p className="text-[11.5px] text-slate-200 mt-0.5 font-medium">
+              Tu perfil, centros educativos y secciones han sido guardados y sincronizados.
+            </p>
+          </div>
+          <Link
+            href="/dashboard"
+            className="px-3.5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-black rounded-xl shrink-0 transition-colors shadow-xs flex items-center gap-1"
+          >
+            <span>Dashboard</span>
+            <span>→</span>
+          </Link>
         </div>
       )}
     </div>

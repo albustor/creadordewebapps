@@ -3021,10 +3021,26 @@
       }
     }
 
+    function showToast(msg) {
+      let toast = document.getElementById('mepLiveToast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'mepLiveToast';
+        toast.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#0f172a;color:#fff;padding:12px 20px;border-radius:12px;border:2px solid #10b981;box-shadow:0 10px 25px rgba(0,0,0,0.3);font-size:13px;font-weight:700;z-index:99999;display:flex;align-items:center;gap:10px;animation:live-pulse 2s infinite ease-in-out;';
+        document.body.appendChild(toast);
+      }
+      toast.innerHTML = `<span>✅</span><span>${msg}</span>`;
+      toast.style.display = 'flex';
+      setTimeout(() => {
+        if (toast) toast.style.display = 'none';
+      }, 3500);
+    }
+
     function saveModalChanges() {
       saveDocenteState();
       filterAndRender();
       closeModal();
+      showToast('¡Ajustes de rúbrica guardados y sincronizados!');
     }
 
     function closeModal() {
