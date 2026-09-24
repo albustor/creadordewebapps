@@ -261,6 +261,7 @@ export async function POST(req: NextRequest) {
         // Si el nuevo registro es completado o más reciente, prevalece el puntaje real enviado
         const esNuevoCompletado = resultadoProcesado.estadoProgreso === "completado";
         const esExistenteCompletado = existente.estadoProgreso === "completado";
+        const esCompletadoFinal = esNuevoCompletado || esExistenteCompletado;
 
         let porcentajeFinal = puntajeNuevo;
         const totReactivos = resultadoProcesado.totalReactivos || existente.totalReactivos || (resultadoProcesado.nivel === "8°" ? 14 : 10);
@@ -274,8 +275,9 @@ export async function POST(req: NextRequest) {
           cogFinal = existente.cog;
         }
 
-        const nivelFinal =
-          porcentajeFinal >= 80 ? "Avanzado" : porcentajeFinal <= 59 ? "Inicial" : "Intermedio";
+        const nivelFinal = !esCompletadoFinal
+          ? "En Evaluación"
+          : (porcentajeFinal >= 80 ? "Avanzado" : (porcentajeFinal <= 59 ? "Inicial" : "Intermedio"));
 
         registrosTelemetriaMemoria[indexExistente] = {
           ...existente,
@@ -289,11 +291,16 @@ export async function POST(req: NextRequest) {
           subareasDetalle: resultadoProcesado.subareasDetalle || existente.subareasDetalle,
           socioafectivo: resultadoProcesado.socioafectivo || existente.socioafectivo,
           psicomotor: resultadoProcesado.psicomotor || existente.psicomotor,
+          psicomotorDetalle: resultadoProcesado.psicomotorDetalle || existente.psicomotorDetalle,
           nivelLogro: nivelFinal,
-          estadoProgreso: esNuevoCompletado || esExistenteCompletado ? "completado" : "iniciado",
+          estadoProgreso: esCompletadoFinal ? "completado" : "en_progreso",
           ultimaActualizacion: new Date().toISOString(),
         };
       } else {
+        const esComp = resultadoProcesado.estadoProgreso === "completado";
+        resultadoProcesado.nivelLogro = esComp
+          ? (resultadoProcesado.porcentaje >= 80 ? "Avanzado" : (resultadoProcesado.porcentaje <= 59 ? "Inicial" : "Intermedio"))
+          : "En Evaluación";
         registrosTelemetriaMemoria.unshift(resultadoProcesado);
       }
 

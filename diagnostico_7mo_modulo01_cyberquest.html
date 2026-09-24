@@ -1013,14 +1013,14 @@
     <!-- PROGRESS HUD -->
     <section class="mission-progress-bar">
       <div class="progress-labels">
-        <span id="progressCurrentMission">Fase 0: Registro de Pareja de Cadetes</span>
+        <span id="progressCurrentMission">Fase 0: Datos del estudiante</span>
         <span id="progressPercentage">0%</span>
       </div>
       <div class="progress-track">
         <div class="progress-fill" id="progressBarFill"></div>
       </div>
       <div class="phase-steps">
-        <div class="step-item active" id="step0">0. Pareja</div>
+        <div class="step-item active" id="step0">0. Datos del estudiante</div>
         <div class="step-item" id="step1">1. Psicomotriz</div>
         <div class="step-item" id="step2">2. Cognitivo</div>
         <div class="step-item" id="step3">3. Autoevaluación</div>
@@ -1133,33 +1133,55 @@
           }
         }
 
-        if (!docenteId) {
-          try {
-            const storedDoc = localStorage.getItem('docente_activo') || localStorage.getItem('MEP_DOCENTE_PERFIL_GLOBAL');
-            if (storedDoc) {
-              const parsedDoc = JSON.parse(storedDoc);
-              docenteId = parsedDoc.idDocente || parsedDoc.cedula || '5-0305-0179';
-              docente = docente || parsedDoc.nombreCompleto || parsedDoc.nombre;
-              institucion = institucion || parsedDoc.institucionNombre || parsedDoc.colegio;
-              dre = dre || parsedDoc.dreCodigo;
+        // Buscar datos en el perfil docente institucional si falta algún campo
+        try {
+          const storedDoc = localStorage.getItem('docente_activo') || localStorage.getItem('MEP_DOCENTE_PERFIL_GLOBAL');
+          if (storedDoc) {
+            const parsedDoc = JSON.parse(storedDoc);
+            if (!docenteId) docenteId = parsedDoc.idDocente || parsedDoc.cedula || '5-0305-0179';
+            if (!docente || docente === 'Docente MEP' || docente === 'Prof. Formación Tecnológica') {
+              docente = parsedDoc.nombreCompleto || parsedDoc.nombre;
             }
-          } catch(e) {}
-        }
+            if (!institucion || institucion === 'Centro Educativo MEP' || institucion === 'Colegio') {
+              institucion = parsedDoc.institucionNombre || parsedDoc.colegio || parsedDoc.colegioActivo;
+            }
+            if (!dre || dre === 'DRE-01' || dre === 'DRE') {
+              dre = parsedDoc.dreNombre || parsedDoc.dreCodigo;
+            }
+          }
+        } catch(e) {}
 
+        // Fallbacks predeterminados oficiales institucionales
+        if (!docente || docente === 'Docente MEP' || docente === 'Prof. Formación Tecnológica') {
+          docente = 'Prof. Alberto Bustos Ortega';
+        }
+        if (!institucion || institucion === 'Centro Educativo MEP' || institucion === 'Colegio') {
+          institucion = 'Liceo de Costa Rica';
+        }
+        if (!dre || dre === 'DRE-01' || dre === 'DRE') {
+          dre = 'DRE-01 - San José Central';
+        }
         if (!docenteId) {
           docenteId = '5-0305-0179';
         }
 
         AppState.teacher = {
           id: docenteId,
-          name: docente || 'Prof. Formación Tecnológica',
-          institution: institucion || 'Centro Educativo MEP',
-          dre: dre || 'DRE-01'
+          name: docente,
+          institution: institucion,
+          dre: dre
         };
 
         if (seccion) {
           AppState.section = seccion.replace(/^secci[oó]n\s*/i, '').trim();
           AppState.sectionLocked = true;
+        }
+
+        // Limpieza automática de la barra de direcciones para blindar privacidad y datos personales
+        if (window.location.search && window.history && window.history.replaceState) {
+          try {
+            window.history.replaceState({}, document.title, window.location.pathname);
+          } catch (e) {}
         }
       } catch (e) {
         console.warn('Error parsing URL params:', e);
@@ -1168,8 +1190,9 @@
 
     function loadState() {
       try {
+        const isSessionActiveInTab = sessionStorage.getItem('CYBERQUEST_ACTIVE_IN_PROGRESS') === 'true';
         const saved = localStorage.getItem(STATE_KEY);
-        if (saved) {
+        if (saved && isSessionActiveInTab) {
           const parsed = JSON.parse(saved);
           if (parsed.cadet && !parsed.cadet1) {
             parsed.cadet1 = {
@@ -1187,6 +1210,13 @@
             parsed.section = parsed.cadet.section || '7-1';
           }
           AppState = { ...defaultState, ...parsed };
+        } else {
+          // Nueva pestaña o enlace recién abierto por nuevos estudiantes: iniciar siempre en Fase 0 limpio
+          AppState = { ...defaultState };
+          AppState.phase = 0;
+          AppState.xp = 0;
+          AppState.cadet1 = { ...defaultState.cadet1, name: '' };
+          AppState.cadet2 = { ...defaultState.cadet2, name: '' };
         }
       } catch (e) {
         console.warn('Error al cargar estado previo:', e);
@@ -2061,7 +2091,7 @@
       
       const isIndiv = AppState.modalidad === 'individual' || !AppState.cadet2.name;
       const phaseNames = [
-        isIndiv ? 'Fase 0: Registro de Cadete' : 'Fase 0: Registro de Pareja de Cadetes',
+        isIndiv ? 'Fase 0: Datos del estudiante' : 'Fase 0: Datos de los estudiantes (Pareja)',
         isIndiv ? 'Fase 1: Entrenamiento Psicomotriz Individual' : 'Fase 1: Entrenamiento Psicomotriz en Pareja',
         'Fase 2: Desafíos Cognitivos y Pensamiento Computacional',
         isIndiv ? 'Fase 3: Dimensión 3 • Valoración Socioafectiva' : 'Fase 3: Dimensión 3 • Valoración Socioafectiva',
@@ -2079,7 +2109,7 @@
         const stepEl = document.getElementById(`step${i}`);
         if (stepEl) {
           stepEl.className = 'step-item';
-          if (i === 0) stepEl.textContent = isIndiv ? '0. Cadete' : '0. Pareja';
+          if (i === 0) stepEl.textContent = '0. Datos del estudiante';
           if (i === AppState.phase) stepEl.classList.add('active');
           if (i < AppState.phase) stepEl.classList.add('completed');
         }
@@ -2119,7 +2149,50 @@
       else if (AppState.phase === 4) renderPhase4(container);
     }
 
-    // FASE 0: REGISTRO
+    // FORMATEO Y VALIDACIÓN ESTRICTA DE NOMBRES MEP 2026
+    function formatFullName(str) {
+      if (!str) return '';
+      // Limpiar espacios dobles o múltiples y recortar extremos
+      const cleaned = str.trim().replace(/\s+/g, ' ');
+      if (!cleaned) return '';
+      // Convertir cada palabra con inicial mayúscula y resto en minúscula
+      return cleaned
+        .split(' ')
+        .map(word => {
+          if (!word) return '';
+          return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        })
+        .join(' ');
+    }
+
+    function validateStudentFullName(str, studentRoleLabel = 'Estudiante') {
+      const formatted = formatFullName(str);
+      if (!formatted) {
+        return { valid: false, message: `⚠️ Por favor ingresa el nombre completo de ${studentRoleLabel}.`, formatted: '' };
+      }
+      const words = formatted.split(' ').filter(w => w.length > 0);
+      // Validar que tenga al menos 3 palabras (1 o 2 nombres + 2 apellidos)
+      if (words.length < 3) {
+        return {
+          valid: false,
+          message: `⚠️ ${studentRoleLabel}:\n\nDebe ingresar el nombre completo con sus DOS apellidos (ejemplo: Juan Rosales Valverde o María José Gómez Porras).\n\nActualmente se ingresó: "${formatted}"`,
+          formatted
+        };
+      }
+      // Validar longitud mínima de las palabras
+      for (const w of words) {
+        if (w.length < 2 && !['Y', 'y', 'E', 'e', 'De', 'de', 'La', 'la', 'El', 'el', 'Del', 'del'].includes(w)) {
+          return {
+            valid: false,
+            message: `⚠️ ${studentRoleLabel}: La palabra "${w}" en el nombre ingresado parece incompleta. Por favor verifique los datos.`,
+            formatted
+          };
+        }
+      }
+      return { valid: true, formatted };
+    }
+
+    // FASE 0: REGISTRO DE DATOS DEL ESTUDIANTE
     function renderPhase0(container) {
       const avatars = [
         { icon: '🤖', name: 'CyberBot' },
@@ -2135,25 +2208,29 @@
       container.innerHTML = `
         <div class="cyber-card">
           <div class="card-header">
-            <span class="mission-badge badge-psico" id="phase0Badge">FASE INICIAL &bull; REGISTRO DE CADETE${isSolo ? ' (INDIVIDUAL)' : 'S (MISIÓN EN PAREJAS)'}</span>
+            <span class="mission-badge badge-psico" id="phase0Badge">FASE INICIAL &bull; DATOS DEL ESTUDIANTE${isSolo ? ' (INDIVIDUAL)' : ' (MISIÓN EN PAREJAS)'}</span>
             <h1 class="card-title">Bienvenido a CyberQuest 7.° Año</h1>
             <p class="card-desc">Evaluación Diagnóstica Oficial MEP 2026 - III Ciclo. Registra la información del estudiante para iniciar la aventura diagnóstica.</p>
           </div>
 
-          ${AppState.teacher && (AppState.teacher.name || AppState.teacher.institution) ? `
-            <div style="background: rgba(0, 240, 255, 0.08); border: 1.5px solid var(--cyan-neon); border-radius: 10px; padding: 10px 14px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-size: 20px;">👨‍🏫</span>
-                <div>
-                  <strong style="font-size: 12.5px; color: var(--cyan-neon); display: block;">Docente: ${AppState.teacher.name || 'Docente Evaluador'}</strong>
-                  <span style="font-size: 11px; color: #cbd5e1;">🏫 ${AppState.teacher.institution || 'Colegio'} &bull; 📍 ${AppState.teacher.dre || 'DRE'}</span>
+          <div style="background: rgba(0, 240, 255, 0.08); border: 1.5px solid var(--cyan-neon); border-radius: 12px; padding: 12px 16px; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; box-shadow: 0 4px 15px rgba(0, 240, 255, 0.08);">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 26px;">🏫</span>
+              <div>
+                <strong style="font-size: 14px; color: #ffffff; display: block; letter-spacing: -0.2px;">
+                  ${AppState.teacher?.institution || 'Liceo de Costa Rica'}
+                </strong>
+                <div style="font-size: 12px; color: var(--cyan-neon); font-weight: 700; display: flex; align-items: center; gap: 6px; margin-top: 3px; flex-wrap: wrap;">
+                  <span>👨‍🏫 Docente: ${AppState.teacher?.name || 'Prof. Alberto Bustos Ortega'}</span>
+                  <span style="color: #64748b;">•</span>
+                  <span style="color: #cbd5e1; font-weight: 500;">📍 ${AppState.teacher?.dre || 'DRE-01 - San José Central'}</span>
                 </div>
               </div>
-              <span class="mep-tag" style="background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #34d399; font-size: 10.5px;">
-                🔗 Vinculado al Docente Evaluador
-              </span>
             </div>
-          ` : ''}
+            <span class="mep-tag" style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #34d399; font-size: 11px; padding: 5px 12px; border-radius: 20px; font-weight: 800;">
+              🔗 Vinculado al Docente Evaluador
+            </span>
+          </div>
 
           <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 16px; align-items: flex-end;">
             <div class="form-group" style="flex: 1; min-width: 220px;">
@@ -2184,12 +2261,12 @@
             <div class="cadet-box leader-box" id="cadetBox1">
               <div class="cadet-box-header">
                 <span class="cadet-role-tag tag-cyan" id="cadet1RoleTag">
-                  ${isSolo ? '🚀 Estudiante &bull; Cadete Titular' : '🚀 Estudiante 1 &bull; Líder de Misión'}
+                  ${isSolo ? '🚀 Estudiante &bull; Datos del Estudiante' : '🚀 Estudiante 1 &bull; Líder de Misión'}
                 </span>
               </div>
               <div class="form-group">
-                <label class="form-label">Nombre Completo:</label>
-                <input type="text" id="regName1" class="form-input" placeholder="Ej: Juan Viales" value="${AppState.cadet1.name}">
+                <label class="form-label">Nombre Completo (con ambos apellidos):</label>
+                <input type="text" id="regName1" class="form-input" placeholder="Ej. Juan Rosales Valverde" value="${AppState.cadet1.name}">
               </div>
               <div class="form-group">
                 <label class="form-label">Selecciona tu Avatar:</label>
@@ -2209,8 +2286,8 @@
                 <span class="cadet-role-tag tag-violet">🧭 Estudiante 2 &bull; Co-piloto de Datos</span>
               </div>
               <div class="form-group">
-                <label class="form-label">Nombre Completo:</label>
-                <input type="text" id="regName2" class="form-input" placeholder="Ej: María Gómez" value="${AppState.cadet2.name}">
+                <label class="form-label">Nombre Completo (con ambos apellidos):</label>
+                <input type="text" id="regName2" class="form-input" placeholder="Ej. María Gómez Porras" value="${AppState.cadet2.name}">
               </div>
               <div class="form-group">
                 <label class="form-label">Selecciona tu Avatar:</label>
@@ -2251,7 +2328,7 @@
           if (cadetBox2) cadetBox2.style.display = 'flex';
           if (pairGridContainer) pairGridContainer.classList.remove('solo-mode');
           if (cadet1RoleTag) cadet1RoleTag.innerHTML = '🚀 Estudiante 1 &bull; Líder de Misión';
-          if (phase0Badge) phase0Badge.innerHTML = 'FASE INICIAL &bull; REGISTRO DE PAREJA TECNOLÓGICA';
+          if (phase0Badge) phase0Badge.innerHTML = 'FASE INICIAL &bull; DATOS DEL ESTUDIANTE (MISIÓN EN PAREJAS)';
           AudioEngine.playClick();
         });
 
@@ -2261,9 +2338,31 @@
           btnPairs.classList.remove('active');
           if (cadetBox2) cadetBox2.style.display = 'none';
           if (pairGridContainer) pairGridContainer.classList.add('solo-mode');
-          if (cadet1RoleTag) cadet1RoleTag.innerHTML = '🚀 Estudiante &bull; Cadete Titular';
-          if (phase0Badge) phase0Badge.innerHTML = 'FASE INICIAL &bull; REGISTRO DE CADETE (INDIVIDUAL)';
+          if (cadet1RoleTag) cadet1RoleTag.innerHTML = '🚀 Estudiante &bull; Datos del Estudiante';
+          if (phase0Badge) phase0Badge.innerHTML = 'FASE INICIAL &bull; DATOS DEL ESTUDIANTE (INDIVIDUAL)';
           AudioEngine.playClick();
+        });
+      }
+
+      // Auto-formateo en tiempo real al escribir / salir del campo
+      const inputName1 = document.getElementById('regName1');
+      const inputName2 = document.getElementById('regName2');
+
+      if (inputName1) {
+        inputName1.addEventListener('blur', () => {
+          inputName1.value = formatFullName(inputName1.value);
+        });
+        inputName1.addEventListener('change', () => {
+          inputName1.value = formatFullName(inputName1.value);
+        });
+      }
+
+      if (inputName2) {
+        inputName2.addEventListener('blur', () => {
+          inputName2.value = formatFullName(inputName2.value);
+        });
+        inputName2.addEventListener('change', () => {
+          inputName2.value = formatFullName(inputName2.value);
         });
       }
 
@@ -2288,22 +2387,30 @@
       });
 
       document.getElementById('btnStartQuest').addEventListener('click', () => {
-        const name1 = document.getElementById('regName1').value.trim();
-        const name2 = (document.getElementById('regName2')?.value || '').trim();
+        const rawName1 = document.getElementById('regName1')?.value || '';
+        const rawName2 = document.getElementById('regName2')?.value || '';
 
-        if (!name1) {
-          showToast('⚠️ Ingresa el nombre del estudiante.');
+        const val1 = validateStudentFullName(rawName1, AppState.modalidad === 'individual' ? 'el estudiante' : 'el Estudiante 1 (Líder)');
+        if (!val1.valid) {
+          alert(val1.message);
+          showToast(val1.message.split('\n')[0]);
           AudioEngine.playBeep();
-          document.getElementById('regName1').focus();
+          const inp1 = document.getElementById('regName1');
+          if (inp1) {
+            inp1.value = val1.formatted;
+            inp1.focus();
+          }
           return;
         }
+        const name1 = val1.formatted;
+        document.getElementById('regName1').value = name1;
 
         if (AppState.modalidad === 'individual') {
           AppState.cadet1.name = name1;
           AppState.cadet2.name = '';
         } else {
           // Modalidad en parejas
-          if (!name2) {
+          if (!rawName2.trim()) {
             const continuarSolo = confirm(
               `Solo has ingresado a "${name1}".\n\n¿Deseas realizar la evaluación de forma INDIVIDUAL (solo 1 estudiante) o deseas ingresar a tu compañero/a de pareja?\n\n- Presiona [Aceptar] para continuar en modo INDIVIDUAL.\n- Presiona [Cancelar] para ingresar el nombre de la pareja.`
             );
@@ -2317,6 +2424,20 @@
               return;
             }
           } else {
+            const val2 = validateStudentFullName(rawName2, 'el Estudiante 2 (Co-piloto)');
+            if (!val2.valid) {
+              alert(val2.message);
+              showToast(val2.message.split('\n')[0]);
+              AudioEngine.playBeep();
+              const inp2 = document.getElementById('regName2');
+              if (inp2) {
+                inp2.value = val2.formatted;
+                inp2.focus();
+              }
+              return;
+            }
+            const name2 = val2.formatted;
+            document.getElementById('regName2').value = name2;
             AppState.cadet1.name = name1;
             AppState.cadet2.name = name2;
           }
@@ -2325,6 +2446,7 @@
         AppState.section = document.getElementById('regSection').value;
         AppState.startedAt = new Date().toISOString();
         AppState.phase = 1;
+        sessionStorage.setItem('CYBERQUEST_ACTIVE_IN_PROGRESS', 'true');
         saveState();
         AudioEngine.playFanfare();
         sendTelemetryToGoogleSheets(); // Sincronización instantánea de inicio con el dashboard del docente
@@ -2826,24 +2948,33 @@
       const secFormateada = `Sección ${secClean}`;
       const docId = AppState.teacher?.id || '5-0305-0179';
       const estadoActual = overrideStatus || (AppState.phase === 4 ? 'completado' : 'en_progreso');
+      const isCompleted = estadoActual === 'completado';
+
+      const p1Data = AppState.psicomotriz?.p1_lateralidad || {};
+      const p2Data = AppState.psicomotriz?.p2_ritmo || {};
+      const p3Data = AppState.psicomotriz?.p3_pulso || {};
+      const p4Data = AppState.psicomotriz?.p4_dibujo || {};
 
       const fullData = {
         tipo: 'CYBERQUEST_7MO',
-        idResultado: `res-7mo-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+        idResultado: AppState.sessionHash ? `res-7mo-${AppState.sessionHash}` : `res-7mo-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
         webAppId: 'diagnostico_7mo_modulo01_cyberquest',
         webAppTitulo: 'CyberQuest 7°: Diagnóstico de Fundamentos Digitales',
         docenteId: docId,
         docenteNombre: AppState.teacher?.name || 'Alberto Bustos Ortega',
-        institucionNombre: AppState.teacher?.institution || 'Centro Educativo MEP',
+        institucionNombre: AppState.teacher?.institution || 'Liceo de Costa Rica',
         dreCodigo: AppState.teacher?.dre || 'DRE-01',
         estudianteNombre: nombreCompletoPareja,
         seccionOGrupo: secFormateada,
         nivel: '7°',
-        puntaje: metrics.globalAvg,
-        porcentaje: metrics.globalAvg,
-        aciertos: metrics.cogScore ? Math.round((metrics.cogScore / 100) * 10) : 8,
-        fallos: Math.max(0, 10 - (metrics.cogScore ? Math.round((metrics.cogScore / 100) * 10) : 8)),
-        nivelLogro: metrics.globalLevel === 'A' ? 'Avanzado' : (metrics.globalLevel === 'B' ? 'Intermedio' : 'Inicial'),
+        faseActual: `Fase ${AppState.phase} de 4`,
+        puntaje: isCompleted ? metrics.globalAvg : null,
+        porcentaje: isCompleted ? metrics.globalAvg : Math.round((AppState.phase / 4) * 100),
+        aciertos: isCompleted ? (metrics.cogScore ? Math.round((metrics.cogScore / 100) * 10) : 8) : 0,
+        fallos: isCompleted ? Math.max(0, 10 - (metrics.cogScore ? Math.round((metrics.cogScore / 100) * 10) : 8)) : 0,
+        nivelLogro: isCompleted 
+          ? (metrics.globalLevel === 'A' ? 'Avanzado' : (metrics.globalLevel === 'B' ? 'Intermedio' : 'Inicial'))
+          : 'En Evaluación',
         tiempoSegundos: 120,
         estadoProgreso: estadoActual,
         timestamp: Date.now(),
@@ -2852,11 +2983,17 @@
         cadet2: cadet2Name,
         cadet1Avatar: AppState.cadet1?.avatar || '🤖',
         cadet2Avatar: AppState.cadet2?.avatar || '⚡',
-        psicoScore: metrics.psicoScore,
-        cogScore: metrics.cogScore,
-        socioScore: metrics.socioScore,
-        globalAvg: metrics.globalAvg,
-        globalLevel: metrics.globalLevel,
+        psicoScore: isCompleted ? metrics.psicoScore : null,
+        cogScore: isCompleted ? metrics.cogScore : null,
+        socioScore: isCompleted ? metrics.socioScore : null,
+        globalAvg: isCompleted ? metrics.globalAvg : null,
+        globalLevel: isCompleted ? metrics.globalLevel : 'EN_CURSO',
+        psicomotorDetalle: {
+          p1: { score: p1Data.score !== undefined ? p1Data.score : (p1Data.completed ? 100 : 0), moves: p1State?.moves || 0, errors: p1State?.pathErrors || 0, completed: Boolean(p1Data.completed) },
+          p2: { score: p2Data.score !== undefined ? p2Data.score : (p2Data.completed ? 100 : 0), greenHits: p2State?.greenHits || 0, redHits: p2State?.redHits || 0, completed: Boolean(p2Data.completed) },
+          p3: { score: p3Data.score !== undefined ? p3Data.score : (p3Data.completed ? 100 : 0), completed: Boolean(p3Data.completed) },
+          p4: { score: p4Data.score !== undefined ? p4Data.score : (p4Data.completed ? 100 : 0), completed: Boolean(p4Data.completed), dataUrl: p4Data.dataUrl || '' }
+        },
         tokenAntiFraude: `TOKEN-7MO-${Date.now()}`
       };
 
@@ -2885,11 +3022,14 @@
             avatar1: fullData.cadet1Avatar,
             avatar2: fullData.cadet2Avatar,
             section: secClean,
-            psicoScore: metrics.psicoScore,
-            cogScore: metrics.cogScore,
-            socioScore: metrics.socioScore,
-            globalAvg: metrics.globalAvg,
-            globalLevel: metrics.globalLevel,
+            estadoProgreso: estadoActual,
+            faseActual: fullData.faseActual,
+            psicoScore: fullData.psicoScore,
+            cogScore: fullData.cogScore,
+            socioScore: fullData.socioScore,
+            globalAvg: fullData.globalAvg,
+            globalLevel: fullData.globalLevel,
+            psicomotorDetalle: fullData.psicomotorDetalle,
             raw: fullData
           };
           const exIdx = listEvaluations.findIndex(e => e.name1 === cadet1Name && e.section === secClean);
@@ -2966,6 +3106,7 @@
 
     document.getElementById('btnResetSession').addEventListener('click', () => {
       if (confirm('¿Deseas reiniciar la sesión diagnóstica? Se borrará el avance no exportado.')) {
+        sessionStorage.removeItem('CYBERQUEST_ACTIVE_IN_PROGRESS');
         localStorage.removeItem(STATE_KEY);
         AppState = { ...defaultState };
         AppState.phase = 0;

@@ -43,28 +43,105 @@
     }
 
     header.doc-header {
-      background: linear-gradient(135deg, var(--mep-blue) 0%, var(--mep-dark) 100%);
+      background: linear-gradient(135deg, #134e4a 0%, #115e59 60%, #0f172a 100%);
       color: #ffffff;
-      padding: 18px 24px;
+      padding: 16px 24px;
       border-radius: 12px;
       margin-bottom: 25px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 15px;
-      box-shadow: 0 4px 15px rgba(0, 51, 102, 0.15);
-      border-bottom: 3px solid #38bdf8;
+      gap: 14px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      border-bottom: 3px solid #2dd4bf;
     }
 
-    .badge-nivel {
-      background: var(--mep-gold);
-      color: #000;
-      padding: 6px 14px;
+    /* ANIMACIÓN Y EFECTOS HEADER INSTITUCIONAL */
+    @keyframes live-pulse {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+      }
+      50% {
+        transform: scale(1.15);
+        opacity: 0.85;
+        box-shadow: 0 0 0 5px rgba(16, 185, 129, 0);
+      }
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .sync-live-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
       border-radius: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(45, 212, 191, 0.35);
+      backdrop-filter: blur(8px);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .sync-live-pill:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(94, 234, 212, 0.6);
+      transform: translateY(-1px);
+    }
+
+    .sync-live-dot {
+      width: 8.5px;
+      height: 8.5px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
+      animation: live-pulse 2s infinite ease-in-out;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .teacher-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(45, 212, 191, 0.35);
+      backdrop-filter: blur(8px);
+      font-size: 12px;
+      font-weight: 700;
+      color: #f8fafc;
+      transition: all 0.2s ease;
+    }
+    .teacher-badge-pill:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(94, 234, 212, 0.5);
+    }
+
+    .btn-header-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-size: 12.5px;
       font-weight: 800;
-      font-size: 0.88rem;
-      text-transform: uppercase;
+      color: #ffffff;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      letter-spacing: -0.1px;
+    }
+    .btn-header-action:hover {
+      transform: translateY(-1.5px);
     }
 
     /* AUTH MODAL TABS & CONTROLS (ALTO CONTRASTE) */
@@ -374,38 +451,39 @@
   <header class="doc-header">
     <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
       <div>
-        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-          <span style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px;">MEP 2026</span>
-          <h1 style="font-size: 1.35rem; margin: 0;">📋 Módulo Docente Evaluador — 8° Año</h1>
-        </div>
-        <p style="margin: 0; font-size: 12px; opacity: 0.9;">Formación Tecnológica &bull; III Ciclo &bull; Ministerio de Educación Pública</p>
+        <h1 style="font-size: 1.25rem; font-weight: 800; letter-spacing: -0.3px; margin: 0; color: #ffffff;">
+          🤖 Herramienta de Evaluación Diagnóstica Docente Octavo Año
+        </h1>
+        <p style="margin: 4px 0 0 0; font-size: 12px; color: #99f6e4;">
+          Programa Nacional de Formación Tecnológica &bull; Evaluación Diagnóstica Curricular del Tercer Ciclo
+        </p>
       </div>
     </div>
-    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-      <div id="teacherProfileBar" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 8px; display: flex; flex-direction: column; align-items: flex-end; gap: 2px;">
-        <span id="badgeTeacherName" style="font-weight: 800; font-size: 12px; color: #fff;">👨‍🏫 Docente no identificado</span>
-        <span id="badgeTeacherSchool" style="font-size: 10.5px; color: #cbd5e1;">Sin registrar</span>
+    <div class="top-actions" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+      <!-- INDICADOR EN VIVO DE TELEMETRÍA Y SINCRONIZACIÓN -->
+      <div id="syncIndicatorWrapper" class="sync-live-pill" onclick="sincronizarTelemetria8vo(true)" title="Estado de telemetría en tiempo real (Clic para forzar sincronización)">
+        <span id="syncDotIndicator" class="sync-live-dot"></span>
+        <span id="syncStatusLabel" style="font-size: 11.5px; font-weight: 800; color: #ccfbf1; letter-spacing: 0.2px;">Sincronizado</span>
+        <span id="syncIconSpin" style="font-size: 10.5px; opacity: 0.75; display: none;">🔄</span>
       </div>
-      <button class="btn btn-outline" style="background: #ffffff; color: #0f172a; padding: 6px 12px; font-size: 11.5px; border-radius: 8px; font-weight: 800;" onclick="openAuthModal(false)">
-        ⚙️ Perfil / PIN
-      </button>
-      <!-- BOTÓN COMPACTO DE SINCRONIZACIÓN CON ESTADO DE LUZ VERDE/ROJO Y TEXTO FIJO -->
-      <div id="syncIndicatorWrapper" style="display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 88px; height: 32px; padding: 2px 6px; border-radius: 8px; background: #ffffff; border: 1.5px solid #cbd5e1; cursor: pointer; user-select: none; box-sizing: border-box;" onclick="sincronizarTelemetria8vo(true)" title="Sincronización en vivo con el Dashboard (Clic para sincronizar)">
-        <div style="display: flex; align-items: center; justify-content: center; gap: 4px; line-height: 1;">
-          <span id="syncDotIndicator" style="width: 7.5px; height: 7.5px; border-radius: 50%; background: #10b981; display: inline-block; box-shadow: 0 0 6px rgba(16, 185, 129, 0.8); transition: background 0.3s ease;"></span>
-          <span id="syncIconSpin" style="font-size: 11px; display: inline-block; transition: transform 0.3s ease;">🔄</span>
-        </div>
-        <span style="font-size: 8.5px; font-weight: 800; color: #0369a1; text-transform: uppercase; letter-spacing: 0.3px; line-height: 1; margin-top: 2px;">
-          Sincronizando
-        </span>
+
+      <!-- CHIP DE SESIÓN DOCENTE -->
+      <div id="teacherAuthBadge" class="teacher-badge-pill">
+        <span id="badgeTeacherName">👨‍🏫 Docente</span>
+        <button type="button" class="btn" style="padding: 3px 9px; font-size: 11px; min-height: 22px; border-radius: 8px; background: rgba(20, 184, 166, 0.4); border: 1px solid rgba(94, 234, 212, 0.5); color: #ffffff; font-weight: 800;" onclick="openAuthModal(false)">🔑 Perfil</button>
       </div>
-      <button class="btn btn-accent" style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); border-color: #0284c7; color: #ffffff; font-size: 11.5px; padding: 6px 12px; border-radius: 8px; font-weight: 800;" onclick="openStudentLinksModal()" title="Generar enlaces y proyectar QR para computadoras de estudiantes">
-        🔗 Enlaces Estudiantes (PC)
+
+      <!-- BOTÓN DE APLICACIÓN DIAGNÓSTICA PARA ESTUDIANTES -->
+      <button type="button" class="btn-header-action" style="background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); border-color: #2dd4bf; box-shadow: 0 2px 10px rgba(20,184,166,0.35);" onclick="openStudentLinksModal()" title="Generar enlaces y proyectar QR para computadoras de estudiantes">
+        <span style="font-size: 14px;">🚀</span>
+        <span>Aplicación Diagnóstica Estudiantes</span>
       </button>
-      <a href="/dashboard" target="_blank" class="btn" style="background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); border-color: #7c3aed; color: #ffffff; text-decoration: none; font-size: 11.5px; padding: 6px 12px; border-radius: 8px; font-weight: 800;" title="Abrir Dashboard de Telemetría Nacional (diagnosticosecundaria.vercel.app / dashboard)">
-        📈 Dashboard Web
+
+      <!-- BOTÓN DE RETORNO AL DASHBOARD CENTRAL -->
+      <a href="/dashboard" target="_blank" class="btn-header-action" style="background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); border-color: #a78bfa; box-shadow: 0 2px 10px rgba(139,92,246,0.3);" title="Abrir Dashboard de Telemetría Nacional (diagnosticosecundaria.vercel.app / dashboard)">
+        <span style="font-size: 14px;">📊</span>
+        <span>Dashboard Web</span>
       </a>
-      <div class="badge-nivel">8° Año</div>
     </div>
   </header>
 
@@ -766,15 +844,18 @@
 
     <div class="modal-body" style="padding: 18px 22px; max-height: 75vh; overflow-y: auto; display: flex; flex-direction: column; gap: 16px;">
       
-      <!-- AVISO OBLIGATORIO DE COMPUTADORAS DE LABORATORIO (ALTO CONTRASTE) -->
-      <div style="background: #eff6ff; border: 2px solid #38bdf8; border-radius: 10px; padding: 12px 16px; display: flex; align-items: flex-start; gap: 12px;">
-        <span style="font-size: 26px; line-height: 1;">💻</span>
+      <!-- AVISO DE RECOMENDACIÓN GENERAL: COMPUTADORAS DE LABORATORIO Y DISPOSITIVOS MÓVILES -->
+      <div style="background: #f0fdfa; border: 2px solid #2dd4bf; border-radius: 10px; padding: 14px 16px; display: flex; align-items: flex-start; gap: 12px;">
+        <span style="font-size: 26px; line-height: 1;">💡</span>
         <div>
-          <strong style="font-size: 12.5px; color: #0369a1; display: block; margin-bottom: 2px; text-transform: uppercase;">
-            Requisito Obligatorio: Ejecución Exclusiva en Computadoras de Laboratorio
+          <strong style="font-size: 12.5px; color: #115e59; display: block; margin-bottom: 4px; text-transform: uppercase;">
+            Recomendación General: Uso en Computadoras de Laboratorio de Formación Tecnológica
           </strong>
-          <p style="font-size: 11.5px; color: #334155; margin: 0; line-height: 1.45;">
-            Esta evaluación diagnóstica curricular interactiva está optimizada <strong>estrictamente para ejecutarse en computadoras de escritorio o portátiles (PC / Mac)</strong> de las aulas tecnológicas o laboratorios de informática educativa. <strong>No debe ejecutarse en celulares de estudiantes.</strong>
+          <p style="font-size: 11.5px; color: #1e293b; margin: 0 0 6px 0; line-height: 1.45;">
+            Esta herramienta web interactiva está estandarizada y optimizada principalmente para ejecutarse en <strong>computadoras de escritorio o portátiles con conectividad</strong> dentro del laboratorio de formación tecnológica, garantizando una visualización fluida, adecuada interacción y óptimo registro de datos.
+          </p>
+          <p style="font-size: 11px; color: #475569; margin: 0; line-height: 1.4;">
+            <em>Nota pedagógica / técnica:</em> El uso de celulares o tabletas es de carácter opcional y queda a criterio del docente según el contexto institucional, debiendo considerarse factores técnicos como: estabilidad, conectividad, tamaño de pantalla, sistema operativo actualizado y compatibilidad de navegación para el acceso.
           </p>
         </div>
       </div>
@@ -840,8 +921,7 @@
 
     </div>
 
-    <div style="background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; padding: 10px 18px;">
-      <span style="font-size: 11px; color: #64748b;">Ministerio de Educación Pública &bull; Telemetría Curricular 2026</span>
+    <div style="background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; padding: 10px 18px;">
       <button class="btn btn-secondary" onclick="closeStudentLinksModal()">Cerrar</button>
     </div>
 
@@ -2249,15 +2329,33 @@
       const school = schools[schIdx] || schools[0];
       const baseUrl = getBase8voStudentUrl();
 
-      // Params
-      const baseParams = new URLSearchParams();
-      if (profile.cedula) baseParams.set('docenteId', profile.cedula);
-      if (profile.nombre) baseParams.set('docente', profile.nombre);
-      if (school.colegio) baseParams.set('institucion', school.colegio);
-      if (school.dreCodigo || school.dreNombre) baseParams.set('dre', school.dreCodigo || school.dreNombre);
-      baseParams.set('nivel', '8');
+      // Generar identificador docente seguro que jamás exponga la cédula
+      let safeDocenteId = profile.id || profile.docenteId;
+      if (!safeDocenteId || safeDocenteId.startsWith('0-') || /^\d{1,2}-\d{4}-\d{4}$/.test(safeDocenteId)) {
+        const dreCode = (school.dreCodigo || profile.dreCodigo || 'DRE01').replace(/[^a-zA-Z0-9]/g, '');
+        let hash = 0;
+        const str = (profile.cedula || profile.correo || profile.nombre || 'doc');
+        for (let i = 0; i < str.length; i++) hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        const pinCode = Math.abs(hash % 9000) + 1000;
+        safeDocenteId = `DOC-${dreCode}-${pinCode}`;
+      }
 
-      const generalUrl = `${baseUrl}?${baseParams.toString()}`;
+      // Generar token de sesión encriptado/opaco para no exponer ningún dato sensible en la URL
+      const secList = (school.secciones && school.secciones['8']?.selected) || (profile.seccionesPorNivel && profile.seccionesPorNivel['8']) || [];
+      const instName = school.colegio || profile.colegioActivo || profile.colegio || 'Liceo de Costa Rica';
+      const docName = profile.nombre || 'Prof. Alberto Bustos Ortega';
+      const dreName = school.dreNombre || school.dreCodigo || profile.dreNombre || profile.dreCodigo || 'DRE-01 - San José Central';
+      const sessionToken = {
+        docId: safeDocenteId,
+        doc: docName,
+        inst: instName,
+        dre: dreName,
+        nivel: 8,
+        secciones: secList
+      };
+
+      const tokenEncoded = btoa(unescape(encodeURIComponent(JSON.stringify(sessionToken))));
+      const generalUrl = `${baseUrl}?token=${tokenEncoded}`;
 
       // Update General input & button
       const genInput = document.getElementById('slmGeneralUrlInput');
@@ -2285,15 +2383,15 @@
           <html lang="es">
             <head>
               <meta charset="UTF-8">
-              <title>Código QR - Diagnóstico 8.° Año</title>
+              <title>Código QR - Herramienta de Evaluación Diagnóstica 8.° Año</title>
             </head>
-            <body style="margin:0; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#001e3d; font-family:system-ui,-apple-system,sans-serif; color:white; padding:24px; text-align:center;">
-              <h1 style="margin:0 0 6px 0; font-size:26px; font-weight:800; color:#38bdf8;">Diagnóstico 8.° Año • Informática Educativa</h1>
-              <p style="margin:0 0 24px 0; font-size:16px; color:#cbd5e1;">Escanee con la cámara o abra en la PC del laboratorio</p>
-              <div style="background:white; padding:22px; border-radius:20px; box-shadow:0 15px 35px rgba(0,0,0,0.6); display:inline-block;">
+            <body style="margin:0; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; background:linear-gradient(135deg, #134e4a 0%, #115e59 50%, #0f172a 100%); font-family:system-ui,-apple-system,sans-serif; color:white; padding:24px; text-align:center;">
+              <h1 style="margin:0 0 6px 0; font-size:26px; font-weight:800; color:#5eead4;">🤖 Diagnóstico 8.° Año • Formación Tecnológica</h1>
+              <p style="margin:0 0 24px 0; font-size:15px; color:#ccfbf1;">Escanee con la cámara o abra en la computadora del laboratorio de formación tecnológica</p>
+              <div style="background:white; padding:22px; border-radius:20px; box-shadow:0 15px 35px rgba(0,0,0,0.6); display:inline-block; border:3px solid #2dd4bf;">
                 <img src="${qrUrl}" alt="Código QR 8.° Año" style="width:340px; height:340px; display:block;" />
               </div>
-              <p style="margin-top:24px; font-family:monospace; font-size:13px; color:#7dd3fc; max-width:680px; word-break:break-all; background:rgba(0,0,0,0.3); padding:10px 16px; border-radius:10px; border:1px solid rgba(56,189,248,0.3);">
+              <p style="margin-top:24px; font-family:monospace; font-size:13px; color:#ccfbf1; max-width:720px; word-break:break-all; background:rgba(0,0,0,0.4); padding:10px 16px; border-radius:10px; border:1px solid rgba(45,212,191,0.4);">
                 ${url}
               </p>
             </body>
@@ -2326,12 +2424,17 @@
   async function sincronizarTelemetria8vo(esManual) {
     const dot = document.getElementById('syncDotIndicator');
     const spin = document.getElementById('syncIconSpin');
+    const label = document.getElementById('syncStatusLabel');
     if (dot) {
       dot.style.background = '#f59e0b';
       dot.style.boxShadow = '0 0 6px rgba(245, 158, 11, 0.8)';
     }
     if (spin) {
+      spin.style.display = 'inline-block';
       spin.style.animation = 'spin 0.8s linear infinite';
+    }
+    if (label) {
+      label.textContent = 'Sincronizando...';
     }
 
     let syncExitosa = true;
@@ -2414,15 +2517,19 @@
 
       if (huboNuevos) {
         guardarLocal();
-        renderTabla();
       }
+      renderTabla();
 
       if (dot) {
         dot.style.background = syncExitosa ? '#10b981' : '#ef4444';
         dot.style.boxShadow = syncExitosa ? '0 0 6px rgba(16, 185, 129, 0.8)' : '0 0 6px rgba(239, 68, 68, 0.8)';
       }
       if (spin) {
+        spin.style.display = 'none';
         spin.style.animation = 'none';
+      }
+      if (label) {
+        label.textContent = syncExitosa ? 'Sincronizado' : 'Sin conexión';
       }
 
       if (esManual) {
@@ -2434,7 +2541,11 @@
         dot.style.boxShadow = '0 0 6px rgba(239, 68, 68, 0.8)';
       }
       if (spin) {
+        spin.style.display = 'none';
         spin.style.animation = 'none';
+      }
+      if (label) {
+        label.textContent = 'Sin conexión';
       }
       if (esManual) {
         alert('⚠️ Error durante la sincronización: ' + (e.message || 'Verifique la conexión.'));

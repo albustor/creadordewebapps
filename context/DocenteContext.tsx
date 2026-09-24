@@ -92,22 +92,52 @@ interface DocenteContextType {
 const DocenteContext = createContext<DocenteContextType | undefined>(undefined);
 
 export const DOCENTE_DEFAULT: DocenteData = {
-  idDocente: "ASESOR-FT-7729",
-  nombreCompleto: "Alberto Bustos Ortega",
+  idDocente: "5-0305-0179",
+  nombreCompleto: "Prof. Alberto Bustos Ortega",
   correoInstitucional: "alberto.bustos.ortega@mep.go.cr",
   pin: "2617",
   contrasena: "2617",
   cedula: "5-0305-0179",
   telefono: "+506 8888-9999",
-  tipoRol: "Asesor Nacional",
-  dreCodigo: "DRE-NACIONAL",
-  dreNombre: "Asesoría de Formación Tecnológica",
-  circuito: "Nivel Nacional / Ámbito General",
-  codigoPresupuestario: "FT-NACIONAL-2026",
-  institucionNombre: "Asesoría Nacional de Formación Tecnológica (Dimensión 1 y 2)",
-  rol: "Asesor de Formación Tecnológica & Administrador General (Dimensión 1 y 2)",
+  tipoRol: "Docente",
+  dreCodigo: "DRE-01",
+  dreNombre: "DRE-01 - San José Central",
+  circuito: "Circuito 01",
+  codigoPresupuestario: "MEP-LCR-2026",
+  institucionNombre: "Liceo de Costa Rica",
+  rol: "Docente Evaluador de Formación Tecnológica",
   asignaturas: ["Formación Tecnológica (Dimensión 1 y 2)"],
   fechaRegistro: new Date().toISOString(),
+  centrosEducativos: [
+    {
+      id: "CENTRO-01",
+      nombre: "Liceo de Costa Rica",
+      dreCodigo: "DRE-01",
+      dreNombre: "DRE-01 - San José Central",
+      circuito: "Circuito 01",
+      codigoPresupuestario: "MEP-LCR-2026",
+      desgloseNiveles: [
+        {
+          nivel: "7°",
+          activo: true,
+          totalSeccionesColegio: 6,
+          seccionesAtendidasDocente: ["7-1", "7-2", "7-3"],
+        },
+        {
+          nivel: "8°",
+          activo: true,
+          totalSeccionesColegio: 6,
+          seccionesAtendidasDocente: ["8-1", "8-2", "8-3"],
+        },
+        {
+          nivel: "9°",
+          activo: true,
+          totalSeccionesColegio: 6,
+          seccionesAtendidasDocente: ["9-1", "9-2", "9-3"],
+        },
+      ],
+    },
+  ],
 };
 
 export const DOCENTE_PRUEBA_REGIONAL: DocenteData = {

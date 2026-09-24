@@ -34,6 +34,7 @@ import {
   Buildings,
   IdentificationCard,
   ChalkboardTeacher,
+  Gauge,
 } from "@phosphor-icons/react";
 
 export default function DashboardAnaliticoPage() {
@@ -47,6 +48,9 @@ export default function DashboardAnaliticoPage() {
 
   // Nivel activo seleccionado por pestañas (7mo, 8vo, 9no)
   const [nivelActivo, setNivelActivo] = useState<"7mo" | "8vo" | "9no">("7mo");
+
+  // Pestaña activa del bloque analítico inferior (Semáforo, Analítica por Secciones, Recomendaciones IA)
+  const [pestanaAnalitica, setPestanaAnalitica] = useState<"semaforo" | "analitica" | "recomendaciones">("semaforo");
 
   // Centro educativo activo seleccionado para el docente (en caso de tener varios)
   const [centroActivoIdx, setCentroActivoIdx] = useState<number>(0);
@@ -432,7 +436,15 @@ export default function DashboardAnaliticoPage() {
           {/* Botones de Exportación */}
           <div className="flex flex-wrap items-center gap-2.5 shrink-0">
             <button
-              onClick={() => exportarAExcel(telemetriaFiltrada)}
+              onClick={() =>
+                exportarAExcel(telemetriaFiltrada, {
+                  nivel: nivelActivo === "7mo" ? "7.° Año" : nivelActivo === "8vo" ? "8.° Año" : "9.° Año",
+                  seccion: filtroGrupo,
+                  institucion: centroActivo?.nombre || docente?.institucionNombre || "Centro Educativo MEP",
+                  docente: docente?.nombreCompleto || "Docente MEP",
+                  dre: centroActivo?.dreCodigo || centroActivo?.dreNombre || docente?.dreCodigo || "DRE",
+                })
+              }
               className="flex items-center gap-1.5 px-4 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs rounded-xl transition-all shadow-xs cursor-pointer"
               title="Descargar Acta Oficial en Excel del Nivel Seleccionado"
             >
@@ -441,7 +453,15 @@ export default function DashboardAnaliticoPage() {
             </button>
 
             <button
-              onClick={() => exportarAPDF(telemetriaFiltrada)}
+              onClick={() =>
+                exportarAPDF(telemetriaFiltrada, {
+                  nivel: nivelActivo === "7mo" ? "7.° Año" : nivelActivo === "8vo" ? "8.° Año" : "9.° Año",
+                  seccion: filtroGrupo,
+                  institucion: centroActivo?.nombre || docente?.institucionNombre || "Centro Educativo MEP",
+                  docente: docente?.nombreCompleto || "Docente MEP",
+                  dre: centroActivo?.dreCodigo || centroActivo?.dreNombre || docente?.dreCodigo || "DRE",
+                })
+              }
               className="flex items-center gap-1.5 px-4 py-2.5 bg-rose-700 hover:bg-rose-800 text-white font-black text-xs rounded-xl transition-all shadow-xs cursor-pointer"
               title="Descargar Informe Institucional en PDF del Nivel Seleccionado"
             >
@@ -594,17 +614,29 @@ export default function DashboardAnaliticoPage() {
               </div>
 
               {/* Botones de Apertura de la Tarjeta */}
-              <div className="shrink-0 flex flex-col gap-2.5">
+              <div className="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-2.5">
                 {listaCentrosDocente.length > 0 && centroActivo ? (
-                  <a
-                    href={getUrlEvaluador(centroActivo)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2.5 px-6 py-4 bg-indigo-500 hover:bg-indigo-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-indigo-500/30 hover:scale-[1.02] cursor-pointer text-center"
-                  >
-                    <span>Abrir Herramienta 7.° Año</span>
-                    <ArrowSquareOut size={20} weight="bold" />
-                  </a>
+                  <>
+                    <a
+                      href={getUrlEvaluador(centroActivo)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2.5 px-6 py-4 bg-indigo-500 hover:bg-indigo-400 text-white font-black text-sm rounded-2xl transition-all shadow-lg hover:shadow-indigo-500/30 hover:scale-[1.02] cursor-pointer text-center"
+                    >
+                      <span>Abrir Herramienta 7.° Año</span>
+                      <ArrowSquareOut size={20} weight="bold" />
+                    </a>
+                    <a
+                      href="/docs/GUIA_PEDAGOGICA_EVALUACION_DIAGNOSTICA_MEP.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 px-5 py-3 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs rounded-xl transition-all shadow text-center cursor-pointer"
+                      title="Ver o descargar la Guía Pedagógica y Operativa oficial en PDF"
+                    >
+                      <span>📘 Guía Pedagógica Docente (PDF)</span>
+                      <ArrowSquareOut size={16} weight="bold" />
+                    </a>
+                  </>
                 ) : (
                   <div className="flex items-center justify-center px-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-xs text-indigo-200/70 font-medium text-center">
                     Nivel no asignado
@@ -915,7 +947,7 @@ export default function DashboardAnaliticoPage() {
                   <th className="p-3 rounded-l-xl">Estudiante</th>
                   <th className="p-3">Sección</th>
                   <th className="p-3">Diagnóstico / Nivel</th>
-                  <th className="p-3 text-center">Porcentaje</th>
+                  <th className="p-3 text-center">Saberes Demostrados</th>
                   <th className="p-3 text-center">Nivel de Logro</th>
                   <th className="p-3 text-right">Fecha / Hora</th>
                   <th className="p-3 text-center rounded-r-xl">Acciones</th>
@@ -933,7 +965,7 @@ export default function DashboardAnaliticoPage() {
                           Sin registros de telemetría en {nivelActivo === "7mo" ? "7.° Séptimo" : nivelActivo === "8vo" ? "8.° Octavo" : "9.° Noveno"} Año
                         </div>
                         <p className="text-xs text-slate-500 leading-relaxed">
-                          Este espacio se encuentra completamente listo. Al aplicar el diagnóstico con sus estudiantes de este nivel, sus entregas y evaluaciones aparecerán aquí en tiempo real.
+                           Este espacio se encuentra completamente listo. Al aplicar el diagnóstico con sus estudiantes de este nivel, sus entregas y evaluaciones aparecerán aquí en tiempo real.
                         </p>
                       </div>
                     </td>
@@ -942,6 +974,7 @@ export default function DashboardAnaliticoPage() {
                   telemetriaFiltrada.map((item, idx) => {
                     const puntajeFinal = item.porcentaje ?? item.puntaje ?? 0;
                     const logroDinamico = obtenerNivelDinamico(puntajeFinal);
+                    const saberesCount = Math.max(1, Math.min(10, Math.round((puntajeFinal / 100) * 10)));
                     return (
                       <tr key={item.timestamp || idx} className="hover:bg-stone-50/80 transition-colors">
                         <td className="p-3 font-bold text-slate-900 flex items-center gap-2">
@@ -954,8 +987,10 @@ export default function DashboardAnaliticoPage() {
                         <td className="p-3 text-slate-600 truncate max-w-xs">
                           {item.webAppTitulo}
                         </td>
-                        <td className="p-3 text-center font-black text-slate-900">
-                          {puntajeFinal}%
+                        <td className="p-3 text-center">
+                          <span className="font-extrabold text-slate-800 bg-stone-100 px-2.5 py-1 rounded-md border border-stone-200 text-xs">
+                            {saberesCount}/10 Saberes
+                          </span>
                         </td>
                         <td className="p-3 text-center">
                           <span
@@ -1005,42 +1040,100 @@ export default function DashboardAnaliticoPage() {
         </div>
 
         {/* ========================================================================= */}
-        {/* GRÁFICAS Y ANÁLISIS PEDAGÓGICO DEL NIVEL ACTIVO                           */}
+        {/* PANEL ANALÍTICO Y PEDAGÓGICO POR PESTAÑAS HORIZONTALES                   */}
         {/* ========================================================================= */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <ErrorBoundary
-            fallbackTitle="Semáforo Diagnóstico"
-            fallbackMessage="No se pudo procesar la distribución visual del semáforo con los datos actuales. Puedes continuar usando la tabla y los instrumentos."
-          >
-            <SemaforoLogro
-              registros={telemetriaFiltrada}
-              configuracion={configuracion}
-              nivel={nivelActivo}
-            />
-          </ErrorBoundary>
-          <ErrorBoundary
-            fallbackTitle="Analítica Visual & Desglose de Indicadores"
-            fallbackMessage="No se pudo renderizar la comparativa gráfica por secciones. Los datos tabulares continúan completamente disponibles."
-          >
-            <GraficasSecciones
-              registros={telemetriaFiltrada}
-              configuracion={configuracion}
-              nivel={nivelActivo}
-            />
-          </ErrorBoundary>
-        </div>
+        <div className="space-y-4">
+          {/* Barra de Pestañas Principales */}
+          <div className="bg-white p-2 rounded-2xl border border-stone-200 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2">
+            <div className="flex items-center gap-2 flex-1 overflow-x-auto pb-1 sm:pb-0">
+              
+              {/* Pestaña 1: Semáforo Diagnóstico */}
+              <button
+                type="button"
+                onClick={() => setPestanaAnalitica("semaforo")}
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl font-black text-xs transition-all cursor-pointer whitespace-nowrap ${
+                  pestanaAnalitica === "semaforo"
+                    ? "bg-slate-900 text-white shadow-md shadow-slate-900/20 scale-[1.01]"
+                    : "bg-stone-50 hover:bg-stone-100 text-slate-700 border border-stone-200"
+                }`}
+              >
+                <Gauge size={18} weight={pestanaAnalitica === "semaforo" ? "fill" : "bold"} className={pestanaAnalitica === "semaforo" ? "text-amber-400" : "text-slate-500"} />
+                <span>1. Semáforo Diagnóstico de Saberes</span>
+              </button>
 
-        {/* RECOMENDACIONES PEDAGÓGICAS DUA DEL NIVEL ACTIVO */}
-        <ErrorBoundary
-          fallbackTitle="Recomendaciones Pedagógicas DUA"
-          fallbackMessage="El generador de recomendaciones está calibrando los datos del grupo."
-        >
-          <RecomendacionesDUA
-            registros={telemetriaFiltrada}
-            configuracion={configuracion}
-            nivel={nivelActivo}
-          />
-        </ErrorBoundary>
+              {/* Pestaña 2: Analítica Visual Comparativa */}
+              <button
+                type="button"
+                onClick={() => setPestanaAnalitica("analitica")}
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl font-black text-xs transition-all cursor-pointer whitespace-nowrap ${
+                  pestanaAnalitica === "analitica"
+                    ? "bg-slate-900 text-white shadow-md shadow-slate-900/20 scale-[1.01]"
+                    : "bg-stone-50 hover:bg-stone-100 text-slate-700 border border-stone-200"
+                }`}
+              >
+                <ChartBar size={18} weight={pestanaAnalitica === "analitica" ? "fill" : "bold"} className={pestanaAnalitica === "analitica" ? "text-cyan-400" : "text-slate-500"} />
+                <span>2. Analítica Visual & Comparativa de Secciones</span>
+              </button>
+
+              {/* Pestaña 3: Recomendaciones Pedagógicas & IA */}
+              <button
+                type="button"
+                onClick={() => setPestanaAnalitica("recomendaciones")}
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl font-black text-xs transition-all cursor-pointer whitespace-nowrap ${
+                  pestanaAnalitica === "recomendaciones"
+                    ? "bg-gradient-to-r from-indigo-700 to-purple-800 text-white shadow-md shadow-indigo-900/20 scale-[1.01]"
+                    : "bg-stone-50 hover:bg-stone-100 text-slate-700 border border-stone-200"
+                }`}
+              >
+                <Sparkle size={18} weight="fill" className={pestanaAnalitica === "recomendaciones" ? "text-amber-300" : "text-indigo-600"} />
+                <span>3. Recomendaciones Pedagógicas & Asistente IA</span>
+              </button>
+
+            </div>
+          </div>
+
+          {/* Renderizado de la Pestaña Activa a Ancho Completo */}
+          <div className="transition-all duration-300">
+            {pestanaAnalitica === "semaforo" && (
+              <ErrorBoundary
+                fallbackTitle="Semáforo Diagnóstico"
+                fallbackMessage="No se pudo procesar la distribución visual del semáforo con los datos actuales. Puedes continuar usando la tabla y los instrumentos."
+              >
+                <SemaforoLogro
+                  registros={telemetriaFiltrada}
+                  configuracion={configuracion}
+                  nivel={nivelActivo}
+                />
+              </ErrorBoundary>
+            )}
+
+            {pestanaAnalitica === "analitica" && (
+              <ErrorBoundary
+                fallbackTitle="Analítica Visual & Desglose de Indicadores"
+                fallbackMessage="No se pudo renderizar la comparativa gráfica por secciones. Los datos tabulares continúan completamente disponibles."
+              >
+                <GraficasSecciones
+                  registros={telemetriaFiltrada}
+                  configuracion={configuracion}
+                  nivel={nivelActivo}
+                />
+              </ErrorBoundary>
+            )}
+
+            {pestanaAnalitica === "recomendaciones" && (
+              <ErrorBoundary
+                fallbackTitle="Recomendaciones Pedagógicas DUA"
+                fallbackMessage="El generador de recomendaciones está calibrando los datos del grupo."
+              >
+                <RecomendacionesDUA
+                  registros={telemetriaFiltrada}
+                  configuracion={configuracion}
+                  nivel={nivelActivo}
+                />
+              </ErrorBoundary>
+            )}
+          </div>
+        </div>
 
         {/* MODAL EDITAR REGISTRO */}
         {registroEditando && (

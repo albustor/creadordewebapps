@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-title" content="Diagnóstico FT 9°">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#003366">
-  <title>Diagnóstico 9° [EN LÍNEA] - «Aula Inteligente» (Sincronización en Tiempo Real)</title>
+  <title>Diagnóstico Integrado 9° - «Aula Inteligente» (MEP - Formación Tecnológica 2026)</title>
   
   <style>
     :root {
@@ -678,17 +678,7 @@
 <body>
 
   <!-- HEADER OFICIAL -->
-  
-    <!-- BANNER MODALIDAD EN LÍNEA -->
-    <div style="background: linear-gradient(90deg, #064e3b, #047857); color: white; padding: 6px 14px; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #10b981;">
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <span style="display: inline-block; width: 8px; height: 8px; background: #34d399; border-radius: 50%; box-shadow: 0 0 8px #34d399;"></span>
-        <span>🌐 <strong>MODALIDAD EN LÍNEA (CONECTADO)</strong> • Sincronización automática de respuestas e indicadores en tiempo real con el Dashboard Docente.</span>
-      </div>
-      <span style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 6px; font-size: 10px;">💻 Uso exclusivo en PC / Laptop</span>
-    </div>
-
-    <header>
+  <header>
     <div style="display: flex; align-items: center; gap: 8px;">
       <div style="width: 32px; height: 32px; border-radius: 6px; background: white; display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); border: 1px solid #bae6fd;">
         💡
@@ -754,26 +744,30 @@
           </h3>
         </div>
 
-        <div id="teacherInfoBadge9no" style="display: flex; background: #eff6ff; border: 1.5px solid #38bdf8; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="font-size: 20px;">👨‍🏫</span>
+        <div id="teacherInfoBadge9no" style="display: flex; background: #f0fdfa; border: 1.5px solid #2dd4bf; border-radius: 12px; padding: 12px 16px; margin-bottom: 16px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; box-shadow: 0 2px 8px rgba(13, 148, 136, 0.08);">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 26px;">🏫</span>
             <div>
-              <strong id="badgeTeacherName9no" style="font-size: 12.5px; color: #003366; display: block;">Docente: Evaluador Asignado</strong>
-              <span id="badgeTeacherMeta9no" style="font-size: 11px; color: #475569;">Centro Educativo MEP</span>
+              <strong id="badgeTeacherMeta9no" style="font-size: 14px; color: #0f172a; display: block; letter-spacing: -0.2px;">Liceo de Costa Rica</strong>
+              <div style="font-size: 12px; color: #0d9488; font-weight: 700; display: flex; align-items: center; gap: 6px; margin-top: 3px; flex-wrap: wrap;">
+                <span id="badgeTeacherName9no">👨‍🏫 Docente: Prof. Alberto Bustos Ortega</span>
+                <span style="color: #64748b;">•</span>
+                <span id="badgeTeacherDre9no" style="color: #475569; font-weight: 500;">📍 DRE-01 - San José Central</span>
+              </div>
             </div>
           </div>
-          <span style="background: #dcfce7; color: #15803d; border: 1px solid #86efac; font-size: 10.5px; font-weight: 800; padding: 2px 7px; border-radius: 6px;">
-            🔒 Vinculado al Docente Evaluador
+          <span style="background: #dcfce7; color: #15803d; border: 1px solid #86efac; font-size: 11px; font-weight: 800; padding: 5px 12px; border-radius: 20px;">
+            🔗 Vinculado al Docente Evaluador
           </span>
         </div>
         
         <div style="display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 12px; margin-bottom: 12px;">
           <div>
             <label style="display: block; font-size: 11.5px; font-weight: 700; color: #334155; margin-bottom: 4px;">
-              Nombre y Apellidos Completos: <span style="color: #ef4444;">* (Obligatorio)</span>
+              Nombre Completo del Estudiante (con ambos apellidos): <span style="color: #ef4444;">* (Obligatorio)</span>
             </label>
-            <input type="text" id="inputEstudianteNombre" placeholder="Ej: Kevin Morales Vargas" style="width: 100%; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 9px 12px; color: #0f172a; font-size: 13px; font-weight: 600; outline: none;" oninput="formatearNombreEstudiante(this); validarDatosEstudiante();" onblur="validarDatosEstudiante();">
-            <span style="font-size: 10.5px; color: #64748b; display: block; margin-top: 3px;">Debe incluir tu nombre y al menos dos apellidos (ej. Juan Pérez Mora).</span>
+            <input type="text" id="inputEstudianteNombre" placeholder="Ej. Juan Rosales Valverde" style="width: 100%; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 9px 12px; color: #0f172a; font-size: 13px; font-weight: 600; outline: none;" oninput="validarDatosEstudiante();" onblur="this.value = formatFullName(this.value); validarDatosEstudiante();" onchange="this.value = formatFullName(this.value); validarDatosEstudiante();">
+            <span style="font-size: 10.5px; color: #64748b; display: block; margin-top: 3px;">Debe incluir un nombre y sus dos apellidos (ej. Juan Rosales Valverde o María José Gómez Porras).</span>
           </div>
 
           <div>
@@ -1363,11 +1357,28 @@
   <script>
     function obtenerDocenteEInstitucionActiva() {
       var params = new URLSearchParams(window.location.search);
+      var token = params.get("token");
       var docParam = params.get("docente") || params.get("docenteNombre") || params.get("profesor");
       var instParam = params.get("institucion") || params.get("colegio") || params.get("centroEducativo");
       var secParam = params.get("seccion") || params.get("seccionGrupo");
       var dreParam = params.get("dre") || params.get("dreNombre") || "";
       var docIdParam = params.get("docenteId") || params.get("idDocente") || params.get("cedula") || "";
+      var seccionesParam = params.get("secciones") || "";
+
+      if (token) {
+        try {
+          var decoded = JSON.parse(decodeURIComponent(escape(atob(token))));
+          if (decoded) {
+            if (decoded.docId) docIdParam = decoded.docId;
+            if (decoded.cedula) docIdParam = decoded.cedula;
+            if (decoded.doc) docParam = decoded.doc;
+            if (decoded.inst) instParam = decoded.inst;
+            if (decoded.dre) dreParam = decoded.dre;
+            if (decoded.sec) secParam = decoded.sec;
+            if (decoded.secciones) seccionesParam = decoded.secciones;
+          }
+        } catch(e) {}
+      }
 
       var docNombre = docParam ? docParam.trim() : "";
       var instNombre = instParam ? instParam.trim() : "";
@@ -1408,16 +1419,25 @@
       }
 
       // Fallback seguro institucional
-      if (!docNombre) docNombre = "Luis López Rueda";
-      if (!instNombre) instNombre = "Liceo / CTP MEP";
-      if (!docenteId) docenteId = "1-0892-0456";
+      if (!docNombre) docNombre = "Alberto Bustos Ortega";
+      if (!instNombre) instNombre = "Liceo de Costa Rica";
+      if (!docenteId) docenteId = "DOC-DRE01-2617";
+      if (!dreNombre) dreNombre = "DRE-01 - San José Central";
+
+      // Limpieza automática de la barra de direcciones para blindar privacidad y datos personales
+      if (window.location.search && window.history && window.history.replaceState) {
+        try {
+          window.history.replaceState({}, document.title, window.location.pathname);
+        } catch (e) {}
+      }
 
       return {
         docenteNombre: docNombre,
         instNombre: instNombre,
         docenteId: docenteId,
         dreNombre: dreNombre,
-        secParam: secParam
+        secParam: secParam,
+        secciones: seccionesParam
       };
     }
 
@@ -1504,6 +1524,29 @@
       document.getElementById("btnAudioToggle").innerText = estado.audioHabilitado ? "🔊 Sonidos" : "🔇 Silencio";
     }
 
+    function formatFullName(str) {
+      if (!str) return '';
+      var cleaned = str.trim().replace(/\s+/g, ' ');
+      if (!cleaned) return '';
+      return cleaned.split(' ').map(function(w) {
+        if (!w) return '';
+        return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+      }).join(' ');
+    }
+
+    function validateStudentFullName(fullName) {
+      if (!fullName) return { valid: false, message: 'Por favor ingresa tu nombre completo.' };
+      var cleaned = fullName.trim().replace(/\s+/g, ' ');
+      var parts = cleaned.split(' ').filter(function(p) { return p.length > 0; });
+      if (parts.length < 3) {
+        return {
+          valid: false,
+          message: '⚠️ Debes ingresar tu nombre y tus dos apellidos completos (ej: Juan Rosales Valverde).'
+        };
+      }
+      return { valid: true, formatted: formatFullName(cleaned) };
+    }
+
     function formatearNombreEstudiante(input) {
       var cursor = input.selectionStart;
       var palabras = input.value.split(" ");
@@ -1545,9 +1588,9 @@
       var msg = document.getElementById("msgValidacionDatos");
       var btn = document.getElementById("btnIniciarDiagnostico");
 
-      var partes = nom.split(/\s+/).filter(function(p){ return p.length >= 2; });
-      if (partes.length < 2 || nom.length < 6) {
-        msg.innerText = "⚠️ Por favor escribe tu Nombre y al menos dos Apellidos completos (ej: Carlos Daniel Pérez Soto).";
+      var valNom = validateStudentFullName(nom);
+      if (!valNom.valid) {
+        msg.innerText = valNom.message;
         msg.style.color = "#f59e0b";
         if (btn) btn.disabled = true;
         return false;
@@ -1560,7 +1603,7 @@
         return false;
       }
 
-      msg.innerText = "✅ Identificación validada: " + nom + " • " + sec + (ced ? " (Cédula: " + ced + ")" : "");
+      msg.innerText = "✅ Identificación validada: " + formatFullName(nom) + " • " + sec + (ced ? " (Cédula: " + ced + ")" : "");
       msg.style.color = "#34d399";
       if (btn) btn.disabled = false;
       return true;
@@ -3274,11 +3317,13 @@
         var dreNombre = infoDoc.dreNombre;
 
         var badge = document.getElementById("teacherInfoBadge9no");
-        var nameEl = document.getElementById("badgeTeacherName9no");
-        var metaEl = document.getElementById("badgeTeacherMeta9no");
-        if (badge) badge.style.display = "block";
-        if (nameEl) nameEl.textContent = "👨‍🏫 Docente: Prof. " + docNombre;
-        if (metaEl) metaEl.textContent = "🏫 " + instNombre + (dreNombre ? " • 📍 " + dreNombre : "");
+        var schoolEl = document.getElementById("badgeTeacherMeta9no");
+        var teacherEl = document.getElementById("badgeTeacherName9no");
+        var dreEl = document.getElementById("badgeTeacherDre9no");
+        if (badge) badge.style.display = "flex";
+        if (schoolEl) schoolEl.textContent = instNombre;
+        if (teacherEl) teacherEl.textContent = "👨‍🏫 Docente: Prof. " + docNombre;
+        if (dreEl) dreEl.textContent = "📍 " + (dreNombre || "DRE-01 - San José Central");
         CONFIG.docenteId = infoDoc.docenteId;
 
         var inputDoc = document.getElementById("inputDocente");
@@ -3304,12 +3349,27 @@
         }
 
         var selectSec = document.getElementById("selectSeccion");
-        if (selectSec && secParam) {
-          var valToSet = secParam.startsWith("Sección ") ? secParam : ("Sección " + secParam);
-          selectSec.value = valToSet;
-          selectSec.style.borderColor = "#0284c7";
-          selectSec.style.fontWeight = "800";
-          estado.seccionGrupo = valToSet;
+        if (selectSec) {
+          if (infoDoc.secciones && (Array.isArray(infoDoc.secciones) ? infoDoc.secciones.length > 0 : infoDoc.secciones.trim())) {
+            var secsArr = Array.isArray(infoDoc.secciones) ? infoDoc.secciones : infoDoc.secciones.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+            if (secsArr.length > 0) {
+              selectSec.innerHTML = '<option value="">-- Seleccione su sección (9°) --</option>';
+              secsArr.forEach(function(s) {
+                var sClean = s.replace(/^secci[oó]n\s*/i, '').trim();
+                var opt = document.createElement('option');
+                opt.value = 'Sección ' + sClean;
+                opt.textContent = 'Sección ' + sClean;
+                selectSec.appendChild(opt);
+              });
+            }
+          }
+          if (secParam) {
+            var valToSet = secParam.startsWith("Sección ") ? secParam : ("Sección " + secParam);
+            selectSec.value = valToSet;
+            selectSec.style.borderColor = "#0284c7";
+            selectSec.style.fontWeight = "800";
+            estado.seccionGrupo = valToSet;
+          }
         }
 
         // 🌟 RESTAURAR SESIÓN ACTIVA SI EXISTE (PERSISTENCIA ANTE RECARGAS F5 O CIERRE ACCIDENTAL)

@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Guía Pedagógica y Operativa - Herramienta de Evaluación Diagnóstica MEP 2026</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
+
+    @page {
+      size: letter portrait;
+      margin: 10mm 12mm 12mm 12mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #1e293b;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .page {
+      page-break-after: always;
+      position: relative;
+      min-height: 100%;
+      padding-bottom: 8px;
+    }
+    .page:last-child {
+      page-break-after: avoid;
+    }
+
+    /* HEADER */
+    .header-mep {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2.5px solid #003366;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+    }
+    .header-titles h1 {
+      font-size: 16px;
+      font-weight: 900;
+      color: #003366;
+      margin: 0;
+      letter-spacing: -0.3px;
+    }
+    .header-titles h2 {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #0284c7;
+      margin: 2px 0 0 0;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .mep-badge-pill {
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 9px;
+      font-weight: 800;
+      color: #166534;
+      text-align: right;
+    }
+
+    /* TYPOGRAPHY */
+    h3.section-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: #003366;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 10px 0 6px 0;
+      padding-bottom: 3px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    p {
+      margin: 0 0 5px 0;
+      color: #334155;
+    }
+
+    /* CARDS & GRIDS */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .grid-10-indicators {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
+    .card-primary {
+      background: #f0f9ff;
+      border: 1.5px solid #bae6fd;
+    }
+    .card-accent {
+      background: #faf5ff;
+      border: 1.5px solid #e9d5ff;
+    }
+    .card-success {
+      background: #f0fdf4;
+      border: 1.5px solid #bbf7d0;
+    }
+    .card-warning {
+      background: #fffbeb;
+      border: 1.5px solid #fde68a;
+    }
+
+    .card-title {
+      font-size: 11px;
+      font-weight: 800;
+      color: #003366;
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* INDICATOR CARD COMPONENT (AS IN DASHBOARD) */
+    .indicator-card {
+      border-radius: 8px;
+      padding: 7px 10px;
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .indicator-card.logrado {
+      background: #f0fdf4;
+      border-color: #86efac;
+    }
+    .indicator-card.desarrollo {
+      background: #fffbeb;
+      border-color: #fde68a;
+    }
+    .indicator-card.acompanamiento {
+      background: #fef2f2;
+      border-color: #fca5a5;
+    }
+
+    .ind-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .ind-num-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 800;
+      font-size: 10.5px;
+      color: #0f172a;
+    }
+    .ind-badge-num {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #003366;
+      color: #ffffff;
+      font-size: 9.5px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ind-tag {
+      font-size: 8.5px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+    .tag-logrado { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+    .tag-desarrollo { background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; }
+    .tag-acomp { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+
+    .ind-desc {
+      font-size: 9px;
+      color: #64748b;
+      margin: 0;
+      line-height: 1.25;
+    }
+    .ind-progress-bar {
+      height: 5px;
+      border-radius: 3px;
+      width: 100%;
+      margin: 2px 0;
+    }
+    .bar-green { background: #10b981; }
+    .bar-yellow { background: #f59e0b; }
+    .bar-red { background: #ef4444; }
+
+    /* STEP FLOW INFOGRAPHIC */
+    .flow-container {
+      display: flex;
+      gap: 6px;
+      margin: 8px 0 10px 0;
+    }
+    .flow-step {
+      flex: 1;
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 6px 8px;
+      position: relative;
+    }
+    .flow-step.active {
+      border-color: #0284c7;
+      background: #f0f9ff;
+    }
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      background: #003366;
+      color: #ffffff;
+      border-radius: 50%;
+      font-size: 9px;
+      font-weight: 800;
+      margin-bottom: 2px;
+    }
+    .step-name {
+      font-size: 10px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 2px;
+    }
+    .step-desc {
+      font-size: 8.5px;
+      color: #475569;
+      line-height: 1.3;
+    }
+
+    /* TABLES */
+    table.mep-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9.5px;
+      margin-bottom: 8px;
+    }
+    table.mep-table th {
+      background: #003366;
+      color: #ffffff;
+      padding: 5px 7px;
+      text-align: left;
+      font-weight: 700;
+      border: 1px solid #002244;
+    }
+    table.mep-table td {
+      padding: 4px 7px;
+      border: 1px solid #e2e8f0;
+      color: #334155;
+    }
+    table.mep-table tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    /* PILLS & BADGES */
+    .badge {
+      display: inline-block;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 8.5px;
+      font-weight: 700;
+    }
+    .badge-a { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+    .badge-b { background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; }
+    .badge-c { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+
+    /* FOOTER */
+    .page-footer {
+      border-top: 1px solid #cbd5e1;
+      padding-top: 4px;
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 8px;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== PÁGINA 1: PROPÓSITO, ABORDAJE Y BENEFICIOS ==================== -->
+  <div class="page">
+    <div class="header-mep">
+      <div class="header-titles">
+        <h1>Ministerio de Educación Pública de Costa Rica</h1>
+        <h2>Programa Nacional de Formación Tecnológica &bull; III Ciclo (7.°, 8.° y 9.° Año)</h2>
+      </div>
+      <div class="mep-badge-pill">
+        📘 GUÍA TÉCNICO-PEDAGÓGICA<br>
+        <span style="font-size: 7.5px; font-weight: 600; color: #475569;">Curso Lectivo 2026</span>
+      </div>
+    </div>
+
+    <!-- RESUMEN EJECUTIVO -->
+    <div class="card card-primary" style="margin-bottom: 8px;">
+      <div class="card-title">🎯 Propósito del Instrumento de Evaluación Diagnóstica</div>
+      <p style="font-size: 10.5px; margin: 0; line-height: 1.4;">
+        La presente herramienta web interactiva constituye un instrumento curricular estandarizado para la <strong>identificación oportuna de saberes previos</strong> en informática educativa y formación tecnológica. Su enfoque está fundamentado en el <em>Diseño Universal para el Aprendizaje (DUA)</em>, integrando dinámicas lúdicas de pareja (Líder y Co-piloto) con telemetría formativa en tiempo real para alimentar directamente las <strong>Estrategias de Mediación del Planeamiento Didáctico Oficial</strong>.
+      </p>
+    </div>
+
+    <!-- ABORDAJE TEMÁTICO INTEGRAL: 3 DIMENSIONES -->
+    <h3 class="section-title">🧭 Abordaje Temático y Dimensiones Curriculares Evaluadas</h3>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-title" style="color: #0369a1;">🧠 1. Dimensión Cognitiva</div>
+        <p style="font-size: 9.5px; color: #475569; margin-bottom: 3px;"><strong>6 Saberes Conceptuales Clave:</strong></p>
+        <ul style="margin: 0; padding-left: 12px; font-size: 9px; color: #334155; line-height: 1.3;">
+          <li>Hardware, Periféricos y CPU.</li>
+          <li>Sistemas Operativos y Archivos.</li>
+          <li>Redes, Internet y Ciberseguridad.</li>
+          <li>Lógica y Pensamiento Algorítmico.</li>
+          <li>Variables y Tipos de Datos.</li>
+          <li>Estructuras de Control (Ciclos/Condicionales).</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title" style="color: #059669;">🖐️ 2. Dimensión Psicomotriz</div>
+        <p style="font-size: 9.5px; color: #475569; margin-bottom: 3px;"><strong>4 Retos con Datos de Sensores:</strong></p>
+        <ul style="margin: 0; padding-left: 12px; font-size: 9px; color: #334155; line-height: 1.3;">
+          <li><strong>P1:</strong> Orientación espacial y lateralidad en cuadrícula 4x4.</li>
+          <li><strong>P2:</strong> Ritmo e inhibición motriz con semáforo auditivo/visual.</li>
+          <li><strong>P3:</strong> Pulso y control fino en canal digital interactivo.</li>
+          <li><strong>P4:</strong> Evidencia de trazo y dibujo digital cooperativo.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title" style="color: #7c3aed;">🤝 3. Dimensión Socioafectiva</div>
+        <p style="font-size: 9.5px; color: #475569; margin-bottom: 3px;"><strong>Dinámica de Parejas (Líder / Co-piloto):</strong></p>
+        <ul style="margin: 0; padding-left: 12px; font-size: 9px; color: #334155; line-height: 1.3;">
+          <li>Comunicación asertiva y negociación de roles.</li>
+          <li>Tolerancia a la frustración ante el error algorítmico.</li>
+          <li>Escucha activa y toma compartida de decisiones.</li>
+          <li>Cuidado de la privacidad y respeto mutuo.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- BENEFICIOS CLAVE -->
+    <h3 class="section-title">⭐ Beneficios Transformadores para la Comunidad Educativa</h3>
+    <div class="grid-2">
+      <div class="card card-success">
+        <div class="card-title" style="color: #15803d;">👨‍🏫 Para el Docente</div>
+        <ul style="margin: 0; padding-left: 12px; font-size: 9.5px; color: #166534; line-height: 1.35;">
+          <li><strong>Cero Calificación Manual:</strong> La telemetría consolida indicadores de manera instantánea.</li>
+          <li><strong>Semáforo Diagnóstico Automatizado:</strong> Agrupación inmediata en Nivel A (Autónomo), Nivel B (Con Apoyo) y Nivel C (Inicial).</li>
+          <li><strong>Recomendaciones DUA con IA:</strong> Propuestas concretas de mediación pedagógica diferenciada.</li>
+          <li><strong>Impresión Oficial de Fichas:</strong> Generación de actas diagnósticas y fichas individuales para el expediente del estudiante.</li>
+        </ul>
+      </div>
+
+      <div class="card card-accent">
+        <div class="card-title" style="color: #6d28d9;">🧑‍🎓 Para el Estudiante</div>
+        <ul style="margin: 0; padding-left: 12px; font-size: 9.5px; color: #581c87; line-height: 1.35;">
+          <li><strong>Experiencia Gamificada Sin Ansiedad:</strong> Aprendizaje basado en retos sin el estrés de una prueba sumativa tradicional.</li>
+          <li><strong>Desarrollo de Habilidades Blandas:</strong> Trabajo en parejas que fomenta la empatía y la resolución conjunta de problemas.</li>
+          <li><strong>Retroalimentación Inmediata:</strong> Comprensión del error como oportunidad de aprendizaje y ajuste en tiempo real.</li>
+          <li><strong>Inclusividad y Accesibilidad:</strong> Múltiples formas de representación, expresión e interacción digital.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ESCALA DE VALORACIÓN OFICIAL MEP -->
+    <h3 class="section-title">📊 Escala Oficial de Valoración Diagnóstica MEP 2026</h3>
+    <table class="mep-table">
+      <thead>
+        <tr>
+          <th style="width: 24%;">Nivel de Logro</th>
+          <th style="width: 18%;">Saberes Demostrados</th>
+          <th style="width: 30%;">Descripción Pedagógica</th>
+          <th style="width: 28%;">Acción en Planeamiento Didáctico</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-a">NIVEL A (Autónomo)</span></td>
+          <td><strong>8 a 10 Saberes</strong> (80% - 100%)</td>
+          <td>Demuestra dominio pleno de saberes previos e independencia en la ejecución.</td>
+          <td>Actividades de enriquecimiento, liderazgo técnico y proyectos avanzados.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-b">NIVEL B (Con Apoyo)</span></td>
+          <td><strong>6 a 7 Saberes</strong> (60% - 79%)</td>
+          <td>Aplica conceptos y destrezas básicas con mediación intermedia o acompañamiento.</td>
+          <td>Estrategias de andamiaje, modelado guiado y práctica colaborativa.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-c">NIVEL C (Inicial)</span></td>
+          <td><strong>Menos de 6 Saberes</strong> (< 60%)</td>
+          <td>Requiere nivelación prioritaria en conceptos lógicos y destrezas procedimentales.</td>
+          <td>Plan remedial focalizado, tutoría entre pares y adecuación metodológica.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="page-footer">
+      <span>Ministerio de Educación Pública &bull; Formación Tecnológica 2026</span>
+      <span>Página 1 de 2 &bull; Fundamento Curricular y Beneficios</span>
+    </div>
+  </div>
+
+  <!-- ==================== PÁGINA 2: MATRIZ DE 10 INDICADORES Y PROTOCOLO ==================== -->
+  <div class="page">
+    <div class="header-mep">
+      <div class="header-titles">
+        <h1>Matriz Diagnóstica de 10 Indicadores y Protocolo de Aplicación</h1>
+        <h2>Monitoreo en Tiempo Real, Dashboard y Directrices Técnicas</h2>
+      </div>
+      <div class="mep-badge-pill">
+        📊 MATRIZ CURRICULAR<br>
+        <span style="font-size: 7.5px; font-weight: 600; color: #475569;">Suite 7.° Año (CyberQuest)</span>
+      </div>
+    </div>
+
+    <!-- MATRIZ DIAGNÓSTICA DE LOS 10 INDICADORES DE LOGRO (VISUAL) -->
+    <h3 class="section-title">🧩 Matriz Diagnóstica de los 10 Indicadores de Logro Cognitivo</h3>
+    <div class="grid-10-indicators">
+      
+      <!-- 1 -->
+      <div class="indicator-card logrado">
+        <div class="ind-header">
+          <div class="ind-num-title">
+            <span class="ind-badge-num">1</span>
+            <span>Hardware y Periféricos</span>
+          </div>
+          <span class="ind-tag tag-logrado">Logrado</span>
+        </div>
+        <p class="ind-desc">Hardware • Identificación de periféricos de entrada, salida y almacenamiento.</p>
+        <div class="ind-progress-bar bar-green"></div>
+      </div>
+
+      <!-- 2 -->
+      <div class="indicator-card logrado">
+        <div class="ind-header">
+          <div class="ind-num-title">
+            <span class="ind-badge-num">2</span>
+            <span>Software y Aplicaciones</span>
+          </div>
+          <span class="ind-tag tag-logrado">Logrado</span>
+        </div>
+        <p class="ind-desc">Software • Diferenciación entre software de sistema, utilitarios y aplicaciones.</p>
+        <div class="ind-progress-bar bar-green"></div>
+      </div>
+
+      <!-- 3 -->
+      <div class="indicator-card logrado">
+        <div class="ind-header">
+          <div class="ind-num-title">
+            <span class="ind-badge-num">3</span>
+            <span>Sistemas Operativos y Archivos</span>
+          </div>
+          <span class="ind-tag tag-logrado">Logrado</span>
+        </div>
+        <p class="ind-desc">Gestión • Estructura jerárquica de carpetas y extensiones de archivos.</p>
+        <div class="ind-progress-bar bar-green"></div>
+      </div>
+
+      <!-- 4 -->
+      <div class="indicator-card logrado">
+        <div class="ind-header">
+          <div class="ind-num-title">
+            <span class="ind-badge-num">4</span>
+            <span>Seguridad Digital y Contraseñas</span>
+          </div>
+          <span class="ind-tag tag-logrado">Logrado</span>
+        </div>
+        <p class="ind-desc">Ciberseguridad • Buenas prácticas de contraseñas robustas y autenticación.</p>
+        <div class="ind-progress-bar bar-green"></div>
+      </div>
+
+      <!-- 5 -->
+      <div class="indicator-card logrado">
+        <div class="ind-header">
+          <div class="ind-num-title">
+            <span class="ind-badge-num">5</span>
+            <span>Ciudadanía y Convivencia Digital</span>
+          </div>
+          <span class="ind-tag tag-logrado">Logrado</span>
+        </div>
+        <p class="ind-desc">Ética Digital • Uso responsable, huella digital y netiqueta estudiantil.</p>
+        <div class="ind-progress-bar bar-green"></div>
+      </div>
+
+      <!-- 6 -->
+      <div class="indicator-card desarrollo">
+        <div class="ind-header">
+          <div class="ind-num-title">
+            <span class="ind-badge-num">6</span>
+            <span>Algoritmos y Secuencias</span>
+          </div>
+          <span class="ind-tag tag-desarrollo">En Desarrollo</span>
+        </div>
+        <p class="ind-desc">Pensamiento Computacional • Instrucciones lógicas ordenadas paso a paso.</p>
+        <div class="ind-progress-bar bar-yellow"></div>
+      </div>
+
+      <!-- 7 -->
+      <div class="indicator-card acompanamiento">
+        <div class="ind-header">
+          <div class="ind-num-title">
+            <span class="ind-badge-num">7</span>
+            <span>Descomposición de Problemas</span>
+          </div>
+          <span class="ind-tag tag-acomp">Acompañamiento</span>
+        </div>
+        <p class="ind-desc">Pensamiento Computacional • División de retos complejos en subproblemas.</p>
+        <div class="ind-progress-bar bar-red"></div>
+      </div>
+
+      <!-- 8 -->
+      <div class="indicator-card acompanamiento">
+        <div class="ind-header">
+          <div class="ind-num-title">
+            <span class="ind-badge-num">8</span>
+            <span>Reconocimiento de Patrones</span>
+          </div>
+          <span class="ind-tag tag-acomp">Acompañamiento</span>
+        </div>
+        <p class="ind-desc">Lógica • Identificación de regularidades y secuencias repetitivas.</p>
+        <div class="ind-progress-bar bar-red"></div>
+      </div>
+
+      <!-- 9 -->
+      <div class="indicator-card acompanamiento">
+        <div class="ind-header">
+          <div class="ind-num-title">
+            <span class="ind-badge-num">9</span>
+            <span>Programación por Bloques</span>
+          </div>
+          <span class="ind-tag tag-acomp">Acompañamiento</span>
+        </div>
+        <p class="ind-desc">Programación • Construcción de secuencias con eventos y acciones.</p>
+        <div class="ind-progress-bar bar-red"></div>
+      </div>
+
+      <!-- 10 -->
+      <div class="indicator-card acompanamiento">
+        <div class="ind-header">
+          <div class="ind-num-title">
+            <span class="ind-badge-num">10</span>
+            <span>Depuración y Corrección</span>
+          </div>
+          <span class="ind-tag tag-acomp">Acompañamiento</span>
+        </div>
+        <p class="ind-desc">Pensamiento Crítico • Localización y ajuste de fallas en algoritmos.</p>
+        <div class="ind-progress-bar bar-red"></div>
+      </div>
+
+    </div>
+
+    <!-- INFOGRAFÍA: FLUJO DE 4 PASOS -->
+    <h3 class="section-title">🔄 Flujo de Trabajo en 4 Fases para el Docente</h3>
+    <div class="flow-container">
+      <div class="flow-step active">
+        <span class="step-number">1</span>
+        <div class="step-name">Ingreso y Validación</div>
+        <div class="step-desc">El docente ingresa al Dashboard con su cédula/PIN. Verifica su centro y secciones con estado <strong>✅ Sesión Validada</strong>.</div>
+      </div>
+      <div class="flow-step">
+        <span class="step-number">2</span>
+        <div class="step-name">Generación Enlace / QR</div>
+        <div class="step-desc">Abre la Herramienta Evaluadora y proyecta el <strong>Código QR</strong> o comparte el enlace único en las PCs del laboratorio.</div>
+      </div>
+      <div class="flow-step">
+        <span class="step-number">3</span>
+        <div class="step-name">Misión en Parejas</div>
+        <div class="step-desc">Los estudiantes seleccionan su sección, registran nombres y completan los retos. Cada nueva sección arranca limpia en Fase 0.</div>
+      </div>
+      <div class="flow-step">
+        <span class="step-number">4</span>
+        <div class="step-name">Telemetría y Dictamen</div>
+        <div class="step-desc">Los datos ingresan en vivo al Dashboard. Se genera la analítica, recomendaciones IA y fichas para el expediente.</div>
+      </div>
+    </div>
+
+    <!-- POLÍTICAS Y DIRECTRIZ OBLIGATORIA -->
+    <div style="background: #003366; color: #ffffff; border-radius: 8px; padding: 8px 12px; margin-top: 6px; display: flex; align-items: center; gap: 10px;">
+      <span style="font-size: 20px;">📌</span>
+      <div style="font-size: 9px; line-height: 1.35;">
+        <strong style="font-size: 10px; color: #38bdf8; display: block; text-transform: uppercase; margin-bottom: 2px;">
+          Directriz de Vinculación Curricular Obligatoria MEP
+        </strong>
+        Los resultados cualitativos recopilados en esta evaluación diagnóstica deben trasladarse directamente a las <strong>Estrategias de Mediación Pedagógica</strong> del planeamiento didáctico oficial y al plan de nivelación del primer periodo lectivo, garantizando atención a la diversidad según el DUA.
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span>Ministerio de Educación Pública &bull; Formación Tecnológica 2026</span>
+      <span>Página 2 de 2 &bull; Matriz de Indicadores y Protocolo de Aplicación</span>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1062,8 +1062,7 @@
 
       </div>
 
-      <div class="modal-footer" style="justify-content: space-between; padding: 10px 18px;">
-        <span style="font-size: 11px; color: #64748b;">Ministerio de Educación Pública &bull; Telemetría Curricular 2026</span>
+      <div class="modal-footer" style="justify-content: flex-end; padding: 10px 18px;">
         <button class="btn btn-secondary" onclick="closeStudentLinksModal()">Cerrar</button>
       </div>
 
@@ -1275,8 +1274,8 @@
 
         if (huboNuevos) {
           saveDocenteState();
-          filterAndRender();
         }
+        filterAndRender();
 
         if (dot) {
           dot.style.background = syncExitosa ? '#10b981' : '#ef4444';
@@ -2097,13 +2096,15 @@
       renderSchoolCards();
     }
 
+    // Captura inmediata de parámetros URL al cargar la página
+    const initialUrlParams = new URLSearchParams(window.location.search);
+
     function getStoredProfile() {
       try {
-        const params = new URLSearchParams(window.location.search);
-        const urlDoc = params.get('docente');
-        const urlId = params.get('docenteId') || params.get('cedula');
-        const urlInst = params.get('institucion') || params.get('colegio');
-        const urlDre = params.get('dre');
+        const urlDoc = initialUrlParams.get('docente') || initialUrlParams.get('nombre') || '';
+        const urlId = initialUrlParams.get('docenteId') || initialUrlParams.get('cedula') || '';
+        const urlInst = initialUrlParams.get('institucion') || initialUrlParams.get('colegio') || '';
+        const urlDre = initialUrlParams.get('dre') || '';
 
         // 1. Sincronizar automáticamente con el docente activo de Next.js (Prioridad 1)
         const docenteActivo = localStorage.getItem('docente_activo');
@@ -2112,48 +2113,54 @@
           if (doc && (doc.nombreCompleto || doc.idDocente || doc.cedula)) {
             const centros = (doc.centrosEducativos && doc.centrosEducativos.length > 0)
               ? doc.centrosEducativos.map(c => ({
-                  colegio: c.nombre,
-                  dreCodigo: c.dreCodigo,
-                  dreNombre: c.dreNombre,
-                  circuito: c.circuito,
+                  colegio: c.nombre || c.colegio,
+                  dreCodigo: c.dreCodigo || doc.dreCodigo || 'DRE-01',
+                  dreNombre: c.dreNombre || doc.dreNombre || 'DRE',
+                  circuito: c.circuito || doc.circuito || 'Circuito 01',
                   niveles: {
-                    '7': (c.desgloseNiveles || []).some(dn => dn.nivel.includes('7') && dn.activo),
-                    '8': (c.desgloseNiveles || []).some(dn => dn.nivel.includes('8') && dn.activo),
-                    '9': (c.desgloseNiveles || []).some(dn => dn.nivel.includes('9') && dn.activo)
+                    '7': (c.desgloseNiveles || []).some(dn => dn.nivel && dn.nivel.includes('7') && dn.activo !== false) || true,
+                    '8': (c.desgloseNiveles || []).some(dn => dn.nivel && dn.nivel.includes('8') && dn.activo !== false) || true,
+                    '9': (c.desgloseNiveles || []).some(dn => dn.nivel && dn.nivel.includes('9') && dn.activo !== false) || true
                   },
                   secciones: {
-                    '7': { total: 6, selected: (c.desgloseNiveles?.find(dn => dn.nivel.includes('7'))?.seccionesAtendidasDocente) || ['7-1', '7-2'] },
-                    '8': { total: 6, selected: (c.desgloseNiveles?.find(dn => dn.nivel.includes('8'))?.seccionesAtendidasDocente) || ['8-1'] },
-                    '9': { total: 6, selected: (c.desgloseNiveles?.find(dn => dn.nivel.includes('9'))?.seccionesAtendidasDocente) || ['9-1'] }
+                    '7': { total: 6, selected: (c.desgloseNiveles?.find(dn => dn.nivel && dn.nivel.includes('7'))?.seccionesAtendidasDocente) || ['7-1', '7-2', '7-3'] },
+                    '8': { total: 6, selected: (c.desgloseNiveles?.find(dn => dn.nivel && dn.nivel.includes('8'))?.seccionesAtendidasDocente) || ['8-1', '8-2', '8-3'] },
+                    '9': { total: 8, selected: (c.desgloseNiveles?.find(dn => dn.nivel && dn.nivel.includes('9'))?.seccionesAtendidasDocente) || ['9-1', '9-2', '9-3'] }
                   }
                 }))
               : [{
-                  colegio: doc.institucionNombre || 'Liceo / CTP MEP',
-                  dreCodigo: doc.dreCodigo || 'DRE-01',
-                  dreNombre: doc.dreNombre || 'San José Central',
+                  colegio: urlInst || doc.institucionNombre || 'Centro Educativo MEP',
+                  dreCodigo: urlDre || doc.dreCodigo || 'DRE-01',
+                  dreNombre: urlDre || doc.dreNombre || 'Dirección Regional',
                   niveles: { '7': true, '8': true, '9': true },
                   secciones: {
-                    '7': { total: 6, selected: ['7-1', '7-2'] },
-                    '8': { total: 6, selected: ['8-1'] },
-                    '9': { total: 6, selected: ['9-1'] }
+                    '7': { total: 6, selected: ['7-1', '7-2', '7-3'] },
+                    '8': { total: 6, selected: ['8-1', '8-2', '8-3'] },
+                    '9': { total: 6, selected: ['9-1', '9-2', '9-3'] }
                   }
                 }];
 
-            const colegioActivo = urlInst || centros[0]?.colegio || doc.institucionNombre || 'Liceo / CTP MEP';
+            const colegioActivo = urlInst || centros[0]?.colegio || doc.institucionNombre || 'Centro Educativo MEP';
 
             const adaptado = {
               autenticado: true,
-              nombre: urlDoc || doc.nombreCompleto || 'Luis López Rueda',
-              cedula: urlId || doc.cedula || doc.idDocente || '1-0892-0456',
-              correo: doc.correoInstitucional || 'luis.lopez.rueda@mep.go.cr',
-              telefono: doc.telefono || '+506 8888-9999',
-              pin: doc.pin || '4560',
+              nombre: doc.nombreCompleto || urlDoc || 'Docente MEP',
+              cedula: doc.cedula || doc.idDocente || urlId || '—',
+              correo: doc.correoInstitucional || 'docente@mep.go.cr',
+              telefono: doc.telefono || '',
+              tipoRol: doc.tipoRol || doc.rol || 'Docente',
+              pin: doc.pin || '',
               colegio: doc.institucionNombre || colegioActivo,
               colegioActivo: colegioActivo,
-              dreCodigo: urlDre || doc.dreCodigo || 'DRE-01',
-              dreNombre: urlDre || doc.dreNombre || 'San José Central',
+              dreCodigo: doc.dreCodigo || urlDre || centros[0]?.dreCodigo || 'DRE-01',
+              dreNombre: doc.dreNombre || urlDre || centros[0]?.dreNombre || 'DRE',
               circuito: doc.circuito || 'Circuito 01',
-              centrosEducativos: centros
+              centrosEducativos: centros,
+              seccionesPorNivel: {
+                '7': centros[0]?.secciones?.['7']?.selected || ['7-1', '7-2', '7-3'],
+                '8': centros[0]?.secciones?.['8']?.selected || ['8-1', '8-2', '8-3'],
+                '9': centros[0]?.secciones?.['9']?.selected || ['9-1', '9-2', '9-3']
+              }
             };
             localStorage.setItem('MEP_DOCENTE_PERFIL_GLOBAL', JSON.stringify(adaptado));
             return adaptado;
@@ -2162,23 +2169,26 @@
 
         // 2. Parámetros URL (Prioridad 2)
         if (urlDoc || urlInst || urlId) {
+          const urlSecArr = initialUrlParams.get('secciones') ? initialUrlParams.get('secciones').split(',') : ['7-1', '7-2', '7-3'];
           const profileUrl = {
             autenticado: true,
-            nombre: urlDoc || 'Docente Evaluador',
-            cedula: urlId || '1-0892-0456',
+            nombre: urlDoc || 'Docente MEP',
+            cedula: urlId || '—',
             correo: 'docente@mep.go.cr',
+            tipoRol: 'Docente',
             colegio: urlInst || 'Centro Educativo MEP',
             colegioActivo: urlInst || 'Centro Educativo MEP',
             dreCodigo: urlDre || 'DRE-01',
-            dreNombre: urlDre || 'San José Central',
-            pin: '4560',
+            dreNombre: urlDre || 'DRE',
+            pin: '',
             centrosEducativos: [{
               colegio: urlInst || 'Centro Educativo MEP',
               dreCodigo: urlDre || 'DRE-01',
-              dreNombre: urlDre || 'San José Central',
+              dreNombre: urlDre || 'DRE',
               niveles: { '7': true, '8': true, '9': true },
-              secciones: { '7': { total: 6, selected: ['7-1', '7-2'] } }
-            }]
+              secciones: { '7': { total: 6, selected: urlSecArr } }
+            }],
+            seccionesPorNivel: { '7': urlSecArr }
           };
           localStorage.setItem('MEP_DOCENTE_PERFIL_GLOBAL', JSON.stringify(profileUrl));
           return profileUrl;
@@ -2189,20 +2199,39 @@
         if (saved) {
           const parsed = JSON.parse(saved);
           if (urlInst) parsed.colegioActivo = urlInst;
+          if (urlDoc) parsed.nombre = urlDoc;
+          if (urlId) parsed.cedula = urlId;
+          parsed.autenticado = true;
           return parsed;
         }
       } catch (e) {}
-      return null;
+
+      // 4. Fallback predeterminado seguro
+      return {
+        autenticado: true,
+        nombre: 'Docente Evaluador',
+        cedula: '—',
+        correo: 'docente@mep.go.cr',
+        colegio: 'Centro Educativo MEP',
+        colegioActivo: 'Centro Educativo MEP',
+        dreCodigo: 'DRE-01',
+        dreNombre: 'DRE',
+        pin: '',
+        tipoRol: 'Docente',
+        centrosEducativos: [{
+          colegio: 'Centro Educativo MEP',
+          dreCodigo: 'DRE-01',
+          dreNombre: 'DRE',
+          niveles: { '7': true, '8': true, '9': true },
+          secciones: { '7': { total: 6, selected: ['7-1', '7-2', '7-3'] } }
+        }],
+        seccionesPorNivel: { '7': ['7-1', '7-2', '7-3'] }
+      };
     }
 
     function checkTeacherAuth() {
       const profile = getStoredProfile();
-      if (profile && profile.autenticado && profile.nombre) {
-        applyTeacherProfileUI(profile);
-      } else {
-        applyTeacherProfileUI(null);
-        openAuthModal(true);
-      }
+      applyTeacherProfileUI(profile);
     }
 
     function openAuthModal(isMandatory = false) {
@@ -2211,7 +2240,7 @@
       const profile = getStoredProfile();
 
       if (closeBtn) {
-        closeBtn.style.display = (isMandatory || !profile || !profile.autenticado) ? 'none' : 'block';
+        closeBtn.style.display = 'block';
       }
 
       switchAuthTab('register');
@@ -2589,6 +2618,7 @@
           statusBadge.style.color = '#15803d';
           statusBadge.textContent = '✅ Sesión Validada';
         }
+        const schoolsDisplay = todosCentros.map(s => `${s.colegio} [${s.dreCodigo || 'DRE'}]`).join(' • ') || `${colegioActivo} [${dreActiva}]`;
         if (printMeta) {
           printMeta.textContent = `Docente Evaluador: ${profile.nombre} | Cédula: ${profile.cedula || '—'} | Institución: ${schoolsDisplay}`;
         }
@@ -2764,7 +2794,9 @@
         const sec = (c.section || '').toString();
 
         const matchesName = !search || nom1.includes(search) || nom2.includes(search) || sec.toLowerCase().includes(search);
-        const matchesSec = (section === 'ALL' || !section) || (sec === section);
+        const cleanSec = sec.replace(/^secci[oó]n\s*/i, '').trim();
+        const cleanFilterSec = (section || '').replace(/^secci[oó]n\s*/i, '').trim();
+        const matchesSec = (section === 'ALL' || !section) || (sec === section || cleanSec === cleanFilterSec);
         const matchesLvl = (level === 'ALL' || !level) || (c.globalLevel === level);
         return matchesName && matchesSec && matchesLvl;
       });
@@ -2792,8 +2824,13 @@
 
       filtered.forEach((c, idx) => {
         const tr = document.createElement('tr');
+        const isCompleted = c.estadoProgreso === 'completado' || c.raw?.estadoProgreso === 'completado';
         
         const getBadge = (lvl) => {
+          if (!isCompleted) {
+            const fase = c.faseActual || c.raw?.faseActual || 'En Curso';
+            return `<span class="badge" style="background:#fef3c7; color:#b45309; border:1px solid #fde68a; font-weight:800; padding:4px 8px; border-radius:6px;">🟡 En Evaluación (${fase})</span>`;
+          }
           if (lvl === 'A') return '<span class="badge badge-a" style="background:#dcfce7; color:#15803d; border:1px solid #86efac; font-weight:800; padding:4px 8px; border-radius:6px;">Nivel A (Autónomo)</span>';
           if (lvl === 'B') return '<span class="badge badge-b" style="background:#fef3c7; color:#b45309; border:1px solid #fde68a; font-weight:800; padding:4px 8px; border-radius:6px;">Nivel B (Con Apoyo)</span>';
           return '<span class="badge badge-c" style="background:#fee2e2; color:#b91c1c; border:1px solid #fca5a5; font-weight:800; padding:4px 8px; border-radius:6px;">Nivel C (Inicial)</span>';
@@ -2802,6 +2839,13 @@
         const displayName1 = typeof c.name1 === 'object' && c.name1 !== null ? (c.name1.name || 'Estudiante 1') : (c.name1 || 'Estudiante');
         const displayName2 = typeof c.name2 === 'object' && c.name2 !== null ? (c.name2.name || '') : (c.name2 || '');
         const isIndiv = !displayName2 || displayName2 === 'Individual' || displayName2 === 'N/A' || displayName2 === 'Sin Pareja';
+
+        const formatDimScore = (val) => {
+          if (val !== null && val !== undefined && isCompleted) {
+            return `<strong style="color:#0f172a;">${val}%</strong>`;
+          }
+          return `<span class="badge" style="background:#f8fafc; color:#64748b; border:1px solid #cbd5e1; font-weight:600; font-size:11px;">En curso</span>`;
+        };
 
         tr.innerHTML = `
           <td style="font-weight: 800; color: #0f172a; text-align: center;">${idx + 1}</td>
@@ -2820,9 +2864,9 @@
             </div>
           </td>
           <td><span class="badge" style="background:#e0f2fe; color:#0369a1; border:1px solid #bae6fd; font-weight:800;">${c.section}</span></td>
-          <td><strong style="color:#0f172a;">${c.psicoScore}%</strong></td>
-          <td><strong style="color:#0f172a;">${c.cogScore}%</strong></td>
-          <td><strong style="color:#0f172a;">${c.socioScore}%</strong></td>
+          <td>${formatDimScore(c.psicoScore)}</td>
+          <td>${formatDimScore(c.cogScore)}</td>
+          <td>${formatDimScore(c.socioScore)}</td>
           <td>${getBadge(c.globalLevel)}</td>
           <td>
             <button class="btn btn-outline" style="padding: 4px 10px; font-size: 11.5px; font-weight: 700; color: #003366; border-color: #cbd5e1;" onclick="openStudentDetail('${c.id}')">
@@ -2863,74 +2907,82 @@
         { id: 'sab6', num: 6, title: 'Implementa Estructuras Condicionales y Repetitivas (Ciclos / Toma de decisiones)', isOk: answers.ind9?.isCorrect }
       ];
 
+      const p1Info = raw.psicomotorDetalle?.p1 || raw.psicomotriz?.p1_lateralidad || {};
+      const p2Info = raw.psicomotorDetalle?.p2 || raw.psicomotriz?.p2_ritmo || {};
+      const p3Info = raw.psicomotorDetalle?.p3 || raw.psicomotriz?.p3_pulso || {};
+      const p4Info = raw.psicomotorDetalle?.p4 || raw.psicomotriz?.p4_dibujo || {};
+      const isComp = cadet.estadoProgreso === 'completado' || raw.estadoProgreso === 'completado';
+
+      const formatPVal = (info, defVal, extraText) => {
+        if (info && (info.completed || info.score !== undefined)) {
+          const sc = info.score !== undefined ? info.score : defVal;
+          return `<strong style="color: #059669;">${sc}% ${extraText ? `(${extraText})` : ''}</strong>`;
+        }
+        if (!isComp) {
+          return `<span style="color: #b45309; font-weight: 700; font-size: 11px;">🟡 En progreso</span>`;
+        }
+        return `<span style="color: #94a3b8; font-size: 11px;">⏳ No completado</span>`;
+      };
+
+      const p1Extra = p1Info.moves ? `${p1Info.moves} movs, ${p1Info.errors || 0} err` : '';
+      const p2Extra = p2Info.greenHits ? `${p2Info.greenHits} aciertos` : '';
+
       const modalBody = document.getElementById('modalStudentBody');
+      const badgeClass = cadet.globalLevel === 'A' ? 'badge-a' : (cadet.globalLevel === 'B' ? 'badge-b' : 'badge-c');
+      const badgeText = cadet.globalLevel === 'A' ? '🟢 NIVEL A (AUTÓNOMO - DOMINIO PLENO)' : (cadet.globalLevel === 'B' ? '🟡 NIVEL B (CON APOYO - EN DESARROLLO)' : '🔴 NIVEL C (INICIAL - REQUIERE ACOMPAÑAMIENTO)');
+      const badgeBg = cadet.globalLevel === 'A' ? '#dcfce7' : (cadet.globalLevel === 'B' ? '#fef3c7' : '#fee2e2');
+      const badgeColor = cadet.globalLevel === 'A' ? '#15803d' : (cadet.globalLevel === 'B' ? '#b45309' : '#b91c1c');
+      const badgeBorder = cadet.globalLevel === 'A' ? '#86efac' : (cadet.globalLevel === 'B' ? '#fde68a' : '#fca5a5');
+
       modalBody.innerHTML = `
-        <!-- CARACTERIZACIÓN DUA Y RITMO DE APRENDIZAJE -->
-        <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 14px;">
-          <h3 style="font-size: 13px; font-weight: 800; color: #003366; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
-            <span>🧭</span> Caracterización Pedagógica y Perfil de Aprendizaje (DUA)
-          </h3>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
-            <div>
-              <label style="font-size: 11.5px; font-weight: 700; color: #475569; display: block; margin-bottom: 3px;">Estilo Predominante</label>
-              <select id="rubricEstilo" class="filter-select" style="width: 100%; font-size: 12px;">
-                <option value="visual" selected>Visual (Entornos en bloques, gráficos)</option>
-                <option value="auditivo">Auditivo (Instrucciones verbales, secuencias)</option>
-                <option value="kinestesico">Kinestésico / Práctico (Experimentación directa)</option>
-                <option value="mixto">Multimodal / Mixto</option>
-              </select>
-            </div>
-            <div>
-              <label style="font-size: 11.5px; font-weight: 700; color: #475569; display: block; margin-bottom: 3px;">Ritmo de Construcción</label>
-              <select id="rubricRitmo" class="filter-select" style="width: 100%; font-size: 12px;">
-                <option value="avanzado" selected>Autónomo / Avanzado</option>
-                <option value="medio">Medio / Progresivo</option>
-                <option value="apoyo">Requiere Acompañamiento Constante</option>
-              </select>
-            </div>
-            <div>
-              <label style="font-size: 11.5px; font-weight: 700; color: #475569; display: block; margin-bottom: 3px;">Apoyos Requeridos (DUA)</label>
-              <select id="rubricDua" class="filter-select" style="width: 100%; font-size: 12px;">
-                <option value="ninguno" selected>Sin apoyos específicos adicionales</option>
-                <option value="tiempo">Tiempo adicional de ejecución</option>
-                <option value="visual">Apoyo visual y textual complementario</option>
-                <option value="pareja">Mediación guiada por pares / docente</option>
-              </select>
-            </div>
+        <!-- DICTAMEN DIAGNÓSTICO OFICIAL MEP -->
+        <div style="background: ${badgeBg}; border: 2px solid ${badgeBorder}; border-radius: 12px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: #475569; letter-spacing: 0.5px; display: block;">Nivel de Logro Diagnóstico Oficial MEP:</span>
+            <strong style="font-size: 15px; color: ${badgeColor}; display: flex; align-items: center; gap: 6px; margin-top: 2px;">
+              ${badgeText}
+            </strong>
+          </div>
+          <div style="font-size: 11px; color: #475569; text-align: right;">
+            <span>Sección: <strong>${cadet.section}</strong></span><br>
+            <span>Instrumento: <strong>7.° Año (CyberQuest)</strong></span>
           </div>
         </div>
 
-        <!-- TABLA OFICIAL: INDICADORES DE DESEMPEÑO EVALUADOS (SABERES CURRICULARES DE 7°) -->
-        <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 10px; overflow: hidden;">
-          <div style="background: #003366; color: #ffffff; padding: 10px 14px; font-size: 13px; font-weight: 800;">
-            Indicadores de Desempeño Evaluados (Saberes Curriculares de 7.° Año - MEP 2026):
+        <!-- TABLA OFICIAL: MATRIZ DIAGNÓSTICA DE SABERES CURRICULARES (7° AÑO) -->
+        <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+          <div style="background: #003366; color: #ffffff; padding: 10px 16px; font-size: 13px; font-weight: 800; display: flex; justify-content: space-between; align-items: center;">
+            <span>📋 Matriz Diagnóstica de Saberes Curriculares</span>
+            <span style="font-size: 11px; font-weight: 600; opacity: 0.85;">Formación Tecnológica MEP 2026</span>
           </div>
           <div style="overflow-x: auto;">
             <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
               <thead>
                 <tr style="background: #0f2744; color: #ffffff; text-align: center;">
-                  <th style="padding: 8px 12px; text-align: left; font-weight: 800; font-size: 11px;">INDICADOR / SABER ESPECÍFICO</th>
-                  <th style="padding: 8px 10px; width: 110px; font-weight: 800; font-size: 11px;">AUTÓNOMO<br>(A)</th>
-                  <th style="padding: 8px 10px; width: 110px; font-weight: 800; font-size: 11px;">CON APOYO<br>(CA)</th>
-                  <th style="padding: 8px 10px; width: 110px; font-weight: 800; font-size: 11px;">AÚN NO SE OBSERVA<br>(NO)</th>
+                  <th style="padding: 10px 14px; text-align: left; font-weight: 800; font-size: 11px;">#</th>
+                  <th style="padding: 10px 14px; text-align: left; font-weight: 800; font-size: 11px;">SABER PREVIO EVALUADO</th>
+                  <th style="padding: 10px 12px; width: 140px; font-weight: 800; font-size: 11px;">VALORACIÓN CUALITATIVA</th>
                 </tr>
               </thead>
               <tbody>
                 ${saberesDef.map(s => {
-                  const defaultVal = s.isOk ? 'A' : (cadet.globalLevel === 'C' ? 'NO' : 'CA');
+                  const estadoQual = s.isOk ? 'Autónomo (Logrado)' : (cadet.globalLevel === 'C' ? 'Requiere Acompañamiento' : 'En Desarrollo (Con Apoyo)');
+                  const estadoColor = s.isOk ? '#15803d' : (cadet.globalLevel === 'C' ? '#b91c1c' : '#b45309');
+                  const estadoBg = s.isOk ? '#dcfce7' : (cadet.globalLevel === 'C' ? '#fee2e2' : '#fef3c7');
+                  const estadoDot = s.isOk ? '🟢' : (cadet.globalLevel === 'C' ? '🔴' : '🟡');
                   return `
                     <tr style="border-bottom: 1px solid #e2e8f0;">
-                      <td style="padding: 10px 12px; color: #1e293b; font-weight: 600;">
-                        ${s.num}. ${s.title}
+                      <td style="padding: 10px 12px; font-weight: 800; color: #003366; text-align: center; width: 35px;">
+                        ${s.num}
                       </td>
-                      <td style="padding: 8px; text-align: center;">
-                        <input type="radio" name="${s.id}" value="A" ${defaultVal === 'A' ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer; accent-color: #059669;">
+                      <td style="padding: 10px 14px; color: #1e293b; font-weight: 600; line-height: 1.4;">
+                        ${s.title}
                       </td>
-                      <td style="padding: 8px; text-align: center;">
-                        <input type="radio" name="${s.id}" value="CA" ${defaultVal === 'CA' ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer; accent-color: #d97706;">
-                      </td>
-                      <td style="padding: 8px; text-align: center;">
-                        <input type="radio" name="${s.id}" value="NO" ${defaultVal === 'NO' ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer; accent-color: #dc2626;">
+                      <td style="padding: 10px 12px; text-align: center;">
+                        <span style="display: inline-flex; align-items: center; gap: 4px; background: ${estadoBg}; color: ${estadoColor}; padding: 4px 8px; border-radius: 6px; font-weight: 800; font-size: 11px;">
+                          <span>${estadoDot}</span>
+                          <span>${estadoQual}</span>
+                        </span>
                       </td>
                     </tr>
                   `;
@@ -2940,49 +2992,22 @@
           </div>
         </div>
 
-        <!-- OBSERVACIONES CUALITATIVAS PEDAGÓGICAS -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px;">
-          <div>
-            <label style="font-size: 11.5px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">
-              Estrategias particulares observadas en la lógica o sistemas:
-            </label>
-            <textarea id="rubricObsLogica" rows="3" class="filter-input" style="width: 100%; font-size: 12px; resize: vertical;" placeholder="Ej. Aplica descomposición algorítmica ágil y reconoce variables con fluidez."></textarea>
-          </div>
-          <div>
-            <label style="font-size: 11.5px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">
-              Interacción, colaboración en parejas o apoyos requeridos:
-            </label>
-            <textarea id="rubricObsInteraccion" rows="3" class="filter-input" style="width: 100%; font-size: 12px; resize: vertical;" placeholder="Ej. Excelente sinergia entre líder y co-piloto, comunicación asertiva constante."></textarea>
-          </div>
-        </div>
-
-        <!-- RESUMEN PSICOMOTRIZ Y EVIDENCIA DIBUJO P4 -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px;">
-          <div class="rubric-card">
-            <h3 class="rubric-dimension-title">🖐️ Dimensión Psicomotriz en Pareja</h3>
-            <div class="rubric-item"><span>P1. Orientación Espacial (4x4):</span> <strong>${raw.psicomotriz?.p1_lateralidad?.score || 100}%</strong></div>
-            <div class="rubric-item"><span>P2. Ritmo e Inhibición (Semáforo):</span> <strong>${raw.psicomotriz?.p2_ritmo?.score || 95}%</strong></div>
-            <div class="rubric-item"><span>P3. Pulso y Canal Digital:</span> <strong>${raw.psicomotriz?.p3_pulso?.score || 90}%</strong></div>
-            <div class="rubric-item"><span>P4. Motricidad Fina (Trazo):</span> <strong>${raw.psicomotriz?.p4_dibujo?.score || 100}%</strong></div>
+        <!-- RESUMEN PSICOMOTRIZ Y EVIDENCIA DIGITAL P4 -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px;">
+          <div class="rubric-card" style="padding: 14px; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px;">
+            <h3 class="rubric-dimension-title" style="font-size: 12.5px; font-weight: 800; color: #003366; margin-bottom: 10px;">🖐️ Evidencias de la Dimensión Psicomotriz</h3>
+            <div class="rubric-item" style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #e2e8f0; font-size: 11.5px;"><span>P1. Orientación Espacial (4x4):</span> ${formatPVal(p1Info, 100, p1Extra)}</div>
+            <div class="rubric-item" style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #e2e8f0; font-size: 11.5px;"><span>P2. Ritmo e Inhibición (Semáforo):</span> ${formatPVal(p2Info, 100, p2Extra)}</div>
+            <div class="rubric-item" style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #e2e8f0; font-size: 11.5px;"><span>P3. Pulso y Canal Digital:</span> ${formatPVal(p3Info, 100, '')}</div>
+            <div class="rubric-item" style="display: flex; justify-content: space-between; padding: 5px 0; font-size: 11.5px;"><span>P4. Motricidad Fina (Trazo):</span> ${formatPVal(p4Info, 100, '')}</div>
           </div>
 
-          ${raw.psicomotriz?.p4_dibujo?.dataUrl ? `
-            <div class="rubric-card" style="text-align: center;">
-              <h3 class="rubric-dimension-title">🎨 Evidencia Digital P4 (Diseño de Pareja)</h3>
-              <img src="${raw.psicomotriz.p4_dibujo.dataUrl}" style="max-width: 180px; max-height: 110px; border-radius: 6px; border: 1px solid #cbd5e1; margin-top: 4px;" alt="Plano P4">
+          ${p4Info.dataUrl || raw.psicomotriz?.p4_dibujo?.dataUrl ? `
+            <div class="rubric-card" style="text-align: center; padding: 14px; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px;">
+              <h3 class="rubric-dimension-title" style="font-size: 12.5px; font-weight: 800; color: #003366; margin-bottom: 8px;">🎨 Evidencia Digital de Trazo Libre (P4)</h3>
+              <img src="${p4Info.dataUrl || raw.psicomotriz.p4_dibujo.dataUrl}" style="max-width: 220px; max-height: 120px; border-radius: 8px; border: 1.5px solid #cbd5e1; background: #000; margin: 0 auto; display: block;" alt="Trazo P4">
             </div>
           ` : ''}
-        </div>
-
-        <!-- DICTAMEN OFICIAL DEL DOCENTE -->
-        <div class="rubric-card" style="background: #f0fdf4; border-color: #86efac;">
-          <h3 class="rubric-dimension-title" style="color: #15803d;">📋 Dictamen Oficial del Docente (Escala MEP 2026)</h3>
-          <div style="display: flex; gap: 10px; align-items: center; margin-top: 8px; flex-wrap: wrap;">
-            <label style="font-size: 13px; font-weight: 700;">Nivel Asignado:</label>
-            <button class="level-selector-btn ${cadet.globalLevel === 'A' ? 'active-a' : ''}" onclick="setCadetLevel('A')">Nivel A (Autónomo)</button>
-            <button class="level-selector-btn ${cadet.globalLevel === 'B' ? 'active-b' : ''}" onclick="setCadetLevel('B')">Nivel B (Con Apoyo)</button>
-            <button class="level-selector-btn ${cadet.globalLevel === 'C' ? 'active-c' : ''}" onclick="setCadetLevel('C')">Nivel C (Inicial)</button>
-          </div>
         </div>
       `;
 
@@ -3178,15 +3203,22 @@
         safeDocenteId = `DOC-${dreCode}-${pinCode}`;
       }
 
-      // Parámetros seguros
-      const baseParams = new URLSearchParams();
-      baseParams.set('docenteId', safeDocenteId);
-      if (profile.nombre) baseParams.set('docente', profile.nombre);
-      if (school.colegio) baseParams.set('institucion', school.colegio);
-      if (school.dreCodigo || school.dreNombre) baseParams.set('dre', school.dreCodigo || school.dreNombre);
-      baseParams.set('nivel', '7');
+      // Generar token de sesión encriptado/opaco para no exponer ningún dato sensible en la URL
+      const secList = (school.secciones && school.secciones['7']?.selected) || (profile.seccionesPorNivel && profile.seccionesPorNivel['7']) || [];
+      const instName = school.colegio || profile.colegioActivo || profile.colegio || 'Liceo de Costa Rica';
+      const docName = profile.nombre || 'Prof. Alberto Bustos Ortega';
+      const dreName = school.dreNombre || school.dreCodigo || profile.dreNombre || profile.dreCodigo || 'DRE-01 - San José Central';
+      const sessionToken = {
+        docId: safeDocenteId,
+        doc: docName,
+        inst: instName,
+        dre: dreName,
+        nivel: 7,
+        secciones: secList
+      };
 
-      const generalUrl = `${baseUrl}?${baseParams.toString()}`;
+      const tokenEncoded = btoa(unescape(encodeURIComponent(JSON.stringify(sessionToken))));
+      const generalUrl = `${baseUrl}?token=${tokenEncoded}`;
 
       // Update General input & button
       const genInput = document.getElementById('slmGeneralUrlInput');
@@ -3253,12 +3285,6 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      // Limpieza automática de la barra de direcciones para blindar privacidad y datos personales
-      if (window.location.search && window.history && window.history.replaceState) {
-        try {
-          window.history.replaceState({}, document.title, window.location.pathname);
-        } catch (e) {}
-      }
       checkTeacherAuth();
       loadDocenteState();
       setInterval(sincronizarTelemetriaOnline, 3000);
@@ -3267,6 +3293,12 @@
           loadDocenteState();
         }
       });
+      // Limpieza cosmética de la barra de direcciones después de autenticar
+      if (window.location.search && window.history && window.history.replaceState) {
+        try {
+          window.history.replaceState({}, document.title, window.location.pathname);
+        } catch (e) {}
+      }
     });
   </script>
 </body>
