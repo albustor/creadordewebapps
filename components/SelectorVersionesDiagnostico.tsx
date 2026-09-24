@@ -110,8 +110,8 @@ export default function SelectorVersionesDiagnostico({
 
   const urlEscaner =
     typeof window !== "undefined"
-      ? `${window.location.origin}/diagnostico_9no_escaner_datos_locales.html`
-      : "/diagnostico_9no_escaner_datos_locales.html";
+      ? `${window.location.origin}/diagnostico_escaner_datos_locales.html`
+      : "/diagnostico_escaner_datos_locales.html";
 
   const copiarEnlaceOnline = () => {
     navigator.clipboard.writeText(urlOnline);
