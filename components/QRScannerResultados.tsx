@@ -101,9 +101,16 @@ export default function QRScannerResultados({
       }
 
       const es8vo = datos.n === "8°" || datos.t === "MEP8" || (datos.s && typeof datos.s === "string" && datos.s.startsWith("8-")) || (datos.sec && typeof datos.sec === "string" && datos.sec.startsWith("8-"));
-      const es7mo = datos.n === "7°" || datos.tipo === "CYBERQUEST_7MO" || (datos.s && typeof datos.s === "string" && datos.s.startsWith("7-"));
+      const es7mo = datos.n === "7°" || datos.t === "MEP7" || datos.tipo === "CYBERQUEST_7MO" || (datos.s && typeof datos.s === "string" && datos.s.startsWith("7-")) || (datos.sec && typeof datos.sec === "string" && datos.sec.startsWith("7-")) || Boolean(datos.c1);
 
-      let estNombre = datos.est || datos.estudianteNombre || datos.e || datos.nom || datos.nombre || "Estudiante Escaneado";
+      let estNombre = datos.est || datos.estudianteNombre || datos.e || datos.nom || datos.nombre;
+      if (!estNombre && es7mo && datos.c1) {
+        estNombre = datos.c2 && datos.c2 !== "Individual" ? `${datos.c1} & ${datos.c2}` : datos.c1;
+      }
+      if (!estNombre) {
+        estNombre = "Estudiante Escaneado";
+      }
+
       let seccion = datos.grp || datos.seccionOGrupo || datos.s || datos.sec || datos.seccion || (es8vo ? "Sección 8-1" : es7mo ? "Sección 7-1" : "General");
       if (!seccion.startsWith("Sección ") && /^[789]-/i.test(seccion)) {
         seccion = `Sección ${seccion}`;
@@ -121,6 +128,13 @@ export default function QRScannerResultados({
         porcentaje = porcRaw;
         totalReactivos = 14;
         aciertos = puntaje;
+      } else if (es7mo && (datos.g !== undefined || datos.c !== undefined || datos.globalAvg !== undefined)) {
+        const gRaw = typeof datos.g === "number" ? datos.g : (typeof datos.globalAvg === "number" ? datos.globalAvg : (typeof datos.puntaje === "number" ? datos.puntaje : 80));
+        puntaje = gRaw;
+        porcentaje = gRaw;
+        totalReactivos = 10;
+        const cogScore = typeof datos.c === "number" ? datos.c : (typeof datos.cogScore === "number" ? datos.cogScore : 80);
+        aciertos = Math.round((cogScore / 100) * 10);
       } else {
         const pRaw = typeof datos.pts === "number" ? datos.pts : (typeof datos.puntaje === "number" ? datos.puntaje : (typeof datos.porcentaje === "number" ? datos.porcentaje : 80));
         porcentaje = pRaw;
@@ -136,8 +150,8 @@ export default function QRScannerResultados({
       } : undefined;
 
       const payload: PayloadTelemetria = {
-        webAppId: datos.wId || datos.webAppId || (es8vo ? "diagnostico_8vo_modulo01_docente_evaluador" : "webapp-offline"),
-        webAppTitulo: datos.wTitulo || datos.webAppTitulo || (es8vo ? "Evaluación Diagnóstica — 8° Año (PNFT)" : "Reto Offline Escaneado"),
+        webAppId: datos.wId || datos.webAppId || (es8vo ? "diagnostico_8vo_modulo01_docente_evaluador" : es7mo ? "diagnostico_7mo_modulo01_cyberquest" : "webapp-offline"),
+        webAppTitulo: datos.wTitulo || datos.webAppTitulo || (es8vo ? "Evaluación Diagnóstica — 8° Año (PNFT)" : es7mo ? "CyberQuest 7°: Diagnóstico de Fundamentos Digitales" : "Reto Offline Escaneado"),
         docenteId: datos.dId || datos.docenteId || "DOC-OFFLINE",
         estudianteNombre: estNombre,
         seccionOGrupo: seccion,

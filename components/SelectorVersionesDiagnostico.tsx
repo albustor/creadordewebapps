@@ -81,7 +81,7 @@ export default function SelectorVersionesDiagnostico({
 
   if (nivel === "7°") {
     pathOnline = "/webapps/diagnostico_7mo_modulo01_cyberquest.html";
-    pathOffline = "/webapps/diagnostico_7mo_modulo01_cyberquest.html";
+    pathOffline = "/webapps/diagnostico_7mo_modulo01_desconectado_offline.html";
     pathDocente = "/webapps/diagnostico_7mo_modulo01_docente_evaluador.html";
   } else if (nivel === "9°") {
     pathOnline = "/webapps/diagnostico_9no_modulo01_en_linea.html";

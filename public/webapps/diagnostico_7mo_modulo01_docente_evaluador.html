@@ -771,9 +771,10 @@
       </div>
       
       <!-- TABS DEL ESCÁNER -->
-      <div style="display: flex; gap: 8px; justify-content: center; margin: 12px 0;">
+      <div style="display: flex; gap: 8px; justify-content: center; margin: 12px 0; flex-wrap: wrap;">
         <button class="btn btn-accent" id="tabBtnCamera" style="padding: 6px 12px; font-size: 12px;" onclick="switchQrTab('camara')">📷 Usar Cámara</button>
         <button class="btn btn-secondary" id="tabBtnManual" style="padding: 6px 12px; font-size: 12px;" onclick="switchQrTab('manual')">📋 Pegar Código</button>
+        <button class="btn btn-secondary" id="tabBtnFile" style="padding: 6px 12px; font-size: 12px;" onclick="switchQrTab('archivo')">📁 Cargar Ficha (.json)</button>
       </div>
 
       <div class="modal-body" style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
@@ -794,6 +795,20 @@
             <button class="btn btn-secondary" style="font-size: 12px;" onclick="insertTestQrPayload()">🧪 Pegar Ejemplo de Prueba</button>
             <button class="btn btn-accent" style="font-size: 12px;" onclick="processManualQrInput()">📥 Procesar Registro</button>
           </div>
+        </div>
+
+        <!-- VISTA CARGAR ARCHIVO .JSON -->
+        <div id="qrFileView" style="width: 100%; display: none; flex-direction: column; gap: 10px; text-align: center;">
+          <div style="border: 2px dashed #0284c7; border-radius: 12px; padding: 24px 16px; background: #f0f9ff;">
+            <span style="font-size: 32px; display: block; margin-bottom: 6px;">📂</span>
+            <strong style="color: #0369a1; font-size: 13.5px; display: block;">Seleccionar archivos de telemetría (.json)</strong>
+            <p style="color: #64748b; font-size: 11.5px; margin: 4px 0 12px 0;">Puedes seleccionar uno o varios archivos descargados por los estudiantes desde la versión local.</p>
+            <input type="file" id="inputJsonFiles" accept=".json" multiple style="display: none;" onchange="handleJsonFilesUpload(event)">
+            <button class="btn btn-accent" style="font-size: 12.5px; padding: 8px 18px;" onclick="document.getElementById('inputJsonFiles').click()">
+              🔍 Examinar Archivos .json
+            </button>
+          </div>
+          <div id="jsonUploadFeedback" style="font-size: 12.5px; font-weight: 700; color: #166534; min-height: 20px;"></div>
         </div>
 
       </div>
@@ -1599,22 +1614,63 @@
     function switchQrTab(tab) {
       const cameraView = document.getElementById('qrCameraView');
       const manualView = document.getElementById('qrManualView');
+      const fileView = document.getElementById('qrFileView');
       const tabBtnCamera = document.getElementById('tabBtnCamera');
       const tabBtnManual = document.getElementById('tabBtnManual');
+      const tabBtnFile = document.getElementById('tabBtnFile');
 
       if (tab === 'camara') {
         if (cameraView) cameraView.style.display = 'flex';
         if (manualView) manualView.style.display = 'none';
+        if (fileView) fileView.style.display = 'none';
         if (tabBtnCamera) tabBtnCamera.className = 'btn btn-accent';
         if (tabBtnManual) tabBtnManual.className = 'btn btn-secondary';
+        if (tabBtnFile) tabBtnFile.className = 'btn btn-secondary';
         startQrCameraScanner();
-      } else {
+      } else if (tab === 'manual') {
         if (cameraView) cameraView.style.display = 'none';
         if (manualView) manualView.style.display = 'flex';
+        if (fileView) fileView.style.display = 'none';
         if (tabBtnManual) tabBtnManual.className = 'btn btn-accent';
         if (tabBtnCamera) tabBtnCamera.className = 'btn btn-secondary';
+        if (tabBtnFile) tabBtnFile.className = 'btn btn-secondary';
+        detenerCamaraQR7mo();
+      } else if (tab === 'archivo') {
+        if (cameraView) cameraView.style.display = 'none';
+        if (manualView) manualView.style.display = 'none';
+        if (fileView) fileView.style.display = 'flex';
+        if (tabBtnFile) tabBtnFile.className = 'btn btn-accent';
+        if (tabBtnCamera) tabBtnCamera.className = 'btn btn-secondary';
+        if (tabBtnManual) tabBtnManual.className = 'btn btn-secondary';
         detenerCamaraQR7mo();
       }
+    }
+
+    function handleJsonFilesUpload(event) {
+      const files = event.target.files;
+      if (!files || files.length === 0) return;
+
+      const feedbackEl = document.getElementById('jsonUploadFeedback');
+      let procesados = 0;
+      let errores = 0;
+
+      Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const data = JSON.parse(e.target.result);
+            processCadetJson(data);
+            procesados++;
+            if (feedbackEl) {
+              feedbackEl.innerHTML = `✅ ${procesados} archivo(s) procesado(s) exitosamente.`;
+            }
+          } catch (err) {
+            errores++;
+            console.error('Error al procesar archivo JSON:', err);
+          }
+        };
+        reader.readAsText(file);
+      });
     }
 
     function insertTestQrPayload() {
