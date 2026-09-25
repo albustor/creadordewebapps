@@ -4,9 +4,9 @@
 *Departamento de Investigación, Desarrollo e Implementación (IDI)*
 
 **Elaborado por:**  
-- Heidy Cordonero Solano  
-- Rodolfo González Gutiérrez  
-*Asesores Nacionales de Formación Tecnológica / Informática Educativa*  
+- Heidy María Cascante Cruz  
+- Rodolfo Pérez Juárez  
+*Asesoría Nacional de Formación Tecnológica • Dirección de Recursos Tecnológicos en Educación*  
 **Fecha de emisión:** Febrero 2027  
 **Versión del documento:** Versión oficial consolidada 1.0 — Enfoque híbrido triangulado para 7.° año
 
@@ -141,6 +141,6 @@ La adopción de este modelo híbrido en 7.° año unifica la visión metodológi
 
 **Dirección de Recursos Tecnológicos en Educación (DRTE) • Ministerio de Educación Pública**  
 *Elaborado por:*  
-- Heidy Cordonero Solano  
-- Rodolfo González Gutiérrez  
+- Heidy María Cascante Cruz  
+- Rodolfo Pérez Juárez  
 *Febrero 2027.*

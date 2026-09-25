@@ -91,10 +91,10 @@ export default function Footer() {
                 </span>
                 <div className="flex flex-col md:items-end gap-1 mt-1">
                   <span className="inline-flex items-center px-3 py-1 rounded-lg bg-teal-50 text-teal-950 font-bold text-xs border border-teal-200 shadow-2xs">
-                    Heidy Cordonero Solano
+                    Heidy María Cascante Cruz
                   </span>
                   <span className="inline-flex items-center px-3 py-1 rounded-lg bg-teal-50 text-teal-950 font-bold text-xs border border-teal-200 shadow-2xs">
-                    Rodolfo González Gutiérrez
+                    Rodolfo Pérez Juárez
                   </span>
                 </div>
               </div>
