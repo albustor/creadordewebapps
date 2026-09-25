@@ -66,7 +66,7 @@ export default function Footer() {
                       ⚡ 7.° AÑO
                     </span>
                     <span className="text-xs font-bold text-teal-900/80">
-                      CyberQuest 7.°
+                      Diagnóstico 7mo
                     </span>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -96,7 +96,7 @@ export default function Footer() {
                       🤖 9.° AÑO
                     </span>
                     <span className="text-xs font-bold text-emerald-900/80">
-                      Aula Inteligente 9.°
+                      Diagnóstico 9no
                     </span>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
