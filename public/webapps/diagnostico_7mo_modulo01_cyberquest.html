@@ -2443,7 +2443,7 @@
         if (a1) {
           a1.textContent = AppState.cadet1.avatar;
           a1.style.display = 'inline-block';
-          a1.style.transform = AppState.cadet1.avatar === '⚡' ? 'rotate(90deg)' : (AppState.cadet1.avatar === '🚀' ? 'rotate(-45deg)' : 'none');
+          a1.style.transform = AppState.cadet1.avatar === '⚡' ? 'rotate(90deg)' : (AppState.cadet1.avatar === '🚀' ? 'rotate(45deg)' : 'none');
         }
         document.getElementById('hudCadet1Name').textContent = isIndiv
           ? `${AppState.cadet1.name.split(' ')[0]} (Cadete)`
@@ -2458,7 +2458,7 @@
         if (a2) {
           a2.textContent = AppState.cadet2.avatar;
           a2.style.display = 'inline-block';
-          a2.style.transform = AppState.cadet2.avatar === '⚡' ? 'rotate(90deg)' : (AppState.cadet2.avatar === '🚀' ? 'rotate(-45deg)' : 'none');
+          a2.style.transform = AppState.cadet2.avatar === '⚡' ? 'rotate(90deg)' : (AppState.cadet2.avatar === '🚀' ? 'rotate(45deg)' : 'none');
         }
         document.getElementById('hudCadet2Name').textContent = `${AppState.cadet2.name.split(' ')[0]} (Copiloto)`;
       } else {
@@ -2610,7 +2610,7 @@
                 <div class="avatar-grid" id="avatarGrid1">
                   ${avatars.map(a => `
                     <div class="avatar-card ${AppState.cadet1.avatar === a.icon ? 'selected' : ''}" data-target="1" data-icon="${a.icon}" data-name="${a.name}">
-                      <span class="avatar-icon" style="display:inline-block; font-size: 2rem; ${a.icon === '🚀' ? 'transform: rotate(-45deg);' : (a.icon === '⚡' ? 'transform: rotate(90deg);' : '')}">${a.icon}</span>
+                      <span class="avatar-icon" style="display:inline-block; font-size: 2rem; ${a.icon === '🚀' ? 'transform: rotate(45deg);' : (a.icon === '⚡' ? 'transform: rotate(90deg);' : '')}">${a.icon}</span>
                       <span class="avatar-name">${a.name}</span>
                     </div>
                   `).join('')}
@@ -2631,7 +2631,7 @@
                 <div class="avatar-grid" id="avatarGrid2">
                   ${avatars.map(a => `
                     <div class="avatar-card ${AppState.cadet2.avatar === a.icon ? 'selected-purple' : ''}" data-target="2" data-icon="${a.icon}" data-name="${a.name}">
-                      <span class="avatar-icon" style="display:inline-block; font-size: 2rem; ${a.icon === '🚀' ? 'transform: rotate(-45deg);' : (a.icon === '⚡' ? 'transform: rotate(90deg);' : '')}">${a.icon}</span>
+                      <span class="avatar-icon" style="display:inline-block; font-size: 2rem; ${a.icon === '🚀' ? 'transform: rotate(45deg);' : (a.icon === '⚡' ? 'transform: rotate(90deg);' : '')}">${a.icon}</span>
                       <span class="avatar-name">${a.name}</span>
                     </div>
                   `).join('')}
