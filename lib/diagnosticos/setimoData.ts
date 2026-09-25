@@ -16,21 +16,21 @@ export const DIAGNOSTICO_7MO_DATA: ConfiguracionDiagnosticoNivel = {
   subareas: [
     {
       id: "sub1_ciudadania_digital",
-      nombre: "Misión 1-2: Ciudadanía Digital e Internet Seguro",
+      nombre: "Grupo de criterios asociados 1: Ciudadanía Digital e Internet Seguro",
       descripcion: "Explora la identidad digital, contraseñas seguras y uso responsable de entornos virtuales.",
       itemsIds: [1, 2],
       pesoTotal: 2
     },
     {
       id: "sub2_hardware_basico",
-      nombre: "Misión 3-4: Componentes Básicos y Periféricos",
+      nombre: "Grupo de criterios asociados 2: Componentes Básicos y Periféricos",
       descripcion: "Identifica componentes de entrada, salida y almacenamiento en dispositivos digitales.",
       itemsIds: [3, 4],
       pesoTotal: 2
     },
     {
       id: "sub3_pensamiento_logico",
-      nombre: "Misión 5-6: Secuencias Lógicas y Algoritmos Básicos",
+      nombre: "Grupo de criterios asociados 3: Secuencias Lógicas y Algoritmos Básicos",
       descripcion: "Reconoce pasos ordenados y resolución de laberintos de lógica.",
       itemsIds: [5, 6],
       pesoTotal: 2

@@ -16,21 +16,21 @@ export const DIAGNOSTICO_9NO_DATA: ConfiguracionDiagnosticoNivel = {
   subareas: [
     {
       id: "sub1_sistemas_auto",
-      nombre: "Subárea 1: Sistemas Automatizados y Arquitectura de Control",
+      nombre: "Grupo de criterios asociados 1: Sistemas Automatizados y Arquitectura de Control",
       descripcion: "Explora microcontroladores, sensores, actuadores y el modelo Entrada-Proceso-Salida.",
       itemsIds: [1, 2, 3, 6],
       pesoTotal: 4
     },
     {
       id: "sub2_algoritmos_iot",
-      nombre: "Subárea 2: Pensamiento Computacional y Lógica Condicional",
+      nombre: "Grupo de criterios asociados 2: Pensamiento Computacional y Lógica Condicional",
       descripcion: "Evalúa algoritmos, condicionales simples y dobles, tipos de datos y operadores.",
       itemsIds: [4, 5, 7, 8],
       pesoTotal: 4
     },
     {
       id: "sub3_depuracion_datos",
-      nombre: "Subárea 3: Depuración, Conectividad y Almacenamiento",
+      nombre: "Grupo de criterios asociados 3: Depuración, Conectividad y Almacenamiento",
       descripcion: "Analiza la depuración de circuitos, calibración de sensores y toma de decisiones con datos.",
       itemsIds: [9, 10],
       pesoTotal: 2

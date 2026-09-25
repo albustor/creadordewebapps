@@ -415,6 +415,7 @@ export default function PanelDocenteSimplificado() {
   const [criterioModalDetalle, setCriterioModalDetalle] = useState<CriterioPsicomotorOficial | null>(null);
   const [criterioSocioModalDetalle, setCriterioSocioModalDetalle] = useState<CriterioSocioafectivoOficial | null>(null);
   const [acordeonDimensionesSocio, setAcordeonDimensionesSocio] = useState(false);
+  const [acordeonMetricasCohorte, setAcordeonMetricasCohorte] = useState(false);
   const [guardadosFeedback, setGuardadosFeedback] = useState<Record<string, boolean>>({});
   const [modalAnalisisPsicoIA, setModalAnalisisPsicoIA] = useState(false);
 
@@ -791,16 +792,6 @@ export default function PanelDocenteSimplificado() {
 
         {/* Acciones Rápidas en Cabecera */}
         <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setModalDocumentacion(true)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-900 border border-sky-200 text-xs font-bold shadow-xs transition-all cursor-pointer"
-            title="Ver y descargar propuestas técnicas y guías pedagógicas oficiales en PDF (7° y 9°)"
-          >
-            <FilePdf size={16} weight="bold" className="text-rose-600" />
-            <span className="hidden lg:inline">Documentación Técnica</span>
-          </button>
-
           <button
             type="button"
             onClick={() => setModalEscaner(true)}
@@ -1293,7 +1284,7 @@ export default function PanelDocenteSimplificado() {
             {seccionActivaMenu === "cognitivo" && (
               <div className="space-y-6 animate-fadeIn">
                 
-                {/* Cabecera de Subáreas Cognitivas */}
+                {/* Cabecera de Grupos de Criterios Asociados */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {configNivel.subareas.map((sub, idx) => (
                     <div
@@ -1301,11 +1292,8 @@ export default function PanelDocenteSimplificado() {
                       className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs space-y-2 border-l-4 border-l-[#1B5E59]"
                     >
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-[#1B5E59] uppercase tracking-wider">
-                          Subárea {idx + 1}
-                        </span>
-                        <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#D1EBE7] text-[#1B5E59] font-bold">
-                          {sub.itemsIds.length} Reactivos
+                        <span className="text-[11px] font-bold text-[#1B5E59] uppercase tracking-wider">
+                          Grupo de criterios asociados {idx + 1}
                         </span>
                       </div>
                       <h4 className="text-sm font-bold text-slate-900 leading-snug">
@@ -1323,7 +1311,7 @@ export default function PanelDocenteSimplificado() {
                   <div className="p-4 border-b border-slate-100 flex items-center justify-between">
                     <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
                       <BookOpen size={18} className="text-[#1B5E59]" />
-                      <span>Resultados de Reactivos Cognitivos — Sección {seccionActiva}</span>
+                      <span>Resultados de Criterios Cognitivos — Sección {seccionActiva}</span>
                     </h3>
                     <span className="text-xs text-slate-500 font-medium">
                       {registrosSeccion.length} estudiantes registrados
@@ -1420,80 +1408,111 @@ export default function PanelDocenteSimplificado() {
             {seccionActivaMenu === "socioafectivo" && (
               <div className="space-y-6 animate-fadeIn">
                 
-                {/* 4 Tarjetas de Métricas de Cohorte */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {/* Clima de Aula */}
-                  <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-[#D1EBE7] text-[#1B5E59] flex items-center justify-center font-bold">
-                        <Heart size={22} weight="fill" />
+                {/* 4 Tarjetas de Métricas de Cohorte (Acordeón Plegable) */}
+                <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden transition-all">
+                  <button
+                    type="button"
+                    onClick={() => setAcordeonMetricasCohorte(!acordeonMetricasCohorte)}
+                    className="w-full p-3.5 sm:px-4 flex items-center justify-between gap-3 bg-gradient-to-r from-teal-50/50 via-slate-50 to-white hover:bg-teal-50 transition-colors text-left cursor-pointer select-none"
+                    aria-expanded={acordeonMetricasCohorte}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-7 h-7 rounded-lg bg-[#D1EBE7] text-[#1B5E59] flex items-center justify-center font-bold text-xs shrink-0">
+                        <Heart size={16} weight="fill" />
                       </div>
-                      <div>
-                        <p className="text-[11px] font-bold text-slate-500 uppercase">Clima de Aula</p>
-                        <h3 className="text-base font-black text-slate-900 leading-tight">
-                          {metricasCohorte.climaPositivo}% Positivo
-                        </h3>
-                        <span className="text-[10px] text-slate-500">Estabilidad Grupal</span>
-                      </div>
+                      <span className="text-xs sm:text-sm font-black text-slate-900 uppercase tracking-wide">
+                        Métricas de Cohorte y Clima de Aula
+                      </span>
                     </div>
-                    <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                      +4%
-                    </span>
-                  </div>
 
-                  {/* Estado Predominante */}
-                  <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-center font-bold">
-                        <Sparkle size={22} weight="fill" />
-                      </div>
-                      <div>
-                        <p className="text-[11px] font-bold text-slate-500 uppercase">Estado Predominante</p>
-                        <h3 className="text-xs font-bold text-[#1B5E59] mt-0.5">
-                          {metricasCohorte.estadoPredominante}
-                        </h3>
-                        <span className="text-[10px] text-slate-500">Motivación formativa</span>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="text-xs font-bold text-[#1B5E59]">
+                        {acordeonMetricasCohorte ? "Contraer métricas" : "Ver métricas"}
+                      </span>
+                      <div className={`w-6 h-6 rounded-lg flex items-center justify-center bg-white border border-slate-200 text-slate-600 transition-transform duration-200 ${acordeonMetricasCohorte ? "rotate-180" : ""}`}>
+                        <CaretDown size={14} weight="bold" />
                       </div>
                     </div>
-                  </div>
+                  </button>
 
-                  {/* Alerta Temprana */}
-                  <div className="bg-white p-4 rounded-xl border border-amber-200 shadow-2xs flex items-center justify-between bg-amber-50/20">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-[#FFF3EB] text-[#E07A2C] flex items-center justify-center font-bold">
-                        <WarningCircle size={22} weight="fill" />
-                      </div>
-                      <div>
-                        <p className="text-[11px] font-bold text-[#E07A2C] uppercase">Alerta Temprana</p>
-                        <h3 className="text-base font-black text-slate-900">
-                          {metricasCohorte.alertasTempranas} Estudiantes
-                        </h3>
-                        <p className="text-[10px] text-amber-800 font-medium">Requieren acompañamiento</p>
-                      </div>
-                    </div>
-                    {metricasCohorte.alertasTempranas > 0 && (
-                      <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping" />
-                    )}
-                  </div>
+                  {acordeonMetricasCohorte && (
+                    <div className="p-4 border-t border-slate-100 bg-white animate-fadeIn">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {/* Clima de Aula */}
+                        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-lg bg-[#D1EBE7] text-[#1B5E59] flex items-center justify-center font-bold">
+                              <Heart size={22} weight="fill" />
+                            </div>
+                            <div>
+                              <p className="text-[11px] font-bold text-slate-500 uppercase">Clima de Aula</p>
+                              <h3 className="text-base font-black text-slate-900 leading-tight">
+                                {metricasCohorte.climaPositivo}% Positivo
+                              </h3>
+                              <span className="text-[10px] text-slate-500">Estabilidad Grupal</span>
+                            </div>
+                          </div>
+                          <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                            +4%
+                          </span>
+                        </div>
 
-                  {/* Último Registro */}
-                  <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center font-bold">
-                        <Broadcast size={22} weight="fill" />
-                      </div>
-                      <div>
-                        <p className="text-[11px] font-bold text-slate-500 uppercase">Último Registro</p>
-                        <h3 className="text-xs font-bold text-slate-900 truncate max-w-[130px]">
-                          {metricasCohorte.ultimoRegistroTexto}
-                        </h3>
-                        <span className="text-[10px] text-slate-500">Sincronización activa</span>
+                        {/* Estado Predominante */}
+                        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-center font-bold">
+                              <Sparkle size={22} weight="fill" />
+                            </div>
+                            <div>
+                              <p className="text-[11px] font-bold text-slate-500 uppercase">Estado Predominante</p>
+                              <h3 className="text-xs font-bold text-[#1B5E59] mt-0.5">
+                                {metricasCohorte.estadoPredominante}
+                              </h3>
+                              <span className="text-[10px] text-slate-500">Motivación formativa</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Alerta Temprana */}
+                        <div className="bg-white p-4 rounded-xl border border-amber-200 shadow-2xs flex items-center justify-between bg-amber-50/20">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-lg bg-[#FFF3EB] text-[#E07A2C] flex items-center justify-center font-bold">
+                              <WarningCircle size={22} weight="fill" />
+                            </div>
+                            <div>
+                              <p className="text-[11px] font-bold text-[#E07A2C] uppercase">Alerta Temprana</p>
+                              <h3 className="text-base font-black text-slate-900">
+                                {metricasCohorte.alertasTempranas} Estudiantes
+                              </h3>
+                              <p className="text-[10px] text-amber-800 font-medium">Requieren acompañamiento</p>
+                            </div>
+                          </div>
+                          {metricasCohorte.alertasTempranas > 0 && (
+                            <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping" />
+                          )}
+                        </div>
+
+                        {/* Último Registro */}
+                        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center font-bold">
+                              <Broadcast size={22} weight="fill" />
+                            </div>
+                            <div>
+                              <p className="text-[11px] font-bold text-slate-500 uppercase">Último Registro</p>
+                              <h3 className="text-xs font-bold text-slate-900 truncate max-w-[130px]">
+                                {metricasCohorte.ultimoRegistroTexto}
+                              </h3>
+                              <span className="text-[10px] text-slate-500">Sincronización activa</span>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
                 </div>
 
-                {/* Acordeón Plegable: Las 4 Dimensiones Socioafectivas Oficiales del MEP con Preguntas Guía */}
+                {/* Acordeón Plegable: Criterios Asociados Socioafectivos */}
                 <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden transition-all">
                   <button
                     type="button"
@@ -1505,26 +1524,19 @@ export default function PanelDocenteSimplificado() {
                       <div className="w-8 h-8 rounded-lg bg-[#D1EBE7] text-[#1B5E59] flex items-center justify-center font-bold text-sm shrink-0">
                         <Heart size={18} weight="fill" />
                       </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h4 className="text-xs sm:text-sm font-black text-slate-900 uppercase tracking-wide">
-                            Dimensiones y Preguntas Guía Socioafectivas (S1 a S4)
-                          </h4>
-                          <span className="px-2 py-0.5 rounded-full bg-teal-100 text-[#1B5E59] font-bold text-[10px] border border-teal-300">
-                            MEP Oficial
-                          </span>
-                        </div>
-                        <p className="text-[11px] text-slate-500 mt-0.5">
-                          {acordeonDimensionesSocio
-                            ? "Haga clic para contraer y optimizar el espacio de la tabla de observación."
-                            : "Despliegue para consultar las preguntas de reflexión y rúbricas de logro (S1: Calidad, S2: Error, S3: Trabajo en equipo, S4: Perseverancia)."}
-                        </p>
+                      <div className="flex items-center gap-2">
+                        <h4 className="text-xs sm:text-sm font-black text-slate-900 uppercase tracking-wide">
+                          Criterios asociados
+                        </h4>
+                        <span className="px-2 py-0.5 rounded-full bg-teal-100 text-[#1B5E59] font-bold text-[10px] border border-teal-300">
+                          MEP Oficial
+                        </span>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2 shrink-0">
                       <span className="hidden sm:inline-block text-xs font-bold text-[#1B5E59]">
-                        {acordeonDimensionesSocio ? "Contraer dimensiones" : "Ver 4 dimensiones"}
+                        {acordeonDimensionesSocio ? "Contraer" : "Ver 4 dimensiones"}
                       </span>
                       <div className={`w-7 h-7 rounded-lg flex items-center justify-center bg-white border border-slate-200 text-slate-600 transition-transform duration-200 ${acordeonDimensionesSocio ? "rotate-180" : ""}`}>
                         <CaretDown size={16} weight="bold" />
