@@ -82,30 +82,30 @@ export const CRITERIOS_SOCIOAFECTIVOS_MAP: Record<"7mo" | "8vo" | "9no", Criteri
   "7mo": [
     {
       id: "s1",
-      codigo: "S1. Gusto por la Precisión y Calidad",
-      titulo: "Gusto por la Precisión y Calidad",
+      codigo: "S1. Gusto por la precisión",
+      titulo: "Gusto por la precisión",
       preguntaReflexion: "«Cuando respondió los retos, ¿revisó los detalles con cuidado?»",
       escalaA: "Avanzado (A): Revisé con cuidado cada respuesta antes de enviarla.",
       escalaB: "Intermedio (B): Revisé solo algunas respuestas.",
       escalaC: "Inicial (C): Respondí rápido, sin revisar.",
       modalidadEvaluacion: "telemetria",
-      etiquetaModalidad: "Telemetría + Autorreflexión",
+      etiquetaModalidad: "🤖 Telemetría",
     },
     {
       id: "s2",
-      codigo: "S2. Aprender del Error",
-      titulo: "Aprender del Error (Resiliencia y Metacognición)",
+      codigo: "S2. Aprender del error",
+      titulo: "Aprender del error",
       preguntaReflexion: "«Cuando se equivocó en un reto, ¿qué hizo?»",
       escalaA: "Avanzado (A): Busqué mi error, lo corregí y aprendí algo.",
       escalaB: "Intermedio (B): Lo intenté de nuevo con ayuda.",
       escalaC: "Inicial (C): Lo dejé así y continué.",
       modalidadEvaluacion: "telemetria",
-      etiquetaModalidad: "Telemetría + Depuración",
+      etiquetaModalidad: "🤖 Telemetría",
     },
     {
       id: "s3",
-      codigo: "S3. Flexibilidad",
-      titulo: "Flexibilidad para Manejar Problemas y Trabajo Colaborativo",
+      codigo: "S3. Flexibilidad para manejar problemas",
+      titulo: "Flexibilidad para manejar problemas",
       preguntaReflexion: "«Cuando algo no salió como esperaba (una pregunta difícil, un problema con la computadora o con el compañero/a), ¿qué hizo?»",
       escalaA: "Avanzado (A): Parejas: «Escuché las ideas de mi compañero(a) y juntos probamos otra forma.» | Individual: «Busqué por mi cuenta otra forma de resolverlo.»",
       escalaB: "Intermedio (B): Probé otra forma cuando alguien me dio una idea.",
@@ -116,8 +116,8 @@ export const CRITERIOS_SOCIOAFECTIVOS_MAP: Record<"7mo" | "8vo" | "9no", Criteri
     },
     {
       id: "s4",
-      codigo: "S4. Resiliencia",
-      titulo: "Tolerancia a la Frustración y Perseverancia",
+      codigo: "S4. Tolerancia a la frustración",
+      titulo: "Tolerancia a la frustración",
       preguntaReflexion: "«Cuando un reto se puso difícil, ¿cómo reaccioné?»",
       escalaA: "Avanzado (A): Mantuve la calma y seguí intentando hasta terminar.",
       escalaB: "Intermedio (B): Me costó, pero seguí cuando me animaron.",
@@ -129,30 +129,30 @@ export const CRITERIOS_SOCIOAFECTIVOS_MAP: Record<"7mo" | "8vo" | "9no", Criteri
   "9no": [
     {
       id: "s1",
-      codigo: "S1. Gusto por la Precisión y Calidad",
-      titulo: "Gusto por la Precisión y Calidad en Sistemas",
+      codigo: "S1. Gusto por la precisión",
+      titulo: "Gusto por la precisión",
       preguntaReflexion: "«Al armar el circuito y programar el sistema, ¿verificó conexiones y umbrales con minuciosidad?»",
       escalaA: "Avanzado (A): Verifica con autonomía cada conexión eléctrica, polaridad y condición lógica antes de energizar.",
       escalaB: "Intermedio (B): Revisa conexiones principales; omite verificar detalles secundarios de calibración.",
       escalaC: "Inicial (C): Conecta rápidamente sin verificar polaridades ni valores lógicos de umbral.",
       modalidadEvaluacion: "telemetria",
-      etiquetaModalidad: "Telemetría + Autorreflexión",
+      etiquetaModalidad: "🤖 Telemetría",
     },
     {
       id: "s2",
-      codigo: "S2. Aprender del Error (Depuración Metacognitiva)",
-      titulo: "Aprender del Error (Resiliencia y Metacognición en Debugging)",
+      codigo: "S2. Aprender del error",
+      titulo: "Aprender del error",
       preguntaReflexion: "«Ante una falla inyectada o circuito no funcional, ¿cuál fue su actitud y método de resolución?»",
       escalaA: "Avanzado (A): Analiza metódicamente la falla, formula hipótesis y depura el circuito aprendiendo del error.",
       escalaB: "Intermedio (B): Intenta corregir por ensayo y error guiado hasta recuperar la funcionalidad.",
       escalaC: "Inicial (C): Muestra desinterés ante el error o abandona el circuito sin intentar depurarlo.",
       modalidadEvaluacion: "telemetria",
-      etiquetaModalidad: "Telemetría + Depuración",
+      etiquetaModalidad: "🤖 Telemetría",
     },
     {
       id: "s3",
-      codigo: "S3. Flexibilidad",
-      titulo: "Flexibilidad para Manejar Problemas y Trabajo Colaborativo",
+      codigo: "S3. Flexibilidad para manejar problemas",
+      titulo: "Flexibilidad para manejar problemas",
       preguntaReflexion: "«Cuando un sensor o actuador no respondía como esperaba, ¿cómo coordinó la solución?»",
       escalaA: "Avanzado (A): En parejas: Escucha aportes y reconfigura en equipo | Individual: Explora autónomamente rutas alternas.",
       escalaB: "Intermedio (B): Acepta modificar la configuración si recibe una sugerencia directa del docente.",
@@ -163,8 +163,8 @@ export const CRITERIOS_SOCIOAFECTIVOS_MAP: Record<"7mo" | "8vo" | "9no", Criteri
     },
     {
       id: "s4",
-      codigo: "S4. Resiliencia",
-      titulo: "Tolerancia a la Frustración y Perseverancia en Proyectos",
+      codigo: "S4. Tolerancia a la frustración",
+      titulo: "Tolerancia a la frustración",
       preguntaReflexion: "«Ante la complejidad de integrar hardware físico y código condicional, ¿cómo gestionó la perseverancia?»",
       escalaA: "Avanzado (A): Mantiene el enfoque y persevera con calma sistemática hasta verificar el funcionamiento completo.",
       escalaB: "Intermedio (B): Experimenta desánimo leve, retomando el reto tras acompañamiento docente.",
@@ -176,39 +176,47 @@ export const CRITERIOS_SOCIOAFECTIVOS_MAP: Record<"7mo" | "8vo" | "9no", Criteri
   "8vo": [
     {
       id: "s1",
-      codigo: "S1. Precisión",
-      titulo: "Gusto por la Precisión y Calidad",
+      codigo: "S1. Gusto por la precisión",
+      titulo: "Gusto por la precisión",
       preguntaReflexion: "«¿Revisó minuciosamente cada parámetro?»",
       escalaA: "Avanzado (A): Verificación completa.",
       escalaB: "Intermedio (B): Verificación parcial.",
       escalaC: "Inicial (C): Sin verificación.",
+      modalidadEvaluacion: "telemetria",
+      etiquetaModalidad: "🤖 Telemetría",
     },
     {
       id: "s2",
-      codigo: "S2. Error",
-      titulo: "Aprender del Error",
+      codigo: "S2. Aprender del error",
+      titulo: "Aprender del error",
       preguntaReflexion: "«¿Qué hizo ante el error?»",
       escalaA: "Avanzado (A): Depuración autónoma.",
       escalaB: "Intermedio (B): Corrección con apoyo.",
       escalaC: "Inicial (C): Desinterés.",
+      modalidadEvaluacion: "telemetria",
+      etiquetaModalidad: "🤖 Telemetría",
     },
     {
       id: "s3",
-      codigo: "S3. Flexibilidad",
-      titulo: "Flexibilidad y Cooperación",
+      codigo: "S3. Flexibilidad para manejar problemas",
+      titulo: "Flexibilidad para manejar problemas",
       preguntaReflexion: "«¿Cómo abordó los problemas?»",
       escalaA: "Avanzado (A): Adaptación y escucha activa.",
       escalaB: "Intermedio (B): Prueba alternativa guiada.",
       escalaC: "Inicial (C): Resistencia al cambio.",
+      modalidadEvaluacion: "hibrido",
+      etiquetaModalidad: "⚡ Híbrido + Docente",
     },
     {
       id: "s4",
-      codigo: "S4. Perseverancia",
-      titulo: "Tolerancia a la Frustración",
+      codigo: "S4. Tolerancia a la frustración",
+      titulo: "Tolerancia a la frustración",
       preguntaReflexion: "«¿Cómo reaccionó ante la dificultad?»",
       escalaA: "Avanzado (A): Serenidad y perseverancia.",
       escalaB: "Intermedio (B): Continuación asistida.",
       escalaC: "Inicial (C): Frustración y abandono.",
+      modalidadEvaluacion: "hibrido",
+      etiquetaModalidad: "⚡ Híbrido + Docente",
     },
   ],
 };
@@ -1869,28 +1877,28 @@ export default function PanelDocenteSimplificado() {
                         <thead>
                           <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
                             <th className="py-3 px-4 w-60">Persona Estudiante</th>
-                            <th className="py-3 px-3 text-center w-28">
+                            <th className="py-3 px-3 text-center w-36">
                               <div className="flex flex-col items-center gap-1">
-                                <span className="font-bold text-slate-700">S1. Precisión</span>
+                                <span className="font-bold text-slate-700">S1. Gusto por la precisión</span>
                                 <BadgeModalidadExplicativa modalidad="telemetria" labelPersonalizado="🤖 Telemetría" alineacionHorizontal="left" />
                               </div>
                             </th>
-                            <th className="py-3 px-3 text-center w-28">
+                            <th className="py-3 px-3 text-center w-36">
                               <div className="flex flex-col items-center gap-1">
-                                <span className="font-bold text-slate-700">S2. Error</span>
+                                <span className="font-bold text-slate-700">S2. Aprender del error</span>
                                 <BadgeModalidadExplicativa modalidad="telemetria" labelPersonalizado="🤖 Telemetría" alineacionHorizontal="center" />
                               </div>
                             </th>
-                            <th className="py-3 px-3 text-center w-28">
+                            <th className="py-3 px-3 text-center w-44">
                               <div className="flex flex-col items-center gap-1">
-                                <span className="font-bold text-slate-700">S3. Flexibilidad</span>
-                                <BadgeModalidadExplicativa modalidad="hibrido" labelPersonalizado="⚡ Híbrido" alineacionHorizontal="center" />
+                                <span className="font-bold text-slate-700">S3. Flexibilidad para manejar problemas</span>
+                                <BadgeModalidadExplicativa modalidad="hibrido" labelPersonalizado="⚡ Híbrido + Docente" alineacionHorizontal="center" />
                               </div>
                             </th>
-                            <th className="py-3 px-3 text-center w-28">
+                            <th className="py-3 px-3 text-center w-40">
                               <div className="flex flex-col items-center gap-1">
-                                <span className="font-bold text-slate-700">S4. Resiliencia</span>
-                                <BadgeModalidadExplicativa modalidad="hibrido" labelPersonalizado="⚡ Híbrido" alineacionHorizontal="right" />
+                                <span className="font-bold text-slate-700">S4. Tolerancia a la frustración</span>
+                                <BadgeModalidadExplicativa modalidad="hibrido" labelPersonalizado="⚡ Híbrido + Docente" alineacionHorizontal="right" />
                               </div>
                             </th>
                             <th className="py-3 px-4">Nota Pedagógica del Docente</th>
@@ -2097,15 +2105,27 @@ export default function PanelDocenteSimplificado() {
                           {/* Micro-indicadores */}
                           <div className="grid grid-cols-2 gap-2 text-[11px]">
                             <div className="p-1.5 bg-slate-50 rounded border border-slate-100 flex justify-between">
-                              <span className="text-slate-500">Precisión (S1):</span>
+                              <span className="text-slate-500">S1. Gusto por la precisión:</span>
                               <strong className={`font-bold ${socio.s1 ? (socio.s1 === "A" ? "text-emerald-700" : socio.s1 === "B" ? "text-amber-700" : "text-rose-700") : "text-slate-400"}`}>
                                 {socio.s1 || "—"}
                               </strong>
                             </div>
                             <div className="p-1.5 bg-slate-50 rounded border border-slate-100 flex justify-between">
-                              <span className="text-slate-500">Error (S2):</span>
+                              <span className="text-slate-500">S2. Aprender del error:</span>
                               <strong className={`font-bold ${socio.s2 ? (socio.s2 === "A" ? "text-emerald-700" : socio.s2 === "B" ? "text-amber-700" : "text-rose-700") : "text-slate-400"}`}>
                                 {socio.s2 || "—"}
+                              </strong>
+                            </div>
+                            <div className="p-1.5 bg-slate-50 rounded border border-slate-100 flex justify-between">
+                              <span className="text-slate-500">S3. Flexibilidad:</span>
+                              <strong className={`font-bold ${socio.s3 ? (socio.s3 === "A" ? "text-emerald-700" : socio.s3 === "B" ? "text-amber-700" : "text-rose-700") : "text-slate-400"}`}>
+                                {socio.s3 || "—"}
+                              </strong>
+                            </div>
+                            <div className="p-1.5 bg-slate-50 rounded border border-slate-100 flex justify-between">
+                              <span className="text-slate-500">S4. Tolerancia frustración:</span>
+                              <strong className={`font-bold ${socio.s4 ? (socio.s4 === "A" ? "text-emerald-700" : socio.s4 === "B" ? "text-amber-700" : "text-rose-700") : "text-slate-400"}`}>
+                                {socio.s4 || "—"}
                               </strong>
                             </div>
                           </div>
