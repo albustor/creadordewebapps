@@ -990,7 +990,7 @@ export default function PanelDocenteSimplificado() {
                 <p className="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">
                   {seccionActivaMenu === "enlaces" && "Genere enlaces y códigos QR en línea o descargue el archivo para PCs sin conexión."}
                   {seccionActivaMenu === "cognitivo" && "Registro y monitoreo de respuestas, nivel de logro y reactivos oficiales del programa MEP."}
-                  {seccionActivaMenu === "socioafectivo" && "Registro y seguimiento de las 4 dimensiones socioafectivas oficiales (S1: Precisión, S2: Error, S3: Flexibilidad, S4: Confort)."}
+                  {seccionActivaMenu === "socioafectivo" && "Registro y seguimiento de los 4 criterios socioafectivos oficiales (S1: Precisión, S2: Error, S3: Flexibilidad, S4: Confort)."}
                   {seccionActivaMenu === "psicomotriz" && "Registro y evaluación de destrezas operativas, conexionado circuital (MCU, LDR, Actuador) y motricidad fina."}
                   {seccionActivaMenu === "sistematizacion" && "Matriz oficial de sistematización curricular con exportación inmediata a Excel y PDF."}
                   {seccionActivaMenu === "analitica" && "Monitoreo en vivo de telemetría, semáforo de logro y recomendaciones pedagógicas DUA con IA."}
@@ -1408,110 +1408,6 @@ export default function PanelDocenteSimplificado() {
             {seccionActivaMenu === "socioafectivo" && (
               <div className="space-y-6 animate-fadeIn">
                 
-                {/* 4 Tarjetas de Métricas de Cohorte (Acordeón Plegable) */}
-                <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden transition-all">
-                  <button
-                    type="button"
-                    onClick={() => setAcordeonMetricasCohorte(!acordeonMetricasCohorte)}
-                    className="w-full p-3.5 sm:px-4 flex items-center justify-between gap-3 bg-gradient-to-r from-teal-50/50 via-slate-50 to-white hover:bg-teal-50 transition-colors text-left cursor-pointer select-none"
-                    aria-expanded={acordeonMetricasCohorte}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-7 h-7 rounded-lg bg-[#D1EBE7] text-[#1B5E59] flex items-center justify-center font-bold text-xs shrink-0">
-                        <Heart size={16} weight="fill" />
-                      </div>
-                      <span className="text-xs sm:text-sm font-black text-slate-900 uppercase tracking-wide">
-                        Métricas de Cohorte y Clima de Aula
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-2 shrink-0">
-                      <span className="text-xs font-bold text-[#1B5E59]">
-                        {acordeonMetricasCohorte ? "Contraer métricas" : "Ver métricas"}
-                      </span>
-                      <div className={`w-6 h-6 rounded-lg flex items-center justify-center bg-white border border-slate-200 text-slate-600 transition-transform duration-200 ${acordeonMetricasCohorte ? "rotate-180" : ""}`}>
-                        <CaretDown size={14} weight="bold" />
-                      </div>
-                    </div>
-                  </button>
-
-                  {acordeonMetricasCohorte && (
-                    <div className="p-4 border-t border-slate-100 bg-white animate-fadeIn">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {/* Clima de Aula */}
-                        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex items-center justify-between">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-lg bg-[#D1EBE7] text-[#1B5E59] flex items-center justify-center font-bold">
-                              <Heart size={22} weight="fill" />
-                            </div>
-                            <div>
-                              <p className="text-[11px] font-bold text-slate-500 uppercase">Clima de Aula</p>
-                              <h3 className="text-base font-black text-slate-900 leading-tight">
-                                {metricasCohorte.climaPositivo}% Positivo
-                              </h3>
-                              <span className="text-[10px] text-slate-500">Estabilidad Grupal</span>
-                            </div>
-                          </div>
-                          <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                            +4%
-                          </span>
-                        </div>
-
-                        {/* Estado Predominante */}
-                        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex items-center justify-between">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-center font-bold">
-                              <Sparkle size={22} weight="fill" />
-                            </div>
-                            <div>
-                              <p className="text-[11px] font-bold text-slate-500 uppercase">Estado Predominante</p>
-                              <h3 className="text-xs font-bold text-[#1B5E59] mt-0.5">
-                                {metricasCohorte.estadoPredominante}
-                              </h3>
-                              <span className="text-[10px] text-slate-500">Motivación formativa</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Alerta Temprana */}
-                        <div className="bg-white p-4 rounded-xl border border-amber-200 shadow-2xs flex items-center justify-between bg-amber-50/20">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-lg bg-[#FFF3EB] text-[#E07A2C] flex items-center justify-center font-bold">
-                              <WarningCircle size={22} weight="fill" />
-                            </div>
-                            <div>
-                              <p className="text-[11px] font-bold text-[#E07A2C] uppercase">Alerta Temprana</p>
-                              <h3 className="text-base font-black text-slate-900">
-                                {metricasCohorte.alertasTempranas} Estudiantes
-                              </h3>
-                              <p className="text-[10px] text-amber-800 font-medium">Requieren acompañamiento</p>
-                            </div>
-                          </div>
-                          {metricasCohorte.alertasTempranas > 0 && (
-                            <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping" />
-                          )}
-                        </div>
-
-                        {/* Último Registro */}
-                        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex items-center justify-between">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center font-bold">
-                              <Broadcast size={22} weight="fill" />
-                            </div>
-                            <div>
-                              <p className="text-[11px] font-bold text-slate-500 uppercase">Último Registro</p>
-                              <h3 className="text-xs font-bold text-slate-900 truncate max-w-[130px]">
-                                {metricasCohorte.ultimoRegistroTexto}
-                              </h3>
-                              <span className="text-[10px] text-slate-500">Sincronización activa</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
                 {/* Acordeón Plegable: Criterios Asociados Socioafectivos */}
                 <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden transition-all">
                   <button
@@ -1536,7 +1432,7 @@ export default function PanelDocenteSimplificado() {
 
                     <div className="flex items-center gap-2 shrink-0">
                       <span className="hidden sm:inline-block text-xs font-bold text-[#1B5E59]">
-                        {acordeonDimensionesSocio ? "Contraer" : "Ver 4 dimensiones"}
+                        {acordeonDimensionesSocio ? "Contraer criterios" : "Ver 4 criterios"}
                       </span>
                       <div className={`w-7 h-7 rounded-lg flex items-center justify-center bg-white border border-slate-200 text-slate-600 transition-transform duration-200 ${acordeonDimensionesSocio ? "rotate-180" : ""}`}>
                         <CaretDown size={16} weight="bold" />
@@ -1902,7 +1798,7 @@ export default function PanelDocenteSimplificado() {
                       {/* Título Principal */}
                       <div>
                         <span className="text-xs font-bold text-teal-700 uppercase tracking-wider block">
-                          Dimensión Socioafectiva
+                          Criterio Socioafectivo
                         </span>
                         <h3 className="text-xl sm:text-2xl font-black text-[#0f2d4a] tracking-tight leading-snug">
                           {criterioSocioModalDetalle.codigo}
