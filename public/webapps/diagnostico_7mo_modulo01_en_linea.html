@@ -716,21 +716,22 @@
 
     .reaction-trigger-btn-cyber {
       width: 100%;
-      max-width: 380px;
-      height: 66px;
+      max-width: 440px;
+      min-height: 74px;
+      padding: 18px 28px;
       background: #131d31;
       border: 2px solid var(--cyan-neon);
       color: #fff;
-      font-size: 16px;
-      font-weight: 800;
+      font-size: 1.15rem;
+      font-weight: 900;
       letter-spacing: 0.5px;
-      border-radius: 16px;
+      border-radius: 18px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+      gap: 12px;
+      box-shadow: 0 0 24px rgba(0, 240, 255, 0.22);
       transition: all 0.15s;
     }
 
@@ -2866,7 +2867,7 @@
         subContainer.innerHTML = `
           <h2 class="card-title">P2. Ritmo, tempo e inhibición motriz</h2>
           <p class="card-desc">
-            <strong>Instrucción del sensor:</strong> Pulse el botón <strong>Capturar pulso</strong> únicamente cuando la luz central se encienda en <strong>verde 🟢</strong>.
+            <strong>Instrucción del sensor:</strong> Pulse el botón <strong>capturar pulso</strong> únicamente cuando la luz central se encienda en <strong>verde 🟢</strong>.
             Si se enciende en <strong>rojo 🔴</strong> o está en espera, <strong>no debe tocar el botón</strong>.
           </p>
           
@@ -2881,11 +2882,11 @@
             </div>
             
             <button class="btn-cyber reaction-trigger-btn-cyber" id="btnStartP2" onclick="startP2Game()">
-              ▶ Iniciar sensor de reflejos
+              ▶ Tocar aquí capturar pulso
             </button>
             
             <button class="reaction-trigger-btn-cyber" id="btnActionP2" style="display: none;" onclick="handleP2Tap()">
-              ⚡ Capturar pulso (clic aquí) ⚡
+              ⚡ Tocar aquí capturar pulso ⚡
             </button>
 
             <div style="margin-top: 8px; width: 100%; display: flex; justify-content: flex-end;">

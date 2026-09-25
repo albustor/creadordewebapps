@@ -716,21 +716,22 @@
 
     .reaction-trigger-btn-cyber {
       width: 100%;
-      max-width: 380px;
-      height: 66px;
+      max-width: 440px;
+      min-height: 74px;
+      padding: 18px 28px;
       background: #131d31;
       border: 2px solid var(--cyan-neon);
       color: #fff;
-      font-size: 16px;
-      font-weight: 800;
+      font-size: 1.15rem;
+      font-weight: 900;
       letter-spacing: 0.5px;
-      border-radius: 16px;
+      border-radius: 18px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+      gap: 12px;
+      box-shadow: 0 0 24px rgba(0, 240, 255, 0.22);
       transition: all 0.15s;
     }
 
@@ -2276,12 +2277,12 @@
       ctx.fillRect(10, 85, 45, 70);
       ctx.fillStyle = '#00f0ff';
       ctx.font = 'bold 11px sans-serif';
-      ctx.fillText('INICIO', 14, 125);
+      ctx.fillText('Inicio', 14, 125);
 
       ctx.fillStyle = 'rgba(16, 185, 129, 0.3)';
       ctx.fillRect(485, 85, 45, 70);
       ctx.fillStyle = '#10b981';
-      ctx.fillText('META', 492, 125);
+      ctx.fillText('Meta', 492, 125);
     }
 
     function drawP3UserPath(ctx) {
@@ -2827,7 +2828,7 @@
       if (activeSubP === 'p1') {
         subContainer.innerHTML = `
           <h2 class="card-title">P1. Lateralidad y orientación espacial (mando en tiempo real)</h2>
-          <p class="card-desc">Conduzca el robot en tiempo real hasta el <strong>Servidor Central 🖥️</strong> en la esquina inferior derecha (4,4), evitando chocar con los obstáculos de fuego 🔥 o salir del circuito.</p>
+          <p class="card-desc">Conduzca el robot en tiempo real hasta el <strong>servidor central 🖥️</strong> en la esquina inferior derecha (4,4), evitando chocar con los obstáculos de fuego 🔥 o salir del circuito.</p>
           
           <div class="p1-controls-wrapper" style="margin: 16px 0;">
             
@@ -2844,13 +2845,13 @@
                 ⬆ Avanzar
               </button>
               <button class="p1-btn-move p1-btn-left" onclick="p1TurnLeft()" title="Girar 90° a la izquierda">
-                ↶ Girar Izq
+                ↶ Girar a la izquierda
               </button>
               <button class="p1-btn-move p1-btn-reset" onclick="p1ResetPosition()" title="Volver a la casilla inicial">
                 ↺ Inicio
               </button>
               <button class="p1-btn-move p1-btn-right" onclick="p1TurnRight()" title="Girar 90° a la derecha">
-                ↷ Girar Der
+                ↷ Girar a la derecha
               </button>
             </div>
             
@@ -2866,8 +2867,8 @@
         subContainer.innerHTML = `
           <h2 class="card-title">P2. Ritmo, tempo e inhibición motriz</h2>
           <p class="card-desc">
-            <strong>Instrucción del sensor:</strong> Pulse el botón <strong>CAPTURAR PULSO</strong> únicamente cuando la luz central se encienda en <strong>VERDE 🟢</strong>.
-            Si se enciende en <strong>ROJO 🔴</strong> o está en espera, <strong>no debe tocar el botón</strong>.
+            <strong>Instrucción del sensor:</strong> Pulse el botón <strong>capturar pulso</strong> únicamente cuando la luz central se encienda en <strong>verde 🟢</strong>.
+            Si se enciende en <strong>rojo 🔴</strong> o está en espera, <strong>no debe tocar el botón</strong>.
           </p>
           
           <div class="semaphore-box">
@@ -2881,11 +2882,11 @@
             </div>
             
             <button class="btn-cyber reaction-trigger-btn-cyber" id="btnStartP2" onclick="startP2Game()">
-              ▶ Iniciar sensor de reflejos
+              ▶ Tocar aquí capturar pulso
             </button>
             
             <button class="reaction-trigger-btn-cyber" id="btnActionP2" style="display: none;" onclick="handleP2Tap()">
-              ⚡ Capturar pulso (clic aquí) ⚡
+              ⚡ Tocar aquí capturar pulso ⚡
             </button>
 
             <div style="margin-top: 8px; width: 100%; display: flex; justify-content: flex-end;">
@@ -2898,7 +2899,7 @@
       } else if (activeSubP === 'p3') {
         subContainer.innerHTML = `
           <h2 class="card-title">P3. Coordinación visomanual y pulso digital</h2>
-          <p class="card-desc">Guíe el cursor o trazo con pulso firme desde la zona <strong>INICIO</strong> hasta la <strong>META</strong> dentro del canal continuo sin tocar los bordes.</p>
+          <p class="card-desc">Guíe el cursor o trazo con pulso firme desde la zona de <strong>inicio</strong> hasta la <strong>meta</strong> dentro del canal continuo sin tocar los bordes.</p>
           
           <div class="canvas-wrapper" style="margin: 20px 0;">
             <canvas id="p3Canvas" class="game-canvas"></canvas>
@@ -3239,6 +3240,13 @@
                 🖨️ Imprimir comprobante
               </button>
             </div>
+
+            <!-- BOTÓN DE CIERRE DE SESIÓN Y VENTANA SEGURO -->
+            <div style="margin-top: 14px; width: 100%; display: flex; justify-content: center;">
+              <button type="button" class="btn-cyber" style="background: linear-gradient(135deg, #dc2626, #991b1b); border: 1.5px solid #ef4444; color: #ffffff; font-weight: 800; font-size: 13px; padding: 11px 22px; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4); display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s;" onclick="cerrarVentana7mo()">
+                🔒 Cerrar ventana y finalizar sesión
+              </button>
+            </div>
           </div>
 
           ${AppState.psicomotriz.p4_dibujo.dataUrl ? `
@@ -3254,6 +3262,48 @@
       setTimeout(() => {
         sendTelemetryToGoogleSheets('completado');
       }, 100);
+    }
+
+    function cerrarVentana7mo() {
+      const confirmar = confirm("¿Desea cerrar la ventana y finalizar la sesión de evaluación?\n\nSus respuestas e informe ya han sido transmitidos y guardados con éxito.");
+      if (!confirmar) return;
+
+      try {
+        localStorage.removeItem("CYBERQUEST_7MO_SAVE_STATE");
+        localStorage.removeItem("CYBERQUEST_ACTIVE_SESSION");
+      } catch(e) {}
+
+      try {
+        window.close();
+      } catch(e) {}
+
+      setTimeout(function() {
+        const container = document.getElementById('missionAppContainer');
+        if (container) {
+          container.innerHTML = `
+            <div style="padding: 40px 24px; text-align: center; background: #0f172a; border-radius: 20px; border: 2px solid #10b981; max-width: 580px; margin: 30px auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+              <div style="font-size: 50px; margin-bottom: 12px;">🔒</div>
+              <h2 style="font-size: 1.4rem; color: #ffffff; font-weight: 900; margin-bottom: 8px;">Evaluación diagnóstica finalizada</h2>
+              <p style="font-size: 13.5px; color: #94a3b8; margin-bottom: 18px; line-height: 1.5;">
+                Las respuestas y resultados han sido debidamente transferidos y registrados en el panel de evaluación docente.
+              </p>
+              <div style="font-size: 12.5px; color: #34d399; font-weight: 800; background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; padding: 10px 18px; border-radius: 12px; display: inline-block; margin-bottom: 22px;">
+                ✅ Sesión cerrada de forma segura • Puede cerrar esta pestaña
+              </div><br>
+              <button class="btn-cyber" style="font-weight: 800; font-size: 13px; padding: 10px 20px; border-radius: 10px; cursor: pointer; background: #1e293b; color: #f8fafc; border: 1px solid #475569;" onclick="reiniciarDiagnosticoBlanco7mo()">
+                🔄 Iniciar nueva prueba para otro estudiante
+              </button>
+            </div>
+          `;
+        }
+      }, 150);
+    }
+
+    function reiniciarDiagnosticoBlanco7mo() {
+      try {
+        localStorage.clear();
+      } catch(e) {}
+      window.location.reload();
     }
 
     function calculateDiagnosticsMetrics() {
