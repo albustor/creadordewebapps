@@ -2276,12 +2276,12 @@
       ctx.fillRect(10, 85, 45, 70);
       ctx.fillStyle = '#00f0ff';
       ctx.font = 'bold 11px sans-serif';
-      ctx.fillText('INICIO', 14, 125);
+      ctx.fillText('Inicio', 14, 125);
 
       ctx.fillStyle = 'rgba(16, 185, 129, 0.3)';
       ctx.fillRect(485, 85, 45, 70);
       ctx.fillStyle = '#10b981';
-      ctx.fillText('META', 492, 125);
+      ctx.fillText('Meta', 492, 125);
     }
 
     function drawP3UserPath(ctx) {
@@ -2827,7 +2827,7 @@
       if (activeSubP === 'p1') {
         subContainer.innerHTML = `
           <h2 class="card-title">P1. Lateralidad y orientación espacial (mando en tiempo real)</h2>
-          <p class="card-desc">Conduzca el robot en tiempo real hasta el <strong>Servidor Central 🖥️</strong> en la esquina inferior derecha (4,4), evitando chocar con los obstáculos de fuego 🔥 o salir del circuito.</p>
+          <p class="card-desc">Conduzca el robot en tiempo real hasta el <strong>servidor central 🖥️</strong> en la esquina inferior derecha (4,4), evitando chocar con los obstáculos de fuego 🔥 o salir del circuito.</p>
           
           <div class="p1-controls-wrapper" style="margin: 16px 0;">
             
@@ -2844,13 +2844,13 @@
                 ⬆ Avanzar
               </button>
               <button class="p1-btn-move p1-btn-left" onclick="p1TurnLeft()" title="Girar 90° a la izquierda">
-                ↶ Girar Izq
+                ↶ Girar a la izquierda
               </button>
               <button class="p1-btn-move p1-btn-reset" onclick="p1ResetPosition()" title="Volver a la casilla inicial">
                 ↺ Inicio
               </button>
               <button class="p1-btn-move p1-btn-right" onclick="p1TurnRight()" title="Girar 90° a la derecha">
-                ↷ Girar Der
+                ↷ Girar a la derecha
               </button>
             </div>
             
@@ -2866,8 +2866,8 @@
         subContainer.innerHTML = `
           <h2 class="card-title">P2. Ritmo, tempo e inhibición motriz</h2>
           <p class="card-desc">
-            <strong>Instrucción del sensor:</strong> Pulse el botón <strong>CAPTURAR PULSO</strong> únicamente cuando la luz central se encienda en <strong>VERDE 🟢</strong>.
-            Si se enciende en <strong>ROJO 🔴</strong> o está en espera, <strong>no debe tocar el botón</strong>.
+            <strong>Instrucción del sensor:</strong> Pulse el botón <strong>Capturar pulso</strong> únicamente cuando la luz central se encienda en <strong>verde 🟢</strong>.
+            Si se enciende en <strong>rojo 🔴</strong> o está en espera, <strong>no debe tocar el botón</strong>.
           </p>
           
           <div class="semaphore-box">
@@ -2898,7 +2898,7 @@
       } else if (activeSubP === 'p3') {
         subContainer.innerHTML = `
           <h2 class="card-title">P3. Coordinación visomanual y pulso digital</h2>
-          <p class="card-desc">Guíe el cursor o trazo con pulso firme desde la zona <strong>INICIO</strong> hasta la <strong>META</strong> dentro del canal continuo sin tocar los bordes.</p>
+          <p class="card-desc">Guíe el cursor o trazo con pulso firme desde la zona de <strong>inicio</strong> hasta la <strong>meta</strong> dentro del canal continuo sin tocar los bordes.</p>
           
           <div class="canvas-wrapper" style="margin: 20px 0;">
             <canvas id="p3Canvas" class="game-canvas"></canvas>
