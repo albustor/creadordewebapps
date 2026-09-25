@@ -15,12 +15,12 @@ export const DIAGNOSTICO_7MO_DATA: ConfiguracionDiagnosticoNivel = {
   ],
   subareas: [
     {
-      id: "sub1_hardware_sistemas",
-      areaCurricular: "Apropiación tecnológica y digital",
-      nombre: "Grupo de criterios asociados 1: Hardware, Periféricos y Sistemas Operativos",
-      descripcion: "Identifica componentes de entrada, salida, procesamiento, reglas de cuidado y administración de recursos del sistema operativo.",
-      itemsIds: [1, 2, 3],
-      pesoTotal: 3
+      id: "sub3_programacion_algoritmos",
+      areaCurricular: "Programación y algoritmos",
+      nombre: "Grupo de criterios asociados 1: Pensamiento Computacional, Algoritmia y Control Lógico",
+      descripcion: "Aplica eventos, traza de variables en ciclos, toma de decisiones condicionales y evaluación de proposiciones lógicas compuestas.",
+      itemsIds: [7, 8, 9, 10],
+      pesoTotal: 4
     },
     {
       id: "sub2_conectividad_archivos",
@@ -31,12 +31,12 @@ export const DIAGNOSTICO_7MO_DATA: ConfiguracionDiagnosticoNivel = {
       pesoTotal: 3
     },
     {
-      id: "sub3_programacion_algoritmos",
-      areaCurricular: "Programación y algoritmos",
-      nombre: "Grupo de criterios asociados 3: Pensamiento Computacional, Algoritmia y Control Lógico",
-      descripcion: "Aplica eventos, traza de variables en ciclos, toma de decisiones condicionales y evaluación de proposiciones lógicas compuestas.",
-      itemsIds: [7, 8, 9, 10],
-      pesoTotal: 4
+      id: "sub1_hardware_sistemas",
+      areaCurricular: "Apropiación tecnológica y digital",
+      nombre: "Grupo de criterios asociados 3: Hardware, Periféricos y Sistemas Operativos",
+      descripcion: "Identifica componentes de entrada, salida, procesamiento, reglas de cuidado y administración de recursos del sistema operativo.",
+      itemsIds: [1, 2, 3],
+      pesoTotal: 3
     }
   ],
   reactivos: [

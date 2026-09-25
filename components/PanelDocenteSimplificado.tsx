@@ -1312,7 +1312,7 @@ export default function PanelDocenteSimplificado() {
                           </h4>
                           <span className="px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 text-[10px] font-black uppercase tracking-wider border border-teal-300">
                             {nivelActivo === "7mo"
-                              ? "Apropiación tecnológica y digital • Programación y algoritmos"
+                              ? "Programación y algoritmos • Apropiación tecnológica y digital"
                               : nivelActivo === "8vo"
                               ? "Apropiación Tecnológica • Programación y algoritmos"
                               : "Computación física, robótica y automatización • Programación y algoritmos"}
