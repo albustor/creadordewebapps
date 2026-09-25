@@ -91,6 +91,8 @@ export default function ModalDocumentacionOficial({
             <div className="flex items-center gap-2.5 pt-1 flex-wrap">
               <a
                 href="/docs/PROPUESTA_ARQUITECTURA_EVALUATIVA_HIBRIDA_7MO_MEP_2027.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
                 download="PROPUESTA_ARQUITECTURA_EVALUATIVA_HIBRIDA_7MO_MEP_2027.pdf"
                 className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-black shadow-xs transition-colors cursor-pointer"
               >
@@ -137,6 +139,8 @@ export default function ModalDocumentacionOficial({
             <div className="flex items-center gap-2.5 pt-1 flex-wrap">
               <a
                 href="/docs/PROPUESTA_ARQUITECTURA_EVALUATIVA_HIBRIDA_MEP_2027.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
                 download="PROPUESTA_ARQUITECTURA_EVALUATIVA_HIBRIDA_MEP_2027.pdf"
                 className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-black shadow-xs transition-colors cursor-pointer"
               >
