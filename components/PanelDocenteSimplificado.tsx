@@ -221,82 +221,6 @@ export const CRITERIOS_SOCIOAFECTIVOS_MAP: Record<"7mo" | "8vo" | "9no", Criteri
   ],
 };
 
-export interface InfoNivelMEP {
-  id: "7mo" | "8vo" | "9no";
-  codigo: string;
-  nombreCorto: string;
-  nombreCompleto: string;
-  subtitulo: string;
-  proyecto: string;
-  icono: string;
-  colorPrimario: string;
-  bgBannerClass: string;
-  borderBannerClass: string;
-  badgeClass: string;
-  buttonActiveClass: string;
-  buttonInactiveClass: string;
-  iconBoxClass: string;
-  proyectoColorClass: string;
-  mepAreaPrincipal: string;
-}
-
-export const CONFIG_NIVELES_MEP: Record<"7mo" | "8vo" | "9no", InfoNivelMEP> = {
-  "7mo": {
-    id: "7mo",
-    codigo: "7mo",
-    nombreCorto: "7.° AÑO",
-    nombreCompleto: "7.° AÑO (SÉTIMO)",
-    subtitulo: "Educación Secundaria - Primer Ciclo Diversificado",
-    proyecto: "CyberQuest • Fundamentos, Programación y Algoritmos",
-    icono: "💻",
-    colorPrimario: "#1B5E59",
-    bgBannerClass: "bg-gradient-to-r from-emerald-50 via-teal-50/60 to-white border-l-4 border-l-[#1B5E59] border-emerald-200",
-    borderBannerClass: "border-emerald-200",
-    badgeClass: "bg-[#1B5E59] text-white border border-emerald-700",
-    buttonActiveClass: "bg-[#1B5E59] text-white shadow-md ring-2 ring-emerald-500/40",
-    buttonInactiveClass: "text-slate-600 hover:text-emerald-800 hover:bg-emerald-50/70",
-    iconBoxClass: "bg-[#D1EBE7] text-[#1B5E59] border border-emerald-200",
-    proyectoColorClass: "text-[#1B5E59] font-bold",
-    mepAreaPrincipal: "Apropiación Tecnológica y Programación",
-  },
-  "8vo": {
-    id: "8vo",
-    codigo: "8vo",
-    nombreCorto: "8.° AÑO",
-    nombreCompleto: "8.° AÑO (OCTAVO)",
-    subtitulo: "Educación Secundaria - Segundo Ciclo Diversificado",
-    proyecto: "Robótica Educativa • Sensores, Motores y Mecanismos",
-    icono: "⚙️",
-    colorPrimario: "#D97706",
-    bgBannerClass: "bg-gradient-to-r from-amber-50 via-orange-50/50 to-white border-l-4 border-l-[#D97706] border-amber-200",
-    borderBannerClass: "border-amber-200",
-    badgeClass: "bg-[#D97706] text-white border border-amber-700",
-    buttonActiveClass: "bg-[#D97706] text-white shadow-md ring-2 ring-amber-500/40",
-    buttonInactiveClass: "text-slate-600 hover:text-amber-800 hover:bg-amber-50/70",
-    iconBoxClass: "bg-[#FEF3C7] text-[#D97706] border border-amber-200",
-    proyectoColorClass: "text-[#D97706] font-bold",
-    mepAreaPrincipal: "Robótica y Computación Física",
-  },
-  "9no": {
-    id: "9no",
-    codigo: "9no",
-    nombreCorto: "9.° AÑO",
-    nombreCompleto: "9.° AÑO (NOVENO)",
-    subtitulo: "Educación Secundaria - Tercer Ciclo Diversificado",
-    proyecto: "Aula Inteligente & Domótica • Sistemas Embebidos y Automatización",
-    icono: "🤖",
-    colorPrimario: "#002B49",
-    bgBannerClass: "bg-gradient-to-r from-sky-50 via-blue-50/60 to-white border-l-4 border-l-[#002B49] border-sky-200",
-    borderBannerClass: "border-sky-200",
-    badgeClass: "bg-[#002B49] text-white border border-sky-900",
-    buttonActiveClass: "bg-[#002B49] text-white shadow-md ring-2 ring-sky-600/40",
-    buttonInactiveClass: "text-slate-600 hover:text-blue-900 hover:bg-sky-50/70",
-    iconBoxClass: "bg-[#E0F2FE] text-[#002B49] border border-sky-200",
-    proyectoColorClass: "text-[#002B49] font-bold",
-    mepAreaPrincipal: "Computación Física, Robótica y Automatización",
-  },
-};
-
 export interface SaberCognitivoOficial {
   id: number;
   nombre: string;
@@ -718,26 +642,11 @@ export default function PanelDocenteSimplificado() {
     return [`${nivelNum}-1`, `${nivelNum}-2`, `${nivelNum}-3`, `${nivelNum}-4`];
   }, [centroActivo, nivelActivo]);
 
-  // Configuración del Tema Oficial MEP del Nivel Activo
-  const temaNivel = CONFIG_NIVELES_MEP[nivelActivo] || CONFIG_NIVELES_MEP["9no"];
-
   // Al cambiar de nivel
   const handleCambiarNivel = (nuevoNivel: "7mo" | "8vo" | "9no") => {
     setNivelActivo(nuevoNivel);
     const nivelNum = nuevoNivel === "7mo" ? "7" : nuevoNivel === "8vo" ? "8" : "9";
     setSeccionActiva(`${nivelNum}-1`);
-  };
-
-  // Al cambiar de sección (con sincronización automática de nivel si corresponde)
-  const handleCambiarSeccion = (nuevaSeccion: string) => {
-    setSeccionActiva(nuevaSeccion);
-    if (nuevaSeccion.startsWith("7") && nivelActivo !== "7mo") {
-      setNivelActivo("7mo");
-    } else if (nuevaSeccion.startsWith("8") && nivelActivo !== "8vo") {
-      setNivelActivo("8vo");
-    } else if (nuevaSeccion.startsWith("9") && nivelActivo !== "9no") {
-      setNivelActivo("9no");
-    }
   };
 
   // Enlace Estudiante Generado (Con Token)
@@ -1342,49 +1251,29 @@ export default function PanelDocenteSimplificado() {
                 </p>
               </div>
 
-              {/* Selector Rápido de Nivel con Estilo Institucional MEP (7.°, 8.° y 9.° Año) */}
-              <div className="flex items-center gap-1.5 p-1.5 bg-slate-100 rounded-2xl border border-slate-200 self-start sm:self-center shadow-2xs">
+              {/* Selector Rápido de Nivel (7.° y 9.° Año) */}
+              <div className="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl border border-slate-200 self-start sm:self-center">
                 <button
                   type="button"
                   onClick={() => handleCambiarNivel("7mo")}
-                  className={`px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 ${
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${
                     nivelActivo === "7mo"
-                      ? "bg-[#1B5E59] text-white shadow-md ring-2 ring-emerald-500/40"
-                      : "text-slate-600 hover:text-emerald-800 hover:bg-emerald-50/70"
+                      ? "bg-[#1B5E59] text-white shadow-2xs"
+                      : "text-slate-600 hover:text-slate-900"
                   }`}
-                  title="Evaluar 7.° Año (Sétimo) - CyberQuest"
                 >
-                  <span>💻</span>
-                  <span>7.° AÑO</span>
-                  {nivelActivo === "7mo" && <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse" />}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleCambiarNivel("8vo")}
-                  className={`px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 ${
-                    nivelActivo === "8vo"
-                      ? "bg-[#D97706] text-white shadow-md ring-2 ring-amber-500/40"
-                      : "text-slate-600 hover:text-amber-800 hover:bg-amber-50/70"
-                  }`}
-                  title="Evaluar 8.° Año (Octavo) - Robótica"
-                >
-                  <span>⚙️</span>
-                  <span>8.° AÑO</span>
-                  {nivelActivo === "8vo" && <span className="w-1.5 h-1.5 rounded-full bg-amber-300 animate-pulse" />}
+                  7.° AÑO
                 </button>
                 <button
                   type="button"
                   onClick={() => handleCambiarNivel("9no")}
-                  className={`px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 ${
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${
                     nivelActivo === "9no"
-                      ? "bg-[#002B49] text-white shadow-md ring-2 ring-sky-500/40"
-                      : "text-slate-600 hover:text-blue-900 hover:bg-sky-50/70"
+                      ? "bg-[#1B5E59] text-white shadow-2xs"
+                      : "text-slate-600 hover:text-slate-900"
                   }`}
-                  title="Evaluar 9.° Año (Noveno) - Aula Inteligente"
                 >
-                  <span>🤖</span>
-                  <span>9.° AÑO</span>
-                  {nivelActivo === "9no" && <span className="w-1.5 h-1.5 rounded-full bg-sky-300 animate-pulse" />}
+                  9.° AÑO
                 </button>
               </div>
             </div>
@@ -1416,14 +1305,14 @@ export default function PanelDocenteSimplificado() {
                 </div>
               )}
 
-              {/* Selector de Sección con sincronización de nivel */}
+              {/* Selector de Sección */}
               <div className="w-36 sm:w-44">
                 <label className="block text-[11px] font-bold text-slate-600 uppercase tracking-wide mb-1">
                   SECCIÓN
                 </label>
                 <select
                   value={seccionActiva}
-                  onChange={(e) => handleCambiarSeccion(e.target.value)}
+                  onChange={(e) => setSeccionActiva(e.target.value)}
                   className="w-full bg-white border border-slate-300 text-slate-800 text-xs font-semibold rounded-lg px-3 py-2 shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#1B5E59]/30 focus:border-[#1B5E59] cursor-pointer"
                 >
                   {seccionesDisponibles.map((sec) => (
@@ -1478,83 +1367,6 @@ export default function PanelDocenteSimplificado() {
                 </span>
               </div>
             </section>
-
-            {/* ========================================================================= */}
-            {/* BANNER CONTEXTUAL DESTACADO (OPCIÓN 3 + 4 - PREVENCIÓN DE CONFUSIÓN MEP) */}
-            {/* ========================================================================= */}
-            <div className={`p-3.5 sm:p-4 rounded-2xl border shadow-xs transition-all duration-200 ${temaNivel.bgBannerClass}`}>
-              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3.5">
-                <div className="flex items-center gap-3">
-                  <div className={`w-11 h-11 rounded-xl flex items-center justify-center text-2xl shadow-xs shrink-0 ${temaNivel.iconBoxClass}`}>
-                    {temaNivel.icono}
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">
-                        NIVEL Y GRUPO EN EVALUACIÓN:
-                      </span>
-                      <span className={`px-2.5 py-0.5 rounded-full text-xs font-black tracking-wide shadow-2xs ${temaNivel.badgeClass}`}>
-                        {temaNivel.nombreCompleto}
-                      </span>
-                      <span className="px-2.5 py-0.5 rounded-full bg-white/95 border border-slate-300 text-slate-800 text-xs font-black shadow-2xs">
-                        Sección {seccionActiva}
-                      </span>
-                      <span className="px-2 py-0.5 rounded-md bg-slate-100/90 text-slate-700 text-[10px] font-bold border border-slate-200">
-                        {registrosSeccion.length} estudiantes registrados
-                      </span>
-                    </div>
-                    <p className="text-xs sm:text-[13px] font-bold text-slate-800 mt-1 flex items-center gap-1.5 flex-wrap">
-                      <span className="text-slate-500 font-normal">Proyecto Curricular:</span>
-                      <span className={temaNivel.proyectoColorClass}>{temaNivel.proyecto}</span>
-                      <span className="text-slate-300 hidden sm:inline">•</span>
-                      <span className="text-slate-600 font-medium text-xs truncate max-w-xs sm:max-w-md">
-                        🏫 {centroActivo.nombre} ({centroActivo.dreNombre})
-                      </span>
-                    </p>
-                  </div>
-                </div>
-
-                {/* Conmutador Rápido Integrado en el Banner */}
-                <div className="flex items-center gap-2 self-start lg:self-center shrink-0 pt-2 lg:pt-0 border-t lg:border-t-0 border-slate-200/60 w-full lg:w-auto justify-between lg:justify-end">
-                  <span className="text-[11px] font-bold text-slate-500">Cambiar de nivel:</span>
-                  <div className="inline-flex rounded-xl p-1 bg-white/90 border border-slate-200 shadow-2xs">
-                    <button
-                      type="button"
-                      onClick={() => handleCambiarNivel("7mo")}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-black transition-all cursor-pointer ${
-                        nivelActivo === "7mo"
-                          ? "bg-[#1B5E59] text-white shadow-xs"
-                          : "text-slate-600 hover:text-emerald-800 hover:bg-emerald-50"
-                      }`}
-                    >
-                      💻 7.° Sétimo
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleCambiarNivel("8vo")}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-black transition-all cursor-pointer ${
-                        nivelActivo === "8vo"
-                          ? "bg-[#D97706] text-white shadow-xs"
-                          : "text-slate-600 hover:text-amber-800 hover:bg-amber-50"
-                      }`}
-                    >
-                      ⚙️ 8.° Octavo
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleCambiarNivel("9no")}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-black transition-all cursor-pointer ${
-                        nivelActivo === "9no"
-                          ? "bg-[#002B49] text-white shadow-xs"
-                          : "text-slate-600 hover:text-blue-900 hover:bg-sky-50"
-                      }`}
-                    >
-                      🤖 9.° Noveno
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
 
             {/* ========================================================= */}
             {/* SECCIÓN 1: ENLACES ESTUDIANTE (Opción A y Opción B)       */}
@@ -1703,11 +1515,11 @@ export default function PanelDocenteSimplificado() {
                   <button
                     type="button"
                     onClick={() => setAcordeonDimensionesCognitivo(!acordeonDimensionesCognitivo)}
-                    className="w-full p-4 flex items-center justify-between gap-3 bg-gradient-to-r from-slate-50 via-white to-slate-50 hover:bg-slate-100/70 transition-colors text-left cursor-pointer select-none"
+                    className="w-full p-4 flex items-center justify-between gap-3 bg-gradient-to-r from-teal-50/70 via-slate-50 to-white hover:bg-teal-50/80 transition-colors text-left cursor-pointer select-none"
                     aria-expanded={acordeonDimensionesCognitivo}
                   >
                     <div className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm shrink-0 ${temaNivel.iconBoxClass}`}>
+                      <div className="w-8 h-8 rounded-lg bg-[#D1EBE7] text-[#1B5E59] flex items-center justify-center font-bold text-sm shrink-0">
                         <BookOpen size={18} weight="fill" />
                       </div>
                       <div>
@@ -1715,13 +1527,7 @@ export default function PanelDocenteSimplificado() {
                           <h4 className="text-xs sm:text-sm font-black text-slate-900 uppercase tracking-wide">
                             Criterios Módulo 1
                           </h4>
-                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
-                            nivelActivo === "7mo"
-                              ? "bg-teal-100 text-teal-800 border border-teal-300"
-                              : nivelActivo === "8vo"
-                              ? "bg-amber-100 text-amber-800 border border-amber-300"
-                              : "bg-sky-100 text-[#002B49] border border-sky-300"
-                          }`}>
+                          <span className="px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 text-[10px] font-black uppercase tracking-wider border border-teal-300">
                             {nivelActivo === "7mo"
                               ? "Programación y algoritmos • Apropiación tecnológica y digital"
                               : nivelActivo === "8vo"
@@ -1730,7 +1536,7 @@ export default function PanelDocenteSimplificado() {
                           </span>
                         </div>
                         <p className="text-[11px] text-slate-500 font-medium mt-0.5">
-                          Saberes diagnosticados para <strong className="text-slate-800">{temaNivel.nombreCompleto}</strong>. Haga clic para {acordeonDimensionesCognitivo ? "contraer" : "expandir"}.
+                          Haga clic para {acordeonDimensionesCognitivo ? "contraer" : "expandir"} los saberes diagnosticados del Módulo 1.
                         </p>
                       </div>
                     </div>
@@ -1739,7 +1545,7 @@ export default function PanelDocenteSimplificado() {
                       <CaretDown
                         size={18}
                         weight="bold"
-                        className={`transition-transform duration-200 ${acordeonDimensionesCognitivo ? "rotate-180 text-slate-800" : ""}`}
+                        className={`transition-transform duration-200 ${acordeonDimensionesCognitivo ? "rotate-180 text-[#1B5E59]" : ""}`}
                       />
                     </div>
                   </button>
@@ -1750,32 +1556,14 @@ export default function PanelDocenteSimplificado() {
                         {(SABERES_COGNITIVOS_MAP[nivelActivo] || SABERES_COGNITIVOS_MAP["9no"]).map((saber) => (
                           <div
                             key={saber.id}
-                            className={`bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs space-y-1.5 border-l-4 hover:shadow-md transition-all flex flex-col justify-center ${
-                              nivelActivo === "7mo"
-                                ? "border-l-[#1B5E59]"
-                                : nivelActivo === "8vo"
-                                ? "border-l-[#D97706]"
-                                : "border-l-[#002B49]"
-                            }`}
+                            className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs space-y-1.5 border-l-4 border-l-[#1B5E59] hover:shadow-md transition-all flex flex-col justify-center"
                           >
                             <div className="flex items-center justify-between gap-1 mb-1.5 flex-wrap">
-                              <span className={`w-5 h-5 rounded-full font-black text-[10px] flex items-center justify-center shrink-0 ${
-                                nivelActivo === "7mo"
-                                  ? "bg-teal-100 text-[#1B5E59]"
-                                  : nivelActivo === "8vo"
-                                  ? "bg-amber-100 text-[#D97706]"
-                                  : "bg-sky-100 text-[#002B49]"
-                              }`}>
+                              <span className="w-5 h-5 rounded-full bg-teal-100 text-[#1B5E59] font-black text-[10px] flex items-center justify-center shrink-0">
                                 {saber.id}
                               </span>
                               {saber.areaCurricular && (
-                                <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-md truncate max-w-[150px] ${
-                                  nivelActivo === "7mo"
-                                    ? "bg-teal-50 text-teal-800 border border-teal-100"
-                                    : nivelActivo === "8vo"
-                                    ? "bg-amber-50 text-amber-800 border border-amber-100"
-                                    : "bg-sky-50 text-sky-900 border border-sky-100"
-                                }`} title={saber.areaCurricular}>
+                                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-teal-50 text-teal-800 border border-teal-100 truncate max-w-[130px]" title={saber.areaCurricular}>
                                   {saber.areaCurricular}
                                 </span>
                               )}
@@ -1897,31 +1685,25 @@ export default function PanelDocenteSimplificado() {
                   <button
                     type="button"
                     onClick={() => setAcordeonDimensionesSocio(!acordeonDimensionesSocio)}
-                    className="w-full p-4 flex items-center justify-between gap-3 bg-gradient-to-r from-slate-50 via-white to-slate-50 hover:bg-slate-100/70 transition-colors text-left cursor-pointer select-none"
+                    className="w-full p-4 flex items-center justify-between gap-3 bg-gradient-to-r from-teal-50/70 via-slate-50 to-white hover:bg-teal-50 transition-colors text-left cursor-pointer select-none"
                     aria-expanded={acordeonDimensionesSocio}
                   >
                     <div className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm shrink-0 ${temaNivel.iconBoxClass}`}>
+                      <div className="w-8 h-8 rounded-lg bg-[#D1EBE7] text-[#1B5E59] flex items-center justify-center font-bold text-sm shrink-0">
                         <Heart size={18} weight="fill" />
                       </div>
                       <div className="flex items-center gap-2">
                         <h4 className="text-xs sm:text-sm font-black text-slate-900 uppercase tracking-wide">
                           Criterios Módulo 1
                         </h4>
-                        <span className={`px-2 py-0.5 rounded-full font-bold text-[10px] border ${
-                          nivelActivo === "7mo"
-                            ? "bg-teal-100 text-[#1B5E59] border-teal-300"
-                            : nivelActivo === "8vo"
-                            ? "bg-amber-100 text-[#D97706] border-amber-300"
-                            : "bg-sky-100 text-[#002B49] border-sky-300"
-                        }`}>
-                          Socioafectivo • {temaNivel.nombreCorto}
+                        <span className="px-2 py-0.5 rounded-full bg-teal-100 text-[#1B5E59] font-bold text-[10px] border border-teal-300">
+                          Socioafectivo
                         </span>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2 shrink-0">
-                      <span className="hidden sm:inline-block text-xs font-bold text-slate-700">
+                      <span className="hidden sm:inline-block text-xs font-bold text-[#1B5E59]">
                         {acordeonDimensionesSocio ? "Contraer criterios" : "Ver 4 criterios"}
                       </span>
                       <div className={`w-7 h-7 rounded-lg flex items-center justify-center bg-white border border-slate-200 text-slate-600 transition-transform duration-200 ${acordeonDimensionesSocio ? "rotate-180" : ""}`}>
@@ -1937,24 +1719,12 @@ export default function PanelDocenteSimplificado() {
                           <div
                             key={crit.id}
                             onClick={() => setCriterioSocioModalDetalle(crit)}
-                            className={`bg-white p-4 rounded-xl border border-slate-200 shadow-2xs hover:shadow-md transition-all cursor-pointer group flex flex-col justify-between border-l-4 ${
-                              nivelActivo === "7mo"
-                                ? "border-l-[#1B5E59]"
-                                : nivelActivo === "8vo"
-                                ? "border-l-[#D97706]"
-                                : "border-l-[#002B49]"
-                            }`}
+                            className="bg-white p-4 rounded-xl border-l-4 border-l-[#1B5E59] border border-slate-200 shadow-2xs hover:shadow-md transition-all cursor-pointer group flex flex-col justify-between"
                             title="Haga clic para ver la rúbrica oficial y niveles de logro"
                           >
                             <div>
                               <div className="flex items-center justify-between gap-2 mb-1.5 flex-wrap">
-                                <span className={`text-xs font-black group-hover:opacity-80 transition-opacity ${
-                                  nivelActivo === "7mo"
-                                    ? "text-[#1B5E59]"
-                                    : nivelActivo === "8vo"
-                                    ? "text-[#D97706]"
-                                    : "text-[#002B49]"
-                                }`}>
+                                <span className="text-xs font-black text-[#1B5E59] group-hover:text-teal-700 transition-colors">
                                   {crit.codigo}
                                 </span>
                                 <BadgeModalidadExplicativa
@@ -1974,13 +1744,7 @@ export default function PanelDocenteSimplificado() {
                             
                             <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
                               <span className="text-slate-500 font-medium">3 Niveles: C ➔ B ➔ A</span>
-                              <span className={`font-bold underline group-hover:no-underline ${
-                                nivelActivo === "7mo"
-                                  ? "text-[#1B5E59]"
-                                  : nivelActivo === "8vo"
-                                  ? "text-[#D97706]"
-                                  : "text-[#002B49]"
-                              }`}>
+                              <span className="text-[#1B5E59] font-bold underline group-hover:no-underline">
                                 Ver detalle rúbrica
                               </span>
                             </div>
@@ -2470,11 +2234,11 @@ export default function PanelDocenteSimplificado() {
                     <button
                       type="button"
                       onClick={() => setGuiaSimbologiaAbierta(!guiaSimbologiaAbierta)}
-                      className="w-full p-4 bg-gradient-to-r from-slate-50 via-white to-slate-50 hover:bg-slate-100/70 border-b border-slate-200 flex items-center justify-between text-left transition-colors cursor-pointer select-none"
+                      className="w-full p-4 bg-gradient-to-r from-teal-50/70 via-slate-50 to-white hover:bg-teal-50/80 border-b border-slate-200 flex items-center justify-between text-left transition-colors cursor-pointer select-none"
                       aria-expanded={guiaSimbologiaAbierta}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm shrink-0 ${temaNivel.iconBoxClass}`}>
+                        <div className="w-8 h-8 rounded-lg bg-[#D1EBE7] text-[#1B5E59] flex items-center justify-center font-bold text-sm shrink-0">
                           <Pulse size={18} weight="bold" />
                         </div>
                         <div>
@@ -2482,18 +2246,12 @@ export default function PanelDocenteSimplificado() {
                             <h4 className="text-xs sm:text-sm font-black text-slate-900 uppercase tracking-wide">
                               Criterios Módulo 1
                             </h4>
-                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider border ${
-                              nivelActivo === "7mo"
-                                ? "bg-teal-100 text-teal-800 border-teal-300"
-                                : nivelActivo === "8vo"
-                                ? "bg-amber-100 text-amber-800 border-amber-300"
-                                : "bg-sky-100 text-[#002B49] border-sky-300"
-                            }`}>
-                              Psicomotor • {temaNivel.nombreCorto}
+                            <span className="px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 text-[10px] font-black uppercase tracking-wider border border-teal-300">
+                              Psicomotor / Procedimental
                             </span>
                           </div>
                           <p className="text-[11px] text-slate-500 font-medium mt-0.5">
-                            Haga clic para {guiaSimbologiaAbierta ? "contraer" : "expandir"} los {criteriosActuales.length} criterios y rúbricas del Módulo 1.
+                            Haga clic para {guiaSimbologiaAbierta ? "contraer" : "expandir"} los {criteriosActuales.length} criterios, indicadores de logro y rúbricas del Módulo 1.
                           </p>
                         </div>
                       </div>
@@ -2502,7 +2260,7 @@ export default function PanelDocenteSimplificado() {
                         <CaretDown
                           size={18}
                           weight="bold"
-                          className={`transition-transform duration-200 ${guiaSimbologiaAbierta ? "rotate-180 text-slate-800" : ""}`}
+                          className={`transition-transform duration-200 ${guiaSimbologiaAbierta ? "rotate-180 text-[#1B5E59]" : ""}`}
                         />
                       </div>
                     </button>
@@ -2514,35 +2272,17 @@ export default function PanelDocenteSimplificado() {
                             <div
                               key={crit.id}
                               onClick={() => setCriterioModalDetalle(crit)}
-                              className={`bg-white p-4 rounded-xl border border-slate-200 shadow-2xs hover:shadow-md transition-all cursor-pointer group flex flex-col justify-between border-l-4 ${
-                                nivelActivo === "7mo"
-                                  ? "border-l-[#1B5E59]"
-                                  : nivelActivo === "8vo"
-                                  ? "border-l-[#D97706]"
-                                  : "border-l-[#002B49]"
-                              }`}
+                              className="bg-white p-4 rounded-xl border-l-4 border-l-[#1B5E59] border border-slate-200 shadow-2xs hover:shadow-md transition-all cursor-pointer group flex flex-col justify-between"
                               title="Haga clic para ver la rúbrica oficial y niveles de logro"
                             >
                               <div>
                                 <div className="flex items-center justify-between gap-2 mb-1.5 flex-wrap">
-                                  <span className={`text-xs font-black group-hover:opacity-80 transition-opacity ${
-                                    nivelActivo === "7mo"
-                                      ? "text-[#1B5E59]"
-                                      : nivelActivo === "8vo"
-                                      ? "text-[#D97706]"
-                                      : "text-[#002B49]"
-                                  }`}>
+                                  <span className="text-xs font-black text-[#1B5E59] group-hover:text-teal-700 transition-colors">
                                     {crit.codigo}
                                   </span>
                                   <div className="flex items-center gap-1.5 flex-wrap">
                                     {crit.areaCurricular && (
-                                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${
-                                        nivelActivo === "7mo"
-                                          ? "bg-teal-50 text-[#1B5E59] border-teal-200"
-                                          : nivelActivo === "8vo"
-                                          ? "bg-amber-50 text-[#D97706] border-amber-200"
-                                          : "bg-sky-50 text-[#002B49] border-sky-200"
-                                      }`}>
+                                      <span className="text-[10px] bg-teal-50 text-[#1B5E59] font-bold px-2 py-0.5 rounded border border-teal-200">
                                         {crit.areaCurricular}
                                       </span>
                                     )}
