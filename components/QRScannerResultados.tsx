@@ -258,39 +258,106 @@ export default function QRScannerResultados({
 
       let datos: any = {};
 
-      if (textoLimpio.startsWith("{")) {
+      if (textoLimpio.startsWith("{") && textoLimpio.endsWith("}")) {
         try {
           datos = JSON.parse(textoLimpio);
         } catch {
           datos = {};
         }
       } else {
-        const matchTxt = textoLimpio.match(/(?:ID|Estudiante|Nombre):\s*([^|\n]+)(?:\|\s*(?:Sec|Secci[oó]n|Grupo):\s*([^|\n]+))?(?:\|\s*(?:Nota|Puntaje|Aciertos):\s*(\d+)(?:\/(\d+))?)?(?:.*\(?(\d+)%\)?)?/i);
-        if (matchTxt) {
-          const nom = (matchTxt[1] || "").trim();
-          const sec = (matchTxt[2] || "").trim();
-          const aciertos = matchTxt[3] ? parseInt(matchTxt[3], 10) : undefined;
-          const total = matchTxt[4] ? parseInt(matchTxt[4], 10) : undefined;
-          const porc = matchTxt[5] ? parseInt(matchTxt[5], 10) : (aciertos !== undefined && total ? Math.round((aciertos / total) * 100) : undefined);
+        const lineas = textoLimpio.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+        
+        if (lineas.length >= 2 && (textoLimpio.includes("COG:") || textoLimpio.includes("PSI:") || textoLimpio.includes("SOC:") || textoLimpio.includes("FORTALEZAS:"))) {
+          // Formato estándar de líneas offline (< 300 caracteres)
+          const nom = lineas[0].replace(/^(ID|Estudiante|Nombre):\s*/i, '').trim();
+          const sec = lineas[1].replace(/^(Sec|Sección|Grupo):\s*/i, '').trim();
           
+          let aciertos = 8;
+          let total = 10;
+          let porc = 80;
+          let nivelTexto = "Logrado";
+          let fortalezas = "";
+          let prioridades = "";
+          let socTexto = "5/5 indicadores favorables";
+          let psiTarjetas = "3/3";
+          let psiPuertos = "9/9";
+
+          lineas.forEach(l => {
+            const up = l.toUpperCase();
+            if (up.startsWith("COG:") || up.startsWith("COGNOSCITIVA:")) {
+              const mFrac = l.match(/(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)/);
+              if (mFrac) {
+                aciertos = parseFloat(mFrac[1]);
+                total = parseFloat(mFrac[2]) || 10;
+                porc = Math.round((aciertos / total) * 100);
+              }
+              const mPct = l.match(/(\d+(?:\.\d+)?)\s*%/);
+              if (mPct) {
+                porc = parseInt(mPct[1], 10);
+              }
+              if (l.includes("(") && l.includes(")")) {
+                nivelTexto = l.substring(l.indexOf("(") + 1, l.indexOf(")")).trim();
+              }
+            } else if (up.startsWith("PSI:") || up.startsWith("PSICOMOTORA:")) {
+              const mT = l.match(/Tarjetas\s*:?\s*(\d+\/\d+)/i) || l.match(/HW\s*:?\s*(\d+\/\d+)/i);
+              if (mT) psiTarjetas = mT[1];
+              const mP = l.match(/Puertos\s*:?\s*(\d+\/\d+)/i) || l.match(/Algo\s*:?\s*(\d+\/\d+)/i);
+              if (mP) psiPuertos = mP[1];
+            } else if (up.startsWith("SOC:") || up.startsWith("SOCIOAFECTIVA:") || l.toLowerCase().includes("indicadores favorables")) {
+              socTexto = l.includes(":") ? l.substring(l.indexOf(":") + 1).trim() : l;
+            } else if (up.startsWith("FORTALEZAS:")) {
+              fortalezas = l.substring(11).trim();
+            } else if (up.startsWith("PRIORIDADES:")) {
+              prioridades = l.substring(12).trim();
+            }
+          });
+
+          const esNivel9 = sec.startsWith("9-") || sec.includes("9°") || sec.includes("9no") || total === 10;
+          const esNivel8 = sec.startsWith("8-") || sec.includes("8°") || sec.includes("8vo") || total === 14;
+          const esNivel7 = sec.startsWith("7-") || sec.includes("7°") || sec.includes("7mo");
+
           datos = {
-            e: nom,
-            s: sec,
+            nom: nom,
+            sec: sec,
             p: aciertos,
-            porc: porc,
             tot: total,
-            n: sec.startsWith("8-") ? "8°" : sec.startsWith("7-") ? "7°" : sec.startsWith("9-") ? "9°" : "8°"
+            porc: porc,
+            nivelCog: nivelTexto,
+            fortalezas: fortalezas,
+            prioridades: prioridades,
+            socTexto: socTexto,
+            tarjetas: psiTarjetas,
+            puertos: psiPuertos,
+            n: esNivel9 ? "9°" : (esNivel8 ? "8°" : (esNivel7 ? "7°" : "9°"))
           };
         } else {
-          const partes = textoLimpio.split(/[|,\n]/).map(p => p.trim()).filter(Boolean);
-          if (partes.length >= 2) {
+          const matchTxt = textoLimpio.match(/(?:ID|Estudiante|Nombre):\s*([^|\n]+)(?:\|\s*(?:Sec|Secci[oó]n|Grupo):\s*([^|\n]+))?(?:\|\s*(?:Nota|Puntaje|Aciertos):\s*(\d+)(?:\/(\d+))?)?(?:.*\(?(\d+)%\)?)?/i);
+          if (matchTxt) {
+            const nom = (matchTxt[1] || "").trim();
+            const sec = (matchTxt[2] || "").trim();
+            const aciertos = matchTxt[3] ? parseInt(matchTxt[3], 10) : undefined;
+            const total = matchTxt[4] ? parseInt(matchTxt[4], 10) : undefined;
+            const porc = matchTxt[5] ? parseInt(matchTxt[5], 10) : (aciertos !== undefined && total ? Math.round((aciertos / total) * 100) : undefined);
+            
             datos = {
-              e: partes[0].replace(/^(ID|Estudiante|Nombre):\s*/i, ''),
-              s: partes[1].replace(/^(Sec|Sección|Grupo):\s*/i, ''),
-              p: partes[2] ? parseInt(partes[2].replace(/[^0-9]/g, ''), 10) : 80
+              e: nom,
+              s: sec,
+              p: aciertos,
+              porc: porc,
+              tot: total,
+              n: sec.startsWith("8-") ? "8°" : sec.startsWith("7-") ? "7°" : sec.startsWith("9-") ? "9°" : "8°"
             };
           } else {
-            datos = { estudianteNombre: textoLimpio.slice(0, 40), puntaje: 80 };
+            const partes = textoLimpio.split(/[|,\n]/).map(p => p.trim()).filter(Boolean);
+            if (partes.length >= 2) {
+              datos = {
+                e: partes[0].replace(/^(ID|Estudiante|Nombre):\s*/i, ''),
+                s: partes[1].replace(/^(Sec|Sección|Grupo):\s*/i, ''),
+                p: partes[2] ? parseInt(partes[2].replace(/[^0-9]/g, ''), 10) : 80
+              };
+            } else {
+              datos = { estudianteNombre: textoLimpio.slice(0, 40), puntaje: 80 };
+            }
           }
         }
       }
@@ -312,7 +379,7 @@ export default function QRScannerResultados({
         seccion = `Sección ${seccion}`;
       }
 
-      let totalReactivos = es8vo ? 14 : es9no ? 15 : 10;
+      let totalReactivos = datos.tot || (es8vo ? 14 : es9no ? 10 : 10);
       let porcentaje = 80;
       let aciertos = es8vo ? 11 : 8;
 
@@ -343,12 +410,12 @@ export default function QRScannerResultados({
       } : undefined;
 
       const payload: PayloadTelemetria = {
-        webAppId: datos.wId || datos.webAppId || (es8vo ? "diagnostico_8vo_modulo01_docente_evaluador" : es7mo ? "diagnostico_7mo_modulo01_cyberquest" : "webapp-offline"),
-        webAppTitulo: datos.wTitulo || datos.webAppTitulo || (es8vo ? "Evaluación Diagnóstica — 8° Año (PNFT)" : es7mo ? "CyberQuest 7°: Diagnóstico de Fundamentos Digitales" : "Reto Offline Escaneado"),
+        webAppId: datos.wId || datos.webAppId || (es8vo ? "diagnostico_8vo_modulo01_docente_evaluador" : es7mo ? "diagnostico_7mo_modulo01_cyberquest" : "diagnostico_9no_modulo01_desconectado_offline"),
+        webAppTitulo: datos.wTitulo || datos.webAppTitulo || (es8vo ? "Evaluación Diagnóstica — 8° Año (PNFT)" : es7mo ? "CyberQuest 7°: Diagnóstico de Fundamentos Digitales" : "Evaluación Diagnóstica — 9° Año (PNFT)"),
         docenteId: datos.dId || datos.docenteId || "DOC-OFFLINE",
         estudianteNombre: estNombre,
         seccionOGrupo: seccion,
-        nivel: es8vo ? "8°" : (es7mo ? "7°" : (es9no ? "9°" : (datos.nivel || "8°"))),
+        nivel: es8vo ? "8°" : (es7mo ? "7°" : (es9no ? "9°" : (datos.nivel || "9°"))),
         puntaje: puntaje,
         puntajeMaximo: totalReactivos,
         porcentaje: porcentaje,
@@ -359,7 +426,7 @@ export default function QRScannerResultados({
         fallos: Math.max(0, totalReactivos - aciertos),
         subareasDetalle: subareasDetalle,
         timestamp: typeof datos.ts === "number" && datos.ts > 1000000000 ? datos.ts : Date.now(),
-        tokenAntiFraude: datos.tok || `TOKEN-${Date.now()}`,
+        tokenAntiFraude: datos.tok || datos.h || `TOKEN-${Date.now()}`,
       };
 
       setUltimoEscaneado(payload);
@@ -392,7 +459,7 @@ export default function QRScannerResultados({
 
     try {
       if (typeof window !== "undefined" && navigator.onLine) {
-        await fetch("/api/telemetria", {
+        await fetch("/api/telemetria/enviar", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(estudiante),
@@ -430,7 +497,7 @@ export default function QRScannerResultados({
 
       if (typeof window !== "undefined" && navigator.onLine) {
         try {
-          await fetch("/api/telemetria", {
+          await fetch("/api/telemetria/enviar", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(r),

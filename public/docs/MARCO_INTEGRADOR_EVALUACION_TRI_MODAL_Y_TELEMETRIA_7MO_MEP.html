@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Marco Integrador de Evaluación Tri-Modal y Telemetría Educativa — Sétimo Año (PNFT - MEP)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+    :root {
+      --mep-azul: #002b49;
+      --mep-rojo: #e30613;
+      --mep-celeste: #0072ce;
+      --mep-dorado: #d97706;
+      --verde-logrado: #059669;
+      --amarillo-proceso: #d97706;
+      --rojo-apoyo: #dc2626;
+      --bg-light: #f8fafc;
+      --card-bg: #ffffff;
+      --borde: #e2e8f0;
+      --texto-oscuro: #0f172a;
+      --texto-medio: #475569;
+      --texto-claro: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f1f5f9;
+      color: var(--texto-oscuro);
+      line-height: 1.6;
+      padding: 30px 20px;
+    }
+
+    .doc-container {
+      max-width: 960px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 50px 60px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      border: 1px solid var(--borde);
+    }
+
+    /* BARRA DE ACCIONES SUPERIOR */
+    .top-actions-bar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .btn-print {
+      background: var(--mep-azul);
+      color: #ffffff;
+      border-color: #001f35;
+    }
+
+    .btn-print:hover {
+      background: #001f35;
+      transform: translateY(-1px);
+    }
+
+    .btn-pdf {
+      background: #dc2626;
+      color: #ffffff;
+      border-color: #b91c1c;
+    }
+
+    .btn-pdf:hover {
+      background: #b91c1c;
+      transform: translateY(-1px);
+    }
+
+    /* HEADER INSTITUCIONAL */
+    .header-mep {
+      border-bottom: 3px solid var(--mep-azul);
+      padding-bottom: 25px;
+      margin-bottom: 35px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .header-left {
+      flex: 1;
+    }
+
+    .mep-tag {
+      display: inline-block;
+      background: #e0f2fe;
+      color: var(--mep-celeste);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .header-left h1 {
+      color: var(--mep-azul);
+      font-size: 26px;
+      font-weight: 900;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    .header-left h2 {
+      color: var(--texto-medio);
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .header-meta {
+      background: #f8fafc;
+      border: 1px solid var(--borde);
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 12px;
+      color: var(--texto-medio);
+      min-width: 230px;
+      text-align: right;
+    }
+
+    .header-meta strong {
+      color: var(--mep-azul);
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    /* SECCIONES Y ENCABEZADOS */
+    h3.section-title {
+      color: var(--mep-azul);
+      font-size: 19px;
+      font-weight: 800;
+      margin: 35px 0 15px 0;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h4.sub-title {
+      color: var(--mep-celeste);
+      font-size: 15px;
+      font-weight: 700;
+      margin: 20px 0 10px 0;
+    }
+
+    p {
+      color: var(--texto-medio);
+      font-size: 14px;
+      margin-bottom: 14px;
+      text-align: justify;
+    }
+
+    /* TABLAS */
+    table.custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0 25px 0;
+      font-size: 12.5px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--borde);
+    }
+
+    table.custom-table th {
+      background: var(--mep-azul);
+      color: #ffffff;
+      font-weight: 700;
+      text-align: left;
+      padding: 10px 12px;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    table.custom-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #f1f5f9;
+      color: var(--texto-oscuro);
+      vertical-align: top;
+    }
+
+    table.custom-table tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    /* BADGES */
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge-logrado { background: #dcfce7; color: #15803d; }
+    .badge-proceso { background: #fef3c7; color: #b45309; }
+    .badge-apoyo { background: #fee2e2; color: #b91c1c; }
+    .badge-info { background: #e0f2fe; color: #0369a1; }
+    .badge-purple { background: #f3e8ff; color: #7e22ce; }
+
+    /* CAJAS DE INFORMACIÓN */
+    .callout {
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 20px 0;
+      font-size: 13.5px;
+      line-height: 1.55;
+    }
+
+    .callout-blue {
+      background: #f0f9ff;
+      border-left: 5px solid var(--mep-celeste);
+      color: #0c4a6e;
+    }
+
+    .callout-green {
+      background: #f0fdf4;
+      border-left: 5px solid var(--verde-logrado);
+      color: #14532d;
+    }
+
+    .callout-amber {
+      background: #fffbeb;
+      border-left: 5px solid var(--mep-dorado);
+      color: #78350f;
+    }
+
+    /* GRID MODALIDADES */
+    .grid-modalidades {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .card-modalidad {
+      background: #ffffff;
+      border: 1.5px solid var(--borde);
+      border-radius: 14px;
+      padding: 18px 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-modalidad.online { border-top: 5px solid #0284c7; }
+    .card-modalidad.offline { border-top: 5px solid #059669; }
+    .card-modalidad.impreso { border-top: 5px solid #d97706; }
+
+    .card-modalidad h5 {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--mep-azul);
+      margin-bottom: 8px;
+    }
+
+    .card-modalidad ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 8px 0 0 0;
+      font-size: 12px;
+      color: var(--texto-medio);
+    }
+
+    .card-modalidad ul li {
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+
+    .card-modalidad ul li strong {
+      color: var(--texto-oscuro);
+    }
+
+    /* CÓDIGO Y ESTRUCTURAS */
+    .code-box {
+      background: #0f172a;
+      color: #f8fafc;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      padding: 14px 18px;
+      border-radius: 10px;
+      margin: 14px 0;
+      overflow-x: auto;
+      line-height: 1.5;
+    }
+
+    /* FLUJOS */
+    .flow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+      font-size: 13.5px;
+    }
+
+    .flow-num {
+      background: var(--mep-azul);
+      color: #ffffff;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    /* FOOTER */
+    .footer-doc {
+      margin-top: 45px;
+      border-top: 2px solid var(--borde);
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--texto-claro);
+    }
+
+    .footer-authors {
+      font-weight: 700;
+      color: var(--mep-azul);
+    }
+
+    /* IMPRESIÓN */
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .top-actions-bar {
+        display: none !important;
+      }
+      .doc-container {
+        padding: 0;
+        box-shadow: none;
+        border: none;
+        max-width: 100%;
+      }
+      .page-break {
+        page-break-before: always;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="doc-container">
+
+  <!-- BARRA DE ACCIONES SUPERIOR -->
+  <div class="top-actions-bar">
+    <button class="btn-action btn-print" onclick="window.print()">
+      🖨️ Imprimir Documento
+    </button>
+    <a class="btn-action btn-pdf" href="MARCO_INTEGRADOR_EVALUACION_TRI_MODAL_Y_TELEMETRIA_7MO_MEP.pdf" download target="_blank">
+      📥 Descargar PDF Oficial
+    </a>
+  </div>
+
+  <!-- ENCABEZADO INSTITUCIONAL -->
+  <div class="header-mep">
+    <div class="header-left">
+      <span class="mep-tag">Documento Técnico-Pedagógico Oficial 2027</span>
+      <h1>Marco Integrador de Evaluación Tri-Modal y Telemetría Educativa</h1>
+      <h2>Ecosistema Diagnóstico de Sétimo Año: Modalidad En Línea, Local Desconectada y Formato Impreso</h2>
+    </div>
+    <div class="header-meta">
+      <strong>MEP — DRTE — PNFT</strong>
+      <span>III Ciclo de la Educación General Básica</span><br>
+      <span>Módulo 01: CyberQuest y Pensamiento Computacional</span><br>
+      <span style="font-weight:700; color:var(--mep-azul);">Febrero 2027</span>
+    </div>
+  </div>
+
+  <!-- INTRODUCCIÓN Y NOMBRE INTEGRADOR -->
+  <div class="callout callout-blue">
+    <strong>Propósito del Ecosistema Integrador:</strong><br>
+    Este documento formaliza la arquitectura del <strong>Sistema Integrador de Evaluación Diagnóstica Tri-Modal del PNFT (SIED-TM)</strong> para <strong>Sétimo Año</strong>. Garantiza una cobertura diagnóstica inclusiva (DUA) al 100% de la población estudiantil nacional mediante tres canales de aplicación interoperables: <em>(1) Digital En Línea con Telemetría Centralizada</em>, <em>(2) Digital Local Desconectada con Telemetría QR, JSON y CSV</em> y <em>(3) Formato Físico Impreso con Guía de Observación Docente Cualitativa y Rúbrica de Homologación</em>.
+  </div>
+
+  <!-- SECCIÓN 1: LAS TRES MODALIDADES DE APLICACIÓN -->
+  <h3 class="section-title">1. Ecosistema de Evaluación Tri-Modal: Descripción Operativa</h3>
+  <p>
+    Para superar las brechas de conectividad y equipamiento en las diferentes instituciones educativas del país, el sistema diagnostica las mismas dimensiones formativas (Psicomotriz, Cognitiva y Socioafectiva) a través de tres vías armonizadas:
+  </p>
+
+  <div class="grid-modalidades">
+    <!-- MODALIDAD 1 -->
+    <div class="card-modalidad online">
+      <span class="badge badge-info" style="align-self: flex-start; margin-bottom: 6px;">Canal 1</span>
+      <h5>🌐 Digital En Línea</h5>
+      <p style="font-size:12px; margin-bottom:6px;">Aplicativo web interactivo alojado en el portal oficial MEP.</p>
+      <ul>
+        <li><strong>Telemetría:</strong> Envío en tiempo real vía <code>POST /api/telemetria/enviar</code>.</li>
+        <li><strong>Captura Automática:</strong> Cronometraje por fase, tasa de colisiones, latencias y token criptográfico SHA-256.</li>
+        <li><strong>Sincronización:</strong> Ingesta inmediata en el Dashboard Analítico Docente en 0ms.</li>
+        <li><strong>Modalidad:</strong> Parejas (Líder y Co-piloto) o Individual.</li>
+      </ul>
+    </div>
+
+    <!-- MODALIDAD 2 -->
+    <div class="card-modalidad offline">
+      <span class="badge badge-logrado" style="align-self: flex-start; margin-bottom: 6px;">Canal 2</span>
+      <h5>💻 Digital Local Desconectada</h5>
+      <p style="font-size:12px; margin-bottom:6px;">Archivo único autocontenido (HTML5 puro) ejecutable sin internet.</p>
+      <ul>
+        <li><strong>Código QR Ultracompacto:</strong> Inyección en Canvas pixel a pixel con <code>QRCodeModel</code> nativo.</li>
+        <li><strong>Fichas Descargables:</strong> Exportación de expedientes en <code>.json</code> y <code>.csv</code> compatibles con Excel.</li>
+        <li><strong>Lectura Óptica:</strong> Escaneo en segundos mediante la cámara del móvil del docente.</li>
+        <li><strong>Cero Pérdida de Datos:</strong> Persistencia local en el dispositivo.</li>
+      </ul>
+    </div>
+
+    <!-- MODALIDAD 3 -->
+    <div class="card-modalidad impreso">
+      <span class="badge badge-proceso" style="align-self: flex-start; margin-bottom: 6px;">Canal 3</span>
+      <h5>📄 Formato Físico Impreso</h5>
+      <p style="font-size:12px; margin-bottom:6px;">Cuadernillo estructurado para aulas sin dispositivos de cómputo.</p>
+      <ul>
+        <li><strong>Ficha de Resolución:</strong> Laberinto 4x4 gráfico, canal senoidal y 10 reactivos de opción múltiple.</li>
+        <li><strong>Observación Docente:</strong> Rúbrica formativa cualitativa para cotejo en mesa de trabajo.</li>
+        <li><strong>Transcripción Ágil:</strong> Módulo de registro manual rápido en el panel evaluador para consolidación unificada.</li>
+        <li><strong>Equidad DUA:</strong> Mismos indicadores que la versión digital.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 2: MATRIZ DE CORRESPONDENCIA CURRICULAR E INDICADORES OFICIALES -->
+  <h3 class="section-title">2. Matriz de Correspondencia Curricular: Indicadores de Sétimo Año</h3>
+  <p>
+    El diagnóstico de Sétimo Año evalúa 10 reactivos del área cognoscitiva, 4 retos psicomotrices y 4 indicadores socioafectivos, alineados a los programas vigentes del MEP:
+  </p>
+
+  <table class="custom-table">
+    <thead>
+      <tr>
+        <th style="width: 14%;">Reactivo / Reto</th>
+        <th style="width: 32%;">Indicador Curricular Oficial (PNFT 2027)</th>
+        <th style="width: 24%;">Componente Evaluado</th>
+        <th style="width: 30%;">Telemetría / Evidencia Capturada</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Reto P1 (Psico)</strong></td>
+        <td><strong>Ind. P1:</strong> Orientación espacial y lateralidad en cuadrículas 2D.</td>
+        <td>Mando discreto en Rejilla 4x4</td>
+        <td>Movimientos totales, colisiones con fuego 🔥, tiempo (segundos) y meta alcanzada.</td>
+      </tr>
+      <tr>
+        <td><strong>Reto P2 (Psico)</strong></td>
+        <td><strong>Ind. P2:</strong> Control inhibitorio motor y discriminación temporal ante estímulos.</td>
+        <td>Semáforo de tiempos y ritmo</td>
+        <td>Tiempos de reacción (ms), clics en falso (color rojo) y aciertos en ventana verde.</td>
+      </tr>
+      <tr>
+        <td><strong>Reto P3 (Psico)</strong></td>
+        <td><strong>Ind. P3:</strong> Coordinación motriz fina visomanual en trayectorias curvas continuas.</td>
+        <td>Canal senoidal de precisión</td>
+        <td>Trayectoria continua, colisiones perimetrales y porcentaje de precisión motriz (0-100%).</td>
+      </tr>
+      <tr>
+        <td><strong>Reto P4 (Psico)</strong></td>
+        <td><strong>Ind. P4:</strong> Representación esquemática básica de la arquitectura computacional.</td>
+        <td>Canvas de trazo libre</td>
+        <td>Cantidad de trazos vectoriales e imagen del plano renderizada en Base64.</td>
+      </tr>
+      <tr>
+        <td><strong>Ítem 1 (Cog)</strong></td>
+        <td><strong>Ind. 1:</strong> Identificar la función de dispositivos de entrada, salida y almacenamiento.</td>
+        <td>Hardware y Periféricos</td>
+        <td>Opción elegida (Teclado/Mouse/Micrófono), validación booleana y latencia.</td>
+      </tr>
+      <tr>
+        <td><strong>Ítem 2 (Cog)</strong></td>
+        <td><strong>Ind. 2:</strong> Diferenciar aplicaciones de usuario de programas utilitarios y de seguridad.</td>
+        <td>Software y Mantenimiento</td>
+        <td>Opción elegida (Antivirus y optimización de disco), validación booleana.</td>
+      </tr>
+      <tr>
+        <td><strong>Ítem 3 (Cog)</strong></td>
+        <td><strong>Ind. 3:</strong> Reconocer las funciones cardinales del sistema operativo en la administración de recursos.</td>
+        <td>Sistemas Operativos</td>
+        <td>Opción elegida (Puente entre hardware y software), validación booleana.</td>
+      </tr>
+      <tr>
+        <td><strong>Ítem 4 (Cog)</strong></td>
+        <td><strong>Ind. 4:</strong> Identificar el rol de las redes de área local para compartir recursos informáticos.</td>
+        <td>Redes y Conectividad</td>
+        <td>Opción elegida (Conexión en red para compartir impresora/Internet).</td>
+      </tr>
+      <tr>
+        <td><strong>Ítem 5 (Cog)</strong></td>
+        <td><strong>Ind. 5:</strong> Relacionar extensiones de archivo con el tipo de información digital almacenada.</td>
+        <td>Formatos Digitales</td>
+        <td>Opción elegida (Formatos de audio .mp3 / .wav para pódcast escolar).</td>
+      </tr>
+      <tr>
+        <td><strong>Ítem 6 (Cog)</strong></td>
+        <td><strong>Ind. 6:</strong> Aplicar operaciones de transformación y corrección visual sobre imágenes digitales.</td>
+        <td>Edición Gráfica Digital</td>
+        <td>Opción elegida (Recorte de encuadre y ajuste de brillo).</td>
+      </tr>
+      <tr>
+        <td><strong>Ítem 7 (Cog)</strong></td>
+        <td><strong>Ind. 7:</strong> Identificar disparadores de acción (eventos) en entornos de programación por bloques.</td>
+        <td>Algoritmos y Eventos</td>
+        <td>Opción elegida (Bloque <code>Al hacer clic en este objeto</code>).</td>
+      </tr>
+      <tr>
+        <td><strong>Ítem 8 (Cog)</strong></td>
+        <td><strong>Ind. 8:</strong> Realizar traza secuencial de variables en estructuras repetitivas (bucles).</td>
+        <td>Variables y Ciclos</td>
+        <td>Opción elegida (Traza de <code>Repetir 3 veces { puntos = puntos + 5 }</code> = 15).</td>
+      </tr>
+      <tr>
+        <td><strong>Ítem 9 (Cog)</strong></td>
+        <td><strong>Ind. 9:</strong> Evaluar estructuras condicionales simples (<code>Si / Si no</code>) basadas en umbrales.</td>
+        <td>Condicionales Simples</td>
+        <td>Opción elegida (Activación de modo ahorro ante batería &lt; 20%).</td>
+      </tr>
+      <tr>
+        <td><strong>Ítem 10 (Cog)</strong></td>
+        <td><strong>Ind. 10:</strong> Determinar el valor de verdad en condiciones compuestas con el operador lógico <code>Y</code>.</td>
+        <td>Lógica Proposicional</td>
+        <td>Opción elegida (Evaluación de <code>(10 &gt; 5) Y (4 + 2 == 6)</code> = Verdadero).</td>
+      </tr>
+      <tr>
+        <td><strong>Escala Socioafectiva</strong></td>
+        <td><strong>Ind. S1-S4:</strong> Minuciosidad (S1), Resiliencia (S2), Sinergia colaborativa (S3) y Perseverancia (S4).</td>
+        <td>Dimensión Actitudinal</td>
+        <td>Vector Likert <code>{s1, s2, s3, s4}</code>, autopercepción formativa y sinergia de pareja.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SALTO DE PÁGINA PARA IMPRESIÓN -->
+  <div class="page-break"></div>
+
+  <!-- SECCIÓN 3: TELEMETRÍA EN EL INSTRUMENTO DESCARGADO (HTML OFFLINE) Y CÓDIGO QR -->
+  <h3 class="section-title">3. Telemetría en el Formato Local Descargado (HTML Offline) y Empaquetado QR</h3>
+  <p>
+    En el aplicativo descargado (<code>diagnostico_7mo_modulo01_desconectado_offline.html</code>), el motor en JavaScript calcula las métricas formativas en la memoria del navegador del estudiante. Al finalizar la Fase 4, consolida el diagnóstico y genera un <strong>Código QR ultracompacto (&lt; 250 caracteres)</strong> diseñado para garantizar lectura instantánea con cualquier cámara:
+  </p>
+
+  <div class="code-box">
+    <div style="color: #38bdf8; font-weight: bold; margin-bottom: 6px;">// Estructura JSON del Payload QR Ultracompacto:</div>
+{<br>
+&nbsp;&nbsp;"t": "MEP7",<br>
+&nbsp;&nbsp;"tipo": "CYBERQUEST_7MO",<br>
+&nbsp;&nbsp;"sec": "7-1",<br>
+&nbsp;&nbsp;"c1": "Alberto Bustos Ortega",<br>
+&nbsp;&nbsp;"a1": "🤖",<br>
+&nbsp;&nbsp;"c2": "Carlos Rojas Solís",<br>
+&nbsp;&nbsp;"a2": "⚡",<br>
+&nbsp;&nbsp;"p": 95, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Puntaje Psicomotriz (0-100)<br>
+&nbsp;&nbsp;"c": 90, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Puntaje Cognitivo (0-100)<br>
+&nbsp;&nbsp;"s": 100, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Puntaje Socioafectivo (0-100)<br>
+&nbsp;&nbsp;"g": 93, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Promedio Global Ponderado<br>
+&nbsp;&nbsp;"lvl": "A", &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Nivel Sugerido (A: Avanzado, B: Intermedio, C: Inicial)<br>
+&nbsp;&nbsp;"h": "HASH-7MO-KX92A1", &nbsp;// Token Antifraude SHA-256<br>
+&nbsp;&nbsp;"xp": 450, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Puntos de Experiencia Gamificados<br>
+&nbsp;&nbsp;"ts": 1790348000000 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Marca de Tiempo Epoch<br>
+}
+  </div>
+
+  <div class="callout callout-green">
+    <strong>Ventajas del Formato QR Condensado y Fichas Locales:</strong>
+    <ul style="margin-left: 20px; font-size: 13px; margin-top: 6px;">
+      <li><strong>Densidad Óptima (Versión QR 3 a 5):</strong> Módulos más grandes y legibles, permitiendo escaneo rápido a distancia incluso en pantallas con bajo brillo.</li>
+      <li><strong>Descarga de Archivos (.JSON y .CSV):</strong> Si el aula no dispone de cámaras para escanear, el estudiante descarga su ficha técnica y el docente las consolida en bloque mediante llave USB.</li>
+      <li><strong>Autosincronización al Padrón Central:</strong> Al escanear el QR desde el Panel Evaluador Docente, si hay internet se sincroniza con el servidor central; si no, queda registrado en la base de datos local del navegador.</li>
+    </ul>
+  </div>
+
+  <!-- SECCIÓN 4: MODELO HÍBRIDO ASISTIDO (TELEMETRÍA AUTOMÁTICA VS. RECTIFICACIÓN HUMANA) -->
+  <h3 class="section-title">4. Modelo Híbrido Asistido: Telemetría Automática vs. Intervención Docente</h3>
+  <p>
+    El sistema opera bajo el principio de <strong>Soberanía Pedagógica</strong>: la telemetría proporciona mediciones objetivas a velocidad de milisegundos, pero el docente evaluador conserva la potestad absoluta de validar, rectificar y contextualizar las valoraciones finales:
+  </p>
+
+  <table class="custom-table">
+    <thead>
+      <tr>
+        <th style="width: 50%; background:#0369a1;">🤖 Lo que Realiza la Telemetría Automática</th>
+        <th style="width: 50%; background:#002b49;">👨‍🏫 Lo que Realiza el Docente Evaluador</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          • Cronometra los tiempos de respuesta y latencia por fase.<br>
+          • Registra conteo de colisiones, trayectorias y precisión motriz.<br>
+          • Autocalifica los 10 reactivos lógicos y pondera el puntaje.<br>
+          • Empaqueta el token SHA-256 y dibuja el Canvas QR.<br>
+          • Sugiere el nivel preliminar (Nivel A, B o C).
+        </td>
+        <td>
+          • Rectifica datos de matrícula o errores tipográficos mediante PIN docente.<br>
+          • Ajusta el nivel de logro global si mediaron factores externos.<br>
+          • Caracteriza estilos de aprendizaje DUA y apoyos requeridos.<br>
+          • Redacta observaciones formativas cualitativas institucionales.<br>
+          • Emite y firma el Acta Oficial de Diagnóstico MEP.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECCIÓN 5: PROTOCOLO PARA LA MODALIDAD IMPRESA -->
+  <h3 class="section-title">5. Protocolo de Abordaje Pedagógico en Formato Impreso</h3>
+  <p>
+    Para centros educativos que apliquen la evaluación diagnóstica de forma física en papel, se establece la siguiente secuencia de abordaje e integración:
+  </p>
+
+  <div class="flow-step">
+    <div class="flow-num">1</div>
+    <div><strong>Resolución Cognitiva y Psicomotriz en Cuadernillo:</strong> El estudiante (o pareja) traza la ruta en la rejilla 4x4 impresa, dibuja la curva senoidal continua, elabora el esquema del computador y responde los 10 reactivos de selección única.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">2</div>
+    <div><strong>Autoevaluación Socioafectiva:</strong> Marca la escala Likert de 4 preguntas sobre minuciosidad, resiliencia, trabajo colaborativo y tolerancia a la frustración.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">3</div>
+    <div><strong>Observación y Rúbrica Docente:</strong> El docente coteja el desempeño con la rúbrica formativa estandarizada al reverso del instrumento.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">4</div>
+    <div><strong>Digitación Rápida en el Panel Evaluador:</strong> El docente ingresa al Panel de Sétimo Año, activa la opción <em>"Registro Manual Rápido"</em> e introduce los aciertos para generar las actas consolidadas en el mismo padrón digital.</div>
+  </div>
+
+  <!-- SECCIÓN 6: MÁQUINA DE ESTADOS Y FLUJO DE CIERRE -->
+  <h3 class="section-title">6. Máquina de Estados y Flujo de Cierre por Fases (Fases 0 &rarr; 4)</h3>
+  <p>
+    La información viaja de forma estructurada a través de una <strong>máquina de estados por fases secuenciales</strong>:
+  </p>
+
+  <div style="background:#f8fafc; border:1.5px solid var(--borde); border-radius:12px; padding:16px; margin:16px 0;">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+      <div style="text-align:center; flex:1; min-width:130px; background:#fff; padding:10px; border-radius:8px; border:1px solid #cbd5e1;">
+        <span class="badge badge-info">Fase 0</span>
+        <div style="font-weight:800; font-size:12px; margin-top:4px;">Identificación</div>
+        <div style="font-size:11px; color:var(--texto-medio);">Líder + Copiloto / Sección</div>
+      </div>
+      <div style="font-weight:bold; color:var(--mep-celeste);">&rarr;</div>
+      <div style="text-align:center; flex:1; min-width:130px; background:#fff; padding:10px; border-radius:8px; border:1px solid #cbd5e1;">
+        <span class="badge badge-info">Fase 1</span>
+        <div style="font-weight:800; font-size:12px; margin-top:4px;">Psicomotriz</div>
+        <div style="font-size:11px; color:var(--texto-medio);">4 Retos Prácticos</div>
+      </div>
+      <div style="font-weight:bold; color:var(--mep-celeste);">&rarr;</div>
+      <div style="text-align:center; flex:1; min-width:130px; background:#fff; padding:10px; border-radius:8px; border:1px solid #cbd5e1;">
+        <span class="badge badge-info">Fase 2</span>
+        <div style="font-weight:800; font-size:12px; margin-top:4px;">Cognitiva</div>
+        <div style="font-size:11px; color:var(--texto-medio);">10 Reactivos Lógicos</div>
+      </div>
+      <div style="font-weight:bold; color:var(--mep-celeste);">&rarr;</div>
+      <div style="text-align:center; flex:1; min-width:130px; background:#fff; padding:10px; border-radius:8px; border:1px solid #cbd5e1;">
+        <span class="badge badge-info">Fase 3</span>
+        <div style="font-weight:800; font-size:12px; margin-top:4px;">Socioafectiva</div>
+        <div style="font-size:11px; color:var(--texto-medio);">4 Escalas Likert</div>
+      </div>
+      <div style="font-weight:bold; color:var(--mep-celeste);">&rarr;</div>
+      <div style="text-align:center; flex:1; min-width:130px; background:#fff; padding:10px; border-radius:8px; border:1px solid #cbd5e1;">
+        <span class="badge badge-logrado">Fase 4</span>
+        <div style="font-weight:800; font-size:12px; margin-top:4px;">Consolidación</div>
+        <div style="font-size:11px; color:var(--texto-medio);">QR / JSON / CSV / API</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PIE DE PÁGINA Y CRÉDITOS -->
+  <div class="footer-doc">
+    <div>
+      <div class="footer-authors">Allan Morera Araya • Alberto Bustos Ortega</div>
+      <div style="font-size:11px;">Asesores Nacionales de Formación Tecnológica — Dirección de Recursos Tecnológicos en Educación</div>
+    </div>
+    <div style="text-align:right;">
+      <div>Ministerio de Educación Pública de Costa Rica</div>
+      <div style="font-size:11px; color:var(--mep-celeste); font-weight:700;">Gestión Curricular 2027</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

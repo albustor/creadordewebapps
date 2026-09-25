@@ -111,6 +111,54 @@ export default function ModalDocumentacionOficial({
             </div>
           </div>
 
+          {/* Tarjeta Marco Integrador Tri-Modal 9.° Año (Nuevo) */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-indigo-50/70 via-white to-purple-50/30 border border-indigo-200 shadow-2xs space-y-3">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-[#002b49] text-white flex items-center justify-center font-black text-xs shadow-xs">
+                  9° TM
+                </div>
+                <div>
+                  <h4 className="font-extrabold text-slate-900 text-sm sm:text-base leading-snug">
+                    Marco Integrador de Evaluación Tri-Modal y Telemetría — 9.° Año
+                  </h4>
+                  <span className="text-[11px] text-indigo-700 font-bold">
+                    Ecosistema Tri-Modal: En Línea, Local Desconectado (QR/USB) e Impreso
+                  </span>
+                </div>
+              </div>
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-100 text-indigo-800 shrink-0">
+                Nuevo Oficial
+              </span>
+            </div>
+
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Define la arquitectura tri-modal estandarizada (en línea, HTML offline con QR condensado &lt; 300 caracteres y formato impreso), matriz de 10 reactivos e indicadores MEP, telemetría automática y protocolo de validación docente.
+            </p>
+
+            <div className="flex items-center gap-2.5 pt-1 flex-wrap">
+              <a
+                href="/docs/MARCO_INTEGRADOR_EVALUACION_TRI_MODAL_Y_TELEMETRIA_9NO_MEP.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                download="MARCO_INTEGRADOR_EVALUACION_TRI_MODAL_Y_TELEMETRIA_9NO_MEP.pdf"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-black shadow-xs transition-colors cursor-pointer"
+              >
+                <FilePdf size={16} weight="bold" />
+                <span>Descargar PDF Tri-Modal</span>
+              </a>
+              <a
+                href="/docs/MARCO_INTEGRADOR_EVALUACION_TRI_MODAL_Y_TELEMETRIA_9NO_MEP.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-indigo-50 text-indigo-900 border border-indigo-300 text-xs font-bold shadow-2xs transition-colors cursor-pointer"
+              >
+                <ArrowSquareOut size={16} weight="bold" />
+                <span>Ver Documento Web</span>
+              </a>
+            </div>
+          </div>
+
           {/* Tarjeta 9.° Año */}
           <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-emerald-50/70 via-white to-emerald-50/30 border border-emerald-200 shadow-2xs space-y-3">
             <div className="flex items-start justify-between gap-3">

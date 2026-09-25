@@ -989,7 +989,7 @@ export default function PanelDocenteSimplificado() {
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">
                   {seccionActivaMenu === "enlaces" && "Genere enlaces y códigos QR en línea o descargue el archivo para PCs sin conexión."}
-                  {seccionActivaMenu === "cognitivo" && "Registro y monitoreo de respuestas, nivel de logro y reactivos oficiales del programa MEP."}
+                  {seccionActivaMenu === "cognitivo" && "Registro y monitoreo de respuestas, nivel de logro y criterios oficiales del programa MEP."}
                   {seccionActivaMenu === "socioafectivo" && "Registro y seguimiento de los 4 criterios socioafectivos oficiales (S1: Precisión, S2: Error, S3: Flexibilidad, S4: Confort)."}
                   {seccionActivaMenu === "psicomotriz" && "Registro y evaluación de destrezas operativas, conexionado circuital (MCU, LDR, Actuador) y motricidad fina."}
                   {seccionActivaMenu === "sistematizacion" && "Matriz oficial de sistematización curricular con exportación inmediata a Excel y PDF."}

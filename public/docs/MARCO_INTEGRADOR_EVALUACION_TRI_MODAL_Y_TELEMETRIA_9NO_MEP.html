@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Marco Integrador de Evaluación Tri-Modal y Telemetría Educativa — 9.° Año (PNFT - MEP)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+    :root {
+      --mep-azul: #002b49;
+      --mep-rojo: #e30613;
+      --mep-celeste: #0072ce;
+      --mep-dorado: #d97706;
+      --verde-logrado: #059669;
+      --amarillo-proceso: #d97706;
+      --rojo-apoyo: #dc2626;
+      --bg-light: #f8fafc;
+      --card-bg: #ffffff;
+      --borde: #e2e8f0;
+      --texto-oscuro: #0f172a;
+      --texto-medio: #475569;
+      --texto-claro: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f1f5f9;
+      color: var(--texto-oscuro);
+      line-height: 1.6;
+      padding: 30px 20px;
+    }
+
+    .doc-container {
+      max-width: 960px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 50px 60px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      border: 1px solid var(--borde);
+    }
+
+    /* HEADER INSTITUCIONAL */
+    .header-mep {
+      border-bottom: 3px solid var(--mep-azul);
+      padding-bottom: 25px;
+      margin-bottom: 35px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .header-left {
+      flex: 1;
+    }
+
+    .mep-tag {
+      display: inline-block;
+      background: #e0f2fe;
+      color: var(--mep-celeste);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .header-left h1 {
+      color: var(--mep-azul);
+      font-size: 26px;
+      font-weight: 900;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    .header-left h2 {
+      color: var(--texto-medio);
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .header-meta {
+      background: #f8fafc;
+      border: 1px solid var(--borde);
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 12px;
+      color: var(--texto-medio);
+      min-width: 220px;
+      text-align: right;
+    }
+
+    .header-meta strong {
+      color: var(--mep-azul);
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    /* SECCIONES Y ENCABEZADOS */
+    h3.section-title {
+      color: var(--mep-azul);
+      font-size: 19px;
+      font-weight: 800;
+      margin: 35px 0 15px 0;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h4.sub-title {
+      color: var(--mep-celeste);
+      font-size: 15px;
+      font-weight: 700;
+      margin: 20px 0 10px 0;
+    }
+
+    p {
+      color: var(--texto-medio);
+      font-size: 14px;
+      margin-bottom: 14px;
+      text-align: justify;
+    }
+
+    /* TABLAS */
+    table.custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0 25px 0;
+      font-size: 12.5px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--borde);
+    }
+
+    table.custom-table th {
+      background: var(--mep-azul);
+      color: #ffffff;
+      font-weight: 700;
+      text-align: left;
+      padding: 10px 12px;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    table.custom-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #f1f5f9;
+      color: var(--texto-oscuro);
+      vertical-align: top;
+    }
+
+    table.custom-table tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    /* BADGES */
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge-logrado { background: #dcfce7; color: #15803d; }
+    .badge-proceso { background: #fef3c7; color: #b45309; }
+    .badge-apoyo { background: #fee2e2; color: #b91c1c; }
+    .badge-info { background: #e0f2fe; color: #0369a1; }
+    .badge-purple { background: #f3e8ff; color: #7e22ce; }
+
+    /* CAJAS DE INFORMACIÓN */
+    .callout {
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 20px 0;
+      font-size: 13.5px;
+      line-height: 1.55;
+    }
+
+    .callout-blue {
+      background: #f0f9ff;
+      border-left: 5px solid var(--mep-celeste);
+      color: #0c4a6e;
+    }
+
+    .callout-green {
+      background: #f0fdf4;
+      border-left: 5px solid var(--verde-logrado);
+      color: #14532d;
+    }
+
+    .callout-amber {
+      background: #fffbeb;
+      border-left: 5px solid var(--mep-dorado);
+      color: #78350f;
+    }
+
+    /* GRID MODALIDADES */
+    .grid-modalidades {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .card-modalidad {
+      background: #ffffff;
+      border: 1.5px solid var(--borde);
+      border-radius: 14px;
+      padding: 18px 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-modalidad.online { border-top: 5px solid #0284c7; }
+    .card-modalidad.offline { border-top: 5px solid #059669; }
+    .card-modalidad.impreso { border-top: 5px solid #d97706; }
+
+    .card-modalidad h5 {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--mep-azul);
+      margin-bottom: 8px;
+    }
+
+    .card-modalidad ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 8px 0 0 0;
+      font-size: 12px;
+      color: var(--texto-medio);
+    }
+
+    .card-modalidad ul li {
+      margin-bottom: 6px;
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .card-modalidad ul li::before {
+      content: "•";
+      color: var(--mep-celeste);
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+
+    /* CODE SNIPPET */
+    code, pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+    }
+
+    .code-box {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 14px 18px;
+      border-radius: 10px;
+      margin: 14px 0;
+      overflow-x: auto;
+    }
+
+    /* DIAGRAMA VISUAL */
+    .flow-step {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #f8fafc;
+      border: 1px solid var(--borde);
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      font-size: 12.5px;
+    }
+
+    .flow-num {
+      background: var(--mep-azul);
+      color: #fff;
+      font-weight: 800;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    /* FOOTER */
+    .footer-doc {
+      margin-top: 45px;
+      border-top: 2px solid var(--borde);
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--texto-claro);
+    }
+
+    .footer-authors {
+      font-weight: 700;
+      color: var(--mep-azul);
+    }
+
+    /* IMPRESIÓN */
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .doc-container {
+        padding: 0;
+        box-shadow: none;
+        border: none;
+        max-width: 100%;
+      }
+      .page-break {
+        page-break-before: always;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="doc-container">
+
+  <!-- ENCABEZADO INSTITUCIONAL -->
+  <div class="header-mep">
+    <div class="header-left">
+      <span class="mep-tag">Documento Técnico-Pedagógico Oficial 2027</span>
+      <h1>Marco Integrador de Evaluación Tri-Modal y Telemetría Educativa</h1>
+      <h2>Ecosistema Diagnóstico de 9.° Año: Modalidad En Línea, Local Desconectada y Formato Impreso</h2>
+    </div>
+    <div class="header-meta">
+      <strong>MEP — DRTE — PNFT</strong>
+      <span>III Ciclo de la Educación General Básica</span><br>
+      <span>Módulo 01: Aula Inteligente y Domótica</span><br>
+      <span style="font-weight:700; color:var(--mep-azul);">Febrero 2027</span>
+    </div>
+  </div>
+
+  <!-- INTRODUCCIÓN Y NOMBRE INTEGRADOR -->
+  <div class="callout callout-blue">
+    <strong>Propósito del Ecosistema Integrador:</strong><br>
+    Este documento formaliza la arquitectura del <strong>Sistema Integrador de Evaluación Diagnóstica Tri-Modal del PNFT (SIED-TM)</strong> para 9.° Año. Garantiza una cobertura diagnóstica inclusiva (DUA) al 100% de la población estudiantil nacional mediante tres canales de aplicación interoperables: <em>(1) Digital En Línea con Telemetría Centralizada</em>, <em>(2) Digital Local Desconectada con Telemetría QR/USB</em> y <em>(3) Formato Físico Impreso con Guía de Observación Docente Cualitativa</em>.
+  </div>
+
+  <!-- SECCIÓN 1: LAS TRES MODALIDADES DE APLICACIÓN -->
+  <h3 class="section-title">1. Ecosistema de Evaluación Tri-Modal: Descripción Operativa</h3>
+  <p>
+    Para superar las brechas de conectividad y equipamiento en las diferentes instituciones educativas del país, el sistema diagnostica las mismas dimensiones formativas (Cognitiva, Psicomotora y Socioafectiva) a través de tres vías armonizadas:
+  </p>
+
+  <div class="grid-modalidades">
+    <!-- MODALIDAD 1 -->
+    <div class="card-modalidad online">
+      <span class="badge badge-info" style="align-self: flex-start; margin-bottom: 6px;">Canal 1</span>
+      <h5>🌐 Digital En Línea</h5>
+      <p style="font-size:12px; margin-bottom:6px;">Aplicativo web interactivo alojado en el portal oficial MEP.</p>
+      <ul>
+        <li><strong>Telemetría:</strong> Envío en tiempo real vía <code>POST /api/telemetria/enviar</code>.</li>
+        <li><strong>Captura Automática:</strong> Cronometraje por etapa, tasa de fallos, pérdida de foco/pestaña y token SHA-256.</li>
+        <li><strong>Sincronización:</strong> Ingesta inmediata en el Dashboard Analítico Docente.</li>
+      </ul>
+    </div>
+
+    <!-- MODALIDAD 2 -->
+    <div class="card-modalidad offline">
+      <span class="badge badge-logrado" style="align-self: flex-start; margin-bottom: 6px;">Canal 2</span>
+      <h5>💾 Local Desconectada (Offline)</h5>
+      <p style="font-size:12px; margin-bottom:6px;">Archivo HTML interactivo autónomo (0 dependencias) ejecutable sin internet.</p>
+      <ul>
+        <li><strong>Telemetría Local:</strong> Algoritmo de autocalificación y empaquetado seguro en el navegador.</li>
+        <li><strong>Transporte de Datos:</strong> Código QR ultracompacto (&lt; 300 caracteres), descarga de Ficha JSON y CSV en llave USB.</li>
+        <li><strong>Lectura:</strong> Escaneado directo con celular/laptop en el Módulo Docente.</li>
+      </ul>
+    </div>
+
+    <!-- MODALIDAD 3 -->
+    <div class="card-modalidad impreso">
+      <span class="badge badge-proceso" style="align-self: flex-start; margin-bottom: 6px;">Canal 3</span>
+      <h5>🖨️ Formato Físico Impreso</h5>
+      <p style="font-size:12px; margin-bottom:6px;">Instrumento impreso en papel para laboratorios sin acceso a dispositivos.</p>
+      <ul>
+        <li><strong>Observación Docente:</strong> Rúbrica de cotejo para montaje en hardware físico real o diagramas.</li>
+        <li><strong>Registro Manual:</strong> Matriz de 10 reactivos y escala socioafectiva formativa.</li>
+        <li><strong>Abordaje DUA:</strong> El docente digita el consolidado en el padrón del Dashboard.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 2: MATRIZ DE ALINEAMIENTO DE ÍTEMS E INDICADORES OFICIALES MEP -->
+  <h3 class="section-title">2. Matriz de Alineamiento: Reactivos, Indicadores MEP y Telemetría</h3>
+  <p>
+    Cada uno de los 10 reactivos cognitivos, la prueba psicomotora de conexionado y la reflexión socioafectiva tributan a un indicador específico del Programa de Estudio oficial de Formación Tecnológica:
+  </p>
+
+  <table class="custom-table">
+    <thead>
+      <tr>
+        <th style="width: 8%;">Ítem</th>
+        <th style="width: 32%;">Indicador Oficial MEP (9.° Año)</th>
+        <th style="width: 25%;">Saber / Concepto Clave</th>
+        <th style="width: 35%;">Datos e Interactividad Telemetría</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Ítem 1</strong></td>
+        <td><strong>Ind. 1:</strong> Explicar la función y arquitectura del microcontrolador en sistemas automatizados.</td>
+        <td>Microcontrolador (Cerebro del sistema)</td>
+        <td>Opción elegida (A, B, C), tiempo de respuesta, discriminación del rol de procesamiento.</td>
+      </tr>
+      <tr>
+        <td><strong>Ítem 2</strong></td>
+        <td><strong>Ind. 2:</strong> Diferenciar las funciones operativas entre sensores y actuadores.</td>
+        <td>Sensores (Entrada) vs Actuadores (Salida)</td>
+        <td>Opción elegida, validación de conceptos de captación vs ejecución física.</td>
+      </tr>
+      <tr>
+        <td><strong>Ítem 3</strong></td>
+        <td><strong>Ind. 3:</strong> Aplicar el modelo Entrada–Proceso–Salida (E-P-S) en sistemas embebidos.</td>
+        <td>Arquitectura de Flujo E-P-S</td>
+        <td>Opción elegida, verificación de la cadena sistémica (Botón &rarr; Micro &rarr; LED).</td>
+      </tr>
+      <tr>
+        <td><strong>Ítem 4</strong></td>
+        <td><strong>Ind. 4:</strong> Estructurar algoritmos de control mediante secuencias lógicas y ordenadas.</td>
+        <td>Secuencia Lógica Algorítmica</td>
+        <td>Opción elegida, secuencia de encendido e instrucciones paso a paso.</td>
+      </tr>
+      <tr>
+        <td><strong>Ítem 5</strong></td>
+        <td><strong>Ind. 5:</strong> Evaluar expresiones lógicas y condicionales simples en código de control.</td>
+        <td>Condicional <code>if</code> y Umbral de Disparo</td>
+        <td>Opción elegida, interpretación del operador relacional (<code>luz &lt; 300</code>).</td>
+      </tr>
+      <tr>
+        <td><strong>Ítem 6</strong></td>
+        <td><strong>Ind. 6:</strong> Relacionar componentes físicos de un circuito con sus roles de conexión.</td>
+        <td>Roles de Conexión (VCC, GND, Pines)</td>
+        <td>Asignación de roles en tarjetas virtuales o hardware (Sensor, Micro, LED).</td>
+      </tr>
+      <tr>
+        <td><strong>Ítem 7</strong></td>
+        <td><strong>Ind. 7:</strong> Identificar la diferencia entre señales y datos analógicos vs digitales.</td>
+        <td>Tipos de Señales y Datos Sensoriales</td>
+        <td>Opción elegida, distinción entre valores continuos (0-1023) y discretos (HIGH/LOW).</td>
+      </tr>
+      <tr>
+        <td><strong>Ítem 8</strong></td>
+        <td><strong>Ind. 8:</strong> Aplicar estructuras condicionales dobles (<code>if - else</code>) a problemas reales.</td>
+        <td>Bifurcación Lógica Doble</td>
+        <td>Opción elegida, toma de decisiones ante activación y apagado de cargas.</td>
+      </tr>
+      <tr>
+        <td><strong>Ítem 9</strong></td>
+        <td><strong>Ind. 9:</strong> Aplicar estrategias sistemáticas de depuración de fallas en circuitos y código.</td>
+        <td>Depuración y Diagnóstico Sistemático</td>
+        <td>Opción elegida, trazabilidad ordenada de revisión de cables y sintaxis.</td>
+      </tr>
+      <tr>
+        <td><strong>Ítem 10</strong></td>
+        <td><strong>Ind. 10:</strong> Comprender la importancia del almacenamiento y ciclo de datos para la toma de decisiones.</td>
+        <td>Memoria, Registro y Telemetría de Datos</td>
+        <td>Opción elegida, análisis histórico de métricas para optimización energética.</td>
+      </tr>
+      <tr>
+        <td><strong>Área Psicomotora</strong></td>
+        <td><strong>Ind. P1-P6:</strong> Organización espacial del hardware y cableado de circuitos de control.</td>
+        <td>Conexionado Físico (VCC, GND, A0, D9)</td>
+        <td>Tarjetas colocadas (3/3), puertos conectados (9/9), intentos fallidos y trazado interactivo.</td>
+      </tr>
+      <tr>
+        <td><strong>Área Socioafectiva</strong></td>
+        <td><strong>Ind. S1-S5:</strong> Rigor técnico, perseverancia, aprendizaje del error y ética tecnológica.</td>
+        <td>Autorreflexión y Actitudes Vocacionales</td>
+        <td>Puntaje actitudinal (5/5 indicadores favorables), nivel de honestidad y perseverancia.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SALTO DE PÁGINA PARA IMPRESIÓN -->
+  <div class="page-break"></div>
+
+  <!-- SECCIÓN 3: TELEMETRÍA EN EL INSTRUMENTO DESCARGADO (HTML OFFLINE) Y CÓDIGO QR -->
+  <h3 class="section-title">3. Telemetría en el Formato Local Descargado (HTML Offline) y Empaquetado QR</h3>
+  <p>
+    En el aplicativo descargado (<code>diagnostico_9no_modulo01_desconectado_offline.html</code>), el motor de ejecución en JavaScript realiza todo el cálculo formativo localmente en la memoria del navegador del estudiante. Al finalizar la Etapa 3, consolida el diagnóstico y genera un <strong>Código QR ultracompacto (&lt; 300 caracteres)</strong> diseñado para garantizar lectura instantánea con cualquier cámara:
+  </p>
+
+  <div class="code-box">
+    <div style="color: #38bdf8; font-weight: bold; margin-bottom: 6px;">// Estructura Unificada del Código QR Ultracompacto (&lt; 300 caracteres):</div>
+Alberto Bustos Ortega<br>
+Sección 9-1<br>
+2027-02-15<br>
+COG: 8/10 (Logrado)<br>
+PSI: Tarjetas 3/3, Puertos 9/9 (Completa)<br>
+SOC: 5/5 indicadores favorables<br>
+FORTALEZAS: Microcontrolador, Depuración, Almacenamiento<br>
+PRIORIDADES: Algoritmos
+  </div>
+
+  <div class="callout callout-green">
+    <strong>Ventajas del Formato QR Condensado:</strong>
+    <ul style="margin-left: 20px; font-size: 13px; margin-top: 6px;">
+      <li><strong>Densidad Óptima (Versión QR 3 a 5):</strong> Módulos más grandes y legibles, permitiendo escaneo a más de 1.5 metros de distancia o en pantallas con brillo atenuado.</li>
+      <li><strong>Redundancia y Resiliencia:</strong> Si la cámara no enfoca, el estudiante tiene en pantalla el botón para <em>Descargar Ficha JSON</em>, <em>Descargar CSV</em> o <em>Copiar al Portapapeles</em>.</li>
+      <li><strong>Autosincronización al Portal Central:</strong> Al escanear el QR desde el Escáner de Datos Locales, si el docente cuenta con internet, el sistema transmite el registro inmediatamente a la base central (<code>POST /api/telemetria/enviar</code>); si no, lo guarda en el padrón local.</li>
+    </ul>
+  </div>
+
+  <!-- SECCIÓN 4: MODELO HÍBRIDO ASISTIDO (TELEMETRÍA AUTOMÁTICA VS. RECTIFICACIÓN HUMANA) -->
+  <h3 class="section-title">4. Modelo Híbrido Asistido: Telemetría Automática vs. Intervención Docente</h3>
+  <p>
+    El sistema no sustituye el criterio pedagógico del docente, sino que actúa como un **asistente de telemetría de alta velocidad**. El docente tiene total potestad para revisar, validar y rectificar las valoraciones sugeridas por el sistema antes de asentar el informe ministerial final:
+  </p>
+
+  <table class="custom-table">
+    <thead>
+      <tr>
+        <th style="width: 50%; background:#0369a1;">🤖 Lo que Realiza la Telemetría Automática</th>
+        <th style="width: 50%; background:#002b49;">👨‍🏫 Lo que Realiza el Docente Evaluador</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          • Cronometra los tiempos de resolución por etapa.<br>
+          • Registra cambios de foco y alertas anti-fraude.<br>
+          • Autocalifica reactivos y asigna nivel DUA preliminar.<br>
+          • Empaqueta token SHA-256 y genera el QR / JSON / CSV.
+        </td>
+        <td>
+          • Rectifica errores tipográficos de matrícula (nombre, sección).<br>
+          • Ajusta cualitativamente el logro de cualquier indicador.<br>
+          • Valida el desempeño psicomotor en hardware físico de aula.<br>
+          • Dictamina el plan de acompañamiento y ajustes DUA definitivos.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECCIÓN 5: PROTOCOLO PARA LA MODALIDAD IMPRESA -->
+  <h3 class="section-title">5. Protocolo de Abordaje Pedagógico en Formato Impreso</h3>
+  <p>
+    Para las aulas que apliquen la prueba en formato físico impreso (papel), el docente implementará el siguiente protocolo de observación y sistematización:
+  </p>
+
+  <div class="flow-step">
+    <div class="flow-num">1</div>
+    <div><strong>Resolución Cognitiva Individual:</strong> El estudiante completa los 10 reactivos de opción múltiple en su hoja impresa.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">2</div>
+    <div><strong>Observación Psicomotora en Mesa de Trabajo:</strong> El docente solicita al estudiante identificar los componentes en el kit físico o diagrama (Sensor LDR, Tarjeta de Control, LED) y conectar las líneas de alimentación y señal.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">3</div>
+    <div><strong>Entrevista Cualitativa Socioafectiva:</strong> El docente aplica las preguntas reflexivas sobre precisión, tolerancia a la frustración y ética tecnológica mediante diálogo formativo guiado.</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">4</div>
+    <div><strong>Digitación y Consolidación en el Dashboard:</strong> Al finalizar la sesión, el docente abre el <em>Escáner y Padrón Local</em> e ingresa los puntajes en la ficha manual o carga la plantilla CSV consolidada para generar los semáforos DUA y reportes institucionales.</div>
+  </div>
+
+  <!-- SECCIÓN 6: MÁQUINA DE ESTADOS Y FLUJO DE CIERRE -->
+  <h3 class="section-title">6. Máquina de Estados y Flujo de Cierre por Bloques (Etapas 1 &rarr; 4)</h3>
+  <p>
+    El flujo de datos no se registra de manera fragmentada o por reactivo individual, sino mediante una **máquina de estados por bloques estandarizados**, evitando estados inconsistentes:
+  </p>
+
+  <div style="background:#f8fafc; border:1.5px solid var(--borde); border-radius:12px; padding:16px; margin:16px 0;">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+      <div style="text-align:center; flex:1; min-width:140px; background:#fff; padding:10px; border-radius:8px; border:1px solid #cbd5e1;">
+        <span class="badge badge-info">Bloque 1</span>
+        <div style="font-weight:800; font-size:12.5px; margin-top:4px;">Etapa Cognitiva</div>
+        <div style="font-size:11px; color:var(--texto-medio);">10/10 Respondidos + Datos</div>
+      </div>
+      <div style="font-weight:bold; color:var(--mep-celeste);">&rarr;</div>
+      <div style="text-align:center; flex:1; min-width:140px; background:#fff; padding:10px; border-radius:8px; border:1px solid #cbd5e1;">
+        <span class="badge badge-info">Bloque 2</span>
+        <div style="font-weight:800; font-size:12.5px; margin-top:4px;">Etapa Psicomotora</div>
+        <div style="font-size:11px; color:var(--texto-medio);">3 Tarjetas + 9 Puertos</div>
+      </div>
+      <div style="text-align:center; flex:1; min-width:140px; background:#fff; padding:10px; border-radius:8px; border:1px solid #cbd5e1;">
+        <span class="badge badge-info">Bloque 3</span>
+        <div style="font-weight:800; font-size:12.5px; margin-top:4px;">Etapa Socioafectiva</div>
+        <div style="font-size:11px; color:var(--texto-medio);">5 Actitudes y Saberes</div>
+      </div>
+      <div style="font-weight:bold; color:var(--mep-celeste);">&rarr;</div>
+      <div style="text-align:center; flex:1; min-width:140px; background:#fff; padding:10px; border-radius:8px; border:1px solid #cbd5e1;">
+        <span class="badge badge-logrado">Bloque 4</span>
+        <div style="font-weight:800; font-size:12.5px; margin-top:4px;">Comprobante Final</div>
+        <div style="font-size:11px; color:var(--texto-medio);">QR / JSON / CSV / API</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PIE DE PÁGINA Y CRÉDITOS -->
+  <div class="footer-doc">
+    <div>
+      <div class="footer-authors">Allan Morera Araya • Alberto Bustos Ortega</div>
+      <div style="font-size:11px;">Asesores Nacionales de Formación Tecnológica — Dirección de Recursos Tecnológicos en Educación</div>
+    </div>
+    <div style="text-align:right;">
+      <div>Ministerio de Educación Pública de Costa Rica</div>
+      <div style="font-size:11px; color:var(--mep-celeste); font-weight:700;">Gestión Curricular 2027</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
