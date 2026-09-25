@@ -74,7 +74,7 @@ export interface CriterioSocioafectivoOficial {
   escalaB: string; // Intermedio
   escalaC: string; // Inicial
   modalidadNota?: string;
-  modalidadEvaluacion?: "telemetria" | "docente";
+  modalidadEvaluacion?: "telemetria" | "docente" | "hibrido";
   etiquetaModalidad?: string;
 }
 
@@ -104,26 +104,26 @@ export const CRITERIOS_SOCIOAFECTIVOS_MAP: Record<"7mo" | "8vo" | "9no", Criteri
     },
     {
       id: "s3",
-      codigo: "S3. Flexibilidad y Trabajo Colaborativo",
+      codigo: "S3. Flexibilidad",
       titulo: "Flexibilidad para Manejar Problemas y Trabajo Colaborativo",
       preguntaReflexion: "«Cuando algo no salió como esperaba (una pregunta difícil, un problema con la computadora o con el compañero/a), ¿qué hizo?»",
       escalaA: "Avanzado (A): Parejas: «Escuché las ideas de mi compañero(a) y juntos probamos otra forma.» | Individual: «Busqué por mi cuenta otra forma de resolverlo.»",
       escalaB: "Intermedio (B): Probé otra forma cuando alguien me dio una idea.",
       escalaC: "Inicial (C): Seguí con la misma idea aunque no funcionaba.",
       modalidadNota: "Diferenciado por modalidad: En parejas o individual.",
-      modalidadEvaluacion: "docente",
-      etiquetaModalidad: "Foco Docente (Observación Directa)",
+      modalidadEvaluacion: "hibrido",
+      etiquetaModalidad: "⚡ Híbrido + Docente",
     },
     {
       id: "s4",
-      codigo: "S4. Tolerancia a la Frustración y Perseverancia",
+      codigo: "S4. Resiliencia",
       titulo: "Tolerancia a la Frustración y Perseverancia",
       preguntaReflexion: "«Cuando un reto se puso difícil, ¿cómo reaccioné?»",
       escalaA: "Avanzado (A): Mantuve la calma y seguí intentando hasta terminar.",
       escalaB: "Intermedio (B): Me costó, pero seguí cuando me animaron.",
       escalaC: "Inicial (C): Me enojé o quise dejarlo.",
-      modalidadEvaluacion: "docente",
-      etiquetaModalidad: "Foco Docente (Contención Emocional)",
+      modalidadEvaluacion: "hibrido",
+      etiquetaModalidad: "⚡ Híbrido + Docente",
     },
   ],
   "9no": [
@@ -151,26 +151,26 @@ export const CRITERIOS_SOCIOAFECTIVOS_MAP: Record<"7mo" | "8vo" | "9no", Criteri
     },
     {
       id: "s3",
-      codigo: "S3. Flexibilidad y Resolución Colaborativa",
+      codigo: "S3. Flexibilidad",
       titulo: "Flexibilidad para Manejar Problemas y Trabajo Colaborativo",
       preguntaReflexion: "«Cuando un sensor o actuador no respondía como esperaba, ¿cómo coordinó la solución?»",
       escalaA: "Avanzado (A): En parejas: Escucha aportes y reconfigura en equipo | Individual: Explora autónomamente rutas alternas.",
       escalaB: "Intermedio (B): Acepta modificar la configuración si recibe una sugerencia directa del docente.",
       escalaC: "Inicial (C): Mantiene la conexión errada insistiendo en el mismo enfoque no funcional.",
       modalidadNota: "Diferenciado por modalidad: En parejas o individual.",
-      modalidadEvaluacion: "docente",
-      etiquetaModalidad: "Foco Docente (Observación Directa)",
+      modalidadEvaluacion: "hibrido",
+      etiquetaModalidad: "⚡ Híbrido + Docente",
     },
     {
       id: "s4",
-      codigo: "S4. Tolerancia a la Frustración y Perseverancia",
+      codigo: "S4. Resiliencia",
       titulo: "Tolerancia a la Frustración y Perseverancia en Proyectos",
       preguntaReflexion: "«Ante la complejidad de integrar hardware físico y código condicional, ¿cómo gestionó la perseverancia?»",
       escalaA: "Avanzado (A): Mantiene el enfoque y persevera con calma sistemática hasta verificar el funcionamiento completo.",
       escalaB: "Intermedio (B): Experimenta desánimo leve, retomando el reto tras acompañamiento docente.",
       escalaC: "Inicial (C): Se frustra tempranamente y suspende la actividad ante el primer obstáculo.",
-      modalidadEvaluacion: "docente",
-      etiquetaModalidad: "Foco Docente (Contención Emocional)",
+      modalidadEvaluacion: "hibrido",
+      etiquetaModalidad: "⚡ Híbrido + Docente",
     },
   ],
   "8vo": [
@@ -278,8 +278,8 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
       escalaA: "Logrado (L): Verifica estados lógicos y umbrales con exactitud técnica en el simulador.",
       escalaB: "En Desarrollo (ED): Comprende la relación condicional umbral-actuador tras aclaración del docente.",
       escalaC: "Requiere Acompañamiento (RA): No asocia el valor del umbral del sensor a la activación del actuador.",
-      modalidadEvaluacion: "docente",
-      etiquetaModalidad: "Foco Docente (Observable)",
+      modalidadEvaluacion: "hibrido",
+      etiquetaModalidad: "⚡ Híbrido + Docente",
     },
     {
       id: "p5",
@@ -291,8 +291,8 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
       escalaA: "Logrado (L): Diagnostica la falla y reconecta el cable en A0 de forma autónoma e inmediata.",
       escalaB: "En Desarrollo (ED): Reconecta el cable correctamente tras recibir una pista orientadora del docente.",
       escalaC: "Requiere Acompañamiento (RA): No logra localizar la falla ni ejecutar la reconexión en el banco interactivo.",
-      modalidadEvaluacion: "docente",
-      etiquetaModalidad: "Foco Docente (Observable)",
+      modalidadEvaluacion: "hibrido",
+      etiquetaModalidad: "⚡ Híbrido + Docente",
     },
     {
       id: "p6",
@@ -304,8 +304,8 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
       escalaA: "Logrado (L): Justificación técnica precisa articulando voltaje analógico vs alimentación fija.",
       escalaB: "En Desarrollo (ED): Justificación empírica parcial sobre la necesidad de leer cambios de luz.",
       escalaC: "Requiere Acompañamiento (RA): No fundamenta conceptualmente la corrección realizada.",
-      modalidadEvaluacion: "docente",
-      etiquetaModalidad: "Foco Docente (Observable)",
+      modalidadEvaluacion: "hibrido",
+      etiquetaModalidad: "⚡ Híbrido + Docente",
     },
   ],
   "7mo": [
@@ -410,6 +410,171 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
   ],
 };
 
+interface BadgeModalidadExplicativaProps {
+  modalidad: "telemetria" | "hibrido" | "docente";
+  labelPersonalizado?: string;
+  posicionPopover?: "bottom" | "top";
+  alineacionHorizontal?: "center" | "left" | "right";
+  className?: string;
+}
+
+export function BadgeModalidadExplicativa({
+  modalidad,
+  labelPersonalizado,
+  posicionPopover = "bottom",
+  alineacionHorizontal = "center",
+  className = "",
+}: BadgeModalidadExplicativaProps) {
+  const [abiertoTouch, setAbiertoTouch] = useState(false);
+
+  const info = useMemo(() => {
+    switch (modalidad) {
+      case "telemetria":
+        return {
+          etiqueta: labelPersonalizado || "🤖 Telemetría",
+          badgeCls: "bg-sky-50 text-sky-800 border-sky-200 hover:bg-sky-100 hover:border-sky-300",
+          titulo: "🤖 Telemetría Digital Automatizada",
+          headerCls: "bg-gradient-to-r from-sky-600 to-blue-700 text-white",
+          subtitulo: "Registro en tiempo real por la WebApp",
+          descripcion:
+            "El sistema captura de manera objetiva y continua la interacción del estudiante durante la prueba:",
+          puntos: [
+            "⏱️ Tiempos de respuesta, latencia y ritmo de resolución.",
+            "🎯 Precisión de respuestas, aciertos y reintentos.",
+            "📐 Fluidez motriz digital (control del puntero, clics y trazos).",
+            "⚡ Precarga inmediata de la sugerencia del Nivel de Logro (A, B o C)."
+          ],
+          pieDocente: "El docente tiene control total para validar o ajustar la valoración formativa.",
+        };
+      case "hibrido":
+        return {
+          etiqueta: labelPersonalizado || "⚡ Híbrido + Docente",
+          badgeCls: "bg-teal-50 text-teal-800 border-teal-200 hover:bg-teal-100 hover:border-teal-300",
+          titulo: "⚡ Modalidad Híbrida (Telemetría + Docente)",
+          headerCls: "bg-gradient-to-r from-teal-700 to-emerald-800 text-white",
+          subtitulo: "Sinergia entre datos digitales y observación en aula",
+          descripcion:
+            "Combina la medición objetiva del software con la mirada pedagógica presencial del docente:",
+          puntos: [
+            "🖱️ La WebApp evalúa la precisión del trazo, tiempos y coordenadas.",
+            "👨‍🏫 El docente observa postura ergonómica, soltura y manejo de periféricos.",
+            "🔍 Ideal para destrezas de motricidad fina y articulación práctica.",
+            "✨ Permite ratificar o modular la calificación con un solo clic."
+          ],
+          pieDocente: "Equilibrio entre la evidencia tecnológica y el juicio profesional docente.",
+        };
+      case "docente":
+      default:
+        return {
+          etiqueta: labelPersonalizado || "👨‍🏫 Foco Docente",
+          badgeCls: "bg-amber-50 text-amber-900 border-amber-200 hover:bg-amber-100 hover:border-amber-300",
+          titulo: "👨‍🏫 Foco Docente (Observación Directa)",
+          headerCls: "bg-gradient-to-r from-amber-700 to-amber-900 text-white",
+          subtitulo: "Evaluación formativa y contención humana",
+          descripcion:
+            "Observación presencial en el aula de aspectos cualitativos y formativos no medibles por software:",
+          puntos: [
+            "🤝 Trabajo colaborativo, escucha activa y resolución en parejas.",
+            "🧘 Autorregulación emocional, perseverancia y tolerancia a la frustración.",
+            "👁️ Disposición, concentración y cuidado del material/equipo informático.",
+            "💚 Facilita mediación inmediata y retroalimentación pedagógica oportuna."
+          ],
+          pieDocente: "El docente selecciona o ratifica el nivel directamente en la matriz.",
+        };
+    }
+  }, [modalidad, labelPersonalizado]);
+
+  const alignClass =
+    alineacionHorizontal === "left"
+      ? "left-0 translate-x-0"
+      : alineacionHorizontal === "right"
+      ? "right-0 translate-x-0"
+      : "left-1/2 -translate-x-1/2";
+
+  return (
+    <div className={`relative inline-flex items-center group ${className}`}>
+      {/* Botón interactivo para hover (mouse) y clic/tap (touch) */}
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          setAbiertoTouch((prev) => !prev);
+        }}
+        onBlur={() => {
+          setTimeout(() => setAbiertoTouch(false), 250);
+        }}
+        className={`inline-flex items-center gap-1 cursor-pointer font-black rounded border transition-all text-[9px] px-1.5 py-0.5 whitespace-nowrap select-none shadow-2xs ${info.badgeCls}`}
+        aria-label={`Información sobre ${info.titulo}`}
+      >
+        <span>{info.etiqueta}</span>
+        <span className="opacity-75 group-hover:opacity-100 text-[8px]">ℹ️</span>
+      </button>
+
+      {/* Popover / Tooltip informativo enriquecido */}
+      <div
+        className={`absolute z-50 w-72 sm:w-80 p-0 text-left bg-white rounded-xl shadow-2xl border border-slate-200/90 transition-all duration-200 pointer-events-none ${
+          abiertoTouch
+            ? "opacity-100 scale-100 pointer-events-auto"
+            : "opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:scale-100 group-focus-within:pointer-events-auto"
+        } ${
+          posicionPopover === "bottom"
+            ? "top-full mt-2"
+            : "bottom-full mb-2"
+        } ${alignClass}`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Cabecera */}
+        <div className={`px-3.5 py-2.5 rounded-t-xl font-bold ${info.headerCls}`}>
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-black tracking-wide flex items-center gap-1.5">
+              {info.titulo}
+            </span>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setAbiertoTouch(false);
+              }}
+              className="text-white/80 hover:text-white p-0.5 rounded hover:bg-white/20 sm:hidden"
+              title="Cerrar"
+            >
+              <X size={13} weight="bold" />
+            </button>
+          </div>
+          <span className="text-[10px] text-white/80 font-medium block mt-0.5">
+            {info.subtitulo}
+          </span>
+        </div>
+
+        {/* Contenido pedagógico */}
+        <div className="p-3 text-[11px] text-slate-700 space-y-2.5 bg-white rounded-b-xl">
+          <p className="font-semibold text-slate-800 leading-snug">
+            {info.descripcion}
+          </p>
+
+          <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200/70 space-y-1.5">
+            <span className="font-bold text-[10px] text-[#1B5E59] uppercase tracking-wider block">
+              ¿Cómo opera en el instrumento?
+            </span>
+            <ul className="space-y-1 text-[10.5px] text-slate-600 leading-tight">
+              {info.puntos.map((punto, idx) => (
+                <li key={idx} className="flex items-start gap-1">
+                  <span>{punto}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="pt-2 border-t border-slate-100 flex items-start gap-1.5 text-[10px] text-slate-500 leading-tight">
+            <span className="text-emerald-700 font-bold shrink-0">💡 Rol Docente:</span>
+            <span>{info.pieDocente}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function PanelDocenteSimplificado() {
   const {
     docente,
@@ -449,6 +614,8 @@ export default function PanelDocenteSimplificado() {
   const [acordeonDimensionesCognitivo, setAcordeonDimensionesCognitivo] = useState(false);
   const [acordeonMetricasCohorte, setAcordeonMetricasCohorte] = useState(false);
   const [guardadosFeedback, setGuardadosFeedback] = useState<Record<string, boolean>>({});
+  const [cambiosPendientes, setCambiosPendientes] = useState<Record<string, boolean>>({});
+  const [mensajeGuardadoGlobal, setMensajeGuardadoGlobal] = useState<string | null>(null);
   const [modalAnalisisPsicoIA, setModalAnalisisPsicoIA] = useState(false);
 
   // Estado de edición de observaciones pedagógicas locales / notas
@@ -767,13 +934,34 @@ export default function PanelDocenteSimplificado() {
     });
   };
 
-  // Guardar fila psicomotriz con feedback visual
+  // Guardar fila psicomotriz con feedback visual y auto-persistencia
   const handleGuardarFilaPsicomotriz = (idKey: string, timestamp: number, observacion: string) => {
     guardarNotaDocente(idKey, observacion);
+    setCambiosPendientes((prev) => {
+      const nuevo = { ...prev };
+      delete nuevo[idKey];
+      return nuevo;
+    });
     setGuardadosFeedback((prev) => ({ ...prev, [idKey]: true }));
     setTimeout(() => {
       setGuardadosFeedback((prev) => ({ ...prev, [idKey]: false }));
     }, 2500);
+  };
+
+  // Guardar todas las observaciones de la sección
+  const handleGuardarTodoPsicomotriz = () => {
+    registrosSeccion.forEach((r, i) => {
+      const idKey = r.idResultado || r.estudianteCedula || r.estudianteNombre || `est-${i}`;
+      const inputEl = document.getElementById(`obs-input-${idKey}`) as HTMLInputElement;
+      if (inputEl) {
+        guardarNotaDocente(idKey, inputEl.value);
+      }
+    });
+    setCambiosPendientes({});
+    setMensajeGuardadoGlobal("✓ Todos los cambios y observaciones de la sección han sido guardados con éxito.");
+    setTimeout(() => {
+      setMensajeGuardadoGlobal(null);
+    }, 4000);
   };
 
   // Exportar a Excel y PDF
@@ -1373,34 +1561,6 @@ export default function PanelDocenteSimplificado() {
                   </div>
                 </div>
 
-                {/* BANNER / BOTÓN GUÍA INSTALACIÓN WEB APP EN MÓVILES */}
-                <div className="lg:col-span-2 bg-gradient-to-r from-teal-50 via-sky-50 to-emerald-50 rounded-2xl p-4 sm:p-5 border border-teal-200/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div className="flex items-start sm:items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-[#1B5E59] text-white flex items-center justify-center shadow-xs shrink-0">
-                      <DeviceMobile size={22} weight="bold" />
-                    </div>
-                    <div>
-                      <h4 className="text-xs sm:text-sm font-bold text-slate-900 flex items-center gap-2">
-                        <span>¿Cómo activar e instalar la Web App en el celular?</span>
-                        <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-extrabold border border-emerald-300">
-                          100% Offline tras abrir 1 vez
-                        </span>
-                      </h4>
-                      <p className="text-xs text-slate-600 mt-0.5">
-                        Guía paso a paso para <strong>Android</strong>, <strong>iPhone (iOS)</strong> y <strong>Huawei</strong> para usar el diagnóstico o el escáner sin internet en el aula.
-                      </p>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setModalInstalacionMovil(true)}
-                    className="inline-flex items-center justify-center gap-2 bg-[#1B5E59] hover:bg-[#144642] text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl transition-all shadow-2xs cursor-pointer shrink-0 active:scale-95"
-                  >
-                    <DeviceMobile size={16} weight="bold" />
-                    <span>Ver guía de instalación móvil</span>
-                  </button>
-                </div>
-
               </div>
             )}
 
@@ -1630,13 +1790,14 @@ export default function PanelDocenteSimplificado() {
                             title="Haga clic para ver la rúbrica oficial y niveles de logro"
                           >
                             <div>
-                              <div className="flex items-center justify-between gap-2 mb-1.5">
+                              <div className="flex items-center justify-between gap-2 mb-1.5 flex-wrap">
                                 <span className="text-xs font-black text-[#1B5E59] group-hover:text-teal-700 transition-colors">
                                   {crit.codigo}
                                 </span>
-                                <span className="text-[10px] bg-teal-50 text-[#1B5E59] font-bold px-2 py-0.5 rounded border border-teal-200">
-                                  MEP
-                                </span>
+                                <BadgeModalidadExplicativa
+                                  modalidad={crit.modalidadEvaluacion || "telemetria"}
+                                  labelPersonalizado={crit.etiquetaModalidad || (crit.modalidadEvaluacion === "telemetria" ? "🤖 Telemetría" : "👨‍🏫 Foco Docente")}
+                                />
                               </div>
                               <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200/80 mb-2">
                                 <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-0.5">
@@ -1709,27 +1870,27 @@ export default function PanelDocenteSimplificado() {
                           <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
                             <th className="py-3 px-4 w-60">Persona Estudiante</th>
                             <th className="py-3 px-3 text-center w-28">
-                              <div className="flex flex-col items-center gap-0.5">
-                                <span>S1. Precisión</span>
-                                <span className="text-[9px] font-black text-sky-700 bg-sky-50 px-1.5 py-0.2 rounded border border-sky-200 whitespace-nowrap">🤖 Telemetría</span>
+                              <div className="flex flex-col items-center gap-1">
+                                <span className="font-bold text-slate-700">S1. Precisión</span>
+                                <BadgeModalidadExplicativa modalidad="telemetria" labelPersonalizado="🤖 Telemetría" alineacionHorizontal="left" />
                               </div>
                             </th>
                             <th className="py-3 px-3 text-center w-28">
-                              <div className="flex flex-col items-center gap-0.5">
-                                <span>S2. Error</span>
-                                <span className="text-[9px] font-black text-sky-700 bg-sky-50 px-1.5 py-0.2 rounded border border-sky-200 whitespace-nowrap">🤖 Telemetría</span>
+                              <div className="flex flex-col items-center gap-1">
+                                <span className="font-bold text-slate-700">S2. Error</span>
+                                <BadgeModalidadExplicativa modalidad="telemetria" labelPersonalizado="🤖 Telemetría" alineacionHorizontal="center" />
                               </div>
                             </th>
                             <th className="py-3 px-3 text-center w-28">
-                              <div className="flex flex-col items-center gap-0.5">
-                                <span>S3. Flexibilidad</span>
-                                <span className="text-[9px] font-black text-amber-800 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-200 whitespace-nowrap">👨‍🏫 Foco Docente</span>
+                              <div className="flex flex-col items-center gap-1">
+                                <span className="font-bold text-slate-700">S3. Flexibilidad</span>
+                                <BadgeModalidadExplicativa modalidad="hibrido" labelPersonalizado="⚡ Híbrido" alineacionHorizontal="center" />
                               </div>
                             </th>
                             <th className="py-3 px-3 text-center w-28">
-                              <div className="flex flex-col items-center gap-0.5">
-                                <span>S4. Resiliencia</span>
-                                <span className="text-[9px] font-black text-amber-800 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-200 whitespace-nowrap">👨‍🏫 Foco Docente</span>
+                              <div className="flex flex-col items-center gap-1">
+                                <span className="font-bold text-slate-700">S4. Resiliencia</span>
+                                <BadgeModalidadExplicativa modalidad="hibrido" labelPersonalizado="⚡ Híbrido" alineacionHorizontal="right" />
                               </div>
                             </th>
                             <th className="py-3 px-4">Nota Pedagógica del Docente</th>
@@ -1961,9 +2122,15 @@ export default function PanelDocenteSimplificado() {
                     <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 max-w-lg w-full p-6 sm:p-7 space-y-4">
                       {/* Encabezado Superior con Badge y Cerrar */}
                       <div className="flex items-center justify-between">
-                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-800 text-xs font-bold">
-                          <span>❤️</span>
-                          <span>3. ÁREA SOCIOAFECTIVA (MEP OFICIAL)</span>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-800 text-xs font-bold">
+                            <span>❤️</span>
+                            <span>3. ÁREA SOCIOAFECTIVA (MEP OFICIAL)</span>
+                          </div>
+                          <BadgeModalidadExplicativa
+                            modalidad={criterioSocioModalDetalle.modalidadEvaluacion || "telemetria"}
+                            labelPersonalizado={criterioSocioModalDetalle.etiquetaModalidad || (criterioSocioModalDetalle.modalidadEvaluacion === "telemetria" ? "🤖 Telemetría" : "👨‍🏫 Foco Docente")}
+                          />
                         </div>
                         <button
                           type="button"
@@ -2069,18 +2236,46 @@ export default function PanelDocenteSimplificado() {
                           className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1B5E59]/30 focus:border-[#1B5E59]"
                         />
                       </div>
+
+                      {/* Notificación o Estado de Guardado */}
+                      {mensajeGuardadoGlobal && (
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-300 rounded-lg text-xs font-bold animate-fadeIn">
+                          <CheckCircle size={15} weight="fill" className="text-emerald-600" />
+                          <span>{mensajeGuardadoGlobal}</span>
+                        </div>
+                      )}
+                      {!mensajeGuardadoGlobal && Object.values(cambiosPendientes).some(Boolean) && (
+                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 text-amber-800 border border-amber-300 rounded-lg text-[11px] font-bold animate-pulse">
+                          <span>⚠️ Cambios pendientes de guardar</span>
+                        </div>
+                      )}
                     </div>
 
                     <div className="flex items-center gap-2 flex-wrap">
+                      {/* Botón Guardar Cambios de Sección (Global) */}
+                      <button
+                        type="button"
+                        onClick={handleGuardarTodoPsicomotriz}
+                        title="Guarda todas las observaciones pedagógicas y valoraciones de la sección activa"
+                        className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-black shadow-sm transition-all cursor-pointer active:scale-95 ${
+                          Object.values(cambiosPendientes).some(Boolean)
+                            ? "bg-[#1B5E59] hover:bg-[#144642] text-white ring-2 ring-emerald-400/50"
+                            : "bg-slate-900 hover:bg-black text-white"
+                        }`}
+                      >
+                        <Check size={15} weight="bold" />
+                        <span>Guardar Cambios de la Sección</span>
+                      </button>
+
                       {/* Botón Marcar Todo en Nivel A */}
                       <button
                         type="button"
                         onClick={handleMarcarTodaSeccionPsicomotrizNivelA}
                         title="Marca todos los criterios de los estudiantes visibles en Nivel A (Logrado)"
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFF3EB] hover:bg-[#FDE2D0] text-[#E07A2C] border border-[#FBD0B6] rounded-lg text-xs font-bold shadow-2xs transition-colors cursor-pointer"
+                        className="inline-flex items-center gap-1.5 px-3 py-2 bg-[#FFF3EB] hover:bg-[#FDE2D0] text-[#E07A2C] border border-[#FBD0B6] rounded-xl text-xs font-bold shadow-2xs transition-colors cursor-pointer"
                       >
                         <Lightning size={15} weight="fill" />
-                        <span>Marcar Toda la Sección en Nivel A</span>
+                        <span>Marcar Todo en Nivel A</span>
                       </button>
 
                       <div className="text-xs text-slate-500 font-bold pl-2 border-l border-slate-200">
@@ -2140,11 +2335,29 @@ export default function PanelDocenteSimplificado() {
                                   <span className="text-xs font-black text-[#1B5E59] group-hover:text-teal-700 transition-colors">
                                     {crit.codigo}
                                   </span>
-                                  {crit.areaCurricular && (
-                                    <span className="text-[10px] bg-teal-50 text-[#1B5E59] font-bold px-2 py-0.5 rounded border border-teal-200">
-                                      {crit.areaCurricular}
-                                    </span>
-                                  )}
+                                  <div className="flex items-center gap-1.5 flex-wrap">
+                                    {crit.areaCurricular && (
+                                      <span className="text-[10px] bg-teal-50 text-[#1B5E59] font-bold px-2 py-0.5 rounded border border-teal-200">
+                                        {crit.areaCurricular}
+                                      </span>
+                                    )}
+                                    <BadgeModalidadExplicativa
+                                      modalidad={
+                                        crit.modalidadEvaluacion === "telemetria"
+                                          ? "telemetria"
+                                          : crit.modalidadEvaluacion === "hibrido"
+                                          ? "hibrido"
+                                          : "docente"
+                                      }
+                                      labelPersonalizado={
+                                        crit.modalidadEvaluacion === "telemetria"
+                                          ? "🤖 Telemetría"
+                                          : crit.modalidadEvaluacion === "hibrido"
+                                          ? "⚡ Híbrido"
+                                          : "👨‍🏫 Foco Docente"
+                                      }
+                                    />
+                                  </div>
                                 </div>
                                 <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200/80 mb-2">
                                   <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-0.5">
@@ -2183,42 +2396,50 @@ export default function PanelDocenteSimplificado() {
                       </div>
                     ) : (
                       <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse text-xs min-w-[920px]">
+                        <table className="w-full text-left border-collapse text-xs">
                           <thead>
                             <tr className="bg-slate-50 border-b border-slate-200 text-slate-700 font-bold uppercase tracking-wider text-[11px]">
-                              <th className="py-3 px-4 min-w-[200px]">Persona Estudiante (Nómina)</th>
-                              {criteriosActuales.map((crit) => (
-                                <th key={crit.id} className="py-3 px-2 text-center min-w-[110px]">
-                                  <div className="flex flex-col items-center justify-center gap-1">
-                                    <button
-                                      type="button"
-                                      onClick={() => setCriterioModalDetalle(crit)}
-                                      className="inline-flex items-center gap-1 text-emerald-800 hover:text-emerald-950 font-black cursor-pointer group"
-                                      title={`${crit.desc}\n\n(Haz clic para ver rúbrica oficial)`}
-                                    >
-                                      <span>{crit.codigo}</span>
-                                      <span className="text-[10px] bg-emerald-100 group-hover:bg-emerald-200 text-emerald-800 px-1 py-0.2 rounded border border-emerald-300">ℹ️</span>
-                                    </button>
-                                    {crit.modalidadEvaluacion === "telemetria" ? (
-                                      <span className="text-[9px] font-black text-sky-700 bg-sky-50 px-1.5 py-0.2 rounded border border-sky-200 whitespace-nowrap">
-                                        🤖 Telemetría
-                                      </span>
-                                    ) : crit.modalidadEvaluacion === "hibrido" ? (
-                                      <span className="text-[9px] font-black text-teal-800 bg-teal-50 px-1.5 py-0.2 rounded border border-teal-200 whitespace-nowrap">
-                                        ⚡ Híbrido + Docente
-                                      </span>
-                                    ) : (
-                                      <span className="text-[9px] font-black text-amber-800 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-200 whitespace-nowrap">
-                                        👨‍🏫 Foco Docente
-                                      </span>
-                                    )}
-                                    <span className="text-[10px] text-slate-400 font-normal normal-case">Escala A/B/C</span>
-                                  </div>
-                                </th>
-                              ))}
-                              <th className="py-3 px-3 text-center min-w-[120px]">Nivel Psicomotor</th>
-                              <th className="py-3 px-4 min-w-[220px]">Observación Pedagógica del Docente</th>
-                              <th className="py-3 px-3 text-center min-w-[90px]">Guardar</th>
+                              <th className="py-3 px-4 w-56 min-w-[200px]">Persona Estudiante (Nómina)</th>
+                              {criteriosActuales.map((crit, idx) => {
+                                const modalidad: "telemetria" | "hibrido" | "docente" =
+                                  crit.modalidadEvaluacion === "telemetria"
+                                    ? "telemetria"
+                                    : crit.modalidadEvaluacion === "hibrido"
+                                    ? "hibrido"
+                                    : "docente";
+                                const alineacion: "left" | "center" | "right" =
+                                  idx === 0 ? "left" : idx >= criteriosActuales.length - 2 ? "right" : "center";
+
+                                return (
+                                  <th key={crit.id} className="py-3 px-2 text-center w-24 min-w-[95px]">
+                                    <div className="flex flex-col items-center justify-center gap-1">
+                                      <button
+                                        type="button"
+                                        onClick={() => setCriterioModalDetalle(crit)}
+                                        className="inline-flex items-center gap-1 text-emerald-800 hover:text-emerald-950 font-black cursor-pointer group"
+                                        title={`${crit.desc}\n\n(Haz clic para ver rúbrica oficial)`}
+                                      >
+                                        <span>{crit.codigo}</span>
+                                        <span className="text-[10px] bg-emerald-100 group-hover:bg-emerald-200 text-emerald-800 px-1 py-0.2 rounded border border-emerald-300">ℹ️</span>
+                                      </button>
+                                      <BadgeModalidadExplicativa
+                                        modalidad={modalidad}
+                                        labelPersonalizado={
+                                          modalidad === "telemetria"
+                                            ? "🤖 Telemetría"
+                                            : modalidad === "hibrido"
+                                            ? "⚡ Híbrido"
+                                            : "👨‍🏫 Foco Docente"
+                                        }
+                                        alineacionHorizontal={alineacion}
+                                      />
+                                      <span className="text-[10px] text-slate-400 font-normal normal-case">Escala A/B/C</span>
+                                    </div>
+                                  </th>
+                                );
+                              })}
+                              <th className="py-3 px-3 text-center w-32 min-w-[120px]">Nivel Psicomotor</th>
+                              <th className="py-3 px-4 flex-1 min-w-[260px]">Observación Pedagógica del Docente</th>
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-slate-100 font-medium">
@@ -2288,7 +2509,10 @@ export default function PanelDocenteSimplificado() {
                                             <button
                                               key={escala}
                                               type="button"
-                                              onClick={() => handleActualizarPsicomotriz(r.timestamp, crit.id, escala)}
+                                              onClick={() => {
+                                                handleActualizarPsicomotriz(r.timestamp, crit.id, escala);
+                                                setCambiosPendientes((prev) => ({ ...prev, [idKey]: true }));
+                                              }}
                                               title={`${crit.codigo} - ${escala === "A" ? crit.escalaA : escala === "B" ? crit.escalaB : crit.escalaC}`}
                                               className={`px-2 py-1 text-xs font-bold rounded transition-all cursor-pointer ${
                                                 val === escala
@@ -2322,36 +2546,16 @@ export default function PanelDocenteSimplificado() {
                                       type="text"
                                       defaultValue={observacionGuardada}
                                       id={`obs-input-${idKey}`}
-                                      onBlur={(e) => guardarNotaDocente(idKey, e.target.value)}
+                                      onChange={() => {
+                                        setCambiosPendientes((prev) => ({ ...prev, [idKey]: true }));
+                                      }}
+                                      onBlur={(e) => {
+                                        guardarNotaDocente(idKey, e.target.value);
+                                        handleGuardarFilaPsicomotriz(idKey, r.timestamp, e.target.value);
+                                      }}
                                       placeholder="Añadir observación cualitativa..."
                                       className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:bg-white focus:outline-none focus:border-[#1B5E59] focus:ring-1 focus:ring-[#1B5E59]"
                                     />
-                                  </td>
-
-                                  {/* Botón Guardar */}
-                                  <td className="py-3 px-3 text-center">
-                                    <button
-                                      type="button"
-                                      onClick={() => {
-                                        const inputEl = document.getElementById(`obs-input-${idKey}`) as HTMLInputElement;
-                                        const obs = inputEl ? inputEl.value : observacionGuardada;
-                                        handleGuardarFilaPsicomotriz(idKey, r.timestamp, obs);
-                                      }}
-                                      className={`inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold transition-all shadow-2xs cursor-pointer ${
-                                        guardadosFeedback[idKey]
-                                          ? "bg-emerald-600 text-white"
-                                          : "bg-slate-800 hover:bg-slate-900 text-white"
-                                      }`}
-                                    >
-                                      {guardadosFeedback[idKey] ? (
-                                        <>
-                                          <Check size={13} weight="bold" />
-                                          <span>Listo</span>
-                                        </>
-                                      ) : (
-                                        <span>Guardar</span>
-                                      )}
-                                    </button>
                                   </td>
                                 </tr>
                               );
@@ -2368,9 +2572,27 @@ export default function PanelDocenteSimplificado() {
                       <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 max-w-lg w-full p-6 sm:p-7 space-y-4">
                         {/* Encabezado Superior con Badge de Área y Botón Cerrar */}
                         <div className="flex items-center justify-between">
-                          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold">
-                            <span>🖐️</span>
-                            <span>2. ÁREA PSICOMOTORA / PROCEDIMENTAL</span>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold">
+                              <span>🖐️</span>
+                              <span>2. ÁREA PSICOMOTORA / PROCEDIMENTAL</span>
+                            </div>
+                            <BadgeModalidadExplicativa
+                              modalidad={
+                                criterioModalDetalle.modalidadEvaluacion === "telemetria"
+                                  ? "telemetria"
+                                  : criterioModalDetalle.modalidadEvaluacion === "hibrido"
+                                  ? "hibrido"
+                                  : "docente"
+                              }
+                              labelPersonalizado={
+                                criterioModalDetalle.modalidadEvaluacion === "telemetria"
+                                  ? "🤖 Telemetría"
+                                  : criterioModalDetalle.modalidadEvaluacion === "hibrido"
+                                  ? "⚡ Híbrido"
+                                  : "👨‍🏫 Foco Docente"
+                              }
+                            />
                           </div>
                           <button
                             type="button"
