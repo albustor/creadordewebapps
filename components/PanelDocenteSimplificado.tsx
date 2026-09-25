@@ -1016,11 +1016,45 @@ export default function PanelDocenteSimplificado() {
       
       {/* 1. TOP BAR — Barra de Navegación del Sistema */}
       <header className="bg-[#F0F3F6] border-b border-[#CBD5E1]/80 px-4 py-3 flex items-center justify-between gap-3 select-none">
-        {/* Controles de ventana decorativos */}
-        <div className="flex items-center space-x-2">
-          <span className="w-3 h-3 rounded-full bg-[#FF5F57] border border-[#E0443E] inline-block" />
-          <span className="w-3 h-3 rounded-full bg-[#FEBC2E] border border-[#D89E24] inline-block" />
-          <span className="w-3 h-3 rounded-full bg-[#28C840] border border-[#1AAB29] inline-block" />
+        {/* Controles de ventana decorativos + Título Panel de Evaluación + Selector de Nivel (7.° y 9.°) */}
+        <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap">
+          <div className="flex items-center space-x-2">
+            <span className="w-3 h-3 rounded-full bg-[#FF5F57] border border-[#E0443E] inline-block" />
+            <span className="w-3 h-3 rounded-full bg-[#FEBC2E] border border-[#D89E24] inline-block" />
+            <span className="w-3 h-3 rounded-full bg-[#28C840] border border-[#1AAB29] inline-block" />
+          </div>
+
+          <span className="text-xs sm:text-sm font-black text-slate-800 tracking-tight pl-1.5 sm:pl-2 border-l border-slate-300">
+            Panel de Evaluación
+          </span>
+
+          {/* Selector Rápido de Nivel Superior (7.° y 9.° Año) */}
+          <div className="flex items-center gap-1 p-0.5 sm:p-1 bg-white rounded-xl border border-slate-300 shadow-2xs">
+            <button
+              type="button"
+              onClick={() => handleCambiarNivel("7mo")}
+              className={`px-3 py-1 rounded-lg text-xs font-black transition-all cursor-pointer ${
+                nivelActivo === "7mo"
+                  ? "bg-[#1B5E59] text-white shadow-xs"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+              }`}
+              title="Evaluar 7.° Año (Sétimo)"
+            >
+              7.° AÑO
+            </button>
+            <button
+              type="button"
+              onClick={() => handleCambiarNivel("9no")}
+              className={`px-3 py-1 rounded-lg text-xs font-black transition-all cursor-pointer ${
+                nivelActivo === "9no"
+                  ? "bg-[#1B5E59] text-white shadow-xs"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+              }`}
+              title="Evaluar 9.° Año (Noveno)"
+            >
+              9.° AÑO
+            </button>
+          </div>
         </div>
 
         {/* Acciones Rápidas en Cabecera */}
@@ -1251,30 +1285,10 @@ export default function PanelDocenteSimplificado() {
                 </p>
               </div>
 
-              {/* Selector Rápido de Nivel (7.° y 9.° Año) */}
-              <div className="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl border border-slate-200 self-start sm:self-center">
-                <button
-                  type="button"
-                  onClick={() => handleCambiarNivel("7mo")}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${
-                    nivelActivo === "7mo"
-                      ? "bg-[#1B5E59] text-white shadow-2xs"
-                      : "text-slate-600 hover:text-slate-900"
-                  }`}
-                >
-                  7.° AÑO
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleCambiarNivel("9no")}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${
-                    nivelActivo === "9no"
-                      ? "bg-[#1B5E59] text-white shadow-2xs"
-                      : "text-slate-600 hover:text-slate-900"
-                  }`}
-                >
-                  9.° AÑO
-                </button>
+              {/* Indicador de Sección Activa En Vivo */}
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#D1EBE7] text-[#1B5E59] border border-[#9FD1C9] text-xs font-black shadow-2xs self-start sm:self-center">
+                <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
+                <span>{seccionActiva} en vivo</span>
               </div>
             </div>
 
