@@ -221,6 +221,54 @@ export const CRITERIOS_SOCIOAFECTIVOS_MAP: Record<"7mo" | "8vo" | "9no", Criteri
   ],
 };
 
+export interface SaberCognitivoOficial {
+  id: number;
+  nombre: string;
+  saber: string;
+  pregunta: string;
+  areaCurricular?: string;
+  descripcion?: string;
+}
+
+export const SABERES_COGNITIVOS_MAP: Record<"7mo" | "8vo" | "9no", SaberCognitivoOficial[]> = {
+  "9no": [
+    { id: 1, nombre: "Microcontrolador (Pregunta 1)", saber: "Microcontrolador", pregunta: "Pregunta 1", areaCurricular: "Computación física y robótica", descripcion: "Reconoce la función del microcontrolador dentro de un sistema automatizado." },
+    { id: 2, nombre: "Sensor y actuador (Pregunta 2)", saber: "Sensor y actuador", pregunta: "Pregunta 2", areaCurricular: "Computación física y robótica", descripcion: "Diferencia la función de sensor y actuador." },
+    { id: 3, nombre: "Entrada – proceso – salida (Pregunta 3)", saber: "Entrada – proceso – salida", pregunta: "Pregunta 3", areaCurricular: "Computación física y robótica", descripcion: "Relaciona sensor, microcontrolador y LED dentro de un sistema." },
+    { id: 4, nombre: "Algoritmo (Pregunta 4)", saber: "Algoritmo", pregunta: "Pregunta 4", areaCurricular: "Programación y algoritmos", descripcion: "Reconoce el orden lógico de una secuencia para resolver una situación automatizada." },
+    { id: 5, nombre: "Condición (Pregunta 5)", saber: "Condición", pregunta: "Pregunta 5", areaCurricular: "Programación y algoritmos", descripcion: "Identifica cuándo es necesario utilizar una estructura condicional." },
+    { id: 6, nombre: "Elementos y funciones (Pregunta 6)", saber: "Elementos y funciones", pregunta: "Pregunta 6", areaCurricular: "Computación física y robótica", descripcion: "Relaciona sensor, actuador y microcontrolador con su función." },
+    { id: 7, nombre: "Dato (Pregunta 7)", saber: "Dato", pregunta: "Pregunta 7", areaCurricular: "Ciencia de datos e IA", descripcion: "Reconoce qué tipo de información puede proporcionar un sensor." },
+    { id: 8, nombre: "Representación lógica (Pregunta 8)", saber: "Representación lógica", pregunta: "Pregunta 8", areaCurricular: "Programación y algoritmos", descripcion: "Identifica una estructura condicional a partir de una situación." },
+    { id: 9, nombre: "Problema y depuración (Pregunta 9)", saber: "Problema y depuración", pregunta: "Pregunta 9", areaCurricular: "Computación física / Procedimental", descripcion: "Reconoce una estrategia inicial para localizar un problema de funcionamiento." },
+    { id: 10, nombre: "Datos y almacenamiento (Pregunta 10)", saber: "Datos y almacenamiento", pregunta: "Pregunta 10", areaCurricular: "Ciencia de datos e IA", descripcion: "Comprende la importancia de conservar datos para consultarlos, analizarlos o utilizarlos posteriormente." },
+  ],
+  "7mo": [
+    { id: 1, nombre: "Hardware y periféricos (Pregunta 1)", saber: "Hardware", pregunta: "Pregunta 1", areaCurricular: "Apropiación tecnológica" },
+    { id: 2, nombre: "Software y utilitarios (Pregunta 2)", saber: "Software", pregunta: "Pregunta 2", areaCurricular: "Apropiación tecnológica" },
+    { id: 3, nombre: "Sistema Operativo (Pregunta 3)", saber: "Sistema operativo", pregunta: "Pregunta 3", areaCurricular: "Apropiación tecnológica" },
+    { id: 4, nombre: "Redes locales LAN (Pregunta 4)", saber: "Redes de comunicación", pregunta: "Pregunta 4", areaCurricular: "Conectividad" },
+    { id: 5, nombre: "Formatos de archivos (Pregunta 5)", saber: "Gestión de archivos", pregunta: "Pregunta 5", areaCurricular: "Apropiación tecnológica" },
+    { id: 6, nombre: "Edición multimedia (Pregunta 6)", saber: "Multimedia", pregunta: "Pregunta 6", areaCurricular: "Apropiación tecnológica" },
+    { id: 7, nombre: "Eventos en programación (Pregunta 7)", saber: "Evento", pregunta: "Pregunta 7", areaCurricular: "Programación y algoritmos" },
+    { id: 8, nombre: "Traza de variables (Pregunta 8)", saber: "Algoritmo", pregunta: "Pregunta 8", areaCurricular: "Programación y algoritmos" },
+    { id: 9, nombre: "Estructuras condicionales (Pregunta 9)", saber: "Condición", pregunta: "Pregunta 9", areaCurricular: "Programación y algoritmos" },
+    { id: 10, nombre: "Operadores lógicos (Pregunta 10)", saber: "Lógica", pregunta: "Pregunta 10", areaCurricular: "Programación y algoritmos" },
+  ],
+  "8vo": [
+    { id: 1, nombre: "Hardware y periféricos (Pregunta 1)", saber: "Hardware", pregunta: "Pregunta 1", areaCurricular: "Apropiación tecnológica" },
+    { id: 2, nombre: "Tipos de software (Pregunta 2)", saber: "Software", pregunta: "Pregunta 2", areaCurricular: "Apropiación tecnológica" },
+    { id: 3, nombre: "Redes y almacenamiento (Pregunta 3)", saber: "Redes", pregunta: "Pregunta 3", areaCurricular: "Apropiación tecnológica" },
+    { id: 4, nombre: "Conexión entre dispositivos (Pregunta 4)", saber: "Conexión", pregunta: "Pregunta 4", areaCurricular: "Apropiación tecnológica" },
+    { id: 5, nombre: "Sistema Operativo (Pregunta 5)", saber: "Sistema Operativo", pregunta: "Pregunta 5", areaCurricular: "Apropiación tecnológica" },
+    { id: 6, nombre: "Gestión de archivos (Pregunta 6)", saber: "Archivos", pregunta: "Pregunta 6", areaCurricular: "Apropiación tecnológica" },
+    { id: 7, nombre: "Edición multimedia (Pregunta 7)", saber: "Multimedia", pregunta: "Pregunta 7", areaCurricular: "Apropiación tecnológica" },
+    { id: 8, nombre: "Internet de las cosas (Pregunta 8)", saber: "IoT", pregunta: "Pregunta 8", areaCurricular: "Apropiación tecnológica" },
+    { id: 9, nombre: "Programación robótica (Pregunta 9)", saber: "Programación", pregunta: "Pregunta 9", areaCurricular: "Programación y algoritmos" },
+    { id: 10, nombre: "Robot y componentes (Pregunta 10)", saber: "Robótica", pregunta: "Pregunta 10", areaCurricular: "Computación física" },
+  ],
+};
+
 export interface CriterioPsicomotorOficial {
   id: string;
   codigo: string;
@@ -1604,12 +1652,12 @@ export default function PanelDocenteSimplificado() {
                           </span>
                         </div>
                         <p className="text-[11px] text-slate-500 font-medium mt-0.5">
-                          Haga clic para {acordeonDimensionesCognitivo ? "contraer" : "expandir"} los 10 indicadores de logro y grupos de criterios del Módulo 1.
+                          Haga clic para {acordeonDimensionesCognitivo ? "contraer" : "expandir"} los 10 saberes diagnosticados del Módulo 1.
                         </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2 text-slate-500 text-xs font-semibold shrink-0">
-                      <span>{acordeonDimensionesCognitivo ? "Ocultar" : "Ver áreas y criterios"}</span>
+                      <span>{acordeonDimensionesCognitivo ? "Ocultar" : "Ver 10 saberes"}</span>
                       <CaretDown
                         size={18}
                         weight="bold"
@@ -1619,33 +1667,33 @@ export default function PanelDocenteSimplificado() {
                   </button>
 
                   {acordeonDimensionesCognitivo && (
-                    <div className="p-4 sm:p-5 bg-slate-50/60 border-t border-slate-200/80">
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        {configNivel.subareas.map((sub, idx) => (
+                    <div className="p-4 sm:p-5 bg-slate-50/60 border-t border-slate-200/80 animate-fadeIn">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                        {(SABERES_COGNITIVOS_MAP[nivelActivo] || SABERES_COGNITIVOS_MAP["9no"]).map((saber) => (
                           <div
-                            key={sub.id}
-                            className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs space-y-2 border-l-4 border-l-[#1B5E59]"
+                            key={saber.id}
+                            className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs space-y-1.5 border-l-4 border-l-[#1B5E59] hover:shadow-md transition-all flex flex-col justify-between"
                           >
-                            <div className="flex items-center justify-between flex-wrap gap-1">
-                              <span className="text-[11px] font-bold text-[#1B5E59] uppercase tracking-wider">
-                                Grupo de criterios {idx + 1}
-                              </span>
-                              {sub.areaCurricular && (
-                                <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-teal-50 text-teal-800 border border-teal-200">
-                                  {sub.areaCurricular}
+                            <div>
+                              <div className="flex items-center justify-between gap-1 mb-1.5 flex-wrap">
+                                <span className="w-5 h-5 rounded-full bg-teal-100 text-[#1B5E59] font-black text-[10px] flex items-center justify-center shrink-0">
+                                  {saber.id}
                                 </span>
-                              )}
+                                {saber.areaCurricular && (
+                                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-teal-50 text-teal-800 border border-teal-100 truncate max-w-[130px]" title={saber.areaCurricular}>
+                                    {saber.areaCurricular}
+                                  </span>
+                                )}
+                              </div>
+                              <h4 className="text-xs font-bold text-slate-900 leading-snug">
+                                {saber.nombre}
+                              </h4>
                             </div>
-                            <h4 className="text-sm font-bold text-slate-900 leading-snug">
-                              {sub.nombre}
-                            </h4>
-                            <p className="text-[11px] text-slate-600 leading-relaxed">
-                              {sub.descripcion}
-                            </p>
-                            <div className="pt-1 flex items-center justify-between text-[10px] text-slate-400 font-mono">
-                              <span>Reactivos: {sub.itemsIds.join(", ")}</span>
-                              <span>Peso: {sub.pesoTotal} pts</span>
-                            </div>
+                            {saber.descripcion && (
+                              <p className="text-[10px] text-slate-500 font-medium italic border-t border-slate-100 pt-1.5 mt-1 line-clamp-2" title={saber.descripcion}>
+                                {saber.descripcion}
+                              </p>
+                            )}
                           </div>
                         ))}
                       </div>
