@@ -33,7 +33,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/dashboard" className="hover:text-emerald-800 transition-colors font-semibold text-emerald-800">
-                  Dashboard Docente (7°, 8° y 9°)
+                  Dashboard Docente (7° y 9°)
                 </Link>
               </li>
               <li>
@@ -64,9 +64,48 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Tarjeta Oficial de Autoría y Desarrollo Conceptual */}
+        <div className="bg-white rounded-2xl border border-stone-200 shadow-xs overflow-hidden mb-8">
+          <div className="h-1.5 bg-[#0f2d4a] w-full" />
+          <div className="p-5 sm:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            {/* Elaborado por */}
+            <div className="space-y-1">
+              <h4 className="text-sm font-black text-[#0f2d4a]">
+                Elaborado por:
+              </h4>
+              <p className="text-xs sm:text-sm font-bold text-slate-900">
+                Asesores Nacionales del Programa Nacional de Formación Tecnológica
+              </p>
+              <div className="text-xs text-stone-500 space-y-0.5 pt-0.5">
+                <p>Departamento de Investigación, Desarrollo e Implementación</p>
+                <p>Dirección de Recursos Tecnológicos en Educación</p>
+                <p>Ministerio de Educación Pública</p>
+              </div>
+            </div>
+
+            {/* Elaborado por: Allan Morera Araya, Alberto Bustos Ortega */}
+            <div className="space-y-2 md:text-right">
+              <h4 className="text-xs sm:text-sm font-black text-[#0f2d4a]">
+                Elaborado por:
+              </h4>
+              <div className="flex items-center md:justify-end gap-2 flex-wrap">
+                <span className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-50 text-emerald-900 font-bold text-xs border border-emerald-300 shadow-2xs">
+                  Allan Morera Araya
+                </span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-50 text-emerald-900 font-bold text-xs border border-emerald-300 shadow-2xs">
+                  Alberto Bustos Ortega
+                </span>
+              </div>
+              <p className="text-xs font-bold text-stone-600 pt-1">
+                Febrero 2027.
+              </p>
+            </div>
+          </div>
+        </div>
+
         <div className="pt-6 border-t border-stone-200 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-stone-500">
           <div>
-            © Diagnóstico & Dashboard • Tecnologías de la Información (7°, 8° y 9° año).
+            © Diagnóstico & Dashboard • Tecnologías de la Información (7° y 9° año).
           </div>
           <div>
             Optimizado para computadoras de laboratorios, PCs y portátiles.

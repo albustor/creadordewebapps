@@ -37,7 +37,7 @@ export default function SelectorNivelDiagnosticoTabs({
 
   return (
     <div className="bg-white p-2 rounded-3xl border border-stone-200 shadow-softPastel">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
         {LISTA_NIVELES_III_CICLO.map((nivel) => {
           const isActivo = nivelSeleccionado === nivel;
           const config = obtenerDiagnosticoPorNivel(nivel);

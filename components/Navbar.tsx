@@ -41,7 +41,7 @@ export default function Navbar() {
       href: "/dashboard",
       label: "Dashboard Docente",
       icon: <ChartBar size={18} weight="duotone" />,
-      titulo: "Panel de control del docente, enlaces seguros y telemetría de 7°, 8° y 9°",
+      titulo: "Panel de control del docente, enlaces seguros y telemetría de 7° y 9°",
     },
     ...(esAsesor
       ? [
@@ -56,26 +56,26 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-[#FCFBF9]/95 backdrop-blur-md border-b border-stone-200/90 shadow-xs transition-all duration-300">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#CBD5E1]/80 shadow-xs transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20 gap-3">
+        <div className="flex items-center justify-between h-16 sm:h-20 gap-3">
           
-          {/* Logo & Marca */}
+          {/* Logo & Marca Stitch / Aula Clara */}
           <Link
             href={docente ? "/dashboard" : "/"}
             className="flex items-center gap-3 shrink-0 group py-1 focus:outline-none"
             title="Diagnóstico Secundaria - Tecnologías de la Información"
           >
-            <div className="w-11 h-11 rounded-2xl bg-emerald-100/90 border border-emerald-300/80 flex items-center justify-center text-emerald-800 shadow-xs group-hover:scale-105 transition-all">
-              <Lightning size={24} weight="fill" className="text-amber-600" />
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-[#D1EBE7] border border-[#9FD1C9] flex items-center justify-center text-[#1B5E59] shadow-xs group-hover:scale-105 transition-all">
+              <Lightning size={24} weight="fill" className="text-[#E07A2C]" />
             </div>
             <div className="flex flex-col justify-center">
-              <span className="font-black text-base sm:text-lg tracking-tight text-slate-900 leading-none whitespace-nowrap">
+              <span className="font-black text-base sm:text-lg tracking-tight text-[#0D1C2E] leading-none whitespace-nowrap">
                 Diagnóstico Secundaria PNFT
               </span>
-              <span className="text-[11px] font-extrabold text-emerald-700 tracking-wider uppercase leading-none mt-1.5 whitespace-nowrap flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
-                Evaluación Diagnóstica MEP • PNFT • 7°, 8° y 9°
+              <span className="text-[11px] font-bold text-[#1B5E59] tracking-wider uppercase leading-none mt-1.5 whitespace-nowrap flex items-center gap-1.5 font-sans">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                Evaluación MEP • 7.° y 9.° Año
               </span>
             </div>
           </Link>
@@ -89,13 +89,13 @@ export default function Navbar() {
                   key={enlace.href}
                   href={enlace.href}
                   title={enlace.titulo}
-                  className={`inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all select-none ${
+                  className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap transition-all select-none ${
                     activo
-                      ? "bg-emerald-50 text-emerald-900 border border-emerald-300/80 shadow-xs"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-stone-100/80 border border-transparent"
+                      ? "bg-[#D1EBE7] text-[#1B5E59] font-bold shadow-xs border border-[#9FD1C9]"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-transparent"
                   }`}
                 >
-                  <span className={activo ? "text-emerald-700" : "text-slate-500"}>
+                  <span className={activo ? "text-[#1B5E59]" : "text-slate-500"}>
                     {enlace.icon}
                   </span>
                   <span>{enlace.label}</span>
@@ -113,13 +113,13 @@ export default function Navbar() {
                   <Link
                     href="/admin"
                     title="Panel de administración y gobernanza general"
-                    className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all ${
+                    className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold border transition-all ${
                       pathname === "/admin"
-                        ? "bg-amber-100/80 text-amber-900 border-amber-300 shadow-xs"
-                        : "bg-stone-100 text-stone-700 hover:text-stone-900 hover:bg-stone-200/80 border-stone-300/70"
+                        ? "bg-amber-100 text-amber-950 border-amber-300 shadow-xs"
+                        : "bg-slate-100 text-slate-700 hover:text-slate-900 hover:bg-slate-200 border-slate-300"
                     }`}
                   >
-                    <ShieldCheck size={16} weight="fill" className="text-amber-600" />
+                    <ShieldCheck size={16} weight="fill" className="text-[#E07A2C]" />
                     <span>Administración</span>
                   </Link>
                 )}
@@ -127,17 +127,17 @@ export default function Navbar() {
                 <Link
                   href="/registro"
                   title="Configuración de perfil docente"
-                  className={`inline-flex items-center gap-2.5 px-3 py-1.5 rounded-xl border transition-all shadow-xs group ${
+                  className={`inline-flex items-center gap-2.5 px-3 py-1.5 rounded-lg border transition-all shadow-xs group ${
                     esSuperAdmin
-                      ? "border-amber-300 bg-amber-50/60 hover:bg-amber-50 text-slate-900"
-                      : "border-stone-300 bg-white hover:bg-stone-50 text-slate-900"
+                      ? "border-amber-300 bg-amber-50 hover:bg-amber-100 text-slate-900"
+                      : "border-slate-200 bg-white hover:bg-slate-50 text-slate-900"
                   }`}
                 >
                   <div
-                    className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs font-bold shrink-0 transition-colors shadow-xs ${
+                    className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 transition-colors shadow-xs ${
                       esSuperAdmin
-                        ? "bg-amber-500 text-white group-hover:scale-105"
-                        : "bg-emerald-700 text-white"
+                        ? "bg-[#E07A2C] text-white group-hover:scale-105"
+                        : "bg-[#1B5E59] text-white"
                     }`}
                   >
                     {esSuperAdmin ? (
@@ -147,7 +147,7 @@ export default function Navbar() {
                     )}
                   </div>
                   <div className="text-left flex flex-col justify-center">
-                    <span className="text-xs font-extrabold text-slate-900 leading-none whitespace-nowrap flex items-center gap-1">
+                    <span className="text-xs font-bold text-slate-900 leading-none whitespace-nowrap flex items-center gap-1">
                       {(() => {
                         const raw = docente?.nombreCompleto || "Docente";
                         const limpio = raw
@@ -162,7 +162,7 @@ export default function Navbar() {
                     </span>
                     <span
                       className={`text-[10px] font-mono font-bold leading-none mt-1 whitespace-nowrap ${
-                        esSuperAdmin ? "text-amber-800 font-extrabold" : "text-emerald-700"
+                        esSuperAdmin ? "text-amber-800 font-extrabold" : "text-[#1B5E59]"
                       }`}
                     >
                       {docente?.idDocente || "DOC-7729"}
@@ -173,7 +173,7 @@ export default function Navbar() {
                 <button
                   onClick={() => cerrarSesion()}
                   title="Cerrar sesión"
-                  className="p-2.5 rounded-xl text-stone-600 hover:text-rose-700 hover:bg-rose-50 border border-stone-300/80 transition-colors"
+                  className="p-2 rounded-lg text-slate-500 hover:text-rose-700 hover:bg-rose-50 border border-slate-200 transition-colors"
                 >
                   <SignOut size={18} weight="bold" />
                 </button>
@@ -181,10 +181,10 @@ export default function Navbar() {
             ) : (
               <Link
                 href="/"
-                className="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs sm:text-sm font-black rounded-xl shadow-sm transition-all"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[#1B5E59] hover:bg-[#144642] text-white text-xs sm:text-sm font-bold rounded-lg shadow-sm transition-all"
               >
                 <SignIn size={18} weight="bold" />
-                <span>Ingreso docente</span>
+                <span>Ingreso Docente</span>
               </Link>
             )}
           </div>

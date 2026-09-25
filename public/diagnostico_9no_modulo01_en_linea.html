@@ -45,21 +45,27 @@
       overflow-x: hidden;
     }
 
-    /* HEADER OFICIAL MEP (PÚRPURA / VIOLETA REAL) */
+    /* HEADER OFICIAL MEP (PÚRPURA / VIOLETA REAL - CENTRADO Y ALINEADO) */
     header {
+      max-width: 1040px;
+      width: calc(100% - 24px);
+      margin: 14px auto 0;
       background: linear-gradient(135deg, #2e1065 0%, #4c1d95 60%, #0f172a 100%);
       color: #ffffff;
-      padding: 10px 16px;
+      padding: 12px 18px;
+      border-radius: 14px;
+      border: 1.5px solid #a855f7;
+      box-shadow: 0 4px 16px rgba(46, 16, 101, 0.15);
+      z-index: 100;
+    }
+
+    .header-container {
+      width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 10px;
-      border-bottom: 2px solid #a855f7;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      position: sticky;
-      top: 0;
-      z-index: 100;
     }
 
     .mep-badge {
@@ -227,6 +233,64 @@
       padding: 3px 8px;
       border-radius: 6px;
       border: 1px solid #7dd3fc;
+    }
+
+    .validacion-banner {
+      margin-top: 14px;
+      margin-bottom: 12px;
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transform-origin: center left;
+    }
+
+    .validacion-banner.valido {
+      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+      border: 2px solid #10b981;
+      color: #065f46;
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.22);
+      animation: validacionBounceIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .validacion-banner.invalido {
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      border: 2px solid #f59e0b;
+      color: #92400e;
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.18);
+      animation: validacionShake 0.35s ease-in-out;
+    }
+
+    .validacion-banner.neutro {
+      background: #f8fafc;
+      border: 1.5px dashed #cbd5e1;
+      color: #64748b;
+      box-shadow: none;
+    }
+
+    @keyframes validacionBounceIn {
+      0% {
+        opacity: 0;
+        transform: translateY(-6px) scale(0.97);
+      }
+      70% {
+        opacity: 1;
+        transform: translateY(1px) scale(1.02);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes validacionShake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-4px); }
+      40%, 80% { transform: translateX(4px); }
     }
 
     .opcion-btn {
@@ -755,37 +819,30 @@
 </head>
 <body>
 
-  <!-- HEADER OFICIAL -->
+  <!-- HEADER OFICIAL (CENTRADO Y ALINEADO CON DATOS) -->
   <header>
-    <div style="display: flex; align-items: center; gap: 8px;">
-      <div style="width: 32px; height: 32px; border-radius: 6px; background: white; display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); border: 1px solid #d8b4fe;">
-        💡
-      </div>
-      <div>
-        <div class="mep-badge" style="background: #f3e8ff; border: 1px solid #d8b4fe; color: #6b21a8;">
-          <span>Formación Tecnológica 2027</span>
+    <div class="header-container">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="width: 34px; height: 34px; border-radius: 8px; background: white; display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); border: 1px solid #d8b4fe;">
+          💡
         </div>
-        <h1 style="font-size: 0.95rem; font-weight: 900; letter-spacing: -0.2px; margin-top: 1px; color: #ffffff;">
-          Diagnóstico 9°: «Aula Inteligente» (Módulo 1)
-        </h1>
-      </div>
-    </div>
-
-    <div class="top-tools" style="display: flex; align-items: center; gap: 8px;">
-      <button class="btn btn-outline" style="font-size: 10.5px; padding: 4px 10px; min-height: 28px; color: #ffffff; border-color: rgba(216, 180, 254, 0.4); background: rgba(255, 255, 255, 0.1); font-weight: 700;" onclick="mostrarModalInstrumento()">
-        📋 Criterios de Logro
-      </button>
-      <div style="background: #7c3aed; border: 1.5px solid #a855f7; color: #ffffff; font-size: 11px; font-weight: 900; padding: 5px 12px; border-radius: 20px; box-shadow: 0 2px 8px rgba(124, 58, 237, 0.25);" id="badgeProgresoHeader">
-        📊 Progreso: 0%
+        <div>
+          <div class="mep-badge" style="background: #f3e8ff; border: 1px solid #d8b4fe; color: #6b21a8;">
+            <span>Formación Tecnológica 2027</span>
+          </div>
+          <h1 style="font-size: 1rem; font-weight: 900; letter-spacing: -0.2px; margin-top: 1px; color: #ffffff;">
+            Diagnóstico 9°: «Aula Inteligente» (Módulo 1)
+          </h1>
+        </div>
       </div>
     </div>
   </header>
 
-  <!-- NAVEGADOR DE 4 ETAPAS -->
+  <!-- NAVEGADOR DE 5 ETAPAS OFICIALES MEP -->
   <nav class="nav-tabs">
     <div class="nav-tab activa" id="tabSec1" onclick="irASeccion(1)">
-      <span id="tabSec1Label">1. Datos</span>
-      <span id="tabSec1Sub">Identificación</span>
+      <span id="tabSec1Label">1. Identificación</span>
+      <span id="tabSec1Sub">Datos personales</span>
     </div>
     <div class="nav-tab" id="tabSec2" onclick="irASeccion(2)">
       <span>2. Parte A</span>
@@ -796,7 +853,11 @@
       <span>Reto práctico</span>
     </div>
     <div class="nav-tab" id="tabSec4" onclick="irASeccion(4)">
-      <span>4. Informe</span>
+      <span>4. Parte C</span>
+      <span>Reflexión MEP</span>
+    </div>
+    <div class="nav-tab" id="tabSec5" onclick="irASeccion(5)">
+      <span>5. Informe</span>
       <span>Evidencia QR</span>
     </div>
   </nav>
@@ -809,16 +870,16 @@
     <div id="seccion1" class="card">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 4px;">
         <span class="mep-badge" style="background: #1e3a8a; border-color: #38bdf8; color: #93c5fd;">
-          Etapa 1 • Guía de Evaluación Diagnóstica
+          Etapa 1 • Guía de evaluación diagnóstica
         </span>
-        <span style="font-size: 11px; color: #94a3b8; font-weight: 700;">III Ciclo • Noveno Año (Módulo 1) | Duración: 70 min</span>
+        <span style="font-size: 11px; color: #94a3b8; font-weight: 700;">III Ciclo • Noveno año (Módulo 1) | Duración: 70 min</span>
       </div>
 
       <!-- FORMULARIO DE IDENTIFICACIÓN OFICIAL -->
       <div style="background: #ffffff; border: 1.5px solid #7dd3fc; border-radius: 12px; padding: 18px; margin-bottom: 16px; box-shadow: 0 2px 10px rgba(2, 132, 199, 0.08);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
           <h3 style="font-size: 13.5px; color: #0369a1; font-weight: 800; margin: 0;">
-            👤 Datos de Identificación del Estudiante:
+            👤 Datos de identificación de la persona estudiante:
           </h3>
         </div>
 
@@ -835,14 +896,14 @@
             </div>
           </div>
           <span style="background: #dcfce7; color: #15803d; border: 1px solid #86efac; font-size: 11px; font-weight: 800; padding: 5px 12px; border-radius: 20px;">
-            🔗 Vinculado al Docente Evaluador
+            🔗 Vinculado a la persona docente evaluadora
           </span>
         </div>
         
         <div style="display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 12px; margin-bottom: 12px;">
           <div>
             <label style="display: block; font-size: 11.5px; font-weight: 700; color: #334155; margin-bottom: 4px;">
-              Nombre Completo del Estudiante (con ambos apellidos): <span style="color: #ef4444;">* (Obligatorio)</span>
+              Nombre completo de la persona estudiante (con ambos apellidos): <span style="color: #ef4444;">* (Obligatorio)</span>
             </label>
             <input type="text" id="inputEstudianteNombre" placeholder="Ej. Juan Rosales Valverde" style="width: 100%; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 9px 12px; color: #0f172a; font-size: 13px; font-weight: 600; outline: none;" oninput="validarDatosEstudiante();" onblur="this.value = formatFullName(this.value); validarDatosEstudiante();" onchange="this.value = formatFullName(this.value); validarDatosEstudiante();">
             <span style="font-size: 10.5px; color: #64748b; display: block; margin-top: 3px;">Debe incluir un nombre y sus dos apellidos (ej. Juan Rosales Valverde o María José Gómez Porras).</span>
@@ -850,7 +911,7 @@
 
           <div>
             <label style="display: block; font-size: 11.5px; font-weight: 700; color: #334155; margin-bottom: 4px;">
-              Sección / Grupo: <span style="color: #ef4444;">*</span>
+              Sección o grupo: <span style="color: #ef4444;">*</span>
             </label>
             <select id="selectSeccion" style="width: 100%; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 9px 12px; color: #0f172a; font-size: 13px; font-weight: 700; outline: none;" onchange="validarDatosEstudiante()">
               <option value="Sección 9-1">Sección 9-1</option>
@@ -880,13 +941,13 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
           <div>
             <label style="display: block; font-size: 11px; font-weight: 700; color: #334155; margin-bottom: 4px;">
-              Cédula / Identificación: <span style="color: #64748b; font-weight: normal;">(Opcional)</span>
+              Cédula o identificación: <span style="color: #64748b; font-weight: normal;">(Opcional)</span>
             </label>
             <input type="text" id="inputEstudianteCedula" placeholder="Ej: 1-1234-5678" style="width: 100%; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; color: #0f172a; font-size: 11.5px; outline: none;" oninput="validarDatosEstudiante()">
           </div>
           <div>
             <label style="display: block; font-size: 11px; font-weight: 700; color: #334155; margin-bottom: 4px;">
-              Correo Institucional / Oficial: <span style="color: #64748b; font-weight: normal;">(Opcional)</span>
+              Correo institucional u oficial: <span style="color: #64748b; font-weight: normal;">(Opcional)</span>
             </label>
             <input type="email" id="inputEstudianteCorreo" placeholder="ejemplo@institucion.ed.cr" style="width: 100%; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; color: #0f172a; font-size: 11.5px; outline: none;" oninput="validarDatosEstudiante()">
           </div>
@@ -895,39 +956,27 @@
         <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; margin-bottom: 8px;">
           <div>
             <label style="display: block; font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 4px;">
-              🏫 Centro Educativo: <span style="color: #0369a1; font-weight: 800; font-size: 10.5px;">🔒 (Asignado)</span>
+              🏫 Centro educativo: <span style="color: #0369a1; font-weight: 800; font-size: 10.5px;">🔒 (Asignado)</span>
             </label>
             <input type="text" id="inputCentroEducativo" readonly placeholder="Cargando institución asignada..." value="" style="width: 100%; background: #f1f5f9; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; color: #0f172a; font-size: 12px; font-weight: 700; outline: none; cursor: not-allowed;">
           </div>
           <div>
             <label style="display: block; font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 4px;">
-              👨‍🏫 Docente Evaluador: <span style="color: #0369a1; font-weight: 800; font-size: 10.5px;">🔒 (Asignado)</span>
+              👨‍🏫 Docente evaluador: <span style="color: #0369a1; font-weight: 800; font-size: 10.5px;">🔒 (Asignado)</span>
             </label>
             <input type="text" id="inputDocente" readonly placeholder="Cargando docente a cargo..." value="" style="width: 100%; background: #f1f5f9; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; color: #0f172a; font-size: 12px; font-weight: 700; outline: none; cursor: not-allowed;">
           </div>
         </div>
 
-        <div id="msgValidacionDatos" style="font-size: 11.5px; color: #b45309; font-weight: 700; padding: 4px 0;">
-          ⚠️ Ingresa tu Nombre y al menos dos Apellidos completos para habilitar la prueba.
-        </div>
-      </div>
-
-      <!-- SITUACIÓN-PROBLEMA: AULA INTELIGENTE (DOCUMENTO BASE OFICIAL) -->
-      <div class="situacion-box">
-        <h2 style="font-size: 1.15rem; color: #0369a1; margin-bottom: 6px; font-weight: 800;">
-          🏫 2. Situación-problema: Aula inteligente
-        </h2>
-        <p style="font-size: 12.5px; color: #334155; line-height: 1.55; margin-bottom: 8px;">
-          El laboratorio desea implementar un sistema que permita <strong>encender una luz automáticamente cuando exista poca iluminación</strong>. Para ello se dispone de un <strong>microcontrolador</strong>, un <strong>sensor</strong> y un <strong>actuador</strong>. Tu tarea será analizar la situación y realizar una primera propuesta de solución.
-        </p>
-        <div style="background: #ffffff; border-left: 3.5px solid #0284c7; padding: 10px 12px; border-radius: 6px; font-size: 11.5px; color: #0369a1;">
-          <strong>Importante:</strong> durante esta actividad el docente observará tu proceso de trabajo. No se espera que todo quede perfecto; interesa conocer cómo piensas, cómo pruebas una solución y cómo reaccionas cuando algo no funciona.
+        <div id="msgValidacionDatos" class="validacion-banner neutro">
+          <span style="font-size: 20px;">✍️</span>
+          <span>Ingresa tu <strong>nombre y al menos dos apellidos</strong> completos para habilitar la prueba.</span>
         </div>
       </div>
 
       <div style="display: flex; justify-content: flex-end;">
-        <button class="btn btn-accent" id="btnIniciarDiagnostico" style="padding: 9px 20px; font-size: 13px; font-weight: 800;" onclick="comenzarDiagnosticoValido()">
-          Comenzar Parte A (Conocimientos Previos) ➔
+        <button class="btn btn-accent" id="btnIniciarDiagnostico" style="padding: 10px 22px; font-size: 13.5px; font-weight: 800;" onclick="comenzarDiagnosticoValido()">
+          Continuar a la Parte A (10 reactivos) ➔
         </button>
       </div>
     </div>
@@ -939,15 +988,28 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
         <div>
           <span class="mep-badge" style="background: #e0f2fe; border-color: #7dd3fc; color: #0369a1;">
-            Parte A • Área Cognoscitiva (Documento Base)
+            Parte A • Área cognoscitiva (documento base)
           </span>
           <h2 style="font-size: 1.15rem; color: #0f172a; margin-top: 2px; font-weight: 900;">
-            Conocimientos Previos (10 Ítems Oficiales)
+            Conocimientos previos (10 reactivos oficiales)
           </h2>
         </div>
         <span id="contadorRespuestas" style="font-size: 11px; color: #0369a1; font-weight: 800; background: #e0f2fe; padding: 4px 8px; border-radius: 6px; border: 1px solid #7dd3fc;">
           Respondidas: 0 / 10
         </span>
+      </div>
+
+      <!-- SITUACIÓN-PROBLEMA: AULA INTELIGENTE (CONTEXTO GENERAL DE EVALUACIÓN) -->
+      <div class="situacion-box" style="margin-bottom: 20px;">
+        <h2 style="font-size: 1.15rem; color: #0369a1; margin-bottom: 6px; font-weight: 800;">
+          🏫 Situación-problema: Aula inteligente
+        </h2>
+        <p style="font-size: 12.5px; color: #334155; line-height: 1.55; margin-bottom: 8px;">
+          El laboratorio desea implementar un sistema que permita <strong>encender una luz automáticamente cuando exista poca iluminación</strong>. Para ello se dispone de un <strong>microcontrolador</strong>, un <strong>sensor</strong> y un <strong>actuador</strong>. Tu tarea será analizar la situación y realizar una primera propuesta de solución a través de los siguientes reactivos y la simulación práctica.
+        </p>
+        <div style="background: #ffffff; border-left: 3.5px solid #0284c7; padding: 10px 12px; border-radius: 6px; font-size: 11.5px; color: #0369a1;">
+          <strong>Propósito Formativo del Diagnóstico:</strong> Esta herramienta permite explorar tus conocimientos y habilidades prácticas. No constituye una calificación sumativa o punitiva. Responde y experimenta con tranquilidad: lo que ya conoces es un logro, y lo que aún no conoces representa una valiosa oportunidad para aprender durante el curso lectivo.
+        </div>
       </div>
 
       <!-- ÍTEM 1 -->
@@ -1096,9 +1158,9 @@
         <div id="retroItem10" class="retro-box"></div>
       </div>
 
-      <div style="display: flex; justify-content: space-between; margin-top: 14px;">
-        <button class="btn btn-outline" onclick="irASeccion(1)">⬅️ Etapa 1: Datos</button>
-        <button class="btn btn-accent" onclick="irASeccion(3)">Continuar a Parte B (Reto Práctico) ➔</button>
+      <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 14px; gap: 12px;">
+        <span style="font-size: 12px; color: #64748b; font-weight: 600;">🔒 Datos de identificación registrados</span>
+        <button class="btn btn-accent" onclick="irASeccion(3)">Continuar a la Parte B (reto práctico) ➔</button>
       </div>
     </div>
 
@@ -1316,17 +1378,100 @@
 
       <!-- BOTONES DE NAVEGACIÓN -->
       <div style="display: flex; justify-content: space-between; margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px; flex-wrap: wrap; gap: 6px;">
-        <button class="btn btn-outline" onclick="irASeccion(2)">⬅️ Parte A: 10 Reactivos</button>
+        <button class="btn btn-outline" onclick="irASeccion(2)">⬅️ Parte A: 10 reactivos</button>
         <button class="btn btn-accent" style="padding: 9px 22px; font-size: 13.5px; font-weight: 800; background: linear-gradient(135deg, #059669 0%, #047857 100%); border-color: #047857; color: white;" onclick="irASeccion(4)">
-          Finalizar y Generar Informe Oficial ➔
+          Continuar a la Parte C (Reflexión) ➔
         </button>
       </div>
     </div>
 
     <!-- ==================================================================== -->
-    <!-- ETAPA 4: COMPROBANTE DE ENTREGA Y CONFIRMACIÓN DOCENTE               -->
+    <!-- ETAPA 4: PARTE C – REFLEXIÓN SOCIOAFECTIVA (4 PREGUNTAS OFICIALES)   -->
     <!-- ==================================================================== -->
-    <div id="seccion4" class="card" style="display: none; text-align: center; max-width: 680px; margin: 0 auto;">
+    <div id="seccion4" class="card" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
+        <div>
+          <span class="mep-badge" style="background: #fdf2f8; border-color: #f472b6; color: #db2777;">
+            Parte C • Área Socioafectiva (MEP Oficial)
+          </span>
+          <h2 style="font-size: 1.15rem; color: #0f172a; margin-top: 2px; font-weight: 900;">
+            Reflexión Formativa: Autopercepción de Actitudes
+          </h2>
+        </div>
+        <span style="font-size: 11px; color: #db2777; font-weight: 800; background: #fdf2f8; padding: 4px 8px; border-radius: 6px; border: 1px solid #f472b6;">
+          ❤️ 4 Preguntas de Cierre
+        </span>
+      </div>
+
+      <div style="background: #fdf2f8; border: 1.5px solid #fbcfe8; padding: 12px 14px; border-radius: 10px; margin-bottom: 16px; font-size: 12px; color: #9d174d; line-height: 1.5;">
+        <strong>Instrucciones:</strong> Selecciona con total sinceridad la opción que mejor describa tu experiencia y actitud durante el desarrollo de los reactivos y la simulación práctica.
+      </div>
+
+      <!-- S1 -->
+      <div class="item-card" style="border-left: 4px solid #db2777; margin-bottom: 12px;">
+        <div class="item-header"><span class="item-num" style="background: #db2777;">S1. Gusto por la Precisión y Calidad</span></div>
+        <p style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #0f172a;">
+          «Al responder los reactivos y verificar el circuito, ¿revisó los detalles con minuciosidad?»
+        </p>
+        <div id="optsSocio1">
+          <button class="opcion-btn" id="btnSocio_s1_A" onclick="seleccionarSocioafectivo('s1', 'A')">A. Revisé minuciosamente cada conexión, polaridad y respuesta antes de avanzar.</button>
+          <button class="opcion-btn" id="btnSocio_s1_B" onclick="seleccionarSocioafectivo('s1', 'B')">B. Revisé solo algunas partes principales del reto.</button>
+          <button class="opcion-btn" id="btnSocio_s1_C" onclick="seleccionarSocioafectivo('s1', 'C')">C. Respondí y conecté rápido sin revisar los detalles.</button>
+        </div>
+      </div>
+
+      <!-- S2 -->
+      <div class="item-card" style="border-left: 4px solid #db2777; margin-bottom: 12px;">
+        <div class="item-header"><span class="item-num" style="background: #db2777;">S2. Aprender del Error (Resiliencia en Debugging)</span></div>
+        <p style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #0f172a;">
+          «Ante una falla o cuando el circuito no funcionó como esperaba, ¿cuál fue su actitud y método de resolución?»
+        </p>
+        <div id="optsSocio2">
+          <button class="opcion-btn" id="btnSocio_s2_A" onclick="seleccionarSocioafectivo('s2', 'A')">A. Analicé el monitor serial/fallo con calma, busqué mi error, lo corregí y aprendí algo.</button>
+          <button class="opcion-btn" id="btnSocio_s2_B" onclick="seleccionarSocioafectivo('s2', 'B')">B. Intenté corregirlo con apoyo o pistas del simulador.</button>
+          <button class="opcion-btn" id="btnSocio_s2_C" onclick="seleccionarSocioafectivo('s2', 'C')">C. Me costó identificar el error o sentí desánimo.</button>
+        </div>
+      </div>
+
+      <!-- S3 -->
+      <div class="item-card" style="border-left: 4px solid #db2777; margin-bottom: 12px;">
+        <div class="item-header"><span class="item-num" style="background: #db2777;">S3. Flexibilidad y Trabajo Colaborativo</span></div>
+        <p style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #0f172a;">
+          «Cuando un sensor o actuador no respondía como esperaba, ¿cómo coordinó la solución?»
+        </p>
+        <div id="optsSocio3">
+          <button class="opcion-btn" id="btnSocio_s3_A" onclick="seleccionarSocioafectivo('s3', 'A')">A. Probé caminos alternos (multímetro/otro orden) y escuché aportes de mi compañero/a.</button>
+          <button class="opcion-btn" id="btnSocio_s3_B" onclick="seleccionarSocioafectivo('s3', 'B')">B. Acepté modificar la conexión al recibir una sugerencia.</button>
+          <button class="opcion-btn" id="btnSocio_s3_C" onclick="seleccionarSocioafectivo('s3', 'C')">C. Seguí insistiendo en la misma conexión aunque no funcionaba.</button>
+        </div>
+      </div>
+
+      <!-- S4 -->
+      <div class="item-card" style="border-left: 4px solid #db2777; margin-bottom: 12px;">
+        <div class="item-header"><span class="item-num" style="background: #db2777;">S4. Tolerancia a la Frustración y Perseverancia</span></div>
+        <p style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #0f172a;">
+          «Ante la dificultad de integrar hardware físico y programación, ¿cómo gestionó la perseverancia?»
+        </p>
+        <div id="optsSocio4">
+          <button class="opcion-btn" id="btnSocio_s4_A" onclick="seleccionarSocioafectivo('s4', 'A')">A. Mantuve la calma y persistí sistemáticamente hasta que todo funcionó.</button>
+          <button class="opcion-btn" id="btnSocio_s4_B" onclick="seleccionarSocioafectivo('s4', 'B')">B. Me costó un poco, pero continué con entusiasmo tras recibir apoyo.</button>
+          <button class="opcion-btn" id="btnSocio_s4_C" onclick="seleccionarSocioafectivo('s4', 'C')">C. Sentí frustración o deseos de no continuar.</button>
+        </div>
+      </div>
+
+      <!-- BOTONES DE NAVEGACIÓN -->
+      <div style="display: flex; justify-content: space-between; margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px; flex-wrap: wrap; gap: 6px;">
+        <button class="btn btn-outline" onclick="irASeccion(3)">⬅️ Regresar a la Parte B</button>
+        <button class="btn btn-accent" style="padding: 9px 22px; font-size: 13.5px; font-weight: 800; background: linear-gradient(135deg, #059669 0%, #047857 100%); border-color: #047857; color: white;" onclick="irASeccion(5)">
+          Finalizar y generar informe oficial ➔
+        </button>
+      </div>
+    </div>
+
+    <!-- ==================================================================== -->
+    <!-- ETAPA 5: COMPROBANTE DE ENTREGA Y CONFIRMACIÓN DOCENTE               -->
+    <!-- ==================================================================== -->
+    <div id="seccion5" class="card" style="display: none; text-align: center; max-width: 680px; margin: 0 auto;">
       <div style="font-size: 38px; margin-bottom: 6px;">🎉</div>
       <h2 style="font-size: 1.4rem; color: #0369a1; font-weight: 900; margin-bottom: 14px;">
         ¡Diagnóstico Completado con Éxito!
@@ -1374,10 +1519,13 @@
         </div>
       </div>
 
-      <!-- BOTÓN CERRAR VENTANA Y FINALIZAR SESIÓN -->
-      <div style="display: flex; justify-content: center; gap: 10px; margin-top: 10px;">
-        <button class="btn" style="background: #dc2626; color: white; font-weight: 900; font-size: 13.5px; padding: 12px 28px; border-radius: 12px; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25); cursor: pointer; border: none;" onclick="cerrarVentanaDiagnostico()">
+      <!-- BOTONES DE ACCIÓN: FINALIZAR SESIÓN / NUEVA PRUEBA EN BLANCO -->
+      <div style="display: flex; justify-content: center; gap: 12px; margin-top: 14px; flex-wrap: wrap;">
+        <button class="btn" style="background: #dc2626; color: white; font-weight: 900; font-size: 13px; padding: 12px 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25); cursor: pointer; border: none;" onclick="cerrarVentanaDiagnostico()">
           🚪 Cerrar Ventana y Finalizar Sesión
+        </button>
+        <button class="btn btn-secondary" style="font-weight: 800; font-size: 13px; padding: 12px 20px; border-radius: 12px; border: 1.5px solid #cbd5e1; cursor: pointer;" onclick="prepararSiguienteEstudiante(true)">
+          🔄 Nueva Prueba / Reiniciar en Blanco
         </button>
       </div>
     </div>
@@ -1393,7 +1541,7 @@
           <p class="footer-subtext">Ministerio de Educación Pública</p>
         </div>
         <div class="footer-section footer-credits">
-          <h4 class="footer-title">Desarrollo Web / Implementación:</h4>
+          <h4 class="footer-title">Elaborado por:</h4>
           <p class="footer-authors">
             <span class="author-badge">Allan Morera Araya</span>
             <span class="author-badge">Alberto Bustos Ortega</span>
@@ -1458,23 +1606,56 @@
       var params = new URLSearchParams(window.location.search);
       var token = params.get("token");
       var docParam = params.get("docente") || params.get("docenteNombre") || params.get("profesor");
-      var instParam = params.get("institucion") || params.get("colegio") || params.get("centroEducativo");
-      var secParam = params.get("seccion") || params.get("seccionGrupo");
-      var dreParam = params.get("dre") || params.get("dreNombre") || "";
-      var docIdParam = params.get("docenteId") || params.get("idDocente") || params.get("cedula") || "";
+      var instParam = params.get("institucion") || params.get("colegio") || params.get("centroEducativo") || params.get("inst");
+      var secParam = params.get("seccion") || params.get("seccionGrupo") || params.get("sec");
+      var dreParam = params.get("dre") || params.get("dreNombre") || params.get("dreCod") || "";
+      var docIdParam = params.get("docenteId") || params.get("idDocente") || params.get("cedula") || params.get("docId") || "";
       var seccionesParam = params.get("secciones") || "";
 
+      // Prioridad 1: Token Base64 seguro en la URL
       if (token) {
         try {
           var decoded = JSON.parse(decodeURIComponent(escape(atob(token))));
           if (decoded) {
             if (decoded.docId) docIdParam = decoded.docId;
             if (decoded.cedula) docIdParam = decoded.cedula;
-            if (decoded.doc) docParam = decoded.doc;
-            if (decoded.inst) instParam = decoded.inst;
-            if (decoded.dre) dreParam = decoded.dre;
-            if (decoded.sec) secParam = decoded.sec;
+            if (decoded.doc || decoded.docNom || decoded.docente) docParam = decoded.doc || decoded.docNom || decoded.docente;
+            if (decoded.inst || decoded.institucion) instParam = decoded.inst || decoded.institucion;
+            if (decoded.dre || decoded.dreNom) dreParam = decoded.dre || decoded.dreNom;
+            if (decoded.sec || decoded.seccion) secParam = decoded.sec || decoded.seccion;
             if (decoded.secciones) seccionesParam = decoded.secciones;
+
+            // Guardar contexto activo de la sesión del estudiante para que persista ante recargas F5
+            try {
+              sessionStorage.setItem("mep_token_context_9no", JSON.stringify({
+                docNombre: docParam,
+                instNombre: instParam,
+                docenteId: docIdParam,
+                dreNombre: dreParam,
+                secParam: secParam,
+                secciones: seccionesParam
+              }));
+            } catch(e) {}
+          }
+        } catch(e) {
+          console.warn("Error al decodificar token URL:", e);
+        }
+      }
+
+      // Prioridad 2: Contexto guardado en sessionStorage de esta pestaña
+      if (!instParam || !secParam) {
+        try {
+          var rawSess = sessionStorage.getItem("mep_token_context_9no");
+          if (rawSess) {
+            var parsedSess = JSON.parse(rawSess);
+            if (parsedSess) {
+              if (!docParam && parsedSess.docNombre) docParam = parsedSess.docNombre;
+              if (!instParam && parsedSess.instNombre) instParam = parsedSess.instNombre;
+              if (!docIdParam && parsedSess.docenteId) docIdParam = parsedSess.docenteId;
+              if (!dreParam && parsedSess.dreNombre) dreParam = parsedSess.dreNombre;
+              if (!secParam && parsedSess.secParam) secParam = parsedSess.secParam;
+              if (!seccionesParam && parsedSess.secciones) seccionesParam = parsedSess.secciones;
+            }
           }
         } catch(e) {}
       }
@@ -1484,7 +1665,7 @@
       var docenteId = docIdParam ? docIdParam.trim() : "";
       var dreNombre = dreParam ? dreParam.trim() : "";
 
-      // Prioridad 2: Buscar en almacenamiento local global
+      // Prioridad 3: Buscar en almacenamiento local si no vino por token
       if (!docNombre || !instNombre) {
         try {
           var rawDoc = localStorage.getItem("docente_activo") || localStorage.getItem("MEP_DOCENTE_PERFIL_GLOBAL") || localStorage.getItem("antigravity_docente_sesion");
@@ -1492,7 +1673,15 @@
             var parsed = JSON.parse(rawDoc);
             if (parsed) {
               if (!docNombre) docNombre = parsed.nombreCompleto || parsed.nombre || "";
-              if (!instNombre) instNombre = parsed.institucionNombre || parsed.colegio || parsed.institucion || "";
+              if (!instNombre) {
+                if (parsed.centrosEducativos && Array.isArray(parsed.centrosEducativos) && parsed.centrosEducativos.length > 0) {
+                  instNombre = parsed.centrosEducativos[0].nombre || "";
+                } else if (parsed.institucionNombre) {
+                  instNombre = parsed.institucionNombre.split(" / ")[0].trim();
+                } else {
+                  instNombre = parsed.colegio || parsed.institucion || "";
+                }
+              }
               if (!docenteId) docenteId = parsed.cedula || parsed.idDocente || "";
               if (!dreNombre) dreNombre = parsed.dreNombre || parsed.dreCodigo || "";
             }
@@ -1500,28 +1689,11 @@
         } catch(e) {}
       }
 
-      // Prioridad 3: Usuarios registrados
-      if (!docNombre || !instNombre) {
-        try {
-          var rawUsers = localStorage.getItem("usuarios_registrados_locales");
-          if (rawUsers) {
-            var listUsers = JSON.parse(rawUsers);
-            if (Array.isArray(listUsers) && listUsers.length > 0) {
-              var lastUser = listUsers[listUsers.length - 1];
-              if (!docNombre) docNombre = lastUser.nombreCompleto || lastUser.nombre || "";
-              if (!instNombre) instNombre = lastUser.institucionNombre || lastUser.institucion || lastUser.colegio || "";
-              if (!docenteId) docenteId = lastUser.idDocente || lastUser.cedula || "";
-              if (!dreNombre) dreNombre = lastUser.dreNombre || lastUser.dreCodigo || "";
-            }
-          }
-        } catch(e) {}
-      }
-
-      // Fallback seguro institucional
-      if (!docNombre) docNombre = "Alberto Bustos Ortega";
+      // Fallbacks institucionales
+      if (!docNombre) docNombre = "Docente Evaluador MEP";
       if (!instNombre) instNombre = "Liceo de Costa Rica";
-      if (!docenteId) docenteId = "DOC-DRE01-2617";
-      if (!dreNombre) dreNombre = "DRE-01 - San José Central";
+      if (!docenteId) docenteId = "DOC-DRE01-7729";
+      if (!dreNombre) dreNombre = "San José Central";
 
       // Limpieza automática de la barra de direcciones para blindar privacidad y datos personales
       if (window.location.search && window.history && window.history.replaceState) {
@@ -1635,15 +1807,40 @@
     }
 
     function validateStudentFullName(fullName) {
-      if (!fullName) return { valid: false, message: 'Por favor ingresa tu nombre completo.' };
+      if (!fullName || !fullName.trim()) {
+        return { valid: false, message: '⚠️ Faltan datos: Por favor ingresa tu nombre y apellidos completos.' };
+      }
       var cleaned = fullName.trim().replace(/\s+/g, ' ');
       var parts = cleaned.split(' ').filter(function(p) { return p.length > 0; });
+
       if (parts.length < 3) {
         return {
           valid: false,
-          message: '⚠️ Debes ingresar tu nombre y tus dos apellidos completos (ej: Juan Rosales Valverde).'
+          message: '⚠️ Faltan datos: Debes ingresar tu nombre y tus dos apellidos completos (mínimo 3 palabras, ej: Juan Rosales Valverde).'
         };
       }
+
+      // Validar que cada palabra contenga solo caracteres alfabéticos válidos
+      for (var i = 0; i < parts.length; i++) {
+        var part = parts[i];
+        if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ'-]+$/.test(part)) {
+          return {
+            valid: false,
+            message: '⚠️ El nombre y apellidos solo deben contener letras (sin números ni símbolos extraños).'
+          };
+        }
+      }
+
+      // Validar que cada palabra (nombre y apellidos) tenga al menos 3 caracteres
+      for (var k = 0; k < parts.length; k++) {
+        if (parts[k].length < 3) {
+          return {
+            valid: false,
+            message: '⚠️ Faltan datos: El nombre y los apellidos deben tener al menos 3 caracteres cada uno. La palabra "' + parts[k] + '" está incompleta.'
+          };
+        }
+      }
+
       return { valid: true, formatted: formatFullName(cleaned) };
     }
 
@@ -1688,23 +1885,44 @@
       var msg = document.getElementById("msgValidacionDatos");
       var btn = document.getElementById("btnIniciarDiagnostico");
 
+      if (!nom) {
+        if (msg) {
+          msg.className = "validacion-banner neutro";
+          msg.innerHTML = '<span style="font-size: 20px;">✍️</span> <span>Ingresa tu <strong>Nombre y al menos dos Apellidos</strong> completos para habilitar la prueba.</span>';
+        }
+        if (btn) btn.disabled = true;
+        return false;
+      }
+
       var valNom = validateStudentFullName(nom);
       if (!valNom.valid) {
-        msg.innerText = valNom.message;
-        msg.style.color = "#f59e0b";
+        if (msg) {
+          msg.className = "validacion-banner invalido";
+          msg.innerHTML = '<span style="font-size: 22px; flex-shrink: 0;">⚠️</span> <div style="font-size: 13.5px; line-height: 1.45;">' + valNom.message.replace(/^⚠️\s*/, '') + '</div>';
+        }
         if (btn) btn.disabled = true;
         return false;
       }
 
       if (cor.length > 0 && !cor.includes("@")) {
-        msg.innerText = "⚠️ El correo institucional debe incluir '@' (ej: nombre.apellido@est.mep.go.cr).";
-        msg.style.color = "#f59e0b";
+        if (msg) {
+          msg.className = "validacion-banner invalido";
+          msg.innerHTML = '<span style="font-size: 22px; flex-shrink: 0;">⚠️</span> <div style="font-size: 13.5px;">El correo institucional debe incluir <strong>\'@\'</strong> (ej: <code>nombre.apellido@est.mep.go.cr</code>).</div>';
+        }
         if (btn) btn.disabled = true;
         return false;
       }
 
-      msg.innerText = "✅ Identificación validada: " + formatFullName(nom) + " • " + sec + (ced ? " (Cédula: " + ced + ")" : "");
-      msg.style.color = "#34d399";
+      if (msg) {
+        msg.className = "validacion-banner valido";
+        msg.innerHTML = '<span style="font-size: 24px; flex-shrink: 0; filter: drop-shadow(0 2px 4px rgba(16,185,129,0.35));">✅</span> ' +
+          '<div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">' +
+            '<span style="font-size: 15px; font-weight: 900; color: #065f46;">Identificación Validada:</span> ' +
+            '<strong style="font-size: 15.5px; color: #0f172a; background: #ffffff; padding: 2px 10px; border-radius: 8px; border: 1.5px solid #a7f3d0; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">' + formatFullName(nom) + '</strong> ' +
+            '<span style="background: #0284c7; color: white; padding: 3px 10px; border-radius: 8px; font-size: 12.5px; font-weight: 800; box-shadow: 0 2px 6px rgba(2,132,199,0.25);">' + sec + '</span>' +
+            (ced ? ' <span style="color: #334155; font-size: 13px; font-weight: 700; background: #f1f5f9; padding: 2px 8px; border-radius: 6px; border: 1px solid #cbd5e1;">🆔 Cédula: ' + ced + '</span>' : '') +
+          '</div>';
+      }
       if (btn) btn.disabled = false;
       return true;
     }
@@ -1762,35 +1980,41 @@
 
     function bloquearDatosIdentificacion() {
       estado.datosBloqueados = true;
+      var elCent = document.getElementById("inputCentroEducativo");
+      var elDoc = document.getElementById("inputDocente");
       var elNom = document.getElementById("inputEstudianteNombre");
       var elSec = document.getElementById("selectSeccion");
       var elCed = document.getElementById("inputEstudianteCedula");
       var elCor = document.getElementById("inputEstudianteCorreo");
-      var elCent = document.getElementById("inputCentroEducativo");
-      var elDoc = document.getElementById("inputDocente");
       var btn = document.getElementById("btnIniciarDiagnostico");
       var lbl1 = document.getElementById("tabSec1Label");
       var sub1 = document.getElementById("tabSec1Sub");
+      var tab1 = document.getElementById("tabSec1");
 
-      if (elNom) elNom.disabled = true;
-      if (elSec) elSec.disabled = true;
-      if (elCed) elCed.disabled = true;
-      if (elCor) elCor.disabled = true;
-      if (elCent) elCent.disabled = true;
-      if (elDoc) elDoc.disabled = true;
+      // Bloquear inputs para evitar modificaciones
+      if (elNom) { elNom.readOnly = true; elNom.style.background = "#f8fafc"; }
+      if (elSec) { elSec.disabled = true; elSec.style.background = "#f8fafc"; }
+      if (elCed) { elCed.readOnly = true; elCed.style.background = "#f8fafc"; }
+      if (elCor) { elCor.readOnly = true; elCor.style.background = "#f8fafc"; }
+      if (elCent) elCent.readOnly = true;
+      if (elDoc) elDoc.readOnly = true;
+
+      // El botón de avance permanece completado
       if (btn) {
         btn.disabled = true;
-        btn.innerHTML = "🔒 Datos registrados (bloqueado)";
-        btn.style.background = "#64748b";
+        btn.innerHTML = "🔒 Datos Confirmados y Registrados";
+        btn.style.background = "#475569";
         btn.style.cursor = "not-allowed";
       }
-      if (lbl1) lbl1.innerText = "🔒 1. Datos";
-      if (sub1) sub1.innerText = "Registrado";
+      if (lbl1) lbl1.innerHTML = "1. Datos 🔒";
+      if (sub1) sub1.innerHTML = "Confirmados";
 
-      var tab1 = document.getElementById("tabSec1");
+      // Desactivar tab 1 para que no se pueda regresar
       if (tab1) {
-        tab1.style.opacity = "0.75";
-        tab1.title = "Datos de identificación registrados y bloqueados";
+        tab1.style.pointerEvents = "none";
+        tab1.style.opacity = "0.6";
+        tab1.style.cursor = "not-allowed";
+        tab1.title = "🔒 Los datos de identificación ya fueron registrados y bloqueados";
       }
     }
 
@@ -1986,21 +2210,37 @@
       });
     }
 
-    function irASeccion(num) {
-      if (num === 1 && estado.datosBloqueados) {
-        if (estado.seccionActual === 4) {
-          var deseaNuevo = confirm("📋 La prueba diagnóstica anterior ya fue completada y enviada.\n\n¿Deseas preparar este equipo para el siguiente estudiante?");
-          if (deseaNuevo) {
-            prepararSiguienteEstudiante(false);
-            return;
+    function seleccionarSocioafectivo(criterio, valor) {
+      if (!estado.socioafectivo) {
+        estado.socioafectivo = { s1: 'A', s2: 'A', s3: 'A', s4: 'A' };
+      }
+      estado.socioafectivo[criterio] = valor;
+
+      var opciones = ['A', 'B', 'C'];
+      opciones.forEach(function(opt) {
+        var btn = document.getElementById("btnSocio_" + criterio + "_" + opt);
+        if (btn) {
+          if (opt === valor) {
+            btn.className = "opcion-btn seleccionada";
+          } else {
+            btn.className = "opcion-btn";
           }
         }
-        desbloquearDatosIdentificacionDocente();
+      });
+
+      playBeep(520, "sine", 0.08);
+      guardarProgresoEnLocalStorage();
+      enviarProgresoEnTiempoReal();
+    }
+
+    function irASeccion(num) {
+      if (num === 1 && estado.datosBloqueados) {
+        alert("🔒 Los datos de identificación ya fueron validados y registrados. No es posible modificarlos.");
         return;
       }
 
-      if (num > 1 && !estado.datosBloqueados && !validarDatosEstudiante()) {
-        alert("⚠️ Debes completar y validar tus datos de identificación en la Etapa 1 antes de continuar.");
+      if (num > 1 && !validarDatosEstudiante()) {
+        alert("⚠️ Debes completar y validar tus datos de identificación (nombre y apellidos) en la Etapa 1 antes de continuar.");
         return;
       }
 
@@ -2009,17 +2249,26 @@
         return;
       }
 
-
-
       estado.seccionActual = num;
-      for (var i = 1; i <= 4; i++) {
+      for (var i = 1; i <= 5; i++) {
         var sec = document.getElementById("seccion" + i);
         var tab = document.getElementById("tabSec" + i);
         if (sec) sec.style.display = (i === num ? "block" : "none");
         if (tab) {
-          if (i === num) tab.className = "nav-tab activa";
-          else if (i < num) tab.className = "nav-tab completada";
-          else tab.className = "nav-tab";
+          if (i === num) {
+            tab.className = "nav-tab activa";
+          } else if (i < num) {
+            tab.className = "nav-tab completada";
+          } else {
+            tab.className = "nav-tab";
+          }
+
+          // Si los datos ya fueron bloqueados, la pestaña 1 permanece bloqueada y no clickeable
+          if (i === 1 && estado.datosBloqueados) {
+            tab.style.pointerEvents = "none";
+            tab.style.opacity = "0.6";
+            tab.style.cursor = "not-allowed";
+          }
         }
       }
 
@@ -2033,6 +2282,21 @@
           iniciarAnimacionAula();
         }, 120);
       } else if (num === 4) {
+        // Inicializar selecciones por defecto si aún no han sido tocadas
+        if (!estado.socioafectivo) {
+          estado.socioafectivo = { s1: 'A', s2: 'A', s3: 'A', s4: 'A' };
+        }
+        ['s1', 's2', 's3', 's4'].forEach(function(crit) {
+          var val = estado.socioafectivo[crit] || 'A';
+          ['A', 'B', 'C'].forEach(function(opt) {
+            var btn = document.getElementById("btnSocio_" + crit + "_" + opt);
+            if (btn) {
+              if (opt === val) btn.className = "opcion-btn seleccionada";
+              else btn.className = "opcion-btn";
+            }
+          });
+        });
+      } else if (num === 5) {
         finalizarDiagnostico();
       }
     }
@@ -2076,10 +2340,10 @@
         estudianteCorreo: estado.estudianteCorreo || "",
         seccionOGrupo: seccionEst,
         tipoActividad: "diagnostico",
-        estadoProgreso: estado.seccionActual === 4 ? "completado" : "en_progreso",
+        estadoProgreso: estado.seccionActual === 5 ? "completado" : "en_progreso",
         fechaEntrega: fechaStr,
         horaInicio: estado.horaInicio || horaStr,
-        horaEntrega: estado.seccionActual === 4 ? horaStr : "",
+        horaEntrega: estado.seccionActual === 5 ? horaStr : "",
         timestampEpoch: timeEpoch,
         timestamp: timeEpoch,
         puntaje: porc,
@@ -2091,6 +2355,7 @@
         aciertos: aciertos,
         fallos: totalRespondidas - aciertos,
         cog: cogVec,
+        socioafectivo: estado.socioafectivo || { s1: 'A', s2: 'A', s3: 'A', s4: 'A' },
         retosPracticos: {
           reto1Conexion: (Object.values(estado.cables || {}).filter(Boolean).length) + "/5 terminales validados",
           reto2Actuador: "LED",
@@ -2213,8 +2478,8 @@
     function actualizarContadorItems() {
       var total = Object.keys(estado.respuestasCognoscitivas).length;
       document.getElementById("contadorRespuestas").innerText = "Respondidas: " + total + " / " + CONFIG.totalItems;
-      var prog = Math.round((total / CONFIG.totalItems) * 100);
-      document.getElementById("badgeProgresoHeader").innerText = "Progreso: " + prog + "%";
+      var bph = document.getElementById("badgeProgresoHeader");
+      if (bph) bph.innerText = "Progreso: " + prog + "%";
     }
 
     function formatPinName(pinId) {
@@ -3001,13 +3266,15 @@
         "Estudiante: <strong style='color: white; font-size: 13px;'>" + nombreEst + "</strong> • Sección: <strong style='color: #38bdf8; font-size: 13px;'>" + seccionEst + "</strong>";
 
       var aciertos = 0;
+      var respondidas = 0;
       for (var k in estado.respuestasCognoscitivas) {
-        if (estado.respuestasCognoscitivas[k].correcta) aciertos++;
+        if (estado.respuestasCognoscitivas[k]) {
+          respondidas++;
+          if (estado.respuestasCognoscitivas[k].correcta) aciertos++;
+        }
       }
 
-      if (Object.keys(estado.respuestasCognoscitivas).length === 0) aciertos = CONFIG.totalItems;
-
-      var porc = Math.round((aciertos / CONFIG.totalItems) * 100);
+      var porc = CONFIG.totalItems > 0 ? Math.round((aciertos / CONFIG.totalItems) * 100) : 0;
       var elCog = document.getElementById("resCognoscitiva");
       if (elCog) elCog.innerText = porc + "%";
       var elCogDet = document.getElementById("resCognoscitivaDetalle");
@@ -3036,15 +3303,16 @@
         horaEntrega: horaStr,
         timestampEpoch: timeEpoch,
         timestamp: timeEpoch,
-        puntaje: porc,
-        puntajeMaximo: 100,
+        puntaje: aciertos,
+        puntajeMaximo: CONFIG.totalItems,
         porcentaje: porc,
-        nivelLogro: porc >= 80 ? "Consolidado (Nivel A)" : (porc >= 60 ? "En Desarrollo (Nivel B)" : "En Acompañamiento (Nivel C)"),
+        nivelLogro: porc >= 70 ? "Logrado" : (porc >= 50 ? "En proceso" : "Requiere apoyo"),
         tiempoSegundos: estado.tiempoTotal,
         totalReactivos: CONFIG.totalItems,
         aciertos: aciertos,
         fallos: CONFIG.totalItems - aciertos,
         cog: calcularVectorCognitivo(),
+        socioafectivo: estado.socioafectivo || { s1: 'A', s2: 'A', s3: 'A', s4: 'A' },
         hashVerificacion: hashToken,
         tokenAntiFraude: hashToken,
         dimensiones: {
@@ -3057,6 +3325,9 @@
           estadoReto1: "Completado y Verificado en Simulación"
         }
       };
+
+      // Renderizar QR en pantalla con payload real
+      generarQRDetallado(payload);
 
       // 🔒 GUARDAR BLOQUEO DE UN SOLO USO EN LOCALSTORAGE
       try {
@@ -3111,18 +3382,27 @@
 
     function cerrarVentanaDiagnostico() {
       try {
+        localStorage.removeItem("diagnostico_9no_mep_bloqueo_entrega");
+        localStorage.removeItem("diagnostico_9no_sesion_activa");
+      } catch(e) {}
+
+      try {
         window.close();
       } catch(e) {}
+
       setTimeout(function() {
         var sec4 = document.getElementById("seccion4");
         if (sec4) {
-          sec4.innerHTML = '<div style="padding: 40px 20px; text-align: center; background: #ffffff; border-radius: 16px; border: 2px solid #86efac; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">' +
+          sec4.innerHTML = '<div style="padding: 36px 20px; text-align: center; background: #ffffff; border-radius: 16px; border: 2px solid #86efac; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">' +
             '<div style="font-size: 46px; margin-bottom: 12px;">🔒</div>' +
             '<h2 style="font-size: 1.35rem; color: #0f172a; font-weight: 900; margin-bottom: 8px;">Evaluación Diagnóstica Finalizada</h2>' +
-            '<p style="font-size: 13px; color: #64748b; margin-bottom: 16px;">Tus respuestas ya fueron debidamente transmitidas y registradas en el Dashboard Docente.</p>' +
-            '<div style="font-size: 12.5px; color: #047857; font-weight: 800; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 10px 18px; border-radius: 10px; display: inline-block;">' +
-              '✅ Sesión Cerrada de Forma Segura' +
-            '</div>' +
+            '<p style="font-size: 13px; color: #64748b; margin-bottom: 16px;">Tus respuestas e informe ya fueron debidamente transmitidos y registrados en el Dashboard Docente.</p>' +
+            '<div style="font-size: 12.5px; color: #047857; font-weight: 800; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 10px 18px; border-radius: 10px; display: inline-block; margin-bottom: 18px;">' +
+              '✅ Sesión Cerrada de Forma Segura • Puedes cerrar esta pestaña' +
+            '</div><br>' +
+            '<button class="btn btn-secondary" style="font-weight: 800; font-size: 13px; padding: 10px 20px; border-radius: 10px; cursor: pointer;" onclick="prepararSiguienteEstudiante(true)">' +
+              '🔄 Iniciar Nueva Prueba en Blanco' +
+            '</button>' +
           '</div>';
         }
       }, 150);
@@ -3310,137 +3590,30 @@
     }
 
     function guardarProgresoEnLocalStorage() {
+      // No guardamos sesiones incompletas en localStorage para evitar que otro estudiante quede bloqueado
       try {
-        var payloadSesion = {
-          estudianteNombre: estado.estudianteNombre,
-          seccionGrupo: estado.seccionGrupo,
-          estudianteCedula: estado.estudianteCedula,
-          estudianteCorreo: estado.estudianteCorreo,
-          centroEducativo: estado.centroEducativo,
-          docenteNombre: estado.docenteNombre,
-          datosBloqueados: !!estado.datosBloqueados,
-          seccionActual: estado.seccionActual || 1,
-          respuestasCognoscitivas: estado.respuestasCognoscitivas || {},
-          cables: estado.cables || {},
-          reflexion: estado.reflexion || {},
-          subRetoActual: subRetoActual || 1,
-          actuadorActual: estado.actuadorActual || "LED",
-          reto3Diagnostico: estado.reto3Diagnostico || null,
-          reto3Justificacion: estado.reto3Justificacion || "",
-          reto3JustificacionOpc: estado.reto3JustificacionOpc || 0,
-          reto3Explicacion: estado.reto3Explicacion || "",
-          tiempoInicio: estado.tiempoInicio,
-          timestampUltimaActividad: Date.now()
-        };
-        localStorage.setItem("diagnostico_9no_sesion_activa", JSON.stringify(payloadSesion));
+        localStorage.removeItem("diagnostico_9no_sesion_activa");
       } catch(e) {}
     }
 
     function restaurarProgresoDesdeLocalStorage() {
+      // Cada vez que se abre la ventana o pestaña, el formulario inicia limpio y en blanco
       try {
-        var rawBloqueo = localStorage.getItem("diagnostico_9no_mep_bloqueo_entrega");
-        if (rawBloqueo) {
-          var dataB = JSON.parse(rawBloqueo);
-          if (dataB) {
-            mostrarPantallaBloqueoDefinitivo(dataB);
-            return true;
-          }
-        }
-
-        var raw = localStorage.getItem("diagnostico_9no_sesion_activa");
-        if (!raw) return false;
-        var s = JSON.parse(raw);
-        if (!s || !s.estudianteNombre || !s.estudianteNombre.trim()) return false;
-
-        var infoDoc = obtenerDocenteEInstitucionActiva();
-
-        // Restaurar campos de identificación
-        if (s.estudianteNombre) {
-          var inputNom = document.getElementById("inputEstudianteNombre");
-          if (inputNom) inputNom.value = s.estudianteNombre;
-          estado.estudianteNombre = s.estudianteNombre;
-        }
-        if (s.seccionGrupo) {
-          var inputSec = document.getElementById("selectSeccion");
-          if (inputSec) inputSec.value = s.seccionGrupo;
-          estado.seccionGrupo = s.seccionGrupo;
-        }
-        if (s.estudianteCedula) {
-          var inputCed = document.getElementById("inputEstudianteCedula");
-          if (inputCed) inputCed.value = s.estudianteCedula;
-          estado.estudianteCedula = s.estudianteCedula;
-        }
-        if (s.estudianteCorreo) {
-          var inputCor = document.getElementById("inputEstudianteCorreo");
-          if (inputCor) inputCor.value = s.estudianteCorreo;
-          estado.estudianteCorreo = s.estudianteCorreo;
-        }
-        
-        // Docente e Institución siempre se blindan con la asignación activa
-        estado.centroEducativo = infoDoc.instNombre;
-        estado.docenteNombre = infoDoc.docenteNombre;
-        CONFIG.docenteId = infoDoc.docenteId;
-
-        var inputCent = document.getElementById("inputCentroEducativo");
-        if (inputCent) {
-          inputCent.value = infoDoc.instNombre;
-          inputCent.readOnly = true;
-        }
-        var inputDoc = document.getElementById("inputDocente");
-        if (inputDoc) {
-          inputDoc.value = infoDoc.docenteNombre;
-          inputDoc.readOnly = true;
-        }
-
-        // Si los datos ya estaban confirmados o inició la prueba, bloquear inputs
-        if (s.datosBloqueados || s.estudianteNombre) {
-          bloquearDatosIdentificacion();
-        }
-
-        // Restaurar respuestas Parte A
-        if (s.respuestasCognoscitivas && Object.keys(s.respuestasCognoscitivas).length > 0) {
-          estado.respuestasCognoscitivas = s.respuestasCognoscitivas;
-          Object.keys(s.respuestasCognoscitivas).forEach(function(itemNum) {
-            var itemData = s.respuestasCognoscitivas[itemNum];
-            var cont = document.getElementById("optsItem" + itemNum);
-            if (cont && itemData) {
-              var btns = cont.children;
-              if (btns && btns[itemData.opcion]) {
-                btns[itemData.opcion].className = "opcion-btn seleccionada";
-              }
-            }
-            var retroDiv = document.getElementById("retroItem" + itemNum);
-            if (retroDiv) {
-              retroDiv.style.display = "none";
-            }
-          });
-          actualizarContadorItems();
-        }
-
-        // Restaurar cables Parte B
-        if (s.cables) {
-          estado.cables = s.cables;
-        }
-        if (s.subRetoActual) {
-          subRetoActual = s.subRetoActual;
-        }
-        if (s.tiempoInicio) {
-          estado.tiempoInicio = s.tiempoInicio;
-        }
-
-        verificarEstadoCircuito();
-        redibujarCablesSVG();
-        actualizarSimulador(document.getElementById("sliderLuz") ? document.getElementById("sliderLuz").value : 180);
-
-        // Reanudar en la sección donde iba el estudiante (máximo sección 4)
-        var targetSec = (s.seccionActual && s.seccionActual > 1) ? Math.min(s.seccionActual, 4) : 2;
-        irASeccion(targetSec);
-        return true;
-      } catch(err) {
-        console.error("Error al restaurar sesion activa:", err);
-        return false;
-      }
+        localStorage.removeItem("diagnostico_9no_sesion_activa");
+        localStorage.removeItem("diagnostico_9no_mep_bloqueo_entrega");
+      } catch(e) {}
+      return false;
     }
+
+    // AVISO DE CONFIRMACIÓN ANTE CIERRE O RECARGA ACCIDENTAL DE VENTANA
+    window.addEventListener("beforeunload", function(e) {
+      if (!estado.finalizado && estado.estudianteNombre && estado.estudianteNombre.trim().length > 0) {
+        var msg = "¿Está seguro de que desea salir o cerrar la ventana? Perderá los datos de la evaluación que no hayan sido entregados.";
+        e.preventDefault();
+        e.returnValue = msg;
+        return msg;
+      }
+    });
 
     // INICIALIZACIÓN DINÁMICA DE DATOS Y RESTAURACIÓN DE SESIÓN
     window.addEventListener("DOMContentLoaded", function() {
@@ -3485,26 +3658,37 @@
 
         var selectSec = document.getElementById("selectSeccion");
         if (selectSec) {
-          if (infoDoc.secciones && (Array.isArray(infoDoc.secciones) ? infoDoc.secciones.length > 0 : infoDoc.secciones.trim())) {
-            var secsArr = Array.isArray(infoDoc.secciones) ? infoDoc.secciones : infoDoc.secciones.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
-            if (secsArr.length > 0) {
-              selectSec.innerHTML = '<option value="">-- Seleccione su sección (9°) --</option>';
-              secsArr.forEach(function(s) {
-                var sClean = s.replace(/^secci[oó]n\s*/i, '').trim();
-                var opt = document.createElement('option');
-                opt.value = 'Sección ' + sClean;
-                opt.textContent = 'Sección ' + sClean;
-                selectSec.appendChild(opt);
-              });
+          var secFijada = infoDoc.secParam ? (infoDoc.secParam.startsWith("Sección ") ? infoDoc.secParam : ("Sección " + infoDoc.secParam)) : "Sección 9-1";
+          var secsDisponibles = [];
+
+          if (infoDoc.secciones) {
+            if (Array.isArray(infoDoc.secciones) && infoDoc.secciones.length > 0) {
+              secsDisponibles = infoDoc.secciones;
+            } else if (typeof infoDoc.secciones === "string" && infoDoc.secciones.trim()) {
+              secsDisponibles = infoDoc.secciones.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
             }
           }
-          if (secParam) {
-            var valToSet = secParam.startsWith("Sección ") ? secParam : ("Sección " + secParam);
-            selectSec.value = valToSet;
-            selectSec.style.borderColor = "#0284c7";
-            selectSec.style.fontWeight = "800";
-            estado.seccionGrupo = valToSet;
+
+          if (secsDisponibles.length === 0) {
+            secsDisponibles = [secFijada];
           }
+
+          selectSec.innerHTML = "";
+          secsDisponibles.forEach(function(s) {
+            var sClean = s.replace(/^secci[oó]n\s*/i, '').trim();
+            var opt = document.createElement('option');
+            opt.value = 'Sección ' + sClean;
+            opt.textContent = 'Sección ' + sClean;
+            if (('Sección ' + sClean) === secFijada) {
+              opt.selected = true;
+            }
+            selectSec.appendChild(opt);
+          });
+
+          selectSec.value = secFijada;
+          selectSec.style.borderColor = "#0284c7";
+          selectSec.style.fontWeight = "800";
+          estado.seccionGrupo = secFijada;
         }
 
         // 🌟 RESTAURAR SESIÓN ACTIVA SI EXISTE (PERSISTENCIA ANTE RECARGAS F5 O CIERRE ACCIDENTAL)
@@ -3563,8 +3747,11 @@
           '</div>' +
 
           '<div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 12px;">' +
-            '<button class="btn" style="background: #059669; color: white; font-weight: 900; font-size: 13px; padding: 10px 18px; border-radius: 10px; box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25);" onclick="prepararSiguienteEstudiante(true)">' +
-              '✨ Iniciar Diagnóstico para Siguiente Estudiante' +
+            '<button class="btn" style="background: #059669; color: white; font-weight: 900; font-size: 13px; padding: 10px 18px; border-radius: 10px; box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25); cursor: pointer;" onclick="prepararSiguienteEstudiante(true)">' +
+              '🔄 Iniciar Nueva Prueba / Formulario en Blanco' +
+            '</button>' +
+            '<button class="btn btn-secondary" style="font-size: 12px; padding: 9px 14px; cursor: pointer;" onclick="cerrarVentanaDiagnostico()">' +
+              '🚪 Cerrar Sesión' +
             '</button>' +
             '<button id="btnToggleQR" class="btn btn-secondary" style="font-size: 12px; padding: 9px 14px;" onclick="toggleQROpcional()">' +
               '📱 Ver Código QR de Respaldo' +

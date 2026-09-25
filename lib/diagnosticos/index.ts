@@ -19,7 +19,7 @@ export const DIAGNOSTICOS_CATALOGO: Record<NivelEducativo, ConfiguracionDiagnost
   "9°": DIAGNOSTICO_9NO_DATA
 };
 
-export const LISTA_NIVELES_III_CICLO: NivelEducativo[] = ["7°", "8°", "9°"];
+export const LISTA_NIVELES_III_CICLO: NivelEducativo[] = ["7°", "9°"];
 
 /**
  * Obtiene la configuración completa de un nivel

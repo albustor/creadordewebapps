@@ -148,21 +148,46 @@ export const DIAGNOSTICO_7MO_DATA: ConfiguracionDiagnosticoNivel = {
   ],
   criteriosSocioafectivos: [
     {
-      id: "soc_7mo_colab",
-      nombre: "Trabajo colaborativo",
-      descripcion: "Participa activamente en dinámicas de equipo y respeta turnos."
+      id: "s1_precision",
+      nombre: "S1. Gusto por la Precisión y Calidad",
+      descripcion: "Pregunta de reflexión: «Cuando respondió los retos, ¿revisó los detalles con cuidado?» | Inicial: Respondí rápido, sin revisar. | Intermedio: Revisé solo algunas respuestas. | Avanzado: Revisé con cuidado cada respuesta antes de enviarla."
     },
     {
-      id: "soc_7mo_cuidado",
-      nombre: "Cuidado de recursos",
-      descripcion: "Cuida los dispositivos digitales asignados en el aula o laboratorio."
+      id: "s2_error",
+      nombre: "S2. Aprender del Error (Resiliencia y Metacognición)",
+      descripcion: "Pregunta de reflexión: «Cuando se equivocó en un reto, ¿qué hizo?» | Inicial: Lo dejé así y continué. | Intermedio: Lo intenté de nuevo con ayuda. | Avanzado: Busqué mi error, lo corregí y aprendí algo."
+    },
+    {
+      id: "s3_flexibilidad",
+      nombre: "S3. Flexibilidad para Manejar Problemas y Trabajo Colaborativo",
+      descripcion: "Pregunta de reflexión: «Cuando algo no salió como esperaba (pregunta difícil, problema de equipo/compañero), ¿qué hizo?» | Inicial: Seguí con la misma idea aunque no funcionaba. | Intermedio: Probé otra forma cuando alguien me dio una idea. | Avanzado: (Parejas: Escuché ideas y juntos probamos otra forma / Individual: Busqué por mi cuenta otra forma)."
+    },
+    {
+      id: "s4_tolerancia",
+      nombre: "S4. Tolerancia a la Frustración y Perseverancia",
+      descripcion: "Pregunta de reflexión: «Cuando un reto se puso difícil, ¿cómo reaccioné?» | Inicial: Me enojé o quise dejarlo. | Intermedio: Me costó, pero seguí cuando me animaron. | Avanzado: Mantuve la calma y seguí intentando hasta terminar."
     }
   ],
   criteriosPsicomotores: [
     {
-      id: "psi_7mo_mouse",
-      nombre: "Manejo del ratón y teclado",
-      descripcion: "Utiliza el mouse y teclado con soltura básica para navegar en el entorno."
+      id: "p1_orientacion",
+      nombre: "P1. Orientación Espacial y Desplazamiento",
+      descripcion: "Coordinación espacial, lateralidad y desplazamiento secuencial en cuadrícula lógica."
+    },
+    {
+      id: "p2_ritmo",
+      nombre: "P2. Ritmo e Inhibición Sensorio-Motora",
+      descripcion: "Control inhibitorio motor y respuesta sincronizada ante estímulos visuales."
+    },
+    {
+      id: "p3_pulso",
+      nombre: "P3. Pulso y Precisión Digital",
+      descripcion: "Estabilidad de pulso y control del puntero en trayectorias estrechas."
+    },
+    {
+      id: "p4_motricidad",
+      nombre: "P4. Motricidad Fina con Periféricos",
+      descripcion: "Coordinación óculo-manual en dibujo, captura de trazo y destreza de periféricos."
     }
   ]
 };

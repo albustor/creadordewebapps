@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Propuesta técnica: Arquitectura de evaluación diagnóstica híbrida para 7.° año MEP 2027</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --primary-light: #e0f2fe;
+      --accent: #10b981;
+      --accent-dark: #047857;
+      --purple: #8b5cf6;
+      --purple-light: #f3e8ff;
+      --pink: #db2777;
+      --pink-light: #fdf2f8;
+      --amber: #f59e0b;
+      --amber-light: #fffbeb;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 24px;
+    }
+
+    .doc-container {
+      max-width: 960px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border-radius: 16px;
+      border: 1.5px solid var(--border);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      padding: 44px;
+    }
+
+    .header-box {
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 24px;
+      margin-bottom: 28px;
+    }
+
+    .mep-badge-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .badge-primary {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      border: 1px solid #7dd3fc;
+    }
+
+    .badge-accent {
+      background: #dcfce7;
+      color: var(--accent-dark);
+      border: 1px solid #86efac;
+    }
+
+    .badge-purple {
+      background: var(--purple-light);
+      color: #6b21a8;
+      border: 1px solid #d8b4fe;
+    }
+
+    h1 {
+      font-size: 1.85rem;
+      font-weight: 900;
+      color: #0f172a;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      color: var(--primary-dark);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      background: #f1f5f9;
+      padding: 14px 18px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      border: 1px solid #cbd5e1;
+    }
+
+    .meta-item strong {
+      color: #334155;
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .meta-item span {
+      color: #0f172a;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: #0f172a;
+      margin-top: 32px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-left: 4px solid var(--primary);
+      padding-left: 12px;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin-top: 20px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      font-size: 14px;
+      color: #334155;
+      margin-bottom: 14px;
+      line-height: 1.65;
+    }
+
+    .highlight-box {
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin: 20px 0;
+    }
+
+    .alert-box {
+      background: #fffbeb;
+      border: 1.5px solid #fde68a;
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin: 20px 0;
+    }
+
+    .triangulation-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    @media (max-width: 768px) {
+      .triangulation-grid {
+        grid-template-columns: 1fr;
+      }
+      .doc-container {
+        padding: 20px;
+      }
+    }
+
+    .tri-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tri-card.f1 { border-top: 4px solid var(--primary); }
+    .tri-card.f2 { border-top: 4px solid var(--pink); }
+    .tri-card.f3 { border-top: 4px solid var(--accent-dark); }
+
+    .tri-card h4 {
+      font-size: 13.5px;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .tri-card.f1 h4 { color: var(--primary-dark); }
+    .tri-card.f2 h4 { color: var(--pink); }
+    .tri-card.f3 h4 { color: var(--accent-dark); }
+
+    .tri-card ul {
+      list-style-type: none;
+      font-size: 12.5px;
+      color: #475569;
+      line-height: 1.5;
+    }
+
+    .tri-card ul li {
+      margin-bottom: 6px;
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .tri-card ul li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 13px;
+    }
+
+    th, td {
+      padding: 12px 14px;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+
+    th {
+      background: #f1f5f9;
+      color: #0f172a;
+      font-weight: 800;
+    }
+
+    tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    .step-badge {
+      display: inline-flex;
+      width: 24px;
+      height: 24px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 900;
+      margin-right: 8px;
+      flex-shrink: 0;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 14px;
+      font-size: 13.5px;
+      color: #334155;
+    }
+
+    .step-content strong {
+      color: #0f172a;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .example-scenario {
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin: 16px 0;
+    }
+
+    .app-mep-footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 2px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 12px;
+    }
+
+    .author-badge {
+      display: inline-block;
+      background: #f0fdf4;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+      font-size: 0.85rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-right: 4px;
+    }
+
+    .btn-print {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #0284c7;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(2,132,199,0.3);
+      text-decoration: none;
+    }
+
+    .btn-print:hover {
+      background: #0369a1;
+    }
+
+    .btn-pdf {
+      background: #059669;
+      box-shadow: 0 2px 6px rgba(5,150,105,0.3);
+    }
+    .btn-pdf:hover {
+      background: #047857;
+    }
+
+    @media print {
+      body {
+        padding: 0;
+        background: white;
+      }
+      .doc-container {
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="doc-container">
+    
+    <!-- ACCIONES DE IMPRESIÓN / DESCARGA -->
+    <div class="no-print" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 10px; flex-wrap: wrap;">
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <a href="/docs/PROPUESTA_ARQUITECTURA_EVALUATIVA_HIBRIDA_7MO_MEP_2027.pdf" download class="btn-print btn-pdf">📥 Descargar PDF oficial (7.° año)</a>
+        <a href="/docs/PROPUESTA_ARQUITECTURA_EVALUATIVA_HIBRIDA_MEP_2027.html" class="btn-print" style="background: #475569;">📘 Ver guía de 9.° año ➔</a>
+      </div>
+      <button class="btn-print" onclick="window.print()">🖨️ Imprimir documento</button>
+    </div>
+
+    <!-- BANNER DE IDENTIFICACIÓN DEL NIVEL DE DIAGNÓSTICO -->
+    <div style="background: #e0f2fe; border: 1.5px solid #0284c7; border-radius: 10px; padding: 12px 18px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 22px;">📘</span>
+        <div>
+          <strong style="font-size: 13.5px; color: #0369a1; display: block;">Guía técnica correspondiente al diagnóstico de 7.° año</strong>
+          <span style="font-size: 11.5px; color: #475569;">Programa Nacional de Formación Tecnológica • CyberQuest 7.° (Módulo 1: Pensamiento computacional y algoritmos)</span>
+        </div>
+      </div>
+      <span style="background: #0284c7; color: #ffffff; padding: 4px 12px; border-radius: 6px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px;">Nivel 7.° • III Ciclo</span>
+    </div>
+
+    <!-- ENCABEZADO OFICIAL -->
+    <div class="header-box">
+      <div class="mep-badge-container">
+        <span class="badge badge-primary">Ministerio de Educación Pública</span>
+        <span class="badge badge-accent">DRTE • Departamento de IDI</span>
+        <span class="badge badge-purple">Formación Tecnológica 2027</span>
+      </div>
+
+      <h1>Arquitectura de evaluación diagnóstica híbrida para 7.° año</h1>
+      <div class="subtitle">Modelo de triangulación formativa y mediación pedagógica en parejas (CyberQuest 7.° • Módulo 1)</div>
+
+      <div class="meta-grid">
+        <div class="meta-item">
+          <strong>Elaborado por:</strong>
+          <span>Allan Morera Araya y Alberto Bustos Ortega</span>
+        </div>
+        <div class="meta-item">
+          <strong>Nivel educativo:</strong>
+          <span>7.° año • Educación secundaria (III Ciclo)</span>
+        </div>
+        <div class="meta-item">
+          <strong>Fecha de publicación:</strong>
+          <span>Febrero 2027</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 1: JUSTIFICACIÓN -->
+    <h2>1. Resumen ejecutivo y diagnóstico del estado actual en 7.° año</h2>
+    <p>
+      En el nivel de séptimo año de secundaria, la evaluación diagnóstica del <strong>Módulo 1: Fundamentos de algoritmos, pensamiento computacional y trabajo colaborativo</strong> se implementó bajo la modalidad en parejas (<em>Líder y copiloto</em>) con dinámicas interactivas.
+    </p>
+
+    <div class="highlight-box">
+      <h3 style="color: #065f46; margin-top: 0;">🎯 Oportunidades de mejora en 7.° año</h3>
+      <p style="margin-bottom: 0; font-size: 13.5px; color: #166534;">
+        La versión previa totalmente automatizada presentaba riesgos de calificar como <em>«dificultad lógica»</em> lo que en realidad era una limitación de motricidad fina con el ratón o una discrepancia en la alternancia de roles entre el líder y el copiloto.
+        <br><br>
+        <strong>El modelo híbrido articula telemetría en simuladores con observación docente directa en el aula.</strong>
+      </p>
+    </div>
+
+    <!-- GRID DE LAS 3 FUENTES -->
+    <div class="triangulation-grid">
+      <!-- FUENTE 1 -->
+      <div class="tri-card f1">
+        <h4>💻 1. Telemetría algorítmica</h4>
+        <div style="font-size: 11px; color: var(--primary-dark); font-weight: 800; margin-bottom: 8px;">Métricas objetivas en vivo</div>
+        <ul>
+          <li>Trazado de rutas y secuencias en cuadrícula.</li>
+          <li>10 reactivos oficiales sobre algoritmos y E-P-S.</li>
+          <li>Detección de tiempos de reacción y bucles.</li>
+          <li>Vector de aciertos instantáneo.</li>
+        </ul>
+      </div>
+
+      <!-- FUENTE 2 -->
+      <div class="tri-card f2">
+        <h4>❤️ 2. Reflexión en parejas</h4>
+        <div style="font-size: 11px; color: var(--pink); font-weight: 800; margin-bottom: 8px;">Autopercepción Líder y Copiloto</div>
+        <ul>
+          <li>Distribución equitativa del control.</li>
+          <li>Escucha activa de propuestas.</li>
+          <li>Tolerancia a la frustración ante obstáculos.</li>
+          <li>Aprendizaje reflexivo del error.</li>
+        </ul>
+      </div>
+
+      <!-- FUENTE 3 -->
+      <div class="tri-card f3">
+        <h4>👨‍🏫 3. Observación docente</h4>
+        <div style="font-size: 11px; color: var(--accent-dark); font-weight: 800; margin-bottom: 8px;">Criterio formativo en aula</div>
+        <ul>
+          <li>Dinámica real de interacción en el pupitre.</li>
+          <li>Manipulación motriz y postura ergonómica.</li>
+          <li>Contención socioafectiva oportuna.</li>
+          <li>Diseño de apoyos DUA personalizados.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 2: EL RADAR PEDAGÓGICO -->
+    <h2>2. El radar pedagógico en tiempo real para 7.° año</h2>
+    <p>
+      El panel docente identifica en tiempo real patrones de interacción para orientar las visitas del profesor a los pupitres que requieren mediación formativa:
+    </p>
+
+    <div class="alert-box">
+      <h3 style="color: #b45309; margin-top: 0;">⚠️ Alertas telemétricas en vivo para 7.° año</h3>
+      <ul style="margin-left: 20px; font-size: 13px; color: #78350f;">
+        <li style="margin-bottom: 6px;"><strong>Alerta de bucle o desorientación espacial:</strong> El robot gira sobre sí mismo más de 6 veces en la cuadrícula sin avanzar al servidor.</li>
+        <li style="margin-bottom: 6px;"><strong>Alerta de estancamiento:</strong> La pareja permanece inactiva por más de 2.5 minutos en la fase de trazado o selección.</li>
+        <li><strong>Alerta de discrepancia de roles:</strong> Uno de los integrantes monopoliza el dispositivo mientras el otro permanece desconectado de la actividad.</li>
+      </ul>
+    </div>
+
+    <!-- SECCIÓN 3: DESGLOSE POR DIMENSIONES -->
+    <h2>3. Desglose de áreas evaluadas: Máquina y docente</h2>
+
+    <h3>🧠 Dimensión 1: Área cognoscitiva (100% tecnológico)</h3>
+    <p>
+      10 reactivos oficiales sobre concepto de algoritmo, secuencias ordenadas, variables, bucles, condicionales y modelo E-P-S evaluados de forma automática ($0\%$ a $100\%$).
+    </p>
+
+    <h3>🖐️ Dimensión 2: Área psicomotora y procedimental (Modelo híbrido)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Criterio</th>
+          <th>¿Quién lo evalúa?</th>
+          <th>¿Qué se evalúa en 7.° año?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>P1. Orientación espacial y secuenciación</strong></td>
+          <td>🤖 <strong>Telemetría</strong></td>
+          <td>Trazado de trayectorias (adelante, giro izquierda, giro derecha) evitando obstáculos.</td>
+        </tr>
+        <tr>
+          <td><strong>P2. Coordinación visomotriz</strong></td>
+          <td>🤖 <strong>Telemetría</strong></td>
+          <td>Tiempos de reacción ante eventos lumínicos temporizados (semáforo tecnológico).</td>
+        </tr>
+        <tr>
+          <td><strong>P3. Precisión en el uso de periféricos</strong></td>
+          <td>👨‍🏫 <strong>Docente (Observable)</strong></td>
+          <td>Manejo fluido del ratón/touchpad, coordinación mano-ojo y ausencia de temblor por nerviosismo.</td>
+        </tr>
+        <tr>
+          <td><strong>P4. Postura ergonómica en el puesto</strong></td>
+          <td>👨‍🏫 <strong>Docente (Observable)</strong></td>
+          <td>Disposición adecuada en la silla, distancia a la pantalla y uso seguro del equipo.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>❤️ Dimensión 3: Área socioafectiva (Modelo híbrido triangulado)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Criterio</th>
+          <th>¿Quién lo evalúa?</th>
+          <th>¿Qué se evalúa en 7.° año?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>S1. Alternancia de roles (Líder y copiloto)</strong></td>
+          <td>👨‍🏫 <strong>Docente (Observable)</strong></td>
+          <td>Si la pareja dialoga antes de pulsar, se alternan el control y respetan los turnos.</td>
+        </tr>
+        <tr>
+          <td><strong>S2. Tolerancia a la frustración</strong></td>
+          <td>👨‍🏫 <strong>Docente (Observable)</strong></td>
+          <td>Reacción ante colisiones del robot: si buscan la solución en equipo o se culpan entre sí.</td>
+        </tr>
+        <tr>
+          <td><strong>S3. Gusto por la precisión y calidad</strong></td>
+          <td>🤖 <strong>Telemetría y estudiante</strong></td>
+          <td>Tiempo de verificación previa al envío y autoevaluación reflexiva en la fase de cierre.</td>
+        </tr>
+        <tr>
+          <td><strong>S4. Escucha activa y empatía</strong></td>
+          <td>👨‍🏫 <strong>Docente (Observable)</strong></td>
+          <td>Apertura para aceptar ideas del compañero o compañera de mesa ante un desafío.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- SECCIÓN 4: PROTOCOLO DE CALIFICACIÓN -->
+    <h2>4. Protocolo de calificación y mediación emocional por excepción</h2>
+    <p>
+      El sistema precarga a todas las parejas en <strong>Nivel A (Autónomo por defecto)</strong>. El docente solo interviene en aquellos casos donde su observación evidencia necesidad formativa:
+    </p>
+
+    <!-- EJEMPLO PRÁCTICO -->
+    <div class="example-scenario">
+      <h3 style="color: #0369a1; margin-top: 0;">📖 Ejemplo pedagógico de mediación en 7.° año</h3>
+      <p style="font-size: 13px; margin-bottom: 8px;">
+        <strong>1. Alerta en el panel:</strong> La pareja conformada por <strong>Sofía (Líder)</strong> y <strong>Mateo (Copiloto)</strong> registra 9 colisiones consecutivas en la cuadrícula.
+      </p>
+      <p style="font-size: 13px; margin-bottom: 8px;">
+        <strong>2. Aproximación docente:</strong> El docente nota que Sofía hace clics desesperados mientras Mateo se cruza de brazos molesto (<em>«Ella no me deja participar»</em>).
+      </p>
+      <p style="font-size: 13px; margin-bottom: 8px;">
+        <strong>3. Mediación socioafectiva:</strong> El docente <strong>no resuelve el laberinto ni les indica qué flechas presionar</strong>. Realiza una pausa de contención:
+        <br>
+        <em>«Tranquilos, chicos. Recuerden que este diagnóstico no tiene una nota numérica ni es una competencia. Sofía, cuéntale a Mateo qué camino pensaste; Mateo, ayúdale a verificar si hay algún obstáculo en esa ruta»</em>.
+      </p>
+      <p style="font-size: 13px; margin-bottom: 8px;">
+        <strong>4. Determinación del nivel formativo:</strong>
+      </p>
+      <ul style="margin-left: 20px; font-size: 13px; color: #334155; margin-bottom: 8px;">
+        <li><strong>Si retoman el diálogo y colaboran:</strong> Asigna <strong>Nivel B</strong> en trabajo colaborativo.</li>
+        <li><strong>Si persiste el bloqueo emocional o la desconexión total:</strong> Asigna <strong>Nivel C</strong> y documenta el caso para brindar apoyos socioafectivos tempranos en el plan DUA.</li>
+      </ul>
+      <p style="font-size: 13px; color: #047857; font-weight: 700; margin-bottom: 0;">
+        Las parejas que trabajaron armónicas y fluidas permanecen en Nivel A automáticamente.
+      </p>
+    </div>
+
+    <!-- SECCIÓN 5: COMPARATIVA -->
+    <h2>5. Comparativa: Modelo automatizado previo vs. Modelo híbrido propuesto</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Dimensión</th>
+          <th>Modelo Previo (100% Automatizado)</th>
+          <th>Modelo Híbrido Propuesto (MEP 2027)</th>
+          <th>Beneficio Pedagógico</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Área cognoscitiva</strong></td>
+          <td>10 reactivos automáticos.</td>
+          <td>10 reactivos automáticos con vector cognitivo.</td>
+          <td>Mantiene rapidez y cálculo en 0 ms.</td>
+        </tr>
+        <tr>
+          <td><strong>Área psicomotora</strong></td>
+          <td>Calificación aislada por clics.</td>
+          <td>Telemetría de cuadrícula + observación de motricidad y postura.</td>
+          <td>Elimina falsos negativos por falta de hábito con el ratón.</td>
+        </tr>
+        <tr>
+          <td><strong>Área socioafectiva</strong></td>
+          <td>Escala Likert sin contexto.</td>
+          <td>Autoevaluación + observación de convivencia y roles.</td>
+          <td>Valora la empatía, el trabajo en parejas y la resiliencia real.</td>
+        </tr>
+        <tr>
+          <td><strong>Carga docente</strong></td>
+          <td>Sin control ni visibilidad cualitativa.</td>
+          <td>Radar de alertas tempranas + edición por excepción.</td>
+          <td>Focaliza la atención pedagógica donde hay necesidad real.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- SECCIÓN 6: CONCLUSIÓN -->
+    <h2>6. Conclusión y valor institucional</h2>
+    <p>
+      La implementación de la <strong>Herramienta de Diagnóstico Estudiantes</strong> en 7.° año asegura una transición armónica de primaria a secundaria, brindando un instrumento técnico con rigor estadístico y sentido humano para el inicio del ciclo lectivo.
+    </p>
+
+    <!-- PIE DE PÁGINA INSTITUCIONAL OFICIAL -->
+    <footer class="app-mep-footer">
+      <div>
+        <strong style="color: #0f172a; display: block; margin-bottom: 2px;">Ministerio de Educación Pública de Costa Rica</strong>
+        <span style="color: #64748b;">Dirección de Recursos Tecnológicos en Educación • Departamento de IDI</span>
+      </div>
+      <div style="text-align: right;">
+        <div style="margin-bottom: 4px;">
+          <span class="author-badge">Allan Morera Araya</span>
+          <span class="author-badge">Alberto Bustos Ortega</span>
+        </div>
+        <div style="color: #64748b; font-weight: 700;">Febrero 2027.</div>
+      </div>
+    </footer>
+
+  </div>
+
+</body>
+</html>

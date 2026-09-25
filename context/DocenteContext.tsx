@@ -955,7 +955,17 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
               const key = normalizarClave(item);
               const existente = mapa.get(key);
               const secNorm = normalizarSeccion(item.seccionOGrupo);
-              const itemNorm = { ...item, seccionOGrupo: secNorm };
+              const socioPreservado = existente?.socioafectivo || item.socioafectivo;
+              const psicoPreservado = existente?.psicomotor || item.psicomotor;
+              const obsPreservada = existente?.observacionDocente || item.observacionDocente;
+
+              const itemNorm = {
+                ...item,
+                seccionOGrupo: secNorm,
+                socioafectivo: socioPreservado,
+                psicomotor: psicoPreservado,
+                observacionDocente: obsPreservada,
+              };
               if (!existente) {
                 mapa.set(key, itemNorm);
               } else {
@@ -967,6 +977,13 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
                   mapa.set(key, itemNorm);
                 } else if (puntajeNuevo === puntajeExistente && (item.timestamp || 0) >= (existente.timestamp || 0)) {
                   mapa.set(key, itemNorm);
+                } else {
+                  mapa.set(key, {
+                    ...existente,
+                    socioafectivo: socioPreservado,
+                    psicomotor: psicoPreservado,
+                    observacionDocente: obsPreservada,
+                  });
                 }
               }
             }
@@ -1721,11 +1738,31 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
   };
 
   const actualizarResultadoTelemetria = (timestamp: number, datosActualizados: Partial<PayloadTelemetria>) => {
+    let itemModificado: PayloadTelemetria | null = null;
     setTelemetria((prev) => {
-      const updated = prev.map((item) => (item.timestamp === timestamp ? { ...item, ...datosActualizados } : item));
+      const updated = prev.map((item) => {
+        if (item.timestamp === timestamp || (item.idResultado && datosActualizados.idResultado && item.idResultado === datosActualizados.idResultado)) {
+          const merged = { ...item, ...datosActualizados };
+          itemModificado = merged;
+          return merged;
+        }
+        return item;
+      });
       SafeStorage.setItem("telemetria_registros", JSON.stringify(updated));
+      if (typeof window !== "undefined" && docente?.cedula) {
+        const cedClean = docente.cedula.replace(/[^a-zA-Z0-9]/g, "");
+        SafeStorage.setItem(`telemetria_registros_${cedClean}`, JSON.stringify(updated));
+      }
       return updated;
     });
+
+    if (itemModificado) {
+      fetch("/api/telemetria/enviar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(itemModificado),
+      }).catch(() => {});
+    }
   };
 
   const importarLoteResultados = (lote: PayloadTelemetria[]) => {

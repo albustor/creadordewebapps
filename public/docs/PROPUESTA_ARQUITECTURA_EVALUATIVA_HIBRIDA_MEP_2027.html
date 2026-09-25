@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Propuesta técnica: Arquitectura de evaluación diagnóstica híbrida MEP 2027</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --primary-light: #e0f2fe;
+      --accent: #10b981;
+      --accent-dark: #047857;
+      --purple: #8b5cf6;
+      --purple-light: #f3e8ff;
+      --pink: #db2777;
+      --pink-light: #fdf2f8;
+      --amber: #f59e0b;
+      --amber-light: #fffbeb;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 24px;
+    }
+
+    .doc-container {
+      max-width: 960px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border-radius: 16px;
+      border: 1.5px solid var(--border);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      padding: 44px;
+    }
+
+    .header-box {
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 24px;
+      margin-bottom: 28px;
+    }
+
+    .mep-badge-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .badge-primary {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      border: 1px solid #7dd3fc;
+    }
+
+    .badge-accent {
+      background: #dcfce7;
+      color: var(--accent-dark);
+      border: 1px solid #86efac;
+    }
+
+    .badge-purple {
+      background: var(--purple-light);
+      color: #6b21a8;
+      border: 1px solid #d8b4fe;
+    }
+
+    h1 {
+      font-size: 1.85rem;
+      font-weight: 900;
+      color: #0f172a;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      color: var(--primary-dark);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      background: #f1f5f9;
+      padding: 14px 18px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      border: 1px solid #cbd5e1;
+    }
+
+    .meta-item strong {
+      color: #334155;
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .meta-item span {
+      color: #0f172a;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: #0f172a;
+      margin-top: 32px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-left: 4px solid var(--primary);
+      padding-left: 12px;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin-top: 20px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      font-size: 14px;
+      color: #334155;
+      margin-bottom: 14px;
+      line-height: 1.65;
+    }
+
+    .highlight-box {
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin: 20px 0;
+    }
+
+    .alert-box {
+      background: #fffbeb;
+      border: 1.5px solid #fde68a;
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin: 20px 0;
+    }
+
+    .triangulation-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    @media (max-width: 768px) {
+      .triangulation-grid {
+        grid-template-columns: 1fr;
+      }
+      .doc-container {
+        padding: 20px;
+      }
+    }
+
+    .tri-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tri-card.f1 { border-top: 4px solid var(--primary); }
+    .tri-card.f2 { border-top: 4px solid var(--pink); }
+    .tri-card.f3 { border-top: 4px solid var(--accent-dark); }
+
+    .tri-card h4 {
+      font-size: 13.5px;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .tri-card.f1 h4 { color: var(--primary-dark); }
+    .tri-card.f2 h4 { color: var(--pink); }
+    .tri-card.f3 h4 { color: var(--accent-dark); }
+
+    .tri-card ul {
+      list-style-type: none;
+      font-size: 12.5px;
+      color: #475569;
+      line-height: 1.5;
+    }
+
+    .tri-card ul li {
+      margin-bottom: 6px;
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .tri-card ul li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 13px;
+    }
+
+    th, td {
+      padding: 12px 14px;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+
+    th {
+      background: #f1f5f9;
+      color: #0f172a;
+      font-weight: 800;
+    }
+
+    tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    .step-badge {
+      display: inline-flex;
+      width: 24px;
+      height: 24px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 900;
+      margin-right: 8px;
+      flex-shrink: 0;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 14px;
+      font-size: 13.5px;
+      color: #334155;
+    }
+
+    .step-content strong {
+      color: #0f172a;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .example-scenario {
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin: 16px 0;
+    }
+
+    .app-mep-footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 2px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 12px;
+    }
+
+    .author-badge {
+      display: inline-block;
+      background: #f0fdf4;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+      font-size: 0.85rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-right: 4px;
+    }
+
+    .btn-print {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #0284c7;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(2,132,199,0.3);
+      text-decoration: none;
+    }
+
+    .btn-print:hover {
+      background: #0369a1;
+    }
+
+    .btn-pdf {
+      background: #059669;
+      box-shadow: 0 2px 6px rgba(5,150,105,0.3);
+    }
+    .btn-pdf:hover {
+      background: #047857;
+    }
+
+    @media print {
+      body {
+        padding: 0;
+        background: white;
+      }
+      .doc-container {
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="doc-container">
+    
+    <!-- ACCIONES DE IMPRESIÓN / DESCARGA -->
+    <div class="no-print" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 10px; flex-wrap: wrap;">
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <a href="/docs/PROPUESTA_ARQUITECTURA_EVALUATIVA_HIBRIDA_MEP_2027.pdf" download class="btn-print btn-pdf">📥 Descargar PDF oficial (9.° año)</a>
+        <a href="/docs/PROPUESTA_ARQUITECTURA_EVALUATIVA_HIBRIDA_7MO_MEP_2027.html" class="btn-print" style="background: #475569;">📘 Ver guía de 7.° año ➔</a>
+      </div>
+      <button class="btn-print" onclick="window.print()">🖨️ Imprimir documento</button>
+    </div>
+
+    <!-- BANNER DE IDENTIFICACIÓN DEL NIVEL DE DIAGNÓSTICO -->
+    <div style="background: #e0f2fe; border: 1.5px solid #0284c7; border-radius: 10px; padding: 12px 18px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 22px;">📘</span>
+        <div>
+          <strong style="font-size: 13.5px; color: #0369a1; display: block;">Guía técnica correspondiente al diagnóstico de 9.° año</strong>
+          <span style="font-size: 11.5px; color: #475569;">Programa Nacional de Formación Tecnológica • Aula inteligente (Módulo 1: Computación física y microcontroladores)</span>
+        </div>
+      </div>
+      <span style="background: #0284c7; color: #ffffff; padding: 4px 12px; border-radius: 6px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px;">Nivel 9.° • III Ciclo</span>
+    </div>
+
+    <!-- ENCABEZADO OFICIAL -->
+    <div class="header-box">
+      <div class="mep-badge-container">
+        <span class="badge badge-primary">Ministerio de Educación Pública</span>
+        <span class="badge badge-accent">DRTE • Departamento de IDI</span>
+        <span class="badge badge-purple">Formación Tecnológica 2027</span>
+      </div>
+
+      <h1>Arquitectura de evaluación diagnóstica híbrida</h1>
+      <div class="subtitle">Modelo de triangulación formativa multifuente en tiempo real (Secundaria 7.° a 9.° año)</div>
+
+      <div class="meta-grid">
+        <div class="meta-item">
+          <strong>Elaborado por:</strong>
+          <span>Allan Morera Araya y Alberto Bustos Ortega</span>
+        </div>
+        <div class="meta-item">
+          <strong>Fecha de publicación:</strong>
+          <span>Febrero 2027</span>
+        </div>
+        <div class="meta-item">
+          <strong>Tipo de documento:</strong>
+          <span>Propuesta técnico-pedagógica oficial</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 1: JUSTIFICACIÓN Y RESUMEN -->
+    <h2>1. Resumen ejecutivo y justificación pedagógica</h2>
+    <p>
+      La evaluación de aprendizajes en educación tecnológica contemporánea exige trascender los instrumentos tradicionales de memorización para valorar de forma sistémica tres dimensiones esenciales:
+    </p>
+    <ul style="margin-left: 24px; font-size: 13.5px; color: #334155; margin-bottom: 14px;">
+      <li><strong>El saber conceptual (área cognoscitiva):</strong> Comprensión de principios de computación física, microcontroladores, lógica condicional y flujo entrada-proceso-salida (E-P-S).</li>
+      <li><strong>El saber hacer (área psicomotriz y procedimental):</strong> Destreza en el conexionado físico y simulado, polaridad de terminales, correspondencia de puertos y depuración de circuitos.</li>
+      <li><strong>El saber ser y convivir (área socioafectiva y actitudinal):</strong> Gusto por la calidad, resiliencia ante el error, tolerancia a la frustración, flexibilidad cognitiva y colaboración.</li>
+    </ul>
+
+    <div class="highlight-box">
+      <h3 style="color: #065f46; margin-top: 0;">🎯 El desafío del aula real y la respuesta híbrida</h3>
+      <p style="margin-bottom: 0; font-size: 13.5px; color: #166534;">
+        En un laboratorio con 30 o 35 estudiantes, la persona docente no puede registrar con precisión matemática cada micro-intento, tiempo de duda o rectificación de circuito de cada estudiante. Por otra parte, los algoritmos y la IA no pueden captar el clima humano, la empatía, el lenguaje no verbal ni la intencionalidad pedagógica.
+        <br><br>
+        <strong>La Herramienta de Diagnóstico Estudiantes conjuga ambas fortalezas mediante una triangulación formativa de tres fuentes convergentes.</strong>
+      </p>
+    </div>
+
+    <!-- GRID DE LAS 3 FUENTES DE TRIANGULACIÓN -->
+    <div class="triangulation-grid">
+      <!-- FUENTE 1 -->
+      <div class="tri-card f1">
+        <h4>💻 1. Telemetría algorítmica</h4>
+        <div style="font-size: 11px; color: var(--primary-dark); font-weight: 800; margin-bottom: 8px;">Datos objetivos en tiempo real</div>
+        <ul>
+          <li>Trazado exacto de pines y correspondencia polar (VCC, GND, A0, D9).</li>
+          <li>Medición de latencia de respuesta y tiempos de duda.</li>
+          <li>Registro de micro-reintentos y depuración en simulador.</li>
+          <li>Vector cognitivo por ítem en 0 ms.</li>
+        </ul>
+      </div>
+
+      <!-- FUENTE 2 -->
+      <div class="tri-card f2">
+        <h4>❤️ 2. Autopercepción metacognitiva</h4>
+        <div style="font-size: 11px; color: var(--pink); font-weight: 800; margin-bottom: 8px;">Parte C oficial del estudiante</div>
+        <ul>
+          <li><strong>S1:</strong> Gusto por la precisión y calidad.</li>
+          <li><strong>S2:</strong> Aprender del error (resiliencia en depuración).</li>
+          <li><strong>S3:</strong> Flexibilidad ante dificultades.</li>
+          <li><strong>S4:</strong> Tolerancia a la frustración y perseverancia.</li>
+        </ul>
+      </div>
+
+      <!-- FUENTE 3 -->
+      <div class="tri-card f3">
+        <h4>👨‍🏫 3. Observación docente</h4>
+        <div style="font-size: 11px; color: var(--accent-dark); font-weight: 800; margin-bottom: 8px;">Criterio pedagógico en aula</div>
+        <ul>
+          <li>Convivencia, escucha activa y trabajo en equipo.</li>
+          <li>Manipulación física de componentes en la mesa de trabajo.</li>
+          <li>Validación cualitativa y contextualizada del nivel de logro.</li>
+          <li>Acompañamiento DUA personalizado.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 2: EL RADAR PEDAGÓGICO EN VIVO -->
+    <h2>2. El radar pedagógico en tiempo real (sistema de alertas tempranas)</h2>
+    <p>
+      Para evitar que la persona docente tenga que vigilar 35 pantallas simultáneamente, el <strong>Panel Docente</strong> actúa como un radar de alerta temprana que detecta anomalías telemétricas en vivo y guía al profesor hacia el estudiante que realmente requiere apoyo:
+    </p>
+
+    <div class="alert-box">
+      <h3 style="color: #b45309; margin-top: 0;">⚠️ Indicadores telemétricos de alerta en vivo</h3>
+      <ul style="margin-left: 20px; font-size: 13px; color: #78350f;">
+        <li style="margin-bottom: 6px;"><strong>Alerta de tanteo ciego o ansiedad:</strong> Se activa si un estudiante conecta y desconecta cables más de 8 veces en menos de 30 segundos sin manipular el deslizador de luxes ni consultar el monitor serial.</li>
+        <li style="margin-bottom: 6px;"><strong>Alerta de estancamiento prolongado:</strong> Se activa si el estudiante permanece inactivo por más de 3 minutos en un mismo reactivo o en el banco de componentes.</li>
+        <li><strong>Alerta de inversión polar crítica:</strong> Se activa si el estudiante conecta terminales de alimentación directa (5V a GND) reiteradamente ignorando los avisos de seguridad del simulador.</li>
+      </ul>
+    </div>
+
+    <!-- SECCIÓN 3: DESGLOSE EXHAUSTIVO POR DIMENSIONES -->
+    <h2>3. Desglose exhaustivo por área: Máquina y docente</h2>
+
+    <h3>🧠 Dimensión 1: Área cognoscitiva (100% tecnológico)</h3>
+    <p>
+      Evaluada de forma 100% automatizada a través de 10 reactivos oficiales fundamentados en el documento base MEP (Modelo E-P-S, microcontroladores, sensores, actuadores, condiciones lógicas y almacenamiento de datos). El docente visualiza el porcentaje ($0\%$ a $100\%$) y el vector de aciertos en tiempo real.
+    </p>
+
+    <h3>🖐️ Dimensión 2: Área psicomotora y procedimental (Modelo híbrido)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Criterio</th>
+          <th>¿Quién lo evalúa?</th>
+          <th>¿Qué se evalúa exactamente?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>P1. Reconocimiento de módulos (E-P-S)</strong></td>
+          <td>🤖 <strong>Telemetría</strong></td>
+          <td>Correspondencia lógica entre entrada (LDR), proceso (MCU) y salida (LED).</td>
+        </tr>
+        <tr>
+          <td><strong>P2. Polaridad y alimentación (5V / GND)</strong></td>
+          <td>🤖 <strong>Telemetría</strong></td>
+          <td>Precisión en líneas de voltaje y tierra sin generar cortocircuitos.</td>
+        </tr>
+        <tr>
+          <td><strong>P3. Puertos de señal (A0 / D9)</strong></td>
+          <td>🤖 <strong>Telemetría</strong></td>
+          <td>Conexión analógica del sensor y digital PWM del actuador.</td>
+        </tr>
+        <tr>
+          <td><strong>P4. Destreza y ergonomía en la mesa</strong></td>
+          <td>👨‍🏫 <strong>Docente (Observable)</strong></td>
+          <td>Orden en el puesto de trabajo, motricidad fina y manipulación segura de periféricos.</td>
+        </tr>
+        <tr>
+          <td><strong>P5. Coordinación óculo-manual y trazado</strong></td>
+          <td>👨‍🏫 <strong>Docente (Observable)</strong></td>
+          <td>Fluidez y firmeza en el conexionado sin temblores ni titubeos por nerviosismo.</td>
+        </tr>
+        <tr>
+          <td><strong>P6. Verificación metódica del circuito</strong></td>
+          <td>👨‍🏫 <strong>Docente (Observable)</strong></td>
+          <td>Comprobación visual previa de los cables antes de energizar o probar el sistema.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>❤️ Dimensión 3: Área socioafectiva (Modelo híbrido triangulado)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Criterio</th>
+          <th>¿Quién lo evalúa?</th>
+          <th>¿Qué se evalúa exactamente?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>S1. Gusto por la precisión y calidad</strong></td>
+          <td>🤖 <strong>Telemetría y estudiante</strong></td>
+          <td>Tiempo de inspección previo al envío (&gt;15s) y respuesta reflexiva en la Parte C.</td>
+        </tr>
+        <tr>
+          <td><strong>S2. Detección de ansiedad y tanteo ciego</strong></td>
+          <td>🤖 <strong>Telemetría (Alerta)</strong></td>
+          <td>Frecuencia de clics erráticos por minuto y cambios desordenados de valores.</td>
+        </tr>
+        <tr>
+          <td><strong>S3. Tolerancia a la frustración (Resiliencia)</strong></td>
+          <td>👨‍🏫 <strong>Docente (Observable)</strong></td>
+          <td>Reacción ante el fallo: compostura, perseverancia o abandono de la tarea.</td>
+        </tr>
+        <tr>
+          <td><strong>S4. Flexibilidad y trabajo colaborativo</strong></td>
+          <td>👨‍🏫 <strong>Docente (Observable)</strong></td>
+          <td>Escucha activa con el compañero de mesa y receptividad ante sugerencias del docente.</td>
+        </tr>
+        <tr>
+          <td><strong>S5. Autonomía y seguridad personal</strong></td>
+          <td>👨‍🏫 <strong>Docente (Observable)</strong></td>
+          <td>Iniciativa propia frente a solicitud constante de validación para cada paso menor.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- SECCIÓN 4: PROTOCOLO DE CALIFICACIÓN -->
+    <h2>4. Protocolo de calificación práctica: «Evaluación por excepción»</h2>
+    <p>
+      Para evitar la sobrecarga administrativa del docente en el laboratorio, el sistema implementa un flujo de <strong>evaluación por excepción</strong>:
+    </p>
+
+    <div style="margin: 20px 0;">
+      <div class="step-item">
+        <span class="step-badge">1</span>
+        <div class="step-content">
+          <strong>Línea base automatizada (Nivel A por defecto)</strong>
+          El sistema precarga automáticamente los resultados cognoscitivos y coloca los criterios socioafectivos y psicomotores en Nivel A (Autónomo). El docente no tiene que rellenar manualmente 35 formularios vacíos.
+        </div>
+      </div>
+
+      <div class="step-item">
+        <span class="step-badge">2</span>
+        <div class="step-content">
+          <strong>Focalización y edición rápida</strong>
+          El docente solo interactúa con aquellos casos particulares donde su observación directa detectó la necesidad de asignar <strong>Nivel B (Con apoyo ocasional)</strong> o <strong>Nivel C (Acompañamiento constante)</strong>.
+        </div>
+      </div>
+
+      <div class="step-item">
+        <span class="step-badge">3</span>
+        <div class="step-content">
+          <strong>Persistencia robusta e inmunidad a sobreescritura</strong>
+          Las modificaciones manuales del docente se blindan en el navegador y se transmiten a la base de datos central en tiempo real, garantizando que el refresco automático nunca borre su criterio profesional.
+        </div>
+      </div>
+    </div>
+
+    <!-- EJEMPLO PRÁCTICO EN EL AULA -->
+    <div class="example-scenario">
+      <h3 style="color: #0369a1; margin-top: 0;">📖 Ejemplo práctico de aplicación en el aula</h3>
+      <p style="font-size: 13px; margin-bottom: 8px;">
+        <strong>1. Detección:</strong> El panel muestra una alerta amarilla en el estudiante <strong>Juan Rosales</strong>: <em>«12 intentos fallidos de conexión en 45 segundos»</em>.
+      </p>
+      <p style="font-size: 13px; margin-bottom: 8px;">
+        <strong>2. Intervención pedagógica y contención socioafectiva:</strong> La persona docente se acerca al pupitre y realiza una mediación formativa:
+        <br>
+        <em>«Juan, observa el sensor de luz: ¿cuál es el terminal que suministra energía positiva desde el microcontrolador?»</em>.
+      </p>
+      <p style="font-size: 13px; margin-bottom: 8px;">
+        <strong>3. Determinación del nivel según la respuesta del estudiante:</strong>
+      </p>
+      <ul style="margin-left: 20px; font-size: 13px; color: #334155; margin-bottom: 10px;">
+        <li style="margin-bottom: 6px;">
+          <strong>Caso 1 (Nivel B - Con apoyo ocasional / En proceso):</strong> Juan reflexiona ante la pregunta orientadora, revisa la tarjeta, identifica el terminal (<em>«¡Es el pin VCC que va al 5V!»</em>), realiza la conexión y continúa de forma autónoma. El docente pulsa <strong>B</strong> en el panel.
+        </li>
+        <li>
+          <strong>Caso 2 (Nivel C - Acompañamiento constante / Inicial):</strong> Juan se bloquea y manifiesta frustración (<em>«No entiendo nada de esto, no sé qué hacer»</em>). En este escenario, <strong>la persona docente no resuelve el reto ni guía físicamente las conexiones para preservar la validez del diagnóstico</strong>, sino que realiza una <strong>contención emocional y socioafectiva</strong>:
+          <ul style="margin-left: 18px; margin-top: 4px; color: #475569; font-size: 12.5px;">
+            <li>Le transmite calma recordándole que <strong>no se trata de una nota numérica ni un examen punitivo</strong>, sino de una valoración formativa para conocer su punto de partida.</li>
+            <li>Le enfatiza que <em>«no conocer un tema no está mal; es el punto de partida y una valiosa oportunidad para aprender durante el curso»</em>.</li>
+            <li>Le invita a conectar o responder con honestidad y serenidad lo que recuerde.</li>
+            <li>El docente registra <strong>Nivel C</strong> en el panel y anota las observaciones socioafectivas para el plan de nivelación DUA.</li>
+          </ul>
+        </li>
+      </ul>
+      <p style="font-size: 13px; color: #047857; font-weight: 700; margin-bottom: 0;">
+        4. Alumnos sin incidencias: Los demás 33 estudiantes que resolvieron el reto de manera fluida y autónoma permanecen en Nivel A automáticamente.
+      </p>
+    </div>
+
+    <!-- SECCIÓN 5: CONCLUSIÓN -->
+    <h2>5. Conclusión y valor estratégico para el MEP</h2>
+    <p>
+      Este modelo de evaluación híbrida sitúa a la tecnología como un asistente analítico de alta precisión que libera al docente de tareas repetitivas, permitiéndole concentrarse en lo esencial: <strong>la observación pedagógica, la empatía y la mediación formativa de sus estudiantes</strong>.
+    </p>
+
+    <!-- PIE DE PÁGINA INSTITUCIONAL OFICIAL -->
+    <footer class="app-mep-footer">
+      <div>
+        <strong style="color: #0f172a; display: block; margin-bottom: 2px;">Ministerio de Educación Pública de Costa Rica</strong>
+        <span style="color: #64748b;">Dirección de Recursos Tecnológicos en Educación • Departamento de IDI</span>
+      </div>
+      <div style="text-align: right;">
+        <div style="margin-bottom: 4px;">
+          <span class="author-badge">Allan Morera Araya</span>
+          <span class="author-badge">Alberto Bustos Ortega</span>
+        </div>
+        <div style="color: #64748b; font-weight: 700;">Febrero 2027.</div>
+      </div>
+    </footer>
+
+  </div>
+
+</body>
+</html>

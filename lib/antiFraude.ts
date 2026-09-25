@@ -49,6 +49,14 @@ export interface PayloadTelemetria {
   psicomotor?: Record<string, string>;
   retosPracticos?: any;
   reflexionParteC?: any;
+  intentos?: number;
+  telemetria?: {
+    intentosTotales?: number;
+    anomalias?: string[];
+    tiempoTotal?: number;
+    tiempoPromedioRespuesta?: number;
+    ajustesRapidos?: number;
+  };
 }
 
 const SECRET_SALT = "CreadorWebApps-Token-Integridad-2027-Secret";

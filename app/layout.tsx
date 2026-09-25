@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { DocenteProvider } from "@/context/DocenteContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-plus-jakarta",
+  weight: ["400", "500", "600", "700", "800"],
+});
 
 export const metadata: Metadata = {
   title: "Diagnóstico Secundaria PNFT - Tecnologías de la Información",
@@ -19,7 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={`${inter.className} min-h-screen flex flex-col antialiased selection:bg-blue-100 selection:text-blue-900`}>
+      <body className={`${plusJakartaSans.className} ${inter.variable} min-h-screen flex flex-col antialiased selection:bg-teal-100 selection:text-teal-900 bg-[#EEF2F6]`}>
         <DocenteProvider>
           <Navbar />
           <main className="flex-1">{children}</main>
