@@ -1,4 +1,4 @@
-﻿# Arquitectura de evaluación diagnóstica híbrida para 7.° año (triangulación formativa MEP 2027)
+# Arquitectura de evaluación diagnóstica híbrida para 7.° año (triangulación formativa MEP 2027)
 **Programa Nacional de Formación Tecnológica (PNFT) • Módulo 1: Diagnóstico Sétimo (Misión en parejas)**  
 *Ministerio de Educación Pública de Costa Rica • Dirección de Recursos Tecnológicos en Educación (DRTE)*  
 *Departamento de Investigación, Desarrollo e Implementación (IDI)*
@@ -72,10 +72,10 @@ flowchart LR
 
 | Criterio | ¿Quién lo evalúa? | ¿Qué se evalúa en 7.° año? |
 | :--- | :---: | :--- |
-| **P1. Orientación espacial y secuenciación** | 🤖 **Telemetría** | Trazado de trayectorias (adelante, giro izquierda, giro derecha) evitando obstáculos hacia el servidor. |
-| **P2. Coordinación visomotriz y tiempos de reacción** | 🤖 **Telemetría** | Respuesta ante eventos dinámicos temporizados (reto de semáforo tecnológico). |
-| **P3. Precisión en el uso de periféricos (Mouse/Touchpad)** | 👨‍🏫 **Docente (Observable)** | Manejo fluido del puntero, coordinación mano-ojo y ausencia de temblor o torpeza por falta de hábito. |
-| **P4. Disposición ordenada y postura en el equipo** | 👨‍🏫 **Docente (Observable)** | Postura ergonómica en la silla, distancia a la pantalla y uso adecuado del teclado y ratón. |
+| **P1. Orientación espacial y cuadrícula** | 🤖 **Telemetría Digital** | Navegación espacial, lateralidad y desplazamiento secuencial en cuadrícula 4x4 evitando obstáculos. |
+| **P2. Ritmo e inhibición sensorio-motora (Semáforo)** | 🤖 **Telemetría Digital** | Control inhibitorio motor y respuesta sincronizada ante estímulos cromáticos y temporales. |
+| **P3. Pulso y precisión en canal estrecho** | 🤖 **Telemetría Digital** | Estabilidad de pulso, precisión manual y control del puntero en trayectorias curvas continuas. |
+| **P4. Motricidad fina y periféricos** | ⚡ **Telemetría + 👨‍🏫 Docente** | Telemetría de captura de trazos en lienzo interactivo y validación docente de soltura con periféricos. |
 
 ---
 
@@ -83,10 +83,10 @@ flowchart LR
 
 | Criterio | ¿Quién lo evalúa? | ¿Qué se evalúa en 7.° año? |
 | :--- | :---: | :--- |
-| **S1. Trabajo colaborativo y alternancia de roles** | 👨‍🏫 **Docente (Observable)** | Si la pareja dialoga antes de pulsar, se alternan el control (líder y copiloto) y respetan los turnos. |
-| **S2. Tolerancia a la frustración y gestión emocional** | 👨‍🏫 **Docente (Observable)** | Reacción cuando el robot choca o se equivoca en la secuencia: si se ríen y buscan la solución o se culpan entre sí. |
-| **S3. Gusto por la precisión y cuidado del detalle** | 🤖 **Telemetría y estudiante** | Verificación reflexiva en la autoevaluación final y tiempo de comprobación antes de enviar. |
-| **S4. Escucha activa y empatía** | 👨‍🏫 **Docente (Observable)** | Apertura para aceptar las ideas del compañero o compañera de mesa ante un desafío de lógica. |
+| **S1. Gusto por la precisión y calidad** | 🤖 **Telemetría + Autorreflexión** | Minuciosidad, verificación detallada de respuestas previas al envío y autopercepción formativa. |
+| **S2. Aprender del error (Metacognición)** | 🤖 **Telemetría + Depuración** | Resiliencia ante la falla, búsqueda del error e intentos de corrección metacognitiva. |
+| **S3. Flexibilidad y trabajo colaborativo** | 👨‍🏫 **Docente (Observable)** | Diálogo en parejas, escucha activa, alternancia de roles y exploración conjunta de soluciones. |
+| **S4. Tolerancia a la frustración y perseverancia** | 👨‍🏫 **Docente (Contención)** | Manejo de la calma, perseverancia ante retos complejos y culminación sistemática de la actividad. |
 
 ---
 

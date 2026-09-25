@@ -336,8 +336,8 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
       escalaA: "Logrado (L): Trazo continuo, definido y manipulación ágil de dispositivos de entrada.",
       escalaB: "En Desarrollo (ED): Trazo segmentado o manipulación con lentitud exploratoria.",
       escalaC: "Requiere Acompañamiento (RA): Dificultad motriz para operar periféricos digitales.",
-      modalidadEvaluacion: "docente",
-      etiquetaModalidad: "Foco Docente (Observable)",
+      modalidadEvaluacion: "hibrido",
+      etiquetaModalidad: "Telemetría Digital + Validación Docente",
     },
   ],
   "8vo": [
@@ -1307,8 +1307,8 @@ export default function PanelDocenteSimplificado() {
                       </div>
                       <div>
                         <div className="flex items-center gap-2 flex-wrap">
-                          <h4 className="text-xs sm:text-sm font-bold text-slate-900">
-                            Áreas Curriculares & Grupos de Criterios Asociados (Módulo 1)
+                          <h4 className="text-xs sm:text-sm font-black text-slate-900 uppercase tracking-wide">
+                            Criterios Módulo 1
                           </h4>
                           <span className="px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 text-[10px] font-black uppercase tracking-wider border border-teal-300">
                             {nivelActivo === "7mo"
@@ -1319,7 +1319,7 @@ export default function PanelDocenteSimplificado() {
                           </span>
                         </div>
                         <p className="text-[11px] text-slate-500 font-medium mt-0.5">
-                          Haga clic para {acordeonDimensionesCognitivo ? "contraer" : "expandir"} la descripción detallada de las áreas curriculares y los grupos de criterios del Módulo 1.
+                          Haga clic para {acordeonDimensionesCognitivo ? "contraer" : "expandir"} los 10 indicadores de logro y grupos de criterios del Módulo 1.
                         </p>
                       </div>
                     </div>
@@ -1484,10 +1484,10 @@ export default function PanelDocenteSimplificado() {
                       </div>
                       <div className="flex items-center gap-2">
                         <h4 className="text-xs sm:text-sm font-black text-slate-900 uppercase tracking-wide">
-                          Criterios asociados
+                          Criterios Módulo 1
                         </h4>
                         <span className="px-2 py-0.5 rounded-full bg-teal-100 text-[#1B5E59] font-bold text-[10px] border border-teal-300">
-                          MEP Oficial
+                          Socioafectivo
                         </span>
                       </div>
                     </div>
@@ -1938,67 +1938,11 @@ export default function PanelDocenteSimplificado() {
               return (
                 <div className="space-y-6 animate-fadeIn">
                   
-                  {/* Encabezado Exclusivo del Área Psicomotriz / Procedimental */}
-                  <div className="bg-gradient-to-r from-emerald-50 via-teal-50 to-white p-4 sm:p-5 rounded-2xl border border-emerald-200 shadow-2xs flex flex-wrap items-center justify-between gap-4">
-                    <div className="flex items-center gap-3.5">
-                      <div className="w-11 h-11 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-2xl shadow-xs">
-                        🖐️
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h3 className="text-sm sm:text-base font-black text-slate-900 uppercase tracking-wide">
-                            2. Área Psicomotora / Procedimental
-                          </h3>
-                          <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-[11px] border border-emerald-300">
-                            {nivelActivo === "7mo" ? "7.° Año" : "9.° Año"}
-                          </span>
-                        </div>
-                        <p className="text-xs text-slate-600 font-medium mt-0.5">
-                          {nivelActivo === "9no"
-                            ? "6 Prácticas del Pensador Computacional en Simulación y Hardware (P1 a P6)"
-                            : "4 Prácticas Sensorio-Motoras y Destreza Digital (P1 a P4)"}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 flex-wrap">
-                      {/* Botón Articulación Curricular */}
-                      <button
-                        type="button"
-                        onClick={() => setModalArticulacion(true)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/90 hover:bg-white text-teal-900 border border-teal-300/80 rounded-xl text-xs font-bold shadow-2xs transition-colors cursor-pointer"
-                        title="Ver articulación curricular oficial entre saber cognitivo y saber hacer psicomotriz"
-                      >
-                        <Compass size={15} weight="fill" className="text-teal-700" />
-                        <span>Articulación Saber ⟷ Saber Hacer</span>
-                      </button>
-
-                      {/* Selector Rápido de Nivel en la Cabecera (7mo y 9no) */}
-                      <div className="flex items-center gap-1.5 bg-white/90 p-1 rounded-xl border border-emerald-200 shadow-2xs">
-                        <span className="text-[11px] font-bold text-slate-500 pl-2 pr-1">Nivel:</span>
-                        {(["7mo", "9no"] as const).map((niv) => (
-                          <button
-                            key={niv}
-                            type="button"
-                            onClick={() => handleCambiarNivel(niv)}
-                            className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                              nivelActivo === niv
-                                ? "bg-emerald-600 text-white shadow-2xs"
-                                : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
-                            }`}
-                          >
-                            {niv === "7mo" ? "7.°" : "9.°"}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
                   {/* Barra de Acciones y Filtros */}
                   <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-2xs flex flex-wrap items-center justify-between gap-3">
-                    <div className="flex flex-wrap items-center gap-2.5 flex-1 min-w-[280px]">
+                    <div className="flex flex-wrap items-center gap-2.5 flex-1 min-w-[240px]">
                       {/* Búsqueda rápida */}
-                      <div className="relative flex-1 min-w-[180px] max-w-xs">
+                      <div className="relative flex-1 min-w-[180px] max-w-sm">
                         <MagnifyingGlass size={15} className="absolute left-3 top-2.5 text-slate-400" />
                         <input
                           type="text"
@@ -2008,32 +1952,9 @@ export default function PanelDocenteSimplificado() {
                           className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1B5E59]/30 focus:border-[#1B5E59]"
                         />
                       </div>
-
-                      {/* Selector de Sección */}
-                      <select
-                        value={seccionActiva}
-                        onChange={(e) => setSeccionActiva(e.target.value)}
-                        className="bg-white border border-slate-300 text-slate-800 text-xs font-bold rounded-lg px-3 py-1.5 shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#1B5E59]/30 focus:border-[#1B5E59] cursor-pointer"
-                      >
-                        {seccionesDisponibles.map((sec) => (
-                          <option key={sec} value={sec}>
-                            Sección {sec} ({nivelActivo === "7mo" ? "7°" : nivelActivo === "8vo" ? "8°" : "9°"})
-                          </option>
-                        ))}
-                      </select>
                     </div>
 
                     <div className="flex items-center gap-2 flex-wrap">
-                      {/* Botón IA formativa */}
-                      <button
-                        type="button"
-                        onClick={() => setModalAnalisisPsicoIA(true)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold shadow-2xs transition-colors cursor-pointer"
-                      >
-                        <Sparkle size={15} weight="fill" />
-                        <span>Analizar Sección con IA</span>
-                      </button>
-
                       {/* Botón Marcar Todo en Nivel A */}
                       <button
                         type="button"
@@ -2051,22 +1972,40 @@ export default function PanelDocenteSimplificado() {
                     </div>
                   </div>
 
-                  {/* Guía de Simbología Oficial MEP (Acordeón Plegable) */}
-                  <div className="bg-white border border-slate-200 rounded-2xl shadow-2xs overflow-hidden">
+                  {/* Acordeón Plegable: Criterios Módulo 1 (Psicomotor) */}
+                  <div className="bg-white border border-slate-200 rounded-2xl shadow-2xs overflow-hidden transition-all">
                     <button
                       type="button"
                       onClick={() => setGuiaSimbologiaAbierta(!guiaSimbologiaAbierta)}
-                      className="w-full px-4 py-3 bg-slate-50 hover:bg-slate-100/80 border-b border-slate-200 flex items-center justify-between text-left transition-colors cursor-pointer"
+                      className="w-full p-4 bg-gradient-to-r from-teal-50/70 via-slate-50 to-white hover:bg-teal-50/80 border-b border-slate-200 flex items-center justify-between text-left transition-colors cursor-pointer select-none"
+                      aria-expanded={guiaSimbologiaAbierta}
                     >
-                      <div className="flex items-center gap-2 text-xs font-black text-slate-800 uppercase tracking-wide">
-                        <span>📖 GUÍA DE SIMBOLOGÍA OFICIAL MEP (NIVEL DE DESEMPEÑO FORMATIVO)</span>
-                        <span className="text-[11px] font-bold text-sky-700 bg-sky-100 px-2 py-0.5 rounded-md border border-sky-200 normal-case">
-                          {guiaSimbologiaAbierta ? "▲ Ocultar criterios y rúbricas" : "▼ Toca para ver u ocultar criterios y rúbricas"}
-                        </span>
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-[#D1EBE7] text-[#1B5E59] flex items-center justify-center font-bold text-sm shrink-0">
+                          <Pulse size={18} weight="bold" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <h4 className="text-xs sm:text-sm font-black text-slate-900 uppercase tracking-wide">
+                              Criterios Módulo 1
+                            </h4>
+                            <span className="px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 text-[10px] font-black uppercase tracking-wider border border-teal-300">
+                              Psicomotor / Procedimental
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-slate-500 font-medium mt-0.5">
+                            Haga clic para {guiaSimbologiaAbierta ? "contraer" : "expandir"} los {criteriosActuales.length} criterios, indicadores de logro y rúbricas del Módulo 1.
+                          </p>
+                        </div>
                       </div>
-                      <span className="text-[11px] font-bold text-slate-500 bg-white px-2.5 py-0.5 rounded-full border border-slate-200">
-                        Evaluación 100% Cualitativa y Formativa
-                      </span>
+                      <div className="flex items-center gap-2 text-slate-500 text-xs font-semibold shrink-0">
+                        <span>{guiaSimbologiaAbierta ? "Ocultar" : "Ver criterios y rúbricas"}</span>
+                        <CaretDown
+                          size={18}
+                          weight="bold"
+                          className={`transition-transform duration-200 ${guiaSimbologiaAbierta ? "rotate-180 text-[#1B5E59]" : ""}`}
+                        />
+                      </div>
                     </button>
 
                     {guiaSimbologiaAbierta && (
@@ -2140,6 +2079,10 @@ export default function PanelDocenteSimplificado() {
                                     {crit.modalidadEvaluacion === "telemetria" ? (
                                       <span className="text-[9px] font-black text-sky-700 bg-sky-50 px-1.5 py-0.2 rounded border border-sky-200 whitespace-nowrap">
                                         🤖 Telemetría
+                                      </span>
+                                    ) : crit.modalidadEvaluacion === "hibrido" ? (
+                                      <span className="text-[9px] font-black text-teal-800 bg-teal-50 px-1.5 py-0.2 rounded border border-teal-200 whitespace-nowrap">
+                                        ⚡ Híbrido + Docente
                                       </span>
                                     ) : (
                                       <span className="text-[9px] font-black text-amber-800 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-200 whitespace-nowrap">
