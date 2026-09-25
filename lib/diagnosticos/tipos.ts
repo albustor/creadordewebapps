@@ -54,6 +54,7 @@ export interface CriterioPsicomotorDocente {
 
 export interface SubareaDiagnostica {
   id: string;
+  areaCurricular?: string;
   nombre: string;
   descripcion: string;
   itemsIds: number[];

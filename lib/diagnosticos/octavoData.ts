@@ -16,6 +16,7 @@ export const DIAGNOSTICO_8VO_DATA: ConfiguracionDiagnosticoNivel = {
   subareas: [
     {
       id: "sub1_apropiacion",
+      areaCurricular: "Apropiación Tecnológica, Robótica y Mecanismos",
       nombre: "Grupo de criterios asociados 1: Apropiación Tecnológica y Hardware / Software",
       descripcion: "Explora la identificación de componentes de hardware, periféricos, tipos de software, redes de comunicación y gestión del almacenamiento.",
       itemsIds: [1, 2, 3, 4, 5],
@@ -23,6 +24,7 @@ export const DIAGNOSTICO_8VO_DATA: ConfiguracionDiagnosticoNivel = {
     },
     {
       id: "sub2_algoritmos",
+      areaCurricular: "Programación y algoritmos",
       nombre: "Grupo de criterios asociados 2: Pensamiento Computacional y Algoritmos",
       descripcion: "Evalúa la estructura de algoritmos (E-P-S), tipos de datos, variables, condicionales, bucles y operadores aritméticos y relacionales.",
       itemsIds: [6, 7, 8, 9, 10, 11, 12],
@@ -30,6 +32,7 @@ export const DIAGNOSTICO_8VO_DATA: ConfiguracionDiagnosticoNivel = {
     },
     {
       id: "sub3_robotica",
+      areaCurricular: "Computación física, robótica y automatización",
       nombre: "Grupo de criterios asociados 3: Robótica y Computación Física",
       descripcion: "Analiza el concepto de eventos y la identificación de sistemas robóticos autónomos diferenciándolos de artefactos comunes.",
       itemsIds: [13, 14],

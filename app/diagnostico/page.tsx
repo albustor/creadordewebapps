@@ -167,10 +167,10 @@ export default function DiagnosticoPage() {
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-3">
                   <GameController size={32} className="text-cyan-400" weight="fill" />
-                  <span>Diagnóstico Séptimo: Misión Tecnológica MEP</span>
+                  <span>Diagnóstico Sétimo: Misión Tecnológica MEP</span>
                 </h2>
                 <p className="text-xs sm:text-sm text-indigo-100 leading-relaxed font-normal">
-                  Aventura interactiva que explora fundamentos de computación, ciudadanía digital, secuencias lógicas y coordinación psicomotriz.
+                  Aventura interactiva que explora fundamentos de computación, hardware, gestión de archivos, secuencias lógicas y coordinación psicomotriz.
                 </p>
               </div>
             </div>

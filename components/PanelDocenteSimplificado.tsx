@@ -415,6 +415,7 @@ export default function PanelDocenteSimplificado() {
   const [criterioModalDetalle, setCriterioModalDetalle] = useState<CriterioPsicomotorOficial | null>(null);
   const [criterioSocioModalDetalle, setCriterioSocioModalDetalle] = useState<CriterioSocioafectivoOficial | null>(null);
   const [acordeonDimensionesSocio, setAcordeonDimensionesSocio] = useState(false);
+  const [acordeonDimensionesCognitivo, setAcordeonDimensionesCognitivo] = useState(false);
   const [acordeonMetricasCohorte, setAcordeonMetricasCohorte] = useState(false);
   const [guardadosFeedback, setGuardadosFeedback] = useState<Record<string, boolean>>({});
   const [modalAnalisisPsicoIA, setModalAnalisisPsicoIA] = useState(false);
@@ -954,6 +955,14 @@ export default function PanelDocenteSimplificado() {
             </button>
             <button
               type="button"
+              onClick={() => setModalInstalacionMovil(true)}
+              className="w-full flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-900 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200 transition-colors cursor-pointer"
+            >
+              <DeviceMobile size={16} weight="bold" className="text-emerald-700" />
+              <span>Instalar WebApp en Celular</span>
+            </button>
+            <button
+              type="button"
               onClick={() => setModalArticulacion(true)}
               className="w-full flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-teal-800 bg-teal-50 hover:bg-teal-100/80 border border-teal-200 transition-colors cursor-pointer"
             >
@@ -1284,26 +1293,79 @@ export default function PanelDocenteSimplificado() {
             {seccionActivaMenu === "cognitivo" && (
               <div className="space-y-6 animate-fadeIn">
                 
-                {/* Cabecera de Grupos de Criterios Asociados */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {configNivel.subareas.map((sub, idx) => (
-                    <div
-                      key={sub.id}
-                      className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs space-y-2 border-l-4 border-l-[#1B5E59]"
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="text-[11px] font-bold text-[#1B5E59] uppercase tracking-wider">
-                          Grupo de criterios asociados {idx + 1}
-                        </span>
+                {/* Acordeón Plegable: Áreas Curriculares y Criterios Asociados (Módulo 1) */}
+                <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden transition-all">
+                  <button
+                    type="button"
+                    onClick={() => setAcordeonDimensionesCognitivo(!acordeonDimensionesCognitivo)}
+                    className="w-full p-4 flex items-center justify-between gap-3 bg-gradient-to-r from-teal-50/70 via-slate-50 to-white hover:bg-teal-50/80 transition-colors text-left cursor-pointer select-none"
+                    aria-expanded={acordeonDimensionesCognitivo}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-[#D1EBE7] text-[#1B5E59] flex items-center justify-center font-bold text-sm shrink-0">
+                        <BookOpen size={18} weight="fill" />
                       </div>
-                      <h4 className="text-sm font-bold text-slate-900 leading-snug">
-                        {sub.nombre}
-                      </h4>
-                      <p className="text-[11px] text-slate-500 line-clamp-2">
-                        {sub.descripcion}
-                      </p>
+                      <div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <h4 className="text-xs sm:text-sm font-bold text-slate-900">
+                            Áreas Curriculares & Grupos de Criterios Asociados (Módulo 1)
+                          </h4>
+                          <span className="px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 text-[10px] font-black uppercase tracking-wider border border-teal-300">
+                            {nivelActivo === "7mo"
+                              ? "Apropiación tecnológica y digital • Programación y algoritmos"
+                              : nivelActivo === "8vo"
+                              ? "Apropiación Tecnológica • Programación y algoritmos"
+                              : "Computación física, robótica y automatización • Programación y algoritmos"}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-slate-500 font-medium mt-0.5">
+                          Haga clic para {acordeonDimensionesCognitivo ? "contraer" : "expandir"} la descripción detallada de las áreas curriculares y los grupos de criterios del Módulo 1.
+                        </p>
+                      </div>
                     </div>
-                  ))}
+                    <div className="flex items-center gap-2 text-slate-500 text-xs font-semibold shrink-0">
+                      <span>{acordeonDimensionesCognitivo ? "Ocultar" : "Ver áreas y criterios"}</span>
+                      <CaretDown
+                        size={18}
+                        weight="bold"
+                        className={`transition-transform duration-200 ${acordeonDimensionesCognitivo ? "rotate-180 text-[#1B5E59]" : ""}`}
+                      />
+                    </div>
+                  </button>
+
+                  {acordeonDimensionesCognitivo && (
+                    <div className="p-4 sm:p-5 bg-slate-50/60 border-t border-slate-200/80">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {configNivel.subareas.map((sub, idx) => (
+                          <div
+                            key={sub.id}
+                            className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs space-y-2 border-l-4 border-l-[#1B5E59]"
+                          >
+                            <div className="flex items-center justify-between flex-wrap gap-1">
+                              <span className="text-[11px] font-bold text-[#1B5E59] uppercase tracking-wider">
+                                Grupo de criterios {idx + 1}
+                              </span>
+                              {sub.areaCurricular && (
+                                <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-teal-50 text-teal-800 border border-teal-200">
+                                  {sub.areaCurricular}
+                                </span>
+                              )}
+                            </div>
+                            <h4 className="text-sm font-bold text-slate-900 leading-snug">
+                              {sub.nombre}
+                            </h4>
+                            <p className="text-[11px] text-slate-600 leading-relaxed">
+                              {sub.descripcion}
+                            </p>
+                            <div className="pt-1 flex items-center justify-between text-[10px] text-slate-400 font-mono">
+                              <span>Reactivos: {sub.itemsIds.join(", ")}</span>
+                              <span>Peso: {sub.pesoTotal} pts</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Tabla de Resultados Cognitivos */}

@@ -66,7 +66,7 @@ export default function Footer() {
                       ⚡ 7.° AÑO
                     </span>
                     <span className="text-xs font-bold text-teal-900/80">
-                      Diagnóstico Séptimo
+                      Diagnóstico Sétimo
                     </span>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -83,7 +83,7 @@ export default function Footer() {
                         Rodolfo Pérez Juárez
                       </span>
                       <span className="block text-[10px] text-teal-800 font-semibold uppercase tracking-wider">
-                        Ing. y Arquitecto Orientador
+                        Asesor Nacional PNFT
                       </span>
                     </div>
                   </div>

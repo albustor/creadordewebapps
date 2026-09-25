@@ -63,7 +63,55 @@ export default function ModalDocumentacionOficial({
         {/* Tarjetas de Documentos */}
         <div className="space-y-4">
           
-          {/* Tarjeta 7.° Año */}
+          {/* Tarjeta Marco Integrador Tri-Modal 7.° Año */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-teal-50/70 via-white to-sky-50/30 border border-teal-200 shadow-2xs space-y-3">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-teal-800 text-white flex items-center justify-center font-black text-xs shadow-xs">
+                  7° TM
+                </div>
+                <div>
+                  <h4 className="font-extrabold text-slate-900 text-sm sm:text-base leading-snug">
+                    Marco Integrador de Evaluación Tri-Modal y Telemetría — 7.° Año
+                  </h4>
+                  <span className="text-[11px] text-teal-700 font-bold">
+                    Ecosistema Tri-Modal: En Línea, Local Desconectado (QR/USB) e Impreso
+                  </span>
+                </div>
+              </div>
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-teal-100 text-teal-800 shrink-0">
+                Oficial MEP
+              </span>
+            </div>
+
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Define la arquitectura tri-modal estandarizada para 7.° año: diagnóstico en línea, ejecutable HTML offline con QR comprimido de alta densidad y ficha impresa, telemetría sensorio-motora y protocolo de sistematización docente.
+            </p>
+
+            <div className="flex items-center gap-2.5 pt-1 flex-wrap">
+              <a
+                href="/docs/MARCO_INTEGRADOR_EVALUACION_TRI_MODAL_Y_TELEMETRIA_7MO_MEP.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                download="MARCO_INTEGRADOR_EVALUACION_TRI_MODAL_Y_TELEMETRIA_7MO_MEP.pdf"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-black shadow-xs transition-colors cursor-pointer"
+              >
+                <FilePdf size={16} weight="bold" />
+                <span>Descargar PDF Tri-Modal (7°)</span>
+              </a>
+              <a
+                href="/docs/MARCO_INTEGRADOR_EVALUACION_TRI_MODAL_Y_TELEMETRIA_7MO_MEP.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-teal-50 text-teal-900 border border-teal-300 text-xs font-bold shadow-2xs transition-colors cursor-pointer"
+              >
+                <ArrowSquareOut size={16} weight="bold" />
+                <span>Ver Documento Web</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Tarjeta Propuesta Híbrida 7.° Año */}
           <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-sky-50/70 via-white to-sky-50/30 border border-sky-200 shadow-2xs space-y-3">
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-center gap-2.5">
@@ -111,7 +159,7 @@ export default function ModalDocumentacionOficial({
             </div>
           </div>
 
-          {/* Tarjeta Marco Integrador Tri-Modal 9.° Año (Nuevo) */}
+          {/* Tarjeta Marco Integrador Tri-Modal 9.° Año */}
           <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-indigo-50/70 via-white to-purple-50/30 border border-indigo-200 shadow-2xs space-y-3">
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-center gap-2.5">
@@ -128,7 +176,7 @@ export default function ModalDocumentacionOficial({
                 </div>
               </div>
               <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-100 text-indigo-800 shrink-0">
-                Nuevo Oficial
+                Oficial MEP
               </span>
             </div>
 
@@ -145,7 +193,7 @@ export default function ModalDocumentacionOficial({
                 className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-black shadow-xs transition-colors cursor-pointer"
               >
                 <FilePdf size={16} weight="bold" />
-                <span>Descargar PDF Tri-Modal</span>
+                <span>Descargar PDF Tri-Modal (9°)</span>
               </a>
               <a
                 href="/docs/MARCO_INTEGRADOR_EVALUACION_TRI_MODAL_Y_TELEMETRIA_9NO_MEP.html"

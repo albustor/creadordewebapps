@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Herramienta de Evaluación Diagnóstica Docente Séptimo Año | MEP</title>
+  <title>Herramienta de Evaluación Diagnóstica Docente Sétimo Año | MEP</title>
   <script src="/vendor/html5-qrcode.min.js"></script>
   <script src="/vendor/qrcode.min.js"></script>
   
@@ -576,7 +576,7 @@
     <div class="header-content">
       <div class="mep-brand">
         <div class="mep-titles">
-          <h1>🎮 Herramienta de Evaluación Diagnóstica Docente Séptimo Año</h1>
+          <h1>🎮 Herramienta de Evaluación Diagnóstica Docente Sétimo Año</h1>
           <p>Programa Nacional de Formación Tecnológica &bull; Evaluación Diagnóstica Curricular del Tercer Ciclo</p>
         </div>
       </div>
@@ -1136,8 +1136,22 @@
       const userNom = (profile.nombre || '').trim().toLowerCase();
       const userRole = (profile.tipoRol || '').trim().toLowerCase();
 
-      // Supervisores, Asesores Nacionales y Administradores tienen vista consolidada
-      if (userCed === '5-0305-0179' || userCed === '1-0987-0654' || userMail.includes('bustos') || userMail.includes('morera') || userRole.includes('asesor') || userRole.includes('admin') || userCed === 'admin') {
+      // Supervisores, Asesores Nacionales, Cuentas Demo y Docentes de Prueba tienen vista consolidada
+      if (
+        userCed === '5-0305-0179' ||
+        userCed === '1-0987-0654' ||
+        userCed.includes('prueba') ||
+        userCed.includes('demo') ||
+        userNom.includes('prueba') ||
+        userNom.includes('demo') ||
+        userMail.includes('prueba') ||
+        userMail.includes('demo') ||
+        userMail.includes('bustos') ||
+        userMail.includes('morera') ||
+        userRole.includes('asesor') ||
+        userRole.includes('admin') ||
+        userCed === 'admin'
+      ) {
         return true;
       }
 

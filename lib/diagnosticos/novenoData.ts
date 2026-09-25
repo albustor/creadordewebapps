@@ -16,6 +16,7 @@ export const DIAGNOSTICO_9NO_DATA: ConfiguracionDiagnosticoNivel = {
   subareas: [
     {
       id: "sub1_sistemas_auto",
+      areaCurricular: "Computación física, robótica y automatización",
       nombre: "Grupo de criterios asociados 1: Sistemas Automatizados y Arquitectura de Control",
       descripcion: "Explora microcontroladores, sensores, actuadores y el modelo Entrada-Proceso-Salida.",
       itemsIds: [1, 2, 3, 6],
@@ -23,6 +24,7 @@ export const DIAGNOSTICO_9NO_DATA: ConfiguracionDiagnosticoNivel = {
     },
     {
       id: "sub2_algoritmos_iot",
+      areaCurricular: "Programación y algoritmos",
       nombre: "Grupo de criterios asociados 2: Pensamiento Computacional y Lógica Condicional",
       descripcion: "Evalúa algoritmos, condicionales simples y dobles, tipos de datos y operadores.",
       itemsIds: [4, 5, 7, 8],
@@ -30,6 +32,7 @@ export const DIAGNOSTICO_9NO_DATA: ConfiguracionDiagnosticoNivel = {
     },
     {
       id: "sub3_depuracion_datos",
+      areaCurricular: "Computación física, robótica y automatización",
       nombre: "Grupo de criterios asociados 3: Depuración, Conectividad y Almacenamiento",
       descripcion: "Analiza la depuración de circuitos, calibración de sensores y toma de decisiones con datos.",
       itemsIds: [9, 10],
