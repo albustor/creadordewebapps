@@ -473,157 +473,45 @@ interface BadgeModalidadExplicativaProps {
 export function BadgeModalidadExplicativa({
   modalidad,
   labelPersonalizado,
-  posicionPopover = "bottom",
-  alineacionHorizontal = "center",
   className = "",
 }: BadgeModalidadExplicativaProps) {
-  const [abiertoTouch, setAbiertoTouch] = useState(false);
-
   const info = useMemo(() => {
     switch (modalidad) {
       case "telemetria":
         return {
           etiqueta: labelPersonalizado || "🤖 Telemetría",
-          badgeCls: "bg-sky-50 text-sky-800 border-sky-200 hover:bg-sky-100 hover:border-sky-300",
+          badgeCls: "bg-sky-50 text-sky-800 border-sky-200",
           titulo: "🤖 Telemetría Digital Automatizada",
-          headerCls: "bg-gradient-to-r from-sky-600 to-blue-700 text-white",
-          subtitulo: "Registro en tiempo real por la WebApp",
           descripcion:
-            "El sistema captura de manera objetiva y continua la interacción del estudiante durante la prueba:",
-          puntos: [
-            "⏱️ Tiempos de respuesta, latencia y ritmo de resolución.",
-            "🎯 Precisión de respuestas, aciertos y reintentos.",
-            "📐 Fluidez motriz digital (control del puntero, clics y trazos).",
-            "⚡ Precarga inmediata de la sugerencia del Nivel de Logro (A, B o C)."
-          ],
-          pieDocente: "El docente tiene control total para validar o ajustar la valoración formativa.",
+            "El sistema captura de manera objetiva y continua la interacción del estudiante durante la prueba.",
         };
       case "hibrido":
         return {
           etiqueta: labelPersonalizado || "⚡ Híbrido + Docente",
-          badgeCls: "bg-teal-50 text-teal-800 border-teal-200 hover:bg-teal-100 hover:border-teal-300",
+          badgeCls: "bg-teal-50 text-teal-800 border-teal-200",
           titulo: "⚡ Modalidad Híbrida (Telemetría + Docente)",
-          headerCls: "bg-gradient-to-r from-teal-700 to-emerald-800 text-white",
-          subtitulo: "Sinergia entre datos digitales y observación en aula",
           descripcion:
-            "Combina la medición objetiva del software con la mirada pedagógica presencial del docente:",
-          puntos: [
-            "🖱️ La WebApp evalúa la precisión del trazo, tiempos y coordenadas.",
-            "👨‍🏫 El docente observa postura ergonómica, soltura y manejo de periféricos.",
-            "🔍 Ideal para destrezas de motricidad fina y articulación práctica.",
-            "✨ Permite ratificar o modular la calificación con un solo clic."
-          ],
-          pieDocente: "Equilibrio entre la evidencia tecnológica y el juicio profesional docente.",
+            "Combina la medición objetiva del software con la mirada pedagógica presencial del docente.",
         };
       case "docente":
       default:
         return {
           etiqueta: labelPersonalizado || "👨‍🏫 Foco Docente",
-          badgeCls: "bg-amber-50 text-amber-900 border-amber-200 hover:bg-amber-100 hover:border-amber-300",
+          badgeCls: "bg-amber-50 text-amber-900 border-amber-200",
           titulo: "👨‍🏫 Foco Docente (Observación Directa)",
-          headerCls: "bg-gradient-to-r from-amber-700 to-amber-900 text-white",
-          subtitulo: "Evaluación formativa y contención humana",
           descripcion:
-            "Observación presencial en el aula de aspectos cualitativos y formativos no medibles por software:",
-          puntos: [
-            "🤝 Trabajo colaborativo, escucha activa y resolución en parejas.",
-            "🧘 Autorregulación emocional, perseverancia y tolerancia a la frustración.",
-            "👁️ Disposición, concentración y cuidado del material/equipo informático.",
-            "💚 Facilita mediación inmediata y retroalimentación pedagógica oportuna."
-          ],
-          pieDocente: "El docente selecciona o ratifica el nivel directamente en la matriz.",
+            "Observación presencial en el aula de aspectos cualitativos y formativos no medibles por software.",
         };
     }
   }, [modalidad, labelPersonalizado]);
 
-  const alignClass =
-    alineacionHorizontal === "left"
-      ? "left-0 translate-x-0"
-      : alineacionHorizontal === "right"
-      ? "right-0 translate-x-0"
-      : "left-1/2 -translate-x-1/2";
-
   return (
-    <div className={`relative inline-flex items-center group ${className}`}>
-      {/* Botón interactivo para hover (mouse) y clic/tap (touch) */}
-      <button
-        type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          setAbiertoTouch((prev) => !prev);
-        }}
-        onBlur={() => {
-          setTimeout(() => setAbiertoTouch(false), 250);
-        }}
-        className={`inline-flex items-center gap-1 cursor-pointer font-black rounded border transition-all text-[9px] px-1.5 py-0.5 whitespace-nowrap select-none shadow-2xs ${info.badgeCls}`}
-        aria-label={`Información sobre ${info.titulo}`}
-      >
-        <span>{info.etiqueta}</span>
-        <span className="opacity-75 group-hover:opacity-100 text-[8px]">ℹ️</span>
-      </button>
-
-      {/* Popover / Tooltip informativo enriquecido */}
-      <div
-        className={`absolute z-50 w-72 sm:w-80 p-0 text-left bg-white rounded-xl shadow-2xl border border-slate-200/90 transition-all duration-200 pointer-events-none ${
-          abiertoTouch
-            ? "opacity-100 scale-100 pointer-events-auto"
-            : "opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:scale-100 group-focus-within:pointer-events-auto"
-        } ${
-          posicionPopover === "bottom"
-            ? "top-full mt-2"
-            : "bottom-full mb-2"
-        } ${alignClass}`}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Cabecera */}
-        <div className={`px-3.5 py-2.5 rounded-t-xl font-bold ${info.headerCls}`}>
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-black tracking-wide flex items-center gap-1.5">
-              {info.titulo}
-            </span>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                setAbiertoTouch(false);
-              }}
-              className="text-white/80 hover:text-white p-0.5 rounded hover:bg-white/20 sm:hidden"
-              title="Cerrar"
-            >
-              <X size={13} weight="bold" />
-            </button>
-          </div>
-          <span className="text-[10px] text-white/80 font-medium block mt-0.5">
-            {info.subtitulo}
-          </span>
-        </div>
-
-        {/* Contenido pedagógico */}
-        <div className="p-3 text-[11px] text-slate-700 space-y-2.5 bg-white rounded-b-xl">
-          <p className="font-semibold text-slate-800 leading-snug">
-            {info.descripcion}
-          </p>
-
-          <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200/70 space-y-1.5">
-            <span className="font-bold text-[10px] text-[#1B5E59] uppercase tracking-wider block">
-              ¿Cómo opera en el instrumento?
-            </span>
-            <ul className="space-y-1 text-[10.5px] text-slate-600 leading-tight">
-              {info.puntos.map((punto, idx) => (
-                <li key={idx} className="flex items-start gap-1">
-                  <span>{punto}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="pt-2 border-t border-slate-100 flex items-start gap-1.5 text-[10px] text-slate-500 leading-tight">
-            <span className="text-emerald-700 font-bold shrink-0">💡 Rol Docente:</span>
-            <span>{info.pieDocente}</span>
-          </div>
-        </div>
-      </div>
-    </div>
+    <span
+      className={`inline-flex items-center gap-1 font-bold rounded-md border text-[10px] px-2 py-0.5 whitespace-nowrap select-none shadow-2xs ${info.badgeCls} ${className}`}
+      title={`${info.titulo}: ${info.descripcion}`}
+    >
+      <span>{info.etiqueta}</span>
+    </span>
   );
 }
 
