@@ -1,5 +1,5 @@
 # Arquitectura de evaluación diagnóstica híbrida para 7.° año (triangulación formativa MEP 2027)
-**Programa Nacional de Formación Tecnológica (PNFT) • Módulo 1: CyberQuest 7.° (Misión en parejas)**  
+**Programa Nacional de Formación Tecnológica (PNFT) • Módulo 1: Diagnóstico Séptimo (Misión en parejas)**  
 *Ministerio de Educación Pública de Costa Rica • Dirección de Recursos Tecnológicos en Educación (DRTE)*  
 *Departamento de Investigación, Desarrollo e Implementación (IDI)*
 
@@ -14,7 +14,7 @@
 
 ## 1. Resumen ejecutivo y diagnóstico del estado actual en 7.° año
 
-En el nivel de séptimo año de secundaria (III Ciclo), la evaluación diagnóstica del **Módulo 1: Fundamentos de algoritmos, pensamiento computacional y trabajo colaborativo** se implementó inicialmente bajo una modalidad en parejas (*Líder y copiloto*) con alta gamificación (*CyberQuest 7.°*).
+En el nivel de séptimo año de secundaria (III Ciclo), la evaluación diagnóstica del **Módulo 1: Fundamentos de algoritmos, pensamiento computacional y trabajo colaborativo** se implementó inicialmente bajo una modalidad en parejas (*Líder y copiloto*) con alta gamificación (*Diagnóstico Séptimo*).
 
 ### Situación actual y oportunidades de mejora identificadas
 1. **Sobredependencia de la automatización algorítmica:** La versión preliminar pretende calificar de forma $100\%$ automatizada no solo el área cognoscitiva, sino también el área psicomotora (movimientos en cuadrícula, tiempos de reacción de semáforo) y el área socioafectiva (escalas Likert rígidas).
@@ -27,7 +27,7 @@ Al igual que en noveno año, se propone estructurar la **Herramienta de Diagnós
 ```mermaid
 flowchart TD
     subgraph Fuentes ["Tres fuentes de evidencia convergentes (7.° año)"]
-        F1["💻 Fuente 1: Telemetría algorítmica<br><b>(Métricas objetivas de interacción)</b><br>• Trazado de rutas y secuencias en cuadrícula<br>• Vector cognitivo de 10 reactivos oficiales<br>• Latencia de respuesta y micro-reintentos"]
+        F1["💻 Fuente 1: Telemetría algorítmica<br><b>(Métricas objetivas de interacción)</b><br>• Trazado de rutas y secuencias en cuadrícula<br>• Vector cognitivo de 10 criterios oficiales<br>• Latencia de respuesta y micro-reintentos"]
         F2["❤️ Fuente 2: Autopercepción metacognitiva<br><b>(Reflexión en parejas: Líder y Copiloto)</b><br>• Distribución de roles y escucha activa<br>• Tolerancia a la frustración ante el bloqueo<br>• Resiliencia y aprendizaje del error"]
         F3["👨‍🏫 Fuente 3: Observación docente cualitativa<br><b>(Criterio pedagógico en aula)</b><br>• Dinámica real de interacción en el pupitre<br>• Manipulación motriz y postura ergonómica<br>• Contención socioafectiva y mediación DUA"]
     end
@@ -60,7 +60,7 @@ flowchart LR
 
 ### 🧠 Dimensión 1: Área cognoscitiva (100% tecnológico)
 * **Contenidos evaluados:** Concepto de algoritmo, secuencias ordenadas, reconocimiento de patrones, noción de variable y modelo entrada-proceso-salida (E-P-S).
-* **Mecanismo:** 10 reactivos oficiales de opción múltiple calificados de forma instantánea ($0\%$ a $100\%$) con vector de aciertos.
+* **Mecanismo:** 10 criterios oficiales de opción múltiple calificados de forma instantánea ($0\%$ a $100\%$) con vector de aciertos.
 * **Escala oficial:**
   * **Avanzado:** $\ge 80\%$
   * **Intermedio:** $60\% - 79\%$
@@ -123,7 +123,7 @@ flowchart TD
 
 | Dimensión | Enfoque previo (100% automatizado) | Enfoque híbrido propuesto (MEP 2027) | Beneficio pedagógico |
 | :--- | :--- | :--- | :--- |
-| **Área cognoscitiva** | 10 reactivos automáticos. | 10 reactivos automáticos con vector cognitivo. | Mantiene rapidez y cálculo en 0 ms. |
+| **Área cognoscitiva** | 10 criterios automáticos. | 10 criterios automáticos con vector cognitivo. | Mantiene rapidez y cálculo en 0 ms. |
 | **Área psicomotora** | El algoritmo califica clics de forma aislada. | Telemetría en simulador + observación docente de motricidad y postura. | Elimina falsos negativos causados por inexperiencia con el ratón/touchpad. |
 | **Área socioafectiva** | Escalas Likert frías sin contexto. | Autoevaluación formativa + observación de convivencia y contención emocional. | Valora la empatía real, el trabajo en equipo y la resiliencia en el aula. |
 | **Carga docente** | El docente no tiene control ni visibilidad cualitativa. | Radar de alertas tempranas + calificación por excepción en 3 clics. | Ahorra tiempo burocrático y focaliza la atención donde hay necesidad real. |

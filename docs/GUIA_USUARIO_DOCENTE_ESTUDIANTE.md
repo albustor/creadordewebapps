@@ -84,7 +84,7 @@ flowchart TD
 ---
 
 ### 2. Etapa 2: Parte A — Área Cognoscitiva (Conocimientos Previos)
-* Responderás **10 reactivos interactivos** sobre microcontroladores, sensores, lógica algorítmica y depuración.
+* Responderás **10 criterios interactivos** sobre microcontroladores, sensores, lógica algorítmica y depuración.
 * Al seleccionar una opción, el sistema te brindará **retroalimentación pedagógica instantánea** para reforzar tu comprensión.
 
 ---

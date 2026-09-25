@@ -167,10 +167,10 @@ export default function DiagnosticoPage() {
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-3">
                   <GameController size={32} className="text-cyan-400" weight="fill" />
-                  <span>CyberQuest 7°: Misión Tecnológica MEP</span>
+                  <span>Diagnóstico Séptimo: Misión Tecnológica MEP</span>
                 </h2>
                 <p className="text-xs sm:text-sm text-indigo-100 leading-relaxed font-normal">
-                  Aventura interactiva gamificada que explora fundamentos de computación, ciudadanía digital, secuencias lógicas y coordinación psicomotriz.
+                  Aventura interactiva que explora fundamentos de computación, ciudadanía digital, secuencias lógicas y coordinación psicomotriz.
                 </p>
               </div>
             </div>
@@ -202,10 +202,10 @@ export default function DiagnosticoPage() {
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-3">
                   <Cpu size={32} className="text-teal-400" weight="fill" />
-                  <span>Diagnóstico 8°: Hardware, Algoritmos y Robótica</span>
+                  <span>Diagnóstico Octavo: Hardware, Algoritmos y Robótica</span>
                 </h2>
                 <p className="text-xs sm:text-sm text-teal-100 leading-relaxed font-normal">
-                  Instrumento oficial articulado en 3 subáreas (HW/SW, Algoritmos y Robótica) con 14 reactivos interactivos, mini-reto socioafectivo y lista de cotejo psicomotora para el docente.
+                  Instrumento oficial articulado en 3 grupos de criterios asociados (HW/SW, Algoritmos y Robótica) con 14 criterios interactivos, mini-reto socioafectivo y lista de cotejo psicomotora para el docente.
                 </p>
               </div>
             </div>
@@ -237,7 +237,7 @@ export default function DiagnosticoPage() {
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-3">
                   <Lightning size={32} className="text-amber-400" weight="fill" />
-                  <span>Diagnóstico 9°: «Aula Inteligente (LDR + Microcontrolador)»</span>
+                  <span>Diagnóstico Noveno: «Aula Inteligente (LDR + Microcontrolador)»</span>
                 </h2>
                 <p className="text-xs sm:text-sm text-emerald-100 leading-relaxed font-normal">
                   Simulador 2D interactivo con conexionado de terminales (VCC 5V, GND, Pin A0, Pin D9), 10 ítems cognitivos de robótica/IoT y matriz de observación docente en tiempo real.

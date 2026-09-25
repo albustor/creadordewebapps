@@ -60,7 +60,7 @@ flowchart LR
 
 ### 🧠 Dimensión 1: Área cognoscitiva (100% tecnológico)
 * **¿Qué hace el sistema?**
-  * Administra los 10 reactivos oficiales de opción múltiple.
+  * Administra los 10 criterios oficiales de opción múltiple.
   * Evalúa de forma automática aciertos, fallos y vector cognitivo.
   * Determina el porcentaje global ($0\%$ a $100\%$) y la escala oficial:
     * **Avanzado:** $\ge 80\%$

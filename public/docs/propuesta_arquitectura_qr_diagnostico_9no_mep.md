@@ -18,7 +18,7 @@
 El presente documento detalla la arquitectura de distribución, aplicación y sistematización del **Diagnóstico de Entrada para 9° Año** en el marco del programa de Formación Tecnológica. 
 
 La solución se estructura a través de **dos Códigos QR independientes y complementarios**:
-1. **QR del Estudiante (Diagnóstico Interactivo Autónomo):** Permite al estudiante ejecutar la prueba diagnóstica (reactivos cognoscitivos, simulador de conexionado 2D y reflexión metacognitiva), finalizando con la generación de un código QR individual con sus resultados cifrados localmente.
+1. **QR del Estudiante (Diagnóstico Interactivo Autónomo):** Permite al estudiante ejecutar la prueba diagnóstica (criterios cognoscitivos, simulador de conexionado 2D y reflexión metacognitiva), finalizando con la generación de un código QR individual con sus resultados cifrados localmente.
 2. **QR del Docente (Aplicativo Evaluador y Sistematizador por Sección):** Permite al docente configurar su grupo, registrar su nómina, escanear los resultados de los estudiantes, evaluar los indicadores de observación directa (Psicomotriz y Socioafectivo) y obtener la **Sistematización Grupal Inmediata**.
 
 Ambos recursos están concebidos bajo el principio de **Resiliencia Operativa y Offline-First**, funcionando de manera idéntica con o sin conexión a internet.
@@ -48,7 +48,7 @@ Ambos recursos están concebidos bajo el principio de **Resiliencia Operativa y 
                        ▼                                                                    ▼
         ┌─────────────────────────────┐                                      ┌─────────────────────────────┐
         │  WebApp: Aula Inteligente   │                                      │ 1. Asistente Primer Ingreso │
-        │  • 10 Reactivos Cognitivos  │                                      │ 2. Carga Nómina (Excel/CSV) │
+        │  • 10 Criterios Cognitivos  │                                      │ 2. Carga Nómina (Excel/CSV) │
         │  • Simulador 2D de Circuitos│                                      │ 3. Opción PWA (Instalar App)│
         │  • Reflexión Parte C        │                                      │ 4. Escáner QR de Alumnos    │
         │  • Guía PWA por S.O.        │                                      └──────────────┬──────────────┘
@@ -85,7 +85,7 @@ Ambos recursos están concebidos bajo el principio de **Resiliencia Operativa y 
 * **Opción Local (Offline):** Proporciona la descarga o apertura del archivo único autónomo (`.html` Single-File), ejecutable sin internet directamente en laboratorios o dispositivos personales vía Bluetooth / USB.
 
 ### 3.2. Contenido del Diagnóstico
-1. **Parte A: Conocimientos Cognoscitivos Previos (10 reactivos de selección única con retroalimentación inmediata):**
+1. **Parte A: Conocimientos Cognoscitivos Previos (10 criterios de selección única con retroalimentación inmediata):**
    * Fuentes de energía y conversión energética.
    * Circuito simple (fuente, interruptor, actuador).
    * Conductores vs. Aislantes.
@@ -116,7 +116,7 @@ Al escanear el QR o abrir el aplicativo por primera vez, el sistema despliega un
 
 ### 4.2. Sincronización y Escaneo de Resultados
 * El docente pulsa el botón **«Escanear Estudiante»**, activando la cámara del dispositivo de forma 100% local.
-* Al leer el QR generado por la WebApp del alumno, los 10 reactivos cognoscitivos y la autoevaluación se vinculan al estudiante seleccionado en la nómina.
+* Al leer el QR generado por la WebApp del alumno, los 10 criterios cognoscitivos y la autoevaluación se vinculan al estudiante seleccionado en la nómina.
 
 ### 4.3. Rúbrica de Observación Docente Integrada
 En la misma ficha del alumno, el docente evalúa los rubros correspondientes a la mediación presencial:
@@ -127,7 +127,7 @@ En la misma ficha del alumno, el docente evalúa los rubros correspondientes a l
   * Seguimiento de esquemas y diagramas pictóricos.
   * Hábitos de orden y limpieza en el puesto de trabajo.
   * Ejecución autónoma de procedimientos técnicos.
-* **Dimensión Socioafectiva (7 indicadores):**
+* **Criterio Socioafectivo (7 indicadores):**
   * Disposición para el trabajo colaborativo y escucha activa.
   * Respeto a las normas de seguridad del laboratorio.
   * Cuidado responsable del equipo y materiales asignados.
@@ -162,7 +162,7 @@ Una vez finalizada la aplicación diagnóstica de la sección, el aplicativo gen
    * **Acompañamiento Requerido (Rojo):** Porcentaje de estudiantes que demandan apoyos curriculares o adaptaciones específicas.
 2. **Analítica Reactivo por Reactivo:** Gráfica de calor que identifica cuáles contenidos (ej. Ley de Ohm, polaridad, sensores) presentaron mayor índice de dificultad en el grupo.
 3. **QR de Sistematización Grupal:** Código QR único que condensa el reporte ejecutivo de la sección para ser escaneado por asesores pedagógicos, directores o para respaldo institucional.
-4. **Exportación a Hoja de Cálculo Excel (`.xlsx`):** Matriz oficial con la nómina completa, desglose de reactivos cognoscitivos, puntajes psicomotores, socioafectivos y nivel de logro final por estudiante.
+4. **Exportación a Hoja de Cálculo Excel (`.xlsx`):** Matriz oficial con la nómina completa, desglose de criterios cognoscitivos, puntajes psicomotores, socioafectivos y nivel de logro final por estudiante.
 
 ---
 
