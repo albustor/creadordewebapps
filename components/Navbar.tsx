@@ -29,31 +29,36 @@ export default function Navbar() {
     correoLimpio === "allan.morera.araya@mep.go.cr" ||
     (docente?.tipoRol === "Asesor Nacional" || docente?.tipoRol === "Asesor Regional");
 
-  // Navegación: Inicio, Dashboard (Docentes), y Asesoría & Recursos (Exclusivo Asesores y Administradores)
-  const enlaces = [
-    {
-      href: "/",
-      label: "Inicio",
-      icon: <House size={18} weight="bold" />,
-      titulo: "Página de inicio y autenticación",
-    },
-    {
-      href: "/dashboard",
-      label: "Dashboard Docente",
-      icon: <ChartBar size={18} weight="duotone" />,
-      titulo: "Panel de control del docente, enlaces seguros y telemetría de 7° y 9°",
-    },
-    ...(esAsesor
-      ? [
-          {
-            href: "/diagnostico",
-            label: "Asesoría & Recursos",
-            icon: <Lightning size={18} weight="fill" className="text-amber-600" />,
-            titulo: "Portal interactivo de asesoría curricular, pilotaje multinivel y recursos",
-          },
-        ]
-      : []),
-  ];
+  // Navegación contextual:
+  // - Sin autenticar: Se muestra exclusivamente "Inicio"
+  // - Con sesión activa: Se oculta "Inicio" y se muestra "Panel Docente" (+ Asesoría si aplica)
+  const enlaces = docente
+    ? [
+        {
+          href: "/dashboard",
+          label: "Panel Docente",
+          icon: <ChartBar size={18} weight="duotone" />,
+          titulo: "Panel de control docente, gestión de grupos, áreas y telemetría de 7.° y 9.°",
+        },
+        ...(esAsesor
+          ? [
+              {
+                href: "/diagnostico",
+                label: "Asesoría & Recursos",
+                icon: <Lightning size={18} weight="fill" className="text-amber-600" />,
+                titulo: "Portal interactivo de asesoría curricular, pilotaje multinivel y recursos",
+              },
+            ]
+          : []),
+      ]
+    : [
+        {
+          href: "/",
+          label: "Inicio",
+          icon: <House size={18} weight="bold" />,
+          titulo: "Página de inicio y autenticación institucional",
+        },
+      ];
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#CBD5E1]/80 shadow-xs transition-all duration-300">

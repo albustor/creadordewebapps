@@ -862,7 +862,7 @@ export default function PanelDocenteSimplificado() {
                 <span>Enlaces Estudiante</span>
               </button>
 
-              {/* 2. Registro Cognitivo */}
+              {/* 2. Área Cognitiva */}
               <button
                 type="button"
                 onClick={() => setSeccionActivaMenu("cognitivo")}
@@ -873,10 +873,10 @@ export default function PanelDocenteSimplificado() {
                 }`}
               >
                 <BookOpen size={18} weight={seccionActivaMenu === "cognitivo" ? "bold" : "regular"} className={seccionActivaMenu === "cognitivo" ? "text-[#1B5E59]" : "text-slate-500"} />
-                <span>Registro Cognitivo</span>
+                <span>Área Cognitiva</span>
               </button>
 
-              {/* 3. Registro Socioafectivo */}
+              {/* 3. Área Socioafectiva */}
               <button
                 type="button"
                 onClick={() => setSeccionActivaMenu("socioafectivo")}
@@ -888,14 +888,14 @@ export default function PanelDocenteSimplificado() {
               >
                 <div className="flex items-center gap-3 truncate">
                   <Heart size={18} weight={seccionActivaMenu === "socioafectivo" ? "fill" : "regular"} className={seccionActivaMenu === "socioafectivo" ? "text-[#1B5E59]" : "text-slate-500"} />
-                  <span className="truncate">Registro Socioafectivo</span>
+                  <span className="truncate">Área Socioafectiva</span>
                 </div>
                 {metricasCohorte.alertasTempranas > 0 && (
                   <span className="w-2 h-2 rounded-full bg-[#E07A2C] animate-ping shrink-0" />
                 )}
               </button>
 
-              {/* 4. Registro Psicomotriz */}
+              {/* 4. Área Psicomotora */}
               <button
                 type="button"
                 onClick={() => setSeccionActivaMenu("psicomotriz")}
@@ -906,7 +906,7 @@ export default function PanelDocenteSimplificado() {
                 }`}
               >
                 <Pulse size={18} weight={seccionActivaMenu === "psicomotriz" ? "bold" : "regular"} className={seccionActivaMenu === "psicomotriz" ? "text-[#1B5E59]" : "text-slate-500"} />
-                <span>Registro Psicomotriz</span>
+                <span>Área Psicomotora</span>
               </button>
 
               {/* 5. Resultados por Sección (Sistematización MEP) */}
@@ -986,17 +986,17 @@ export default function PanelDocenteSimplificado() {
               <div>
                 <h1 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 uppercase">
                   {seccionActivaMenu === "enlaces" && "ENLACES ESTUDIANTE"}
-                  {seccionActivaMenu === "cognitivo" && "REGISTRO COGNITIVO — DATOS DEL SABER"}
-                  {seccionActivaMenu === "socioafectivo" && "REGISTRO SOCIOAFECTIVO"}
-                  {seccionActivaMenu === "psicomotriz" && "REGISTRO PSICOMOTRIZ — HARDWARE & DESTREZAS"}
+                  {seccionActivaMenu === "cognitivo" && "ÁREA COGNITIVA — EVALUACIÓN DEL SABER"}
+                  {seccionActivaMenu === "socioafectivo" && "ÁREA SOCIOAFECTIVA — EL SER & CONVIVIR"}
+                  {seccionActivaMenu === "psicomotriz" && "ÁREA PSICOMOTORA — EL SABER HACER & HARDWARE"}
                   {seccionActivaMenu === "sistematizacion" && "SISTEMATIZACIÓN DE DESEMPEÑOS Y LOGROS (MEP)"}
                   {seccionActivaMenu === "analitica" && "ANÁLISIS GENERAL & TELEMETRÍA EN TIEMPO REAL"}
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">
                   {seccionActivaMenu === "enlaces" && "Genere enlaces y códigos QR en línea o descargue el archivo para PCs sin conexión."}
-                  {seccionActivaMenu === "cognitivo" && "Monitoreo de respuestas correctas, fallos y nivel de logro en los 10 reactivos oficiales del programa MEP."}
-                  {seccionActivaMenu === "socioafectivo" && "Registro de las 4 dimensiones socioafectivas oficiales (S1: Precisión, S2: Error, S3: Flexibilidad, S4: Confort)."}
-                  {seccionActivaMenu === "psicomotriz" && "Evaluación de destrezas operativas, conexionado circuital (MCU, LDR, Actuador) y motricidad fina."}
+                  {seccionActivaMenu === "cognitivo" && "Registro y monitoreo de respuestas, nivel de logro y reactivos oficiales del programa MEP."}
+                  {seccionActivaMenu === "socioafectivo" && "Registro y seguimiento de las 4 dimensiones socioafectivas oficiales (S1: Precisión, S2: Error, S3: Flexibilidad, S4: Confort)."}
+                  {seccionActivaMenu === "psicomotriz" && "Registro y evaluación de destrezas operativas, conexionado circuital (MCU, LDR, Actuador) y motricidad fina."}
                   {seccionActivaMenu === "sistematizacion" && "Matriz oficial de sistematización curricular con exportación inmediata a Excel y PDF."}
                   {seccionActivaMenu === "analitica" && "Monitoreo en vivo de telemetría, semáforo de logro y recomendaciones pedagógicas DUA con IA."}
                 </p>
@@ -1930,7 +1930,7 @@ export default function PanelDocenteSimplificado() {
                       <div>
                         <div className="flex items-center gap-2">
                           <h3 className="text-sm sm:text-base font-black text-slate-900 uppercase tracking-wide">
-                            2. Área Psicomotriz / Procedimental
+                            2. Área Psicomotora / Procedimental
                           </h3>
                           <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-[11px] border border-emerald-300">
                             {nivelActivo === "7mo" ? "7.° Año" : "9.° Año"}
@@ -2287,7 +2287,7 @@ export default function PanelDocenteSimplificado() {
                         <div className="flex items-center justify-between">
                           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold">
                             <span>🖐️</span>
-                            <span>2. ÁREA PSICOMOTRIZ / PROCEDIMENTAL</span>
+                            <span>2. ÁREA PSICOMOTORA / PROCEDIMENTAL</span>
                           </div>
                           <button
                             type="button"
@@ -2366,7 +2366,7 @@ export default function PanelDocenteSimplificado() {
                             </div>
                             <div>
                               <h3 className="text-sm font-black text-slate-900">
-                                Análisis Pedagógico Psicomotriz con IA
+                                Análisis Pedagógico Psicomotor con IA
                               </h3>
                               <p className="text-[11px] text-slate-500">
                                 Sección {seccionActiva} • {nivelActivo === "7mo" ? "7.° Año" : nivelActivo === "8vo" ? "8.° Año" : "9.° Año"}
