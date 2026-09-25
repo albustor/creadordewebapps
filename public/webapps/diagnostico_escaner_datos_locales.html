@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -681,6 +681,104 @@ input:focus, select:focus {
   color: #64748b;
   margin: 4px 0 0 0;
 }
+
+/* ==========================================================================
+   NAVEGACIÓN PRINCIPAL Y PESTAÑAS
+   ========================================================================== */
+.main-nav-bar {
+  display: flex;
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 6px;
+  gap: 6px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0, 43, 73, 0.08);
+  position: sticky;
+  top: 8px;
+  z-index: 50;
+}
+.nav-tab-btn {
+  flex: 1;
+  padding: 10px 8px;
+  border: 1.5px solid transparent;
+  background: #f8fafc;
+  color: #475569;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+}
+.nav-tab-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+.nav-tab-btn.active {
+  background: #002b49;
+  color: #ffffff;
+  border-color: #002b49;
+  box-shadow: 0 2px 8px rgba(0, 43, 73, 0.25);
+}
+.back-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1.5px solid #e2e8f0;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.btn-back {
+  background: #f8fafc;
+  color: #0f172a;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+.btn-back:hover {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+}
+.tag-fallo {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  margin: 3px;
+}
+.tag-acierto {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  margin: 3px;
+}
 </style>
 </head>
 <body>
@@ -688,7 +786,7 @@ input:focus, select:focus {
 <header>
   <span class="badge-header">MEP • FORMACIÓN TECNOLÓGICA</span>
   <h1>Escáner de Datos Locales</h1>
-  <p>Captura de resultados QR sin conexión para 7.°, 8.° y 9.° Año</p>
+  <p>Captura de resultados QR sin conexión para Diagnóstico Séptimo (7.°) y Diagnóstico Noveno (9.°)</p>
 </header>
 
 <div class="container">
@@ -867,14 +965,13 @@ input:focus, select:focus {
       <div>
         <label for="inputNivel">Nivel Educativo:</label>
         <select id="inputNivel">
-          <option value="7.° año">7.° Año (CyberQuest)</option>
-          <option value="8.° año">8.° Año (Diagnóstico Módulo 01)</option>
-          <option value="9.° año" selected>9.° Año (Diagnóstico Módulo 01)</option>
+          <option value="7.° año">Diagnóstico Séptimo (7.° Año)</option>
+          <option value="9.° año" selected>Diagnóstico Noveno (9.° Año)</option>
         </select>
       </div>
       <div>
         <label for="inputSeccion">Sección por Defecto:</label>
-        <input id="inputSeccion" type="text" placeholder="Ej. 9-1, 8-2, 7-3" value="9-1">
+        <input id="inputSeccion" type="text" placeholder="Ej. 7-1, 9-1" value="7-1">
       </div>
     </div>
 
@@ -889,7 +986,20 @@ input:focus, select:focus {
     </div>
   </section>
 
-  <!-- PASO 2: SESIÓN ACTIVA Y CÁMARA -->
+  <!-- BARRA DE NAVEGACIÓN PRINCIPAL ENTRE VISTAS -->
+  <nav id="navBarSesion" class="main-nav-bar hidden">
+    <button type="button" id="tabNavCamara" class="nav-tab-btn active" onclick="cambiarPestanaPrincipal('camara')">
+      <span>📷 Escáner</span>
+    </button>
+    <button type="button" id="tabNavGrupo" class="nav-tab-btn" onclick="cambiarPestanaPrincipal('grupo')">
+      <span>📊 General Grupal</span>
+    </button>
+    <button type="button" id="tabNavPadron" class="nav-tab-btn" onclick="cambiarPestanaPrincipal('padron')">
+      <span>📋 Padrón (<span id="badgePadronCount">0</span>)</span>
+    </button>
+  </nav>
+
+  <!-- PASO 2: SESIÓN ACTIVA Y CÁMARA (VISTA ULTRA-LIMPIA) -->
   <section id="vistaSesion" class="card hidden">
     <h2>📷 Escaneo de QR Estudiantes</h2>
 
@@ -908,37 +1018,18 @@ input:focus, select:focus {
       <span>⏹️ Pausar Cámara</span>
     </button>
 
-    <!-- Contenedor del video con playsinline para iOS -->
+    <!-- Contenedor del video -->
     <div id="reader" class="hidden" playsinline webkit-playsinline></div>
-
-    <!-- Opciones de respaldo: Foto de cámara nativa, Carga de JSONs y Carga de CSV -->
-    <div class="file-upload-wrapper">
-      <label class="file-upload-btn">
-        <span>📸 Tomar foto / QR</span>
-        <input type="file" id="qrFileInput" accept="image/*" capture="environment" style="display: none;" onchange="procesarArchivoImagen(event)">
-      </label>
-      <label class="file-upload-btn">
-        <span>📂 Cargar JSONs (USB)</span>
-        <input type="file" id="jsonBatchInput" accept=".json" multiple style="display: none;" onchange="importarArchivosJSON(event)">
-      </label>
-      <label class="file-upload-btn" style="background: #f0fdf4; border-color: #16a34a; color: #16a34a;">
-        <span>📊 Subir CSV (Padrón)</span>
-        <input type="file" id="csvBatchInput" accept=".csv,.txt" multiple style="display: none;" onchange="importarArchivosCSV(event)">
-      </label>
-    </div>
 
     <div id="mensajeCamara"></div>
 
-    <!-- Botones de descarga y padrón directos -->
-    <div class="button-grid-3" style="margin-top: 16px;">
-      <button type="button" class="btn-secondary" onclick="alternarVistaRegistros()">
-        <span>📋 Ver Padrón & Métricas</span>
+    <!-- Acciones rápidas de navegación -->
+    <div class="button-grid" style="margin-top: 16px;">
+      <button type="button" class="btn-secondary" onclick="cambiarPestanaPrincipal('grupo')">
+        <span>📊 Ver General Grupal</span>
       </button>
-      <button type="button" class="btn-emerald" onclick="exportarCSV()">
-        <span>📊 Exportar Excel (.csv)</span>
-      </button>
-      <button type="button" class="btn-indigo" onclick="exportarJSON()">
-        <span>💾 Exportar JSON</span>
+      <button type="button" class="btn-emerald" onclick="cambiarPestanaPrincipal('padron')">
+        <span>📋 Ver Padrón de Estudiantes</span>
       </button>
     </div>
 
@@ -949,7 +1040,7 @@ input:focus, select:focus {
     </div>
   </section>
 
-  <!-- PASO 3: CONFIRMACIÓN Y EDICIÓN DE RESULTADO DETECTADO -->
+  <!-- PASO 3: CONFIRMACIÓN DE RESULTADO DETECTADO -->
   <section id="vistaResultado" class="card hidden">
     <h2>✅ Ficha Detectada (Verificar y Guardar)</h2>
 
@@ -964,31 +1055,51 @@ input:focus, select:focus {
     </button>
   </section>
 
-  <!-- PASO 4: PADRÓN DE REGISTROS Y ANÁLISIS DE MÉTRICAS -->
-  <section id="vistaRegistros" class="card hidden">
-    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
-      <h2 style="margin: 0;">📋 Padrón y Métricas Consolidadas</h2>
-      <label class="file-upload-btn" style="width: auto; padding: 6px 12px; background: #f0fdf4; border-color: #16a34a; color: #16a34a;">
-        <span>📊 Subir CSV / Padrón</span>
-        <input type="file" id="csvPadronInput" accept=".csv,.txt" multiple style="display: none;" onchange="importarArchivosCSV(event)">
-      </label>
+  <!-- PASO 4: VISTA DE GENERALIDAD GRUPAL (MÉTRICAS & SEMÁFORO DUA) -->
+  <section id="vistaGrupo" class="card hidden">
+    <div class="back-header-bar">
+      <h2 style="margin: 0;">📊 Generalidad Grupal (Métricas Consolidadas)</h2>
+      <button type="button" class="btn-back" onclick="cambiarPestanaPrincipal('camara')">
+        <span>⬅ Volver al Escáner</span>
+      </button>
     </div>
 
-    <!-- Contenedor dinámico de métricas consolidadas -->
-    <div id="contenedorMetricas"></div>
-
-    <div id="listaRegistros"></div>
+    <div id="contenedorMetricasGrupo"></div>
 
     <!-- SINCRONIZACIÓN DIFERIDA -->
     <div style="margin-top: 14px; padding: 14px; background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 12px; text-align: center;">
-      <h4 style="font-size: 13px; font-weight: 800; color: #166534; margin: 0 0 6px 0;">📡 Sincronización diferida (cuando haya conexión)</h4>
+      <h4 style="font-size: 13px; font-weight: 800; color: #166534; margin: 0 0 6px 0;">📡 Sincronización diferida (cuando haya internet)</h4>
       <p style="font-size: 11.5px; color: #15803d; margin: 0 0 10px 0;">
-        Los datos se almacenan de forma 100% segura en la memoria de este celular. Al tener conexión Wi-Fi o datos móviles, presiona este botón para enviar el consolidado al dashboard docente:
+        Los datos se almacenan de forma 100% segura en este celular. Al conectarte a Wi-Fi o datos, presiona para sincronizar con el panel central:
       </p>
       <button type="button" id="btnSincronizar" class="btn-emerald" style="width: 100%; font-weight: 900; font-size: 13px; padding: 10px;" onclick="sincronizarConDashboard()">
         <span>📡 Sincronizar datos con el dashboard central</span>
       </button>
     </div>
+
+    <div class="button-grid" style="margin-top: 14px;">
+      <button type="button" class="btn-secondary" onclick="cambiarPestanaPrincipal('padron')">
+        <span>📋 Ir al Padrón de Estudiantes</span>
+      </button>
+      <button type="button" class="btn-primary" onclick="cambiarPestanaPrincipal('camara')">
+        <span>📷 Continuar Escaneando</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- PASO 5: VISTA DE PADRÓN ESTUDIANTIL -->
+  <section id="vistaPadron" class="card hidden">
+    <div class="back-header-bar">
+      <div>
+        <h2 style="margin: 0;">📋 Padrón de Estudiantes</h2>
+        <span style="font-size: 11px; color: #64748b;">Toca "Ver Ficha Detallada" en cualquier estudiante para ver sus fallos específicos</span>
+      </div>
+      <button type="button" class="btn-back" onclick="cambiarPestanaPrincipal('camara')">
+        <span>⬅ Volver al Escáner</span>
+      </button>
+    </div>
+
+    <div id="listaRegistros"></div>
 
     <div class="button-grid-3" style="margin-top: 14px;">
       <button type="button" class="btn-emerald" onclick="exportarCSV()">
@@ -998,7 +1109,7 @@ input:focus, select:focus {
         <span>💾 Descargar JSON</span>
       </button>
       <button type="button" class="btn-secondary" onclick="copiarResumenPortapapeles()">
-        <span>📋 Copiar Texto</span>
+        <span>📋 Copiar Resumen</span>
       </button>
     </div>
 
@@ -1006,8 +1117,37 @@ input:focus, select:focus {
       <button type="button" class="btn-danger" onclick="eliminarTodosRegistros()">
         <span>🗑️ Limpiar Todo el Padrón</span>
       </button>
-      <button type="button" class="btn-secondary" onclick="alternarVistaRegistros()">
+      <button type="button" class="btn-secondary" onclick="cambiarPestanaPrincipal('camara')">
         <span>⬅️ Volver al Escáner</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- PASO 6: FICHA INDIVIDUAL DETALLADA (ANÁLISIS DE FALLOS Y ORIENTACIÓN DUA) -->
+  <section id="vistaFichaIndividual" class="card hidden">
+    <div class="back-header-bar">
+      <div>
+        <h2 style="margin: 0;">👤 Ficha Individual de Diagnóstico</h2>
+        <span style="font-size: 11px; color: #64748b;">Informe cualitativo y cuantitativo por dimensiones</span>
+      </div>
+      <div style="display: flex; gap: 6px;">
+        <button type="button" class="btn-back" onclick="cambiarPestanaPrincipal('padron')">
+          <span>⬅ Volver al Padrón</span>
+        </button>
+        <button type="button" class="btn-back" onclick="cambiarPestanaPrincipal('camara')">
+          <span>📷 Escáner</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="contenidoFichaIndividual"></div>
+
+    <div class="button-grid" style="margin-top: 14px;">
+      <button type="button" class="btn-secondary" onclick="cambiarPestanaPrincipal('padron')">
+        <span>⬅ Regresar al Padrón</span>
+      </button>
+      <button type="button" class="btn-primary" onclick="cambiarPestanaPrincipal('camara')">
+        <span>📷 Escanear Siguiente Estudiante</span>
       </button>
     </div>
   </section>
@@ -1129,7 +1269,7 @@ function cambiarPestanaGuia(tab) {
 function iniciarSesionDocente() {
   var centro = (document.getElementById("inputCentro").value || "").trim() || "Colegio de Secundaria MEP";
   var nivel = document.getElementById("inputNivel").value || "9.° año";
-  var seccion = (document.getElementById("inputSeccion").value || "").trim() || "9-1";
+  var seccion = (document.getElementById("inputSeccion").value || "").trim() || "7-1";
 
   sesionActiva.centro = centro;
   sesionActiva.nivel = nivel;
@@ -1140,7 +1280,8 @@ function iniciarSesionDocente() {
     "<strong>📚 Nivel:</strong> " + escaparHTML(sesionActiva.nivel) + " &nbsp;|&nbsp; <strong>👥 Sección:</strong> " + escaparHTML(sesionActiva.seccion);
 
   document.getElementById("vistaConfig").classList.add("hidden");
-  document.getElementById("vistaSesion").classList.remove("hidden");
+  document.getElementById("navBarSesion").classList.remove("hidden");
+  cambiarPestanaPrincipal("camara");
   actualizarContador();
 }
 
@@ -1588,24 +1729,25 @@ function interpretarPayloadQR(raw) {
     try {
       var obj = JSON.parse(texto);
       
-      // Soporte 7.° Año (MEP7 / CYBERQUEST_7MO)
-      if (obj.t === "MEP7" || obj.tipo === "CYBERQUEST_7MO") {
-        var nom7 = obj.estudianteNombre || (obj.c1 ? (obj.c1 + (obj.c2 && obj.c2 !== 'Individual' ? ' & ' + obj.c2 : '')) : "Cadete 7mo");
-        var porc7 = obj.g !== undefined ? obj.g : 80;
-        var niv7 = obj.lvl === 'A' ? "Logrado" : (obj.lvl === 'B' ? "En Desarrollo" : "Reforzamiento conceptual");
+      // Soporte Diagnóstico Séptimo (7.° Año - MEP7 / DIAGNOSTICO_7MO)
+      if (obj.t === "MEP7" || obj.tipo === "CYBERQUEST_7MO" || obj.tipo === "DIAGNOSTICO_7MO" || obj.n === "7°" || obj.nivel === "7.° año" || (obj.sec && typeof obj.sec === "string" && obj.sec.startsWith("7-")) || (obj.s && typeof obj.s === "string" && obj.s.startsWith("7-")) || Boolean(obj.c1)) {
+        var nom7 = obj.estudianteNombre || obj.nom || obj.nombre || (obj.c1 ? (obj.c1 + (obj.c2 && obj.c2 !== 'Individual' && obj.c2 !== 'Solo' ? ' & ' + obj.c2 : '')) : "Estudiante 7.°");
+        var porc7 = obj.g !== undefined ? obj.g : (obj.c !== undefined ? obj.c : (obj.porc !== undefined ? obj.porc : 80));
+        var niv7 = obj.lvl === 'A' || obj.nivelCog === 'Logrado' ? "Logrado" : (obj.lvl === 'B' || obj.nivelCog === 'En Desarrollo' ? "En Desarrollo" : "Reforzamiento conceptual");
+        var sec7 = obj.sec || obj.s || obj.seccion || sesionActiva.seccion;
         return {
           estudiante: nom7,
-          cedula: "",
-          seccionQR: obj.sec || sesionActiva.seccion,
-          fecha: new Date().toLocaleDateString("es-CR"),
+          cedula: obj.cedula || obj.ced || "",
+          seccionQR: sec7,
+          fecha: obj.fec || obj.fecha || new Date().toLocaleDateString("es-CR"),
           cognoscitiva: (obj.c !== undefined ? obj.c + "%" : porc7 + "%"),
           nivelCognoscitivo: niv7,
           tarjetas: "Misiones 4/4",
           puertos: "9/9",
-          ejecucion: (obj.p !== undefined ? obj.p + "% (Psicomotriz)" : "Completa"),
+          ejecucion: (obj.p !== undefined ? obj.p + "% (Práctico)" : "Completa"),
           socioafectiva: (obj.s !== undefined ? obj.s + "% (Socioafectiva)" : "5/5 indicadores favorables"),
-          fortalezas: "Apropiación digital, Destreza psicomotriz y Pensamiento Lógico",
-          prioridades: niv7 === "Logrado" ? "Ninguna" : "Refuerzo en conceptos básicos",
+          fortalezas: obj.fortalezas || "Apropiación digital, destreza técnica y lógica",
+          prioridades: obj.prioridades || (niv7 === "Logrado" ? "Ninguna" : "Refuerzo en conceptos de hardware y algoritmos"),
           textoOriginal: raw
         };
       }
@@ -1840,61 +1982,219 @@ function actualizarContador() {
   var count = obtenerRegistros().length;
   var el = document.getElementById("contadorEstudiantes");
   if (el) el.textContent = "Estudiantes Registrados: " + count;
+  var badge = document.getElementById("badgePadronCount");
+  if (badge) badge.textContent = count;
 }
 
-function alternarVistaRegistros() {
-  var vReg = document.getElementById("vistaRegistros");
+function cambiarPestanaPrincipal(vista) {
   var vSes = document.getElementById("vistaSesion");
+  var vGrupo = document.getElementById("vistaGrupo");
+  var vPadron = document.getElementById("vistaPadron");
+  var vFicha = document.getElementById("vistaFichaIndividual");
+  var vRes = document.getElementById("vistaResultado");
 
-  if (vReg.classList.contains("hidden")) {
+  var btnCam = document.getElementById("tabNavCamara");
+  var btnGrp = document.getElementById("tabNavGrupo");
+  var btnPad = document.getElementById("tabNavPadron");
+
+  // Ocultar todas las vistas de sesión
+  if (vSes) vSes.classList.add("hidden");
+  if (vGrupo) vGrupo.classList.add("hidden");
+  if (vPadron) vPadron.classList.add("hidden");
+  if (vFicha) vFicha.classList.add("hidden");
+  if (vRes) vRes.classList.add("hidden");
+
+  // Desactivar botones de navegación
+  if (btnCam) btnCam.classList.remove("active");
+  if (btnGrp) btnGrp.classList.remove("active");
+  if (btnPad) btnPad.classList.remove("active");
+
+  if (vista === "camara") {
+    if (vSes) vSes.classList.remove("hidden");
+    if (btnCam) btnCam.classList.add("active");
+    actualizarContador();
+  } else if (vista === "grupo") {
     detenerCamara();
-    vSes.classList.add("hidden");
-    vReg.classList.remove("hidden");
+    if (vGrupo) vGrupo.classList.remove("hidden");
+    if (btnGrp) btnGrp.classList.add("active");
+    renderizarMetricasGrupo();
+  } else if (vista === "padron") {
+    detenerCamara();
+    if (vPadron) vPadron.classList.remove("hidden");
+    if (btnPad) btnPad.classList.add("active");
     renderizarListaPadron();
-  } else {
-    vReg.classList.add("hidden");
-    vSes.classList.remove("hidden");
+  } else if (vista === "ficha") {
+    detenerCamara();
+    if (vFicha) vFicha.classList.remove("hidden");
+    if (btnPad) btnPad.classList.add("active");
   }
 }
 
 function renderizarListaPadron() {
   var registros = obtenerRegistros();
   var cont = document.getElementById("listaRegistros");
-  var contMetricas = document.getElementById("contenedorMetricas");
+  if (!cont) return;
+
+  actualizarContador();
 
   if (registros.length === 0) {
-    if (contMetricas) contMetricas.innerHTML = "";
-    cont.innerHTML = '<div class="alert alert-info">No hay estudiantes registrados aún en este dispositivo.<br>Puede escanear códigos QR con la cámara, o pulsar <strong>"📊 Subir CSV / Padrón"</strong> para cargar y analizar las respuestas del grupo.</div>';
+    cont.innerHTML =
+      '<div class="alert alert-info" style="text-align: center; padding: 24px 14px;">' +
+      '  <span style="font-size: 32px; display: block; margin-bottom: 8px;">📋</span>' +
+      '  <strong>Aún no hay estudiantes en el padrón local.</strong><br>' +
+      '  <span style="font-size: 11.5px; color: #475569;">Usa la pestaña "📷 Escáner" para capturar los códigos QR de las pantallas de los estudiantes.</span>' +
+      '</div>';
     return;
   }
 
-  // 1. Calcular y Renderizar Dashboard de Métricas
-  var metricas = calcularMetricasPadron(registros);
-  renderizarMetricasDashboard(metricas);
-
-  // 2. Renderizar Tarjetas Individuales (más recientes primero)
   var listaReversa = registros.slice().reverse();
   var html = "";
   listaReversa.forEach(function(r) {
+    var cogNum = parseInt(String(r.cognoscitiva).replace(/[^0-9]/g, '')) || 80;
+    if (cogNum > 100) cogNum = 80;
+    var nivelTexto = r.nivelCognoscitivo || (cogNum >= 70 ? "Logrado" : (cogNum >= 50 ? "En Desarrollo" : "Reforzamiento"));
+
     html +=
-      '<div class="record-card">' +
+      '<div class="record-card" style="border-left: 4px solid ' + (cogNum >= 70 ? '#10b981' : (cogNum >= 50 ? '#f59e0b' : '#ef4444')) + '; margin-bottom: 10px;">' +
       '  <div class="record-header">' +
       '    <span class="record-name">' + escaparHTML(r.estudiante) + '</span>' +
-      '    <span class="record-badge">' + escaparHTML(r.nivel || "9.°") + ' • ' + escaparHTML(r.seccion) + '</span>' +
+      '    <span class="record-badge" style="background: #002b49; color: #ffffff;">' + escaparHTML(r.seccion || sesionActiva.seccion) + '</span>' +
       '  </div>' +
-      '  <div class="record-details">' +
-      '    <strong>🏫 Centro:</strong> ' + escaparHTML(r.centro) + '<br>' +
-      '    <strong>🧠 Cognitivo:</strong> ' + escaparHTML(r.cognoscitiva || "Completado") + ' (' + escaparHTML(r.nivelCognoscitivo || "Logrado") + ')<br>' +
-      '    <strong>⚙️ Psicomotor:</strong> ' + escaparHTML(r.ejecucion || r.tarjetas || "Completado") + '<br>' +
-      '    <strong>📅 Fecha:</strong> ' + escaparHTML(r.fecha) +
+      '  <div class="record-details" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 8px 0;">' +
+      '    <div><strong>🧠 Calificación:</strong> <span style="font-weight: 800; color: #002b49;">' + escaparHTML(r.cognoscitiva || (cogNum + "%")) + '</span></div>' +
+      '    <div><strong>📊 Nivel:</strong> <span style="font-weight: 800; color: ' + (cogNum >= 70 ? '#059669' : (cogNum >= 50 ? '#d97706' : '#dc2626')) + ';">' + escaparHTML(nivelTexto) + '</span></div>' +
+      '    <div style="grid-column: span 2; font-size: 11px; color: #64748b;"><strong>⚙️ Práctico:</strong> ' + escaparHTML(r.ejecucion || r.tarjetas || "Completa") + ' • <strong>📅</strong> ' + escaparHTML(r.fecha || new Date().toLocaleDateString("es-CR")) + '</div>' +
       '  </div>' +
-      '  <button type="button" class="btn-secondary" data-id="' + r.id + '" onclick="eliminarRegistroIndividual(this.getAttribute(\'data-id\'))" style="margin-top: 8px; color: #dc2626; height: 32px; font-size: 11px;">' +
-      '    🗑️ Eliminar' +
-      '  </button>' +
+      '  <div style="display: flex; gap: 6px; margin-top: 10px;">' +
+      '    <button type="button" class="btn-emerald" data-id="' + r.id + '" onclick="verFichaIndividual(this.getAttribute(\'data-id\'))" style="flex: 2; padding: 7px 10px; font-size: 11.5px; font-weight: 800;">' +
+      '      🔍 Ver Ficha Detallada' +
+      '    </button>' +
+      '    <button type="button" class="btn-secondary" data-id="' + r.id + '" onclick="eliminarRegistroIndividual(this.getAttribute(\'data-id\'))" style="flex: 1; padding: 7px 10px; font-size: 11.5px; color: #dc2626; border-color: #fecaca;">' +
+      '      🗑️ Eliminar' +
+      '    </button>' +
+      '  </div>' +
       '</div>';
   });
 
   cont.innerHTML = html;
+}
+
+function verFichaIndividual(id) {
+  var registros = obtenerRegistros();
+  var estudiante = null;
+
+  for (var i = 0; i < registros.length; i++) {
+    if (registros[i].id === id) {
+      estudiante = registros[i];
+      break;
+    }
+  }
+
+  if (!estudiante) {
+    alert("Estudiante no encontrado en el padrón.");
+    return;
+  }
+
+  var cont = document.getElementById("contenidoFichaIndividual");
+  if (!cont) return;
+
+  var cogNum = parseInt(String(estudiante.cognoscitiva).replace(/[^0-9]/g, '')) || 80;
+  if (cogNum > 100) cogNum = 80;
+  var aciertos = Math.round((cogNum / 100) * 10);
+  var fallos = Math.max(0, 10 - aciertos);
+
+  var prioridadesRaw = estudiante.prioridades || "";
+  var tienePrioridades = prioridadesRaw && prioridadesRaw !== "Ninguna" && prioridadesRaw !== "Ninguna (Dominio Consolidado)" && prioridadesRaw !== "-";
+  var listaFallos = tienePrioridades ? prioridadesRaw.split(/[,•;]/).map(function(s) { return s.trim(); }).filter(Boolean) : [];
+
+  var html =
+    '<div class="ficha-box">' +
+    '  <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 14px;">' +
+    '    <div>' +
+    '      <span style="font-size: 10px; font-weight: 800; color: #0284c7; background: #e0f2fe; padding: 2px 8px; border-radius: 999px;">' + escaparHTML(estudiante.nivel || sesionActiva.nivel) + ' • ' + escaparHTML(estudiante.seccion || sesionActiva.seccion) + '</span>' +
+    '      <h3 style="font-size: 16px; font-weight: 900; color: #002b49; margin: 4px 0 2px 0;">' + escaparHTML(estudiante.estudiante) + '</h3>' +
+    '      <span style="font-size: 11.5px; color: #64748b;">🏫 ' + escaparHTML(estudiante.centro || sesionActiva.centro) + ' • 📅 ' + escaparHTML(estudiante.fecha || new Date().toLocaleDateString("es-CR")) + '</span>' +
+    '    </div>' +
+    '    <div style="text-align: right;">' +
+    '      <div style="font-size: 26px; font-weight: 900; color: ' + (cogNum >= 70 ? '#059669' : (cogNum >= 50 ? '#d97706' : '#dc2626')) + ';">' + cogNum + '%</div>' +
+    '      <span style="font-size: 10.5px; font-weight: 800; padding: 2px 8px; border-radius: 6px; background: ' + (cogNum >= 70 ? '#ecfdf5; color:#065f46;' : (cogNum >= 50 ? '#fffbeb; color:#92400e;' : '#fef2f2; color:#991b1b;')) + '">' + (estudiante.nivelCognoscitivo || (cogNum >= 70 ? "Logrado" : (cogNum >= 50 ? "En Desarrollo" : "Reforzamiento"))) + '</span>' +
+    '    </div>' +
+    '  </div>' +
+
+    '  <!-- RESUMEN DE FALLOS Y CONCEPTOS A REFORZAR -->' +
+    '  <div style="margin-bottom: 14px; padding: 12px; background: ' + (fallos === 0 ? '#f0fdf4; border: 1.5px solid #86efac;' : '#fef2f2; border: 1.5px solid #fca5a5;') + ' border-radius: 12px;">' +
+    '    <strong style="font-size: 12.5px; color: ' + (fallos === 0 ? '#166534;' : '#991b1b;') + ' display: flex; align-items: center; gap: 6px;">' +
+    '      ' + (fallos === 0 ? '✨ Desempeño Pleno — Sin fallos en reactivos' : '⚠️ ' + fallos + ' Reactivo(s) con Fallo Detectado') +
+    '    </strong>' +
+    (fallos === 0 ? (
+      '    <p style="font-size: 11.5px; color: #15803d; margin: 4px 0 0 0;">El estudiante superó exitosamente todos los criterios y reactivos evaluados.</p>'
+    ) : (
+      '    <div style="margin-top: 8px;">' +
+      '      <span style="font-size: 11px; font-weight: 800; color: #991b1b; display: block; margin-bottom: 4px;">Saberes y conceptos con fallo a reforzar en aula:</span>' +
+      '      <div>' +
+      (listaFallos.length > 0 ? listaFallos.map(function(f) { return '<span class="tag-fallo">❌ ' + escaparHTML(f) + '</span>'; }).join('') : '<span class="tag-fallo">❌ Reactivos conceptuales no consolidados (' + fallos + ' fallos)</span>') +
+      '      </div>' +
+      '    </div>'
+    )) +
+    '  </div>' +
+
+    '  <!-- DIMENSIÓN PSICOMOTRIZ -->' +
+    '  <div style="margin-bottom: 14px; padding: 12px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 12px;">' +
+    '    <strong style="font-size: 12px; color: #002b49; display: flex; align-items: center; gap: 6px;">' +
+    '      <span>🔌</span> Dimensión Psicomotriz (Reto Práctico y Conexiones):' +
+    '    </strong>' +
+    '    <div style="font-size: 11.5px; color: #334155; margin-top: 6px; line-height: 1.5;">' +
+    '      <div>• Tarjetas/Componentes: <strong>' + escaparHTML(estudiante.tarjetas || "3/3") + '</strong></div>' +
+    '      <div>• Puertos/Conexiones: <strong>' + escaparHTML(estudiante.puertos || "9/9") + '</strong></div>' +
+    '      <div>• Estado de Ejecución: <strong>' + escaparHTML(estudiante.ejecucion || "Completa") + '</strong></div>' +
+    '    </div>' +
+    '  </div>' +
+
+    '  <!-- DIMENSIÓN SOCIOAFECTIVA -->' +
+    '  <div style="margin-bottom: 14px; padding: 12px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 12px;">' +
+    '    <strong style="font-size: 12px; color: #002b49; display: flex; align-items: center; gap: 6px;">' +
+    '      <span>🤝</span> Dimensión Socioafectiva:' +
+    '    </strong>' +
+    '    <p style="font-size: 11.5px; color: #334155; margin: 4px 0 0 0;">' +
+    '      • Indicadores y actitudes: <strong>' + escaparHTML(estudiante.socioafectiva || "5/5 favorables") + '</strong>' +
+    '    </p>' +
+    '  </div>' +
+
+    '  <!-- ORIENTACIÓN PEDAGÓGICA INDIVIDUAL -->' +
+    '  <div style="padding: 12px; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 12px;">' +
+    '    <strong style="font-size: 12px; color: #065f46; display: flex; align-items: center; gap: 6px;">' +
+    '      <span>💡</span> Orientación Pedagógica DUA para este Estudiante:' +
+    '    </strong>' +
+    '    <p style="font-size: 11.5px; color: #047857; margin: 4px 0 0 0; line-height: 1.5;">' +
+    (cogNum >= 70 ? 'El estudiante evidencia apropiación sólida de los fundamentos. Se sugiere asignarle retos de extensión y rol de monitor de apoyo a pares.' :
+     cogNum >= 50 ? 'El estudiante comprende la estructura general pero requiere mediación puntual en algoritmos de control y lectura de diagramas.' :
+     'El estudiante requiere acompañamiento paso a paso, modelado de conexiones físicas y refuerzo de conceptos básicos Entrada–Proceso–Salida.') +
+    '    </p>' +
+    '  </div>' +
+
+    '</div>';
+
+  cont.innerHTML = html;
+  cambiarPestanaPrincipal("ficha");
+}
+
+function renderizarMetricasGrupo() {
+  var registros = obtenerRegistros();
+  var cont = document.getElementById("contenedorMetricasGrupo");
+  if (!cont) return;
+
+  if (registros.length === 0) {
+    cont.innerHTML =
+      '<div class="alert alert-info" style="text-align: center; padding: 24px 14px;">' +
+      '  <span style="font-size: 32px; display: block; margin-bottom: 8px;">📊</span>' +
+      '  <strong>Aún no hay datos escaneados para calcular promedios grupales.</strong><br>' +
+      '  <span style="font-size: 11.5px; color: #475569;">Usa el escáner para registrar a los estudiantes de la sección.</span>' +
+      '</div>';
+    return;
+  }
+
+  var met = calcularMetricasPadron(registros);
+  renderizarMetricasDashboard(met);
 }
 
 function calcularMetricasPadron(registros) {
@@ -1935,8 +2235,8 @@ function calcularMetricasPadron(registros) {
     sumPct += pct;
 
     var niv = (r.nivelCognoscitivo || "").toLowerCase();
-    if (niv.includes("logrado") || pct >= 80) logrado++;
-    else if (niv.includes("desarrollo") || pct >= 60) desarrollo++;
+    if (niv.includes("logrado") || pct >= 70) logrado++;
+    else if (niv.includes("desarrollo") || pct >= 50) desarrollo++;
     else refuerzo++;
 
     var psi = (r.ejecucion || r.tarjetas || "").toLowerCase();
@@ -1975,7 +2275,7 @@ function calcularMetricasPadron(registros) {
 }
 
 function renderizarMetricasDashboard(met) {
-  var cont = document.getElementById("contenedorMetricas");
+  var cont = document.getElementById("contenedorMetricasGrupo");
   if (!cont) return;
 
   if (met.total === 0) {
@@ -2223,9 +2523,20 @@ async function sincronizarConDashboard() {
 
 function finalizarSesion() {
   detenerCamara();
-  document.getElementById("vistaSesion").classList.add("hidden");
-  document.getElementById("vistaResultado").classList.add("hidden");
-  document.getElementById("vistaRegistros").classList.add("hidden");
+  var vSes = document.getElementById("vistaSesion");
+  var vGrupo = document.getElementById("vistaGrupo");
+  var vPadron = document.getElementById("vistaPadron");
+  var vFicha = document.getElementById("vistaFichaIndividual");
+  var vRes = document.getElementById("vistaResultado");
+  var nav = document.getElementById("navBarSesion");
+
+  if (vSes) vSes.classList.add("hidden");
+  if (vGrupo) vGrupo.classList.add("hidden");
+  if (vPadron) vPadron.classList.add("hidden");
+  if (vFicha) vFicha.classList.add("hidden");
+  if (vRes) vRes.classList.add("hidden");
+  if (nav) nav.classList.add("hidden");
+
   document.getElementById("vistaConfig").classList.remove("hidden");
 }
 

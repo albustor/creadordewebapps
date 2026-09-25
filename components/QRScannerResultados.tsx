@@ -389,28 +389,34 @@ export default function QRScannerResultados({
       }
 
       const es8vo = datos.n === "8°" || datos.t === "MEP8" || (datos.s && typeof datos.s === "string" && datos.s.startsWith("8-")) || (datos.sec && typeof datos.sec === "string" && datos.sec.startsWith("8-"));
-      const es7mo = datos.n === "7°" || datos.t === "MEP7" || datos.tipo === "CYBERQUEST_7MO" || (datos.s && typeof datos.s === "string" && datos.s.startsWith("7-")) || (datos.sec && typeof datos.sec === "string" && datos.sec.startsWith("7-")) || Boolean(datos.c1);
+      const es7mo = datos.n === "7°" || datos.t === "MEP7" || datos.tipo === "CYBERQUEST_7MO" || datos.tipo === "DIAGNOSTICO_7MO" || (datos.s && typeof datos.s === "string" && datos.s.startsWith("7-")) || (datos.sec && typeof datos.sec === "string" && datos.sec.startsWith("7-")) || Boolean(datos.c1);
       const es9no = datos.n === "9°" || datos.t === "MEP9" || (datos.s && typeof datos.s === "string" && datos.s.startsWith("9-")) || (datos.sec && typeof datos.sec === "string" && datos.sec.startsWith("9-"));
 
       let estNombre = datos.est || datos.estudianteNombre || datos.e || datos.nom || datos.nombre;
       if (!estNombre && es7mo && datos.c1) {
-        estNombre = datos.c2 && datos.c2 !== "Individual" ? `${datos.c1} & ${datos.c2}` : datos.c1;
+        estNombre = datos.c2 && datos.c2 !== "Individual" && datos.c2 !== "Solo" ? `${datos.c1} & ${datos.c2}` : datos.c1;
       }
       if (!estNombre) {
-        estNombre = "Estudiante Escaneado";
+        estNombre = es7mo ? "Estudiante 7.° Año" : "Estudiante 9.° Año";
       }
 
-      let seccion = datos.grp || datos.seccionOGrupo || datos.s || datos.sec || datos.seccion || (es8vo ? "Sección 8-1" : es7mo ? "Sección 7-1" : es9no ? "Sección 9-1" : "General");
+      let seccion = datos.grp || datos.seccionOGrupo || datos.s || datos.sec || datos.seccion || (es7mo ? "Sección 7-1" : "Sección 9-1");
       if (!seccion.startsWith("Sección ") && /^[789]-/i.test(seccion)) {
         seccion = `Sección ${seccion}`;
       }
 
       let totalReactivos = datos.tot || (es8vo ? 14 : es9no ? 10 : 10);
       let porcentaje = 80;
-      let aciertos = es8vo ? 11 : 8;
+      let aciertos = 8;
 
       // Sanitizar Porcentaje y Aciertos
-      if (typeof datos.porc === "number" && !isNaN(datos.porc) && datos.porc <= 100 && datos.porc >= 0) {
+      if (es7mo && typeof datos.g === "number" && !isNaN(datos.g)) {
+        porcentaje = datos.g;
+        aciertos = Math.round((porcentaje / 100) * totalReactivos);
+      } else if (es7mo && typeof datos.c === "number" && !isNaN(datos.c)) {
+        porcentaje = datos.c;
+        aciertos = Math.round((porcentaje / 100) * totalReactivos);
+      } else if (typeof datos.porc === "number" && !isNaN(datos.porc) && datos.porc <= 100 && datos.porc >= 0) {
         porcentaje = datos.porc;
       } else if (typeof datos.porcentaje === "number" && !isNaN(datos.porcentaje) && datos.porcentaje <= 100 && datos.porcentaje >= 0) {
         porcentaje = datos.porcentaje;
@@ -436,12 +442,12 @@ export default function QRScannerResultados({
       } : undefined;
 
       const payload: PayloadTelemetria = {
-        webAppId: datos.wId || datos.webAppId || (es8vo ? "diagnostico_8vo_modulo01_docente_evaluador" : es7mo ? "diagnostico_7mo_modulo01_cyberquest" : "diagnostico_9no_modulo01_desconectado_offline"),
-        webAppTitulo: datos.wTitulo || datos.webAppTitulo || (es8vo ? "Evaluación Diagnóstica — 8° Año (PNFT)" : es7mo ? "CyberQuest 7°: Diagnóstico de Fundamentos Digitales" : "Evaluación Diagnóstica — 9° Año (PNFT)"),
+        webAppId: datos.wId || datos.webAppId || (es7mo ? "diagnostico_7mo_modulo01_desconectado_offline" : "diagnostico_9no_modulo01_desconectado_offline"),
+        webAppTitulo: datos.wTitulo || datos.webAppTitulo || (es7mo ? "Diagnóstico Séptimo (7.° Año)" : "Diagnóstico Noveno (9.° Año)"),
         docenteId: datos.dId || datos.docenteId || "DOC-OFFLINE",
         estudianteNombre: estNombre,
         seccionOGrupo: seccion,
-        nivel: es8vo ? "8°" : (es7mo ? "7°" : (es9no ? "9°" : (datos.nivel || "9°"))),
+        nivel: es7mo ? "7°" : (es9no ? "9°" : (datos.nivel || "7°")),
         puntaje: puntaje,
         puntajeMaximo: totalReactivos,
         porcentaje: porcentaje,
@@ -1200,6 +1206,25 @@ export default function QRScannerResultados({
                           </select>
                         </div>
                       )}
+
+                      {/* Botón de Retorno y Navegación Rápida */}
+                      <div className="flex flex-wrap items-center justify-between gap-2 pb-1">
+                        <button
+                          type="button"
+                          onClick={() => setTabActual("padron")}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-[#1B5E59] text-xs font-extrabold border border-emerald-300 transition-colors cursor-pointer"
+                        >
+                          <span>⬅ Volver al Padrón de Estudiantes</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setTabActual("camara")}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-slate-300 transition-colors cursor-pointer"
+                        >
+                          <Camera size={14} />
+                          <span>Escanear Otro Estudiante</span>
+                        </button>
+                      </div>
 
                       {/* Tarjeta de Ficha Individual */}
                       <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-xs space-y-3">

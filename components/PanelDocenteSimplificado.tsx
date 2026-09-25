@@ -416,6 +416,7 @@ export default function PanelDocenteSimplificado() {
     telemetria,
     actualizarResultadoTelemetria,
     agregarResultadoTelemetria,
+    importarLoteResultados,
     eliminarResultado,
     limpiarTelemetria,
   } = useDocente();
@@ -796,6 +797,79 @@ export default function PanelDocenteSimplificado() {
     });
   };
 
+  // Importar archivos JSON recopilados en llave USB o CSV
+  const handleImportarArchivosLote = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const nuevosRegistros: PayloadTelemetria[] = [];
+    let procesados = 0;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      try {
+        const text = await file.text();
+        if (file.name.endsWith(".json")) {
+          const parsed = JSON.parse(text);
+          if (Array.isArray(parsed)) {
+            parsed.forEach((item) => {
+              if (item.estudianteNombre || item.nom || item.estudiante) {
+                nuevosRegistros.push(item);
+              }
+            });
+          } else if (parsed.estudianteNombre || parsed.nom || parsed.c1 || parsed.estudiante) {
+            nuevosRegistros.push(parsed);
+          }
+          procesados++;
+        } else if (file.name.endsWith(".csv") || file.name.endsWith(".txt")) {
+          // Parse CSV
+          const lineas = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+          if (lineas.length > 1) {
+            for (let j = 1; j < lineas.length; j++) {
+              const cols = lineas[j].split(/[;,]/).map(c => c.replace(/^["']|["']$/g, '').trim());
+              if (cols.length >= 4) {
+                const nombreEst = cols[3] || cols[0];
+                const sec = cols[2] || cols[1] || seccionActiva;
+                const cogStr = cols[6] || cols[3] || "80";
+                const porc = parseInt(cogStr.replace(/[^0-9]/g, '')) || 80;
+                nuevosRegistros.push({
+                  webAppId: `diagnostico_${nivelActivo}_importado`,
+                  webAppTitulo: `Diagnóstico ${nivelActivo === '7mo' ? 'Séptimo' : 'Noveno'}`,
+                  docenteId: docente?.idDocente || "DOC-IMPORT",
+                  estudianteNombre: nombreEst,
+                  seccionOGrupo: sec.startsWith("Sección ") ? sec : `Sección ${sec}`,
+                  nivel: nivelActivo === "7mo" ? "7°" : (nivelActivo === "8vo" ? "8°" : "9°"),
+                  puntaje: Math.round((porc / 100) * 10),
+                  puntajeMaximo: 10,
+                  porcentaje: porc,
+                  nivelLogro: calcularNivelLogro(porc),
+                  tiempoSegundos: 60,
+                  totalReactivos: 10,
+                  aciertos: Math.round((porc / 100) * 10),
+                  fallos: Math.max(0, 10 - Math.round((porc / 100) * 10)),
+                  timestamp: Date.now() - (j * 1000),
+                  tokenAntiFraude: `IMPORT-${Date.now()}-${j}`
+                });
+              }
+            }
+            procesados++;
+          }
+        }
+      } catch (err) {
+        console.error("Error al procesar archivo:", file.name, err);
+      }
+    }
+
+    if (nuevosRegistros.length > 0) {
+      importarLoteResultados(nuevosRegistros);
+      alert(`✅ ¡Importación completada con éxito!\n\nSe procesaron ${procesados} archivo(s) y se incorporaron ${nuevosRegistros.length} registro(s) estudiantiles al panel docente.`);
+    } else {
+      alert("⚠️ No se encontraron registros válidos en los archivos seleccionados.");
+    }
+    // Reset file input
+    e.target.value = "";
+  };
+
   const handleEliminarEstudiante = (r: PayloadTelemetria) => {
     const nombre = r.estudianteNombre || "este estudiante";
     if (window.confirm(`¿Estás seguro de que deseas eliminar el registro de "${nombre}"?\n\nEsta acción eliminará permanentemente la evaluación y sus datos asociados del panel docente.`)) {
@@ -823,6 +897,19 @@ export default function PanelDocenteSimplificado() {
 
         {/* Acciones Rápidas en Cabecera */}
         <div className="flex items-center gap-2">
+          {/* Botón de Importación de Lote USB / Archivos JSON o CSV */}
+          <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs transition-all cursor-pointer">
+            <DownloadSimple size={16} weight="bold" />
+            <span className="hidden md:inline">Importar JSON/CSV (USB)</span>
+            <input
+              type="file"
+              accept=".json,.csv,.txt"
+              multiple
+              className="hidden"
+              onChange={handleImportarArchivosLote}
+            />
+          </label>
+
           <button
             type="button"
             onClick={() => setModalEscaner(true)}
