@@ -1,11 +1,11 @@
-# Arquitectura de evaluación diagnóstica híbrida para 7.° año (triangulación formativa MEP 2027)
-**Programa Nacional de Formación Tecnológica (PNFT) • Módulo 1: Diagnóstico Séptimo (Misión en parejas)**  
+﻿# Arquitectura de evaluación diagnóstica híbrida para 7.° año (triangulación formativa MEP 2027)
+**Programa Nacional de Formación Tecnológica (PNFT) • Módulo 1: Diagnóstico Sétimo (Misión en parejas)**  
 *Ministerio de Educación Pública de Costa Rica • Dirección de Recursos Tecnológicos en Educación (DRTE)*  
 *Departamento de Investigación, Desarrollo e Implementación (IDI)*
 
 **Elaborado por:**  
 - Heidy María Cascante Cruz  
-- Rodolfo Pérez Juárez  
+- Rodolfo Juárez Pérez  
 *Asesoría Nacional de Formación Tecnológica • Dirección de Recursos Tecnológicos en Educación*  
 **Fecha de emisión:** Febrero 2027  
 **Versión del documento:** Versión oficial consolidada 1.0 — Enfoque híbrido triangulado para 7.° año
@@ -14,7 +14,7 @@
 
 ## 1. Resumen ejecutivo y diagnóstico del estado actual en 7.° año
 
-En el nivel de séptimo año de secundaria (III Ciclo), la evaluación diagnóstica del **Módulo 1: Fundamentos de algoritmos, pensamiento computacional y trabajo colaborativo** se implementó inicialmente bajo una modalidad en parejas (*Líder y copiloto*) con alta gamificación (*Diagnóstico Séptimo*).
+En el nivel de Sétimo año de secundaria (III Ciclo), la evaluación diagnóstica del **Módulo 1: Fundamentos de algoritmos, pensamiento computacional y trabajo colaborativo** se implementó inicialmente bajo una modalidad en parejas (*Líder y copiloto*) con alta gamificación (*Diagnóstico Sétimo*).
 
 ### Situación actual y oportunidades de mejora identificadas
 1. **Sobredependencia de la automatización algorítmica:** La versión preliminar pretende calificar de forma $100\%$ automatizada no solo el área cognoscitiva, sino también el área psicomotora (movimientos en cuadrícula, tiempos de reacción de semáforo) y el área socioafectiva (escalas Likert rígidas).
@@ -142,5 +142,6 @@ La adopción de este modelo híbrido en 7.° año unifica la visión metodológi
 **Dirección de Recursos Tecnológicos en Educación (DRTE) • Ministerio de Educación Pública**  
 *Elaborado por:*  
 - Heidy María Cascante Cruz  
-- Rodolfo Pérez Juárez  
+- Rodolfo Juárez Pérez  
 *Febrero 2027.*
+

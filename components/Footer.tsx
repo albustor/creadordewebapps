@@ -80,7 +80,7 @@ export default function Footer() {
                     </div>
                     <div className="bg-white/95 border border-teal-200 rounded-lg px-3 py-2 text-center shadow-2xs">
                       <span className="block text-xs font-black text-slate-900">
-                        Rodolfo Pérez Juárez
+                        Rodolfo Juárez Pérez
                       </span>
                       <span className="block text-[10px] text-teal-800 font-semibold uppercase tracking-wider">
                         Asesor Nacional PNFT

@@ -5,8 +5,8 @@ export const DIAGNOSTICO_7MO_DATA: ConfiguracionDiagnosticoNivel = {
   tituloOficial: "CyberQuest 7° — Misión Tecnológica MEP (Evaluación Diagnóstica)",
   asignatura: "Formación Tecnológica (Informática Educativa)",
   modulo: "Módulo 1 — III Ciclo",
-  descripcion: "Aventura interactiva gamificada para 7.° año que explora saberes previos en fundamentos de computación, hardware, gestión de archivos y pensamiento lógico-algorítmico.",
-  totalReactivosCognitivos: 6,
+  descripcion: "Aventura interactiva gamificada para 7.° año que explora saberes previos en fundamentos de computación, hardware, software, gestión de archivos y pensamiento computacional algorítmico.",
+  totalReactivosCognitivos: 10,
   tiempoSugeridoMinutos: 80,
   seccionesSugeridas: [
     "7-1", "7-2", "7-3", "7-4", "7-5",
@@ -15,137 +15,209 @@ export const DIAGNOSTICO_7MO_DATA: ConfiguracionDiagnosticoNivel = {
   ],
   subareas: [
     {
-      id: "sub1_fundamentos_hardware",
+      id: "sub1_hardware_sistemas",
       areaCurricular: "Apropiación tecnológica y digital",
-      nombre: "Grupo de criterios asociados 1: Fundamentos de Computación, Cuidado del Equipo y Hardware",
-      descripcion: "Identifica componentes de procesamiento, reglas de cuidado del equipo y arquitectura básica.",
-      itemsIds: [1, 2],
-      pesoTotal: 2
+      nombre: "Grupo de criterios asociados 1: Hardware, Periféricos y Sistemas Operativos",
+      descripcion: "Identifica componentes de entrada, salida, procesamiento, reglas de cuidado y administración de recursos del sistema operativo.",
+      itemsIds: [1, 2, 3],
+      pesoTotal: 3
     },
     {
-      id: "sub2_software_archivos",
+      id: "sub2_conectividad_archivos",
       areaCurricular: "Apropiación tecnológica y digital",
-      nombre: "Grupo de criterios asociados 2: Periféricos, Software y Gestión de Archivos",
-      descripcion: "Clasifica periféricos de entrada/salida y reconoce unidades de almacenamiento y archivos.",
-      itemsIds: [3, 4],
-      pesoTotal: 2
+      nombre: "Grupo de criterios asociados 2: Conectividad, Redes y Formatos de Archivos Digitales",
+      descripcion: "Reconoce el rol de las redes locales (LAN), clasificación de extensiones de archivos digitales y herramientas de edición de medios.",
+      itemsIds: [4, 5, 6],
+      pesoTotal: 3
     },
     {
       id: "sub3_programacion_algoritmos",
       areaCurricular: "Programación y algoritmos",
-      nombre: "Grupo de criterios asociados 3: Lógica Proposicional, Algoritmia y Control",
-      descripcion: "Reconoce secuencias ordenadas, algoritmos de la vida cotidiana y toma de decisiones condicional.",
-      itemsIds: [5, 6],
-      pesoTotal: 2
+      nombre: "Grupo de criterios asociados 3: Pensamiento Computacional, Algoritmia y Control Lógico",
+      descripcion: "Aplica eventos, traza de variables en ciclos, toma de decisiones condicionales y evaluación de proposiciones lógicas compuestas.",
+      itemsIds: [7, 8, 9, 10],
+      pesoTotal: 4
     }
   ],
   reactivos: [
     {
       id: 1,
-      subarea: "sub1_fundamentos_hardware",
+      subarea: "sub1_hardware_sistemas",
       tipo: "seleccion_unica",
-      enunciado: "¿Cuál es una regla fundamental para el cuidado y uso seguro de una computadora en el laboratorio de informática?",
+      enunciado: "¿Cuál es la función principal de los dispositivos periféricos de entrada (como el teclado y el mouse) en un sistema de cómputo?",
       respuestaCorrecta: "b",
       indicadorId: 1,
-      indicadorTexto: "Aplicar reglas básicas de cuidado, seguridad física y uso responsable de la computadora.",
-      decisionPedagogicaEvidenciado: "Continuar con temas de mantenimiento preventivo y ergonomía.",
-      decisionPedagogicaFortalecer: "Reforzar el protocolo de apagado seguro y cuidado del equipamiento digital.",
+      indicadorTexto: "Identificar la función de dispositivos de entrada, salida y almacenamiento.",
+      decisionPedagogicaEvidenciado: "Continuar con arquitectura avanzada de computadoras.",
+      decisionPedagogicaFortalecer: "Reforzar la clasificación funcional de periféricos de entrada, salida y almacenamiento.",
       puntos: 1,
       opciones: [
-        { id: "a", texto: "a) Consumir alimentos y bebidas sobre el teclado." },
-        { id: "b", texto: "b) Apagar el equipo correctamente por el sistema y mantener limpia el área de trabajo." },
-        { id: "c", texto: "c) Desconectar los cables bruscamente mientras la computadora está encendida." },
-        { id: "d", texto: "d) Mover la CPU bruscamente durante el procesamiento de datos." }
+        { id: "a", texto: "a) Mostrar los resultados visuales en pantalla." },
+        { id: "b", texto: "b) Ingresar datos, comandos e instrucciones a la computadora." },
+        { id: "c", texto: "c) Emitir sonidos y alertas auditivas del sistema." },
+        { id: "d", texto: "d) Enfriar los circuitos internos del procesador." }
       ]
     },
     {
       id: 2,
-      subarea: "sub1_fundamentos_hardware",
+      subarea: "sub1_hardware_sistemas",
       tipo: "seleccion_unica",
-      enunciado: "¿Cuál componente interno es considerado el cerebro de la computadora que procesa los datos y ejecuta las instrucciones?",
+      enunciado: "¿Cuál de los siguientes programas se clasifica como software utilitario orientado al mantenimiento y seguridad del equipo?",
       respuestaCorrecta: "a",
       indicadorId: 2,
-      indicadorTexto: "Identificar los componentes principales de procesamiento y arquitectura básica de computadoras.",
-      decisionPedagogicaEvidenciado: "Articular con interacción de procesador y memorias.",
-      decisionPedagogicaFortalecer: "Realizar mediación visual sobre el rol de la CPU y memoria RAM.",
+      indicadorTexto: "Diferenciar aplicaciones de usuario de programas utilitarios y de seguridad.",
+      decisionPedagogicaEvidenciado: "Articular con seguridad operativa y respaldo de información.",
+      decisionPedagogicaFortalecer: "Realizar mediación visual sobre la tipología de software (sistema, aplicación y utilitarios).",
       puntos: 1,
       opciones: [
-        { id: "a", texto: "a) El Procesador o CPU" },
-        { id: "b", texto: "b) El teclado" },
-        { id: "c", texto: "c) El parlante" },
-        { id: "d", texto: "d) El cable de red" }
+        { id: "a", texto: "a) Antivirus y programas de diagnóstico y limpieza de disco." },
+        { id: "b", texto: "b) Videojuegos recreativos en 3D." },
+        { id: "c", texto: "c) Calculadora básica del sistema." },
+        { id: "d", texto: "d) Navegador web para consultas de internet." }
       ]
     },
     {
       id: 3,
-      subarea: "sub2_software_archivos",
+      subarea: "sub1_hardware_sistemas",
       tipo: "seleccion_unica",
-      enunciado: "¿Cuál de los siguientes es un dispositivo de entrada de datos?",
-      respuestaCorrecta: "a",
+      enunciado: "¿Cuál es la función primordial del Sistema Operativo en una computadora?",
+      respuestaCorrecta: "c",
       indicadorId: 3,
-      indicadorTexto: "Clasificar dispositivos periféricos de entrada, salida y almacenamiento.",
-      decisionPedagogicaEvidenciado: "Continuar con arquitectura de dispositivos.",
-      decisionPedagogicaFortalecer: "Reforzar clasificación funcional de periféricos de entrada y salida.",
+      indicadorTexto: "Reconocer las funciones cardinales del sistema operativo en la administración de recursos.",
+      decisionPedagogicaEvidenciado: "Avanzar a gestión de procesos y almacenamiento.",
+      decisionPedagogicaFortalecer: "Explicar el rol del sistema operativo como administrador de hardware y software.",
       puntos: 1,
       opciones: [
-        { id: "a", texto: "a) Teclado" },
-        { id: "b", texto: "b) Monitor" },
-        { id: "c", texto: "c) Impresora" },
-        { id: "d", texto: "d) Parlantes" }
+        { id: "a", texto: "a) Conectar físicamente los cables eléctricos al tomacorriente." },
+        { id: "b", texto: "b) Diseñar dibujos y logotipos vectoriales." },
+        { id: "c", texto: "c) Servir de puente entre el usuario, aplicaciones y administrar los recursos del hardware." },
+        { id: "d", texto: "d) Fabricar las tarjetas electrónicas de la computadora." }
       ]
     },
     {
       id: 4,
-      subarea: "sub2_software_archivos",
+      subarea: "sub2_conectividad_archivos",
       tipo: "seleccion_unica",
-      enunciado: "¿Cuál dispositivo se utiliza para guardar archivos digitales y llevarlos a otra computadora de forma segura?",
+      enunciado: "En el laboratorio escolar, ¿cuál es la principal ventaja de conectar las computadoras a una Red de Área Local (LAN)?",
       respuestaCorrecta: "b",
       indicadorId: 4,
-      indicadorTexto: "Identificar medios y unidades de almacenamiento digital y gestión de archivos.",
-      decisionPedagogicaEvidenciado: "Articular con organización de carpetas y directorios.",
-      decisionPedagogicaFortalecer: "Explicar gestión de archivos y almacenamiento seguro.",
+      indicadorTexto: "Identificar el rol de las redes de área local para compartir recursos informáticos.",
+      decisionPedagogicaEvidenciado: "Continuar con conceptos de topologías y recursos compartidos.",
+      decisionPedagogicaFortalecer: "Reforzar el concepto de red local y compartición de recursos.",
       puntos: 1,
       opciones: [
-        { id: "a", texto: "a) Micrófono" },
-        { id: "b", texto: "b) Llave de memoria USB" },
-        { id: "c", texto: "c) Teclado" },
-        { id: "d", texto: "d) Pantalla" }
+        { id: "a", texto: "a) Cambiar el color de los monitores automáticamente." },
+        { id: "b", texto: "b) Compartir archivos, carpetas, impresoras y acceso a Internet de forma ágil." },
+        { id: "c", texto: "c) Evitar el uso de electricidad en las computadoras." },
+        { id: "d", texto: "d) Borrar todos los archivos al apagar el equipo." }
       ]
     },
     {
       id: 5,
-      subarea: "sub3_programacion_algoritmos",
+      subarea: "sub2_conectividad_archivos",
       tipo: "seleccion_unica",
-      enunciado: "Para lavarse las manos de forma correcta antes de ingresar al laboratorio, ¿cuál es el orden lógico adecuado?",
+      enunciado: "¿Cuál de las siguientes extensiones corresponde a un formato estándar de archivo de audio digital?",
       respuestaCorrecta: "a",
       indicadorId: 5,
-      indicadorTexto: "Reconocer secuencias lógicas y algoritmos en la vida cotidiana.",
-      decisionPedagogicaEvidenciado: "Avanzar a retos de programación por bloques y pseudocódigo.",
-      decisionPedagogicaFortalecer: "Utilizar actividades desconectadas de secuenciación de instrucciones.",
+      indicadorTexto: "Relacionar extensiones de archivo con el tipo de información digital almacenada.",
+      decisionPedagogicaEvidenciado: "Avanzar a producción multimedia y gestión de archivos.",
+      decisionPedagogicaFortalecer: "Repasar las extensiones más comunes (.mp3, .docx, .png, .pdf).",
       puntos: 1,
       opciones: [
-        { id: "a", texto: "a) Mojar manos ➔ Aplicar jabón ➔ Frotar ➔ Enjuagar ➔ Secar" },
-        { id: "b", texto: "b) Secar ➔ Aplicar jabón ➔ Mojar manos" },
-        { id: "c", texto: "c) Frotar ➔ Secar ➔ Aplicar jabón" },
-        { id: "d", texto: "d) Enjuagar ➔ Secar ➔ Mojar manos" }
+        { id: "a", texto: "a) .mp3 / .wav" },
+        { id: "b", texto: "b) .docx / .txt" },
+        { id: "c", texto: "c) .jpg / .png" },
+        { id: "d", texto: "d) .exe / .bat" }
       ]
     },
     {
       id: 6,
-      subarea: "sub3_programacion_algoritmos",
+      subarea: "sub2_conectividad_archivos",
       tipo: "seleccion_unica",
-      enunciado: "Si un robot debe evitar un charco u obstáculo en su camino, ¿cuál instrucción condicional es la correcta?",
+      enunciado: "Al editar una fotografía digital para un trabajo escolar, ¿qué acción se utiliza para eliminar elementos sobrantes del borde?",
       respuestaCorrecta: "c",
       indicadorId: 6,
-      indicadorTexto: "Aplicar lógica condicional básica en situaciones problema.",
-      decisionPedagogicaEvidenciado: "Articular con programación de sensores y estructuras de control.",
-      decisionPedagogicaFortalecer: "Reforzar la regla Causa-Efecto (SI ... ENTONCES ... SINO).",
+      indicadorTexto: "Aplicar operaciones de transformación y corrección visual sobre imágenes digitales.",
+      decisionPedagogicaEvidenciado: "Continuar con diseño y producción gráfica.",
+      decisionPedagogicaFortalecer: "Realizar taller guiado de recorte y transformación de imágenes.",
       puntos: 1,
       opciones: [
-        { id: "a", texto: "a) Caminar siempre recto sin importar qué hay al frente." },
-        { id: "b", texto: "b) Apagar el robot inmediatamente." },
-        { id: "c", texto: "c) SI detecta charco ENTONCES girar a la derecha, SINO avanzar." },
-        { id: "d", texto: "d) Repetir salto indefinidamente." }
+        { id: "a", texto: "a) Guardar como texto plano." },
+        { id: "b", texto: "b) Subir el volumen del archivo." },
+        { id: "c", texto: "c) Recortar (Crop) y ajustar el encuadre de la imagen." },
+        { id: "d", texto: "d) Duplicar la memoria RAM del equipo." }
+      ]
+    },
+    {
+      id: 7,
+      subarea: "sub3_programacion_algoritmos",
+      tipo: "seleccion_unica",
+      enunciado: "En un entorno de programación por bloques, ¿cuál bloque actúa como disparador de acción o evento?",
+      respuestaCorrecta: "a",
+      indicadorId: 7,
+      indicadorTexto: "Identificar disparadores de acción (eventos) en entornos de programación por bloques.",
+      decisionPedagogicaEvidenciado: "Avanzar a programación dirigida por eventos.",
+      decisionPedagogicaFortalecer: "Reforzar el concepto de evento detonante en programación.",
+      puntos: 1,
+      opciones: [
+        { id: "a", texto: "a) 'Al presionar tecla espacio' o 'Al hacer clic en este objeto'" },
+        { id: "b", texto: "b) 'Sumar 10 puntos'" },
+        { id: "c", texto: "c) 'Esperar 1 segundo'" },
+        { id: "d", texto: "d) 'Fijar tamaño al 100%'" }
+      ]
+    },
+    {
+      id: 8,
+      subarea: "sub3_programacion_algoritmos",
+      tipo: "seleccion_unica",
+      enunciado: "Si una variable llamada 'puntos' inicia en 0 y se ejecuta el ciclo: 'Repetir 3 veces { puntos = puntos + 5 }', ¿cuál es el valor final de la variable?",
+      respuestaCorrecta: "c",
+      indicadorId: 8,
+      indicadorTexto: "Realizar traza secuencial de variables en estructuras repetitivas (bucles).",
+      decisionPedagogicaEvidenciado: "Continuar con bucles anidados y acumuladores.",
+      decisionPedagogicaFortalecer: "Utilizar tablas de traza de variables paso a paso.",
+      puntos: 1,
+      opciones: [
+        { id: "a", texto: "a) 5" },
+        { id: "b", texto: "b) 10" },
+        { id: "c", texto: "c) 15" },
+        { id: "d", texto: "d) 3" }
+      ]
+    },
+    {
+      id: 9,
+      subarea: "sub3_programacion_algoritmos",
+      tipo: "seleccion_unica",
+      enunciado: "En el algoritmo: 'SI bateria < 20% ENTONCES Activar Modo Ahorro, SINO Mantener Normal'. Si la batería marca 15%, ¿qué acción realiza el sistema?",
+      respuestaCorrecta: "b",
+      indicadorId: 9,
+      indicadorTexto: "Evaluar estructuras condicionales simples (Si / Si no) basadas en umbrales.",
+      decisionPedagogicaEvidenciado: "Articular con condicionales dobles y anidados.",
+      decisionPedagogicaFortalecer: "Practicar la evaluación de condiciones lógicas con umbrales numéricos.",
+      puntos: 1,
+      opciones: [
+        { id: "a", texto: "a) El dispositivo se apaga automáticamente." },
+        { id: "b", texto: "b) Se activa el Modo Ahorro porque 15% es menor que 20%." },
+        { id: "c", texto: "c) Se mantiene en Modo Normal." },
+        { id: "d", texto: "d) La batería sube inmediatamente a 100%." }
+      ]
+    },
+    {
+      id: 10,
+      subarea: "sub3_programacion_algoritmos",
+      tipo: "seleccion_unica",
+      enunciado: "¿Cuál es el resultado de verdad de la condición compuesta: '(10 > 5) Y (4 + 2 == 6)'?",
+      respuestaCorrecta: "a",
+      indicadorId: 10,
+      indicadorTexto: "Determinar el valor de verdad en condiciones compuestas con el operador lógico Y.",
+      decisionPedagogicaEvidenciado: "Continuar con operadores lógicos O (OR) y NO (NOT) en algoritmos complejos.",
+      decisionPedagogicaFortalecer: "Reforzar tablas de verdad del operador Y (AND).",
+      puntos: 1,
+      opciones: [
+        { id: "a", texto: "a) Verdadero (porque ambas condiciones se cumplen)." },
+        { id: "b", texto: "b) Falso (porque ninguna condición se cumple)." },
+        { id: "c", texto: "c) Falso (porque solo la primera condición se cumple)." },
+        { id: "d", texto: "d) No se puede calcular." }
       ]
     }
   ],
