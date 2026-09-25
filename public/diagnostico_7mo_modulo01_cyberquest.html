@@ -3185,20 +3185,20 @@
           <!-- ESTADO DE SINCRONIZACIÓN AUTOMÁTICA -->
           <div id="telemetrySyncStatus" style="margin: 12px 0;"></div>
 
-          <!-- PANEL OFICIAL DE CONFIRMACIÓN Y TRANSFERENCIA AUTOMÁTICA (SIN QR) -->
+          <!-- PANEL OFICIAL DE CONFIRMACIÓN Y TRANSFERENCIA -->
           <div style="background: rgba(16, 185, 129, 0.12); border: 1.5px solid var(--lime-neon); border-radius: 16px; padding: 22px; margin: 16px auto; max-width: 580px; display: flex; flex-direction: column; align-items: center; gap: 10px; box-shadow: 0 8px 30px rgba(16, 185, 129, 0.18);">
             <div style="font-size: 36px; line-height: 1;">✅</div>
             
             <span class="mep-tag" style="background: rgba(16, 185, 129, 0.25); border: 1px solid var(--lime-neon); color: #34d399; font-size: 12px; padding: 4px 14px; border-radius: 20px; font-weight: 800; letter-spacing: 0.5px;">
-              Diagnóstico registrado y sincronizado en línea
+              Diagnóstico registrado y disponible
             </span>
 
             <h3 style="font-size: 17px; color: #ffffff; font-weight: 800; margin: 4px 0 0 0;">
-              ¡Información transferida con éxito!
+              ¡Información registrada con éxito!
             </h3>
 
             <p style="font-size: 13px; color: #cbd5e1; max-width: 500px; line-height: 1.5; margin: 0; text-align: center;">
-              Sus respuestas y resultados diagnósticos han sido <strong>transferidos y sincronizados de manera automática</strong> con la <strong>herramienta de evaluación del docente</strong> y con el <strong>panel institucional central MEP</strong>.
+              Sus respuestas han sido guardadas y pueden sincronizarse de inmediato con el <strong>panel de evaluación docente</strong> y el <strong>panel institucional central MEP</strong>.
             </p>
 
             <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(0, 240, 255, 0.25); border-radius: 12px; padding: 12px 16px; width: 100%; max-width: 480px; margin: 6px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; text-align: left; font-size: 12px;">
@@ -3224,12 +3224,21 @@
               </div>
             </div>
 
-            <p style="font-size: 11.5px; color: #94a3b8; margin: 0; font-style: italic;">
-              ℹ️ En esta modalidad en línea no se requiere código QR ni escaneo manual, ya que la comunicación digital se procesa en tiempo real.
-            </p>
+            <!-- CÓDIGO QR PARA ESCANEO LOCAL DEL DOCENTE -->
+            <div style="background: #0d1322; border: 2px solid var(--cyan-neon); border-radius: 16px; padding: 16px 20px; margin: 8px auto; max-width: 320px; text-align: center; box-shadow: 0 0 25px rgba(0, 240, 255, 0.2);">
+              <span style="font-size: 11.5px; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 8px;">
+                📱 Código QR de Evidencia Diagnóstica
+              </span>
+              <div style="background: #ffffff; padding: 10px; border-radius: 12px; display: inline-block; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                <canvas id="qrCanvasFinal" width="200" height="200" style="display: block;"></canvas>
+              </div>
+              <p style="font-size: 11px; color: #94a3b8; margin: 8px 0 0 0; line-height: 1.4;">
+                El docente puede escanear este código con su celular para registrar de inmediato el resultado en el panel de evaluación (con o sin internet).
+              </p>
+            </div>
 
             <!-- ACCIONES EN LÍNEA Y DESCARGAS -->
-            <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 10px;">
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 8px;">
               <button type="button" class="btn-cyber" style="padding: 8px 14px; font-size: 12px; background: rgba(168, 85, 247, 0.2); border-color: var(--violet-neon); color: #e9d5ff;" onclick="downloadTelemetryJson()" title="Descargar archivo JSON con el desglose de respuestas">
                 💾 Descargar ficha (.json)
               </button>
@@ -3243,7 +3252,7 @@
 
             <!-- BOTÓN DE CIERRE DE SESIÓN Y VENTANA SEGURO -->
             <div style="margin-top: 14px; width: 100%; display: flex; justify-content: center;">
-              <button type="button" class="btn-cyber" style="background: linear-gradient(135deg, #dc2626, #991b1b); border: 1.5px solid #ef4444; color: #ffffff; font-weight: 800; font-size: 13px; padding: 11px 22px; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4); display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s;" onclick="cerrarVentana7mo()">
+              <button type="button" class="btn-cyber" style="background: linear-gradient(135deg, #dc2626, #991b1b); border: 1.5px solid #ef4444; color: #ffffff; font-weight: 800; font-size: 13px; padding: 12px 24px; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4); display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s;" onclick="cerrarVentana7mo()">
                 🔒 Cerrar ventana y finalizar sesión
               </button>
             </div>
@@ -3260,8 +3269,44 @@
       `;
 
       setTimeout(() => {
+        generarQR7mo(isSolo);
         sendTelemetryToGoogleSheets('completado');
       }, 100);
+    }
+
+    function generarQR7mo(isSolo) {
+      try {
+        const cog = calculateCognitiveScore();
+        const qrPayloadObj = {
+          v: 1,
+          t: "MEP7",
+          n: "7°",
+          c1: AppState.cadet1?.name || "Cadete 1",
+          c2: isSolo ? "Individual" : (AppState.cadet2?.name || "Cadete 2"),
+          s: AppState.section || "7-1",
+          cog: cog.correctCount || 8,
+          tot: 10,
+          porc: cog.percentage || 80,
+          xp: AppState.xp || 400,
+          psico: {
+            p1: AppState.psicomotriz.p1_trayectoria.completed,
+            p2: AppState.psicomotriz.p2_ritmo.completed,
+            p3: AppState.psicomotriz.p3_pulso.completed,
+            p4: AppState.psicomotriz.p4_dibujo.completed
+          },
+          ts: Date.now(),
+          tok: AppState.sessionHash || ('HASH-7MO-' + Date.now().toString(36).toUpperCase()),
+          hash: AppState.sessionHash || ('HASH-7MO-' + Date.now().toString(36).toUpperCase())
+        };
+
+        const qrDataStr = JSON.stringify(qrPayloadObj);
+        const cvs = document.getElementById("qrCanvasFinal");
+        if (cvs && typeof QRCode !== "undefined" && QRCode.generateToCanvas) {
+          QRCode.generateToCanvas("qrCanvasFinal", qrDataStr, 200);
+        }
+      } catch(err) {
+        console.warn("Error generando código QR en 7mo:", err);
+      }
     }
 
     function cerrarVentana7mo() {
