@@ -1050,9 +1050,17 @@
      * =========================================================================
      */
     (function (root, factory) {
-      if (typeof exports === 'object') module.exports = factory();
-      else root.QRCode = factory();
-    }(this, function () {
+      var qrLib = factory();
+      if (typeof exports === 'object') module.exports = qrLib;
+      if (typeof window !== 'undefined') {
+        window.QRCode = qrLib;
+        window.QRCodeModel = qrLib.QRCodeModel;
+      }
+      if (root) {
+        root.QRCode = qrLib;
+        root.QRCodeModel = qrLib.QRCodeModel;
+      }
+    }(typeof globalThis !== 'undefined' ? globalThis : (typeof window !== 'undefined' ? window : this), function () {
       var QRMode = { MODE_NUMBER: 1 << 0, MODE_ALPHA_NUM: 1 << 1, MODE_8BIT_BYTE: 1 << 2, MODE_KANJI: 1 << 3 };
       var QRErrorCorrectLevel = { L: 1, M: 0, Q: 3, H: 2 };
       var QRMaskPattern = { PATTERN000: 0, PATTERN001: 1, PATTERN010: 2, PATTERN011: 3, PATTERN100: 4, PATTERN101: 5, PATTERN110: 6, PATTERN111: 7 };
@@ -1485,6 +1493,7 @@
         return QRCode(canvasOrId, { text: text, size: size || 250 });
       };
 
+      QRCode.QRCodeModel = QRCodeModel;
       return QRCode;
     }));
 
@@ -3271,41 +3280,91 @@
       setTimeout(() => {
         generarQR7mo(isSolo);
         sendTelemetryToGoogleSheets('completado');
-      }, 100);
+      }, 50);
     }
 
     function generarQR7mo(isSolo) {
       try {
-        const cog = calculateCognitiveScore();
+        const metrics = calculateDiagnosticsMetrics();
+        const secClean = (AppState.section || '7-1').replace(/^sección\s*/i, '').replace(/^seccion\s*/i, '').trim();
+        const c1 = (AppState.cadet1?.name || 'Cadete 1').trim();
+        const c2 = isSolo ? 'Individual' : ((AppState.cadet2?.name || 'Cadete 2').trim());
+        const hash = AppState.sessionHash || ('HASH-7MO-' + Date.now().toString(36).toUpperCase());
+
         const qrPayloadObj = {
-          v: 1,
           t: "MEP7",
-          n: "7°",
-          c1: AppState.cadet1?.name || "Cadete 1",
-          c2: isSolo ? "Individual" : (AppState.cadet2?.name || "Cadete 2"),
-          s: AppState.section || "7-1",
-          cog: cog.correctCount || 8,
-          tot: 10,
-          porc: cog.percentage || 80,
+          tipo: "CYBERQUEST_7MO",
+          sec: secClean,
+          c1: c1,
+          a1: AppState.cadet1?.avatar || '🧑‍💻',
+          c2: c2,
+          a2: isSolo ? '' : (AppState.cadet2?.avatar || '👩‍💻'),
+          p: metrics.psicoScore !== undefined ? metrics.psicoScore : 100,
+          c: metrics.cogScore !== undefined ? metrics.cogScore : 80,
+          s: metrics.socioScore !== undefined ? metrics.socioScore : 80,
+          g: metrics.globalAvg !== undefined ? metrics.globalAvg : 85,
+          lvl: metrics.globalLevel || 'A',
+          h: hash,
           xp: AppState.xp || 400,
-          psico: {
-            p1: AppState.psicomotriz.p1_trayectoria.completed,
-            p2: AppState.psicomotriz.p2_ritmo.completed,
-            p3: AppState.psicomotriz.p3_pulso.completed,
-            p4: AppState.psicomotriz.p4_dibujo.completed
-          },
-          ts: Date.now(),
-          tok: AppState.sessionHash || ('HASH-7MO-' + Date.now().toString(36).toUpperCase()),
-          hash: AppState.sessionHash || ('HASH-7MO-' + Date.now().toString(36).toUpperCase())
+          ts: Date.now()
         };
 
         const qrDataStr = JSON.stringify(qrPayloadObj);
-        const cvs = document.getElementById("qrCanvasFinal");
-        if (cvs && typeof QRCode !== "undefined" && QRCode.generateToCanvas) {
-          QRCode.generateToCanvas("qrCanvasFinal", qrDataStr, 200);
+        const canvas = document.getElementById("qrCanvasFinal");
+        if (!canvas) return;
+
+        let qrRendered = false;
+
+        // 1. Intentar con QRCode.generateToCanvas (0 dependencias en memoria)
+        if (typeof QRCode !== "undefined" && typeof QRCode.generateToCanvas === "function") {
+          try {
+            QRCode.generateToCanvas("qrCanvasFinal", qrDataStr, 220);
+            qrRendered = true;
+          } catch(e1) {
+            console.warn("Fallo QRCode.generateToCanvas, recurriendo a QRCodeModel:", e1);
+          }
+        }
+
+        // 2. Fallback robusto con QRCodeModel directo y pintado pixel a pixel en Canvas (100% Offline)
+        if (!qrRendered) {
+          try {
+            const QRModelClass = (typeof QRCodeModel !== "undefined") ? QRCodeModel : (QRCode && QRCode.QRCodeModel);
+            if (QRModelClass) {
+              const qr = new QRModelClass(0, 1); // 1 = Nivel Error Correction M
+              qr.addData(qrDataStr);
+              qr.make();
+
+              const ctx = canvas.getContext("2d");
+              const size = 220;
+              const count = qr.getModuleCount();
+              const cellSize = size / count;
+
+              canvas.width = size;
+              canvas.height = size;
+              ctx.fillStyle = "#ffffff";
+              ctx.fillRect(0, 0, size, size);
+              ctx.fillStyle = "#000000";
+
+              for (let row = 0; row < count; row++) {
+                for (let col = 0; col < count; col++) {
+                  if (qr.isDark(row, col)) {
+                    ctx.fillRect(
+                      Math.round(col * cellSize),
+                      Math.round(row * cellSize),
+                      Math.ceil(cellSize),
+                      Math.ceil(cellSize)
+                    );
+                  }
+                }
+              }
+              qrRendered = true;
+            }
+          } catch(e2) {
+            console.error("Error en fallback QRCodeModel:", e2);
+          }
         }
       } catch(err) {
-        console.warn("Error generando código QR en 7mo:", err);
+        console.error("Error global generando código QR en 7mo:", err);
       }
     }
 
