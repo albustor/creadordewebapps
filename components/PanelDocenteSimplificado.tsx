@@ -283,8 +283,8 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
   "9no": [
     {
       id: "p1",
-      codigo: "P1. Modularización",
-      titulo: "Modularización y Reconocimiento de Hardware",
+      codigo: "P1. Modulariza",
+      titulo: "Modulariza",
       areaCurricular: "Computación física y robótica",
       preguntaGuia: "«¿Identifica y organiza con autonomía espacial las 3 tarjetas de hardware (Sensor LDR, MCU y Lámpara LED)?»",
       desc: "Resuelve la conexión por partes independientes: identifica y organiza espacialmente las 3 tarjetas de hardware (Sensor LDR, Microcontrolador MCU y Lámpara LED).",
@@ -296,8 +296,8 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
     },
     {
       id: "p2",
-      codigo: "P2. Patrones y Polaridad",
-      titulo: "Reconocimiento de Patrones y Polaridad Eléctrica",
+      codigo: "P2. Reconoce Patrones",
+      titulo: "Reconoce Patrones",
       areaCurricular: "Computación física y robótica",
       preguntaGuia: "«¿Conecta terminales respetando polaridades (VCC 5V 🔴, GND ⚫, Pin A0 🟡, Pin D9 🔵) sin error?»",
       desc: "Identifica las regularidades de polaridad y correspondencia de terminales (VCC 5V 🔴, GND ⚫, Pin A0 🟡, Pin D9 🔵).",
@@ -309,8 +309,8 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
     },
     {
       id: "p3",
-      codigo: "P3. Flujo Algorítmico",
-      titulo: "Formulación del Flujo Algorítmico y Circuito",
+      codigo: "P3. Formula Algoritmo",
+      titulo: "Formula Algoritmo",
       areaCurricular: "Programación y algoritmos",
       preguntaGuia: "«¿Establece el flujo lógico secuencial (Entrada → Proceso → Salida) cerrando el circuito ordenadamente?»",
       desc: "Establece el flujo lógico secuencial del sistema (Entrada → Proceso → Salida) cerrando el circuito eléctrico ordenadamente.",
@@ -322,8 +322,8 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
     },
     {
       id: "p4",
-      codigo: "P4. Programación y Control",
-      titulo: "Programación, Umbrales y Validación de Señal",
+      codigo: "P4. Programa",
+      titulo: "Programa",
       areaCurricular: "Programación y algoritmos",
       preguntaGuia: "«¿Comprueba que al bajar la luz (<300 Lux) el microcontrolador activa la salida digital D9?»",
       desc: "Valida la estructura condicional y asignación de pines: comprueba que al bajar la luz (<300 Lux) el microcontrolador activa la salida digital D9.",
@@ -335,8 +335,8 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
     },
     {
       id: "p5",
-      codigo: "P5. Depuración en Simulación",
-      titulo: "Depuración de Fallas y Reconexión en Banco Interactivo",
+      codigo: "P5. Depura",
+      titulo: "Depura",
       areaCurricular: "Computación física y robótica",
       preguntaGuia: "«¿Detecta la falla técnica inyectada y reconecta físicamente el cable en el puerto A0 de forma autónoma?»",
       desc: "Detecta la falla técnica inyectada en el simulador (señal conectada a 5V en vez de A0) y ejecuta la reconexión física del cable en el banco interactivo.",
@@ -348,8 +348,8 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
     },
     {
       id: "p6",
-      codigo: "P6. Transferencia Técnica",
-      titulo: "Transferencia Técnica y Justificación Argumentada",
+      codigo: "P6. Transferencia",
+      titulo: "Transferencia",
       areaCurricular: "Computación física y robótica",
       preguntaGuia: "«¿Fundamenta técnicamente la diferencia entre señal analógica variable (A0) y alimentación fija (5V)?»",
       desc: "Transfiere el concepto a la justificación técnica: explica por qué la entrada analógica A0 lee voltajes variables según la luz mientras que 5V es fija.",
