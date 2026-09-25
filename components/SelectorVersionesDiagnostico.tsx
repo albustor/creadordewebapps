@@ -175,7 +175,7 @@ export default function SelectorVersionesDiagnostico({
             <ul className="list-disc list-inside text-slate-700 space-y-1.5 font-medium text-[11.5px] leading-relaxed">
               <li><strong>Compartir el Enlace:</strong> Proyecta el código QR o copia y comparte el enlace de <em>Estudiantes en Línea</em> en el laboratorio.</li>
               <li><strong>Identificación Automática:</strong> El enlace ya lleva precargado tu nombre como docente y tu institución de forma inmutable.</li>
-              <li><strong>Recepción en Vivo:</strong> Conforme los estudiantes contestan y completan la simulación, sus calificaciones e indicadores se reflejan en tu <strong>Dashboard Docente</strong> y en el <strong>Módulo Evaluador</strong> en tiempo real.</li>
+              <li><strong>Recepción en Vivo:</strong> Conforme los estudiantes contestan y completan la simulación, sus calificaciones e indicadores se reflejan en tu <strong>Panel de Evaluación</strong> y en el <strong>Módulo Evaluador</strong> en tiempo real.</li>
             </ul>
           </div>
         </div>
@@ -194,7 +194,7 @@ export default function SelectorVersionesDiagnostico({
               </span>
               <span className="text-xs font-bold text-emerald-700">{nivel} Año</span>
             </div>
-            <span className="text-xs text-emerald-800 font-semibold">Telemetría en Vivo al Dashboard</span>
+            <span className="text-xs text-emerald-800 font-semibold">Telemetría en Vivo al Panel de Evaluación</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

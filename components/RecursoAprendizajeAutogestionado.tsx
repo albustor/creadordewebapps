@@ -320,9 +320,9 @@ const ETAPAS_DATOS: EtapaAprendizaje[] = [
   {
     id: 6,
     titulo: "Etapa 6: Consolidación, analítica y recomendaciones DUA (/dashboard)",
-    subtitulo: "Tablero de control con datos reales, semáforos comparativos y sugerencias pedagógicas.",
+    subtitulo: "Panel de evaluación con datos reales, semáforos comparativos y sugerencias pedagógicas.",
     enlaceAccion: {
-      texto: "Abrir Dashboard Docente",
+      texto: "Abrir Panel de Evaluación",
       url: "/dashboard",
     },
     infografia: {

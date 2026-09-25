@@ -208,7 +208,7 @@ export default function ConfiguradorInstrumentoDashboard({
               </span>
             </div>
             <h2 className="text-xl sm:text-2xl font-black text-slate-900">
-              Configurador del Dashboard & Carga de Instrumento Base
+              Configurador del Panel de Evaluación & Carga de Instrumento Base
             </h2>
             <p className="text-xs text-slate-500">
               Personaliza el enfoque evaluativo, las escalas de logro y los criterios de tu planeamiento oficial
@@ -227,7 +227,7 @@ export default function ConfiguradorInstrumentoDashboard({
           {/* Selector de Tipo de Proceso (Diagnóstico vs Trabajo Cotidiano) */}
           <div className="space-y-2">
             <label className="block text-xs font-extrabold text-slate-800 uppercase tracking-wider">
-              1. Enfoque / Modo de Evaluación del Dashboard:
+              1. Enfoque / Modo del Panel de Evaluación:
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <button

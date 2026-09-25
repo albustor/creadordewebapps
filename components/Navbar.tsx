@@ -36,9 +36,9 @@ export default function Navbar() {
     ? [
         {
           href: "/dashboard",
-          label: "Panel Docente",
+          label: "Panel de Evaluación",
           icon: <ChartBar size={18} weight="duotone" />,
-          titulo: "Panel de control docente, gestión de grupos, áreas y telemetría de 7.° y 9.°",
+          titulo: "Panel de evaluación docente, gestión de grupos, áreas curriculares y telemetría de 7.° y 9.°",
         },
         ...(esAsesor
           ? [

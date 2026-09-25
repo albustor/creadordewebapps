@@ -3,7 +3,10 @@
 *Ministerio de Educación Pública de Costa Rica • Dirección de Recursos Tecnológicos en Educación (DRTE)*  
 *Departamento de Investigación, Desarrollo e Implementación (IDI)*
 
-**Elaborado por:** Allan Morera Araya y Alberto Bustos Ortega  
+**Elaborado por:**  
+- Heidy Cordonero Solano  
+- Rodolfo González Gutiérrez  
+*Asesores Nacionales de Formación Tecnológica / Informática Educativa*  
 **Fecha de emisión:** Febrero 2027  
 **Versión del documento:** Versión oficial consolidada 1.0 — Enfoque híbrido triangulado para 7.° año
 
@@ -137,4 +140,7 @@ La adopción de este modelo híbrido en 7.° año unifica la visión metodológi
 ---
 
 **Dirección de Recursos Tecnológicos en Educación (DRTE) • Ministerio de Educación Pública**  
-*Elaborado por: Allan Morera Araya y Alberto Bustos Ortega • Febrero 2027.*
+*Elaborado por:*  
+- Heidy Cordonero Solano  
+- Rodolfo González Gutiérrez  
+*Febrero 2027.*

@@ -52,6 +52,9 @@ import {
   Check,
   X,
   Compass,
+  CaretDown,
+  CaretUp,
+  CaretRight,
 } from "@phosphor-icons/react";
 
 export type SeccionPanel =
@@ -411,6 +414,7 @@ export default function PanelDocenteSimplificado() {
   const [guiaSimbologiaAbierta, setGuiaSimbologiaAbierta] = useState(false);
   const [criterioModalDetalle, setCriterioModalDetalle] = useState<CriterioPsicomotorOficial | null>(null);
   const [criterioSocioModalDetalle, setCriterioSocioModalDetalle] = useState<CriterioSocioafectivoOficial | null>(null);
+  const [acordeonDimensionesSocio, setAcordeonDimensionesSocio] = useState(false);
   const [guardadosFeedback, setGuardadosFeedback] = useState<Record<string, boolean>>({});
   const [modalAnalisisPsicoIA, setModalAnalisisPsicoIA] = useState(false);
 
@@ -1489,42 +1493,85 @@ export default function PanelDocenteSimplificado() {
                   </div>
                 </div>
 
-                {/* Las 4 Dimensiones Socioafectivas Oficiales del MEP con Pregunta de Reflexión */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {(CRITERIOS_SOCIOAFECTIVOS_MAP[nivelActivo] || CRITERIOS_SOCIOAFECTIVOS_MAP["7mo"]).map((crit) => (
-                    <div
-                      key={crit.id}
-                      onClick={() => setCriterioSocioModalDetalle(crit)}
-                      className="bg-white p-4 rounded-xl border-l-4 border-l-[#1B5E59] border border-slate-200 shadow-2xs hover:shadow-md transition-all cursor-pointer group flex flex-col justify-between"
-                      title="Haga clic para ver la rúbrica oficial y niveles de logro"
-                    >
-                      <div>
-                        <div className="flex items-center justify-between gap-2 mb-1.5">
-                          <span className="text-xs font-black text-[#1B5E59] group-hover:text-teal-700 transition-colors">
-                            {crit.codigo}
-                          </span>
-                          <span className="text-[10px] bg-teal-50 text-[#1B5E59] font-bold px-2 py-0.5 rounded border border-teal-200">
-                            MEP
-                          </span>
-                        </div>
-                        <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200/80 mb-2">
-                          <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-0.5">
-                            Pregunta de reflexión:
-                          </span>
-                          <p className="text-xs font-semibold text-slate-800 italic leading-snug">
-                            {crit.preguntaReflexion}
-                          </p>
-                        </div>
+                {/* Acordeón Plegable: Las 4 Dimensiones Socioafectivas Oficiales del MEP con Preguntas Guía */}
+                <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden transition-all">
+                  <button
+                    type="button"
+                    onClick={() => setAcordeonDimensionesSocio(!acordeonDimensionesSocio)}
+                    className="w-full p-4 flex items-center justify-between gap-3 bg-gradient-to-r from-teal-50/70 via-slate-50 to-white hover:bg-teal-50 transition-colors text-left cursor-pointer select-none"
+                    aria-expanded={acordeonDimensionesSocio}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-[#D1EBE7] text-[#1B5E59] flex items-center justify-center font-bold text-sm shrink-0">
+                        <Heart size={18} weight="fill" />
                       </div>
-                      
-                      <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span className="text-slate-500 font-medium">3 Niveles: C ➔ B ➔ A</span>
-                        <span className="text-[#1B5E59] font-bold underline group-hover:no-underline">
-                          Ver detalle rúbrica
-                        </span>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h4 className="text-xs sm:text-sm font-black text-slate-900 uppercase tracking-wide">
+                            Dimensiones y Preguntas Guía Socioafectivas (S1 a S4)
+                          </h4>
+                          <span className="px-2 py-0.5 rounded-full bg-teal-100 text-[#1B5E59] font-bold text-[10px] border border-teal-300">
+                            MEP Oficial
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-slate-500 mt-0.5">
+                          {acordeonDimensionesSocio
+                            ? "Haga clic para contraer y optimizar el espacio de la tabla de observación."
+                            : "Despliegue para consultar las preguntas de reflexión y rúbricas de logro (S1: Calidad, S2: Error, S3: Trabajo en equipo, S4: Perseverancia)."}
+                        </p>
                       </div>
                     </div>
-                  ))}
+
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="hidden sm:inline-block text-xs font-bold text-[#1B5E59]">
+                        {acordeonDimensionesSocio ? "Contraer dimensiones" : "Ver 4 dimensiones"}
+                      </span>
+                      <div className={`w-7 h-7 rounded-lg flex items-center justify-center bg-white border border-slate-200 text-slate-600 transition-transform duration-200 ${acordeonDimensionesSocio ? "rotate-180" : ""}`}>
+                        <CaretDown size={16} weight="bold" />
+                      </div>
+                    </div>
+                  </button>
+
+                  {acordeonDimensionesSocio && (
+                    <div className="p-4 pt-2 border-t border-slate-100 bg-slate-50/50 animate-fadeIn">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {(CRITERIOS_SOCIOAFECTIVOS_MAP[nivelActivo] || CRITERIOS_SOCIOAFECTIVOS_MAP["7mo"]).map((crit) => (
+                          <div
+                            key={crit.id}
+                            onClick={() => setCriterioSocioModalDetalle(crit)}
+                            className="bg-white p-4 rounded-xl border-l-4 border-l-[#1B5E59] border border-slate-200 shadow-2xs hover:shadow-md transition-all cursor-pointer group flex flex-col justify-between"
+                            title="Haga clic para ver la rúbrica oficial y niveles de logro"
+                          >
+                            <div>
+                              <div className="flex items-center justify-between gap-2 mb-1.5">
+                                <span className="text-xs font-black text-[#1B5E59] group-hover:text-teal-700 transition-colors">
+                                  {crit.codigo}
+                                </span>
+                                <span className="text-[10px] bg-teal-50 text-[#1B5E59] font-bold px-2 py-0.5 rounded border border-teal-200">
+                                  MEP
+                                </span>
+                              </div>
+                              <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200/80 mb-2">
+                                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-0.5">
+                                  Pregunta de reflexión:
+                                </span>
+                                <p className="text-xs font-semibold text-slate-800 italic leading-snug">
+                                  {crit.preguntaReflexion}
+                                </p>
+                              </div>
+                            </div>
+                            
+                            <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                              <span className="text-slate-500 font-medium">3 Niveles: C ➔ B ➔ A</span>
+                              <span className="text-[#1B5E59] font-bold underline group-hover:no-underline">
+                                Ver detalle rúbrica
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Matriz Interactiva de Observación Socioafectiva */}

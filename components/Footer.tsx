@@ -33,7 +33,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/dashboard" className="hover:text-emerald-800 transition-colors font-semibold text-emerald-800">
-                  Dashboard Docente (7° y 9°)
+                  Panel de Evaluación (7.° y 9.°)
                 </Link>
               </li>
               <li>
@@ -83,20 +83,37 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Elaborado por: Allan Morera Araya, Alberto Bustos Ortega */}
-            <div className="space-y-2 md:text-right">
-              <h4 className="text-xs sm:text-sm font-black text-[#0f2d4a]">
-                Elaborado por:
-              </h4>
-              <div className="flex items-center md:justify-end gap-2 flex-wrap">
-                <span className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-50 text-emerald-900 font-bold text-xs border border-emerald-300 shadow-2xs">
-                  Allan Morera Araya
+            {/* Elaborado por: Asesorías Nacionales MEP por Nivel */}
+            <div className="space-y-3 md:text-right">
+              <div>
+                <span className="text-[11px] font-black text-[#1B5E59] uppercase tracking-wider block">
+                  7.° Año • CyberQuest 7.°
                 </span>
-                <span className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-50 text-emerald-900 font-bold text-xs border border-emerald-300 shadow-2xs">
-                  Alberto Bustos Ortega
-                </span>
+                <div className="flex flex-col md:items-end gap-1 mt-1">
+                  <span className="inline-flex items-center px-3 py-1 rounded-lg bg-teal-50 text-teal-950 font-bold text-xs border border-teal-200 shadow-2xs">
+                    Heidy Cordonero Solano
+                  </span>
+                  <span className="inline-flex items-center px-3 py-1 rounded-lg bg-teal-50 text-teal-950 font-bold text-xs border border-teal-200 shadow-2xs">
+                    Rodolfo González Gutiérrez
+                  </span>
+                </div>
               </div>
-              <p className="text-xs font-bold text-stone-600 pt-1">
+
+              <div>
+                <span className="text-[11px] font-black text-[#1B5E59] uppercase tracking-wider block">
+                  9.° Año • Aula Inteligente
+                </span>
+                <div className="flex flex-col md:items-end gap-1 mt-1">
+                  <span className="inline-flex items-center px-3 py-1 rounded-lg bg-emerald-50 text-emerald-950 font-bold text-xs border border-emerald-300 shadow-2xs">
+                    Allan Morera Araya
+                  </span>
+                  <span className="inline-flex items-center px-3 py-1 rounded-lg bg-emerald-50 text-emerald-950 font-bold text-xs border border-emerald-300 shadow-2xs">
+                    Alberto Bustos Ortega
+                  </span>
+                </div>
+              </div>
+
+              <p className="text-xs font-bold text-stone-500 pt-0.5">
                 Febrero 2027.
               </p>
             </div>
@@ -105,7 +122,7 @@ export default function Footer() {
 
         <div className="pt-6 border-t border-stone-200 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-stone-500">
           <div>
-            © Diagnóstico & Dashboard • Tecnologías de la Información (7° y 9° año).
+            © Diagnóstico & Panel de Evaluación • Tecnologías de la Información (7.° y 9.° año).
           </div>
           <div>
             Optimizado para computadoras de laboratorios, PCs y portátiles.
