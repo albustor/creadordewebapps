@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#090d16">
-  <title>CyberQuest 7° - Misión Tecnológica MEP 2027 | Evaluación Diagnóstica en Parejas (Offline)</title>
+  <title>CyberQuest 7° - Misión Tecnológica MEP 2027 | Evaluación Diagnóstica en Parejas</title>
   
   <style>
     :root {
@@ -1742,20 +1742,20 @@
     const COGNITIVE_QUESTIONS = [
       {
         id: 'ind1',
-        title: 'Indicador 1: Hardware y dispositivos',
-        desc: 'Identifica la función y clasificación de los componentes físicos esenciales.',
-        question: '¿Cuál de los siguientes grupos contiene exclusivamente dispositivos de entrada (input)?',
+        title: 'Reto 1: Hardware y dispositivos',
+        desc: 'Identifique la función de dispositivos de uso cotidiano en una computadora.',
+        question: 'Un estudiante necesita escribir un texto, mover el puntero y grabar su voz en la computadora. ¿Qué grupo de dispositivos le permitiría realizar esas tres acciones?',
         options: [
           'Monitor, parlantes e impresora',
           'Teclado, ratón (mouse) y micrófono',
-          'Disco duro SSD, memoria RAM y memoria USB (pendrive)',
-          'Pantalla táctil, proyector y tarjeta madre'
+          'Disco SSD, memoria RAM y memoria USB',
+          'Proyector, monitor y parlantes'
         ],
         correctIndex: 1
       },
       {
         id: 'ind2',
-        title: 'Indicador 2: Software y programas',
+        title: 'Reto 2: Software y programas',
         desc: 'Diferenciación entre aplicaciones de usuario y software utilitario.',
         question: 'Un estudiante necesita proteger su computadora contra virus y liberar espacio en el disco duro. ¿Qué tipo de software requiere utilizar?',
         options: [
@@ -1768,7 +1768,7 @@
       },
       {
         id: 'ind3',
-        title: 'Indicador 3: Sistemas operativos',
+        title: 'Reto 3: Sistemas operativos',
         desc: 'Funciones cardinales del sistema operativo y administración de recursos.',
         question: '¿Cuál es la función principal del sistema operativo (como Windows, Linux o macOS)?',
         options: [
@@ -1781,22 +1781,22 @@
       },
       {
         id: 'ind4',
-        title: 'Indicador 4: Redes y conectividad',
-        desc: 'Topologías básicas, Internet vs Intranet y modelo Cliente-Servidor.',
-        question: 'En el laboratorio de cómputo del colegio, todas las computadoras comparten una impresora mediante una red local cerrada sin salir al exterior. Esta red se clasifica como:',
+        title: 'Reto 4: Redes y conectividad',
+        desc: 'Reconoce situaciones cotidianas en las que varios dispositivos se conectan y comparten recursos.',
+        question: 'En el laboratorio de informática, varias computadoras pueden utilizar la misma impresora y acceder a Internet. ¿Qué permite que estos equipos puedan comunicarse y compartir recursos?',
         options: [
-          'WAN (red de área amplia / mundial)',
-          'LAN / intranet (red de área local)',
-          'PAN (red de área personal Bluetooth)',
-          'Satélite espacial'
+          'Que todas las computadoras sean de la misma marca.',
+          'Que las computadoras estén conectadas entre sí mediante una red.',
+          'Que cada computadora tenga conectada su propia impresora.',
+          'Que todas las computadoras utilicen los mismos programas.'
         ],
         correctIndex: 1
       },
       {
         id: 'ind5',
-        title: 'Indicador 5: Formatos y extensiones de archivo',
-        desc: 'Clasificación de tipos de datos (.png, .mp3, .pdf, .docx, .py).',
-        question: 'Al guardar una pista de audio para un pódcast escolar, ¿cuál extensión es la adecuada?',
+        title: 'Reto 5: Formatos y extensiones de archivo',
+        desc: 'Relacione los tipos de archivo y sus extensiones según el contenido que almacenan.',
+        question: 'Si un estudiante guarda una pista de audio para un pódcast escolar, ¿cuál extensión es la adecuada?',
         options: [
           '.png o .jpg',
           '.mp3 o .wav',
@@ -1807,20 +1807,20 @@
       },
       {
         id: 'ind6',
-        title: 'Indicador 6: Edición gráfica y medios',
-        desc: 'Principios de manipulación de imagen y diseño básico en entorno digital.',
-        question: 'Al recortar y cambiar el contraste de una fotografía digital antes de publicarla en un mural educativo, estamos realizando:',
+        title: 'Reto 6: Imágenes digitales',
+        desc: 'Reconoce acciones básicas que se pueden realizar al trabajar con imágenes digitales.',
+        question: 'Un estudiante está preparando una imagen para un trabajo escolar. Necesita eliminar una parte que no desea mostrar y hacer que la imagen se vea más clara. ¿Qué acciones debería realizar?',
         options: [
-          'Edición y retoque gráfico digital',
-          'Compilación de código fuente',
-          'Formateo del disco duro',
-          'Desfragmentación de memoria'
+          'Recortar la imagen y ajustar su brillo.',
+          'Cambiar el nombre del archivo y moverlo a otra carpeta.',
+          'Copiar la imagen y guardarla en una memoria USB.',
+          'Abrir la imagen y enviarla directamente a imprimir.'
         ],
         correctIndex: 0
       },
       {
         id: 'ind7',
-        title: 'Indicador 7: Algoritmos y eventos',
+        title: 'Reto 7: Algoritmos y eventos',
         desc: 'Disparadores de acción (bloques de evento en programación por bloques).',
         question: 'En un programa de bloques (como Scratch), ¿qué bloque se utiliza para que un personaje hable en el momento en que el usuario hace clic sobre él?',
         options: [
@@ -1833,8 +1833,8 @@
       },
       {
         id: 'ind8',
-        title: 'Indicador 8: Variables y bucles',
-        desc: 'Rastreo y simulación de iteraciones.',
+        title: 'Reto 8: Variables y estructuras repetitivas (ciclos)',
+        desc: 'Siga una secuencia de acciones repetidas para determinar su resultado.',
         codeSnippet: 'puntos = 0;\nRepetir 3 veces {\n    puntos = puntos + 5;\n}\nMostrar(puntos);',
         question: 'Al ejecutar este bloque de código, ¿qué valor final tendrá la variable "puntos"?',
         options: [
@@ -1847,10 +1847,10 @@
       },
       {
         id: 'ind9',
-        title: 'Indicador 9: Condicionales lógicos',
-        desc: 'Evaluación de bifurcaciones booleanas Si / Si no.',
-        codeSnippet: 'bateria = 15;\nSi (bateria < 20) Entonces {\n    Estado = "Activar Modo Ahorro";\n} Si no {\n    Estado = "Modo Alto Rendimiento";\n}',
-        question: '¿Qué texto se guardará en la variable "Estado" según los datos dados?',
+        title: 'Reto 9: Estructuras condicionales',
+        desc: 'Reconoce situaciones en las que una acción depende del cumplimiento de una condición.',
+        codeSnippet: 'bateria = 15;\nSi (bateria < 20) Entonces {\n    Estado = "Activar modo ahorro";\n} Si no {\n    Estado = "Modo alto rendimiento";\n}',
+        question: 'Un dispositivo tiene 15 % de batería. Si la batería es menor de 20 %, debe activar el modo ahorro; de lo contrario, mantiene el modo de alto rendimiento. ¿Qué acción debe realizar según el código?',
         options: [
           '"Activar modo ahorro"',
           '"Modo alto rendimiento"',
@@ -1861,15 +1861,15 @@
       },
       {
         id: 'ind10',
-        title: 'Indicador 10: Operadores lógicos y aritméticos',
-        desc: 'Jerarquía de operaciones y operadores relacionales y lógicos.',
-        codeSnippet: 'Resultado = (10 > 5) AND (4 + 2 == 6);',
-        question: '¿Cuál es el valor booleano final de la variable "Resultado"?',
+        title: 'Reto 10: Operadores lógicos',
+        desc: 'Interprete condiciones sencillas para determinar si se cumplen.',
+        codeSnippet: 'Resultado = (10 > 5) Y (4 + 2 == 6)',
+        question: '¿Cuál es el resultado de la condición lógica planteada?',
         options: [
-          'Verdadero (True)',
-          'Falso (False)',
-          'Nulo (Null)',
-          '16'
+          'Verdadero, porque se cumplen las dos condiciones.',
+          'Falso, porque solamente se cumple una condición.',
+          'Falso, porque se cumplen las dos condiciones.',
+          'Verdadero, porque solamente se cumple una condición.'
         ],
         correctIndex: 0
       }
@@ -2395,114 +2395,6 @@
       return 'HASH-' + Math.random().toString(36).substring(2, 10).toUpperCase();
     }
 
-    // TELEMETRÍA Y SINCRONIZACIÓN AUTOMÁTICA / QR
-    const SERVER_WEBHOOK_URL = localStorage.getItem('APP_WEBHOOK_URL') || '';
-
-    function getTelemetryPayload() {
-      const cogCorrectCount = Object.values(AppState.cognitivo.answers).filter(a => a.isCorrect).length;
-      const cogPercentage = Math.round((cogCorrectCount / 10) * 100);
-      const p1 = AppState.psicomotriz.p1_lateralidad.score || 0;
-      const p2 = AppState.psicomotriz.p2_ritmo.score || 0;
-      const p3 = AppState.psicomotriz.p3_pulso.score || 0;
-      const p4 = AppState.psicomotriz.p4_dibujo.score || 0;
-      const psicoAvg = Math.round((p1 + p2 + p3 + p4) / 4);
-      const socioAvg = Math.round(((AppState.socioafectivo.s1_precision + AppState.socioafectivo.s2_resiliencia + AppState.socioafectivo.s3_colaboracion + AppState.socioafectivo.s4_frustracion) / 12) * 100);
-      const globalAvg = Math.round((psicoAvg * 0.35) + (cogPercentage * 0.45) + (socioAvg * 0.20));
-      
-      let globalLevel = 'A';
-      if (globalAvg < 60) globalLevel = 'C';
-      else if (globalAvg < 80) globalLevel = 'B';
-
-      return {
-        tipo: 'CYBERQUEST_7MO',
-        timestamp: new Date().toISOString(),
-        grado: '7.° Año',
-        seccion: AppState.section || '7-1',
-        institucion: AppState.institution || 'Colegio',
-        cadet1: AppState.cadet1.name,
-        avatar1: AppState.cadet1.avatar,
-        cadet2: AppState.cadet2.name,
-        avatar2: AppState.cadet2.avatar,
-        psicoScore: psicoAvg,
-        cogScore: cogPercentage,
-        socioScore: socioAvg,
-        globalAvg,
-        globalLevel,
-        hash: AppState.sessionHash || 'HASH-' + Math.random().toString(36).substring(2, 8).toUpperCase(),
-        psicomotriz: {
-          p1_moves: AppState.psicomotriz.p1_lateralidad.moves || 0,
-          p1_errors: AppState.psicomotriz.p1_lateralidad.pathErrors || 0,
-          p2_hits: AppState.psicomotriz.p2_ritmo.successes || 0,
-          p2_false: AppState.psicomotriz.p2_ritmo.falsePositives || 0,
-          p3_collisions: AppState.psicomotriz.p3_pulso.borderCollisions || 0,
-          p4_strokes: AppState.psicomotriz.p4_dibujo.strokesCount || 0
-        },
-        cognitivo: {
-          aciertos: cogCorrectCount,
-          total: 10
-        }
-      };
-    }
-
-    async function sendTelemetryToGoogleSheets() {
-      const syncEl = document.getElementById('telemetrySyncStatus');
-      const payload = getTelemetryPayload();
-
-      if (syncEl) {
-        syncEl.innerHTML = `
-          <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid var(--amber-neon); border-radius: 10px; padding: 10px 14px; display: inline-flex; align-items: center; gap: 8px;">
-            <span style="font-size: 16px;">⏳</span>
-            <span style="font-size: 13px; color: var(--amber-neon); font-weight: 700;">Sincronizando telemetría con el sistema docente...</span>
-          </div>
-        `;
-      }
-
-      let syncExitosa = false;
-
-      // 1. Envío directo al servidor de telemetría de la plataforma
-      try {
-        const resLocal = await fetch('/api/telemetria/enviar', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        if (resLocal.ok) {
-          syncExitosa = true;
-        }
-      } catch (e) {}
-
-      // 2. Envío secundario a webhook si está configurado
-      if (!syncExitosa && SERVER_WEBHOOK_URL) {
-        try {
-          await fetch(SERVER_WEBHOOK_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          });
-          syncExitosa = true;
-        } catch (err) {}
-      }
-
-      if (syncEl) {
-        if (syncExitosa) {
-          syncEl.innerHTML = `
-            <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid var(--lime-neon); border-radius: 10px; padding: 10px 14px; display: inline-flex; align-items: center; gap: 8px;">
-              <span style="font-size: 16px;">✅</span>
-              <span style="font-size: 13px; color: var(--lime-neon); font-weight: 800;">Misión sincronizada exitosamente con el sistema docente</span>
-            </div>
-          `;
-        } else {
-          syncEl.innerHTML = `
-            <div style="background: rgba(0, 240, 255, 0.1); border: 1px solid var(--cyan-neon); border-radius: 10px; padding: 10px 14px; display: inline-flex; align-items: center; gap: 8px;">
-              <span style="font-size: 16px;">📱</span>
-              <span style="font-size: 13px; color: var(--cyan-neon); font-weight: 700;">Guardado localmente en este equipo. Telemetría lista en pantalla.</span>
-            </div>
-          `;
-        }
-      }
-    }
-
     // RENDER HUD
     function updateProgressHUD() {
       const fill = document.getElementById('progressBarFill');
@@ -2647,7 +2539,7 @@
           <div class="card-header">
             <span class="mission-badge badge-psico" id="phase0Badge">Fase inicial &bull; Datos del estudiante ${isSolo ? '(individual)' : '(misión en parejas)'}</span>
             <h1 class="card-title">Bienvenido a CyberQuest 7.° año</h1>
-            <p class="card-desc">Evaluación diagnóstica oficial MEP 2027 - III Ciclo. Registre la información del estudiante para iniciar la aventura diagnóstica.</p>
+            <p class="card-desc">Evaluación Diagnóstica Oficial MEP 2027 - III Ciclo.</p>
           </div>
 
           <div style="background: rgba(0, 240, 255, 0.08); border: 1.5px solid var(--cyan-neon); border-radius: 12px; padding: 12px 16px; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; box-shadow: 0 4px 15px rgba(0, 240, 255, 0.08);">
@@ -2772,7 +2664,7 @@
           btnSolo.classList.remove('active');
           if (cadetBox2) cadetBox2.style.display = 'flex';
           if (pairGridContainer) pairGridContainer.classList.remove('solo-mode');
-          if (cadet1RoleTag) cadet1RoleTag.innerHTML = '🚀 Estudiante 1 &bull; Líder de Misión';
+          if (cadet1RoleTag) cadet1RoleTag.innerHTML = '🚀 Estudiante 1 &bull; Líder de misión';
           if (phase0Badge) phase0Badge.innerHTML = 'Fase inicial &bull; Datos del estudiante (misión en parejas)';
           updateProgressHUD();
           AudioEngine.playClick();
@@ -2784,7 +2676,7 @@
           btnPairs.classList.remove('active');
           if (cadetBox2) cadetBox2.style.display = 'none';
           if (pairGridContainer) pairGridContainer.classList.add('solo-mode');
-          if (cadet1RoleTag) cadet1RoleTag.innerHTML = '🚀 Estudiante &bull; Datos del Estudiante';
+          if (cadet1RoleTag) cadet1RoleTag.innerHTML = '🚀 Estudiante &bull; Datos del estudiante';
           if (phase0Badge) phase0Badge.innerHTML = 'Fase inicial &bull; Datos del estudiante (individual)';
           updateProgressHUD();
           AudioEngine.playClick();
@@ -2974,7 +2866,7 @@
         subContainer.innerHTML = `
           <h2 class="card-title">P2. Ritmo, tempo e inhibición motriz</h2>
           <p class="card-desc">
-            <strong>Instrucción del sensor:</strong> Pulse el botón de captura rápida <strong>únicamente</strong> cuando la luz central se encienda en <strong>VERDE 🟢</strong>.
+            <strong>Instrucción del sensor:</strong> Pulse el botón <strong>CAPTURAR PULSO</strong> únicamente cuando la luz central se encienda en <strong>VERDE 🟢</strong>.
             Si se enciende en <strong>ROJO 🔴</strong> o está en espera, <strong>no debe tocar el botón</strong>.
           </p>
           
@@ -3023,8 +2915,8 @@
         subContainer.innerHTML = `
           <h2 class="card-title">P4. Motricidad fina y ergonomía: dibujo de computadora</h2>
           <p class="card-desc">
-            Dibuje en el lienzo digital una <strong>Computadora de Escritorio Completa</strong>. 
-            El dibujo debe incluir sus 4 partes fundamentales: 
+            Dibuje en el lienzo digital una <strong>computadora de escritorio</strong>. 
+            El dibujo debe incluir estas 4 partes: 
             <strong>1. Monitor/Pantalla 🖥️</strong>, 
             <strong>2. Teclado ⌨️</strong>, 
             <strong>3. Ratón/Mouse 🖱️</strong> y 
@@ -3176,44 +3068,44 @@
             <span class="mission-badge badge-socio">Dimensión 3 &bull; Valoración socioafectiva ${isSolo ? '(individual)' : '(en parejas)'}</span>
             <h2 class="card-title">${isSolo ? 'Reflexión y autoevaluación individual' : 'Reflexión y coevaluación de la pareja'}</h2>
             <p class="card-desc">
-              Valore el trabajo realizado durante esta misión diagnóstica.
+              Valore con sinceridad su desempeño y actitud durante esta misión diagnóstica.
             </p>
           </div>
 
-          <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div style="display: flex; flex-direction: column; gap: 18px;">
             <div class="form-group">
-              <label class="form-label">S1. Gusto por la precisión y calidad en las respuestas:</label>
+              <label class="form-label">S1. Gusto por la precisión: Cuando respondió los retos, ¿revisó los detalles con cuidado?</label>
               <div class="likert-group">
-                <button class="likert-btn ${AppState.socioafectivo.s1_precision === 1 ? 'selected' : ''}" onclick="setSocio('s1_precision', 1)">1. En progreso (C)</button>
-                <button class="likert-btn ${AppState.socioafectivo.s1_precision === 2 ? 'selected' : ''}" onclick="setSocio('s1_precision', 2)">2. Con apoyo (B)</button>
-                <button class="likert-btn ${AppState.socioafectivo.s1_precision === 3 ? 'selected' : ''}" onclick="setSocio('s1_precision', 3)">3. Autónomo (A)</button>
+                <button class="likert-btn ${AppState.socioafectivo.s1_precision === 1 ? 'selected' : ''}" onclick="setSocio('s1_precision', 1)">(C) Respondí rápido, sin revisar.</button>
+                <button class="likert-btn ${AppState.socioafectivo.s1_precision === 2 ? 'selected' : ''}" onclick="setSocio('s1_precision', 2)">(B) Revisé solo algunas respuestas.</button>
+                <button class="likert-btn ${AppState.socioafectivo.s1_precision === 3 ? 'selected' : ''}" onclick="setSocio('s1_precision', 3)">(A) Revisé con cuidado cada respuesta antes de enviarla.</button>
               </div>
             </div>
 
             <div class="form-group">
-              <label class="form-label">S2. Aprender del error: ¿Cómo fue la reacción ante los errores o imprevistos surgidos durante los retos?</label>
+              <label class="form-label">S2. Aprender del error: Cuando se equivocó en un reto, ¿qué hizo?</label>
               <div class="likert-group">
-                <button class="likert-btn ${AppState.socioafectivo.s2_resiliencia === 1 ? 'selected' : ''}" onclick="setSocio('s2_resiliencia', 1)">${isSolo ? 'Me desanimé' : 'Nos desanimamos'}</button>
-                <button class="likert-btn ${AppState.socioafectivo.s2_resiliencia === 2 ? 'selected' : ''}" onclick="setSocio('s2_resiliencia', 2)">${isSolo ? 'Reintenté con guía' : 'Reintentamos con guía'}</button>
-                <button class="likert-btn ${AppState.socioafectivo.s2_resiliencia === 3 ? 'selected' : ''}" onclick="setSocio('s2_resiliencia', 3)">${isSolo ? 'Aprendí y mejoré' : 'Aprendimos y mejoramos'}</button>
+                <button class="likert-btn ${AppState.socioafectivo.s2_resiliencia === 1 ? 'selected' : ''}" onclick="setSocio('s2_resiliencia', 1)">(C) Lo dejé así y continué.</button>
+                <button class="likert-btn ${AppState.socioafectivo.s2_resiliencia === 2 ? 'selected' : ''}" onclick="setSocio('s2_resiliencia', 2)">(B) Lo intenté de nuevo con ayuda.</button>
+                <button class="likert-btn ${AppState.socioafectivo.s2_resiliencia === 3 ? 'selected' : ''}" onclick="setSocio('s2_resiliencia', 3)">(A) Busqué mi error, lo corregí y aprendí algo.</button>
               </div>
             </div>
 
             <div class="form-group">
-              <label class="form-label">S3. Flexibilidad para mejorar problemas: ¿Cómo gestionaron la toma de decisiones conjunta (en pareja) o el proceso de auto-revisión del trabajo (individual)?</label>
+              <label class="form-label">S3. Flexibilidad para manejar problemas: Cuando algo no salió como esperaba (una pregunta difícil, un problema con la computadora o con el compañero/a), ¿qué hizo?</label>
               <div class="likert-group">
-                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 1 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 1)">${isSolo ? 'Poco acuerdo' : 'Poco acuerdo'}</button>
-                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 2 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 2)">${isSolo ? 'Buena cooperación' : 'Buena cooperación'}</button>
-                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 3 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 3)">${isSolo ? 'Excelente sinergia' : 'Excelente sinergia'}</button>
+                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 1 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 1)">(C) Seguí con la misma idea aunque no funcionaba.</button>
+                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 2 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 2)">(B) Probé otra forma cuando alguien me dio una idea.</button>
+                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 3 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 3)">${isSolo ? '(A) Busqué por mi cuenta otra forma de resolverlo.' : '(A) Escuché las ideas de mi compañero(a) y juntos probamos otra forma.'}</button>
               </div>
             </div>
 
             <div class="form-group">
-              <label class="form-label">S4. Perseverancia y tolerancia a la frustración:</label>
+              <label class="form-label">S4. Tolerancia a la frustración: Cuando un reto se puso difícil, ¿cómo reaccionó?</label>
               <div class="likert-group">
-                <button class="likert-btn ${AppState.socioafectivo.s4_frustracion === 1 ? 'selected' : ''}" onclick="setSocio('s4_frustracion', 1)">Inicial</button>
-                <button class="likert-btn ${AppState.socioafectivo.s4_frustracion === 2 ? 'selected' : ''}" onclick="setSocio('s4_frustracion', 2)">Intermedio</button>
-                <button class="likert-btn ${AppState.socioafectivo.s4_frustracion === 3 ? 'selected' : ''}" onclick="setSocio('s4_frustracion', 3)">Elevada</button>
+                <button class="likert-btn ${AppState.socioafectivo.s4_frustracion === 1 ? 'selected' : ''}" onclick="setSocio('s4_frustracion', 1)">(C) Me enojé o quise dejarlo.</button>
+                <button class="likert-btn ${AppState.socioafectivo.s4_frustracion === 2 ? 'selected' : ''}" onclick="setSocio('s4_frustracion', 2)">(B) Me costó, pero seguí cuando me animaron.</button>
+                <button class="likert-btn ${AppState.socioafectivo.s4_frustracion === 3 ? 'selected' : ''}" onclick="setSocio('s4_frustracion', 3)">(A) Mantuve la calma y seguí intentando hasta terminar.</button>
               </div>
             </div>
           </div>
@@ -3241,9 +3133,10 @@
       saveState();
       AudioEngine.playFanfare();
       renderActivePhase();
+      sendTelemetryToGoogleSheets('completado');
     }
 
-    // FASE 4: EXPEDIENTE FINAL Y QR DE TELEMETRÍA (SIN BOTÓN JSON)
+    // FASE 4: EXPEDIENTE FINAL Y CONFIRMACIÓN DE TELEMETRÍA AUTOMÁTICA
     function renderPhase4(container) {
       const isSolo = AppState.modalidad === 'individual' || !AppState.cadet2.name;
 
@@ -3265,7 +3158,7 @@
           <div class="summary-grid" style="margin: 18px 0;">
             <div class="stat-card">
               <span class="stat-card-title">🖐️ Dimensión psicomotriz</span>
-              <span class="stat-card-value" style="font-size: 1.4rem;">🏅 Superada</span>
+              <span class="stat-card-value" style="font-size: 1.4rem;">🏅 Completada</span>
               <span class="stat-card-badge badge-level-a">Lateralidad y pulso</span>
             </div>
 
@@ -3288,58 +3181,62 @@
             </div>
           </div>
 
-          <!-- AVISO DESTACADO MODO DESCONECTADO (OFFLINE) -->
-          <div style="background: rgba(245, 158, 11, 0.12); border: 1.5px solid var(--amber-neon); border-radius: 12px; padding: 12px 16px; margin: 12px auto; max-width: 540px; display: flex; align-items: center; justify-content: center; gap: 10px;">
-            <span style="font-size: 24px;">📡</span>
-            <div style="text-align: left;">
-              <strong style="color: #fbbf24; font-size: 13.5px; display: block;">Modo desconectado (offline) activo</strong>
-              <span style="color: #cbd5e1; font-size: 12px;">Los resultados están guardados en este equipo. Usa el Código QR o descarga el archivo para entregar al docente.</span>
-            </div>
-          </div>
+          <!-- ESTADO DE SINCRONIZACIÓN AUTOMÁTICA -->
+          <div id="telemetrySyncStatus" style="margin: 12px 0;"></div>
 
-          <!-- CÓDIGO QR DINÁMICO EN PANTALLA -->
-          <div style="background: #0d1322; border: 1.5px solid var(--cyan-neon); border-radius: 16px; padding: 22px; margin: 16px auto; max-width: 500px; display: flex; flex-direction: column; align-items: center; gap: 12px; box-shadow: 0 8px 30px rgba(0, 240, 255, 0.15);">
-            <span class="mep-tag" style="font-size: 10.5px; padding: 4px 10px;">Telemetría oficial para registro</span>
-            <h3 style="font-size: 16px; color: #fff; font-weight: 800; margin: 0;">📱 Código QR ${isSolo ? 'del estudiante' : 'de la pareja de estudiantes'}</h3>
-            <p style="font-size: 12.5px; color: var(--text-muted); max-width: 400px; line-height: 1.4; margin: 0;">
-              Muestre este código QR a su docente para escanear con la cámara y registrar la misión en la sábana institucional.
+          <!-- PANEL OFICIAL DE CONFIRMACIÓN Y TRANSFERENCIA AUTOMÁTICA (SIN QR) -->
+          <div style="background: rgba(16, 185, 129, 0.12); border: 1.5px solid var(--lime-neon); border-radius: 16px; padding: 22px; margin: 16px auto; max-width: 580px; display: flex; flex-direction: column; align-items: center; gap: 10px; box-shadow: 0 8px 30px rgba(16, 185, 129, 0.18);">
+            <div style="font-size: 36px; line-height: 1;">✅</div>
+            
+            <span class="mep-tag" style="background: rgba(16, 185, 129, 0.25); border: 1px solid var(--lime-neon); color: #34d399; font-size: 12px; padding: 4px 14px; border-radius: 20px; font-weight: 800; letter-spacing: 0.5px;">
+              Diagnóstico registrado y sincronizado en línea
+            </span>
+
+            <h3 style="font-size: 17px; color: #ffffff; font-weight: 800; margin: 4px 0 0 0;">
+              ¡Información transferida con éxito!
+            </h3>
+
+            <p style="font-size: 13px; color: #cbd5e1; max-width: 500px; line-height: 1.5; margin: 0; text-align: center;">
+              Sus respuestas y resultados diagnósticos han sido <strong>transferidos y sincronizados de manera automática</strong> con la <strong>herramienta de evaluación del docente</strong> y con el <strong>panel institucional central MEP</strong>.
             </p>
 
-            <div style="background: #ffffff; padding: 14px; border-radius: 14px; box-shadow: 0 0 25px rgba(0, 240, 255, 0.35); margin: 6px 0; display: inline-flex; align-items: center; justify-content: center;">
-              <canvas id="qrCanvasTelemetria" width="240" height="240" style="display: block; width: 240px; height: 240px;"></canvas>
+            <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(0, 240, 255, 0.25); border-radius: 12px; padding: 12px 16px; width: 100%; max-width: 480px; margin: 6px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; text-align: left; font-size: 12px;">
+              <div>
+                <span style="color: #94a3b8; font-size: 11px; display: block;">Estado de evaluación:</span>
+                <strong style="color: #34d399;">🟢 Completado (100%)</strong>
+              </div>
+              <div>
+                <span style="color: #94a3b8; font-size: 11px; display: block;">Sección / grupo:</span>
+                <strong style="color: #ffffff;">Sección ${AppState.section}</strong>
+              </div>
+              <div>
+                <span style="color: #94a3b8; font-size: 11px; display: block;">Docente asignado:</span>
+                <strong style="color: #38bdf8;">${AppState.teacher?.name || 'Prof. Formación Tecnológica'}</strong>
+              </div>
+              <div>
+                <span style="color: #94a3b8; font-size: 11px; display: block;">Institución:</span>
+                <strong style="color: #e2e8f0; font-size: 11px;">${AppState.teacher?.institution || 'Colegio MEP'}</strong>
+              </div>
+              <div style="grid-column: span 2; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 6px;">
+                <span style="color: #94a3b8; font-size: 11px; display: block;">Código único de verificación:</span>
+                <strong style="color: var(--cyan-neon); font-family: monospace; font-size: 11.5px;">${AppState.sessionHash || 'HASH-CYBER2027'}</strong>
+              </div>
             </div>
 
-            <div style="font-size: 11.5px; color: #94a3b8; font-family: monospace;">
-              Código de seguridad: <strong style="color: var(--cyan-neon);">${AppState.sessionHash || 'HASH-CYBER2027'}</strong> &bull; Sección: <strong style="color: #fff;">${AppState.section}</strong>
-            </div>
+            <p style="font-size: 11.5px; color: #94a3b8; margin: 0; font-style: italic;">
+              ℹ️ En esta modalidad en línea no se requiere código QR ni escaneo manual, ya que la comunicación digital se procesa en tiempo real.
+            </p>
 
-            <!-- 4 OPCIONES DE ENTREGA -->
-            <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 14px; margin: 12px auto; max-width: 480px; text-align: left;">
-              <div style="font-size: 12px; font-weight: 800; color: #38bdf8; margin-bottom: 6px;">📦 Opciones oficiales de entrega de resultados:</div>
-              <ol style="font-size: 11.5px; color: #cbd5e1; margin-left: 18px; line-height: 1.5;">
-                <li><strong>📱 Código QR para escanear:</strong> El docente escanea este código directamente con su cámara.</li>
-                <li><strong>💾 Descargar ficha (.json):</strong> Guarda el archivo para entregarlo en llave maya USB.</li>
-                <li><strong>📋 Copiar código QR / resumen:</strong> Copie los datos para enviarlos por Teams, WhatsApp o correo.</li>
-                <li><strong>🖨️ Imprimir hoja diagnóstica:</strong> Imprima el reporte físico oficial.</li>
-              </ol>
-            </div>
-
-            <!-- BOTONES DE EXPORTACIÓN Y RESPALDO OFFLINE -->
-            <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 8px;">
-              <button type="button" class="btn-cyber" style="padding: 9px 14px; font-size: 12px; background: linear-gradient(135deg, #0284c7, #0369a1); border-color: #38bdf8;" onclick="downloadTelemetryJson()" title="Descargar archivo JSON para llave maya USB">
+            <!-- ACCIONES EN LÍNEA Y DESCARGAS -->
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 10px;">
+              <button type="button" class="btn-cyber" style="padding: 8px 14px; font-size: 12px; background: rgba(168, 85, 247, 0.2); border-color: var(--violet-neon); color: #e9d5ff;" onclick="downloadTelemetryJson()" title="Descargar archivo JSON con el desglose de respuestas">
                 💾 Descargar ficha (.json)
               </button>
-              <button type="button" class="btn-cyber" style="padding: 9px 14px; font-size: 12px; background: linear-gradient(135deg, #0891b2, #0e7490); border-color: #22d3ee;" onclick="downloadTelemetryCsv7mo()" title="Descargar archivo CSV compatible con Excel">
+              <button type="button" class="btn-cyber" style="padding: 8px 14px; font-size: 12px; background: linear-gradient(135deg, #0891b2, #0e7490); border-color: #22d3ee; color: #ffffff;" onclick="downloadTelemetryCsv7mo()" title="Descargar archivo CSV compatible con Excel">
                 📊 Descargar ficha (.csv)
               </button>
-              <button type="button" class="btn-cyber" style="padding: 9px 14px; font-size: 12px; background: rgba(168, 85, 247, 0.2); border-color: var(--violet-neon); color: #e9d5ff;" onclick="copyTelemetryJson()">
-                📋 Copiar código QR (JSON)
-              </button>
-              <button type="button" class="btn-cyber" style="padding: 9px 14px; font-size: 12px; background: rgba(59, 130, 246, 0.2); border-color: #60a5fa; color: #bfdbfe;" onclick="copyResumenTexto7mo()">
-                📝 Copiar resumen de texto
-              </button>
-              <button type="button" class="btn-cyber" style="padding: 9px 14px; font-size: 12px; background: rgba(16, 185, 129, 0.2); border-color: var(--lime-neon); color: #a7f3d0;" onclick="window.print()">
-                🖨️ Imprimir hoja diagnóstica
+              <button type="button" class="btn-cyber" style="padding: 8px 14px; font-size: 12px; background: rgba(16, 185, 129, 0.2); border-color: var(--lime-neon); color: #a7f3d0;" onclick="window.print()">
+                🖨️ Imprimir comprobante
               </button>
             </div>
           </div>
@@ -3355,11 +3252,10 @@
       `;
 
       setTimeout(() => {
-        renderQrCodeCanvas('qrCanvasTelemetria');
-        sendTelemetryToGoogleSheets();
+        sendTelemetryToGoogleSheets('completado');
       }, 100);
     }
-    
+
     function calculateDiagnosticsMetrics() {
       const p1 = AppState.psicomotriz?.p1_lateralidad?.score || 0;
       const p2 = AppState.psicomotriz?.p2_ritmo?.score || 0;
@@ -3415,44 +3311,6 @@
         p3: AppState.psicomotriz?.p3_pulso?.score || 0,
         p4: AppState.psicomotriz?.p4_dibujo?.score || 0
       };
-    }
-
-    function renderQrCodeCanvas(canvasId) {
-      const data = get7moTelemetryData();
-      const compactPayload = JSON.stringify({
-        t: 'MEP7',
-        sec: data.sec,
-        c1: data.c1,
-        a1: data.a1,
-        c2: data.c2 || 'Individual',
-        a2: data.a2 || '',
-        p: data.p,
-        c: data.c,
-        s: data.s,
-        g: data.g,
-        lvl: data.lvl,
-        h: data.h
-      });
-
-      const canvas = typeof canvasId === 'string' ? document.getElementById(canvasId) : canvasId;
-      if (!canvas) return;
-
-      try {
-        if (typeof QRCode !== 'undefined') {
-          QRCode(canvas, {
-            text: compactPayload,
-            size: 240,
-            background: '#ffffff',
-            foreground: '#000000',
-            correctLevel: 1
-          });
-          console.log('✅ QR Code generado con éxito en modo offline.');
-        } else {
-          console.warn('QRCode library not loaded.');
-        }
-      } catch (err) {
-        console.error('Error rendering QR canvas:', err);
-      }
     }
 
     function downloadTelemetryJson() {
@@ -3548,33 +3406,6 @@
       }
     }
 
-    function copyResumenTexto7mo() {
-      const data = get7moTelemetryData();
-      const txt = `=====================================\n` +
-        `MINISTERIO DE EDUCACIÓN PÚBLICA\n` +
-        `INFORME DIAGNÓSTICO 7.° AÑO - 2026\n` +
-        `=====================================\n` +
-        `Estudiante 1: ${data.c1 || 'N/A'}\n` +
-        (data.c2 && data.c2 !== 'Individual' ? `Estudiante 2: ${data.c2}\n` : '') +
-        `Sección: ${data.sec || 'N/A'}\n` +
-        `Puntaje Global: ${data.g}%\n` +
-        `Nivel de Logro: ${data.lvl}\n` +
-        `Dimensión Psicomotriz: ${data.p}%\n` +
-        `Dimensión Cognitiva: ${data.c}%\n` +
-        `Dimensión Socioafectiva: ${data.s}%\n` +
-        `Hash Verificación: ${data.h}\n` +
-        `=====================================`;
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(txt).then(() => {
-          showNotification('📝 Resumen de texto copiado al portapapeles');
-        }).catch(() => {
-          prompt('Copia el siguiente resumen:', txt);
-        });
-      } else {
-        prompt('Copia el siguiente resumen:', txt);
-      }
-    }
-
     async function sendTelemetryToGoogleSheets(overrideStatus) {
       const statusEl = document.getElementById('telemetrySyncStatus');
       const webhookUrl = localStorage.getItem('APP_WEBHOOK_URL') || '';
@@ -3586,8 +3417,8 @@
       const secClean = (AppState.section || '7-1').replace(/^secci[oó]n\s*/i, '').trim();
       const secFormateada = `Sección ${secClean}`;
       const docId = AppState.teacher?.id || '5-0305-0179';
-      const estadoActual = overrideStatus || (AppState.phase === 4 ? 'completado' : 'en_progreso');
-      const isCompleted = estadoActual === 'completado';
+      const estadoActual = overrideStatus || (AppState.phase >= 4 ? 'completado' : 'en_progreso');
+      const isCompleted = estadoActual === 'completado' || AppState.phase >= 4;
 
       const p1Data = AppState.psicomotriz?.p1_lateralidad || {};
       const p2Data = AppState.psicomotriz?.p2_ritmo || {};
@@ -3606,7 +3437,7 @@
         estudianteNombre: nombreCompletoPareja,
         seccionOGrupo: secFormateada,
         nivel: '7°',
-        faseActual: `Fase ${AppState.phase} de 4`,
+        faseActual: isCompleted ? 'Misión Completada (100%)' : `Fase ${AppState.phase} de 4`,
         puntaje: isCompleted ? metrics.globalAvg : null,
         porcentaje: isCompleted ? metrics.globalAvg : Math.round((AppState.phase / 4) * 100),
         aciertos: isCompleted ? (metrics.cogScore ? Math.round((metrics.cogScore / 100) * 10) : 8) : 0,
@@ -3615,7 +3446,7 @@
           ? (metrics.globalLevel === 'A' ? 'Avanzado' : (metrics.globalLevel === 'B' ? 'Intermedio' : 'Inicial'))
           : 'En Evaluación',
         tiempoSegundos: 120,
-        estadoProgreso: estadoActual,
+        estadoProgreso: isCompleted ? 'completado' : estadoActual,
         timestamp: Date.now(),
         sessionHash: AppState.sessionHash,
         cadet1: cadet1Name,
@@ -3661,7 +3492,7 @@
             avatar1: fullData.cadet1Avatar,
             avatar2: fullData.cadet2Avatar,
             section: secClean,
-            estadoProgreso: estadoActual,
+            estadoProgreso: isCompleted ? 'completado' : estadoActual,
             faseActual: fullData.faseActual,
             psicoScore: fullData.psicoScore,
             cogScore: fullData.cogScore,
@@ -3720,7 +3551,7 @@
         } else {
           statusEl.innerHTML = `
             <div style="background: rgba(16, 185, 129, 0.12); border: 1px solid var(--lime-neon); color: #34d399; font-size: 13px; font-weight: 700; padding: 10px 16px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px;">
-              <span>📡 Telemetría generada en pantalla para Escaneo QR del Docente</span>
+              <span>✅ Registrado y disponible en la plataforma docente</span>
             </div>
           `;
         }

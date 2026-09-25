@@ -1742,20 +1742,20 @@
     const COGNITIVE_QUESTIONS = [
       {
         id: 'ind1',
-        title: 'Indicador 1: Hardware y dispositivos',
-        desc: 'Identifica la función y clasificación de los componentes físicos esenciales.',
-        question: '¿Cuál de los siguientes grupos contiene exclusivamente dispositivos de entrada (input)?',
+        title: 'Reto 1: Hardware y dispositivos',
+        desc: 'Identifique la función de dispositivos de uso cotidiano en una computadora.',
+        question: 'Un estudiante necesita escribir un texto, mover el puntero y grabar su voz en la computadora. ¿Qué grupo de dispositivos le permitiría realizar esas tres acciones?',
         options: [
           'Monitor, parlantes e impresora',
           'Teclado, ratón (mouse) y micrófono',
-          'Disco duro SSD, memoria RAM y memoria USB (pendrive)',
-          'Pantalla táctil, proyector y tarjeta madre'
+          'Disco SSD, memoria RAM y memoria USB',
+          'Proyector, monitor y parlantes'
         ],
         correctIndex: 1
       },
       {
         id: 'ind2',
-        title: 'Indicador 2: Software y programas',
+        title: 'Reto 2: Software y programas',
         desc: 'Diferenciación entre aplicaciones de usuario y software utilitario.',
         question: 'Un estudiante necesita proteger su computadora contra virus y liberar espacio en el disco duro. ¿Qué tipo de software requiere utilizar?',
         options: [
@@ -1768,7 +1768,7 @@
       },
       {
         id: 'ind3',
-        title: 'Indicador 3: Sistemas operativos',
+        title: 'Reto 3: Sistemas operativos',
         desc: 'Funciones cardinales del sistema operativo y administración de recursos.',
         question: '¿Cuál es la función principal del sistema operativo (como Windows, Linux o macOS)?',
         options: [
@@ -1781,22 +1781,22 @@
       },
       {
         id: 'ind4',
-        title: 'Indicador 4: Redes y conectividad',
-        desc: 'Topologías básicas, Internet vs Intranet y modelo Cliente-Servidor.',
-        question: 'En el laboratorio de cómputo del colegio, todas las computadoras comparten una impresora mediante una red local cerrada sin salir al exterior. Esta red se clasifica como:',
+        title: 'Reto 4: Redes y conectividad',
+        desc: 'Reconoce situaciones cotidianas en las que varios dispositivos se conectan y comparten recursos.',
+        question: 'En el laboratorio de informática, varias computadoras pueden utilizar la misma impresora y acceder a Internet. ¿Qué permite que estos equipos puedan comunicarse y compartir recursos?',
         options: [
-          'WAN (red de área amplia / mundial)',
-          'LAN / intranet (red de área local)',
-          'PAN (red de área personal Bluetooth)',
-          'Satélite espacial'
+          'Que todas las computadoras sean de la misma marca.',
+          'Que las computadoras estén conectadas entre sí mediante una red.',
+          'Que cada computadora tenga conectada su propia impresora.',
+          'Que todas las computadoras utilicen los mismos programas.'
         ],
         correctIndex: 1
       },
       {
         id: 'ind5',
-        title: 'Indicador 5: Formatos y extensiones de archivo',
-        desc: 'Clasificación de tipos de datos (.png, .mp3, .pdf, .docx, .py).',
-        question: 'Al guardar una pista de audio para un pódcast escolar, ¿cuál extensión es la adecuada?',
+        title: 'Reto 5: Formatos y extensiones de archivo',
+        desc: 'Relacione los tipos de archivo y sus extensiones según el contenido que almacenan.',
+        question: 'Si un estudiante guarda una pista de audio para un pódcast escolar, ¿cuál extensión es la adecuada?',
         options: [
           '.png o .jpg',
           '.mp3 o .wav',
@@ -1807,20 +1807,20 @@
       },
       {
         id: 'ind6',
-        title: 'Indicador 6: Edición gráfica y medios',
-        desc: 'Principios de manipulación de imagen y diseño básico en entorno digital.',
-        question: 'Al recortar y cambiar el contraste de una fotografía digital antes de publicarla en un mural educativo, estamos realizando:',
+        title: 'Reto 6: Imágenes digitales',
+        desc: 'Reconoce acciones básicas que se pueden realizar al trabajar con imágenes digitales.',
+        question: 'Un estudiante está preparando una imagen para un trabajo escolar. Necesita eliminar una parte que no desea mostrar y hacer que la imagen se vea más clara. ¿Qué acciones debería realizar?',
         options: [
-          'Edición y retoque gráfico digital',
-          'Compilación de código fuente',
-          'Formateo del disco duro',
-          'Desfragmentación de memoria'
+          'Recortar la imagen y ajustar su brillo.',
+          'Cambiar el nombre del archivo y moverlo a otra carpeta.',
+          'Copiar la imagen y guardarla en una memoria USB.',
+          'Abrir la imagen y enviarla directamente a imprimir.'
         ],
         correctIndex: 0
       },
       {
         id: 'ind7',
-        title: 'Indicador 7: Algoritmos y eventos',
+        title: 'Reto 7: Algoritmos y eventos',
         desc: 'Disparadores de acción (bloques de evento en programación por bloques).',
         question: 'En un programa de bloques (como Scratch), ¿qué bloque se utiliza para que un personaje hable en el momento en que el usuario hace clic sobre él?',
         options: [
@@ -1833,8 +1833,8 @@
       },
       {
         id: 'ind8',
-        title: 'Indicador 8: Variables y bucles',
-        desc: 'Rastreo y simulación de iteraciones.',
+        title: 'Reto 8: Variables y estructuras repetitivas (ciclos)',
+        desc: 'Siga una secuencia de acciones repetidas para determinar su resultado.',
         codeSnippet: 'puntos = 0;\nRepetir 3 veces {\n    puntos = puntos + 5;\n}\nMostrar(puntos);',
         question: 'Al ejecutar este bloque de código, ¿qué valor final tendrá la variable "puntos"?',
         options: [
@@ -1847,10 +1847,10 @@
       },
       {
         id: 'ind9',
-        title: 'Indicador 9: Condicionales lógicos',
-        desc: 'Evaluación de bifurcaciones booleanas Si / Si no.',
-        codeSnippet: 'bateria = 15;\nSi (bateria < 20) Entonces {\n    Estado = "Activar Modo Ahorro";\n} Si no {\n    Estado = "Modo Alto Rendimiento";\n}',
-        question: '¿Qué texto se guardará en la variable "Estado" según los datos dados?',
+        title: 'Reto 9: Estructuras condicionales',
+        desc: 'Reconoce situaciones en las que una acción depende del cumplimiento de una condición.',
+        codeSnippet: 'bateria = 15;\nSi (bateria < 20) Entonces {\n    Estado = "Activar modo ahorro";\n} Si no {\n    Estado = "Modo alto rendimiento";\n}',
+        question: 'Un dispositivo tiene 15 % de batería. Si la batería es menor de 20 %, debe activar el modo ahorro; de lo contrario, mantiene el modo de alto rendimiento. ¿Qué acción debe realizar según el código?',
         options: [
           '"Activar modo ahorro"',
           '"Modo alto rendimiento"',
@@ -1861,15 +1861,15 @@
       },
       {
         id: 'ind10',
-        title: 'Indicador 10: Operadores lógicos y aritméticos',
-        desc: 'Jerarquía de operaciones y operadores relacionales y lógicos.',
-        codeSnippet: 'Resultado = (10 > 5) AND (4 + 2 == 6);',
-        question: '¿Cuál es el valor booleano final de la variable "Resultado"?',
+        title: 'Reto 10: Operadores lógicos',
+        desc: 'Interprete condiciones sencillas para determinar si se cumplen.',
+        codeSnippet: 'Resultado = (10 > 5) Y (4 + 2 == 6)',
+        question: '¿Cuál es el resultado de la condición lógica planteada?',
         options: [
-          'Verdadero (True)',
-          'Falso (False)',
-          'Nulo (Null)',
-          '16'
+          'Verdadero, porque se cumplen las dos condiciones.',
+          'Falso, porque solamente se cumple una condición.',
+          'Falso, porque se cumplen las dos condiciones.',
+          'Verdadero, porque solamente se cumple una condición.'
         ],
         correctIndex: 0
       }
@@ -2664,7 +2664,7 @@
           btnSolo.classList.remove('active');
           if (cadetBox2) cadetBox2.style.display = 'flex';
           if (pairGridContainer) pairGridContainer.classList.remove('solo-mode');
-          if (cadet1RoleTag) cadet1RoleTag.innerHTML = '🚀 Estudiante 1 &bull; Líder de Misión';
+          if (cadet1RoleTag) cadet1RoleTag.innerHTML = '🚀 Estudiante 1 &bull; Líder de misión';
           if (phase0Badge) phase0Badge.innerHTML = 'Fase inicial &bull; Datos del estudiante (misión en parejas)';
           updateProgressHUD();
           AudioEngine.playClick();
@@ -2676,7 +2676,7 @@
           btnPairs.classList.remove('active');
           if (cadetBox2) cadetBox2.style.display = 'none';
           if (pairGridContainer) pairGridContainer.classList.add('solo-mode');
-          if (cadet1RoleTag) cadet1RoleTag.innerHTML = '🚀 Estudiante &bull; Datos del Estudiante';
+          if (cadet1RoleTag) cadet1RoleTag.innerHTML = '🚀 Estudiante &bull; Datos del estudiante';
           if (phase0Badge) phase0Badge.innerHTML = 'Fase inicial &bull; Datos del estudiante (individual)';
           updateProgressHUD();
           AudioEngine.playClick();
@@ -3068,44 +3068,44 @@
             <span class="mission-badge badge-socio">Dimensión 3 &bull; Valoración socioafectiva ${isSolo ? '(individual)' : '(en parejas)'}</span>
             <h2 class="card-title">${isSolo ? 'Reflexión y autoevaluación individual' : 'Reflexión y coevaluación de la pareja'}</h2>
             <p class="card-desc">
-              Valore el trabajo realizado durante esta misión diagnóstica.
+              Valore con sinceridad su desempeño y actitud durante esta misión diagnóstica.
             </p>
           </div>
 
-          <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div style="display: flex; flex-direction: column; gap: 18px;">
             <div class="form-group">
-              <label class="form-label">S1. Gusto por la precisión y calidad en las respuestas:</label>
+              <label class="form-label">S1. Gusto por la precisión: Cuando respondió los retos, ¿revisó los detalles con cuidado?</label>
               <div class="likert-group">
-                <button class="likert-btn ${AppState.socioafectivo.s1_precision === 1 ? 'selected' : ''}" onclick="setSocio('s1_precision', 1)">1. En progreso (C)</button>
-                <button class="likert-btn ${AppState.socioafectivo.s1_precision === 2 ? 'selected' : ''}" onclick="setSocio('s1_precision', 2)">2. Con apoyo (B)</button>
-                <button class="likert-btn ${AppState.socioafectivo.s1_precision === 3 ? 'selected' : ''}" onclick="setSocio('s1_precision', 3)">3. Autónomo (A)</button>
+                <button class="likert-btn ${AppState.socioafectivo.s1_precision === 1 ? 'selected' : ''}" onclick="setSocio('s1_precision', 1)">(C) Respondí rápido, sin revisar.</button>
+                <button class="likert-btn ${AppState.socioafectivo.s1_precision === 2 ? 'selected' : ''}" onclick="setSocio('s1_precision', 2)">(B) Revisé solo algunas respuestas.</button>
+                <button class="likert-btn ${AppState.socioafectivo.s1_precision === 3 ? 'selected' : ''}" onclick="setSocio('s1_precision', 3)">(A) Revisé con cuidado cada respuesta antes de enviarla.</button>
               </div>
             </div>
 
             <div class="form-group">
-              <label class="form-label">S2. Aprender del error: ¿Cómo fue la reacción ante los errores o imprevistos surgidos durante los retos?</label>
+              <label class="form-label">S2. Aprender del error: Cuando se equivocó en un reto, ¿qué hizo?</label>
               <div class="likert-group">
-                <button class="likert-btn ${AppState.socioafectivo.s2_resiliencia === 1 ? 'selected' : ''}" onclick="setSocio('s2_resiliencia', 1)">${isSolo ? 'Me desanimé' : 'Nos desanimamos'}</button>
-                <button class="likert-btn ${AppState.socioafectivo.s2_resiliencia === 2 ? 'selected' : ''}" onclick="setSocio('s2_resiliencia', 2)">${isSolo ? 'Reintenté con guía' : 'Reintentamos con guía'}</button>
-                <button class="likert-btn ${AppState.socioafectivo.s2_resiliencia === 3 ? 'selected' : ''}" onclick="setSocio('s2_resiliencia', 3)">${isSolo ? 'Aprendí y mejoré' : 'Aprendimos y mejoramos'}</button>
+                <button class="likert-btn ${AppState.socioafectivo.s2_resiliencia === 1 ? 'selected' : ''}" onclick="setSocio('s2_resiliencia', 1)">(C) Lo dejé así y continué.</button>
+                <button class="likert-btn ${AppState.socioafectivo.s2_resiliencia === 2 ? 'selected' : ''}" onclick="setSocio('s2_resiliencia', 2)">(B) Lo intenté de nuevo con ayuda.</button>
+                <button class="likert-btn ${AppState.socioafectivo.s2_resiliencia === 3 ? 'selected' : ''}" onclick="setSocio('s2_resiliencia', 3)">(A) Busqué mi error, lo corregí y aprendí algo.</button>
               </div>
             </div>
 
             <div class="form-group">
-              <label class="form-label">S3. Flexibilidad para mejorar problemas: ¿Cómo gestionaron la toma de decisiones conjunta (en pareja) o el proceso de auto-revisión del trabajo (individual)?</label>
+              <label class="form-label">S3. Flexibilidad para manejar problemas: Cuando algo no salió como esperaba (una pregunta difícil, un problema con la computadora o con el compañero/a), ¿qué hizo?</label>
               <div class="likert-group">
-                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 1 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 1)">${isSolo ? 'Poco acuerdo' : 'Poco acuerdo'}</button>
-                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 2 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 2)">${isSolo ? 'Buena cooperación' : 'Buena cooperación'}</button>
-                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 3 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 3)">${isSolo ? 'Excelente sinergia' : 'Excelente sinergia'}</button>
+                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 1 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 1)">(C) Seguí con la misma idea aunque no funcionaba.</button>
+                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 2 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 2)">(B) Probé otra forma cuando alguien me dio una idea.</button>
+                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 3 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 3)">${isSolo ? '(A) Busqué por mi cuenta otra forma de resolverlo.' : '(A) Escuché las ideas de mi compañero(a) y juntos probamos otra forma.'}</button>
               </div>
             </div>
 
             <div class="form-group">
-              <label class="form-label">S4. Perseverancia y tolerancia a la frustración:</label>
+              <label class="form-label">S4. Tolerancia a la frustración: Cuando un reto se puso difícil, ¿cómo reaccionó?</label>
               <div class="likert-group">
-                <button class="likert-btn ${AppState.socioafectivo.s4_frustracion === 1 ? 'selected' : ''}" onclick="setSocio('s4_frustracion', 1)">Inicial</button>
-                <button class="likert-btn ${AppState.socioafectivo.s4_frustracion === 2 ? 'selected' : ''}" onclick="setSocio('s4_frustracion', 2)">Intermedio</button>
-                <button class="likert-btn ${AppState.socioafectivo.s4_frustracion === 3 ? 'selected' : ''}" onclick="setSocio('s4_frustracion', 3)">Elevada</button>
+                <button class="likert-btn ${AppState.socioafectivo.s4_frustracion === 1 ? 'selected' : ''}" onclick="setSocio('s4_frustracion', 1)">(C) Me enojé o quise dejarlo.</button>
+                <button class="likert-btn ${AppState.socioafectivo.s4_frustracion === 2 ? 'selected' : ''}" onclick="setSocio('s4_frustracion', 2)">(B) Me costó, pero seguí cuando me animaron.</button>
+                <button class="likert-btn ${AppState.socioafectivo.s4_frustracion === 3 ? 'selected' : ''}" onclick="setSocio('s4_frustracion', 3)">(A) Mantuve la calma y seguí intentando hasta terminar.</button>
               </div>
             </div>
           </div>
@@ -3158,7 +3158,7 @@
           <div class="summary-grid" style="margin: 18px 0;">
             <div class="stat-card">
               <span class="stat-card-title">🖐️ Dimensión psicomotriz</span>
-              <span class="stat-card-value" style="font-size: 1.4rem;">🏅 Superada</span>
+              <span class="stat-card-value" style="font-size: 1.4rem;">🏅 Completada</span>
               <span class="stat-card-badge badge-level-a">Lateralidad y pulso</span>
             </div>
 

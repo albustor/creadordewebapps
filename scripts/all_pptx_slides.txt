@@ -1,0 +1,324 @@
+=== SLIDE 0 (ppt/slides/slide1.xml) ===
+Anotaciones de diagnóstico
+24/09/26
+
+=== SLIDE 1 (ppt/slides/slide2.xml) ===
+En amarillo revisar que siempre dice en parejas y escogí individual.
+Las instrucciones deben ir 
+antitos
+ de que el estudiante complete su nombre, no arriba porque me perdí dónde escribir. El texto debe ser algo como: 
+“Registre sus datos para iniciar el diagnóstico.”
+Los logos deben tener una vista hacia al frente para que no interfiera en las actividades de lateralidad.
+
+=== SLIDE 2 (ppt/slides/slide3.xml) ===
+Conduzca (usted conduzca al robot, en singular).
+Valoren si manejamos 
+firewall
+ puesto que no estamos evaluando ciberseguridad o podría confundir porque en ese caso es un mecanismo de seguridad y yo le estaría diciendo que lo evite, en cambio el fuego sí se evita o un virus, si fuera el caso como una amenaza.
+
+=== SLIDE 3 (ppt/slides/slide4.xml) ===
+Modificar la palabra: Pulse el botón azul únicamente cuando la luz….
+NO 
+DEBE
+ TOCAR EL BOTÓN. 
+Eliminar lo que está entre paréntesis.
+Al hacer el ejercicio me confundí qué debía hacer. valorar mejorar el nombre del botón en la instrucción o el nombre en el botón para que coincidan.
+
+=== SLIDE 4 (ppt/slides/slide5.xml) ===
+Redactar en segunda persona (usted): Guíe
+
+=== SLIDE 5 (ppt/slides/slide6.xml) ===
+Yo la pondría solamente así: 
+Dibuje en el lienzo digital una computadora de escritorio. El dibujo debe incluir estas 4 partes: 1. Monitor/Pantalla, 2. Teclado, 3. Ratón/Mouse y 4. Torre/CPU. Utilice los diferentes colores de la paleta para identificar cada componente.
+
+=== SLIDE 6 (ppt/slides/slide7.xml) ===
+Viendo qué quiero que el estudiante sepa antes de comenzar estos indicadores, pensaría en una pregunta como esta:
+Reto 1: Hardware y dispositivos
+Identifique la función de dispositivos de uso cotidiano en una computadora.
+Pregunta:
+Un estudiante necesita 
+escribir un texto, mover el puntero y grabar su voz
+ en la computadora. ¿Qué grupo de dispositivos le permitiría realizar esas tres acciones?
+A.
+ Monitor, parlantes e impresora
+B.
+ Teclado, ratón (mouse) y micrófono
+C.
+ Disco SSD, memoria RAM y memoria USB
+D.
+ Proyector, monitor y parlantes
+
+=== SLIDE 7 (ppt/slides/slide8.xml) ===
+Creo que si no manejan esta pregunta, menos la propuesta, así que le bajé un poco el nivel, si les parece:
+Reto 4: Redes y conectividad
+Reconoce situaciones cotidianas en las que varios dispositivos se conectan y comparten recursos.
+Pregunta:
+En el laboratorio de informática, varias computadoras pueden utilizar la misma impresora y acceder a Internet. ¿Qué permite que estos equipos puedan comunicarse y compartir recursos?
+A.
+ Que todas las computadoras sean de la misma marca.
+B.
+ Que las computadoras estén conectadas entre sí mediante una red. ✅
+C.
+ Que cada computadora tenga conectada su propia impresora.
+D.
+ Que todas las computadoras utilicen los mismos programas.
+
+=== SLIDE 8 (ppt/slides/slide9.xml) ===
+Corregir redacción: 
+Relacione… 
+Si guarda una pista…
+
+=== SLIDE 9 (ppt/slides/slide10.xml) ===
+Vean si esta les parece mejor, es que la sentí muy técnica, podrían sacarla por defecto al no entender las otras respuestas:
+Reto 6: Imágenes digitales
+Reconoce acciones básicas que se pueden realizar al trabajar con imágenes digitales.
+Un estudiante está preparando una imagen para un trabajo escolar. Necesita eliminar una parte que no desea mostrar y hacer que la imagen se vea más clara. ¿Qué acciones debería realizar?
+A.
+ Recortar la imagen y ajustar su brillo. ✅
+B.
+ Cambiar el nombre del archivo y moverlo a otra carpeta.
+C.
+ Copiar la imagen y guardarla en una memoria USB.
+D.
+ Abrir la imagen y enviarla directamente a imprimir.
+
+=== SLIDE 10 (ppt/slides/slide11.xml) ===
+En el título ponerlo en español como lo dice el saber: 
+Variables y estructuras repetitivas (ciclos)
+Debajo de eso sustituir el texto por este: 
+Siga una secuencia de acciones repetidas para determinar su resultado.
+
+=== SLIDE 11 (ppt/slides/slide12.xml) ===
+Modificar el título por: Reto 9:  “Estructuras condicionales” 
+En el texto siguiente modificarlo por: 
+Reconoce situaciones en las que una acción depende del cumplimiento de una condición.
+La IA me sugiere cambiar el código por esto: 
+Un dispositivo tiene 15 % de batería. Si la batería es menor de 20 %, debe activar el modo ahorro; de lo contrario, mantiene el modo de alto rendimiento. ¿Qué acción debe realizar?
+En lo personal, pensaría que el código está bien, pero podríamos valorar dejar ambos, para ver la lógica como tal, que es lo que nos interesa en un diagnóstico, no sé cómo lo ven.
+
+=== SLIDE 12 (ppt/slides/slide13.xml) ===
+Esta es otra posible opción de trabajarlo para que lo valoren: 
+Reto 10: Operadores lógicos
+Interprete condiciones sencillas para determinar si se cumplen.
+Pregunta:
+Observe lo siguiente:
+Resultado 
+= (10 > 5) 
+Y
+ (4 + 2 == 6)
+¿Cuál es el resultado?
+A.
+ Verdadero, porque se cumplen las dos condiciones. ✅
+B.
+ Falso, porque solamente se cumple una condición.
+C.
+ Falso, porque se cumplen las dos condiciones. .
+D.
+ Verdadero, porque solamente se cumple una condición.
+
+=== SLIDE 13 (ppt/slides/slide14.xml) ===
+Revisen si esto es claro para los estudiantes, porque los saberes actitudinales tienen indicadores que permiten al docente tener más claro qué se espera de cada uno y no sé qué tan viable sea esto para ellos o plantearlo diferente, es algo que hay que analizar.
+
+=== SLIDE 14 (ppt/slides/slide15.xml) ===
+S1. Gusto 
+por
+ la 
+precisión
+Cuando 
+respondí
+ los 
+retos
+, ¿
+revisé
+ los 
+detalles
+ con 
+cuidado
+?
+(C) 
+Respondí
+rápido
+, sin 
+revisar
+.
+(B) 
+Revisé
+ solo 
+algunas
+respuestas
+.
+(A) 
+Revisé
+ con 
+cuidado
+cada
+respuesta
+ antes de 
+enviarla
+.
+S2. 
+Aprender
+ del error
+Cuando me 
+equivoqué
+en
+ un 
+reto
+, ¿
+qué
+hice
+?
+(C) Lo 
+dejé
+así
+ y 
+continué
+.
+(B) Lo 
+intenté
+ de nuevo con 
+ayuda
+.
+(A) 
+Busqué
+ mi error, lo 
+corregí
+ y 
+aprendí
+ algo.
+S3. 
+Flexibilidad
+ para 
+manejar
+problemas
+Cuando algo no 
+salió
+como
+esperaba
+ (
+una
+pregunta
+difícil
+, un 
+problema
+ con la 
+computadora
+ o con mi 
+compañero
+), ¿
+qué
+hice
+?
+(C) 
+Seguí
+ con la 
+misma
+ idea 
+aunque
+ no 
+funcionaba
+.
+(B) 
+Probé
+otra
+ forma 
+cuando
+alguien
+ me 
+dio
+una
+ idea.
+(A) 
+Busqué
+por
+ mi 
+cuenta
+otra
+ forma de 
+resolverlo
+.
+Si la 
+ficha
+ se 
+hace
+en
+ pareja, 
+puede
+cambiar
+ la 
+opción
+ A 
+por
+: 
+"
+Escuché
+ las ideas de mi 
+compañero
+(a) y 
+juntos
+probamos
+otra
+ forma."
+Así
+ se 
+evita
+ la 
+pregunta
+ actual, 
+que
+mezcla
+ lo individual y lo de pareja 
+en
+una
+ sola 
+frase
+.
+S4. 
+Tolerancia
+ a la 
+frustración
+Cuando un 
+reto
+ se puso 
+difícil
+, ¿
+cómo
+reaccioné
+?
+(C) Me 
+enojé
+ o 
+quise
+dejarlo
+.
+(B) Me 
+costó
+, 
+pero
+seguí
+cuando
+ me 
+animaron
+.
+(A) 
+Mantuve
+ la 
+calma
+ y 
+seguí
+intentando
+ hasta 
+terminar
+.
+
+=== SLIDE 15 (ppt/slides/slide16.xml) ===
+Modificar por 
+superada
+ por 
+Completada
+
+=== SLIDE 16 (ppt/slides/slide17.xml) ===
+Modificar este pie de página
+Modificar INDICADOR #,  por Reto #
+Por esto….
+
