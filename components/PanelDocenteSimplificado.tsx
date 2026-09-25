@@ -232,16 +232,12 @@ export interface SaberCognitivoOficial {
 
 export const SABERES_COGNITIVOS_MAP: Record<"7mo" | "8vo" | "9no", SaberCognitivoOficial[]> = {
   "9no": [
-    { id: 1, nombre: "Microcontrolador (Pregunta 1)", saber: "Microcontrolador", pregunta: "Pregunta 1", areaCurricular: "Computación física y robótica", descripcion: "Reconoce la función del microcontrolador dentro de un sistema automatizado." },
-    { id: 2, nombre: "Sensor y actuador (Pregunta 2)", saber: "Sensor y actuador", pregunta: "Pregunta 2", areaCurricular: "Computación física y robótica", descripcion: "Diferencia la función de sensor y actuador." },
-    { id: 3, nombre: "Entrada – proceso – salida (Pregunta 3)", saber: "Entrada – proceso – salida", pregunta: "Pregunta 3", areaCurricular: "Computación física y robótica", descripcion: "Relaciona sensor, microcontrolador y LED dentro de un sistema." },
-    { id: 4, nombre: "Algoritmo (Pregunta 4)", saber: "Algoritmo", pregunta: "Pregunta 4", areaCurricular: "Programación y algoritmos", descripcion: "Reconoce el orden lógico de una secuencia para resolver una situación automatizada." },
-    { id: 5, nombre: "Condición (Pregunta 5)", saber: "Condición", pregunta: "Pregunta 5", areaCurricular: "Programación y algoritmos", descripcion: "Identifica cuándo es necesario utilizar una estructura condicional." },
-    { id: 6, nombre: "Elementos y funciones (Pregunta 6)", saber: "Elementos y funciones", pregunta: "Pregunta 6", areaCurricular: "Computación física y robótica", descripcion: "Relaciona sensor, actuador y microcontrolador con su función." },
-    { id: 7, nombre: "Dato (Pregunta 7)", saber: "Dato", pregunta: "Pregunta 7", areaCurricular: "Ciencia de datos e IA", descripcion: "Reconoce qué tipo de información puede proporcionar un sensor." },
-    { id: 8, nombre: "Representación lógica (Pregunta 8)", saber: "Representación lógica", pregunta: "Pregunta 8", areaCurricular: "Programación y algoritmos", descripcion: "Identifica una estructura condicional a partir de una situación." },
-    { id: 9, nombre: "Problema y depuración (Pregunta 9)", saber: "Problema y depuración", pregunta: "Pregunta 9", areaCurricular: "Computación física / Procedimental", descripcion: "Reconoce una estrategia inicial para localizar un problema de funcionamiento." },
-    { id: 10, nombre: "Datos y almacenamiento (Pregunta 10)", saber: "Datos y almacenamiento", pregunta: "Pregunta 10", areaCurricular: "Ciencia de datos e IA", descripcion: "Comprende la importancia de conservar datos para consultarlos, analizarlos o utilizarlos posteriormente." },
+    { id: 1, nombre: "Microcontrolador (Pregunta 1 - 6)", saber: "Microcontrolador", pregunta: "Pregunta 1 - 6", areaCurricular: "Computación física y robótica", descripcion: "Reconoce la función del microcontrolador dentro de un sistema automatizado." },
+    { id: 2, nombre: "Sensor y actuador (Pregunta 2 - 9 - 6)", saber: "Sensor y actuador", pregunta: "Pregunta 2 - 9 - 6", areaCurricular: "Computación física y robótica", descripcion: "Diferencia la función de sensor y actuador, depuración y conexionado." },
+    { id: 3, nombre: "Algoritmo (Pregunta 3 - 4 - 5)", saber: "Algoritmo", pregunta: "Pregunta 3 - 4 - 5", areaCurricular: "Programación y algoritmos", descripcion: "Aplica flujo entrada-proceso-salida, orden lógico secuencial y estructuras condicionales." },
+    { id: 4, nombre: "Dato (Pregunta 7)", saber: "Dato", pregunta: "Pregunta 7", areaCurricular: "Ciencia de datos e IA", descripcion: "Reconoce qué tipo de información puede proporcionar un sensor." },
+    { id: 5, nombre: "Algoritmo (Pregunta 8)", saber: "Algoritmo", pregunta: "Pregunta 8", areaCurricular: "Programación y algoritmos", descripcion: "Identifica una estructura condicional a partir de una situación." },
+    { id: 6, nombre: "Almacenamiento de datos (Pregunta 10)", saber: "Almacenamiento de datos", pregunta: "Pregunta 10", areaCurricular: "Ciencia de datos e IA", descripcion: "Comprende la importancia de conservar datos para consultarlos, analizarlos o utilizarlos posteriormente." },
   ],
   "7mo": [
     { id: 1, nombre: "Hardware y periféricos (Pregunta 1)", saber: "Hardware", pregunta: "Pregunta 1", areaCurricular: "Apropiación tecnológica" },
@@ -1652,12 +1648,12 @@ export default function PanelDocenteSimplificado() {
                           </span>
                         </div>
                         <p className="text-[11px] text-slate-500 font-medium mt-0.5">
-                          Haga clic para {acordeonDimensionesCognitivo ? "contraer" : "expandir"} los 10 saberes diagnosticados del Módulo 1.
+                          Haga clic para {acordeonDimensionesCognitivo ? "contraer" : "expandir"} los saberes diagnosticados del Módulo 1.
                         </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2 text-slate-500 text-xs font-semibold shrink-0">
-                      <span>{acordeonDimensionesCognitivo ? "Ocultar" : "Ver 10 saberes"}</span>
+                      <span>{acordeonDimensionesCognitivo ? "Ocultar" : "Ver saberes"}</span>
                       <CaretDown
                         size={18}
                         weight="bold"
@@ -1668,7 +1664,7 @@ export default function PanelDocenteSimplificado() {
 
                   {acordeonDimensionesCognitivo && (
                     <div className="p-4 sm:p-5 bg-slate-50/60 border-t border-slate-200/80 animate-fadeIn">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
                         {(SABERES_COGNITIVOS_MAP[nivelActivo] || SABERES_COGNITIVOS_MAP["9no"]).map((saber) => (
                           <div
                             key={saber.id}
