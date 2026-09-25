@@ -232,12 +232,12 @@ export interface SaberCognitivoOficial {
 
 export const SABERES_COGNITIVOS_MAP: Record<"7mo" | "8vo" | "9no", SaberCognitivoOficial[]> = {
   "9no": [
-    { id: 1, nombre: "Microcontrolador (Pregunta 1 - 6)", saber: "Microcontrolador", pregunta: "Pregunta 1 - 6", areaCurricular: "Computación física y robótica", descripcion: "Reconoce la función del microcontrolador dentro de un sistema automatizado." },
-    { id: 2, nombre: "Sensor y actuador (Pregunta 2 - 9 - 6)", saber: "Sensor y actuador", pregunta: "Pregunta 2 - 9 - 6", areaCurricular: "Computación física y robótica", descripcion: "Diferencia la función de sensor y actuador, depuración y conexionado." },
-    { id: 3, nombre: "Algoritmo (Pregunta 3 - 4 - 5)", saber: "Algoritmo", pregunta: "Pregunta 3 - 4 - 5", areaCurricular: "Programación y algoritmos", descripcion: "Aplica flujo entrada-proceso-salida, orden lógico secuencial y estructuras condicionales." },
-    { id: 4, nombre: "Dato (Pregunta 7)", saber: "Dato", pregunta: "Pregunta 7", areaCurricular: "Ciencia de datos e IA", descripcion: "Reconoce qué tipo de información puede proporcionar un sensor." },
-    { id: 5, nombre: "Algoritmo (Pregunta 8)", saber: "Algoritmo", pregunta: "Pregunta 8", areaCurricular: "Programación y algoritmos", descripcion: "Identifica una estructura condicional a partir de una situación." },
-    { id: 6, nombre: "Almacenamiento de datos (Pregunta 10)", saber: "Almacenamiento de datos", pregunta: "Pregunta 10", areaCurricular: "Ciencia de datos e IA", descripcion: "Comprende la importancia de conservar datos para consultarlos, analizarlos o utilizarlos posteriormente." },
+    { id: 1, nombre: "Microcontrolador (Pregunta 1 - 6)", saber: "Microcontrolador", pregunta: "Pregunta 1 - 6", areaCurricular: "Computación física y robótica" },
+    { id: 2, nombre: "Sensor y actuador (Pregunta 2 - 9 - 6)", saber: "Sensor y actuador", pregunta: "Pregunta 2 - 9 - 6", areaCurricular: "Computación física y robótica" },
+    { id: 3, nombre: "Algoritmo (Pregunta 3 - 4 - 5)", saber: "Algoritmo", pregunta: "Pregunta 3 - 4 - 5", areaCurricular: "Programación y algoritmos" },
+    { id: 4, nombre: "Dato (Pregunta 7)", saber: "Dato", pregunta: "Pregunta 7", areaCurricular: "Ciencia de datos e IA" },
+    { id: 5, nombre: "Algoritmo (Pregunta 8)", saber: "Algoritmo", pregunta: "Pregunta 8", areaCurricular: "Programación y algoritmos" },
+    { id: 6, nombre: "Almacenamiento de datos (Pregunta 10)", saber: "Almacenamiento de datos", pregunta: "Pregunta 10", areaCurricular: "Ciencia de datos e IA" },
   ],
   "7mo": [
     { id: 1, nombre: "Hardware y periféricos (Pregunta 1)", saber: "Hardware", pregunta: "Pregunta 1", areaCurricular: "Apropiación tecnológica" },
@@ -1668,28 +1668,21 @@ export default function PanelDocenteSimplificado() {
                         {(SABERES_COGNITIVOS_MAP[nivelActivo] || SABERES_COGNITIVOS_MAP["9no"]).map((saber) => (
                           <div
                             key={saber.id}
-                            className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs space-y-1.5 border-l-4 border-l-[#1B5E59] hover:shadow-md transition-all flex flex-col justify-between"
+                            className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs space-y-1.5 border-l-4 border-l-[#1B5E59] hover:shadow-md transition-all flex flex-col justify-center"
                           >
-                            <div>
-                              <div className="flex items-center justify-between gap-1 mb-1.5 flex-wrap">
-                                <span className="w-5 h-5 rounded-full bg-teal-100 text-[#1B5E59] font-black text-[10px] flex items-center justify-center shrink-0">
-                                  {saber.id}
+                            <div className="flex items-center justify-between gap-1 mb-1.5 flex-wrap">
+                              <span className="w-5 h-5 rounded-full bg-teal-100 text-[#1B5E59] font-black text-[10px] flex items-center justify-center shrink-0">
+                                {saber.id}
+                              </span>
+                              {saber.areaCurricular && (
+                                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-teal-50 text-teal-800 border border-teal-100 truncate max-w-[130px]" title={saber.areaCurricular}>
+                                  {saber.areaCurricular}
                                 </span>
-                                {saber.areaCurricular && (
-                                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-teal-50 text-teal-800 border border-teal-100 truncate max-w-[130px]" title={saber.areaCurricular}>
-                                    {saber.areaCurricular}
-                                  </span>
-                                )}
-                              </div>
-                              <h4 className="text-xs font-bold text-slate-900 leading-snug">
-                                {saber.nombre}
-                              </h4>
+                              )}
                             </div>
-                            {saber.descripcion && (
-                              <p className="text-[10px] text-slate-500 font-medium italic border-t border-slate-100 pt-1.5 mt-1 line-clamp-2" title={saber.descripcion}>
-                                {saber.descripcion}
-                              </p>
-                            )}
+                            <h4 className="text-xs font-bold text-slate-900 leading-snug">
+                              {saber.nombre}
+                            </h4>
                           </div>
                         ))}
                       </div>
