@@ -562,12 +562,14 @@ function cargarUsuariosServidor() {
     if (fs.existsSync(CACHE_USUARIOS_PATH)) {
       const data = fs.readFileSync(CACHE_USUARIOS_PATH, "utf8");
       if (data && data.trim().length > 0) {
-        const parsed = JSON.parse(data);
-        if (Array.isArray(parsed)) {
-          USUARIOS_DB = parsed.filter(
-            (u) => !esUsuarioEliminado(u.correoInstitucional, u.nombreCompleto)
-          );
-        }
+        try {
+          const parsed = JSON.parse(data);
+          if (Array.isArray(parsed)) {
+            USUARIOS_DB = parsed.filter(
+              (u) => !esUsuarioEliminado(u.correoInstitucional, u.nombreCompleto)
+            );
+          }
+        } catch {}
       }
     }
   } catch (e) {}
