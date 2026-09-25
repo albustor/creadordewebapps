@@ -218,6 +218,8 @@ export interface CriterioPsicomotorOficial {
   codigo: string;
   titulo: string;
   desc: string;
+  areaCurricular?: string;
+  preguntaGuia?: string;
   escalaA: string;
   escalaB: string;
   escalaC: string;
@@ -231,6 +233,8 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
       id: "p1",
       codigo: "P1. Modularización",
       titulo: "Modularización y Reconocimiento de Hardware",
+      areaCurricular: "Computación física y robótica",
+      preguntaGuia: "«¿Identifica y organiza con autonomía espacial las 3 tarjetas de hardware (Sensor LDR, MCU y Lámpara LED)?»",
       desc: "Resuelve la conexión por partes independientes: identifica y organiza espacialmente las 3 tarjetas de hardware (Sensor LDR, Microcontrolador MCU y Lámpara LED).",
       escalaA: "Logrado (L): Reconoce y organiza con autonomía las 3 tarjetas de hardware sin requerir modelado.",
       escalaB: "En Desarrollo (ED): Noción parcial de la distribución; organiza los módulos con pistas pedagógicas.",
@@ -242,6 +246,8 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
       id: "p2",
       codigo: "P2. Patrones y Polaridad",
       titulo: "Reconocimiento de Patrones y Polaridad Eléctrica",
+      areaCurricular: "Computación física y robótica",
+      preguntaGuia: "«¿Conecta terminales respetando polaridades (VCC 5V 🔴, GND ⚫, Pin A0 🟡, Pin D9 🔵) sin error?»",
       desc: "Identifica las regularidades de polaridad y correspondencia de terminales (VCC 5V 🔴, GND ⚫, Pin A0 🟡, Pin D9 🔵).",
       escalaA: "Logrado (L): Conecta terminales respetando polaridades sin cometer errores de alimentación o señal.",
       escalaB: "En Desarrollo (ED): Corrige polaridades tras advertencia visual o reintento asistido.",
@@ -253,6 +259,8 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
       id: "p3",
       codigo: "P3. Flujo Algorítmico",
       titulo: "Formulación del Flujo Algorítmico y Circuito",
+      areaCurricular: "Programación y algoritmos",
+      preguntaGuia: "«¿Establece el flujo lógico secuencial (Entrada → Proceso → Salida) cerrando el circuito ordenadamente?»",
       desc: "Establece el flujo lógico secuencial del sistema (Entrada → Proceso → Salida) cerrando el circuito eléctrico ordenadamente.",
       escalaA: "Logrado (L): Ejecuta la secuencia lógica ordenada de conexión de Entrada a Salida inmediatamente.",
       escalaB: "En Desarrollo (ED): Ensayo y error guiado hasta completar la secuencia lógica del circuito.",
@@ -264,6 +272,8 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
       id: "p4",
       codigo: "P4. Programación y Control",
       titulo: "Programación, Umbrales y Validación de Señal",
+      areaCurricular: "Programación y algoritmos",
+      preguntaGuia: "«¿Comprueba que al bajar la luz (<300 Lux) el microcontrolador activa la salida digital D9?»",
       desc: "Valida la estructura condicional y asignación de pines: comprueba que al bajar la luz (<300 Lux) el microcontrolador activa la salida digital D9.",
       escalaA: "Logrado (L): Verifica estados lógicos y umbrales con exactitud técnica en el simulador.",
       escalaB: "En Desarrollo (ED): Comprende la relación condicional umbral-actuador tras aclaración del docente.",
@@ -275,6 +285,8 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
       id: "p5",
       codigo: "P5. Depuración en Simulación",
       titulo: "Depuración de Fallas y Reconexión en Banco Interactivo",
+      areaCurricular: "Computación física y robótica",
+      preguntaGuia: "«¿Detecta la falla técnica inyectada y reconecta físicamente el cable en el puerto A0 de forma autónoma?»",
       desc: "Detecta la falla técnica inyectada en el simulador (señal conectada a 5V en vez de A0) y ejecuta la reconexión física del cable en el banco interactivo.",
       escalaA: "Logrado (L): Diagnostica la falla y reconecta el cable en A0 de forma autónoma e inmediata.",
       escalaB: "En Desarrollo (ED): Reconecta el cable correctamente tras recibir una pista orientadora del docente.",
@@ -286,6 +298,8 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
       id: "p6",
       codigo: "P6. Transferencia Técnica",
       titulo: "Transferencia Técnica y Justificación Argumentada",
+      areaCurricular: "Computación física y robótica",
+      preguntaGuia: "«¿Fundamenta técnicamente la diferencia entre señal analógica variable (A0) y alimentación fija (5V)?»",
       desc: "Transfiere el concepto a la justificación técnica: explica por qué la entrada analógica A0 lee voltajes variables según la luz mientras que 5V es fija.",
       escalaA: "Logrado (L): Justificación técnica precisa articulando voltaje analógico vs alimentación fija.",
       escalaB: "En Desarrollo (ED): Justificación empírica parcial sobre la necesidad de leer cambios de luz.",
@@ -299,6 +313,8 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
       id: "p1",
       codigo: "P1. Orientación Espacial",
       titulo: "Orientación Espacial y Desplazamiento en Cuadrícula",
+      areaCurricular: "Apropiación tecnológica y digital",
+      preguntaGuia: "«¿Cómo se desplaza en la cuadrícula lógica y resuelve la orientación espacial aplicando lateralidad sin obstáculos?»",
       desc: "Coordinación espacial, lateralidad y desplazamiento secuencial en laberinto / cuadrícula lógica 4x4.",
       escalaA: "Logrado (L): Navegación precisa y fluida aplicando lateralidad sin desorientación espacial.",
       escalaB: "En Desarrollo (ED): Requiere rectificación ocasional de lateralidad ante giros complejos.",
@@ -310,6 +326,8 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
       id: "p2",
       codigo: "P2. Ritmo e Inhibición",
       titulo: "Ritmo e Inhibición Sensorio-Motora (Semáforo)",
+      areaCurricular: "Apropiación tecnológica y digital",
+      preguntaGuia: "«¿Cómo reacciona ante los cambios de estímulo del semáforo con control inhibitorio sincronizado y sin impulsividad?»",
       desc: "Control inhibitorio motor y respuesta sincronizada ante estímulos cromáticos y temporales.",
       escalaA: "Logrado (L): Reacción sincronizada sin falsos impulsos o clics erráticos.",
       escalaB: "En Desarrollo (ED): Anticipación o retardo leve al reaccionar ante el cambio de estímulo.",
@@ -321,6 +339,8 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
       id: "p3",
       codigo: "P3. Pulso y Precisión",
       titulo: "Pulso y Precisión Digital en Canal Estrecho",
+      areaCurricular: "Apropiación tecnológica y digital",
+      preguntaGuia: "«¿Cómo mantiene el pulso continuo y el control del puntero sin salirse del canal de precisión?»",
       desc: "Estabilidad de pulso, precisión manual y control del puntero en trayectorias estrechas.",
       escalaA: "Logrado (L): Trazo limpio y controlado sin colisiones en las paredes del canal.",
       escalaB: "En Desarrollo (ED): Colisiones leves con recuperación inmediata del control del cursor.",
@@ -332,6 +352,8 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
       id: "p4",
       codigo: "P4. Motricidad Fina",
       titulo: "Motricidad Fina y Destreza con Periféricos",
+      areaCurricular: "Apropiación tecnológica y digital",
+      preguntaGuia: "«¿Con qué soltura, coordinación óculo-manual y postura ergonómica opera los periféricos de entrada al trazar?»",
       desc: "Coordinación óculo-manual en dibujo, captura de trazo y soltura en el manejo de periféricos.",
       escalaA: "Logrado (L): Trazo continuo, definido y manipulación ágil de dispositivos de entrada.",
       escalaB: "En Desarrollo (ED): Trazo segmentado o manipulación con lentitud exploratoria.",
@@ -345,6 +367,8 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
       id: "p1",
       codigo: "P1. Viso-Manual",
       titulo: "Coordinación Viso-Manual con Periféricos y Hardware",
+      areaCurricular: "Apropiación Tecnológica",
+      preguntaGuia: "«¿Demuestra destreza viso-manual en la interacción ergonómica con periféricos y hardware?»",
       desc: "Destreza al interactuar con periféricos (teclado, ratón) y ensamblaje de componentes digitales.",
       escalaA: "Logrado (L): Alta soltura, precisión operativa y control ergonómico.",
       escalaB: "En Desarrollo (ED): Manejo moderado con pausas de verificación.",
@@ -354,6 +378,8 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
       id: "p2",
       codigo: "P2. Postura y Ergonomía",
       titulo: "Hábitos de Postura y Cuidado Ergonómico",
+      areaCurricular: "Apropiación Tecnológica",
+      preguntaGuia: "«¿Mantiene hábitos de postura ergonómica y cuidado preventivo del equipo informático?»",
       desc: "Mantiene postura ergonómica de trabajo y demuestra cuidado preventivo del equipamiento informático.",
       escalaA: "Logrado (L): Postura ergonómica y cuidado preventivo óptimos en el espacio de trabajo.",
       escalaB: "En Desarrollo (ED): Ajusta la postura tras recordatorio docente.",
@@ -363,6 +389,8 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
       id: "p3",
       codigo: "P3. Mecanografía",
       titulo: "Mecanografía y Destreza de Entrada de Comandos",
+      areaCurricular: "Programación y algoritmos",
+      preguntaGuia: "«¿Ingresa comandos y estructuras algorítmicas con fluidez, ritmo y precisión mecanográfica?»",
       desc: "Velocidad, ritmo y precisión táctil en el ingreso de comandos y bloques algorítmicos.",
       escalaA: "Logrado (L): Ingreso rápido, fluido y sin errores de tipeo.",
       escalaB: "En Desarrollo (ED): Velocidad intermedia con necesidad de autocorrección ocasional.",
@@ -372,6 +400,8 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
       id: "p4",
       codigo: "P4. Material y Circuitos",
       titulo: "Manipulación de Material Concreto y Circuitos Físicos",
+      areaCurricular: "Apropiación Tecnológica",
+      preguntaGuia: "«¿Realiza el conexionado y ensamble seguro de componentes respetando polaridades?»",
       desc: "Conexionado físico y ensamble seguro de componentes, sensores y actuadores.",
       escalaA: "Logrado (L): Ensamblado seguro, firme y sin errores de polaridad.",
       escalaB: "En Desarrollo (ED): Corrige conexiones guiado por la retroalimentación docente.",
@@ -2009,35 +2039,41 @@ export default function PanelDocenteSimplificado() {
                     </button>
 
                     {guiaSimbologiaAbierta && (
-                      <div className="p-4 bg-slate-50/50 space-y-4 animate-fadeIn border-t border-slate-100">
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                          <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200">
-                            <span className="font-extrabold text-emerald-900 block text-xs">L (Logrado / Nivel A)</span>
-                            <p className="text-[11px] text-emerald-800 mt-0.5">Demuestra dominio consistente, precisión técnica y autonomía sin requerir modelado continuo.</p>
-                          </div>
-                          <div className="p-3 rounded-xl bg-amber-50 border border-amber-200">
-                            <span className="font-extrabold text-amber-900 block text-xs">ED (En Desarrollo / Nivel B)</span>
-                            <p className="text-[11px] text-amber-800 mt-0.5">Ejecuta la práctica con asistencia ocasional o autocorrección guiada por pistas pedagógicas.</p>
-                          </div>
-                          <div className="p-3 rounded-xl bg-rose-50 border border-rose-200">
-                            <span className="font-extrabold text-rose-900 block text-xs">RA (Requiere Acompañamiento / Nivel C)</span>
-                            <p className="text-[11px] text-rose-800 mt-0.5">Requiere modelado paso a paso, acompañamiento docente cercano o reintento de la actividad.</p>
-                          </div>
-                        </div>
-
-                        {/* Listado de Criterios del Nivel Actual */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 pt-2">
-                          {criteriosActuales.map((crit, idx) => (
-                            <div key={crit.id} className="p-3 bg-white border border-slate-200 rounded-xl space-y-1 text-xs shadow-2xs">
-                              <div className="flex items-center justify-between">
-                                <span className="font-black text-slate-900">{crit.codigo}</span>
-                                <span className="text-[10px] font-bold text-slate-400">Criterio {idx + 1}/{criteriosActuales.length}</span>
+                      <div className="p-4 pt-2 border-t border-slate-100 bg-slate-50/50 animate-fadeIn">
+                        <div className={`grid grid-cols-1 sm:grid-cols-2 ${criteriosActuales.length > 4 ? "lg:grid-cols-3" : "lg:grid-cols-4"} gap-4`}>
+                          {criteriosActuales.map((crit) => (
+                            <div
+                              key={crit.id}
+                              onClick={() => setCriterioModalDetalle(crit)}
+                              className="bg-white p-4 rounded-xl border-l-4 border-l-[#1B5E59] border border-slate-200 shadow-2xs hover:shadow-md transition-all cursor-pointer group flex flex-col justify-between"
+                              title="Haga clic para ver la rúbrica oficial y niveles de logro"
+                            >
+                              <div>
+                                <div className="flex items-center justify-between gap-2 mb-1.5 flex-wrap">
+                                  <span className="text-xs font-black text-[#1B5E59] group-hover:text-teal-700 transition-colors">
+                                    {crit.codigo}
+                                  </span>
+                                  {crit.areaCurricular && (
+                                    <span className="text-[10px] bg-teal-50 text-[#1B5E59] font-bold px-2 py-0.5 rounded border border-teal-200">
+                                      {crit.areaCurricular}
+                                    </span>
+                                  )}
+                                </div>
+                                <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200/80 mb-2">
+                                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-0.5">
+                                    Pregunta guía / Acción observable:
+                                  </span>
+                                  <p className="text-xs font-semibold text-slate-800 italic leading-snug">
+                                    {crit.preguntaGuia || crit.desc}
+                                  </p>
+                                </div>
                               </div>
-                              <p className="text-[11px] text-slate-600 leading-snug">{crit.desc}</p>
-                              <div className="pt-1.5 space-y-0.5 text-[10px] text-slate-500 font-mono">
-                                <div className="text-emerald-800">• <strong>L:</strong> {crit.escalaA}</div>
-                                <div className="text-amber-800">• <strong>ED:</strong> {crit.escalaB}</div>
-                                <div className="text-rose-800">• <strong>RA:</strong> {crit.escalaC}</div>
+                              
+                              <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                                <span className="text-slate-500 font-medium">3 Niveles: RA ➔ ED ➔ L</span>
+                                <span className="text-[#1B5E59] font-bold underline group-hover:no-underline">
+                                  Ver detalle rúbrica
+                                </span>
                               </div>
                             </div>
                           ))}
