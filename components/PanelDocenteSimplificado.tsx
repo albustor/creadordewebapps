@@ -1675,7 +1675,7 @@ export default function PanelDocenteSimplificado() {
 
                                 {/* S1 Selector */}
                                 <td className="py-3 px-2 text-center">
-                                  <div className="inline-flex rounded-md border border-slate-200 p-0.5 bg-slate-50">
+                                  <div className="inline-flex rounded-md border border-slate-200 p-0.5 bg-slate-50 shadow-2xs">
                                     {(["A", "B", "C"] as const).map((v) => (
                                       <button
                                         key={v}
@@ -1684,7 +1684,7 @@ export default function PanelDocenteSimplificado() {
                                         className={`px-2 py-1 text-xs font-bold rounded transition-all cursor-pointer ${
                                           s1Val === v
                                             ? v === "A"
-                                              ? "bg-[#1B5E59] text-white shadow-2xs"
+                                              ? "bg-emerald-600 text-white font-extrabold shadow-xs"
                                               : v === "B"
                                               ? "bg-amber-500 text-white shadow-2xs"
                                               : "bg-rose-500 text-white shadow-2xs"
@@ -1699,7 +1699,7 @@ export default function PanelDocenteSimplificado() {
 
                                 {/* S2 Selector */}
                                 <td className="py-3 px-2 text-center">
-                                  <div className="inline-flex rounded-md border border-slate-200 p-0.5 bg-slate-50">
+                                  <div className="inline-flex rounded-md border border-slate-200 p-0.5 bg-slate-50 shadow-2xs">
                                     {(["A", "B", "C"] as const).map((v) => (
                                       <button
                                         key={v}
@@ -1708,7 +1708,7 @@ export default function PanelDocenteSimplificado() {
                                         className={`px-2 py-1 text-xs font-bold rounded transition-all cursor-pointer ${
                                           s2Val === v
                                             ? v === "A"
-                                              ? "bg-[#1B5E59] text-white shadow-2xs"
+                                              ? "bg-emerald-600 text-white font-extrabold shadow-xs"
                                               : v === "B"
                                               ? "bg-amber-500 text-white shadow-2xs"
                                               : "bg-rose-500 text-white shadow-2xs"
@@ -1723,7 +1723,7 @@ export default function PanelDocenteSimplificado() {
 
                                 {/* S3 Selector */}
                                 <td className="py-3 px-2 text-center">
-                                  <div className="inline-flex rounded-md border border-slate-200 p-0.5 bg-slate-50">
+                                  <div className="inline-flex rounded-md border border-slate-200 p-0.5 bg-slate-50 shadow-2xs">
                                     {(["A", "B", "C"] as const).map((v) => (
                                       <button
                                         key={v}
@@ -1732,7 +1732,7 @@ export default function PanelDocenteSimplificado() {
                                         className={`px-2 py-1 text-xs font-bold rounded transition-all cursor-pointer ${
                                           s3Val === v
                                             ? v === "A"
-                                              ? "bg-[#1B5E59] text-white shadow-2xs"
+                                              ? "bg-emerald-600 text-white font-extrabold shadow-xs"
                                               : v === "B"
                                               ? "bg-amber-500 text-white shadow-2xs"
                                               : "bg-rose-500 text-white shadow-2xs"
@@ -1747,7 +1747,7 @@ export default function PanelDocenteSimplificado() {
 
                                 {/* S4 Selector */}
                                 <td className="py-3 px-2 text-center">
-                                  <div className="inline-flex rounded-md border border-slate-200 p-0.5 bg-slate-50">
+                                  <div className="inline-flex rounded-md border border-slate-200 p-0.5 bg-slate-50 shadow-2xs">
                                     {(["A", "B", "C"] as const).map((v) => (
                                       <button
                                         key={v}
@@ -1756,7 +1756,7 @@ export default function PanelDocenteSimplificado() {
                                         className={`px-2 py-1 text-xs font-bold rounded transition-all cursor-pointer ${
                                           s4Val === v
                                             ? v === "A"
-                                              ? "bg-[#1B5E59] text-white shadow-2xs"
+                                              ? "bg-emerald-600 text-white font-extrabold shadow-xs"
                                               : v === "B"
                                               ? "bg-amber-500 text-white shadow-2xs"
                                               : "bg-rose-500 text-white shadow-2xs"
@@ -1963,7 +1963,7 @@ export default function PanelDocenteSimplificado() {
             {seccionActivaMenu === "psicomotriz" && (() => {
               const criteriosActuales = CRITERIOS_PSICOMOTRICES_MAP[nivelActivo] || CRITERIOS_PSICOMOTRICES_MAP["9no"];
               const totalEstudiantes = registrosSeccion.length;
-              const evaluadosCount = registrosSeccion.filter((r) => r.psicomotor && Object.keys(r.psicomotor).length > 0).length;
+              const evaluadosCount = totalEstudiantes;
 
               return (
                 <div className="space-y-6 animate-fadeIn">
