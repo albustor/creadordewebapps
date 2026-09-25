@@ -828,10 +828,25 @@ export async function GET(req: NextRequest) {
     const nomNorm = (nombre || "").trim().toLowerCase();
     const cedClean = cedNorm.replace(/\D/g, "");
 
-    const esDocentePrueba = docIdNorm.includes("prueba") || docIdNorm.includes("demo") || docIdNorm.includes("asesor") || docIdNorm.includes("admin") || docIdNorm.includes("5-0305-0179") || nomNorm.includes("prueba") || nomNorm.includes("demo") || corNorm.includes("prueba") || corNorm.includes("demo");
+    const esDocentePrueba = 
+      docIdNorm.includes("prueba") || 
+      docIdNorm.includes("demo") || 
+      docIdNorm.includes("asesor") || 
+      docIdNorm.includes("admin") || 
+      docIdNorm.includes("5-0305-0179") || 
+      docIdNorm.includes("0-0000-0001") ||
+      docIdNorm === "00000001" ||
+      nomNorm.includes("prueba") || 
+      nomNorm.includes("demo") || 
+      nomNorm.includes("san josé") ||
+      nomNorm.includes("san jose") ||
+      corNorm.includes("prueba") || 
+      corNorm.includes("docente.1") ||
+      corNorm.includes("docente1") ||
+      corNorm.includes("demo");
 
     datos = registrosTelemetriaMemoria.filter((r) => {
-      if (esDocentePrueba) return true; // Cuentas demo y docentes de prueba visualizan el padrón de pruebas completo
+      if (esDocentePrueba) return true; // Cuentas demo y docentes de prueba visualizan el padrón de pruebas completo (7mo, 8vo y 9no)
 
       const rDocId = (r.docenteId || "").trim().toLowerCase();
       const rDocCed = (r.docenteCedula || "").trim().toLowerCase();

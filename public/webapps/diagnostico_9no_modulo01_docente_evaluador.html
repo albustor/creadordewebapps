@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -2382,6 +2382,59 @@
         applyTeacherProfileUI(stored);
         document.getElementById('authDocenteModal').classList.remove('open');
         alert(`✅ ¡Bienvenido(a) de nuevo, ${stored.nombre}!`);
+        return;
+      }
+
+      if (
+        user.includes('prueba') || 
+        user.includes('0-0000-0001') || 
+        user.includes('00000001') || 
+        user.includes('docente1') || 
+        user.includes('docente.1') || 
+        user.includes('san josé') || 
+        user.includes('san jose')
+      ) {
+        const pruebaProfile = {
+          nombre: 'Docente Prueba San José',
+          cedula: '0-0000-0001',
+          telefono: '8888-0001',
+          correo: 'prueba.docente1.docente.1@mep.go.cr',
+          tipoRol: 'Docente Evaluador',
+          dreCodigo: 'DRE-01',
+          dreNombre: 'DRE-01 - San José Central',
+          colegio: 'Colegio de Prueba San José (MEP)',
+          centrosEducativos: [{
+            dreCodigo: 'DRE-01',
+            dreNombre: 'DRE-01 - San José Central',
+            colegio: 'Colegio de Prueba San José (MEP)',
+            isExpanded: true,
+            niveles: { '7': true, '8': true, '9': true },
+            secciones: {
+              '7': { total: 6, selected: ['7-1', '7-2', '7-3'] },
+              '8': { total: 6, selected: ['8-1', '8-2', '8-3'] },
+              '9': { total: 6, selected: ['9-1', '9-2', '9-3'] }
+            }
+          }],
+          niveles: ['7° Año', '8° Año', '9° Año'],
+          seccionesPorNivel: { '7': ['7-1', '7-2', '7-3'], '8': ['8-1', '8-2', '8-3'], '9': ['9-1', '9-2', '9-3'] },
+          secciones: ['7-1', '7-2', '7-3', '8-1', '8-2', '8-3', '9-1', '9-2', '9-3'],
+          pin: pin || '2617',
+          autenticado: true,
+          registradoEl: new Date().toISOString()
+        };
+        localStorage.setItem('MEP_DOCENTE_PERFIL_GLOBAL', JSON.stringify(pruebaProfile));
+        try {
+          localStorage.setItem('docente_activo', JSON.stringify({
+            nombreCompleto: pruebaProfile.nombre,
+            institucionNombre: pruebaProfile.colegio,
+            correoInstitucional: pruebaProfile.correo,
+            idDocente: pruebaProfile.cedula
+          }));
+        } catch(e) {}
+        applyTeacherProfileUI(pruebaProfile);
+        document.getElementById('authDocenteModal').classList.remove('open');
+        alert(`✅ ¡Bienvenido(a), Docente Prueba San José!\nAcceso habilitado para Sétimo y Noveno Año.`);
+        sincronizarConBaseDeDatos(false);
         return;
       }
 

@@ -42,7 +42,7 @@ export default function ModalDocumentacionOficial({
                 <span className="text-[11px] text-slate-400 font-bold">Febrero 2027</span>
               </div>
               <h3 className="text-lg sm:text-xl font-black text-slate-900 leading-tight mt-0.5">
-                Centro de Documentación Técnica Oficial
+                Centro de Documentación Técnica
               </h3>
             </div>
           </div>
@@ -57,36 +57,27 @@ export default function ModalDocumentacionOficial({
 
         {/* Descripción */}
         <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-          Acceda y descargue los documentos técnicos de la <strong>Herramienta de Diagnóstico Estudiantes</strong>. Elaborados por <strong>Allan Morera Araya y Alberto Bustos Ortega</strong> para orientar la aplicación de la arquitectura evaluativa híbrida en el marco de la Formación Tecnológica 2027.
+          Acceda y descargue los documentos técnicos de la <strong>Herramienta de Diagnóstico Estudiantes</strong>. Elaborados por <strong>Allan Morera Araya y Alberto Bustos Ortega</strong> para orientar la aplicación de la arquitectura evaluativa en el marco de la Formación Tecnológica 2027.
         </p>
 
         {/* Tarjetas de Documentos */}
-        <div className="space-y-4">
+        <div className="space-y-3.5">
           
-          {/* Tarjeta Marco Integrador Tri-Modal 7.° Año */}
+          {/* 1. Marco Integrador Tri-Modal 7.° Año */}
           <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-teal-50/70 via-white to-sky-50/30 border border-teal-200 shadow-2xs space-y-3">
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-teal-800 text-white flex items-center justify-center font-black text-xs shadow-xs">
-                  7° TM
-                </div>
-                <div>
-                  <h4 className="font-extrabold text-slate-900 text-sm sm:text-base leading-snug">
-                    Marco Integrador de Evaluación Tri-Modal y Telemetría — 7.° Año
-                  </h4>
-                  <span className="text-[11px] text-teal-700 font-bold">
-                    Ecosistema Tri-Modal: En Línea, Local Desconectado (QR/USB) e Impreso
-                  </span>
-                </div>
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-teal-800 text-white flex items-center justify-center font-black text-xs shadow-xs shrink-0">
+                7° TM
               </div>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-teal-100 text-teal-800 shrink-0">
-                Oficial MEP
-              </span>
+              <div>
+                <h4 className="font-extrabold text-slate-900 text-sm sm:text-base leading-snug">
+                  Marco Integrador de Evaluación Tri-Modal y Telemetría — 7.° Año
+                </h4>
+                <span className="text-xs text-teal-800 font-bold block mt-0.5">
+                  Diagnóstico Sétimo
+                </span>
+              </div>
             </div>
-
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Define la arquitectura tri-modal estandarizada para 7.° año: diagnóstico en línea, ejecutable HTML offline con QR comprimido de alta densidad y ficha impresa, telemetría sensorio-motora y protocolo de sistematización docente.
-            </p>
 
             <div className="flex items-center gap-2.5 pt-1 flex-wrap">
               <a
@@ -111,30 +102,21 @@ export default function ModalDocumentacionOficial({
             </div>
           </div>
 
-          {/* Tarjeta Propuesta Híbrida 7.° Año */}
+          {/* 2. Propuesta Híbrida 7.° Año */}
           <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-sky-50/70 via-white to-sky-50/30 border border-sky-200 shadow-2xs space-y-3">
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-sky-600 text-white flex items-center justify-center font-black text-sm shadow-xs">
-                  7°
-                </div>
-                <div>
-                  <h4 className="font-extrabold text-slate-900 text-sm sm:text-base leading-snug">
-                    Propuesta de Arquitectura Evaluativa Híbrida — 7.° Año
-                  </h4>
-                  <span className="text-[11px] text-sky-700 font-bold">
-                    CyberQuest: Fundamentos Digitales, Pensamiento Computacional y Motricidad Fina
-                  </span>
-                </div>
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-sky-600 text-white flex items-center justify-center font-black text-sm shadow-xs shrink-0">
+                7°
               </div>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-100 text-sky-800 shrink-0">
-                Oficial MEP
-              </span>
+              <div>
+                <h4 className="font-extrabold text-slate-900 text-sm sm:text-base leading-snug">
+                  Propuesta de Arquitectura Evaluativa Híbrida — 7.° Año
+                </h4>
+                <span className="text-xs text-sky-800 font-bold block mt-0.5">
+                  Diagnóstico Sétimo
+                </span>
+              </div>
             </div>
-
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Detalla la autocalificación de 10 reactivos cognitivos, la telemetría sensorio-motora (P1 a P3), la observación de motricidad fina (P4) y las dinámicas socioafectivas de piloto y copiloto en parejas (S1 a S4).
-            </p>
 
             <div className="flex items-center gap-2.5 pt-1 flex-wrap">
               <a
@@ -159,30 +141,21 @@ export default function ModalDocumentacionOficial({
             </div>
           </div>
 
-          {/* Tarjeta Marco Integrador Tri-Modal 9.° Año */}
+          {/* 3. Marco Integrador Tri-Modal 9.° Año */}
           <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-indigo-50/70 via-white to-purple-50/30 border border-indigo-200 shadow-2xs space-y-3">
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-[#002b49] text-white flex items-center justify-center font-black text-xs shadow-xs">
-                  9° TM
-                </div>
-                <div>
-                  <h4 className="font-extrabold text-slate-900 text-sm sm:text-base leading-snug">
-                    Marco Integrador de Evaluación Tri-Modal y Telemetría — 9.° Año
-                  </h4>
-                  <span className="text-[11px] text-indigo-700 font-bold">
-                    Ecosistema Tri-Modal: En Línea, Local Desconectado (QR/USB) e Impreso
-                  </span>
-                </div>
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-[#002b49] text-white flex items-center justify-center font-black text-xs shadow-xs shrink-0">
+                9° TM
               </div>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-100 text-indigo-800 shrink-0">
-                Oficial MEP
-              </span>
+              <div>
+                <h4 className="font-extrabold text-slate-900 text-sm sm:text-base leading-snug">
+                  Marco Integrador de Evaluación Tri-Modal y Telemetría — 9.° Año
+                </h4>
+                <span className="text-xs text-indigo-800 font-bold block mt-0.5">
+                  Diagnóstico Noveno
+                </span>
+              </div>
             </div>
-
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Define la arquitectura tri-modal estandarizada (en línea, HTML offline con QR condensado &lt; 300 caracteres y formato impreso), matriz de 10 reactivos e indicadores MEP, telemetría automática y protocolo de validación docente.
-            </p>
 
             <div className="flex items-center gap-2.5 pt-1 flex-wrap">
               <a
@@ -207,30 +180,21 @@ export default function ModalDocumentacionOficial({
             </div>
           </div>
 
-          {/* Tarjeta 9.° Año */}
+          {/* 4. Propuesta Híbrida 9.° Año */}
           <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-emerald-50/70 via-white to-emerald-50/30 border border-emerald-200 shadow-2xs space-y-3">
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black text-sm shadow-xs">
-                  9°
-                </div>
-                <div>
-                  <h4 className="font-extrabold text-slate-900 text-sm sm:text-base leading-snug">
-                    Propuesta de Arquitectura Evaluativa Híbrida — 9.° Año
-                  </h4>
-                  <span className="text-[11px] text-emerald-700 font-bold">
-                    Aula Inteligente: Hardware, Programación Condicional y Depuración
-                  </span>
-                </div>
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black text-sm shadow-xs shrink-0">
+                9°
               </div>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 shrink-0">
-                Oficial MEP
-              </span>
+              <div>
+                <h4 className="font-extrabold text-slate-900 text-sm sm:text-base leading-snug">
+                  Propuesta de Arquitectura Evaluativa Híbrida — 9.° Año
+                </h4>
+                <span className="text-xs text-emerald-800 font-bold block mt-0.5">
+                  Diagnóstico Noveno
+                </span>
+              </div>
             </div>
-
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Establece la evaluación híbrida del circuito automatizado: autovalidación de cableado y polaridad (P1 a P3), observación en vivo de umbrales y depuración (P4 a P6), y contención socioafectiva formativa (S1 a S4).
-            </p>
 
             <div className="flex items-center gap-2.5 pt-1 flex-wrap">
               <a
@@ -260,7 +224,7 @@ export default function ModalDocumentacionOficial({
         {/* Nota Institucional */}
         <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-500 text-[11px] flex items-center justify-between flex-wrap gap-2">
           <span>Ministerio de Educación Pública • Dirección de Recursos Tecnológicos en Educación</span>
-          <span className="font-semibold text-slate-700">Versión Final Consolidada</span>
+          <span className="font-semibold text-slate-600">En Proceso de Validación</span>
         </div>
 
       </div>
