@@ -2125,7 +2125,7 @@
       } else if (p2State.activeColor === 'red' || p2State.activeColor === 'yellow') {
         p2State.falsePositives++;
         AudioEngine.playBeep();
-        showToast('⚠️ Inhibición: No debías pulsar');
+        showToast('⚠️ Pausa: No debe pulsar en rojo o en espera');
       } else {
         p2State.falsePositives++;
         AudioEngine.playBeep();
@@ -2813,7 +2813,7 @@
             <span class="mission-badge badge-psico">Dimensión 1 &bull; Psicomotriz y perceptivo-motriz ${isSolo ? '(individual)' : '(en pareja)'}</span>
             <div style="display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0;">
               <button class="btn-cyber-outline ${activeSubP === 'p1' ? 'btn-cyber' : ''}" onclick="switchSubP('p1')">P1. Lateralidad (4x4)</button>
-              <button class="btn-cyber-outline ${activeSubP === 'p2' ? 'btn-cyber' : ''}" onclick="switchSubP('p2')">P2. Ritmo e inhibición</button>
+              <button class="btn-cyber-outline ${activeSubP === 'p2' ? 'btn-cyber' : ''}" onclick="switchSubP('p2')">P2. Ritmo, tiempo y pausa</button>
               <button class="btn-cyber-outline ${activeSubP === 'p3' ? 'btn-cyber' : ''}" onclick="switchSubP('p3')">P3. Pulso visomanual</button>
               <button class="btn-cyber-outline ${activeSubP === 'p4' ? 'btn-cyber' : ''}" onclick="switchSubP('p4')">P4. Trazo y diseño</button>
             </div>
@@ -2874,7 +2874,7 @@
         renderP1Board();
       } else if (activeSubP === 'p2') {
         subContainer.innerHTML = `
-          <h2 class="card-title">P2. Ritmo, tempo e inhibición motriz</h2>
+          <h2 class="card-title">P2. Ritmo, tiempo y pausa</h2>
           <p class="card-desc">
             <strong>Instrucción del sensor:</strong> Pulse el botón <strong>capturar pulso</strong> únicamente cuando la luz central se encienda en <strong>verde 🟢</strong>.
             Si se enciende en <strong>rojo 🔴</strong> o está en espera, <strong>no debe tocar el botón</strong>.

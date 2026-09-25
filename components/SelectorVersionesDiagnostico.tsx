@@ -87,9 +87,9 @@ export default function SelectorVersionesDiagnostico({
   let pathDocente = "/webapps/diagnostico_8vo_modulo01_docente_evaluador.html";
 
   if (nivel === "7°") {
-    pathOnline = "/webapps/diagnostico_7mo_modulo01_cyberquest.html";
-    pathOffline = "/webapps/diagnostico_7mo_modulo01_desconectado_offline.html";
-    pathDocente = "/webapps/diagnostico_7mo_modulo01_docente_evaluador.html";
+    pathOnline = "/webapps/diagnostico_setimo_ano.html";
+    pathOffline = "/webapps/diagnostico_setimo_ano_modulo01_desconectado_offline.html";
+    pathDocente = "/webapps/diagnostico_setimo_ano_modulo01_docente_evaluador.html";
   } else if (nivel === "9°") {
     pathOnline = "/webapps/diagnostico_9no_modulo01_en_linea.html";
     pathOffline = "/webapps/diagnostico_9no_modulo01_desconectado_offline.html";
@@ -315,11 +315,11 @@ export default function SelectorVersionesDiagnostico({
               <div className="pt-2">
                 <a
                   href={urlOffline}
-                  download={`diagnostico_${nivelNum}mo_modulo01_desconectado_offline.html`}
+                  download={nivel === "7°" ? "diagnostico_setimo_ano.html" : `diagnostico_${nivelNum}mo_modulo01_desconectado_offline.html`}
                   className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-black transition-all shadow-xs"
                 >
                   <DownloadSimple size={16} weight="bold" />
-                  <span>Descargar Diagnóstico (.html)</span>
+                  <span>Descargar Diagnóstico {nivel === "7°" ? "Sétimo Año" : `${nivel} Año`} (.html)</span>
                 </a>
               </div>
             </div>
@@ -383,7 +383,7 @@ export default function SelectorVersionesDiagnostico({
             <a
               href={
                 nivel === "7°"
-                  ? "/docs/GUIA_PEDAGOGICA_EVALUACION_DIAGNOSTICA_MEP.pdf"
+                  ? "/docs/GUIA_PEDAGOGICA_DIAGNOSTICO_7MO_MEP.pdf"
                   : nivel === "8°"
                   ? "/docs/GUIA_PEDAGOGICA_DIAGNOSTICO_8VO_MEP.pdf"
                   : "/docs/GUIA_PEDAGOGICA_DIAGNOSTICO_9NO_MEP.pdf"
@@ -393,7 +393,7 @@ export default function SelectorVersionesDiagnostico({
               className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-stone-100 text-slate-800 rounded-xl border border-stone-300 font-bold transition-all text-xs"
             >
               <FilePdf size={14} className="text-rose-600" weight="bold" />
-              <span>Guía Pedagógica {nivel} Año (PDF)</span>
+              <span>Guía Pedagógica Diagnóstico {nivel === "7°" ? "Sétimo" : nivel === "8°" ? "Octavo" : "Noveno"} Año (PDF)</span>
               <ArrowSquareOut size={12} />
             </a>
 

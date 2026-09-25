@@ -716,21 +716,22 @@
 
     .reaction-trigger-btn-cyber {
       width: 100%;
-      max-width: 380px;
-      height: 66px;
+      max-width: 440px;
+      min-height: 74px;
+      padding: 18px 28px;
       background: #131d31;
       border: 2px solid var(--cyan-neon);
       color: #fff;
-      font-size: 16px;
-      font-weight: 800;
+      font-size: 1.15rem;
+      font-weight: 900;
       letter-spacing: 0.5px;
-      border-radius: 16px;
+      border-radius: 18px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+      gap: 12px;
+      box-shadow: 0 0 24px rgba(0, 240, 255, 0.22);
       transition: all 0.15s;
     }
 
@@ -1049,9 +1050,17 @@
      * =========================================================================
      */
     (function (root, factory) {
-      if (typeof exports === 'object') module.exports = factory();
-      else root.QRCode = factory();
-    }(this, function () {
+      var qrLib = factory();
+      if (typeof exports === 'object') module.exports = qrLib;
+      if (typeof window !== 'undefined') {
+        window.QRCode = qrLib;
+        window.QRCodeModel = qrLib.QRCodeModel;
+      }
+      if (root) {
+        root.QRCode = qrLib;
+        root.QRCodeModel = qrLib.QRCodeModel;
+      }
+    }(typeof globalThis !== 'undefined' ? globalThis : (typeof window !== 'undefined' ? window : this), function () {
       var QRMode = { MODE_NUMBER: 1 << 0, MODE_ALPHA_NUM: 1 << 1, MODE_8BIT_BYTE: 1 << 2, MODE_KANJI: 1 << 3 };
       var QRErrorCorrectLevel = { L: 1, M: 0, Q: 3, H: 2 };
       var QRMaskPattern = { PATTERN000: 0, PATTERN001: 1, PATTERN010: 2, PATTERN011: 3, PATTERN100: 4, PATTERN101: 5, PATTERN110: 6, PATTERN111: 7 };
@@ -1484,6 +1493,7 @@
         return QRCode(canvasOrId, { text: text, size: size || 250 });
       };
 
+      QRCode.QRCodeModel = QRCodeModel;
       return QRCode;
     }));
 
@@ -2115,7 +2125,7 @@
       } else if (p2State.activeColor === 'red' || p2State.activeColor === 'yellow') {
         p2State.falsePositives++;
         AudioEngine.playBeep();
-        showToast('⚠️ Inhibición: No debías pulsar');
+        showToast('⚠️ Pausa: No debe pulsar en rojo o en espera');
       } else {
         p2State.falsePositives++;
         AudioEngine.playBeep();
@@ -2803,7 +2813,7 @@
             <span class="mission-badge badge-psico">Dimensión 1 &bull; Psicomotriz y perceptivo-motriz ${isSolo ? '(individual)' : '(en pareja)'}</span>
             <div style="display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0;">
               <button class="btn-cyber-outline ${activeSubP === 'p1' ? 'btn-cyber' : ''}" onclick="switchSubP('p1')">P1. Lateralidad (4x4)</button>
-              <button class="btn-cyber-outline ${activeSubP === 'p2' ? 'btn-cyber' : ''}" onclick="switchSubP('p2')">P2. Ritmo e inhibición</button>
+              <button class="btn-cyber-outline ${activeSubP === 'p2' ? 'btn-cyber' : ''}" onclick="switchSubP('p2')">P2. Ritmo, tiempo y pausa</button>
               <button class="btn-cyber-outline ${activeSubP === 'p3' ? 'btn-cyber' : ''}" onclick="switchSubP('p3')">P3. Pulso visomanual</button>
               <button class="btn-cyber-outline ${activeSubP === 'p4' ? 'btn-cyber' : ''}" onclick="switchSubP('p4')">P4. Trazo y diseño</button>
             </div>
@@ -2864,9 +2874,9 @@
         renderP1Board();
       } else if (activeSubP === 'p2') {
         subContainer.innerHTML = `
-          <h2 class="card-title">P2. Ritmo, tempo e inhibición motriz</h2>
+          <h2 class="card-title">P2. Ritmo, tiempo y pausa</h2>
           <p class="card-desc">
-            <strong>Instrucción del sensor:</strong> Pulse el botón <strong>Capturar pulso</strong> únicamente cuando la luz central se encienda en <strong>verde 🟢</strong>.
+            <strong>Instrucción del sensor:</strong> Pulse el botón <strong>capturar pulso</strong> únicamente cuando la luz central se encienda en <strong>verde 🟢</strong>.
             Si se enciende en <strong>rojo 🔴</strong> o está en espera, <strong>no debe tocar el botón</strong>.
           </p>
           
@@ -2881,11 +2891,11 @@
             </div>
             
             <button class="btn-cyber reaction-trigger-btn-cyber" id="btnStartP2" onclick="startP2Game()">
-              ▶ Iniciar sensor de reflejos
+              ▶ Tocar aquí capturar pulso
             </button>
             
             <button class="reaction-trigger-btn-cyber" id="btnActionP2" style="display: none;" onclick="handleP2Tap()">
-              ⚡ Capturar pulso (clic aquí) ⚡
+              ⚡ Tocar aquí capturar pulso ⚡
             </button>
 
             <div style="margin-top: 8px; width: 100%; display: flex; justify-content: flex-end;">
@@ -3184,20 +3194,20 @@
           <!-- ESTADO DE SINCRONIZACIÓN AUTOMÁTICA -->
           <div id="telemetrySyncStatus" style="margin: 12px 0;"></div>
 
-          <!-- PANEL OFICIAL DE CONFIRMACIÓN Y TRANSFERENCIA AUTOMÁTICA (SIN QR) -->
+          <!-- PANEL OFICIAL DE CONFIRMACIÓN Y TRANSFERENCIA -->
           <div style="background: rgba(16, 185, 129, 0.12); border: 1.5px solid var(--lime-neon); border-radius: 16px; padding: 22px; margin: 16px auto; max-width: 580px; display: flex; flex-direction: column; align-items: center; gap: 10px; box-shadow: 0 8px 30px rgba(16, 185, 129, 0.18);">
             <div style="font-size: 36px; line-height: 1;">✅</div>
             
             <span class="mep-tag" style="background: rgba(16, 185, 129, 0.25); border: 1px solid var(--lime-neon); color: #34d399; font-size: 12px; padding: 4px 14px; border-radius: 20px; font-weight: 800; letter-spacing: 0.5px;">
-              Diagnóstico registrado y sincronizado en línea
+              Diagnóstico registrado y disponible
             </span>
 
             <h3 style="font-size: 17px; color: #ffffff; font-weight: 800; margin: 4px 0 0 0;">
-              ¡Información transferida con éxito!
+              ¡Información registrada con éxito!
             </h3>
 
             <p style="font-size: 13px; color: #cbd5e1; max-width: 500px; line-height: 1.5; margin: 0; text-align: center;">
-              Sus respuestas y resultados diagnósticos han sido <strong>transferidos y sincronizados de manera automática</strong> con la <strong>herramienta de evaluación del docente</strong> y con el <strong>panel institucional central MEP</strong>.
+              Sus respuestas han sido guardadas y pueden sincronizarse de inmediato con el <strong>panel de evaluación docente</strong> y el <strong>panel institucional central MEP</strong>.
             </p>
 
             <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(0, 240, 255, 0.25); border-radius: 12px; padding: 12px 16px; width: 100%; max-width: 480px; margin: 6px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; text-align: left; font-size: 12px;">
@@ -3223,12 +3233,21 @@
               </div>
             </div>
 
-            <p style="font-size: 11.5px; color: #94a3b8; margin: 0; font-style: italic;">
-              ℹ️ En esta modalidad en línea no se requiere código QR ni escaneo manual, ya que la comunicación digital se procesa en tiempo real.
-            </p>
+            <!-- CÓDIGO QR PARA ESCANEO LOCAL DEL DOCENTE -->
+            <div style="background: #0d1322; border: 2px solid var(--cyan-neon); border-radius: 16px; padding: 16px 20px; margin: 8px auto; max-width: 320px; text-align: center; box-shadow: 0 0 25px rgba(0, 240, 255, 0.2);">
+              <span style="font-size: 11.5px; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 8px;">
+                📱 Código QR de Evidencia Diagnóstica
+              </span>
+              <div style="background: #ffffff; padding: 10px; border-radius: 12px; display: inline-block; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                <canvas id="qrCanvasFinal" width="200" height="200" style="display: block;"></canvas>
+              </div>
+              <p style="font-size: 11px; color: #94a3b8; margin: 8px 0 0 0; line-height: 1.4;">
+                El docente puede escanear este código con su celular para registrar de inmediato el resultado en el panel de evaluación (con o sin internet).
+              </p>
+            </div>
 
             <!-- ACCIONES EN LÍNEA Y DESCARGAS -->
-            <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 10px;">
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 8px;">
               <button type="button" class="btn-cyber" style="padding: 8px 14px; font-size: 12px; background: rgba(168, 85, 247, 0.2); border-color: var(--violet-neon); color: #e9d5ff;" onclick="downloadTelemetryJson()" title="Descargar archivo JSON con el desglose de respuestas">
                 💾 Descargar ficha (.json)
               </button>
@@ -3242,7 +3261,7 @@
 
             <!-- BOTÓN DE CIERRE DE SESIÓN Y VENTANA SEGURO -->
             <div style="margin-top: 14px; width: 100%; display: flex; justify-content: center;">
-              <button type="button" class="btn-cyber" style="background: linear-gradient(135deg, #dc2626, #991b1b); border: 1.5px solid #ef4444; color: #ffffff; font-weight: 800; font-size: 13px; padding: 11px 22px; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4); display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s;" onclick="cerrarVentana7mo()">
+              <button type="button" class="btn-cyber" style="background: linear-gradient(135deg, #dc2626, #991b1b); border: 1.5px solid #ef4444; color: #ffffff; font-weight: 800; font-size: 13px; padding: 12px 24px; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4); display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s;" onclick="cerrarVentana7mo()">
                 🔒 Cerrar ventana y finalizar sesión
               </button>
             </div>
@@ -3259,8 +3278,94 @@
       `;
 
       setTimeout(() => {
+        generarQR7mo(isSolo);
         sendTelemetryToGoogleSheets('completado');
-      }, 100);
+      }, 50);
+    }
+
+    function generarQR7mo(isSolo) {
+      try {
+        const metrics = calculateDiagnosticsMetrics();
+        const secClean = (AppState.section || '7-1').replace(/^sección\s*/i, '').replace(/^seccion\s*/i, '').trim();
+        const c1 = (AppState.cadet1?.name || 'Cadete 1').trim();
+        const c2 = isSolo ? 'Individual' : ((AppState.cadet2?.name || 'Cadete 2').trim());
+        const hash = AppState.sessionHash || ('HASH-7MO-' + Date.now().toString(36).toUpperCase());
+
+        const qrPayloadObj = {
+          t: "MEP7",
+          tipo: "CYBERQUEST_7MO",
+          sec: secClean,
+          c1: c1,
+          a1: AppState.cadet1?.avatar || '🧑‍💻',
+          c2: c2,
+          a2: isSolo ? '' : (AppState.cadet2?.avatar || '👩‍💻'),
+          p: metrics.psicoScore !== undefined ? metrics.psicoScore : 100,
+          c: metrics.cogScore !== undefined ? metrics.cogScore : 80,
+          s: metrics.socioScore !== undefined ? metrics.socioScore : 80,
+          g: metrics.globalAvg !== undefined ? metrics.globalAvg : 85,
+          lvl: metrics.globalLevel || 'A',
+          h: hash,
+          xp: AppState.xp || 400,
+          ts: Date.now()
+        };
+
+        const qrDataStr = JSON.stringify(qrPayloadObj);
+        const canvas = document.getElementById("qrCanvasFinal");
+        if (!canvas) return;
+
+        let qrRendered = false;
+
+        // 1. Intentar con QRCode.generateToCanvas (0 dependencias en memoria)
+        if (typeof QRCode !== "undefined" && typeof QRCode.generateToCanvas === "function") {
+          try {
+            QRCode.generateToCanvas("qrCanvasFinal", qrDataStr, 220);
+            qrRendered = true;
+          } catch(e1) {
+            console.warn("Fallo QRCode.generateToCanvas, recurriendo a QRCodeModel:", e1);
+          }
+        }
+
+        // 2. Fallback robusto con QRCodeModel directo y pintado pixel a pixel en Canvas (100% Offline)
+        if (!qrRendered) {
+          try {
+            const QRModelClass = (typeof QRCodeModel !== "undefined") ? QRCodeModel : (QRCode && QRCode.QRCodeModel);
+            if (QRModelClass) {
+              const qr = new QRModelClass(0, 1); // 1 = Nivel Error Correction M
+              qr.addData(qrDataStr);
+              qr.make();
+
+              const ctx = canvas.getContext("2d");
+              const size = 220;
+              const count = qr.getModuleCount();
+              const cellSize = size / count;
+
+              canvas.width = size;
+              canvas.height = size;
+              ctx.fillStyle = "#ffffff";
+              ctx.fillRect(0, 0, size, size);
+              ctx.fillStyle = "#000000";
+
+              for (let row = 0; row < count; row++) {
+                for (let col = 0; col < count; col++) {
+                  if (qr.isDark(row, col)) {
+                    ctx.fillRect(
+                      Math.round(col * cellSize),
+                      Math.round(row * cellSize),
+                      Math.ceil(cellSize),
+                      Math.ceil(cellSize)
+                    );
+                  }
+                }
+              }
+              qrRendered = true;
+            }
+          } catch(e2) {
+            console.error("Error en fallback QRCodeModel:", e2);
+          }
+        }
+      } catch(err) {
+        console.error("Error global generando código QR en 7mo:", err);
+      }
     }
 
     function cerrarVentana7mo() {
