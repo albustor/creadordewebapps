@@ -56,7 +56,7 @@ import {
 
 export type SeccionPanel =
   | "enlaces"
-  | "conceptual"
+  | "cognitivo"
   | "socioafectivo"
   | "psicomotriz"
   | "sistematizacion"
@@ -862,18 +862,18 @@ export default function PanelDocenteSimplificado() {
                 <span>Enlaces Estudiante</span>
               </button>
 
-              {/* 2. Registro Conceptual */}
+              {/* 2. Registro Cognitivo */}
               <button
                 type="button"
-                onClick={() => setSeccionActivaMenu("conceptual")}
+                onClick={() => setSeccionActivaMenu("cognitivo")}
                 className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left ${
-                  seccionActivaMenu === "conceptual"
+                  seccionActivaMenu === "cognitivo"
                     ? "bg-[#D1EBE7] text-[#1B5E59] font-bold shadow-2xs border border-[#9FD1C9]"
                     : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                 }`}
               >
-                <BookOpen size={18} weight={seccionActivaMenu === "conceptual" ? "bold" : "regular"} className={seccionActivaMenu === "conceptual" ? "text-[#1B5E59]" : "text-slate-500"} />
-                <span>Registro Conceptual</span>
+                <BookOpen size={18} weight={seccionActivaMenu === "cognitivo" ? "bold" : "regular"} className={seccionActivaMenu === "cognitivo" ? "text-[#1B5E59]" : "text-slate-500"} />
+                <span>Registro Cognitivo</span>
               </button>
 
               {/* 3. Registro Socioafectivo */}
@@ -986,7 +986,7 @@ export default function PanelDocenteSimplificado() {
               <div>
                 <h1 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 uppercase">
                   {seccionActivaMenu === "enlaces" && "ENLACES ESTUDIANTE"}
-                  {seccionActivaMenu === "conceptual" && "REGISTRO CONCEPTUAL — DATOS COGNITIVOS"}
+                  {seccionActivaMenu === "cognitivo" && "REGISTRO COGNITIVO — DATOS DEL SABER"}
                   {seccionActivaMenu === "socioafectivo" && "REGISTRO SOCIOAFECTIVO"}
                   {seccionActivaMenu === "psicomotriz" && "REGISTRO PSICOMOTRIZ — HARDWARE & DESTREZAS"}
                   {seccionActivaMenu === "sistematizacion" && "SISTEMATIZACIÓN DE DESEMPEÑOS Y LOGROS (MEP)"}
@@ -994,7 +994,7 @@ export default function PanelDocenteSimplificado() {
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">
                   {seccionActivaMenu === "enlaces" && "Genere enlaces y códigos QR en línea o descargue el archivo para PCs sin conexión."}
-                  {seccionActivaMenu === "conceptual" && "Monitoreo de respuestas correctas, fallos y nivel de logro en los reactivos del programa MEP."}
+                  {seccionActivaMenu === "cognitivo" && "Monitoreo de respuestas correctas, fallos y nivel de logro en los 10 reactivos oficiales del programa MEP."}
                   {seccionActivaMenu === "socioafectivo" && "Registro de las 4 dimensiones socioafectivas oficiales (S1: Precisión, S2: Error, S3: Flexibilidad, S4: Confort)."}
                   {seccionActivaMenu === "psicomotriz" && "Evaluación de destrezas operativas, conexionado circuital (MCU, LDR, Actuador) y motricidad fina."}
                   {seccionActivaMenu === "sistematizacion" && "Matriz oficial de sistematización curricular con exportación inmediata a Excel y PDF."}
@@ -1284,9 +1284,9 @@ export default function PanelDocenteSimplificado() {
             )}
 
             {/* ========================================================= */}
-            {/* SECCIÓN 2: REGISTRO CONCEPTUAL (Datos Cognitivos en Vivo)  */}
+            {/* SECCIÓN 2: REGISTRO COGNITIVO (Datos del Saber en Vivo)   */}
             {/* ========================================================= */}
-            {seccionActivaMenu === "conceptual" && (
+            {seccionActivaMenu === "cognitivo" && (
               <div className="space-y-6 animate-fadeIn">
                 
                 {/* Cabecera de Subáreas Cognitivas */}
