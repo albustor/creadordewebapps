@@ -62,6 +62,7 @@ import {
   Globe,
   WifiHigh,
   WifiSlash,
+  ArrowsLeftRight,
 } from "@phosphor-icons/react";
 
 export type SeccionPanel =
@@ -544,7 +545,6 @@ export default function PanelDocenteSimplificado() {
   const [filtroEstado, setFiltroEstado] = useState<"todos" | "apoyo" | "proceso" | "logrado">("todos");
 
   // Estados visuales y modales
-  const [drawerMovilAbierto, setDrawerMovilAbierto] = useState(false);
   const [copiado, setCopiado] = useState(false);
   const [modalProyeccion, setModalProyeccion] = useState(false);
   const [modalEscaner, setModalEscaner] = useState(false);
@@ -569,7 +569,12 @@ export default function PanelDocenteSimplificado() {
   const [criterioModalDetalle, setCriterioModalDetalle] = useState<CriterioPsicomotorOficial | null>(null);
   const [criterioSocioModalDetalle, setCriterioSocioModalDetalle] = useState<CriterioSocioafectivoOficial | null>(null);
   const [acordeonDimensionesSocio, setAcordeonDimensionesSocio] = useState(false);
+  const [acordeonTablaSocio, setAcordeonTablaSocio] = useState(true);
   const [acordeonDimensionesCognitivo, setAcordeonDimensionesCognitivo] = useState(false);
+  const [acordeonTablaCognitivo, setAcordeonTablaCognitivo] = useState(true);
+  const [acordeonDimensionesPsico, setAcordeonDimensionesPsico] = useState(false);
+  const [acordeonTablaPsico, setAcordeonTablaPsico] = useState(true);
+  const [acordeonTablaResultados, setAcordeonTablaResultados] = useState(true);
   const [acordeonMetricasCohorte, setAcordeonMetricasCohorte] = useState(false);
   const [guardadosFeedback, setGuardadosFeedback] = useState<Record<string, boolean>>({});
   const [cambiosPendientes, setCambiosPendientes] = useState<Record<string, boolean>>({});
@@ -1030,31 +1035,20 @@ export default function PanelDocenteSimplificado() {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto bg-white rounded-2xl shadow-cardLg border border-[#CBD5E1]/80 overflow-hidden flex flex-col min-h-[750px]">
+    <div className="w-full max-w-7xl mx-auto bg-white rounded-2xl shadow-cardLg border border-[#CBD5E1]/80 flex flex-col min-h-[750px]">
       
-      {/* 1. TOP BAR — Barra de Navegación del Sistema */}
-      <header className="bg-[#F0F3F6] border-b border-[#CBD5E1]/80 px-3 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-3 select-none">
-        {/* Controles de ventana decorativos + Botón Menú Móvil + Título Panel de Evaluación + Selector de Nivel (7.° y 9.°) */}
+      {/* 1. TOP BAR — Barra de Navegación del Sistema FIJA (Sticky) */}
+      <header className="sticky top-16 sm:top-20 z-40 bg-[#F0F3F6]/95 backdrop-blur-md border-b border-[#CBD5E1]/80 rounded-t-2xl px-3 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-3 select-none shadow-xs">
+        {/* Controles de ventana decorativos + Título Panel de Evaluación + Selector de Nivel (7.° y 9.°) */}
         <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-          {/* Botón Menú Hamburguesa para Móvil */}
-          <button
-            type="button"
-            onClick={() => setDrawerMovilAbierto(true)}
-            className="md:hidden p-1.5 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer shadow-2xs"
-            title="Abrir menú docente y utilidades"
-            aria-label="Abrir menú"
-          >
-            <List size={18} weight="bold" />
-          </button>
-
-          {/* Controles de ventana decorativos (Solo Desktop) */}
-          <div className="hidden md:flex items-center space-x-2">
+          {/* Controles de ventana decorativos (Desktop) */}
+          <div className="hidden sm:flex items-center space-x-2">
             <span className="w-3 h-3 rounded-full bg-[#FF5F57] border border-[#E0443E] inline-block" />
             <span className="w-3 h-3 rounded-full bg-[#FEBC2E] border border-[#D89E24] inline-block" />
             <span className="w-3 h-3 rounded-full bg-[#28C840] border border-[#1AAB29] inline-block" />
           </div>
 
-          <span className="text-xs sm:text-sm font-black text-slate-800 tracking-tight pl-1 sm:pl-2 md:border-l md:border-slate-300 truncate max-w-[130px] sm:max-w-none">
+          <span className="text-xs sm:text-sm font-black text-slate-800 tracking-tight sm:pl-2 sm:border-l sm:border-slate-300 truncate">
             Panel de Evaluación
           </span>
 
@@ -1123,247 +1117,6 @@ export default function PanelDocenteSimplificado() {
           </button>
         </div>
       </header>
-
-      {/* ========================================================= */}
-      {/* DRAWER MÓVIL DESLIZANTE (Para herramientas secundarias)   */}
-      {/* ========================================================= */}
-      {drawerMovilAbierto && (
-        <div className="fixed inset-0 z-50 md:hidden animate-fadeIn">
-          {/* Fondo oscuro traslúcido */}
-          <div
-            className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity"
-            onClick={() => setDrawerMovilAbierto(false)}
-          />
-
-          {/* Panel lateral */}
-          <div className="fixed inset-y-0 left-0 max-w-xs w-full bg-white shadow-2xl z-10 flex flex-col justify-between p-5 overflow-y-auto animate-fadeIn">
-            <div className="space-y-5">
-              {/* Header Drawer */}
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#1B5E59] text-white flex items-center justify-center font-bold text-sm shadow-xs ring-2 ring-[#D1EBE7]">
-                    {(() => {
-                      const n = docente?.nombreCompleto || "MD";
-                      return n.substring(0, 2).toUpperCase();
-                    })()}
-                  </div>
-                  <div className="overflow-hidden">
-                    <h2 className="font-bold text-sm text-[#0D1C2E] truncate leading-tight">
-                      {docente?.nombreCompleto || "Docente MEP"}
-                    </h2>
-                    <p className="text-[11px] text-slate-500 font-mono truncate">
-                      {docente?.idDocente || "DOC-7729"}
-                    </p>
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => setDrawerMovilAbierto(false)}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
-                >
-                  <X size={20} weight="bold" />
-                </button>
-              </div>
-
-              {/* Selector de Nivel en Drawer */}
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80 space-y-2">
-                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
-                  Nivel en Evaluación
-                </span>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      handleCambiarNivel("7mo");
-                      setDrawerMovilAbierto(false);
-                    }}
-                    className={`py-2 px-3 rounded-lg text-xs font-black transition-all cursor-pointer text-center ${
-                      nivelActivo === "7mo"
-                        ? "bg-[#1B5E59] text-white shadow-xs"
-                        : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
-                    }`}
-                  >
-                    7.° AÑO
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      handleCambiarNivel("9no");
-                      setDrawerMovilAbierto(false);
-                    }}
-                    className={`py-2 px-3 rounded-lg text-xs font-black transition-all cursor-pointer text-center ${
-                      nivelActivo === "9no"
-                        ? "bg-[#1B5E59] text-white shadow-xs"
-                        : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
-                    }`}
-                  >
-                    9.° AÑO
-                  </button>
-                </div>
-              </div>
-
-              {/* Menú de Navegación Modular en Drawer */}
-              <nav className="space-y-1.5" aria-label="Navegación Móvil Drawer">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block px-1">
-                  Áreas Curriculares
-                </span>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSeccionActivaMenu("enlaces");
-                    setDrawerMovilAbierto(false);
-                  }}
-                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left ${
-                    seccionActivaMenu === "enlaces"
-                      ? "bg-[#D1EBE7] text-[#1B5E59] font-bold shadow-2xs border border-[#9FD1C9]"
-                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                  }`}
-                >
-                  <LinkIcon size={18} weight={seccionActivaMenu === "enlaces" ? "bold" : "regular"} className={seccionActivaMenu === "enlaces" ? "text-[#1B5E59]" : "text-slate-500"} />
-                  <span>Enlaces Estudiante</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSeccionActivaMenu("cognitivo");
-                    setDrawerMovilAbierto(false);
-                  }}
-                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left ${
-                    seccionActivaMenu === "cognitivo"
-                      ? "bg-[#D1EBE7] text-[#1B5E59] font-bold shadow-2xs border border-[#9FD1C9]"
-                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                  }`}
-                >
-                  <BookOpen size={18} weight={seccionActivaMenu === "cognitivo" ? "bold" : "regular"} className={seccionActivaMenu === "cognitivo" ? "text-[#1B5E59]" : "text-slate-500"} />
-                  <span>Área Cognitiva</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSeccionActivaMenu("socioafectivo");
-                    setDrawerMovilAbierto(false);
-                  }}
-                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left ${
-                    seccionActivaMenu === "socioafectivo"
-                      ? "bg-[#D1EBE7] text-[#1B5E59] font-bold shadow-2xs border border-[#9FD1C9]"
-                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                  }`}
-                >
-                  <div className="flex items-center gap-3 truncate">
-                    <Heart size={18} weight={seccionActivaMenu === "socioafectivo" ? "fill" : "regular"} className={seccionActivaMenu === "socioafectivo" ? "text-[#1B5E59]" : "text-slate-500"} />
-                    <span className="truncate">Área Socioafectiva</span>
-                  </div>
-                  {metricasCohorte.alertasTempranas > 0 && (
-                    <span className="w-2 h-2 rounded-full bg-[#E07A2C] animate-ping shrink-0" />
-                  )}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSeccionActivaMenu("psicomotriz");
-                    setDrawerMovilAbierto(false);
-                  }}
-                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left ${
-                    seccionActivaMenu === "psicomotriz"
-                      ? "bg-[#D1EBE7] text-[#1B5E59] font-bold shadow-2xs border border-[#9FD1C9]"
-                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                  }`}
-                >
-                  <Pulse size={18} weight={seccionActivaMenu === "psicomotriz" ? "bold" : "regular"} className={seccionActivaMenu === "psicomotriz" ? "text-[#1B5E59]" : "text-slate-500"} />
-                  <span>Área Psicomotora</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSeccionActivaMenu("sistematizacion");
-                    setDrawerMovilAbierto(false);
-                  }}
-                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left ${
-                    seccionActivaMenu === "sistematizacion"
-                      ? "bg-[#D1EBE7] text-[#1B5E59] font-bold shadow-2xs border border-[#9FD1C9]"
-                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                  }`}
-                >
-                  <Users size={18} weight={seccionActivaMenu === "sistematizacion" ? "bold" : "regular"} className={seccionActivaMenu === "sistematizacion" ? "text-[#1B5E59]" : "text-slate-500"} />
-                  <span>Resultados por Sección</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSeccionActivaMenu("analitica");
-                    setDrawerMovilAbierto(false);
-                  }}
-                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left ${
-                    seccionActivaMenu === "analitica"
-                      ? "bg-[#D1EBE7] text-[#1B5E59] font-bold shadow-2xs border border-[#9FD1C9]"
-                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                  }`}
-                >
-                  <ChartBar size={18} weight={seccionActivaMenu === "analitica" ? "bold" : "regular"} className={seccionActivaMenu === "analitica" ? "text-[#1B5E59]" : "text-slate-500"} />
-                  <span>Análisis General & IA</span>
-                </button>
-              </nav>
-            </div>
-
-            {/* Footer Drawer */}
-            <div className="pt-4 border-t border-slate-100 space-y-2 mt-4">
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block px-1">
-                Recursos y Soporte
-              </span>
-              <button
-                type="button"
-                onClick={() => {
-                  setModalDocumentacion(true);
-                  setDrawerMovilAbierto(false);
-                }}
-                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold text-sky-900 bg-sky-50 hover:bg-sky-100/80 border border-sky-200 transition-colors cursor-pointer"
-              >
-                <FilePdf size={16} weight="bold" className="text-rose-600" />
-                <span>Documentación Técnica (PDFs)</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setModalAyuda(true);
-                  setDrawerMovilAbierto(false);
-                }}
-                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer"
-              >
-                <Info size={16} />
-                <span>Guía Rápida Docente</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setModalInstalacionMovil(true);
-                  setDrawerMovilAbierto(false);
-                }}
-                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold text-emerald-900 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200 transition-colors cursor-pointer"
-              >
-                <DeviceMobile size={16} weight="bold" className="text-emerald-700" />
-                <span>Instalar WebApp en Celular</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setModalArticulacion(true);
-                  setDrawerMovilAbierto(false);
-                }}
-                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold text-teal-800 bg-teal-50 hover:bg-teal-100/80 border border-teal-200 transition-colors cursor-pointer"
-              >
-                <Compass size={16} weight="fill" className="text-teal-700" />
-                <span>Articulación Curricular MEP</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* 2. APP SHELL — Sidebar + Main Content Canvas */}
       <div className="flex flex-col md:flex-row flex-1 bg-white">
@@ -1532,7 +1285,7 @@ export default function PanelDocenteSimplificado() {
         {/* ========================================================= */}
         {/* MAIN CANVAS — ÁREA DE TRABAJO PRINCIPAL                   */}
         {/* ========================================================= */}
-        <main className="flex-1 bg-[#FBFDFE] p-4 sm:p-6 lg:p-8 flex flex-col justify-between overflow-y-auto pb-24 md:pb-8">
+        <main className="flex-1 bg-[#FBFDFE] p-4 sm:p-6 lg:p-8 flex flex-col justify-between pb-24 md:pb-8">
           <div className="space-y-6">
             
             {/* Header del Canvas */}
@@ -1737,34 +1490,35 @@ export default function PanelDocenteSimplificado() {
                 {/* CONTENEDOR DE TARJETAS (ACORDEONES) */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 items-start">
                   
-                  {/* TARJETA 1: OPCIÓN A (CON INTERNET / EN LÍNEA) */}
+                  {/* TARJETA 1: OPCIÓN A (CON INTERNET / EN LÍNEA - COLOR VERDE INSTITUCIONAL) */}
                   {(filtroModoEnlaces === "todos" || filtroModoEnlaces === "online") && (
-                    <div className="bg-[#D7EFEA] rounded-2xl border border-[#9FD1C9] shadow-xs overflow-hidden transition-all">
-                      
+                    <div className="bg-[#D7EFEA]/80 rounded-2xl border-2 border-[#9FD1C9] shadow-xs overflow-hidden transition-all">
                       {/* Cabecera Plegable Opción A */}
                       <button
                         type="button"
                         onClick={() => setAcordeonOnlineExpandido(!acordeonOnlineExpandido)}
-                        className="w-full p-3.5 sm:p-4 flex items-center justify-between gap-3 text-left hover:bg-[#c9ebe5] transition-colors cursor-pointer select-none"
+                        className="w-full p-3 sm:p-3.5 flex items-center justify-between gap-3 text-left hover:bg-[#c4ebe3] transition-colors cursor-pointer select-none"
                         aria-expanded={acordeonOnlineExpandido}
                       >
                         <div className="flex items-center gap-2.5 min-w-0">
-                          <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-pulse shrink-0" />
+                          <div className="w-8 h-8 rounded-xl bg-[#004641] text-emerald-300 flex items-center justify-center font-bold text-sm shrink-0 shadow-xs">
+                            <Globe size={18} weight="bold" />
+                          </div>
                           <div className="min-w-0">
                             <h3 className="text-xs sm:text-[13px] font-black uppercase tracking-wider text-[#004641] truncate">
                               OPCIÓN A: CON INTERNET (EN LÍNEA)
                             </h3>
-                            <p className="text-[11px] text-[#1B5E59] font-semibold truncate">
+                            <p className="text-[11px] text-[#1B5E59] font-bold truncate">
                               Diagnóstico PFT {nivelActivo} • Sección {seccionActiva}
                             </p>
                           </div>
                         </div>
 
                         <div className="flex items-center gap-2 shrink-0">
-                          <span className="hidden sm:inline-block px-2 py-0.5 rounded-full bg-white/90 border border-[#9FD1C9] text-[10px] font-bold text-[#1B5E59]">
+                          <span className="hidden sm:inline-block px-2 py-0.5 rounded-full bg-white/90 border border-[#9FD1C9] text-[10px] font-black text-[#1B5E59]">
                             Telemetría en 0ms
                           </span>
-                          <div className={`w-6 h-6 rounded-full bg-white/80 flex items-center justify-center text-[#004641] transition-transform duration-200 ${acordeonOnlineExpandido ? "rotate-180" : ""}`}>
+                          <div className={`w-6 h-6 rounded-full bg-white flex items-center justify-center text-[#004641] shadow-2xs transition-transform duration-200 ${acordeonOnlineExpandido ? "rotate-180" : ""}`}>
                             <CaretDown size={14} weight="bold" />
                           </div>
                         </div>
@@ -1772,34 +1526,28 @@ export default function PanelDocenteSimplificado() {
 
                       {/* Contenido Plegable Opción A */}
                       {acordeonOnlineExpandido ? (
-                        <div className="p-3.5 sm:p-4 pt-0">
-                          <div className="bg-white rounded-xl p-4 sm:p-5 shadow-2xs border border-white flex flex-col justify-between space-y-3">
-                            <div>
-                              <h4 className="text-sm sm:text-base font-bold text-slate-900 leading-snug flex items-center gap-2">
-                                <span>Diagnóstico PFT {nivelActivo}</span>
-                                <span className="text-xs font-normal text-slate-500">Sección {seccionActiva}</span>
-                              </h4>
-                              <p className="text-xs sm:text-sm text-slate-600 mt-1 font-medium leading-relaxed">
-                                Los alumnos abren el enlace en sus computadoras o dispositivos móviles con conexión. Las respuestas, tiempos y desempeño se transmiten instantáneamente a este panel.
-                              </p>
-                            </div>
+                        <div className="p-3 sm:p-3.5 pt-0">
+                          <div className="bg-white rounded-xl p-3 sm:p-4 shadow-2xs border border-teal-100 space-y-2.5">
+                            <p className="text-xs text-slate-600 font-medium leading-relaxed">
+                              Los alumnos abren el enlace en sus computadoras o dispositivos. Las respuestas y telemetría se transmiten en vivo a este panel.
+                            </p>
 
                             {/* Botones de Acción Opción A */}
-                            <div className="flex flex-wrap items-center gap-2 pt-1">
+                            <div className="flex flex-wrap items-center gap-1.5 pt-1">
                               <button
                                 type="button"
                                 onClick={handleCopiarEnlace}
-                                className="inline-flex items-center justify-center gap-2 bg-[#1B5E59] hover:bg-[#144642] text-white text-xs sm:text-sm font-semibold px-3.5 py-2 rounded-lg transition-colors shadow-2xs cursor-pointer active:scale-95"
+                                className="inline-flex items-center justify-center gap-1.5 bg-[#1B5E59] hover:bg-[#144642] text-white text-xs font-bold px-3 py-2 rounded-lg transition-colors shadow-2xs cursor-pointer active:scale-95"
                               >
                                 {copiado ? (
                                   <>
-                                    <CheckCircle size={16} weight="fill" className="text-emerald-300" />
+                                    <CheckCircle size={15} weight="fill" className="text-emerald-300" />
                                     <span>¡Enlace Copiado!</span>
                                   </>
                                 ) : (
                                   <>
-                                    <Copy size={16} className="text-teal-200" />
-                                    <span>Copiar Enlace Alumnos</span>
+                                    <Copy size={15} className="text-teal-200" />
+                                    <span>Copiar Enlace</span>
                                   </>
                                 )}
                               </button>
@@ -1807,9 +1555,9 @@ export default function PanelDocenteSimplificado() {
                               <button
                                 type="button"
                                 onClick={() => setModalProyeccion(true)}
-                                className="inline-flex items-center justify-center gap-1.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg transition-colors shadow-2xs cursor-pointer"
+                                className="inline-flex items-center justify-center gap-1 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 text-xs font-bold px-2.5 py-2 rounded-lg transition-colors shadow-2xs cursor-pointer"
                               >
-                                <QrCode size={16} className="text-slate-500" />
+                                <QrCode size={15} className="text-slate-500" />
                                 <span>Proyectar QR</span>
                               </button>
 
@@ -1819,34 +1567,34 @@ export default function PanelDocenteSimplificado() {
                                   setModoVistaDispositivo("desktop");
                                   setModalSimuladorDispositivo(true);
                                 }}
-                                className="inline-flex items-center justify-center gap-1.5 bg-[#004641] hover:bg-[#00332f] text-white text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg transition-colors shadow-2xs cursor-pointer"
+                                className="inline-flex items-center justify-center gap-1 bg-[#004641] hover:bg-[#00332f] text-white text-xs font-bold px-2.5 py-2 rounded-lg transition-colors shadow-2xs cursor-pointer"
                                 title="Ver en vista Celular, Tableta o PC"
                               >
                                 <Desktop size={15} className="text-teal-200" />
-                                <span>Vista Previa Multidispositivo</span>
+                                <span>Vista Previa</span>
                               </button>
 
                               <a
                                 href={urlEstudiante}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center justify-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 text-xs font-semibold px-3 py-2 rounded-lg transition-colors"
+                                className="inline-flex items-center justify-center gap-1 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 text-xs font-bold px-2.5 py-2 rounded-lg transition-colors"
                               >
-                                <span>Abrir WebApp</span>
-                                <ArrowSquareOut size={14} />
+                                <span>Abrir</span>
+                                <ArrowSquareOut size={13} />
                               </a>
                             </div>
                           </div>
                         </div>
                       ) : (
-                        <div className="px-3.5 pb-3 flex items-center justify-between gap-2 text-xs">
-                          <span className="text-[#004641] font-medium text-[11px]">
+                        <div className="px-3 pb-2.5 flex items-center justify-between gap-2 text-xs">
+                          <span className="text-[#004641] font-bold text-[11px]">
                             Enlace listo para {seccionActiva}
                           </span>
                           <button
                             type="button"
                             onClick={handleCopiarEnlace}
-                            className="bg-[#1B5E59] text-white text-[11px] font-bold px-2.5 py-1 rounded-md hover:bg-[#144642] transition-colors cursor-pointer inline-flex items-center gap-1"
+                            className="bg-[#1B5E59] text-white text-[11px] font-black px-2.5 py-1 rounded-md hover:bg-[#144642] transition-colors cursor-pointer inline-flex items-center gap-1 shadow-2xs"
                           >
                             <Copy size={12} />
                             <span>Copiar enlace</span>
@@ -1856,34 +1604,35 @@ export default function PanelDocenteSimplificado() {
                     </div>
                   )}
 
-                  {/* TARJETA 2: OPCIÓN B (SIN INTERNET / DESCONECTADO QR) */}
+                  {/* TARJETA 2: OPCIÓN B (SIN INTERNET / DESCONECTADO QR - COLOR NARANJA) */}
                   {(filtroModoEnlaces === "todos" || filtroModoEnlaces === "offline") && (
-                    <div className="bg-[#FFF3EB] rounded-2xl border border-[#FBD0B6] shadow-xs overflow-hidden transition-all">
-                      
+                    <div className="bg-[#FFF3EB] rounded-2xl border-2 border-[#FBD0B6] shadow-xs overflow-hidden transition-all">
                       {/* Cabecera Plegable Opción B */}
                       <button
                         type="button"
                         onClick={() => setAcordeonOfflineExpandido(!acordeonOfflineExpandido)}
-                        className="w-full p-3.5 sm:p-4 flex items-center justify-between gap-3 text-left hover:bg-[#fae7da] transition-colors cursor-pointer select-none"
+                        className="w-full p-3 sm:p-3.5 flex items-center justify-between gap-3 text-left hover:bg-[#fae7da] transition-colors cursor-pointer select-none"
                         aria-expanded={acordeonOfflineExpandido}
                       >
                         <div className="flex items-center gap-2.5 min-w-0">
-                          <span className="w-2.5 h-2.5 rounded-full bg-[#E07A2C] shrink-0" />
+                          <div className="w-8 h-8 rounded-xl bg-[#E07A2C] text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-xs">
+                            <Lightning size={18} weight="fill" />
+                          </div>
                           <div className="min-w-0">
                             <h3 className="text-xs sm:text-[13px] font-black uppercase tracking-wider text-[#974800] truncate">
                               OPCIÓN B: SIN INTERNET (DESCONECTADO QR)
                             </h3>
-                            <p className="text-[11px] text-[#E07A2C] font-semibold truncate">
+                            <p className="text-[11px] text-[#E07A2C] font-bold truncate">
                               100% Offline • Escáner con cámara celular
                             </p>
                           </div>
                         </div>
 
                         <div className="flex items-center gap-2 shrink-0">
-                          <span className="hidden sm:inline-block px-2 py-0.5 rounded-full bg-white/90 border border-[#FBD0B6] text-[10px] font-bold text-[#E07A2C]">
+                          <span className="hidden sm:inline-block px-2 py-0.5 rounded-full bg-white/90 border border-[#FBD0B6] text-[10px] font-black text-[#E07A2C]">
                             Modo Offline / USB
                           </span>
-                          <div className={`w-6 h-6 rounded-full bg-white/80 flex items-center justify-center text-[#974800] transition-transform duration-200 ${acordeonOfflineExpandido ? "rotate-180" : ""}`}>
+                          <div className={`w-6 h-6 rounded-full bg-white flex items-center justify-center text-[#974800] shadow-2xs transition-transform duration-200 ${acordeonOfflineExpandido ? "rotate-180" : ""}`}>
                             <CaretDown size={14} weight="bold" />
                           </div>
                         </div>
@@ -1891,59 +1640,54 @@ export default function PanelDocenteSimplificado() {
 
                       {/* Contenido Plegable Opción B */}
                       {acordeonOfflineExpandido ? (
-                        <div className="p-3.5 sm:p-4 pt-0">
-                          <div className="bg-white rounded-xl p-4 sm:p-5 shadow-2xs border border-white flex flex-col justify-between space-y-3">
-                            <div>
-                              <h4 className="text-sm sm:text-base font-bold text-slate-900 leading-snug flex items-center gap-2">
-                                <span>Diagnóstico PFT Desconectado (100% Offline)</span>
-                              </h4>
-                              <p className="text-xs sm:text-sm text-slate-600 mt-1 font-medium leading-relaxed">
-                                Los alumnos ejecutan el archivo descargado sin internet. Al finalizar, la aplicación genera un <strong>Código QR Seguro</strong> en sus pantallas que el docente escanea en segundos con su celular.
-                              </p>
-                            </div>
+                        <div className="p-3 sm:p-3.5 pt-0">
+                          <div className="bg-white rounded-xl p-3 sm:p-4 shadow-2xs border border-orange-100 space-y-2.5">
+                            <p className="text-xs text-slate-600 font-medium leading-relaxed">
+                              Los alumnos ejecutan el archivo sin internet. Al finalizar, genera un <strong>Código QR Seguro</strong> que el docente escanea con su celular.
+                            </p>
 
                             {/* Botones de Acción Opción B */}
-                            <div className="flex flex-wrap items-center gap-2 pt-1">
+                            <div className="flex flex-wrap items-center gap-1.5 pt-1">
                               <button
                                 type="button"
                                 onClick={() => setModalEscaner(true)}
                                 title="Escáner de datos (cámara, CSV y métricas)"
-                                className="inline-flex items-center justify-center gap-2 bg-[#E07A2C] hover:bg-[#C8661D] text-white text-xs sm:text-sm font-semibold px-3.5 py-2 rounded-lg transition-colors shadow-2xs cursor-pointer active:scale-95"
+                                className="inline-flex items-center justify-center gap-1.5 bg-[#E07A2C] hover:bg-[#C8661D] text-white text-xs font-bold px-3 py-2 rounded-lg transition-colors shadow-2xs cursor-pointer active:scale-95"
                               >
-                                <Camera size={16} className="text-orange-100" />
+                                <Camera size={15} className="text-orange-100" />
                                 <span>Escáner de datos</span>
                               </button>
 
                               <a
                                 href={archivoOfflineDescarga}
                                 download={`diagnostico_${nivelActivo}_offline.html`}
-                                className="inline-flex items-center justify-center gap-1.5 bg-[#1B5E59] hover:bg-[#144642] text-white text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg transition-colors shadow-2xs"
+                                className="inline-flex items-center justify-center gap-1 bg-[#1B5E59] hover:bg-[#144642] text-white text-xs font-bold px-2.5 py-2 rounded-lg transition-colors shadow-2xs"
                               >
-                                <DownloadSimple size={16} className="text-white" />
-                                <span>Descargar archivo offline</span>
+                                <DownloadSimple size={15} className="text-white" />
+                                <span>Descargar offline</span>
                               </a>
 
                               <a
                                 href="/diagnostico_escaner_datos_locales.html"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center justify-center gap-1.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg transition-colors shadow-2xs"
+                                className="inline-flex items-center justify-center gap-1 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 text-xs font-bold px-2.5 py-2 rounded-lg transition-colors shadow-2xs"
                               >
-                                <ArrowSquareOut size={16} className="text-slate-500" />
-                                <span>Abrir en otra pestaña</span>
+                                <ArrowSquareOut size={14} className="text-slate-500" />
+                                <span>Abrir escáner</span>
                               </a>
                             </div>
                           </div>
                         </div>
                       ) : (
-                        <div className="px-3.5 pb-3 flex items-center justify-between gap-2 text-xs">
-                          <span className="text-[#974800] font-medium text-[11px]">
+                        <div className="px-3 pb-2.5 flex items-center justify-between gap-2 text-xs">
+                          <span className="text-[#974800] font-bold text-[11px]">
                             Modo fuera de línea listo
                           </span>
                           <button
                             type="button"
                             onClick={() => setModalEscaner(true)}
-                            className="bg-[#E07A2C] text-white text-[11px] font-bold px-2.5 py-1 rounded-md hover:bg-[#C8661D] transition-colors cursor-pointer inline-flex items-center gap-1"
+                            className="bg-[#E07A2C] text-white text-[11px] font-black px-2.5 py-1 rounded-md hover:bg-[#C8661D] transition-colors cursor-pointer inline-flex items-center gap-1 shadow-2xs"
                           >
                             <Camera size={12} />
                             <span>Abrir escáner</span>
@@ -2032,95 +1776,128 @@ export default function PanelDocenteSimplificado() {
                   )}
                 </div>
 
-                {/* Tabla de Resultados Cognitivos */}
-                <div className="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
-                  <div className="p-4 border-b border-slate-100 flex items-center justify-between">
-                    <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                      <BookOpen size={18} className="text-[#1B5E59]" />
-                      <span>Resultados de Criterios Cognitivos — Sección {seccionActiva}</span>
-                    </h3>
-                    <span className="text-xs text-slate-500 font-medium">
-                      {registrosSeccion.length} estudiantes registrados
-                    </span>
+                {/* Tabla de Resultados Cognitivos (Acoplable/Desacoplable) */}
+                <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden transition-all">
+                  <div className="p-3.5 sm:p-4 border-b border-slate-100 flex items-center justify-between gap-3 bg-slate-50/50">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-7 h-7 rounded-lg bg-[#D1EBE7] text-[#1B5E59] flex items-center justify-center font-bold text-xs shrink-0">
+                        <BookOpen size={16} weight="bold" />
+                      </div>
+                      <div className="min-w-0">
+                        <h3 className="text-xs sm:text-sm font-bold text-slate-900 truncate flex items-center gap-2">
+                          <span>Resultados de Criterios Cognitivos — Sección {seccionActiva}</span>
+                        </h3>
+                        <span className="text-[11px] text-slate-500 font-medium block truncate">
+                          {registrosSeccion.length} estudiantes registrados
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => setAcordeonTablaCognitivo(!acordeonTablaCognitivo)}
+                        className="text-xs font-bold text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200 transition-colors cursor-pointer inline-flex items-center gap-1.5 shadow-2xs"
+                      >
+                        <span>{acordeonTablaCognitivo ? "Acoplar tabla" : "Desacoplar tabla"}</span>
+                        <CaretDown
+                          size={14}
+                          weight="bold"
+                          className={`transition-transform duration-200 ${acordeonTablaCognitivo ? "rotate-180 text-[#1B5E59]" : ""}`}
+                        />
+                      </button>
+                    </div>
                   </div>
 
-                  {registrosSeccion.length === 0 ? (
-                    <div className="p-12 text-center space-y-3">
-                      <BookOpen size={36} className="mx-auto text-slate-300" />
-                      <p className="text-sm font-bold text-slate-700">No hay registros cognitivos para esta sección aún</p>
-                      <p className="text-xs text-slate-500 max-w-md mx-auto">
-                        Comparta el enlace o escanee los códigos QR de los estudiantes para ver el desglose en vivo.
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-left border-collapse text-xs">
-                        <thead>
-                          <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
-                            <th className="py-3 px-4">Estudiante</th>
-                            <th className="py-3 px-3 text-center">Aciertos</th>
-                            <th className="py-3 px-3 text-center">Fallos</th>
-                            <th className="py-3 px-3 text-center">Tiempo</th>
-                            <th className="py-3 px-3 text-center">Puntaje</th>
-                            <th className="py-3 px-4 text-center">Nivel de Logro</th>
-                            <th className="py-3 px-3 text-right">Hora Registro</th>
-                            <th className="py-3 px-3 text-center w-24">Acción</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-100 font-medium">
-                          {registrosSeccion.map((r, i) => (
-                            <tr key={r.idResultado || r.timestamp || i} className="hover:bg-slate-50/80 transition-colors">
-                              <td className="py-3 px-4 font-bold text-slate-900">
-                                {r.estudianteNombre}
-                                {r.estudianteCedula && (
-                                  <span className="block text-[10px] text-slate-400 font-mono font-normal">
-                                    {r.estudianteCedula}
-                                  </span>
-                                )}
-                              </td>
-                              <td className="py-3 px-3 text-center font-bold text-emerald-700">
-                                {r.aciertos || 0}
-                              </td>
-                              <td className="py-3 px-3 text-center font-bold text-rose-600">
-                                {r.fallos || 0}
-                              </td>
-                              <td className="py-3 px-3 text-center text-slate-500 font-mono">
-                                {Math.floor((r.tiempoSegundos || 0) / 60)}m {(r.tiempoSegundos || 0) % 60}s
-                              </td>
-                              <td className="py-3 px-3 text-center font-black text-slate-900">
-                                {r.porcentaje || 0}%
-                              </td>
-                              <td className="py-3 px-4 text-center">
-                                <span
-                                  className={`inline-block px-2.5 py-1 rounded-full text-[11px] font-bold ${
-                                    r.nivelLogro === "Avanzado"
-                                      ? "bg-emerald-100 text-emerald-900 border border-emerald-300"
-                                      : r.nivelLogro === "Intermedio"
-                                      ? "bg-amber-100 text-amber-900 border border-amber-300"
-                                      : "bg-rose-100 text-rose-900 border border-rose-300"
-                                  }`}
-                                >
-                                  {r.nivelLogro}
-                                </span>
-                              </td>
-                              <td className="py-3 px-3 text-right text-slate-400 font-mono text-[11px]">
-                                {r.timestamp ? new Date(r.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "-"}
-                              </td>
-                              <td className="py-3 px-3 text-center">
-                                <button
-                                  type="button"
-                                  onClick={() => handleEliminarEstudiante(r)}
-                                  title={`Eliminar registro de ${r.estudianteNombre}`}
-                                  className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-lg transition-all cursor-pointer shadow-2xs"
-                                >
-                                  <Trash size={13} weight="bold" />
-                                  <span>Borrar</span>
-                                </button>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                  {acordeonTablaCognitivo && (
+                    <div className="animate-fadeIn">
+                      {registrosSeccion.length === 0 ? (
+                        <div className="p-12 text-center space-y-3">
+                          <BookOpen size={36} className="mx-auto text-slate-300" />
+                          <p className="text-sm font-bold text-slate-700">No hay registros cognitivos para esta sección aún</p>
+                          <p className="text-xs text-slate-500 max-w-md mx-auto">
+                            Comparta el enlace o escanee los códigos QR de los estudiantes para ver el desglose en vivo.
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="p-3 sm:p-4 pt-2 space-y-2">
+                          {/* Indicador de desplazamiento horizontal en móvil */}
+                          <div className="text-[11px] font-bold text-slate-600 bg-slate-100/90 border border-slate-200 px-3 py-1.5 rounded-lg flex items-center justify-between gap-2 md:hidden">
+                            <span>👉 Desliza horizontalmente para ver todos los datos</span>
+                            <ArrowsLeftRight size={14} className="text-slate-500 shrink-0" />
+                          </div>
+
+                          <div className="overflow-x-auto scrollbar-thin rounded-xl border border-slate-200">
+                            <table className="w-full text-left border-collapse text-xs min-w-[700px]">
+                              <thead>
+                                <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
+                                  <th className="py-3 px-4 min-w-[180px]">Estudiante</th>
+                                  <th className="py-3 px-3 text-center min-w-[70px]">Aciertos</th>
+                                  <th className="py-3 px-3 text-center min-w-[70px]">Fallos</th>
+                                  <th className="py-3 px-3 text-center min-w-[80px]">Tiempo</th>
+                                  <th className="py-3 px-3 text-center min-w-[70px]">Puntaje</th>
+                                  <th className="py-3 px-4 text-center min-w-[120px]">Nivel de Logro</th>
+                                  <th className="py-3 px-3 text-right min-w-[90px]">Hora Registro</th>
+                                  <th className="py-3 px-3 text-center w-24">Acción</th>
+                                </tr>
+                              </thead>
+                              <tbody className="divide-y divide-slate-100 font-medium">
+                                {registrosSeccion.map((r, i) => (
+                                  <tr key={r.idResultado || r.timestamp || i} className="hover:bg-slate-50/80 transition-colors">
+                                    <td className="py-3 px-4 font-bold text-slate-900">
+                                      {r.estudianteNombre}
+                                      {r.estudianteCedula && (
+                                        <span className="block text-[10px] text-slate-400 font-mono font-normal">
+                                          {r.estudianteCedula}
+                                        </span>
+                                      )}
+                                    </td>
+                                    <td className="py-3 px-3 text-center font-bold text-emerald-700">
+                                      {r.aciertos || 0}
+                                    </td>
+                                    <td className="py-3 px-3 text-center font-bold text-rose-600">
+                                      {r.fallos || 0}
+                                    </td>
+                                    <td className="py-3 px-3 text-center text-slate-500 font-mono">
+                                      {Math.floor((r.tiempoSegundos || 0) / 60)}m {(r.tiempoSegundos || 0) % 60}s
+                                    </td>
+                                    <td className="py-3 px-3 text-center font-black text-slate-900">
+                                      {r.porcentaje || 0}%
+                                    </td>
+                                    <td className="py-3 px-4 text-center">
+                                      <span
+                                        className={`inline-block px-2.5 py-1 rounded-full text-[11px] font-bold ${
+                                          r.nivelLogro === "Avanzado"
+                                            ? "bg-emerald-100 text-emerald-900 border border-emerald-300"
+                                            : r.nivelLogro === "Intermedio"
+                                            ? "bg-amber-100 text-amber-900 border border-amber-300"
+                                            : "bg-rose-100 text-rose-900 border border-rose-300"
+                                        }`}
+                                      >
+                                        {r.nivelLogro}
+                                      </span>
+                                    </td>
+                                    <td className="py-3 px-3 text-right text-slate-400 font-mono text-[11px]">
+                                      {r.timestamp ? new Date(r.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "-"}
+                                    </td>
+                                    <td className="py-3 px-3 text-center">
+                                      <button
+                                        type="button"
+                                        onClick={() => handleEliminarEstudiante(r)}
+                                        title={`Eliminar registro de ${r.estudianteNombre}`}
+                                        className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-lg transition-all cursor-pointer shadow-2xs"
+                                      >
+                                        <Trash size={13} weight="bold" />
+                                        <span>Borrar</span>
+                                      </button>
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
@@ -2209,53 +1986,87 @@ export default function PanelDocenteSimplificado() {
                   )}
                 </div>
 
-                {/* Matriz Interactiva de Observación Socioafectiva */}
-                <div className="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
-                  <div className="p-4 border-b border-slate-100 flex items-center justify-between">
-                    <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                      <Heart size={18} className="text-[#1B5E59]" weight="fill" />
-                      <span>Matriz de Observación Socioafectiva (Escala MEP: A=Logrado, B=En Proceso, C=Inicial)</span>
-                    </h3>
-                    <div className="flex items-center gap-1.5 text-xs">
+                {/* Matriz Interactiva de Observación Socioafectiva (Acoplable/Desacoplable) */}
+                <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden transition-all">
+                  <div className="p-3.5 sm:p-4 border-b border-slate-100 flex flex-wrap items-center justify-between gap-3 bg-slate-50/50">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-7 h-7 rounded-lg bg-[#D1EBE7] text-[#1B5E59] flex items-center justify-center font-bold text-xs shrink-0">
+                        <Heart size={16} weight="fill" />
+                      </div>
+                      <div className="min-w-0">
+                        <h3 className="text-xs sm:text-sm font-bold text-slate-900 truncate">
+                          Matriz Socioafectiva (Escala MEP: A=Logrado, B=En Proceso, C=Inicial)
+                        </h3>
+                        <span className="text-[11px] text-slate-500 font-medium block truncate">
+                          Sección {seccionActiva} • {registrosSeccion.length} estudiantes
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0">
+                      <div className="flex items-center gap-1 text-xs">
+                        <button
+                          type="button"
+                          onClick={() => setVistaSocioafectiva("matriz")}
+                          className={`px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${
+                            vistaSocioafectiva === "matriz"
+                              ? "bg-[#1B5E59] text-white shadow-2xs"
+                              : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                          }`}
+                        >
+                          Matriz
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setVistaSocioafectiva("tarjetas")}
+                          className={`px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${
+                            vistaSocioafectiva === "tarjetas"
+                              ? "bg-[#1B5E59] text-white shadow-2xs"
+                              : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                          }`}
+                        >
+                          Tarjetas
+                        </button>
+                      </div>
+
                       <button
                         type="button"
-                        onClick={() => setVistaSocioafectiva("matriz")}
-                        className={`px-3 py-1 rounded-lg font-bold transition-all ${
-                          vistaSocioafectiva === "matriz"
-                            ? "bg-[#1B5E59] text-white"
-                            : "bg-slate-100 text-slate-600"
-                        }`}
+                        onClick={() => setAcordeonTablaSocio(!acordeonTablaSocio)}
+                        className="text-xs font-bold text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-100 px-3 py-1 rounded-lg border border-slate-200 transition-colors cursor-pointer inline-flex items-center gap-1.5 shadow-2xs"
                       >
-                        Matriz
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setVistaSocioafectiva("tarjetas")}
-                        className={`px-3 py-1 rounded-lg font-bold transition-all ${
-                          vistaSocioafectiva === "tarjetas"
-                            ? "bg-[#1B5E59] text-white"
-                            : "bg-slate-100 text-slate-600"
-                        }`}
-                      >
-                        Tarjetas
+                        <span>{acordeonTablaSocio ? "Acoplar" : "Desacoplar"}</span>
+                        <CaretDown
+                          size={14}
+                          weight="bold"
+                          className={`transition-transform duration-200 ${acordeonTablaSocio ? "rotate-180 text-[#1B5E59]" : ""}`}
+                        />
                       </button>
                     </div>
                   </div>
 
-                  {registrosSeccion.length === 0 ? (
-                    <div className="p-12 text-center space-y-3">
-                      <Heart size={36} className="mx-auto text-slate-300" />
-                      <p className="text-sm font-bold text-slate-700">Sin datos socioafectivos para esta sección</p>
-                      <p className="text-xs text-slate-500 max-w-md mx-auto">
-                        Inicie una observación o cargue las respuestas de los estudiantes para habilitar la matriz de bienestar.
-                      </p>
-                    </div>
-                  ) : vistaSocioafectiva === "matriz" ? (
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-left border-collapse text-xs min-w-[850px]">
-                        <thead>
-                          <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
-                            <th className="py-3 px-4 w-60">Persona Estudiante</th>
+                  {acordeonTablaSocio && (
+                    <div className="animate-fadeIn">
+                      {registrosSeccion.length === 0 ? (
+                        <div className="p-12 text-center space-y-3">
+                          <Heart size={36} className="mx-auto text-slate-300" />
+                          <p className="text-sm font-bold text-slate-700">Sin datos socioafectivos para esta sección</p>
+                          <p className="text-xs text-slate-500 max-w-md mx-auto">
+                            Inicie una observación o cargue las respuestas de los estudiantes para habilitar la matriz de bienestar.
+                          </p>
+                        </div>
+                      ) : vistaSocioafectiva === "matriz" ? (
+                        <div className="p-3 sm:p-4 pt-2 space-y-2">
+                          {/* Indicador de desplazamiento horizontal en móvil */}
+                          <div className="text-[11px] font-bold text-slate-600 bg-slate-100/90 border border-slate-200 px-3 py-1.5 rounded-lg flex items-center justify-between gap-2 md:hidden">
+                            <span>👉 Desliza horizontalmente para ver todos los criterios</span>
+                            <ArrowsLeftRight size={14} className="text-slate-500 shrink-0" />
+                          </div>
+
+                          <div className="overflow-x-auto scrollbar-thin rounded-xl border border-slate-200">
+                            <table className="w-full text-left border-collapse text-xs min-w-[850px]">
+                              <thead>
+                                <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
+                                  <th className="py-3 px-4 w-60">Persona Estudiante</th>
                             <th className="py-3 px-3 text-center w-36">
                               <div className="flex flex-col items-center gap-1">
                                 <span className="font-bold text-slate-700">S1. Gusto por la precisión</span>
@@ -2433,6 +2244,7 @@ export default function PanelDocenteSimplificado() {
                         </tbody>
                       </table>
                     </div>
+                  </div>
                   ) : (
                     /* Vista Tarjetas con Sparklines */
                     <div className="p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -2514,6 +2326,8 @@ export default function PanelDocenteSimplificado() {
                     </div>
                   )}
                 </div>
+              )}
+            </div>
 
                 {/* Modal Oficial MEP de Detalle Socioafectivo / Rúbrica de Reflexión */}
                 {criterioSocioModalDetalle && (
@@ -2651,6 +2465,17 @@ export default function PanelDocenteSimplificado() {
                     </div>
 
                     <div className="flex items-center gap-2 flex-wrap">
+                      {/* Botón Acoplar / Desacoplar Tabla Psicomotriz */}
+                      <button
+                        type="button"
+                        onClick={() => setAcordeonTablaPsico(!acordeonTablaPsico)}
+                        className="inline-flex items-center gap-1.5 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+                        title="Acoplar o desacoplar la tabla de cotejo psicomotriz"
+                      >
+                        <ArrowsLeftRight size={14} weight="bold" />
+                        <span>{acordeonTablaPsico ? "Acoplar tabla" : "Desacoplar tabla"}</span>
+                      </button>
+
                       {/* Botón Guardar Cambios de Sección (Global) */}
                       <button
                         type="button"
@@ -2781,8 +2606,20 @@ export default function PanelDocenteSimplificado() {
                     )}
                   </div>
 
+                  {/* Banner Desplazamiento Horizontal Móvil */}
+                  {acordeonTablaPsico && registrosSeccion.length > 0 && (
+                    <div className="flex items-center justify-between gap-2 px-3.5 py-2 bg-emerald-50/80 border border-emerald-200 text-emerald-900 rounded-xl text-[11px] font-semibold sm:hidden">
+                      <div className="flex items-center gap-1.5">
+                        <ArrowsLeftRight size={14} weight="bold" className="text-emerald-700 animate-pulse" />
+                        <span>Desliza horizontalmente para calificar los criterios</span>
+                      </div>
+                      <span className="text-[10px] bg-emerald-200/60 px-1.5 py-0.5 rounded font-bold">Scroll horizontal</span>
+                    </div>
+                  )}
+
                   {/* Tabla Principal Dinámica de Registro Psicomotriz */}
-                  <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden">
+                  {acordeonTablaPsico && (
+                    <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden">
                     {registrosSeccion.length === 0 ? (
                       <div className="p-12 text-center space-y-3">
                         <Pulse size={40} className="mx-auto text-slate-300" />
@@ -2964,6 +2801,7 @@ export default function PanelDocenteSimplificado() {
                       </div>
                     )}
                   </div>
+                  )}
 
                   {/* Modal Oficial MEP de Detalle de Criterio / Rúbrica Formativa */}
                   {criterioModalDetalle && (
@@ -3133,7 +2971,18 @@ export default function PanelDocenteSimplificado() {
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-2 shrink-0">
+                  <div className="flex items-center gap-2 shrink-0 flex-wrap">
+                    {/* Botón Acoplar / Desacoplar Sistematización */}
+                    <button
+                      type="button"
+                      onClick={() => setAcordeonTablaResultados(!acordeonTablaResultados)}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 rounded-lg text-xs font-bold transition-colors cursor-pointer"
+                      title="Acoplar o desacoplar la matriz de sistematización"
+                    >
+                      <ArrowsLeftRight size={14} weight="bold" />
+                      <span>{acordeonTablaResultados ? "Acoplar matriz" : "Desacoplar matriz"}</span>
+                    </button>
+
                     <button
                       type="button"
                       onClick={handleDescargarExcel}
@@ -3154,8 +3003,20 @@ export default function PanelDocenteSimplificado() {
                   </div>
                 </div>
 
+                {/* Banner Desplazamiento Horizontal Móvil */}
+                {acordeonTablaResultados && registrosSeccion.length > 0 && (
+                  <div className="flex items-center justify-between gap-2 px-3.5 py-2 bg-teal-50/80 border border-teal-200 text-teal-950 rounded-xl text-[11px] font-semibold sm:hidden">
+                    <div className="flex items-center gap-1.5">
+                      <ArrowsLeftRight size={14} weight="bold" className="text-teal-700 animate-pulse" />
+                      <span>Desliza horizontalmente para ver todos los aprendizajes</span>
+                    </div>
+                    <span className="text-[10px] bg-teal-200/60 px-1.5 py-0.5 rounded font-bold">Scroll horizontal</span>
+                  </div>
+                )}
+
                 {/* Tabla de Sistematización Exacta MEP */}
-                <div className="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
+                {acordeonTablaResultados && (
+                  <div className="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
                   {registrosSeccion.length === 0 ? (
                     <div className="p-12 text-center space-y-3">
                       <Users size={36} className="mx-auto text-slate-300" />
@@ -3228,6 +3089,7 @@ export default function PanelDocenteSimplificado() {
                     </div>
                   )}
                 </div>
+                )}
 
               </div>
             )}
@@ -3290,75 +3152,75 @@ export default function PanelDocenteSimplificado() {
       {/* BARRA DE NAVEGACIÓN INFERIOR FIJA EN MÓVIL (BOTTOM NAV)   */}
       {/* ========================================================= */}
       <nav
-        aria-label="Navegación Móvil"
-        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-2 py-1.5 flex items-center justify-around shadow-2xl select-none"
+        aria-label="Navegación Móvil Principal"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/98 backdrop-blur-xl border-t-2 border-[#1B5E59] px-2 py-2 pb-3.5 flex items-center justify-around shadow-[0_-8px_30px_rgba(0,0,0,0.16)] select-none"
       >
         <button
           type="button"
           onClick={() => setSeccionActivaMenu("enlaces")}
-          className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all cursor-pointer ${
+          className={`flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl transition-all cursor-pointer ${
             seccionActivaMenu === "enlaces"
-              ? "bg-[#D1EBE7] text-[#1B5E59] font-black scale-105"
-              : "text-slate-500 hover:text-slate-900"
+              ? "bg-[#004641] text-emerald-300 font-black scale-105 shadow-md ring-2 ring-emerald-600/30"
+              : "text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 font-bold"
           }`}
         >
-          <LinkIcon size={19} weight={seccionActivaMenu === "enlaces" ? "bold" : "regular"} />
-          <span className="text-[10px] tracking-tight mt-0.5">Enlaces</span>
+          <LinkIcon size={20} weight={seccionActivaMenu === "enlaces" ? "bold" : "regular"} />
+          <span className="text-[10.5px] tracking-tight mt-0.5">Enlaces</span>
         </button>
 
         <button
           type="button"
           onClick={() => setSeccionActivaMenu("cognitivo")}
-          className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all cursor-pointer ${
+          className={`flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl transition-all cursor-pointer ${
             seccionActivaMenu === "cognitivo"
-              ? "bg-[#D1EBE7] text-[#1B5E59] font-black scale-105"
-              : "text-slate-500 hover:text-slate-900"
+              ? "bg-[#004641] text-emerald-300 font-black scale-105 shadow-md ring-2 ring-emerald-600/30"
+              : "text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 font-bold"
           }`}
         >
-          <BookOpen size={19} weight={seccionActivaMenu === "cognitivo" ? "bold" : "regular"} />
-          <span className="text-[10px] tracking-tight mt-0.5">Cognitivo</span>
+          <BookOpen size={20} weight={seccionActivaMenu === "cognitivo" ? "fill" : "regular"} />
+          <span className="text-[10.5px] tracking-tight mt-0.5">Cognitivo</span>
         </button>
 
         <button
           type="button"
           onClick={() => setSeccionActivaMenu("socioafectivo")}
-          className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all cursor-pointer relative ${
+          className={`flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl transition-all cursor-pointer relative ${
             seccionActivaMenu === "socioafectivo"
-              ? "bg-[#D1EBE7] text-[#1B5E59] font-black scale-105"
-              : "text-slate-500 hover:text-slate-900"
+              ? "bg-[#004641] text-emerald-300 font-black scale-105 shadow-md ring-2 ring-emerald-600/30"
+              : "text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 font-bold"
           }`}
         >
-          <Heart size={19} weight={seccionActivaMenu === "socioafectivo" ? "fill" : "regular"} />
-          <span className="text-[10px] tracking-tight mt-0.5">Socioafectivo</span>
+          <Heart size={20} weight={seccionActivaMenu === "socioafectivo" ? "fill" : "regular"} />
+          <span className="text-[10.5px] tracking-tight mt-0.5">Socioafectivo</span>
           {metricasCohorte.alertasTempranas > 0 && (
-            <span className="absolute top-1 right-2 w-2 h-2 rounded-full bg-[#E07A2C] animate-ping" />
+            <span className="absolute top-1 right-2 w-2.5 h-2.5 rounded-full bg-[#E07A2C] animate-ping" />
           )}
         </button>
 
         <button
           type="button"
           onClick={() => setSeccionActivaMenu("psicomotriz")}
-          className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all cursor-pointer ${
+          className={`flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl transition-all cursor-pointer ${
             seccionActivaMenu === "psicomotriz"
-              ? "bg-[#D1EBE7] text-[#1B5E59] font-black scale-105"
-              : "text-slate-500 hover:text-slate-900"
+              ? "bg-[#004641] text-emerald-300 font-black scale-105 shadow-md ring-2 ring-emerald-600/30"
+              : "text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 font-bold"
           }`}
         >
-          <Pulse size={19} weight={seccionActivaMenu === "psicomotriz" ? "bold" : "regular"} />
-          <span className="text-[10px] tracking-tight mt-0.5">Psicomotor</span>
+          <Pulse size={20} weight={seccionActivaMenu === "psicomotriz" ? "bold" : "regular"} />
+          <span className="text-[10.5px] tracking-tight mt-0.5">Psicomotor</span>
         </button>
 
         <button
           type="button"
           onClick={() => setSeccionActivaMenu("sistematizacion")}
-          className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all cursor-pointer ${
+          className={`flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl transition-all cursor-pointer ${
             seccionActivaMenu === "sistematizacion"
-              ? "bg-[#D1EBE7] text-[#1B5E59] font-black scale-105"
-              : "text-slate-500 hover:text-slate-900"
+              ? "bg-[#004641] text-emerald-300 font-black scale-105 shadow-md ring-2 ring-emerald-600/30"
+              : "text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 font-bold"
           }`}
         >
-          <Users size={19} weight={seccionActivaMenu === "sistematizacion" ? "bold" : "regular"} />
-          <span className="text-[10px] tracking-tight mt-0.5">Resultados</span>
+          <Users size={20} weight={seccionActivaMenu === "sistematizacion" ? "fill" : "regular"} />
+          <span className="text-[10.5px] tracking-tight mt-0.5">Resultados</span>
         </button>
       </nav>
 

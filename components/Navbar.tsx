@@ -16,12 +16,18 @@ import {
   SignIn,
   Lightning,
   DeviceMobile,
+  FilePdf,
+  Info,
+  Compass,
+  CaretDown,
+  ArrowSquareOut,
 } from "@phosphor-icons/react";
 
 export default function Navbar() {
   const pathname = usePathname();
   const { docente, cerrarSesion } = useDocente();
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const [acordeonRecursosMovil, setAcordeonRecursosMovil] = useState(false);
 
   const correoLimpio = docente?.correoInstitucional?.toLowerCase().trim() || "";
   const esSuperAdmin = correoLimpio === "alberto.bustos.ortega@mep.go.cr";
@@ -251,7 +257,7 @@ export default function Navbar() {
             </Link>
           )}
 
-          <div className="pt-3 mt-2 border-t border-stone-200 space-y-2">
+          <div className="pt-3 mt-2 border-t border-stone-200 space-y-2.5">
             {docente ? (
               <>
                 <Link
@@ -281,12 +287,103 @@ export default function Navbar() {
                   </span>
                 </Link>
 
+                {/* Acordeón de Soporte, Recursos y Documentación Móvil */}
+                <div className="bg-white border border-stone-200 rounded-xl overflow-hidden shadow-2xs">
+                  <button
+                    type="button"
+                    onClick={() => setAcordeonRecursosMovil(!acordeonRecursosMovil)}
+                    className="w-full flex items-center justify-between p-3 bg-gradient-to-r from-stone-50 via-teal-50/30 to-white hover:bg-stone-100 text-left transition-colors cursor-pointer"
+                    aria-expanded={acordeonRecursosMovil}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-7 h-7 rounded-lg bg-[#D1EBE7] text-[#1B5E59] flex items-center justify-center font-bold text-xs shrink-0">
+                        📚
+                      </div>
+                      <div>
+                        <span className="text-xs font-black text-slate-900 block leading-tight">
+                          Recursos y Soporte
+                        </span>
+                        <span className="text-[10px] text-slate-500 font-medium">
+                          PDFs oficiales, guías y formularios MEP
+                        </span>
+                      </div>
+                    </div>
+                    <CaretDown
+                      size={16}
+                      weight="bold"
+                      className={`text-slate-500 transition-transform duration-200 ${
+                        acordeonRecursosMovil ? "rotate-180 text-[#1B5E59]" : ""
+                      }`}
+                    />
+                  </button>
+
+                  {acordeonRecursosMovil && (
+                    <div className="p-2.5 pt-2 border-t border-stone-200 bg-white space-y-1.5 animate-fadeIn">
+                      {/* 1. Documentación Técnica (PDFs) */}
+                      <a
+                        href="/manuales"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-between p-2.5 rounded-lg text-xs font-bold text-sky-950 bg-sky-50/80 hover:bg-sky-100 border border-sky-200 transition-colors"
+                      >
+                        <div className="flex items-center gap-2">
+                          <FilePdf size={16} weight="bold" className="text-rose-600 shrink-0" />
+                          <span>Documentación Técnica (PDFs)</span>
+                        </div>
+                        <ArrowSquareOut size={14} className="text-sky-700 shrink-0" />
+                      </a>
+
+                      {/* 2. Guía Rápida Docente */}
+                      <a
+                        href="/guia-aprendizaje"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-between p-2.5 rounded-lg text-xs font-semibold text-slate-800 bg-stone-50 hover:bg-stone-100 border border-stone-200 transition-colors"
+                      >
+                        <div className="flex items-center gap-2">
+                          <Info size={16} weight="bold" className="text-[#1B5E59] shrink-0" />
+                          <span>Guía Rápida Docente</span>
+                        </div>
+                        <ArrowSquareOut size={14} className="text-slate-500 shrink-0" />
+                      </a>
+
+                      {/* 3. Articulación Curricular MEP */}
+                      <a
+                        href="/diagnostico"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-between p-2.5 rounded-lg text-xs font-bold text-teal-950 bg-teal-50/80 hover:bg-teal-100 border border-teal-200 transition-colors"
+                      >
+                        <div className="flex items-center gap-2">
+                          <Compass size={16} weight="fill" className="text-teal-700 shrink-0" />
+                          <span>Articulación Curricular MEP</span>
+                        </div>
+                        <ArrowSquareOut size={14} className="text-teal-700 shrink-0" />
+                      </a>
+
+                      {/* 4. Formulario de Acompañamiento y Soporte */}
+                      <a
+                        href="/manuales"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-between p-2.5 rounded-lg text-xs font-bold text-amber-950 bg-amber-50/80 hover:bg-amber-100 border border-amber-200 transition-colors"
+                      >
+                        <div className="flex items-center gap-2">
+                          <Lightning size={16} weight="fill" className="text-[#E07A2C] shrink-0" />
+                          <span>Formulario de Acompañamiento MEP</span>
+                        </div>
+                        <ArrowSquareOut size={14} className="text-amber-700 shrink-0" />
+                      </a>
+                    </div>
+                  )}
+                </div>
+
                 <button
                   onClick={() => {
                     cerrarSesion();
                     setMenuAbierto(false);
                   }}
-                  className="w-full flex items-center justify-center gap-2 p-3 bg-rose-50 text-rose-800 border border-rose-200 rounded-xl text-xs font-bold transition-colors"
+                  className="w-full flex items-center justify-center gap-2 p-3 bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200 rounded-xl text-xs font-bold transition-colors cursor-pointer"
                 >
                   <SignOut size={18} weight="bold" />
                   <span>Cerrar sesión</span>
