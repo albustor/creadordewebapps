@@ -172,7 +172,8 @@ export default function RegistroDocentePage() {
   const [cargandoValidacionCelular, setCargandoValidacionCelular] = useState(false);
   const [mensajeValidacionCelular, setMensajeValidacionCelular] = useState<{ tipo: "exito" | "error"; texto: string } | null>(null);
 
-  // Estados de verificación de correo por Firebase
+  // Estados de verificación de correo por Firebase y desbloqueo de celular
+  const [correoValidado, setCorreoValidado] = useState(Boolean(docente?.correoVerificado || docente?.correoInstitucional));
   const [cargandoVerificacionCorreo, setCargandoVerificacionCorreo] = useState(false);
   const [mensajeVerificacionCorreo, setMensajeVerificacionCorreo] = useState<{ tipo: "exito" | "error"; texto: string } | null>(null);
 
@@ -473,6 +474,13 @@ export default function RegistroDocentePage() {
       return;
     }
 
+    if (!correoValidado) {
+      setErrorValidacion(
+        "Por protocolo de seguridad institucional, debe validar su correo institucional @mep.go.cr con Firebase primero para habilitar el registro y validar su número celular."
+      );
+      return;
+    }
+
     const telefonoLimpio = telefono.trim();
     const pinLimpio = pin.trim();
     if (!/^\d{4,6}$/.test(pinLimpio)) {
@@ -762,7 +770,11 @@ export default function RegistroDocentePage() {
     try {
       const res = await solicitarVerificacionFirebase(targetEmail);
       if (res.exito) {
-        setMensajeVerificacionCorreo({ tipo: "exito", texto: res.mensaje });
+        setCorreoValidado(true);
+        setMensajeVerificacionCorreo({
+          tipo: "exito",
+          texto: `✓ Correo institucional verificado con Firebase Auth (${targetEmail}). Ahora puede registrar y validar su número de celular.`,
+        });
       } else {
         setMensajeVerificacionCorreo({ tipo: "error", texto: res.mensaje });
       }
@@ -939,6 +951,68 @@ export default function RegistroDocentePage() {
       {/* ============================================================ */}
       {pestanaActiva === "registro" && (
         <form onSubmit={handleGuardarDocente} className="space-y-6">
+          {/* TARJETA DE INDICACIONES OFICIALES PARA EL REGISTRO */}
+          <div className="bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 text-white p-6 rounded-3xl border-2 border-emerald-500/40 shadow-xl space-y-4">
+            <div className="flex items-start gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-300 shrink-0 text-2xl shadow-inner">
+                <ShieldCheck size={26} weight="fill" />
+              </div>
+              <div>
+                <span className="px-2.5 py-0.5 rounded-full bg-emerald-400/20 text-emerald-200 text-[10px] font-black uppercase tracking-wider border border-emerald-300/30">
+                  Protocolo Oficial MEP • Seguridad e Identidad Docente
+                </span>
+                <h3 className="text-base sm:text-lg font-black text-white mt-1">
+                  📋 Indicaciones Obligatorias para el Registro y Validación de Cuenta
+                </h3>
+                <p className="text-xs text-emerald-100/80 font-medium mt-0.5 leading-relaxed">
+                  Para garantizar la autenticidad y resguardar el acceso docente, el sistema aplica una validación escalonada:
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
+              <div className="bg-white/10 rounded-2xl p-3.5 border border-white/10 space-y-1">
+                <div className="text-[11px] font-black text-emerald-300 uppercase flex items-center gap-1.5">
+                  <span className="w-5 h-5 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center text-[10px] font-black">1</span>
+                  <span>Correo MEP</span>
+                </div>
+                <p className="text-[11px] text-slate-200 leading-snug">
+                  Ingresa tu correo oficial <code>@mep.go.cr</code> y presiona <strong>«Validar con Firebase»</strong>.
+                </p>
+              </div>
+
+              <div className="bg-white/10 rounded-2xl p-3.5 border border-white/10 space-y-1">
+                <div className="text-[11px] font-black text-amber-300 uppercase flex items-center gap-1.5">
+                  <span className="w-5 h-5 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center text-[10px] font-black">2</span>
+                  <span>Celular WhatsApp</span>
+                </div>
+                <p className="text-[11px] text-slate-200 leading-snug">
+                  Tras validar el correo, se habilita el celular para confirmar el código OTP vía <strong>Evolution API</strong>.
+                </p>
+              </div>
+
+              <div className="bg-white/10 rounded-2xl p-3.5 border border-white/10 space-y-1">
+                <div className="text-[11px] font-black text-sky-300 uppercase flex items-center gap-1.5">
+                  <span className="w-5 h-5 rounded-full bg-sky-400 text-slate-950 flex items-center justify-center text-[10px] font-black">3</span>
+                  <span>PIN de 4 Dígitos</span>
+                </div>
+                <p className="text-[11px] text-slate-200 leading-snug">
+                  Crea tu PIN numérico rápido para acceso ágil en los laboratorios de cómputo.
+                </p>
+              </div>
+
+              <div className="bg-white/10 rounded-2xl p-3.5 border border-white/10 space-y-1">
+                <div className="text-[11px] font-black text-teal-300 uppercase flex items-center gap-1.5">
+                  <span className="w-5 h-5 rounded-full bg-teal-400 text-slate-950 flex items-center justify-center text-[10px] font-black">4</span>
+                  <span>Recuperación</span>
+                </div>
+                <p className="text-[11px] text-slate-200 leading-snug">
+                  Recupera tu acceso en cualquier momento mediante Firebase (Correo) o WhatsApp (Evolution API).
+                </p>
+              </div>
+            </div>
+          </div>
+
           {errorValidacion && (
             <div className="p-4 bg-rose-50 border-2 border-rose-300 text-rose-950 rounded-2xl text-xs font-bold flex items-start gap-3 shadow-xs">
               <WarningCircle size={20} className="text-rose-700 shrink-0 mt-0.5" weight="fill" />
@@ -997,15 +1071,32 @@ export default function RegistroDocentePage() {
 
               {/* Correo Oficial MEP */}
               <div className="space-y-1.5 md:col-span-2">
-                <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
-                  Correo Electrónico Institucional MEP (@mep.go.cr) <span className="text-rose-600">*</span>
-                </label>
+                <div className="flex items-center justify-between flex-wrap gap-1">
+                  <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
+                    Correo Electrónico Institucional MEP (@mep.go.cr) <span className="text-rose-600">*</span>
+                  </label>
+                  {correoValidado ? (
+                    <span className="text-[10.5px] font-black text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300 flex items-center gap-1">
+                      <CheckCircle size={13} weight="fill" />
+                      <span>Correo Validado (Firebase)</span>
+                    </span>
+                  ) : (
+                    <span className="text-[10.5px] font-bold text-rose-800 bg-rose-50 px-2 py-0.5 rounded-md border border-rose-200">
+                      Obligatorio Validar
+                    </span>
+                  )}
+                </div>
                 <div className="relative">
                   <input
                     type="email"
                     required
                     value={correo}
-                    onChange={(e) => setCorreo(e.target.value)}
+                    onChange={(e) => {
+                      setCorreo(e.target.value);
+                      if (e.target.value.toLowerCase().trim() !== docente?.correoInstitucional?.toLowerCase().trim()) {
+                        setCorreoValidado(false);
+                      }
+                    }}
                     placeholder="nombre.apellido.apellido@mep.go.cr"
                     className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 outline-hidden transition-all"
                   />
@@ -1021,14 +1112,14 @@ export default function RegistroDocentePage() {
                   <div className="flex items-start gap-2">
                     <Info size={16} className="text-blue-700 shrink-0 mt-0.5" weight="fill" />
                     <span>
-                      <strong>Validez Oficial:</strong> Toda la comunicación oficial del MEP se remitirá a esta cuenta.
+                      <strong>Paso 1 Obligatorio:</strong> Valida tu cuenta institucional con Firebase para desbloquear el registro de tu celular.
                     </span>
                   </div>
                   <button
                     type="button"
                     onClick={handleVerificarCorreoFirebase}
                     disabled={cargandoVerificacionCorreo}
-                    className="px-3 py-1.5 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-[11px] font-black shrink-0 transition-colors flex items-center gap-1 cursor-pointer"
+                    className="px-3.5 py-1.5 bg-blue-700 hover:bg-blue-800 text-white rounded-xl text-xs font-black shrink-0 transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
                   >
                     {cargandoVerificacionCorreo ? (
                       <ArrowClockwise size={14} className="animate-spin" />
@@ -1051,7 +1142,7 @@ export default function RegistroDocentePage() {
                 )}
               </div>
 
-              {/* Teléfono de Contacto */}
+              {/* Teléfono de Contacto - Habilitado ÚNICAMENTE si el correo está validado */}
               <div className="space-y-2 md:col-span-2">
                 <label className="block text-xs font-black text-slate-800 uppercase tracking-wider flex items-center justify-between">
                   <span>Teléfono Móvil de Contacto (WhatsApp)</span>
@@ -1061,31 +1152,47 @@ export default function RegistroDocentePage() {
                         <CheckCircle size={13} weight="fill" />
                         <span>Verificado (Evolution API)</span>
                       </span>
-                    ) : (
+                    ) : correoValidado ? (
                       <span className="text-[10.5px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
-                        Pendiente Validación
+                        Listo para Validar con WhatsApp
+                      </span>
+                    ) : (
+                      <span className="text-[10.5px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200">
+                        🔒 Requiere Correo Validado
                       </span>
                     )}
                   </div>
                 </label>
-                <div className="relative flex items-center gap-2">
+
+                {!correoValidado && (
+                  <div className="p-3 bg-amber-50 border border-amber-300 rounded-xl text-xs font-bold text-amber-950 flex items-start gap-2.5 shadow-2xs">
+                    <WarningCircle size={18} className="text-amber-700 shrink-0 mt-0.5" weight="fill" />
+                    <div className="leading-relaxed">
+                      <strong>Paso Previo Requerido:</strong> El registro y validación del número de celular se habilitará automáticamente en cuanto valides tu correo institucional MEP arriba con el botón <strong>«Validar con Firebase»</strong>.
+                    </div>
+                  </div>
+                )}
+
+                <div className={`relative flex items-center gap-2 ${!correoValidado ? "opacity-60 pointer-events-none" : ""}`}>
                   <div className="relative flex-1">
                     <input
                       type="tel"
+                      disabled={!correoValidado}
                       value={telefono}
                       onChange={(e) => setTelefono(e.target.value)}
                       placeholder="Ej: 8888-9999"
-                      className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 outline-hidden transition-all"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 outline-hidden transition-all disabled:bg-slate-100 disabled:cursor-not-allowed"
                     />
                     <Phone size={18} className="absolute right-4 top-3.5 text-slate-400" />
                   </div>
                   <button
                     type="button"
+                    disabled={!correoValidado}
                     onClick={() => {
                       setMostrarModalValidarCelular(true);
                       setMensajeValidacionCelular(null);
                     }}
-                    className="px-4 py-3 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-black shrink-0 transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
+                    className="px-4 py-3 bg-emerald-700 hover:bg-emerald-800 disabled:bg-slate-300 text-white rounded-xl text-xs font-black shrink-0 transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs disabled:cursor-not-allowed"
                   >
                     <Phone size={16} weight="bold" />
                     <span>Validar con WhatsApp</span>
