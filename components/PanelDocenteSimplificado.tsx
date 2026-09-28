@@ -899,6 +899,89 @@ export default function PanelDocenteSimplificado() {
     });
   };
 
+  // Obtener logro específico para cada Saber Cognitivo desde la telemetría (cog, detallesReactivos, puntaje)
+  const obtenerLogroSaberEstudiante = (
+    r: PayloadTelemetria,
+    saber: SaberCognitivoOficial,
+    index: number
+  ): "L" | "ED" | "RA" => {
+    const customCogMap = (r as any).saberesCognitivosPersonalizados || {};
+    if (customCogMap[saber.id]) {
+      return customCogMap[saber.id];
+    }
+
+    const matches = saber.pregunta.match(/\d+/g);
+    const preguntasIndices =
+      matches && matches.length > 0
+        ? matches.map((n) => parseInt(n, 10))
+        : [index + 1];
+
+    if (Array.isArray(r.cog) && r.cog.length > 0) {
+      const valores = preguntasIndices
+        .map((pNum) => r.cog![pNum - 1])
+        .filter(Boolean);
+
+      if (valores.length > 0) {
+        const totalL = valores.filter((v) => v === "L" || v === "A" || v === "Logrado").length;
+        const totalRA = valores.filter((v) => v === "RA" || v === "C" || v === "Requiere Acompañamiento").length;
+        if (totalL === valores.length) return "L";
+        if (totalRA === valores.length) return "RA";
+        return "ED";
+      }
+    }
+
+    if (Array.isArray(r.detallesReactivos) && r.detallesReactivos.length > 0) {
+      const valoresReactivos = preguntasIndices
+        .map((pNum) => {
+          const item = r.detallesReactivos!.find(
+            (d) =>
+              d.reactivoId === `r_${pNum}` ||
+              d.reactivoId === `${pNum}` ||
+              d.pregunta?.includes(`Pregunta ${pNum}`) ||
+              d.pregunta?.includes(`Ítem ${pNum}`)
+          );
+          return item ? (item.esCorrecto ? "L" : "RA") : null;
+        })
+        .filter(Boolean);
+
+      if (valoresReactivos.length > 0) {
+        const totalL = valoresReactivos.filter((v) => v === "L").length;
+        const totalRA = valoresReactivos.filter((v) => v === "RA").length;
+        if (totalL === valoresReactivos.length) return "L";
+        if (totalRA === valoresReactivos.length) return "RA";
+        return "ED";
+      }
+    }
+
+    const pct =
+      r.porcentaje !== undefined
+        ? r.porcentaje
+        : r.aciertos && r.totalReactivos
+        ? (r.aciertos / r.totalReactivos) * 100
+        : 70;
+    if (pct >= 80) return "L";
+    if (pct >= 60) return "ED";
+    return "RA";
+  };
+
+  // Actualizar valoración individual de Saber Cognitivo
+  const handleActualizarCognitivoSaber = (
+    timestamp: number,
+    saberId: number,
+    valor: "L" | "ED" | "RA"
+  ) => {
+    const item = (telemetria || []).find((r) => r.timestamp === timestamp);
+    if (!item) return;
+
+    const actual = (item as any).saberesCognitivosPersonalizados || {};
+    const nuevo = { ...actual, [saberId]: valor };
+
+    actualizarResultadoTelemetria(timestamp, {
+      ...item,
+      saberesCognitivosPersonalizados: nuevo,
+    } as any);
+  };
+
   // Marcar toda la sección en Nivel A (Autónomo / Logrado)
   const handleMarcarTodaSeccionPsicomotrizNivelA = () => {
     if (registrosSeccion.length === 0) return;
@@ -1998,17 +2081,27 @@ export default function PanelDocenteSimplificado() {
                           </div>
 
                           <div className="overflow-x-auto scrollbar-thin rounded-xl border border-slate-200">
-                            <table className="w-full text-left border-collapse text-xs min-w-[700px]">
+                            <table className="w-full text-left border-collapse text-xs min-w-[760px]">
                               <thead>
-                                <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
-                                  <th className="py-3 px-4 min-w-[180px]">Estudiante</th>
-                                  <th className="py-3 px-3 text-center min-w-[70px]">Aciertos</th>
-                                  <th className="py-3 px-3 text-center min-w-[70px]">Fallos</th>
-                                  <th className="py-3 px-3 text-center min-w-[80px]">Tiempo</th>
+                                <tr className="bg-slate-50 border-b border-slate-200 text-slate-700 font-bold uppercase tracking-wider text-[11px]">
+                                  <th className="py-3 px-4 w-52 min-w-[180px]">Persona Estudiante</th>
+                                  {(SABERES_COGNITIVOS_MAP[nivelActivo] || SABERES_COGNITIVOS_MAP["9no"]).map((saber) => (
+                                    <th key={saber.id} className="py-3 px-2 text-center min-w-[105px]">
+                                      <div className="flex flex-col items-center justify-center gap-1">
+                                        <span className="font-bold text-slate-800 text-[11px] leading-tight text-center truncate max-w-[115px]" title={`${saber.nombre} (${saber.areaCurricular || "Cognitivo"})`}>
+                                          {saber.id}. {saber.saber}
+                                        </span>
+                                        <span className="text-[9.5px] font-bold text-[#1B5E59] bg-teal-50 px-1.5 py-0.2 rounded border border-teal-200 whitespace-nowrap">
+                                          {saber.pregunta.replace("Pregunta ", "P. ")}
+                                        </span>
+                                        <span className="text-[9px] text-slate-400 font-normal normal-case">Escala L / ED / RA</span>
+                                      </div>
+                                    </th>
+                                  ))}
                                   <th className="py-3 px-3 text-center min-w-[70px]">Puntaje</th>
-                                  <th className="py-3 px-4 text-center min-w-[120px]">Nivel de Logro</th>
-                                  <th className="py-3 px-3 text-right min-w-[90px]">Hora Registro</th>
-                                  <th className="py-3 px-3 text-center w-24">Acción</th>
+                                  <th className="py-3 px-4 text-center min-w-[110px]">Nivel de Logro</th>
+                                  <th className="py-3 px-3 text-right min-w-[85px]">Hora</th>
+                                  <th className="py-3 px-3 text-center w-20">Acción</th>
                                 </tr>
                               </thead>
                               <tbody className="divide-y divide-slate-100 font-medium">
@@ -2022,29 +2115,51 @@ export default function PanelDocenteSimplificado() {
                                         </span>
                                       )}
                                     </td>
-                                    <td className="py-3 px-3 text-center font-bold text-emerald-700">
-                                      {r.aciertos || 0}
-                                    </td>
-                                    <td className="py-3 px-3 text-center font-bold text-rose-600">
-                                      {r.fallos || 0}
-                                    </td>
-                                    <td className="py-3 px-3 text-center text-slate-500 font-mono">
-                                      {Math.floor((r.tiempoSegundos || 0) / 60)}m {(r.tiempoSegundos || 0) % 60}s
-                                    </td>
+                                    {(SABERES_COGNITIVOS_MAP[nivelActivo] || SABERES_COGNITIVOS_MAP["9no"]).map((saber, idx) => {
+                                      const valSaber = obtenerLogroSaberEstudiante(r, saber, idx);
+                                      return (
+                                        <td key={saber.id} className="py-3 px-2 text-center">
+                                          <div className="inline-flex rounded-lg border border-slate-200 p-0.5 bg-slate-50 shadow-2xs">
+                                            {(["L", "ED", "RA"] as const).map((escala) => {
+                                              const seleccionado = valSaber === escala;
+                                              return (
+                                                <button
+                                                  key={escala}
+                                                  type="button"
+                                                  onClick={() => handleActualizarCognitivoSaber(r.timestamp, saber.id, escala)}
+                                                  title={`Saber ${saber.id}: ${saber.nombre} → Nivel ${escala === "L" ? "Logrado (L)" : escala === "ED" ? "En Desarrollo (ED)" : "Requiere Acompañamiento (RA)"}`}
+                                                  className={`px-1.5 sm:px-2 py-0.5 text-[10px] font-black rounded-md transition-all cursor-pointer ${
+                                                    seleccionado
+                                                      ? escala === "L"
+                                                        ? "bg-emerald-600 text-white shadow-xs"
+                                                        : escala === "ED"
+                                                        ? "bg-amber-500 text-white shadow-xs"
+                                                        : "bg-rose-500 text-white shadow-xs"
+                                                      : "text-slate-400 hover:text-slate-700 hover:bg-slate-200/60"
+                                                  }`}
+                                                >
+                                                  {escala}
+                                                </button>
+                                              );
+                                            })}
+                                          </div>
+                                        </td>
+                                      );
+                                    })}
                                     <td className="py-3 px-3 text-center font-black text-slate-900">
                                       {r.porcentaje || 0}%
                                     </td>
                                     <td className="py-3 px-4 text-center">
                                       <span
                                         className={`inline-block px-2.5 py-1 rounded-full text-[11px] font-bold ${
-                                          r.nivelLogro === "Avanzado"
+                                          (r.nivelLogro as string) === "Avanzado" || (r.nivelLogro as string) === "Logrado"
                                             ? "bg-emerald-100 text-emerald-900 border border-emerald-300"
-                                            : r.nivelLogro === "Intermedio"
+                                            : (r.nivelLogro as string) === "Intermedio" || (r.nivelLogro as string) === "En Proceso"
                                             ? "bg-amber-100 text-amber-900 border border-amber-300"
                                             : "bg-rose-100 text-rose-900 border border-rose-300"
                                         }`}
                                       >
-                                        {r.nivelLogro}
+                                        {r.nivelLogro || "Inicial"}
                                       </span>
                                     </td>
                                     <td className="py-3 px-3 text-right text-slate-400 font-mono text-[11px]">
