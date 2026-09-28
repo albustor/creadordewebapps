@@ -45,12 +45,6 @@ export default function Navbar() {
           icon: <ChartBar size={18} weight="duotone" />,
           titulo: "Panel de evaluación docente, gestión de grupos, áreas curriculares y telemetría de 7.° y 9.°",
         },
-        {
-          href: "/#simulador",
-          label: "Simulador (Celular/PC)",
-          icon: <DeviceMobile size={18} weight="bold" className="text-teal-600" />,
-          titulo: "Simulador interactivo de saberes diagnósticos en Celular, Tableta y Computadora",
-        },
         ...(esAsesor
           ? [
               {
@@ -68,12 +62,6 @@ export default function Navbar() {
           label: "Inicio",
           icon: <House size={18} weight="bold" />,
           titulo: "Página de inicio y autenticación institucional",
-        },
-        {
-          href: "/#simulador",
-          label: "Simulador (Celular / PC)",
-          icon: <DeviceMobile size={18} weight="bold" className="text-teal-600" />,
-          titulo: "Simulador interactivo de saberes diagnósticos en Celular, Tableta y Computadora",
         },
       ];
 
