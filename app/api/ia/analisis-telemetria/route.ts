@@ -102,7 +102,7 @@ export async function POST(req: NextRequest) {
       porcentajeIntermedio = 0,
       porcentajeInicial = 0,
       estudiantesAcompaniamiento = [],
-      indicador = "Diagnóstico Integrado 9°: «Aula Inteligente»",
+      indicador = "Diagnóstico 9°",
       asignatura = "Formación Tecnológica",
       nivel = "9° Año - Secundaria",
     } = body;
@@ -278,7 +278,7 @@ Debes responder ÚNICAMENTE con un objeto JSON válido (sin explicaciones adicio
         porcentajeIntermedio: 40,
         porcentajeInicial: 20,
         estudiantesAcompaniamiento: [],
-        indicador: "Diagnóstico Integrado 9°: «Aula Inteligente»",
+        indicador: "Diagnóstico 9°",
         asignatura: "Formación Tecnológica",
         nivel: "9° Año - Secundaria",
       }),

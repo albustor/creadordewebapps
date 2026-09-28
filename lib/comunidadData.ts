@@ -333,7 +333,7 @@ export const PRODUCCIONES_COMUNIDAD_INICIALES: WebAppComunidad[] = [
   },
   {
     id: "com-9-diag-aula-inteligente",
-    titulo: "Diagnóstico Integrado 9°: «Aula Inteligente» (Estudiante)",
+    titulo: "Diagnóstico 9° (Estudiante)",
     autorNombre: "Alberto Bustos Ortega",
     autorRol: "Docente de Innovación y Tecnología",
     autorDRE: "San José Central",
@@ -353,7 +353,7 @@ export const PRODUCCIONES_COMUNIDAD_INICIALES: WebAppComunidad[] = [
     fechaPublicacion: "2027-03-21",
     remixesCount: 88,
     estudiantesEvaluados: 560,
-    tags: ["Diagnóstico 9°", "Aula Inteligente", "MEP 2027", "Evaluación Formativa", "Simulador 2D"],
+    tags: ["Diagnóstico 9°", "MEP 2027", "Evaluación Formativa", "Simulador 2D"],
   },
   {
     id: "com-9-diag-docente-evaluador",

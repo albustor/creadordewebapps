@@ -1227,11 +1227,11 @@ export const CATALOGO_III_CICLO: EjeCurricularIIICiclo[] = [
         descripcion: "Analizar los usos, aplicaciones y beneficios de la domótica, mediante la creación o simulación de un prototipo que responda a necesidades reales en un entorno cotidiano.",
         explicacionPedagogica: "La domótica automatiza iluminación, ventilación, seguridad y ahorro energético en hogares y colegios.",
         criterioInicial: "Describe ejemplos de domótica en viviendas modernas.",
-        criterioIntermedio: "Diseña un prototipo domótico funcional (aula inteligente, alarma) que responde a sensores.",
+        criterioIntermedio: "Diseña un prototipo domótico funcional (iluminación automática, alarma) que responde a sensores.",
         criterioAvanzado: "Propone e implementa soluciones domóticas integrales con criterios de sostenibilidad y confort.",
         saberProcedimental: "Transfiere",
         saberActitudinal: "Piensa de forma creativa",
-        palabrasClave: ["domótica", "aula inteligente", "automatización", "ahorro energético"],
+        palabrasClave: ["domótica", "sistemas automatizados", "automatización", "ahorro energético"],
       },
       {
         id: "9-m1-rob-06",

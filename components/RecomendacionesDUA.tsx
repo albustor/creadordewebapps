@@ -82,9 +82,9 @@ export default function RecomendacionesDUA({
 
   const nivelEtiqueta =
     nivel === "7mo"
-      ? "7.° Año (CyberQuest)"
+      ? "Diagnóstico 7°"
       : nivel === "9no"
-      ? "9.° Año (Aula Inteligente)"
+      ? "Diagnóstico 9°"
       : "General";
 
   const getPuntajeVal = (r: PayloadTelemetria): number => {
@@ -140,8 +140,8 @@ export default function RecomendacionesDUA({
         : configuracion?.indicadorCodigo || "SEC.9NO.DIAG.01",
     indicadorNombre:
       nivel === "7mo"
-        ? "CyberQuest 7°: Diagnóstico de Fundamentos Digitales"
-        : configuracion?.nombreInstrumento || "Diagnóstico Integrado 9°: «Aula Inteligente»",
+        ? "Diagnóstico 7°: Fundamentos Digitales"
+        : configuracion?.nombreInstrumento || "Diagnóstico 9°",
     porcentajePromedio: promedioPuntaje,
     tasaRezago: tasaAlerta,
     esDiagnostico: true,
@@ -172,9 +172,9 @@ export default function RecomendacionesDUA({
           puntaje: e.porcentaje ?? e.puntaje,
           seccion: e.seccionOGrupo,
         })),
-        indicador: configuracion?.nombreInstrumento || "Diagnóstico Integrado 9°: «Aula Inteligente»",
+        indicador: configuracion?.nombreInstrumento || (nivel === "7mo" ? "Diagnóstico 7°" : "Diagnóstico 9°"),
         asignatura: configuracion?.asignatura || "Formación Tecnológica",
-        nivel: configuracion?.nivelEducativo || "9° Año - Secundaria",
+        nivel: configuracion?.nivelEducativo || (nivel === "7mo" ? "7° Año - Secundaria" : "9° Año - Secundaria"),
       };
 
       const res = await fetch("/api/ia/analisis-telemetria", {
@@ -294,7 +294,7 @@ export default function RecomendacionesDUA({
               ✨ Asistente IA Multi-Proveedor
             </span>
             <span className="text-xs text-indigo-200/80 font-semibold">
-              Formación Tecnológica • {nivel === "7mo" ? "7.° Año (CyberQuest)" : "9.° Año"}
+              Formación Tecnológica • {nivel === "7mo" ? "Diagnóstico 7°" : "Diagnóstico 9°"}
             </span>
             {metaIA && (
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 flex items-center gap-1">
@@ -510,7 +510,7 @@ export default function RecomendacionesDUA({
                   {conceptualFinal.descripcion}
                 </p>
                 <div className="p-2.5 bg-blue-50/70 rounded-lg text-[11px] text-blue-950 font-medium">
-                  📡 <strong>Vínculo con Telemetría:</strong> Cuestionarios interactivos, preguntas conceptuales de hardware/software, ciberseguridad y secuencias lógicas resueltas en CyberQuest 7°.
+                  📡 <strong>Vínculo con Telemetría:</strong> Cuestionarios interactivos, preguntas conceptuales de hardware/software, ciberseguridad y secuencias lógicas resueltas en Diagnóstico 7°.
                 </div>
               </div>
 

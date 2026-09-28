@@ -36,7 +36,7 @@ interface ItemArticulacion {
 const MATRIZ_ARTICULACION: Record<"7mo" | "9no", { titulo: string; situacionProblema: string; items: ItemArticulacion[] }> = {
   "9no": {
     titulo: "9.° Año — III Ciclo",
-    situacionProblema: "«El Aula Inteligente y Sistemas Automatizados» (PNFT - Formación Tecnológica)",
+    situacionProblema: "«Sistemas Automatizados y Microcontroladores» (PNFT - Formación Tecnológica)",
     items: [
       {
         subarea: "Grupo de criterios asociados 1: Sistemas Automatizados y Arquitectura de Control",
@@ -102,7 +102,7 @@ const MATRIZ_ARTICULACION: Record<"7mo" | "9no", { titulo: string; situacionProb
   },
   "7mo": {
     titulo: "7.° Año — III Ciclo",
-    situacionProblema: "«CyberQuest: Fundamentos de Computación, Hardware y Pensamiento Algorítmico»",
+    situacionProblema: "«Diagnóstico 7°: Fundamentos de Computación, Hardware y Pensamiento Algorítmico»",
     items: [
       {
         subarea: "Grupo de criterios asociados 1: Lógica Proposicional, Algoritmia y Control",

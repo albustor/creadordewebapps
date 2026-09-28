@@ -55,7 +55,7 @@ export function generarRecomendacionesPedagogicas(
   const saberProc = ctx.saberProcedimental || "Formulación de algoritmos, análisis y conexionado práctico en simulador 2D";
   const saberAct = ctx.saberActitudinal || "Pensamiento crítico, perseverancia y aprendizaje reflexivo del error";
   const indCod = ctx.indicadorCodigo || "SEC.9NO.DIAG.01";
-  const indNom = ctx.indicadorNombre || "Diagnóstico Integrado 9°: «Aula Inteligente»";
+  const indNom = ctx.indicadorNombre || "Diagnóstico 9°";
   const esDiag = ctx.esDiagnostico !== undefined ? ctx.esDiagnostico : true;
   const promedio = ctx.porcentajePromedio ?? 70;
   const cantRezago = ctx.estudiantesRezago?.length || 0;
@@ -71,14 +71,14 @@ export function generarRecomendacionesPedagogicas(
   } else if (promedio < 80) {
     conceptualAcciones = [
       `Fomentar el análisis crítico y la abstracción del concepto "${saberConcept}" en sistemas y problemas de automatización de 9° año.`,
-      `Contrastar concepciones erróneas detectadas en las preguntas de comprobación mediante ejemplos guiados en el aula inteligente.`,
+      `Contrastar concepciones erróneas detectadas en las preguntas de comprobación mediante ejemplos guiados.`,
       `Desafiar a los estudiantes a sintetizar el flujo lógico en esquemas visuales antes de programar la simulación.`,
     ];
   } else {
     // Grupo consolidado
     conceptualAcciones = [
       `Proponer retos de mayor abstracción sobre "${saberConcept}", integrando múltiples sensores y actuadores simultáneos.`,
-      `Conectar el funcionamiento del aula inteligente con implicaciones éticas y de eficiencia energética en el mundo real.`,
+      `Conectar el funcionamiento de los sistemas automatizados con implicaciones éticas y de eficiencia energética en el mundo real.`,
       `Incentivar la creación de tutoriales o esquemas modulares reutilizables para apoyar a compañeros en desarrollo.`,
     ];
   }

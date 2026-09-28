@@ -37,7 +37,7 @@ export default function PlayWebAppPage() {
         .then((html) => {
           if (html) {
             setCodigoHTML(html);
-            setTitulo("Diagnóstico Integrado 9°: «Aula Inteligente»");
+            setTitulo("Diagnóstico 9°");
             setAsignatura("Computación Física y Robótica");
             setNivel("9° Año - Secundaria");
           }

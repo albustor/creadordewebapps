@@ -1429,7 +1429,7 @@
           <span style="font-size: 24px;">🔗</span>
           <div>
             <h2 style="font-size: 15px; font-weight: 800; color: #fff; margin: 0;">Enlace de Acceso para Estudiantes (9.° Año)</h2>
-            <p style="font-size: 11.5px; color: #94a3b8; margin: 0;">Diagnóstico Aula Inteligente 9° (Módulo 1)</p>
+            <p style="font-size: 11.5px; color: #94a3b8; margin: 0;">Diagnóstico 9° (Módulo 1)</p>
           </div>
         </div>
         <button class="btn btn-outline" style="padding: 4px 8px; color: #fff; border-color: rgba(255,255,255,0.3); background: transparent;" onclick="closeStudentLinksModal()">✕</button>
@@ -2789,7 +2789,7 @@
         lote.push({
           idResultado: "doc-eval-" + est.nombre.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase() + "-" + secNorm.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase(),
           webAppId: "diagnostico_9no_modulo01_aula_inteligente",
-          webAppTitulo: "Diagnóstico Integrado 9°: «Aula Inteligente»",
+          webAppTitulo: "Diagnóstico 9°",
           docenteId: docId,
           estudianteNombre: est.nombre.trim(),
           seccionOGrupo: secNorm,
@@ -2969,7 +2969,7 @@
                 match.cog = Array(10).fill("ED");
               }
             }
-            var desc = "Completó diagnóstico web («Aula Inteligente»).";
+            var desc = "Completó diagnóstico web.";
             if (rec.retosPracticos) {
               desc += " Retos: " + (rec.retosPracticos.reto1Conexion || "5/5") + ", Actuador: " + (rec.retosPracticos.reto2Actuador || "LED") + ", Depuración: " + (rec.retosPracticos.reto3Diagnostico || "Completada") + ".";
             }
@@ -2983,7 +2983,7 @@
           }
         } else {
           // Agregar nuevo estudiante detectado en la base de datos o telemetría
-          var descNuevo = esCompletado ? "Completó diagnóstico web («Aula Inteligente»)." : "Estudiante registrado al iniciar prueba diagnóstica.";
+          var descNuevo = esCompletado ? "Completó diagnóstico web." : "Estudiante registrado al iniciar prueba diagnóstica.";
           if (rec.retosPracticos) {
             descNuevo += " Retos: " + (rec.retosPracticos.reto1Conexion || "5/5") + ", Actuador: " + (rec.retosPracticos.reto2Actuador || "LED") + ", Depuración: " + (rec.retosPracticos.reto3Diagnostico || "Completada") + ".";
           }
@@ -3727,7 +3727,7 @@
 
         // Generar texto personalizado si es el genérico inicial
         var descDefault = est.descripcionDesempeno || "";
-        var esGenerico = !descDefault || descDefault.startsWith("Identifica conceptos de microcontroladores y sensores con autonomía") || descDefault.startsWith("Completó diagnóstico web («Aula Inteligente»)") || descDefault.startsWith("Diagnóstico inicial");
+        var esGenerico = !descDefault || descDefault.startsWith("Identifica conceptos de microcontroladores y sensores con autonomía") || descDefault.startsWith("Completó diagnóstico web") || descDefault.startsWith("Diagnóstico inicial");
 
         if (esGenerico) {
           var numL = (est.cog || []).filter(function(x){ return x === "L"; }).length;
@@ -3800,7 +3800,7 @@
         estudiantes: estadoDocente.estudiantes,
         seccion: filtroSec,
         docente: docNombre,
-        indicador: "Diagnóstico 9° Módulo 1 («Aula Inteligente»)"
+        indicador: "Diagnóstico 9° Módulo 1"
       };
 
       try {
@@ -4366,7 +4366,7 @@
               <title>Código QR - Herramienta de Evaluación Diagnóstica 9.° Año</title>
             </head>
             <body style="margin:0; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; background:linear-gradient(135deg, #064e3b 0%, #065f46 50%, #0f172a 100%); font-family:system-ui,-apple-system,sans-serif; color:white; padding:24px; text-align:center;">
-              <h1 style="margin:0 0 6px 0; font-size:26px; font-weight:800; color:#6ee7b7;">💡 Diagnóstico 9.° Año • «Aula Inteligente»</h1>
+              <h1 style="margin:0 0 6px 0; font-size:26px; font-weight:800; color:#6ee7b7;">💡 Diagnóstico 9.° Año</h1>
               <p style="margin:0 0 24px 0; font-size:15px; color:#d1fae5;">Escanee con la cámara o abra en la computadora del laboratorio de formación tecnológica</p>
               <div style="background:white; padding:22px; border-radius:20px; box-shadow:0 15px 35px rgba(0,0,0,0.6); display:inline-block; border:3px solid #34d399;">
                 <img src="${qrUrl}" alt="Código QR 9.° Año" style="width:340px; height:340px; display:block;" />

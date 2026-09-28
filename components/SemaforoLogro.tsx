@@ -20,9 +20,9 @@ export default function SemaforoLogro({ registros, configuracion, nivel = "todos
 
   const nivelEtiqueta =
     nivel === "7mo"
-      ? "7.° Año (CyberQuest)"
+      ? "Diagnóstico 7°"
       : nivel === "9no"
-      ? "9.° Año (Aula Inteligente)"
+      ? "Diagnóstico 9°"
       : "Consolidado Institucional";
 
   if (total === 0) {

@@ -42,7 +42,7 @@ export interface ConfiguracionDashboardDocente {
 
 export const CONFIGURACION_DEFAULT: ConfiguracionDashboardDocente = {
   tipoProceso: "diagnostico",
-  nombreInstrumento: "Diagnóstico Integrado 9°: «Aula Inteligente»",
+  nombreInstrumento: "Diagnóstico 9°",
   asignatura: "Formación Tecnológica",
   nivelEducativo: "9° Año - Secundaria",
   periodo: "Diagnóstico Inicial (Módulo 1)",
@@ -55,7 +55,7 @@ export const CONFIGURACION_DEFAULT: ConfiguracionDashboardDocente = {
     avanzado: "Diseña, conecta y programa sistemas automatizados y algoritmos con total autonomía y precisión.",
   },
   indicadoresClave: [
-    "SEC.9NO.DIAG.01: Análisis y conexión de sensores, circuitos y lógica de control automatizado en el aula inteligente",
+    "SEC.9NO.DIAG.01: Análisis y conexión de sensores, circuitos y lógica de control automatizado",
   ],
   fechaActualizacion: new Date().toISOString(),
 };

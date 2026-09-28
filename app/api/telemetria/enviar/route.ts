@@ -232,7 +232,7 @@ const REGISTROS_DEFAULT_INICIALES_7MO: any[] = [
   {
     idResultado: "RES-7MO-PRUEBA-001",
     webAppId: "diagnostico_7mo_modulo01_cyberquest",
-    webAppTitulo: "CyberQuest 7°: Diagnóstico de Fundamentos Digitales (PNFT 2027)",
+    webAppTitulo: "Diagnóstico 7°: Diagnóstico de Fundamentos Digitales",
     docenteId: "5-0305-0179",
     docenteCedula: "5-0305-0179",
     docenteNombre: "Prof. Alberto Bustos Ortega",
@@ -262,7 +262,7 @@ const REGISTROS_DEFAULT_INICIALES_7MO: any[] = [
   {
     idResultado: "RES-7MO-PRUEBA-002",
     webAppId: "diagnostico_7mo_modulo01_cyberquest",
-    webAppTitulo: "CyberQuest 7°: Diagnóstico de Fundamentos Digitales (PNFT 2027)",
+    webAppTitulo: "Diagnóstico 7°: Diagnóstico de Fundamentos Digitales",
     docenteId: "5-0305-0179",
     docenteCedula: "5-0305-0179",
     docenteNombre: "Prof. Alberto Bustos Ortega",
@@ -292,7 +292,7 @@ const REGISTROS_DEFAULT_INICIALES_7MO: any[] = [
   {
     idResultado: "RES-7MO-PRUEBA-003",
     webAppId: "diagnostico_7mo_modulo01_cyberquest",
-    webAppTitulo: "CyberQuest 7°: Diagnóstico de Fundamentos Digitales (PNFT 2027)",
+    webAppTitulo: "Diagnóstico 7°: Diagnóstico de Fundamentos Digitales",
     docenteId: "5-0305-0179",
     docenteCedula: "5-0305-0179",
     docenteNombre: "Prof. Alberto Bustos Ortega",
@@ -322,7 +322,7 @@ const REGISTROS_DEFAULT_INICIALES_7MO: any[] = [
   {
     idResultado: "RES-7MO-PRUEBA-004",
     webAppId: "diagnostico_7mo_modulo01_cyberquest",
-    webAppTitulo: "CyberQuest 7°: Diagnóstico de Fundamentos Digitales (PNFT 2027)",
+    webAppTitulo: "Diagnóstico 7°: Diagnóstico de Fundamentos Digitales",
     docenteId: "5-0305-0179",
     docenteCedula: "5-0305-0179",
     docenteNombre: "Prof. Alberto Bustos Ortega",
@@ -352,7 +352,7 @@ const REGISTROS_DEFAULT_INICIALES_7MO: any[] = [
   {
     idResultado: "RES-7MO-PRUEBA-005",
     webAppId: "diagnostico_7mo_modulo01_cyberquest",
-    webAppTitulo: "CyberQuest 7°: Diagnóstico de Fundamentos Digitales (PNFT 2027)",
+    webAppTitulo: "Diagnóstico 7°: Diagnóstico de Fundamentos Digitales",
     docenteId: "5-0305-0179",
     docenteCedula: "5-0305-0179",
     docenteNombre: "Prof. Alberto Bustos Ortega",
@@ -382,7 +382,7 @@ const REGISTROS_DEFAULT_INICIALES_7MO: any[] = [
   {
     idResultado: "RES-7MO-PRUEBA-006",
     webAppId: "diagnostico_7mo_modulo01_cyberquest",
-    webAppTitulo: "CyberQuest 7°: Diagnóstico de Fundamentos Digitales (PNFT 2027)",
+    webAppTitulo: "Diagnóstico 7°: Diagnóstico de Fundamentos Digitales",
     docenteId: "5-0305-0179",
     docenteCedula: "5-0305-0179",
     docenteNombre: "Prof. Alberto Bustos Ortega",
@@ -412,7 +412,7 @@ const REGISTROS_DEFAULT_INICIALES_7MO: any[] = [
   {
     idResultado: "RES-7MO-PRUEBA-007",
     webAppId: "diagnostico_7mo_modulo01_cyberquest",
-    webAppTitulo: "CyberQuest 7°: Diagnóstico de Fundamentos Digitales (PNFT 2027)",
+    webAppTitulo: "Diagnóstico 7°: Diagnóstico de Fundamentos Digitales",
     docenteId: "5-0305-0179",
     docenteCedula: "5-0305-0179",
     docenteNombre: "Prof. Alberto Bustos Ortega",
@@ -442,7 +442,7 @@ const REGISTROS_DEFAULT_INICIALES_7MO: any[] = [
   {
     idResultado: "RES-7MO-PRUEBA-008",
     webAppId: "diagnostico_7mo_modulo01_cyberquest",
-    webAppTitulo: "CyberQuest 7°: Diagnóstico de Fundamentos Digitales (PNFT 2027)",
+    webAppTitulo: "Diagnóstico 7°: Diagnóstico de Fundamentos Digitales",
     docenteId: "5-0305-0179",
     docenteCedula: "5-0305-0179",
     docenteNombre: "Prof. Alberto Bustos Ortega",
@@ -472,7 +472,7 @@ const REGISTROS_DEFAULT_INICIALES_7MO: any[] = [
   {
     idResultado: "RES-7MO-PRUEBA-009",
     webAppId: "diagnostico_7mo_modulo01_cyberquest",
-    webAppTitulo: "CyberQuest 7°: Diagnóstico de Fundamentos Digitales (PNFT 2027)",
+    webAppTitulo: "Diagnóstico 7°: Diagnóstico de Fundamentos Digitales",
     docenteId: "5-0305-0179",
     docenteCedula: "5-0305-0179",
     docenteNombre: "Prof. Alberto Bustos Ortega",
@@ -502,7 +502,7 @@ const REGISTROS_DEFAULT_INICIALES_7MO: any[] = [
   {
     idResultado: "RES-7MO-PRUEBA-010",
     webAppId: "diagnostico_7mo_modulo01_cyberquest",
-    webAppTitulo: "CyberQuest 7°: Diagnóstico de Fundamentos Digitales (PNFT 2027)",
+    webAppTitulo: "Diagnóstico 7°: Diagnóstico de Fundamentos Digitales",
     docenteId: "5-0305-0179",
     docenteCedula: "5-0305-0179",
     docenteNombre: "Prof. Alberto Bustos Ortega",
@@ -669,7 +669,7 @@ export async function POST(req: NextRequest) {
         body.puntaje = body.puntaje !== undefined ? body.puntaje : body.porcentaje;
         body.nivel = body.nivel || "7°";
         body.webAppId = body.webAppId || "diag-7mo-cyberquest-2027";
-        body.webAppTitulo = body.webAppTitulo || "CyberQuest 7°: Diagnóstico de Fundamentos Digitales";
+        body.webAppTitulo = body.webAppTitulo || "Diagnóstico 7°: Fundamentos Digitales";
         body.tiempoSegundos = body.tiempoSegundos || 60;
       }
 

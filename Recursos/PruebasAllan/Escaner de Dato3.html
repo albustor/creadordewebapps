@@ -1882,8 +1882,8 @@ tr:nth-child(even){
     class="card hidden"
 >
 
-    <h2>
-        Resultado del diagnóstico
+    <h2 style="margin-top:0;margin-bottom:12px;color:var(--azul);">
+        Resultados del diagnóstico
     </h2>
 
 
@@ -1892,7 +1892,7 @@ tr:nth-child(even){
     ></div>
 
 
-    <div class="button-group mt">
+    <div class="button-group mt" style="margin-top:24px;">
 
         <button
             class="btn-success"
@@ -1909,7 +1909,7 @@ tr:nth-child(even){
             onclick="descartarResultado()"
         >
 
-            DESCARTAR
+            ✖️ DESCARTAR / ESCANEAR OTRO
 
         </button>
 
@@ -5531,55 +5531,50 @@ function mostrarResultado(
         );
 
 
+    const centroMostrar =
+        datos.institucionQR ||
+        sesion.centro ||
+        "—";
+
+    const seccionMostrar =
+        datos.seccionQR ||
+        sesion.seccion ||
+        "—";
+
     document
         .getElementById(
             "resultadoContenido"
         )
         .innerHTML = `
 
+            <div class="alert alert-success" style="margin-top:0;margin-bottom:16px;border:1px solid #BBF7D0;border-radius:10px;font-weight:500;">
+                El diagnóstico ha finalizado. Los resultados se almacenaron localmente en este dispositivo.
+            </div>
+
             <div class="student-header">
 
-                <div class="teacher-registration">
-
-                    <span>
-                        Centro educativo registrado por el docente:
-                        <strong>
-                            ${escaparHTML(
-                                sesion.centro || "—"
-                            )}
-                        </strong>
-                    </span>
-
-                    <span>
-                        Sección registrada por el docente:
-                        <strong>
-                            ${escaparHTML(
-                                sesion.seccion || "—"
-                            )}
-                        </strong>
-                    </span>
-
+                <div class="student-meta" style="font-size:13px;color:#64748B;margin-bottom:4px;">
+                    Centro educativo:
+                    <strong>
+                        ${escaparHTML(
+                            centroMostrar
+                        )}
+                    </strong>
                 </div>
-
 
                 <div class="student-name">
-
                     ${escaparHTML(
-                        datos.estudiante
+                        datos.estudiante || "—"
                     )}
-
                 </div>
 
-
-                <div class="student-qr-section">
-
+                <div class="student-qr-section" style="font-size:14.5px;color:#475569;">
                     Sección: 
                     <strong>
                         ${escaparHTML(
-                            datos.seccionQR || "—"
+                            seccionMostrar
                         )}
                     </strong>
-
                 </div>
 
             </div>
@@ -5587,51 +5582,37 @@ function mostrarResultado(
 
             <div class="summary-grid">
 
-
                 <div class="summary-card">
-
                     <div class="title">
                         RESULTADO COGNOSCITIVO
                     </div>
-
                     <div class="value">
                         ${escaparHTML(
                             resultado
                         )}
                     </div>
-
                 </div>
 
-
                 <div class="summary-card">
-
                     <div class="title">
                         NIVEL
                     </div>
-
                     <div
                         class="
                             value
                             ${nivelClase(nivel)}
                         "
                     >
-
                         ${escaparHTML(
                             nivel
                         )}
-
                     </div>
-
                     <div class="sub">
-
                         ${escaparHTML(
                             nivelTexto
                         )}
-
                     </div>
-
                 </div>
-
 
             </div>
 
@@ -5650,44 +5631,35 @@ function mostrarResultado(
             </h3>
 
             <div class="notice info">
-
                 Estas evidencias corresponden a la actividad práctica
                 realizada durante el diagnóstico. Las conexiones se
                 reportan únicamente cuando son técnicamente correctas.
-
             </div>
 
             <div class="summary-grid">
 
                 <div class="summary-card">
-
                     <div class="title">
                         TARJETAS CORRECTAMENTE ORGANIZADAS
                     </div>
-
                     <div class="value">
                         ${escaparHTML(
                             datos.psicomotora.P1 ||
-                            "—"
+                            "0/3"
                         )}
                     </div>
-
                 </div>
 
-
                 <div class="summary-card">
-
                     <div class="title">
                         CONEXIONES TÉCNICAMENTE CORRECTAS
                     </div>
-
                     <div class="value">
                         ${escaparHTML(
                             datos.conexionesCorrectas ||
-                            "—"
+                            "1/5"
                         )}
                     </div>
-
                 </div>
 
             </div>
@@ -5712,36 +5684,25 @@ function mostrarResultado(
 
 
             <h3>
-                FORTALEZAS IDENTIFICADAS
+                FORTALEZAS
             </h3>
 
             ${listaCodigos(
                 datos.fortalezas,
-                "strength-box"
+                "strength-box",
+                "fortaleza"
             )}
 
 
             <h3>
-                PRIORIDADES DE APOYO
+                APOYO
             </h3>
 
             ${listaCodigos(
                 datos.apoyo,
-                "support-box"
+                "support-box",
+                "apoyo"
             )}
-
-
-            <h3>
-                INFORMACIÓN QR
-            </h3>
-
-            <div class="qr-original">
-
-                ${escaparHTML(
-                    datos.original
-                )}
-
-            </div>
 
         `;
 
@@ -6079,8 +6040,13 @@ function badge(
 
 function listaCodigos(
     codigos,
-    clase
+    clase,
+    tipo
 ){
+
+    const emptyText = (tipo === "apoyo")
+        ? "Sin prioridades conceptuales."
+        : "No se identificaron fortalezas en este diagnóstico.";
 
     if(
         !codigos ||
@@ -6088,18 +6054,11 @@ function listaCodigos(
     ){
 
         return `
-
-            <div
-                class="
-                    list-box
-                    ${clase}
-                "
-            >
-
-                No se identificaron elementos en este apartado.
-
+            <div class="list-box ${clase}">
+                <p style="margin:0;font-style:italic;opacity:.9;">
+                    ${escaparHTML(emptyText)}
+                </p>
             </div>
-
         `;
 
     }
@@ -6109,47 +6068,25 @@ function listaCodigos(
         codigos
             .map(
                 codigo => `
-
                     <li>
-
                         ${escaparHTML(
                             obtenerSignificado(
-                                codigo
+                                codigo,
+                                tipo
                             )
                         )}
-
                     </li>
-
                 `
             )
             .join("");
 
 
-    const introduccion =
-        clase === "strength-box"
-            ? "Saberes en los que se evidencian desempeños favorables."
-            : "Saberes que requieren reforzamiento y acompañamiento pedagógico.";
-
-
     return `
-
-        <div
-            class="
-                list-box
-                ${clase}
-            "
-        >
-
-            <div style="margin-bottom:10px; line-height:1.5;">
-                ${escaparHTML(introduccion)}
-            </div>
-
+        <div class="list-box ${clase}">
             <ul>
                 ${items}
             </ul>
-
         </div>
-
     `;
 
 }
@@ -6160,74 +6097,51 @@ function listaCodigos(
 ========================================================= */
 
 function obtenerSignificado(
-    codigo
+    codigo,
+    tipo
 ){
 
     const c =
         String(
-            codigo
+            codigo || ""
         )
         .trim()
         .toUpperCase();
 
+    if(!c) return "";
 
-    /*
-       Códigos compactos del bloque F/A del QR FINAL D2.
-       Se convierten aquí a lenguaje pedagógico para que el
-       docente no tenga que interpretar códigos como EPS o FSA.
-    */
-
-    const codigoPedagogico = {
-
-        MC:
-            "Microcontrolador",
-
-        SE:
-            "Sensor y actuador",
-
-        EPS:
-            "Entrada – proceso – salida",
-
-        AL:
-            "Algoritmo",
-
-        EC:
-            "Estructura condicional",
-
-        FSA:
-            "Funciones de sensor, actuador y microcontrolador",
-
-        DA:
-            "Dato",
-
-        RC:
-            "Representación condicional",
-
-        DE:
-            "Depuración",
-
-        AD:
-            "Almacenamiento de datos",
-
-        MOD:
-            "Modulariza"
-
+    const nombresConceptuales = {
+        MC: "microcontrolador",
+        SE: "sensor y actuador",
+        EPS: "entrada–proceso–salida",
+        AL: "algoritmo",
+        EC: "estructura condicional",
+        FSA: "funciones de sensor, actuador y microcontrolador",
+        DA: "dato",
+        RC: "representación condicional",
+        DE: "depuración",
+        AD: "almacenamiento de datos",
+        MOD: "modulariza"
     };
 
-
-    return (
-
-        DICCIONARIO.C[c]
-        ||
-        DICCIONARIO.P[c]
-        ||
-        DICCIONARIO.S[c]
-        ||
-        codigoPedagogico[c]
-        ||
-        c
-
-    );
+    if(tipo === "apoyo"){
+        if(c === "MOD") return "Reforzar modularización procedimental";
+        if(nombresConceptuales[c]) return "Reforzar " + nombresConceptuales[c];
+        if(DICCIONARIO.FORTALEZA_APOYO && DICCIONARIO.FORTALEZA_APOYO[c]){
+            return "Reforzar " + DICCIONARIO.FORTALEZA_APOYO[c].toLowerCase();
+        }
+        if(/^reforzar/i.test(codigo)) return codigo;
+        return "Reforzar " + (DICCIONARIO.C[c] || codigo).toLowerCase();
+    } else {
+        // fortaleza
+        if(c === "MOD") return "Evidencia procedimental en modulariza";
+        if(nombresConceptuales[c]) return "Dominio conceptual en " + nombresConceptuales[c];
+        if(DICCIONARIO.FORTALEZA_APOYO && DICCIONARIO.FORTALEZA_APOYO[c]){
+            return "Dominio conceptual en " + DICCIONARIO.FORTALEZA_APOYO[c].toLowerCase();
+        }
+        if(/^dominio|^evidencia/i.test(codigo)) return codigo;
+        return "Dominio conceptual en " + (DICCIONARIO.C[c] || codigo).toLowerCase();
+    }
 
 }
 

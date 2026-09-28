@@ -63,6 +63,8 @@ import {
   WifiHigh,
   WifiSlash,
   ArrowsLeftRight,
+  Printer,
+  FileText,
 } from "@phosphor-icons/react";
 
 export type SeccionPanel =
@@ -557,7 +559,8 @@ export default function PanelDocenteSimplificado() {
   // Estados para acordeón y pestañas de Enlaces Estudiante (móvil y escritorio)
   const [acordeonOnlineExpandido, setAcordeonOnlineExpandido] = useState(true);
   const [acordeonOfflineExpandido, setAcordeonOfflineExpandido] = useState(true);
-  const [filtroModoEnlaces, setFiltroModoEnlaces] = useState<"todos" | "online" | "offline">("todos");
+  const [acordeonImpresoExpandido, setAcordeonImpresoExpandido] = useState(true);
+  const [filtroModoEnlaces, setFiltroModoEnlaces] = useState<"todos" | "online" | "offline" | "impreso">("todos");
 
   // Estado del Simulador Multidispositivo (Celular, Tableta, Computadora)
   const [modalSimuladorDispositivo, setModalSimuladorDispositivo] = useState(false);
@@ -714,6 +717,13 @@ export default function PanelDocenteSimplificado() {
     return nivelActivo === "7mo"
       ? "/webapps/diagnostico_7mo_modulo01_desconectado_offline.html"
       : "/webapps/diagnostico_9no_modulo01_desconectado_offline.html";
+  }, [nivelActivo]);
+
+  // Archivo PDF Imprimible (Modalidad en Papel / Físico)
+  const archivoPDFImprimibleDescarga = useMemo(() => {
+    return nivelActivo === "7mo"
+      ? "/docs/diagnostico_7mo_imprimible.pdf"
+      : "/docs/evaluacion_diagnostica_9no_imprimible.pdf";
   }, [nivelActivo]);
 
   // Copiar Enlace
@@ -1482,6 +1492,22 @@ export default function PanelDocenteSimplificado() {
                       <Lightning size={14} weight={filtroModoEnlaces === "offline" ? "bold" : "regular"} />
                       <span>⚡ Desconectado QR</span>
                     </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFiltroModoEnlaces("impreso");
+                        setAcordeonImpresoExpandido(true);
+                      }}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                        filtroModoEnlaces === "impreso"
+                          ? "bg-[#6366F1] text-white shadow-xs"
+                          : "bg-[#EEF2FF] text-[#4338CA] hover:bg-[#E0E7FF]"
+                      }`}
+                    >
+                      <FilePdf size={14} weight={filtroModoEnlaces === "impreso" ? "fill" : "regular"} />
+                      <span>📄 En Papel / PDF</span>
+                    </button>
                   </div>
 
                   {/* Acciones Rápidas y Plegado / Desplegado Global */}
@@ -1489,19 +1515,20 @@ export default function PanelDocenteSimplificado() {
                     <button
                       type="button"
                       onClick={() => {
-                        const nuevoEstado = !(acordeonOnlineExpandido && acordeonOfflineExpandido);
+                        const nuevoEstado = !(acordeonOnlineExpandido && acordeonOfflineExpandido && acordeonImpresoExpandido);
                         setAcordeonOnlineExpandido(nuevoEstado);
                         setAcordeonOfflineExpandido(nuevoEstado);
+                        setAcordeonImpresoExpandido(nuevoEstado);
                       }}
                       className="text-[11px] font-semibold text-[#667085] hover:text-[#20283B] bg-[#F5F7FA] hover:bg-[#EEF3FA] px-2.5 py-1.5 rounded-lg border border-[#D9DFE8] transition-colors cursor-pointer inline-flex items-center gap-1"
                     >
-                      <span>{acordeonOnlineExpandido && acordeonOfflineExpandido ? "Contraer todo" : "Expandir todo"}</span>
+                      <span>{acordeonOnlineExpandido && acordeonOfflineExpandido && acordeonImpresoExpandido ? "Contraer todo" : "Expandir todo"}</span>
                     </button>
                   </div>
                 </div>
 
                 {/* CONTENEDOR DE TARJETAS (ACORDEONES) */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 items-start">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 items-start">
                   
                   {/* TARJETA 1: OPCIÓN A (CON INTERNET / EN LÍNEA - COLOR INSTITUCIONAL) */}
                   {(filtroModoEnlaces === "todos" || filtroModoEnlaces === "online") && (
@@ -1695,6 +1722,91 @@ export default function PanelDocenteSimplificado() {
                           >
                             <ArrowSquareOut size={12} />
                             <span>Escáner de Datos</span>
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* TARJETA 3: OPCIÓN C (EN PAPEL / PDF IMPRIMIBLE - 100% FÍSICO) */}
+                  {(filtroModoEnlaces === "todos" || filtroModoEnlaces === "impreso") && (
+                    <div className="bg-[#F5F3FF] rounded-2xl border-2 border-[#DDD6FE] shadow-xs overflow-hidden transition-all">
+                      {/* Cabecera Plegable Opción C */}
+                      <button
+                        type="button"
+                        onClick={() => setAcordeonImpresoExpandido(!acordeonImpresoExpandido)}
+                        className="w-full p-3 sm:p-3.5 flex items-center justify-between gap-3 text-left hover:bg-[#ede9fe] transition-colors cursor-pointer select-none"
+                        aria-expanded={acordeonImpresoExpandido}
+                      >
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <div className="w-8 h-8 rounded-xl bg-[#6366F1] text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-xs">
+                            <FilePdf size={18} weight="fill" />
+                          </div>
+                          <div className="min-w-0">
+                            <h3 className="text-xs sm:text-[13px] font-black uppercase tracking-wider text-[#4338CA] truncate">
+                              OPCIÓN C: EN PAPEL (PDF IMPRIMIBLE)
+                            </h3>
+                            <p className="text-[11px] text-[#6366F1] font-bold truncate">
+                              100% Físico • Sin dispositivos ni conexión
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2 shrink-0">
+                          <span className="hidden sm:inline-block px-2 py-0.5 rounded-full bg-white/90 border border-[#DDD6FE] text-[10px] font-black text-[#6366F1]">
+                            PDF Fotocopiable
+                          </span>
+                          <div className={`w-6 h-6 rounded-full bg-white flex items-center justify-center text-[#4338CA] shadow-2xs transition-transform duration-200 ${acordeonImpresoExpandido ? "rotate-180" : ""}`}>
+                            <CaretDown size={14} weight="bold" />
+                          </div>
+                        </div>
+                      </button>
+
+                      {/* Contenido Plegable Opción C */}
+                      {acordeonImpresoExpandido ? (
+                        <div className="p-3 sm:p-3.5 pt-0">
+                          <div className="bg-white rounded-xl p-3 sm:p-4 shadow-2xs border border-purple-100 space-y-2.5">
+                            <p className="text-xs text-slate-600 font-medium leading-relaxed">
+                              Guía pedagógica completa con preguntas escritas, actividades prácticas recortables, situaciones de análisis e instrumentos de cotejo para el aula.
+                            </p>
+
+                            {/* Botones de Acción Opción C */}
+                            <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                              <a
+                                href={archivoPDFImprimibleDescarga}
+                                download={`evaluacion_diagnostica_${nivelActivo}_imprimible_MEP.pdf`}
+                                className="inline-flex items-center justify-center gap-1.5 bg-[#6366F1] hover:bg-[#4F46E5] text-white text-xs font-bold px-3 py-2 rounded-lg transition-colors shadow-2xs cursor-pointer active:scale-95"
+                                title="Descargar inmediatamente el documento PDF oficial"
+                              >
+                                <DownloadSimple size={15} weight="bold" className="text-white" />
+                                <span>Descargar PDF</span>
+                              </a>
+
+                              <a
+                                href={archivoPDFImprimibleDescarga}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center justify-center gap-1.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 text-xs font-bold px-2.5 py-2 rounded-lg transition-colors shadow-2xs"
+                                title="Abrir el documento PDF en una pestaña nueva para imprimir"
+                              >
+                                <Printer size={15} className="text-slate-500" />
+                                <span>Abrir / Imprimir ↗</span>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="px-3 pb-2.5 flex items-center justify-between gap-2 text-xs">
+                          <span className="text-[#4338CA] font-bold text-[11px]">
+                            Guía PDF en papel lista
+                          </span>
+                          <a
+                            href={archivoPDFImprimibleDescarga}
+                            download={`evaluacion_diagnostica_${nivelActivo}_imprimible_MEP.pdf`}
+                            className="bg-[#6366F1] text-white text-[11px] font-black px-2.5 py-1 rounded-md hover:bg-[#4F46E5] transition-colors cursor-pointer inline-flex items-center gap-1 shadow-2xs"
+                          >
+                            <DownloadSimple size={12} weight="bold" />
+                            <span>Descargar PDF</span>
                           </a>
                         </div>
                       )}

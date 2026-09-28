@@ -151,7 +151,7 @@ export default function DiagnosticoPage() {
         {/* CONTENIDO ESPECÍFICO SEGÚN EL NIVEL */}
 
         {/* ========================================================= */}
-        {/* PESTAÑA: 7.° AÑO («CyberQuest 7° - Misión Tecnológica»)   */}
+        {/* PESTAÑA: 7.° AÑO (Diagnóstico 7°)                         */}
         {/* ========================================================= */}
         {nivelActivo === "7°" && (
           <div className="space-y-6 animate-fadeIn">
@@ -167,7 +167,7 @@ export default function DiagnosticoPage() {
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-3">
                   <GameController size={32} className="text-cyan-400" weight="fill" />
-                  <span>Diagnóstico Sétimo: Misión Tecnológica MEP</span>
+                  <span>Diagnóstico Sétimo: Diagnóstico 7°</span>
                 </h2>
                 <p className="text-xs sm:text-sm text-indigo-100 leading-relaxed font-normal">
                   Aventura interactiva que explora fundamentos de computación, hardware, gestión de archivos, secuencias lógicas y coordinación psicomotriz.
@@ -186,7 +186,7 @@ export default function DiagnosticoPage() {
         )}
 
         {/* ========================================================= */}
-        {/* PESTAÑA: 9.° AÑO («Aula Inteligente - LDR + MCU»)         */}
+        {/* PESTAÑA: 9.° AÑO (Diagnóstico 9°)                         */}
         {/* ========================================================= */}
         {nivelActivo === "9°" && (
           <div className="space-y-6 animate-fadeIn">
@@ -202,7 +202,7 @@ export default function DiagnosticoPage() {
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-3">
                   <Lightning size={32} className="text-amber-400" weight="fill" />
-                  <span>Diagnóstico Noveno: «Aula Inteligente (LDR + Microcontrolador)»</span>
+                  <span>Diagnóstico Noveno: Diagnóstico 9°</span>
                 </h2>
                 <p className="text-xs sm:text-sm text-emerald-100 leading-relaxed font-normal">
                   Simulador 2D interactivo con conexionado de terminales (VCC 5V, GND, Pin A0, Pin D9), 10 ítems cognitivos de robótica/IoT y matriz de observación docente en tiempo real.

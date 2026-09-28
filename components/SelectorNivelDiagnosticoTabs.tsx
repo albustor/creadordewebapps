@@ -26,10 +26,10 @@ export default function SelectorNivelDiagnosticoTabs({
   const getSubtituloNivel = (nivel: NivelEducativo) => {
     switch (nivel) {
       case "7°":
-        return "CyberQuest • Ciudadanía Digital y Algoritmos";
+        return "Diagnóstico 7° • Ciudadanía Digital y Algoritmos";
       case "9°":
       default:
-        return "Aula Inteligente • IoT y Microcontroladores";
+        return "Diagnóstico 9° • IoT y Microcontroladores";
     }
   };
 

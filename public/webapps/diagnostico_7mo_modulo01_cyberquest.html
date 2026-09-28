@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#090d16">
-  <title>CyberQuest 7° - Misión Tecnológica MEP 2027 | Evaluación Diagnóstica en Parejas</title>
+  <title>Diagnóstico 7° - Misión Tecnológica MEP 2027 | Evaluación Diagnóstica en Parejas</title>
   
   <style>
     :root {
@@ -984,7 +984,7 @@
   <header class="hud-header">
     <div class="hud-brand">
       <span class="mep-tag">MEP 2027</span>
-      <div class="cyber-title" id="hudCyberTitle">⚡ CyberQuest 7.° &bull; Misión en parejas</div>
+      <div class="cyber-title" id="hudCyberTitle">⚡ Diagnóstico 7.° &bull; Misión en parejas</div>
     </div>
     <div class="hud-stats">
       <div class="stat-pill leader" id="hudCadet1Pill" style="display: none;">
@@ -2440,8 +2440,8 @@
       const cyberTitleEl = document.getElementById('hudCyberTitle');
       if (cyberTitleEl) {
         cyberTitleEl.innerHTML = isIndiv 
-          ? '⚡ CyberQuest 7.° &bull; Misión individual' 
-          : '⚡ CyberQuest 7.° &bull; Misión en parejas';
+          ? '⚡ Diagnóstico 7.° &bull; Misión individual' 
+          : '⚡ Diagnóstico 7.° &bull; Misión en parejas';
       }
 
       const pill1 = document.getElementById('hudCadet1Pill');
@@ -2548,7 +2548,7 @@
         <div class="cyber-card">
           <div class="card-header">
             <span class="mission-badge badge-psico" id="phase0Badge">Fase inicial &bull; Datos del estudiante ${isSolo ? '(individual)' : '(misión en parejas)'}</span>
-            <h1 class="card-title">Bienvenido a CyberQuest 7.° año</h1>
+            <h1 class="card-title">Bienvenido al Diagnóstico 7.° año</h1>
             <p class="card-desc">Evaluación Diagnóstica Oficial MEP 2027 - III Ciclo.</p>
           </div>
 
@@ -3583,7 +3583,7 @@
         tipo: 'CYBERQUEST_7MO',
         idResultado: AppState.sessionHash ? `res-7mo-${AppState.sessionHash}` : `res-7mo-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
         webAppId: 'diagnostico_7mo_modulo01_cyberquest',
-        webAppTitulo: 'CyberQuest 7°: Diagnóstico de Fundamentos Digitales',
+        webAppTitulo: 'Diagnóstico 7°: Diagnóstico de Fundamentos Digitales',
         docenteId: docId,
         docenteNombre: AppState.teacher?.name || 'Alberto Bustos Ortega',
         institucionNombre: AppState.teacher?.institution || 'Liceo de Costa Rica',

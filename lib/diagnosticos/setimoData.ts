@@ -2,7 +2,7 @@ import { ConfiguracionDiagnosticoNivel } from "./tipos";
 
 export const DIAGNOSTICO_7MO_DATA: ConfiguracionDiagnosticoNivel = {
   nivel: "7°",
-  tituloOficial: "CyberQuest 7° — Misión Tecnológica MEP (Evaluación Diagnóstica)",
+  tituloOficial: "Diagnóstico 7° — Misión Tecnológica MEP (Evaluación Diagnóstica)",
   asignatura: "Formación Tecnológica (Informática Educativa)",
   modulo: "Módulo 1 — III Ciclo",
   descripcion: "Aventura interactiva gamificada para 7.° año que explora saberes previos en fundamentos de computación, hardware, software, gestión de archivos y pensamiento computacional algorítmico.",

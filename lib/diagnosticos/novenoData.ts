@@ -2,10 +2,10 @@ import { ConfiguracionDiagnosticoNivel } from "./tipos";
 
 export const DIAGNOSTICO_9NO_DATA: ConfiguracionDiagnosticoNivel = {
   nivel: "9°",
-  tituloOficial: "Evaluación Diagnóstica — 9° Año: Aula Inteligente (PNFT)",
+  tituloOficial: "Evaluación Diagnóstica — Diagnóstico 9° (PNFT)",
   asignatura: "Formación Tecnológica (Informática Educativa)",
   modulo: "Módulo 1 — III Ciclo",
-  descripcion: "Diagnóstico integrado de 9° año basado en la situación-problema «Aula Inteligente» (Sistemas Automatizados, Microcontroladores, Sensores LDR, Actuadores LED, Algoritmos y depuración).",
+  descripcion: "Diagnóstico integrado de 9° año (Sistemas Automatizados, Microcontroladores, Sensores LDR, Actuadores LED, Algoritmos y depuración).",
   totalReactivosCognitivos: 10,
   tiempoSugeridoMinutos: 80,
   seccionesSugeridas: [
@@ -44,7 +44,7 @@ export const DIAGNOSTICO_9NO_DATA: ConfiguracionDiagnosticoNivel = {
       id: 1,
       subarea: "sub1_sistemas_auto",
       tipo: "seleccion_unica",
-      enunciado: "¿Cuál es la función principal de un microcontrolador en un sistema automatizado como el Aula Inteligente?",
+      enunciado: "¿Cuál es la función principal de un microcontrolador en un sistema automatizado?",
       respuestaCorrecta: "b",
       indicadorId: 1,
       indicadorTexto: "Explicar la función de un microcontrolador en un sistema automatizado.",

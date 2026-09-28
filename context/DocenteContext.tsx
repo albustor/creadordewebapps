@@ -679,7 +679,7 @@ export function generarTelemetriaInicialParaDocente(doc: DocenteData): PayloadTe
     {
       idResultado: `RES-7MO-${docId}-001`,
       webAppId: "diagnostico_7mo_modulo01_cyberquest",
-      webAppTitulo: "CyberQuest 7°: Diagnóstico de Fundamentos Digitales",
+      webAppTitulo: "Diagnóstico 7°: Fundamentos Digitales",
       docenteId: docId,
       docenteNombre: docNom,
       docenteCedula: docCed,
@@ -709,7 +709,7 @@ export function generarTelemetriaInicialParaDocente(doc: DocenteData): PayloadTe
     {
       idResultado: `RES-7MO-${docId}-002`,
       webAppId: "diagnostico_7mo_modulo01_cyberquest",
-      webAppTitulo: "CyberQuest 7°: Diagnóstico de Fundamentos Digitales",
+      webAppTitulo: "Diagnóstico 7°: Fundamentos Digitales",
       docenteId: docId,
       docenteNombre: docNom,
       docenteCedula: docCed,
@@ -739,7 +739,7 @@ export function generarTelemetriaInicialParaDocente(doc: DocenteData): PayloadTe
     {
       idResultado: `RES-7MO-${docId}-003`,
       webAppId: "diagnostico_7mo_modulo01_cyberquest",
-      webAppTitulo: "CyberQuest 7°: Diagnóstico de Fundamentos Digitales",
+      webAppTitulo: "Diagnóstico 7°: Fundamentos Digitales",
       docenteId: docId,
       docenteNombre: docNom,
       docenteCedula: docCed,
@@ -769,7 +769,7 @@ export function generarTelemetriaInicialParaDocente(doc: DocenteData): PayloadTe
     {
       idResultado: `RES-7MO-${docId}-004`,
       webAppId: "diagnostico_7mo_modulo01_cyberquest",
-      webAppTitulo: "CyberQuest 7°: Diagnóstico de Fundamentos Digitales",
+      webAppTitulo: "Diagnóstico 7°: Fundamentos Digitales",
       docenteId: docId,
       docenteNombre: docNom,
       docenteCedula: docCed,
@@ -799,7 +799,7 @@ export function generarTelemetriaInicialParaDocente(doc: DocenteData): PayloadTe
     {
       idResultado: `RES-7MO-${docId}-005`,
       webAppId: "diagnostico_7mo_modulo01_cyberquest",
-      webAppTitulo: "CyberQuest 7°: Diagnóstico de Fundamentos Digitales",
+      webAppTitulo: "Diagnóstico 7°: Fundamentos Digitales",
       docenteId: docId,
       docenteNombre: docNom,
       docenteCedula: docCed,
@@ -831,7 +831,7 @@ export function generarTelemetriaInicialParaDocente(doc: DocenteData): PayloadTe
     {
       idResultado: `RES-7MO-${docId}-006`,
       webAppId: "diagnostico_7mo_modulo01_cyberquest",
-      webAppTitulo: "CyberQuest 7°: Diagnóstico de Fundamentos Digitales",
+      webAppTitulo: "Diagnóstico 7°: Fundamentos Digitales",
       docenteId: docId,
       docenteNombre: docNom,
       docenteCedula: docCed,
@@ -861,7 +861,7 @@ export function generarTelemetriaInicialParaDocente(doc: DocenteData): PayloadTe
     {
       idResultado: `RES-7MO-${docId}-007`,
       webAppId: "diagnostico_7mo_modulo01_cyberquest",
-      webAppTitulo: "CyberQuest 7°: Diagnóstico de Fundamentos Digitales",
+      webAppTitulo: "Diagnóstico 7°: Fundamentos Digitales",
       docenteId: docId,
       docenteNombre: docNom,
       docenteCedula: docCed,
@@ -891,7 +891,7 @@ export function generarTelemetriaInicialParaDocente(doc: DocenteData): PayloadTe
     {
       idResultado: `RES-7MO-${docId}-008`,
       webAppId: "diagnostico_7mo_modulo01_cyberquest",
-      webAppTitulo: "CyberQuest 7°: Diagnóstico de Fundamentos Digitales",
+      webAppTitulo: "Diagnóstico 7°: Fundamentos Digitales",
       docenteId: docId,
       docenteNombre: docNom,
       docenteCedula: docCed,
@@ -1288,7 +1288,7 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
             const rec: PayloadTelemetria = {
               idResultado: ev.id || `eval-7mo-${ts}`,
               webAppId: "diagnostico_7mo_modulo01_cyberquest",
-              webAppTitulo: "CyberQuest 7°: Diagnóstico de Fundamentos Digitales",
+              webAppTitulo: "Diagnóstico 7°: Fundamentos Digitales",
               docenteId: ev.docenteId || docenteId || doc.idDocente,
               docenteNombre: ev.docenteNombre || doc.nombreCompleto || "Docente Evaluador",
               institucionNombre: ev.raw?.institucionNombre || doc.institucionNombre || "Centro Educativo MEP",

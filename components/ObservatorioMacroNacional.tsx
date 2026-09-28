@@ -366,7 +366,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
         {
           id: 1,
           codigo: "7.° AÑO",
-          nombre: "CyberQuest 7°: Ciudadanía Digital, Hardware Básico y Lógica Inicial",
+          nombre: "Diagnóstico 7°: Ciudadanía Digital, Hardware Básico y Lógica Inicial",
           subarea: "Módulo 1 — III Ciclo (6 reactivos oficiales)",
           saberes: "Identidad digital, contraseñas seguras, periféricos E/S, secuencias y algoritmos",
           peso: 6,
@@ -376,7 +376,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
         {
           id: 2,
           codigo: "9.° AÑO",
-          nombre: "Aula Inteligente 9°: Microcontroladores, Circuitos, Sensores LDR e IoT",
+          nombre: "Diagnóstico 9°: Microcontroladores, Circuitos, Sensores LDR e IoT",
           subarea: "Módulo 1 — III Ciclo (10 reactivos oficiales)",
           saberes: "Microcontroladores, pines analógicos/digitales, variables, Ley de Ohm, depuración",
           peso: 10,
@@ -413,7 +413,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
         codigo: "III CICLO",
         nombre: "III Ciclo (7.° y 9.° Secundaria): Módulos Activos de Evaluación Diagnóstica",
         subarea: "Educación General Básica III Ciclo • Reactivos Oficiales",
-        saberes: "7° CyberQuest (6 ítems) • 9° Aula Inteligente IoT (10 ítems)",
+        saberes: "Diagnóstico 7° (6 ítems) • Diagnóstico 9° (10 ítems)",
         peso: 30,
         pctLogro: telemetriaReal.length > 0 ? metricasMacro.promedioNacional : 0,
         estado: telemetriaReal.length > 0 ? `${telemetriaReal.length} Evaluaciones en Vivo` : "Suite Diagnóstica Activa",
@@ -477,7 +477,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
     }));
     XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(data2C), "II_Ciclo_Primaria");
 
-    // Hoja 4: Matriz 7mo CyberQuest
+    // Hoja 4: Matriz 7mo Diagnóstico 7°
     const data7mo = DIAGNOSTICO_7MO_DATA.reactivos.map((r, i) => ({
       "N°": i + 1,
       "Código": `IND-7.${i + 1}`,
@@ -486,9 +486,9 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
       "Enunciado": r.enunciado,
       "Puntos": r.puntos,
     }));
-    XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(data7mo), "III_Ciclo_7mo_CyberQuest");
+    XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(data7mo), "III_Ciclo_7mo_Diagnostico7");
 
-    // Hoja 5: Matriz 9no Aula Inteligente
+    // Hoja 5: Matriz 9no Diagnóstico 9°
     const data9no = DIAGNOSTICO_9NO_DATA.reactivos.map((r, i) => ({
       "N°": i + 1,
       "Código": `IND-9.${i + 1}`,
@@ -497,7 +497,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
       "Enunciado": r.enunciado,
       "Puntos": r.puntos,
     }));
-    XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(data9no), "III_Ciclo_9no_AulaInteligente");
+    XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(data9no), "III_Ciclo_9no_Diagnostico9");
 
     // Hoja 7: Diversificada (10°-12° CTP)
     const dataDiv = MATRIZ_DIVERSIFICADA_DATA.indicadores.map((ind, i) => ({
@@ -739,7 +739,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
               }`}
             >
               <GameController size={15} weight="bold" />
-              <span>7.° CyberQuest ({eval7mo})</span>
+              <span>Diagnóstico 7° ({eval7mo})</span>
             </button>
 
             {/* Botón 9.° Año */}
@@ -753,7 +753,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
               }`}
             >
               <Lightbulb size={15} weight="bold" />
-              <span>9.° Aula Inteligente ({eval9no})</span>
+              <span>Diagnóstico 9° ({eval9no})</span>
             </button>
           </div>
         </div>
@@ -783,9 +783,9 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
                 : vistaActiva === "III_CICLO"
                 ? "Analítica Macro: III Ciclo Completo (7.° y 9.° Secundaria)"
                 : vistaActiva === "7mo"
-                ? "Analítica Macro: 7.° Año (CyberQuest — Ciudadanía & Hardware)"
+                ? "Analítica Macro: Diagnóstico 7° (Ciudadanía & Hardware)"
                 : vistaActiva === "9no"
-                ? "Analítica Macro: 9.° Año (Aula Inteligente IoT — Circuitos & Sensores)"
+                ? "Analítica Macro: Diagnóstico 9° (Circuitos & Sensores)"
                 : "Analítica Curricular: Educación Diversificada & CTP (10.°, 11.° y 12.°)"}
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed font-medium">
@@ -886,9 +886,9 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
                   : vistaActiva === "III_CICLO"
                   ? "Matriz Macro Nacional de III Ciclo (7.° y 9.° Secundaria — Suite Diagnóstica)"
                   : vistaActiva === "7mo"
-                  ? "Matriz Macro Nacional de Indicadores y Saberes Previos (7.° Año — CyberQuest)"
+                  ? "Matriz Macro Nacional de Indicadores y Saberes Previos (Diagnóstico 7°)"
                   : vistaActiva === "9no"
-                  ? "Matriz Macro Nacional de Indicadores y Saberes Previos (9.° Año — Aula Inteligente IoT)"
+                  ? "Matriz Macro Nacional de Indicadores y Saberes Previos (Diagnóstico 9°)"
                   : "Matriz Curricular de Educación Diversificada y CTP (10.°, 11.° y 12.°)"}
               </h3>
             </div>

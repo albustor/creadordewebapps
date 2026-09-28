@@ -126,7 +126,7 @@ export async function POST(req: NextRequest) {
       estudiantes = [],
       seccion = "Todas las Secciones",
       docente = "Docente Evaluador",
-      indicador = "Diagnóstico 9° Módulo 1 («Aula Inteligente»)",
+      indicador = "Diagnóstico 9° Módulo 1",
     } = body;
 
     const fallbackData = generarAnalisisDocenteContextual({
