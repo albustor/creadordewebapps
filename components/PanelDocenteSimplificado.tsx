@@ -1031,29 +1031,18 @@ export default function PanelDocenteSimplificado() {
     <div className="w-full max-w-7xl mx-auto bg-white rounded-2xl shadow-cardLg border border-[#CBD5E1]/80 flex flex-col min-h-[750px]">
       
       {/* 1. TOP BAR — Barra de Navegación del Sistema FIJA (Sticky) */}
-      <header className="sticky top-16 sm:top-20 z-40 bg-[#F0F3F6]/95 backdrop-blur-md border-b border-[#CBD5E1]/80 rounded-t-2xl px-3 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-3 select-none shadow-xs">
-        {/* Controles de ventana decorativos + Título Panel de Evaluación + Selector de Nivel (7.° y 9.°) */}
-        <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-          {/* Controles de ventana decorativos (Desktop) */}
-          <div className="hidden sm:flex items-center space-x-2">
-            <span className="w-3 h-3 rounded-full bg-[#FF5F57] border border-[#E0443E] inline-block" />
-            <span className="w-3 h-3 rounded-full bg-[#FEBC2E] border border-[#D89E24] inline-block" />
-            <span className="w-3 h-3 rounded-full bg-[#28C840] border border-[#1AAB29] inline-block" />
-          </div>
-
-          <span className="text-xs sm:text-sm font-black text-slate-800 tracking-tight sm:pl-2 sm:border-l sm:border-slate-300 truncate">
-            Panel de Evaluación
-          </span>
-
+      <header className="sticky top-16 sm:top-20 z-40 bg-[#F0F3F6]/95 backdrop-blur-md border-b border-[#CBD5E1]/80 rounded-t-2xl px-3 sm:px-5 py-2.5 sm:py-3 flex items-center justify-between gap-3 select-none shadow-xs">
+        {/* Lado Izquierdo: Selector de Nivel Principal en Mayor Tamaño */}
+        <div className="flex items-center gap-3">
           {/* Selector Rápido de Nivel Superior (7.° y 9.° Año) */}
-          <div className="flex items-center gap-1 p-0.5 sm:p-1 bg-white rounded-xl border border-slate-300 shadow-2xs">
+          <div className="flex items-center gap-1 p-1 sm:p-1.5 bg-white rounded-2xl border border-slate-300/90 shadow-xs">
             <button
               type="button"
               onClick={() => handleCambiarNivel("7mo")}
-              className={`px-2.5 sm:px-3 py-1 rounded-lg text-xs font-black transition-all cursor-pointer ${
+              className={`px-4 sm:px-5 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer ${
                 nivelActivo === "7mo"
-                  ? "bg-[#1B5E59] text-white shadow-xs"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                  ? "bg-[#1B5E59] text-white shadow-xs scale-100"
+                  : "text-slate-700 hover:text-slate-900 hover:bg-slate-100"
               }`}
               title="Evaluar 7.° Año (Sétimo)"
             >
@@ -1062,24 +1051,28 @@ export default function PanelDocenteSimplificado() {
             <button
               type="button"
               onClick={() => handleCambiarNivel("9no")}
-              className={`px-2.5 sm:px-3 py-1 rounded-lg text-xs font-black transition-all cursor-pointer ${
+              className={`px-4 sm:px-5 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer ${
                 nivelActivo === "9no"
-                  ? "bg-[#1B5E59] text-white shadow-xs"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                  ? "bg-[#1B5E59] text-white shadow-xs scale-100"
+                  : "text-slate-700 hover:text-slate-900 hover:bg-slate-100"
               }`}
               title="Evaluar 9.° Año (Noveno)"
             >
               9.° AÑO
             </button>
           </div>
+
+          <span className="hidden lg:inline-block text-xs font-extrabold text-slate-500 uppercase tracking-wider pl-2 border-l border-slate-300">
+            Panel de Evaluación
+          </span>
         </div>
 
-        {/* Acciones Rápidas en Cabecera */}
+        {/* Acciones Rápidas en Cabecera (Lado Derecho) */}
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           {/* Botón de Importación de Lote USB / Archivos JSON o CSV */}
-          <label className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs transition-all cursor-pointer">
+          <label className="inline-flex items-center gap-1.5 px-3 py-1.5 sm:py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs transition-all cursor-pointer">
             <DownloadSimple size={16} weight="bold" />
-            <span className="hidden md:inline">Importar JSON/CSV (USB)</span>
+            <span className="hidden sm:inline">Importar JSON/CSV (USB)</span>
             <input
               type="file"
               accept=".json,.csv,.txt"
@@ -1088,26 +1081,6 @@ export default function PanelDocenteSimplificado() {
               onChange={handleImportarArchivosLote}
             />
           </label>
-
-          <button
-            type="button"
-            onClick={() => setModalEscaner(true)}
-            className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-[#E07A2C] hover:bg-[#C8661D] text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
-            title="Abrir escáner de datos (cámara, CSV y métricas)"
-          >
-            <Camera size={16} weight="bold" />
-            <span className="hidden md:inline">Escáner de datos</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setModalProyeccion(true)}
-            className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-[#1B5E59] hover:bg-[#144642] text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
-            title="Proyectar QR en pantalla completa para los estudiantes"
-          >
-            <QrCode size={16} weight="bold" />
-            <span className="hidden md:inline">Proyectar QR</span>
-          </button>
         </div>
       </header>
 
@@ -1641,20 +1614,10 @@ export default function PanelDocenteSimplificado() {
 
                             {/* Botones de Acción Opción B */}
                             <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                              <button
-                                type="button"
-                                onClick={() => setModalEscaner(true)}
-                                title="Escáner de datos (cámara, CSV y métricas)"
-                                className="inline-flex items-center justify-center gap-1.5 bg-[#E07A2C] hover:bg-[#C8661D] text-white text-xs font-bold px-3 py-2 rounded-lg transition-colors shadow-2xs cursor-pointer active:scale-95"
-                              >
-                                <Camera size={15} className="text-orange-100" />
-                                <span>Escáner de datos</span>
-                              </button>
-
                               <a
                                 href={archivoOfflineDescarga}
                                 download={`diagnostico_${nivelActivo}_offline.html`}
-                                className="inline-flex items-center justify-center gap-1 bg-[#1B5E59] hover:bg-[#144642] text-white text-xs font-bold px-2.5 py-2 rounded-lg transition-colors shadow-2xs"
+                                className="inline-flex items-center justify-center gap-1.5 bg-[#1B5E59] hover:bg-[#144642] text-white text-xs font-bold px-3 py-2 rounded-lg transition-colors shadow-2xs"
                               >
                                 <DownloadSimple size={15} className="text-white" />
                                 <span>Descargar offline</span>
@@ -1664,10 +1627,11 @@ export default function PanelDocenteSimplificado() {
                                 href="/diagnostico_escaner_datos_locales.html"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center justify-center gap-1 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 text-xs font-bold px-2.5 py-2 rounded-lg transition-colors shadow-2xs"
+                                className="inline-flex items-center justify-center gap-1.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 text-xs font-bold px-3 py-2 rounded-lg transition-colors shadow-2xs"
+                                title="Abrir Escáner de Datos en una pestaña nueva"
                               >
-                                <ArrowSquareOut size={14} className="text-slate-500" />
-                                <span>Abrir escáner</span>
+                                <ArrowSquareOut size={15} className="text-slate-500" />
+                                <span>Escáner de Datos</span>
                               </a>
                             </div>
                           </div>
@@ -1677,14 +1641,15 @@ export default function PanelDocenteSimplificado() {
                           <span className="text-[#974800] font-bold text-[11px]">
                             Modo fuera de línea listo
                           </span>
-                          <button
-                            type="button"
-                            onClick={() => setModalEscaner(true)}
-                            className="bg-[#E07A2C] text-white text-[11px] font-black px-2.5 py-1 rounded-md hover:bg-[#C8661D] transition-colors cursor-pointer inline-flex items-center gap-1 shadow-2xs"
+                          <a
+                            href="/diagnostico_escaner_datos_locales.html"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-[#1B5E59] text-white text-[11px] font-black px-2.5 py-1 rounded-md hover:bg-[#144642] transition-colors cursor-pointer inline-flex items-center gap-1 shadow-2xs"
                           >
-                            <Camera size={12} />
-                            <span>Abrir escáner</span>
-                          </button>
+                            <ArrowSquareOut size={12} />
+                            <span>Escáner de Datos</span>
+                          </a>
                         </div>
                       )}
                     </div>
