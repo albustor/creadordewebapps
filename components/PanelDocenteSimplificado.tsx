@@ -88,7 +88,7 @@ export interface CriterioSocioafectivoOficial {
   etiquetaModalidad?: string;
 }
 
-export const CRITERIOS_SOCIOAFECTIVOS_MAP: Record<"7mo" | "8vo" | "9no", CriterioSocioafectivoOficial[]> = {
+export const CRITERIOS_SOCIOAFECTIVOS_MAP: Record<"7mo" | "9no", CriterioSocioafectivoOficial[]> = {
   "7mo": [
     {
       id: "s1",
@@ -183,52 +183,6 @@ export const CRITERIOS_SOCIOAFECTIVOS_MAP: Record<"7mo" | "8vo" | "9no", Criteri
       etiquetaModalidad: "⚡ Híbrido + Docente",
     },
   ],
-  "8vo": [
-    {
-      id: "s1",
-      codigo: "S1. Gusto por la precisión",
-      titulo: "Gusto por la precisión",
-      preguntaReflexion: "«¿Revisó minuciosamente cada parámetro?»",
-      escalaA: "Avanzado (A): Verificación completa.",
-      escalaB: "Intermedio (B): Verificación parcial.",
-      escalaC: "Inicial (C): Sin verificación.",
-      modalidadEvaluacion: "telemetria",
-      etiquetaModalidad: "🤖 Telemetría",
-    },
-    {
-      id: "s2",
-      codigo: "S2. Aprender del error",
-      titulo: "Aprender del error",
-      preguntaReflexion: "«¿Qué hizo ante el error?»",
-      escalaA: "Avanzado (A): Depuración autónoma.",
-      escalaB: "Intermedio (B): Corrección con apoyo.",
-      escalaC: "Inicial (C): Desinterés.",
-      modalidadEvaluacion: "telemetria",
-      etiquetaModalidad: "🤖 Telemetría",
-    },
-    {
-      id: "s3",
-      codigo: "S3. Flexibilidad para manejar problemas",
-      titulo: "Flexibilidad para manejar problemas",
-      preguntaReflexion: "«¿Cómo abordó los problemas?»",
-      escalaA: "Avanzado (A): Adaptación y escucha activa.",
-      escalaB: "Intermedio (B): Prueba alternativa guiada.",
-      escalaC: "Inicial (C): Resistencia al cambio.",
-      modalidadEvaluacion: "hibrido",
-      etiquetaModalidad: "⚡ Híbrido + Docente",
-    },
-    {
-      id: "s4",
-      codigo: "S4. Tolerancia a la frustración",
-      titulo: "Tolerancia a la frustración",
-      preguntaReflexion: "«¿Cómo reaccionó ante la dificultad?»",
-      escalaA: "Avanzado (A): Serenidad y perseverancia.",
-      escalaB: "Intermedio (B): Continuación asistida.",
-      escalaC: "Inicial (C): Frustración y abandono.",
-      modalidadEvaluacion: "hibrido",
-      etiquetaModalidad: "⚡ Híbrido + Docente",
-    },
-  ],
 };
 
 export interface SaberCognitivoOficial {
@@ -240,7 +194,7 @@ export interface SaberCognitivoOficial {
   descripcion?: string;
 }
 
-export const SABERES_COGNITIVOS_MAP: Record<"7mo" | "8vo" | "9no", SaberCognitivoOficial[]> = {
+export const SABERES_COGNITIVOS_MAP: Record<"7mo" | "9no", SaberCognitivoOficial[]> = {
   "9no": [
     { id: 1, nombre: "Microcontrolador (Pregunta 1 - 6)", saber: "Microcontrolador", pregunta: "Pregunta 1 - 6", areaCurricular: "Computación física y robótica" },
     { id: 2, nombre: "Sensor y actuador (Pregunta 2 - 9 - 6)", saber: "Sensor y actuador", pregunta: "Pregunta 2 - 9 - 6", areaCurricular: "Computación física y robótica" },
@@ -258,18 +212,6 @@ export const SABERES_COGNITIVOS_MAP: Record<"7mo" | "8vo" | "9no", SaberCognitiv
     { id: 6, nombre: "Estructuras condicionales (Pregunta 9)", saber: "Estructuras condicionales", pregunta: "Pregunta 9", areaCurricular: "Programación y algoritmos" },
     { id: 7, nombre: "Operadores relacionales y operadores aritméticos (Pregunta 10)", saber: "Operadores relacionales y aritméticos", pregunta: "Pregunta 10", areaCurricular: "Programación y algoritmos" },
   ],
-  "8vo": [
-    { id: 1, nombre: "Hardware y periféricos (Pregunta 1)", saber: "Hardware", pregunta: "Pregunta 1", areaCurricular: "Apropiación tecnológica" },
-    { id: 2, nombre: "Tipos de software (Pregunta 2)", saber: "Software", pregunta: "Pregunta 2", areaCurricular: "Apropiación tecnológica" },
-    { id: 3, nombre: "Redes y almacenamiento (Pregunta 3)", saber: "Redes", pregunta: "Pregunta 3", areaCurricular: "Apropiación tecnológica" },
-    { id: 4, nombre: "Conexión entre dispositivos (Pregunta 4)", saber: "Conexión", pregunta: "Pregunta 4", areaCurricular: "Apropiación tecnológica" },
-    { id: 5, nombre: "Sistema Operativo (Pregunta 5)", saber: "Sistema Operativo", pregunta: "Pregunta 5", areaCurricular: "Apropiación tecnológica" },
-    { id: 6, nombre: "Gestión de archivos (Pregunta 6)", saber: "Archivos", pregunta: "Pregunta 6", areaCurricular: "Apropiación tecnológica" },
-    { id: 7, nombre: "Edición multimedia (Pregunta 7)", saber: "Multimedia", pregunta: "Pregunta 7", areaCurricular: "Apropiación tecnológica" },
-    { id: 8, nombre: "Internet de las cosas (Pregunta 8)", saber: "IoT", pregunta: "Pregunta 8", areaCurricular: "Apropiación tecnológica" },
-    { id: 9, nombre: "Programación robótica (Pregunta 9)", saber: "Programación", pregunta: "Pregunta 9", areaCurricular: "Programación y algoritmos" },
-    { id: 10, nombre: "Robot y componentes (Pregunta 10)", saber: "Robótica", pregunta: "Pregunta 10", areaCurricular: "Computación física" },
-  ],
 };
 
 export interface CriterioPsicomotorOficial {
@@ -286,7 +228,7 @@ export interface CriterioPsicomotorOficial {
   etiquetaModalidad?: string;
 }
 
-export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", CriterioPsicomotorOficial[]> = {
+export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "9no", CriterioPsicomotorOficial[]> = {
   "9no": [
     {
       id: "p1",
@@ -415,52 +357,6 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
       escalaC: "Requiere Acompañamiento (RA): Dificultad motriz para operar periféricos digitales.",
       modalidadEvaluacion: "hibrido",
       etiquetaModalidad: "Telemetría Digital + Validación Docente",
-    },
-  ],
-  "8vo": [
-    {
-      id: "p1",
-      codigo: "P1. Viso-Manual",
-      titulo: "Coordinación Viso-Manual con Periféricos y Hardware",
-      areaCurricular: "Apropiación Tecnológica",
-      preguntaGuia: "«¿Demuestra destreza viso-manual en la interacción ergonómica con periféricos y hardware?»",
-      desc: "Destreza al interactuar con periféricos (teclado, ratón) y ensamblaje de componentes digitales.",
-      escalaA: "Logrado (L): Alta soltura, precisión operativa y control ergonómico.",
-      escalaB: "En Desarrollo (ED): Manejo moderado con pausas de verificación.",
-      escalaC: "Requiere Acompañamiento (RA): Dificultades notorias de coordinación motriz viso-manual.",
-    },
-    {
-      id: "p2",
-      codigo: "P2. Postura y Ergonomía",
-      titulo: "Hábitos de Postura y Cuidado Ergonómico",
-      areaCurricular: "Apropiación Tecnológica",
-      preguntaGuia: "«¿Mantiene hábitos de postura ergonómica y cuidado preventivo del equipo informático?»",
-      desc: "Mantiene postura ergonómica de trabajo y demuestra cuidado preventivo del equipamiento informático.",
-      escalaA: "Logrado (L): Postura ergonómica y cuidado preventivo óptimos en el espacio de trabajo.",
-      escalaB: "En Desarrollo (ED): Ajusta la postura tras recordatorio docente.",
-      escalaC: "Requiere Acompañamiento (RA): Postura inadecuada persistente o descuido del equipo.",
-    },
-    {
-      id: "p3",
-      codigo: "P3. Mecanografía",
-      titulo: "Mecanografía y Destreza de Entrada de Comandos",
-      areaCurricular: "Programación y algoritmos",
-      preguntaGuia: "«¿Ingresa comandos y estructuras algorítmicas con fluidez, ritmo y precisión mecanográfica?»",
-      desc: "Velocidad, ritmo y precisión táctil en el ingreso de comandos y bloques algorítmicos.",
-      escalaA: "Logrado (L): Ingreso rápido, fluido y sin errores de tipeo.",
-      escalaB: "En Desarrollo (ED): Velocidad intermedia con necesidad de autocorrección ocasional.",
-      escalaC: "Requiere Acompañamiento (RA): Búsqueda visual lenta tecla a tecla.",
-    },
-    {
-      id: "p4",
-      codigo: "P4. Material y Circuitos",
-      titulo: "Manipulación de Material Concreto y Circuitos Físicos",
-      areaCurricular: "Apropiación Tecnológica",
-      preguntaGuia: "«¿Realiza el conexionado y ensamble seguro de componentes respetando polaridades?»",
-      desc: "Conexionado físico y ensamble seguro de componentes, sensores y actuadores.",
-      escalaA: "Logrado (L): Ensamblado seguro, firme y sin errores de polaridad.",
-      escalaB: "En Desarrollo (ED): Corrige conexiones guiado por la retroalimentación docente.",
-      escalaC: "Requiere Acompañamiento (RA): Confusión recurrente en la interconexión de terminales y pines.",
     },
   ],
 };
