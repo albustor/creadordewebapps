@@ -66,25 +66,27 @@ export default function Navbar() {
       ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#CBD5E1]/80 shadow-xs transition-all duration-300">
+    <header className="sticky top-0 z-50 bg-white/98 backdrop-blur-md border-b border-[#D9DFE8] shadow-xs transition-all duration-300">
+      {/* Línea de acento dorado institucional superior */}
+      <div className="h-1 w-full bg-gradient-to-r from-[#2E3552] via-[#D4AF5A] to-[#1F3F78]" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20 gap-3">
           
-          {/* Logo & Marca Stitch / Aula Clara */}
+          {/* Logo & Marca Institucional MEP */}
           <Link
             href={docente ? "/dashboard" : "/"}
             className="flex items-center gap-3 shrink-0 group py-1 focus:outline-none"
             title="Diagnóstico Secundaria - Tecnologías de la Información"
           >
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-[#D1EBE7] border border-[#9FD1C9] flex items-center justify-center text-[#1B5E59] shadow-xs group-hover:scale-105 transition-all">
-              <Lightning size={24} weight="fill" className="text-[#E07A2C]" />
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-[#EEF3FA] border border-[#D9DFE8] flex items-center justify-center text-[#1F3F78] shadow-xs group-hover:scale-105 transition-all">
+              <Lightning size={24} weight="fill" className="text-[#D4AF5A]" />
             </div>
             <div className="flex flex-col justify-center">
-              <span className="font-black text-base sm:text-lg tracking-tight text-[#0D1C2E] leading-none whitespace-nowrap">
+              <span className="font-black text-base sm:text-lg tracking-tight text-[#2E3552] leading-none whitespace-nowrap">
                 Diagnóstico Secundaria PNFT
               </span>
-              <span className="text-[11px] font-bold text-[#1B5E59] tracking-wider uppercase leading-none mt-1.5 whitespace-nowrap flex items-center gap-1.5 font-sans">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[11px] font-bold text-[#1F3F78] tracking-wider uppercase leading-none mt-1.5 whitespace-nowrap flex items-center gap-1.5 font-sans">
+                <span className="w-2 h-2 rounded-full bg-[#2E7D57] animate-pulse" />
                 Evaluación MEP • 7.° y 9.° Año
               </span>
             </div>
@@ -99,13 +101,13 @@ export default function Navbar() {
                   key={enlace.href}
                   href={enlace.href}
                   title={enlace.titulo}
-                  className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap transition-all select-none ${
+                  className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all select-none ${
                     activo
-                      ? "bg-[#D1EBE7] text-[#1B5E59] font-bold shadow-xs border border-[#9FD1C9]"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-transparent"
+                      ? "bg-[#EEF3FA] text-[#1F3F78] font-black shadow-xs border border-[#D9DFE8]"
+                      : "text-[#667085] hover:text-[#20283B] hover:bg-[#F5F7FA] border border-transparent"
                   }`}
                 >
-                  <span className={activo ? "text-[#1B5E59]" : "text-slate-500"}>
+                  <span className={activo ? "text-[#1F3F78]" : "text-[#667085]"}>
                     {enlace.icon}
                   </span>
                   <span>{enlace.label}</span>
@@ -123,13 +125,13 @@ export default function Navbar() {
                   <Link
                     href="/admin"
                     title="Panel de administración y gobernanza general"
-                    className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold border transition-all ${
+                    className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all ${
                       pathname === "/admin"
-                        ? "bg-amber-100 text-amber-950 border-amber-300 shadow-xs"
-                        : "bg-slate-100 text-slate-700 hover:text-slate-900 hover:bg-slate-200 border-slate-300"
+                        ? "bg-[#FFF8E7] text-[#A97C2A] border-[#D4AF5A] shadow-xs font-black"
+                        : "bg-[#F5F7FA] text-[#20283B] hover:bg-[#EEF3FA] border-[#D9DFE8]"
                     }`}
                   >
-                    <ShieldCheck size={16} weight="fill" className="text-[#E07A2C]" />
+                    <ShieldCheck size={16} weight="fill" className="text-[#D4AF5A]" />
                     <span>Administración</span>
                   </Link>
                 )}
@@ -137,17 +139,17 @@ export default function Navbar() {
                 <Link
                   href="/registro"
                   title="Configuración de perfil docente"
-                  className={`inline-flex items-center gap-2.5 px-3 py-1.5 rounded-lg border transition-all shadow-xs group ${
+                  className={`inline-flex items-center gap-2.5 px-3 py-1.5 rounded-xl border transition-all shadow-xs group ${
                     esSuperAdmin
-                      ? "border-amber-300 bg-amber-50 hover:bg-amber-100 text-slate-900"
-                      : "border-slate-200 bg-white hover:bg-slate-50 text-slate-900"
+                      ? "border-[#D4AF5A] bg-[#FFF8E7] hover:bg-amber-100 text-[#20283B]"
+                      : "border-[#D9DFE8] bg-white hover:bg-[#F5F7FA] text-[#20283B]"
                   }`}
                 >
                   <div
                     className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 transition-colors shadow-xs ${
                       esSuperAdmin
-                        ? "bg-[#E07A2C] text-white group-hover:scale-105"
-                        : "bg-[#1B5E59] text-white"
+                        ? "bg-[#D4AF5A] text-white group-hover:scale-105"
+                        : "bg-[#1F3F78] text-white"
                     }`}
                   >
                     {esSuperAdmin ? (
@@ -157,7 +159,7 @@ export default function Navbar() {
                     )}
                   </div>
                   <div className="text-left flex flex-col justify-center">
-                    <span className="text-xs font-bold text-slate-900 leading-none whitespace-nowrap flex items-center gap-1">
+                    <span className="text-xs font-bold text-[#20283B] leading-none whitespace-nowrap flex items-center gap-1">
                       {(() => {
                         const raw = docente?.nombreCompleto || "Docente";
                         const limpio = raw
@@ -172,7 +174,7 @@ export default function Navbar() {
                     </span>
                     <span
                       className={`text-[10px] font-mono font-bold leading-none mt-1 whitespace-nowrap ${
-                        esSuperAdmin ? "text-amber-800 font-extrabold" : "text-[#1B5E59]"
+                        esSuperAdmin ? "text-[#A97C2A] font-extrabold" : "text-[#1F3F78]"
                       }`}
                     >
                       {docente?.idDocente || "DOC-7729"}
@@ -183,7 +185,7 @@ export default function Navbar() {
                 <button
                   onClick={() => cerrarSesion()}
                   title="Cerrar sesión"
-                  className="p-2 rounded-lg text-slate-500 hover:text-rose-700 hover:bg-rose-50 border border-slate-200 transition-colors"
+                  className="p-2 rounded-xl text-[#667085] hover:text-[#A9473D] hover:bg-[#FCEFED] border border-[#D9DFE8] transition-colors"
                 >
                   <SignOut size={18} weight="bold" />
                 </button>
@@ -191,7 +193,7 @@ export default function Navbar() {
             ) : (
               <Link
                 href="/"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[#1B5E59] hover:bg-[#144642] text-white text-xs sm:text-sm font-bold rounded-lg shadow-sm transition-all"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[#1F3F78] hover:bg-[#2E3552] text-white text-xs sm:text-sm font-bold rounded-xl shadow-xs transition-all"
               >
                 <SignIn size={18} weight="bold" />
                 <span>Ingreso Docente</span>

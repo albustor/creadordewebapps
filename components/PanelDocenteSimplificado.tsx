@@ -958,41 +958,86 @@ export default function PanelDocenteSimplificado() {
           if (Array.isArray(parsed)) {
             parsed.forEach((item) => {
               if (item.estudianteNombre || item.nom || item.estudiante) {
-                nuevosRegistros.push(item);
+                nuevosRegistros.push({
+                  ...item,
+                  estudianteNombre: item.estudianteNombre || item.nom || item.estudiante || "Estudiante",
+                  nivel: item.nivel || (nivelActivo === "7mo" ? "7°" : "9°"),
+                  seccionOGrupo: item.seccionOGrupo || item.seccion || seccionActiva,
+                });
               }
             });
           } else if (parsed.estudianteNombre || parsed.nom || parsed.c1 || parsed.estudiante) {
-            nuevosRegistros.push(parsed);
+            nuevosRegistros.push({
+              ...parsed,
+              estudianteNombre: parsed.estudianteNombre || parsed.nom || parsed.estudiante || "Estudiante",
+              nivel: parsed.nivel || (nivelActivo === "7mo" ? "7°" : "9°"),
+              seccionOGrupo: parsed.seccionOGrupo || parsed.seccion || seccionActiva,
+            });
           }
           procesados++;
         } else if (file.name.endsWith(".csv") || file.name.endsWith(".txt")) {
-          // Parse CSV
+          // Parse CSV robusto con delimitadores dinámicos (; o , o \t)
           const lineas = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
           if (lineas.length > 1) {
+            const delimitador = lineas[0].includes(";") ? ";" : lineas[0].includes("\t") ? "\t" : ",";
+            const cabeceras = lineas[0].split(delimitador).map(c => c.replace(/^["']|["']$/g, '').trim().toLowerCase());
+            
+            // Detectar índices de columnas
+            const idxNombre = cabeceras.findIndex(h => h.includes("nombre") || h.includes("estudiante") || h.includes("alumno"));
+            const idxSeccion = cabeceras.findIndex(h => h.includes("secci") || h.includes("grupo"));
+            const idxNivel = cabeceras.findIndex(h => h.includes("nivel") || h.includes("año") || h.includes("grado"));
+            const idxPuntaje = cabeceras.findIndex(h => h.includes("puntaje") || h.includes("puntos") || h.includes("aciertos") || h.includes("acierto"));
+            const idxPorcentaje = cabeceras.findIndex(h => h.includes("porcentaje") || h.includes("calificaci") || h.includes("nota") || h.includes("cognitivo") || h.includes("%"));
+            const idxLogro = cabeceras.findIndex(h => h.includes("logro") || h.includes("desempeño") || h.includes("nivel logro"));
+
             for (let j = 1; j < lineas.length; j++) {
-              const cols = lineas[j].split(/[;,]/).map(c => c.replace(/^["']|["']$/g, '').trim());
-              if (cols.length >= 4) {
-                const nombreEst = cols[3] || cols[0];
-                const sec = cols[2] || cols[1] || seccionActiva;
-                const cogStr = cols[6] || cols[3] || "80";
-                const porc = parseInt(cogStr.replace(/[^0-9]/g, '')) || 80;
+              const cols = lineas[j].split(delimitador).map(c => c.replace(/^["']|["']$/g, '').trim());
+              if (cols.length >= 2) {
+                const nombreEst = (idxNombre >= 0 && cols[idxNombre]) ? cols[idxNombre] : (cols[3] || cols[0]);
+                if (!nombreEst || nombreEst.toLowerCase().includes("promedio") || nombreEst.toLowerCase().includes("total")) continue;
+
+                const secRaw = (idxSeccion >= 0 && cols[idxSeccion]) ? cols[idxSeccion] : (cols[2] || seccionActiva);
+                const sec = secRaw.startsWith("Sección ") ? secRaw : `Sección ${secRaw}`;
+                
+                const nivelDetectado = (idxNivel >= 0 && cols[idxNivel]) 
+                  ? (cols[idxNivel].includes("9") ? "9°" : "7°") 
+                  : (nivelActivo === "7mo" ? "7°" : "9°");
+
+                let porc = 80;
+                if (idxPorcentaje >= 0 && cols[idxPorcentaje]) {
+                  porc = parseInt(cols[idxPorcentaje].replace(/[^0-9]/g, '')) || 80;
+                } else if (idxPuntaje >= 0 && cols[idxPuntaje]) {
+                  const pts = parseFloat(cols[idxPuntaje].replace(/[^0-9.]/g, '')) || 8;
+                  porc = Math.round((pts / 10) * 100);
+                } else if (cols[6]) {
+                  porc = parseInt(cols[6].replace(/[^0-9]/g, '')) || 80;
+                }
+
+                if (porc > 100) porc = 100;
+                if (porc < 0) porc = 0;
+
+                const nivelLogroCalculado = (idxLogro >= 0 && cols[idxLogro] && (cols[idxLogro] === "Avanzado" || cols[idxLogro] === "Intermedio" || cols[idxLogro] === "Inicial"))
+                  ? (cols[idxLogro] as "Inicial" | "Intermedio" | "Avanzado")
+                  : calcularNivelLogro(porc);
+
                 nuevosRegistros.push({
-                  webAppId: `diagnostico_${nivelActivo}_importado`,
-                  webAppTitulo: `Diagnóstico ${nivelActivo === '7mo' ? 'Séptimo' : 'Noveno'}`,
+                  webAppId: `diagnostico_${nivelDetectado === "7°" ? "7mo" : "9no"}_modulo01`,
+                  webAppTitulo: `Diagnóstico ${nivelDetectado === "7°" ? "Séptimo" : "Noveno"} Año — MEP`,
                   docenteId: docente?.idDocente || "DOC-IMPORT",
+                  docenteNombre: docente?.nombreCompleto || "Docente MEP",
                   estudianteNombre: nombreEst,
-                  seccionOGrupo: sec.startsWith("Sección ") ? sec : `Sección ${sec}`,
-                  nivel: nivelActivo === "7mo" ? "7°" : "9°",
+                  seccionOGrupo: sec,
+                  nivel: nivelDetectado as "7°" | "9°",
                   puntaje: Math.round((porc / 100) * 10),
                   puntajeMaximo: 10,
                   porcentaje: porc,
-                  nivelLogro: calcularNivelLogro(porc),
+                  nivelLogro: nivelLogroCalculado,
                   tiempoSegundos: 60,
                   totalReactivos: 10,
                   aciertos: Math.round((porc / 100) * 10),
                   fallos: Math.max(0, 10 - Math.round((porc / 100) * 10)),
                   timestamp: Date.now() - (j * 1000),
-                  tokenAntiFraude: `IMPORT-${Date.now()}-${j}`
+                  tokenAntiFraude: `CSV-${Date.now()}-${j}`
                 });
               }
             }
@@ -1006,7 +1051,7 @@ export default function PanelDocenteSimplificado() {
 
     if (nuevosRegistros.length > 0) {
       importarLoteResultados(nuevosRegistros);
-      alert(`✅ ¡Importación completada con éxito!\n\nSe procesaron ${procesados} archivo(s) y se incorporaron ${nuevosRegistros.length} registro(s) estudiantiles al panel docente.`);
+      alert(`✅ ¡Importación completada con éxito!\n\nSe procesaron ${procesados} archivo(s) CSV/JSON y se incorporaron ${nuevosRegistros.length} registro(s) estudiantiles al panel docente.`);
     } else {
       alert("⚠️ No se encontraron registros válidos en los archivos seleccionados.");
     }
@@ -1028,21 +1073,21 @@ export default function PanelDocenteSimplificado() {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto bg-white rounded-2xl shadow-cardLg border border-[#CBD5E1]/80 flex flex-col min-h-[750px]">
+    <div className="w-full max-w-7xl mx-auto bg-white rounded-2xl shadow-cardLg border border-[#D9DFE8] flex flex-col min-h-[750px]">
       
       {/* 1. TOP BAR — Barra de Navegación del Sistema FIJA (Sticky) */}
-      <header className="sticky top-16 sm:top-20 z-40 bg-[#F0F3F6]/95 backdrop-blur-md border-b border-[#CBD5E1]/80 rounded-t-2xl px-3 sm:px-5 py-2.5 sm:py-3 flex items-center justify-between gap-3 select-none shadow-xs">
+      <header className="sticky top-16 sm:top-20 z-40 bg-[#EEF3FA]/95 backdrop-blur-md border-b border-[#D9DFE8] rounded-t-2xl px-3 sm:px-5 py-2.5 sm:py-3 flex items-center justify-between gap-3 select-none shadow-xs">
         {/* Lado Izquierdo: Selector de Nivel Principal en Mayor Tamaño */}
         <div className="flex items-center gap-3">
           {/* Selector Rápido de Nivel Superior (7.° y 9.° Año) */}
-          <div className="flex items-center gap-1 p-1 sm:p-1.5 bg-white rounded-2xl border border-slate-300/90 shadow-xs">
+          <div className="flex items-center gap-1 p-1 sm:p-1.5 bg-white rounded-2xl border border-[#D9DFE8] shadow-xs">
             <button
               type="button"
               onClick={() => handleCambiarNivel("7mo")}
               className={`px-4 sm:px-5 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer ${
                 nivelActivo === "7mo"
-                  ? "bg-[#1B5E59] text-white shadow-xs scale-100"
-                  : "text-slate-700 hover:text-slate-900 hover:bg-slate-100"
+                  ? "bg-[#1F3F78] text-white shadow-xs scale-100"
+                  : "text-[#20283B] hover:text-[#1F3F78] hover:bg-[#F5F7FA]"
               }`}
               title="Evaluar 7.° Año (Sétimo)"
             >
@@ -1053,8 +1098,8 @@ export default function PanelDocenteSimplificado() {
               onClick={() => handleCambiarNivel("9no")}
               className={`px-4 sm:px-5 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer ${
                 nivelActivo === "9no"
-                  ? "bg-[#1B5E59] text-white shadow-xs scale-100"
-                  : "text-slate-700 hover:text-slate-900 hover:bg-slate-100"
+                  ? "bg-[#1F3F78] text-white shadow-xs scale-100"
+                  : "text-[#20283B] hover:text-[#1F3F78] hover:bg-[#F5F7FA]"
               }`}
               title="Evaluar 9.° Año (Noveno)"
             >
@@ -1062,7 +1107,7 @@ export default function PanelDocenteSimplificado() {
             </button>
           </div>
 
-          <span className="hidden lg:inline-block text-xs font-extrabold text-slate-500 uppercase tracking-wider pl-2 border-l border-slate-300">
+          <span className="hidden lg:inline-block text-xs font-extrabold text-[#667085] uppercase tracking-wider pl-2 border-l border-[#D9DFE8]">
             Panel de Evaluación
           </span>
         </div>
@@ -1070,7 +1115,7 @@ export default function PanelDocenteSimplificado() {
         {/* Acciones Rápidas en Cabecera (Lado Derecho) */}
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           {/* Botón de Importación de Lote USB / Archivos JSON o CSV */}
-          <label className="inline-flex items-center gap-1.5 px-3 py-1.5 sm:py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs transition-all cursor-pointer">
+          <label className="inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:py-2 rounded-xl bg-[#1F3F78] hover:bg-[#2E3552] text-white text-xs font-bold shadow-xs transition-all cursor-pointer">
             <DownloadSimple size={16} weight="bold" />
             <span className="hidden sm:inline">Importar JSON/CSV (USB)</span>
             <input
@@ -1088,24 +1133,24 @@ export default function PanelDocenteSimplificado() {
       <div className="flex flex-col md:flex-row flex-1 bg-white">
         
         {/* ========================================================= */}
-        {/* SIDEBAR DE NAVEGACIÓN DOCENTE (Aula Clara / Stitch Tokens) */}
+        {/* SIDEBAR DE NAVEGACIÓN DOCENTE (Institucional MEP)         */}
         {/* ========================================================= */}
-        <aside className="hidden md:flex w-full md:w-64 lg:w-72 bg-white border-r border-[#E2E8F0] shrink-0 p-4 lg:p-5 flex-col justify-between select-none">
+        <aside className="hidden md:flex w-full md:w-64 lg:w-72 bg-white border-r border-[#D9DFE8] shrink-0 p-4 lg:p-5 flex-col justify-between select-none">
           <div className="space-y-5">
             
             {/* Header Perfil Docente */}
-            <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
-              <div className="w-10 h-10 rounded-xl bg-[#1B5E59] text-white flex items-center justify-center font-bold text-sm shadow-xs ring-2 ring-[#D1EBE7]">
+            <div className="flex items-center gap-3 pb-3 border-b border-[#D9DFE8]">
+              <div className="w-10 h-10 rounded-xl bg-[#1F3F78] text-white flex items-center justify-center font-bold text-sm shadow-xs ring-2 ring-[#EEF3FA]">
                 {(() => {
                   const n = docente?.nombreCompleto || "MD";
                   return n.substring(0, 2).toUpperCase();
                 })()}
               </div>
               <div className="overflow-hidden">
-                <h2 className="font-bold text-sm text-[#0D1C2E] truncate leading-tight">
+                <h2 className="font-bold text-sm text-[#20283B] truncate leading-tight">
                   {docente?.nombreCompleto || "Docente MEP"}
                 </h2>
-                <p className="text-[11px] text-slate-500 font-mono truncate">
+                <p className="text-[11px] text-[#667085] font-mono truncate">
                   {docente?.idDocente || "DOC-7729"}
                 </p>
               </div>
@@ -1119,11 +1164,11 @@ export default function PanelDocenteSimplificado() {
                 onClick={() => setSeccionActivaMenu("enlaces")}
                 className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left ${
                   seccionActivaMenu === "enlaces"
-                    ? "bg-[#D1EBE7] text-[#1B5E59] font-bold shadow-2xs border border-[#9FD1C9]"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    ? "bg-[#EEF3FA] text-[#1F3F78] font-black shadow-2xs border border-[#D9DFE8]"
+                    : "text-[#667085] hover:bg-[#F5F7FA] hover:text-[#20283B]"
                 }`}
               >
-                <LinkIcon size={18} weight={seccionActivaMenu === "enlaces" ? "bold" : "regular"} className={seccionActivaMenu === "enlaces" ? "text-[#1B5E59]" : "text-slate-500"} />
+                <LinkIcon size={18} weight={seccionActivaMenu === "enlaces" ? "bold" : "regular"} className={seccionActivaMenu === "enlaces" ? "text-[#1F3F78]" : "text-[#667085]"} />
                 <span>Enlaces Estudiante</span>
               </button>
 
@@ -1133,11 +1178,11 @@ export default function PanelDocenteSimplificado() {
                 onClick={() => setSeccionActivaMenu("cognitivo")}
                 className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left ${
                   seccionActivaMenu === "cognitivo"
-                    ? "bg-[#D1EBE7] text-[#1B5E59] font-bold shadow-2xs border border-[#9FD1C9]"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    ? "bg-[#EEF3FA] text-[#1F3F78] font-black shadow-2xs border border-[#D9DFE8]"
+                    : "text-[#667085] hover:bg-[#F5F7FA] hover:text-[#20283B]"
                 }`}
               >
-                <BookOpen size={18} weight={seccionActivaMenu === "cognitivo" ? "bold" : "regular"} className={seccionActivaMenu === "cognitivo" ? "text-[#1B5E59]" : "text-slate-500"} />
+                <BookOpen size={18} weight={seccionActivaMenu === "cognitivo" ? "bold" : "regular"} className={seccionActivaMenu === "cognitivo" ? "text-[#1F3F78]" : "text-[#667085]"} />
                 <span>Área Cognitiva</span>
               </button>
 
@@ -1147,16 +1192,16 @@ export default function PanelDocenteSimplificado() {
                 onClick={() => setSeccionActivaMenu("socioafectivo")}
                 className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left ${
                   seccionActivaMenu === "socioafectivo"
-                    ? "bg-[#D1EBE7] text-[#1B5E59] font-bold shadow-2xs border border-[#9FD1C9]"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    ? "bg-[#EEF3FA] text-[#1F3F78] font-black shadow-2xs border border-[#D9DFE8]"
+                    : "text-[#667085] hover:bg-[#F5F7FA] hover:text-[#20283B]"
                 }`}
               >
                 <div className="flex items-center gap-3 truncate">
-                  <Heart size={18} weight={seccionActivaMenu === "socioafectivo" ? "fill" : "regular"} className={seccionActivaMenu === "socioafectivo" ? "text-[#1B5E59]" : "text-slate-500"} />
+                  <Heart size={18} weight={seccionActivaMenu === "socioafectivo" ? "fill" : "regular"} className={seccionActivaMenu === "socioafectivo" ? "text-[#1F3F78]" : "text-[#667085]"} />
                   <span className="truncate">Área Socioafectiva</span>
                 </div>
                 {metricasCohorte.alertasTempranas > 0 && (
-                  <span className="w-2 h-2 rounded-full bg-[#E07A2C] animate-ping shrink-0" />
+                  <span className="w-2 h-2 rounded-full bg-[#A97C2A] animate-ping shrink-0" />
                 )}
               </button>
 
@@ -1166,11 +1211,11 @@ export default function PanelDocenteSimplificado() {
                 onClick={() => setSeccionActivaMenu("psicomotriz")}
                 className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left ${
                   seccionActivaMenu === "psicomotriz"
-                    ? "bg-[#D1EBE7] text-[#1B5E59] font-bold shadow-2xs border border-[#9FD1C9]"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    ? "bg-[#EEF3FA] text-[#1F3F78] font-black shadow-2xs border border-[#D9DFE8]"
+                    : "text-[#667085] hover:bg-[#F5F7FA] hover:text-[#20283B]"
                 }`}
               >
-                <Pulse size={18} weight={seccionActivaMenu === "psicomotriz" ? "bold" : "regular"} className={seccionActivaMenu === "psicomotriz" ? "text-[#1B5E59]" : "text-slate-500"} />
+                <Pulse size={18} weight={seccionActivaMenu === "psicomotriz" ? "bold" : "regular"} className={seccionActivaMenu === "psicomotriz" ? "text-[#1F3F78]" : "text-[#667085]"} />
                 <span>Área Psicomotora</span>
               </button>
 
@@ -1180,11 +1225,11 @@ export default function PanelDocenteSimplificado() {
                 onClick={() => setSeccionActivaMenu("sistematizacion")}
                 className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left ${
                   seccionActivaMenu === "sistematizacion"
-                    ? "bg-[#D1EBE7] text-[#1B5E59] font-bold shadow-2xs border border-[#9FD1C9]"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    ? "bg-[#EEF3FA] text-[#1F3F78] font-black shadow-2xs border border-[#D9DFE8]"
+                    : "text-[#667085] hover:bg-[#F5F7FA] hover:text-[#20283B]"
                 }`}
               >
-                <Users size={18} weight={seccionActivaMenu === "sistematizacion" ? "bold" : "regular"} className={seccionActivaMenu === "sistematizacion" ? "text-[#1B5E59]" : "text-slate-500"} />
+                <Users size={18} weight={seccionActivaMenu === "sistematizacion" ? "bold" : "regular"} className={seccionActivaMenu === "sistematizacion" ? "text-[#1F3F78]" : "text-[#667085]"} />
                 <span>Resultados por Sección</span>
               </button>
 
@@ -1194,11 +1239,11 @@ export default function PanelDocenteSimplificado() {
                 onClick={() => setSeccionActivaMenu("analitica")}
                 className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left ${
                   seccionActivaMenu === "analitica"
-                    ? "bg-[#D1EBE7] text-[#1B5E59] font-bold shadow-2xs border border-[#9FD1C9]"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    ? "bg-[#EEF3FA] text-[#1F3F78] font-black shadow-2xs border border-[#D9DFE8]"
+                    : "text-[#667085] hover:bg-[#F5F7FA] hover:text-[#20283B]"
                 }`}
               >
-                <ChartBar size={18} weight={seccionActivaMenu === "analitica" ? "bold" : "regular"} className={seccionActivaMenu === "analitica" ? "text-[#1B5E59]" : "text-slate-500"} />
+                <ChartBar size={18} weight={seccionActivaMenu === "analitica" ? "bold" : "regular"} className={seccionActivaMenu === "analitica" ? "text-[#1F3F78]" : "text-[#667085]"} />
                 <span>Análisis General & IA</span>
               </button>
             </nav>
@@ -1633,6 +1678,18 @@ export default function PanelDocenteSimplificado() {
                                 <ArrowSquareOut size={15} className="text-slate-500" />
                                 <span>Escáner de Datos</span>
                               </a>
+
+                              <label className="inline-flex items-center justify-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-2 rounded-lg transition-colors shadow-2xs cursor-pointer">
+                                <DownloadSimple size={15} weight="bold" className="text-blue-100" />
+                                <span>Importar JSON/CSV (USB)</span>
+                                <input
+                                  type="file"
+                                  accept=".json,.csv,.txt"
+                                  multiple
+                                  className="hidden"
+                                  onChange={handleImportarArchivosLote}
+                                />
+                              </label>
                             </div>
                           </div>
                         </div>

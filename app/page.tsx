@@ -343,35 +343,35 @@ export default function HomePage() {
             
             {/* Título de la Plataforma */}
             <div className="text-center space-y-3">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100/90 border border-emerald-300/80 text-emerald-900 text-xs font-extrabold shadow-xs">
-                <Lightning size={16} weight="fill" className="text-amber-600" />
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EEF3FA] border border-[#D9DFE8] text-[#1F3F78] text-xs font-extrabold shadow-xs">
+                <Lightning size={16} weight="fill" className="text-[#D4AF5A]" />
                 <span>Formación Tecnológica • Ministerio de Educación Pública</span>
               </div>
 
-              <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+              <h1 className="text-3xl sm:text-4xl font-black text-[#2E3552] tracking-tight">
                 Diagnóstico Secundaria PNFT
               </h1>
 
-              <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto font-medium leading-relaxed">
+              <p className="text-xs sm:text-sm text-[#667085] max-w-md mx-auto font-medium leading-relaxed">
                 Recurso oficial para el desarrollo del diagnóstico formativo en <strong>7.° y 9.° Año</strong> con base en el Programa Nacional de Formación Tecnológica (PNFT).
               </p>
             </div>
 
-            {/* Tarjeta de Autenticación en Blanco Cálido y Pastel */}
-            <div className="bg-white border border-stone-200/90 rounded-3xl p-6 sm:p-8 shadow-softPastel space-y-6">
+            {/* Tarjeta de Autenticación */}
+            <div className="bg-white border border-[#D9DFE8] rounded-3xl p-6 sm:p-8 shadow-softPastel space-y-6">
               
               {/* Selector de Pestañas */}
-              <div className="grid grid-cols-2 p-1.5 bg-stone-100/90 rounded-2xl border border-stone-200">
+              <div className="grid grid-cols-2 p-1.5 bg-[#F5F7FA] rounded-2xl border border-[#D9DFE8]">
                 <button
                   type="button"
                   onClick={() => {
                     setTabAuth("login");
                     setLoginMensaje(null);
                   }}
-                  className={`flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all ${
+                  className={`flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all cursor-pointer ${
                     tabAuth === "login"
-                      ? "bg-emerald-700 text-white shadow-xs"
-                      : "text-slate-600 hover:text-slate-900"
+                      ? "bg-[#1F3F78] text-white shadow-xs"
+                      : "text-[#667085] hover:text-[#20283B]"
                   }`}
                 >
                   <Key size={16} weight="bold" />
@@ -384,10 +384,10 @@ export default function HomePage() {
                     setTabAuth("registro");
                     setRegMensaje(null);
                   }}
-                  className={`flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all ${
+                  className={`flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all cursor-pointer ${
                     tabAuth === "registro"
-                      ? "bg-emerald-700 text-white shadow-xs"
-                      : "text-slate-600 hover:text-slate-900"
+                      ? "bg-[#1F3F78] text-white shadow-xs"
+                      : "text-[#667085] hover:text-[#20283B]"
                   }`}
                 >
                   <UserPlus size={16} weight="bold" />
@@ -402,25 +402,25 @@ export default function HomePage() {
                     <div
                       className={`p-3.5 rounded-xl text-xs font-bold flex items-center gap-2.5 ${
                         loginMensaje.tipo === "exito"
-                          ? "bg-emerald-50 border border-emerald-300 text-emerald-900"
-                          : "bg-rose-50 border border-rose-300 text-rose-900"
+                          ? "bg-[#EEF8F2] border border-[#bbf7d0] text-[#2E7D57]"
+                          : "bg-[#FCEFED] border border-[#fecaca] text-[#A9473D]"
                       }`}
                     >
                       {loginMensaje.tipo === "exito" ? (
-                        <CheckCircle size={18} weight="fill" className="text-emerald-700 shrink-0" />
+                        <CheckCircle size={18} weight="fill" className="text-[#2E7D57] shrink-0" />
                       ) : (
-                        <WarningCircle size={18} weight="fill" className="text-rose-700 shrink-0" />
+                        <WarningCircle size={18} weight="fill" className="text-[#A9473D] shrink-0" />
                       )}
                       <span>{loginMensaje.texto}</span>
                     </div>
                   )}
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                    <label className="block text-xs font-bold text-[#20283B] mb-1.5">
                       Cédula o Correo Electrónico MEP:
                     </label>
                     <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
+                      <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#667085]">
                         <IdentificationCard size={18} />
                       </div>
                       <input
@@ -432,25 +432,25 @@ export default function HomePage() {
                         onChange={(e) => setLoginCredencial(e.target.value)}
                         placeholder="0-0000-0000 (o correo@mep.go.cr)"
                         required
-                        className="w-full pl-10 pr-3.5 py-2.5 bg-[#FCFBF9] border border-stone-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-stone-400 focus:outline-none focus:border-emerald-600 focus:bg-white font-semibold"
+                        className="w-full pl-10 pr-3.5 py-2.5 bg-[#F5F7FA] border border-[#D9DFE8] rounded-xl text-xs sm:text-sm text-[#20283B] placeholder-[#667085] focus:outline-none focus:border-[#1F3F78] focus:bg-white font-semibold"
                       />
                     </div>
                   </div>
 
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
-                      <label className="block text-xs font-bold text-slate-700">
+                      <label className="block text-xs font-bold text-[#20283B]">
                         PIN de Acceso (4 Dígitos):
                       </label>
                       <Link
                         href="/registro"
-                        className="text-[11px] font-bold text-emerald-800 hover:text-emerald-900 hover:underline"
+                        className="text-[11px] font-bold text-[#1F3F78] hover:text-[#2E3552] hover:underline"
                       >
                         ¿Olvidaste tu PIN?
                       </Link>
                     </div>
                     <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
+                      <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#667085]">
                         <LockKey size={18} />
                       </div>
                       <input
@@ -463,12 +463,12 @@ export default function HomePage() {
                         onChange={(e) => setLoginPin(e.target.value.replace(/[^0-9]/g, ""))}
                         placeholder="••••••"
                         required
-                        className="w-full pl-10 pr-10 py-2.5 bg-[#FCFBF9] border border-stone-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-stone-400 focus:outline-none focus:border-emerald-600 focus:bg-white font-semibold tracking-widest text-center font-mono"
+                        className="w-full pl-10 pr-10 py-2.5 bg-[#F5F7FA] border border-[#D9DFE8] rounded-xl text-xs sm:text-sm text-[#20283B] placeholder-[#667085] focus:outline-none focus:border-[#1F3F78] focus:bg-white font-semibold tracking-widest text-center font-mono"
                       />
                       <button
                         type="button"
                         onClick={() => setMostrarLoginPin(!mostrarLoginPin)}
-                        className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-stone-400 hover:text-stone-700"
+                        className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-[#667085] hover:text-[#20283B] cursor-pointer"
                         title={mostrarLoginPin ? "Ocultar PIN" : "Mostrar PIN"}
                       >
                         {mostrarLoginPin ? <EyeSlash size={18} /> : <Eye size={18} />}
@@ -478,7 +478,7 @@ export default function HomePage() {
 
                   <button
                     type="submit"
-                    className="w-full py-3 px-4 bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs sm:text-sm rounded-xl shadow-xs transition-all flex items-center justify-center gap-2"
+                    className="w-full py-3 px-4 bg-[#1F3F78] hover:bg-[#2E3552] text-white font-black text-xs sm:text-sm rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <SignIn size={18} weight="bold" />
                     <span>Ingresar con PIN</span>
@@ -491,9 +491,9 @@ export default function HomePage() {
                         setTabAuth("registro");
                         setRegMensaje(null);
                       }}
-                      className="text-xs font-semibold text-stone-500 hover:text-emerald-900"
+                      className="text-xs font-semibold text-[#667085] hover:text-[#1F3F78] cursor-pointer"
                     >
-                      ¿No tienes cuenta registrada? <strong className="text-emerald-800 underline">Regístrate aquí</strong>
+                      ¿No tienes cuenta registrada? <strong className="text-[#1F3F78] underline">Regístrate aquí</strong>
                     </button>
                   </div>
                 </form>
