@@ -83,7 +83,7 @@ const ETAPAS_DATOS: EtapaAprendizaje[] = [
         {
           numero: 3,
           titulo: "Alineación con la Guía Docente 2026",
-          descripcion: "Constatar que todas las preguntas y retos responden estrictamente a las 4 áreas curriculares oficiales del PNFT (7.°, 8.° y 9.° año).",
+          descripcion: "Constatar que todas las preguntas y retos responden estrictamente a las 4 áreas curriculares oficiales del PNFT (7.° y 9.° año).",
           consejo: "Garantiza congruencia pedagógica con el programa de Formación Tecnológica MEP.",
         },
       ],
@@ -147,7 +147,7 @@ const ETAPAS_DATOS: EtapaAprendizaje[] = [
       },
       {
         id: "e2_t2",
-        texto: "Paso 2: Marcar los centros educativos asignados y activar las secciones atendidas en 7.°, 8.° y 9.° año.",
+        texto: "Paso 2: Marcar los centros educativos asignados y activar las secciones atendidas en 7.° y 9.° año.",
         detalle: "Revisar que la nómina de secciones se personaliza según la carga horaria real del docente.",
       },
       {
@@ -179,7 +179,7 @@ const ETAPAS_DATOS: EtapaAprendizaje[] = [
         {
           numero: 2,
           titulo: "Selección de colegio y grupo",
-          descripcion: "En la barra superior, seleccionar el centro educativo, nivel (7.°, 8.° o 9.°) y la sección específica a evaluar.",
+          descripcion: "En la barra superior, seleccionar el centro educativo, nivel (7.° o 9.°) y la sección específica a evaluar.",
           consejo: "La herramienta contextualiza automáticamente los reactivos e indicadores según el nivel elegido.",
         },
         {
@@ -226,7 +226,7 @@ const ETAPAS_DATOS: EtapaAprendizaje[] = [
           numero: 1,
           titulo: "Resolución de retos curriculares",
           descripcion: "El estudiante responde retos interactivos en las 4 áreas: Apropiación, Programación, Robótica y Ciencia de Datos.",
-          consejo: "La interfaz es intuitiva y adaptada a la Guía Docente 2026 para 7.°, 8.° y 9.° año.",
+          consejo: "La interfaz es intuitiva y adaptada a la Guía Docente 2026 para 7.° y 9.° año.",
         },
         {
           numero: 2,
@@ -251,7 +251,7 @@ const ETAPAS_DATOS: EtapaAprendizaje[] = [
     tareas: [
       {
         id: "e4_t1",
-        texto: "Paso 1: Verificar la resolución de retos en las 4 áreas curriculares para 7.°, 8.° y 9.° año.",
+        texto: "Paso 1: Verificar la resolución de retos en las 4 áreas curriculares para 7.° y 9.° año.",
         detalle: "Apropiación tecnológica, Programación y algoritmos, Computación física y robótica, y Ciencia de datos e IA.",
       },
       {
@@ -1145,7 +1145,7 @@ export default function RecursoAprendizajeAutogestionado() {
                 Glosario oficial de las cuatro áreas curriculares (Guía Docente 2026)
               </h3>
               <p className="text-[11px] font-bold text-stone-500">
-                Marco curricular oficial para 7.°, 8.° y 9.° año (III Ciclo)
+                Marco curricular oficial para 7.° y 9.° año (III Ciclo)
               </p>
             </div>
           </div>

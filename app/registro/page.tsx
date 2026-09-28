@@ -103,7 +103,6 @@ export default function RegistroDocentePage() {
   // ==========================================
   const CREAR_DESGLOSE_NIVELES_DEFAULT = (): DesgloseNivelSecciones[] => [
     { nivel: "7°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["7-1", "7-2", "7-3"] },
-    { nivel: "8°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["8-1", "8-2", "8-3"] },
     { nivel: "9°", activo: true, totalSeccionesColegio: 8, seccionesAtendidasDocente: ["9-1", "9-2", "9-3", "9-4", "9-5"] },
   ];
 
@@ -609,7 +608,7 @@ export default function RegistroDocentePage() {
         colegio: institucionFinal,
         institucionNombre: institucionFinal,
         centrosEducativos: adaptadoCentros,
-        niveles: ['7° Año', '8° Año', '9° Año'],
+        niveles: ['7° Año', '9° Año'],
         pin: pinLimpio,
         autenticado: true,
         registradoEl: new Date().toISOString()
@@ -1315,7 +1314,7 @@ export default function RegistroDocentePage() {
                 </span>
               </div>
               <p className="text-xs text-slate-600 font-medium leading-relaxed pt-1 border-t border-slate-100">
-                Como docente de aula, a continuación puedes editar y actualizar tus <strong>centros educativos</strong>, tus <strong>secciones atendidas por nivel (7.°, 8.° y 9.°)</strong> y tus datos de contacto.
+                Como docente de aula, a continuación puedes editar y actualizar tus <strong>centros educativos</strong>, tus <strong>secciones atendidas por nivel (7.° y 9.°)</strong> y tus datos de contacto.
               </p>
             </div>
           ) : (

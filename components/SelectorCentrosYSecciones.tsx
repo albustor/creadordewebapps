@@ -15,7 +15,6 @@ import {
 
 export const CREAR_DESGLOSE_DEFAULT = (): DesgloseNivelSecciones[] => [
   { nivel: "7°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["7-1", "7-2", "7-3", "7-4"] },
-  { nivel: "8°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["8-1", "8-2", "8-3", "8-4"] },
   { nivel: "9°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["9-1", "9-2", "9-3", "9-4", "9-5"] },
 ];
 

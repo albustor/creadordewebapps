@@ -25,8 +25,8 @@ export default function DiagnosticoPage() {
   const router = useRouter();
   const { docente, isInitialized } = useDocente();
 
-  // Nivel activo: 7°, 8° o 9°
-  const [nivelActivo, setNivelActivo] = useState<NivelEducativo>("8°");
+  // Nivel activo: 7° o 9°
+  const [nivelActivo, setNivelActivo] = useState<NivelEducativo>("7°");
 
   const configActual = obtenerDiagnosticoPorNivel(nivelActivo);
 
@@ -83,7 +83,7 @@ export default function DiagnosticoPage() {
               </span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mt-2">
-              Evaluación Diagnóstica: 7.°, 8.° y 9.° Año
+              Evaluación Diagnóstica: 7.° y 9.° Año
             </h1>
             <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-3xl leading-relaxed">
               Seleccione el nivel educativo para acceder a los instrumentos diagnósticos basados en el Programa de Estudios de Tecnologías de la Información, WebApps autónomas (en línea y desconectadas con QR) y módulos de evaluación docente con rúbricas socioafectivas y psicomotoras.
@@ -120,7 +120,7 @@ export default function DiagnosticoPage() {
                 ¿Cómo funciona este entorno de prueba para el Asesor?
               </h3>
               <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
-                Este módulo es un <strong>espejo interactivo</strong> de las herramientas curriculares que tienen los docentes en el aula. Desde aquí, usted como asesor/a puede explorar, interactuar y <strong>realizar simulaciones y pruebas pedagógicas con cada una de las secciones de 7.°, 8.° y 9.° Año</strong>.
+                Este módulo es un <strong>espejo interactivo</strong> de las herramientas curriculares que tienen los docentes en el aula. Desde aquí, usted como asesor/a puede explorar, interactuar y <strong>realizar simulaciones y pruebas pedagógicas con cada una de las secciones de 7.° y 9.° Año</strong>.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
                 <div className="bg-white/80 p-3 rounded-2xl border border-amber-200 flex items-start gap-2.5">
@@ -142,7 +142,7 @@ export default function DiagnosticoPage() {
           </div>
         </div>
 
-        {/* SELECTOR DE PESTAÑAS DE NIVEL: 7.°, 8.° y 9.° AÑO */}
+        {/* SELECTOR DE PESTAÑAS DE NIVEL: 7.° y 9.° AÑO */}
         <SelectorNivelDiagnosticoTabs
           nivelSeleccionado={nivelActivo}
           onSelectNivel={(n) => setNivelActivo(n)}
@@ -178,41 +178,6 @@ export default function DiagnosticoPage() {
             {/* Selector de Versiones Estudiante y Docente */}
             <SelectorVersionesDiagnostico
               nivel="7°"
-              docenteNombre={docente?.nombreCompleto}
-              institucionNombre={docente?.institucionNombre}
-            />
-
-          </div>
-        )}
-
-        {/* ========================================================= */}
-        {/* PESTAÑA: 8.° AÑO («Hardware, Algoritmos y Robótica»)     */}
-        {/* ========================================================= */}
-        {nivelActivo === "8°" && (
-          <div className="space-y-6 animate-fadeIn">
-            
-            {/* Banner Destacado 8vo */}
-            <div className="bg-gradient-to-br from-teal-900 via-teal-950 to-slate-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-teal-700/50 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
-              <div className="space-y-3 max-w-3xl">
-                <div className="flex items-center gap-2">
-                  <span className="px-3 py-1 bg-teal-500/30 text-teal-200 border border-teal-400/40 rounded-full text-[10px] font-black uppercase tracking-wider">
-                    8.° Año • PNFT Oficial MEP
-                  </span>
-                  <span className="text-xs text-teal-300 font-medium">14 Indicadores de Logro Oficiales</span>
-                </div>
-                <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-3">
-                  <Cpu size={32} className="text-teal-400" weight="fill" />
-                  <span>Diagnóstico Octavo: Hardware, Algoritmos y Robótica</span>
-                </h2>
-                <p className="text-xs sm:text-sm text-teal-100 leading-relaxed font-normal">
-                  Instrumento oficial articulado en 3 grupos de criterios asociados (HW/SW, Algoritmos y Robótica) con 14 criterios interactivos, mini-reto socioafectivo y lista de cotejo psicomotora para el docente.
-                </p>
-              </div>
-            </div>
-
-            {/* Selector de Versiones Estudiante y Docente (8° Año) */}
-            <SelectorVersionesDiagnostico
-              nivel="8°"
               docenteNombre={docente?.nombreCompleto}
               institucionNombre={docente?.institucionNombre}
             />

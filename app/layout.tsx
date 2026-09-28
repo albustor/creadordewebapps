@@ -14,7 +14,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: "Diagnóstico Secundaria PNFT - Tecnologías de la Información",
-  description: "Recurso oficial para el desarrollo del diagnóstico formativo en 7°, 8° y 9° año con base en el Programa Nacional de Formación Tecnológica (PNFT).",
+  description: "Recurso oficial para el desarrollo del diagnóstico formativo en 7° y 9° año con base en el Programa Nacional de Formación Tecnológica (PNFT).",
 };
 
 export default function RootLayout({

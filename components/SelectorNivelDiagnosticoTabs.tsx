@@ -17,9 +17,8 @@ export default function SelectorNivelDiagnosticoTabs({
     switch (nivel) {
       case "7°":
         return <GameController size={20} weight="duotone" />;
-      case "8°":
-        return <Cpu size={20} weight="duotone" />;
       case "9°":
+      default:
         return <Circuitry size={20} weight="duotone" />;
     }
   };
@@ -28,9 +27,8 @@ export default function SelectorNivelDiagnosticoTabs({
     switch (nivel) {
       case "7°":
         return "CyberQuest • Ciudadanía Digital y Algoritmos";
-      case "8°":
-        return "14 Reactivos • HW/SW, Programación y Robótica";
       case "9°":
+      default:
         return "Aula Inteligente • IoT y Microcontroladores";
     }
   };

@@ -35,7 +35,7 @@ interface SelectorVersionesDiagnosticoProps {
 }
 
 export default function SelectorVersionesDiagnostico({
-  nivel = "8°",
+  nivel = "7°",
   docenteNombre,
   institucionNombre,
 }: SelectorVersionesDiagnosticoProps) {
@@ -51,7 +51,7 @@ export default function SelectorVersionesDiagnostico({
   const diagConfig = obtenerDiagnosticoPorNivel(nivel);
 
   // Determinar centro educativo y secciones asignadas para este nivel
-  const nivelNum = nivel.replace(/\D/g, ""); // "7", "8", "9"
+  const nivelNum = nivel.replace(/\D/g, ""); // "7", "9"
   const centrosConNivel = (docente?.centrosEducativos || []).filter((c) =>
     (c.desgloseNiveles || []).some((dn) => dn.nivel.includes(nivelNum) && dn.activo === true)
   );
@@ -81,16 +81,12 @@ export default function SelectorVersionesDiagnostico({
 
   const queryString = `?${queryParams.toString()}`;
 
-  // Rutas dinámicas según el nivel
-  let pathOnline = "/webapps/diagnostico_8vo_modulo01_en_linea.html";
-  let pathOffline = "/webapps/diagnostico_8vo_modulo01_desconectado_offline.html";
-  let pathDocente = "/webapps/diagnostico_8vo_modulo01_docente_evaluador.html";
+  // Rutas dinámicas según el nivel (7° y 9°)
+  let pathOnline = "/webapps/diagnostico_setimo_ano.html";
+  let pathOffline = "/webapps/diagnostico_setimo_ano_modulo01_desconectado_offline.html";
+  let pathDocente = "/webapps/diagnostico_setimo_ano_modulo01_docente_evaluador.html";
 
-  if (nivel === "7°") {
-    pathOnline = "/webapps/diagnostico_setimo_ano.html";
-    pathOffline = "/webapps/diagnostico_setimo_ano_modulo01_desconectado_offline.html";
-    pathDocente = "/webapps/diagnostico_setimo_ano_modulo01_docente_evaluador.html";
-  } else if (nivel === "9°") {
+  if (nivel === "9°") {
     pathOnline = "/webapps/diagnostico_9no_modulo01_en_linea.html";
     pathOffline = "/webapps/diagnostico_9no_modulo01_desconectado_offline.html";
     pathDocente = "/webapps/diagnostico_9no_modulo01_docente_evaluador.html";
@@ -384,8 +380,6 @@ export default function SelectorVersionesDiagnostico({
               href={
                 nivel === "7°"
                   ? "/docs/GUIA_PEDAGOGICA_DIAGNOSTICO_7MO_MEP.pdf"
-                  : nivel === "8°"
-                  ? "/docs/GUIA_PEDAGOGICA_DIAGNOSTICO_8VO_MEP.pdf"
                   : "/docs/GUIA_PEDAGOGICA_DIAGNOSTICO_9NO_MEP.pdf"
               }
               target="_blank"
@@ -393,7 +387,7 @@ export default function SelectorVersionesDiagnostico({
               className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-stone-100 text-slate-800 rounded-xl border border-stone-300 font-bold transition-all text-xs"
             >
               <FilePdf size={14} className="text-rose-600" weight="bold" />
-              <span>Guía Pedagógica Diagnóstico {nivel === "7°" ? "Sétimo" : nivel === "8°" ? "Octavo" : "Noveno"} Año (PDF)</span>
+              <span>Guía Pedagógica Diagnóstico {nivel === "7°" ? "Sétimo" : "Noveno"} Año (PDF)</span>
               <ArrowSquareOut size={12} />
             </a>
 

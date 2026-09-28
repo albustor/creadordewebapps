@@ -64,7 +64,7 @@ export default function ModalGuiaRapidaDocente({ abierto, onCerrar }: ModalGuiaR
                 Seleccione su Nivel y Sección
               </h4>
               <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                En el <strong>Paso 1</strong> de la pantalla, elija el año (7.°, 8.° o 9.°) y toque el botón de su sección real (ejemplo: <strong>7-1</strong>). El sistema preparará automáticamente los reactivos correspondientes.
+                En el <strong>Paso 1</strong> de la pantalla, elija el año (7.° o 9.°) y toque el botón de su sección real (ejemplo: <strong>7-1</strong>). El sistema preparará automáticamente los reactivos correspondientes.
               </p>
             </div>
           </div>

@@ -130,12 +130,6 @@ export const DOCENTE_DEFAULT: DocenteData = {
           seccionesAtendidasDocente: ["7-1", "7-2", "7-3"],
         },
         {
-          nivel: "8°",
-          activo: true,
-          totalSeccionesColegio: 6,
-          seccionesAtendidasDocente: ["8-1", "8-2", "8-3"],
-        },
-        {
           nivel: "9°",
           activo: true,
           totalSeccionesColegio: 6,
@@ -179,12 +173,6 @@ export const DOCENTE_PRUEBA_1: DocenteData = {
           seccionesAtendidasDocente: ["7-1", "7-2", "7-3"],
         },
         {
-          nivel: "8°",
-          activo: true,
-          totalSeccionesColegio: 6,
-          seccionesAtendidasDocente: ["8-1", "8-2"],
-        },
-        {
           nivel: "9°",
           activo: true,
           totalSeccionesColegio: 6,
@@ -207,12 +195,6 @@ export const DOCENTE_PRUEBA_1: DocenteData = {
           seccionesAtendidasDocente: ["7-1", "7-2"],
         },
         {
-          nivel: "8°",
-          activo: true,
-          totalSeccionesColegio: 5,
-          seccionesAtendidasDocente: ["8-1", "8-2", "8-3"],
-        },
-        {
           nivel: "9°",
           activo: true,
           totalSeccionesColegio: 5,
@@ -233,12 +215,6 @@ export const DOCENTE_PRUEBA_1: DocenteData = {
           activo: true,
           totalSeccionesColegio: 6,
           seccionesAtendidasDocente: ["7-4", "7-5", "7-6"],
-        },
-        {
-          nivel: "8°",
-          activo: true,
-          totalSeccionesColegio: 4,
-          seccionesAtendidasDocente: ["8-3", "8-4"],
         },
         {
           nivel: "9°",
@@ -284,12 +260,6 @@ export const DOCENTE_PRUEBA_2: DocenteData = {
           seccionesAtendidasDocente: ["7-1", "7-2", "7-3", "7-4"],
         },
         {
-          nivel: "8°",
-          activo: true,
-          totalSeccionesColegio: 5,
-          seccionesAtendidasDocente: ["8-1", "8-2"],
-        },
-        {
           nivel: "9°",
           activo: true,
           totalSeccionesColegio: 6,
@@ -310,12 +280,6 @@ export const DOCENTE_PRUEBA_2: DocenteData = {
           activo: true,
           totalSeccionesColegio: 8,
           seccionesAtendidasDocente: ["7-1", "7-2", "7-3"],
-        },
-        {
-          nivel: "8°",
-          activo: true,
-          totalSeccionesColegio: 8,
-          seccionesAtendidasDocente: ["8-1", "8-2", "8-3", "8-4"],
         },
         {
           nivel: "9°",
@@ -355,7 +319,6 @@ export const DOCENTE_PRUEBA_3: DocenteData = {
       codigoPresupuestario: "MEP-CSLG-2027",
       desgloseNiveles: [
         { nivel: "7°", activo: true, totalSeccionesColegio: 8, seccionesAtendidasDocente: ["7-1", "7-2", "7-3"] },
-        { nivel: "8°", activo: true, totalSeccionesColegio: 7, seccionesAtendidasDocente: ["8-1", "8-2", "8-3"] },
         { nivel: "9°", activo: true, totalSeccionesColegio: 7, seccionesAtendidasDocente: ["9-1", "9-2", "9-3", "9-4"] },
       ],
     },
@@ -368,7 +331,6 @@ export const DOCENTE_PRUEBA_3: DocenteData = {
       codigoPresupuestario: "MEP-CVLS-2027",
       desgloseNiveles: [
         { nivel: "7°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["7-1", "7-2"] },
-        { nivel: "8°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["8-1", "8-2"] },
         { nivel: "9°", activo: true, totalSeccionesColegio: 4, seccionesAtendidasDocente: ["9-1", "9-2"] },
       ],
     },
@@ -402,7 +364,6 @@ export const DOCENTE_PRUEBA_4: DocenteData = {
       codigoPresupuestario: "MEP-LH-2027",
       desgloseNiveles: [
         { nivel: "7°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["7-1", "7-2", "7-3"] },
-        { nivel: "8°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["8-1", "8-2"] },
         { nivel: "9°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["9-1", "9-2", "9-3"] },
       ],
     },
@@ -415,7 +376,6 @@ export const DOCENTE_PRUEBA_4: DocenteData = {
       codigoPresupuestario: "MEP-CTPMN-2027",
       desgloseNiveles: [
         { nivel: "7°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["7-1", "7-2"] },
-        { nivel: "8°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["8-1", "8-2"] },
         { nivel: "9°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["9-1", "9-2", "9-3"] },
       ],
     },
@@ -449,7 +409,6 @@ export const DOCENTE_PRUEBA_5: DocenteData = {
       codigoPresupuestario: "MEP-IG-2027",
       desgloseNiveles: [
         { nivel: "7°", activo: true, totalSeccionesColegio: 7, seccionesAtendidasDocente: ["7-1", "7-2", "7-3"] },
-        { nivel: "8°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["8-1", "8-2", "8-3"] },
         { nivel: "9°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["9-1", "9-2"] },
       ],
     },
@@ -462,7 +421,6 @@ export const DOCENTE_PRUEBA_5: DocenteData = {
       codigoPresupuestario: "MEP-LLL-2027",
       desgloseNiveles: [
         { nivel: "7°", activo: true, totalSeccionesColegio: 4, seccionesAtendidasDocente: ["7-1", "7-2"] },
-        { nivel: "8°", activo: true, totalSeccionesColegio: 4, seccionesAtendidasDocente: ["8-1", "8-2"] },
         { nivel: "9°", activo: true, totalSeccionesColegio: 4, seccionesAtendidasDocente: ["9-1", "9-2"] },
       ],
     },
@@ -496,7 +454,6 @@ export const DOCENTE_PRUEBA_6: DocenteData = {
       codigoPresupuestario: "MEP-LJM-2027",
       desgloseNiveles: [
         { nivel: "7°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["7-1", "7-2", "7-3"] },
-        { nivel: "8°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["8-1", "8-2"] },
         { nivel: "9°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["9-1", "9-2", "9-3"] },
       ],
     },
@@ -509,7 +466,6 @@ export const DOCENTE_PRUEBA_6: DocenteData = {
       codigoPresupuestario: "MEP-CTPP-2027",
       desgloseNiveles: [
         { nivel: "7°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["7-1", "7-2"] },
-        { nivel: "8°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["8-1", "8-2"] },
         { nivel: "9°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["9-1", "9-2"] },
       ],
     },
@@ -543,7 +499,6 @@ export const DOCENTE_PRUEBA_7: DocenteData = {
       codigoPresupuestario: "MEP-LNL-2027",
       desgloseNiveles: [
         { nivel: "7°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["7-1", "7-2", "7-3"] },
-        { nivel: "8°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["8-1", "8-2", "8-3"] },
         { nivel: "9°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["9-1", "9-2"] },
       ],
     },
@@ -556,7 +511,6 @@ export const DOCENTE_PRUEBA_7: DocenteData = {
       codigoPresupuestario: "MEP-CTPL-2027",
       desgloseNiveles: [
         { nivel: "7°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["7-1", "7-2"] },
-        { nivel: "8°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["8-1", "8-2"] },
         { nivel: "9°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["9-1", "9-2", "9-3"] },
       ],
     },
@@ -590,7 +544,6 @@ export const DOCENTE_PRUEBA_8: DocenteData = {
       codigoPresupuestario: "MEP-LUN-2027",
       desgloseNiveles: [
         { nivel: "7°", activo: true, totalSeccionesColegio: 7, seccionesAtendidasDocente: ["7-1", "7-2", "7-3"] },
-        { nivel: "8°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["8-1", "8-2"] },
         { nivel: "9°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["9-1", "9-2", "9-3"] },
       ],
     },
@@ -603,7 +556,6 @@ export const DOCENTE_PRUEBA_8: DocenteData = {
       codigoPresupuestario: "MEP-CTPGV-2027",
       desgloseNiveles: [
         { nivel: "7°", activo: true, totalSeccionesColegio: 4, seccionesAtendidasDocente: ["7-1", "7-2"] },
-        { nivel: "8°", activo: true, totalSeccionesColegio: 4, seccionesAtendidasDocente: ["8-1", "8-2"] },
         { nivel: "9°", activo: true, totalSeccionesColegio: 4, seccionesAtendidasDocente: ["9-1", "9-2"] },
       ],
     },
@@ -637,7 +589,6 @@ export const DOCENTE_PRUEBA_9: DocenteData = {
       codigoPresupuestario: "MEP-LSC-2027",
       desgloseNiveles: [
         { nivel: "7°", activo: true, totalSeccionesColegio: 7, seccionesAtendidasDocente: ["7-1", "7-2", "7-3"] },
-        { nivel: "8°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["8-1", "8-2"] },
         { nivel: "9°", activo: true, totalSeccionesColegio: 6, seccionesAtendidasDocente: ["9-1", "9-2", "9-3"] },
       ],
     },
@@ -650,7 +601,6 @@ export const DOCENTE_PRUEBA_9: DocenteData = {
       codigoPresupuestario: "MEP-CTPSC-2027",
       desgloseNiveles: [
         { nivel: "7°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["7-1", "7-2"] },
-        { nivel: "8°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["8-1", "8-2"] },
         { nivel: "9°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["9-1", "9-2"] },
       ],
     },
@@ -684,7 +634,6 @@ export const DOCENTE_PRUEBA_10: DocenteData = {
       codigoPresupuestario: "MEP-IJAG-2027",
       desgloseNiveles: [
         { nivel: "7°", activo: true, totalSeccionesColegio: 8, seccionesAtendidasDocente: ["7-1", "7-2", "7-3"] },
-        { nivel: "8°", activo: true, totalSeccionesColegio: 7, seccionesAtendidasDocente: ["8-1", "8-2", "8-3"] },
         { nivel: "9°", activo: true, totalSeccionesColegio: 7, seccionesAtendidasDocente: ["9-1", "9-2", "9-3", "9-4"] },
       ],
     },
@@ -697,7 +646,6 @@ export const DOCENTE_PRUEBA_10: DocenteData = {
       codigoPresupuestario: "MEP-CTPSR-2027",
       desgloseNiveles: [
         { nivel: "7°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["7-1", "7-2"] },
-        { nivel: "8°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["8-1", "8-2"] },
         { nivel: "9°", activo: true, totalSeccionesColegio: 5, seccionesAtendidasDocente: ["9-1", "9-2"] },
       ],
     },
@@ -969,163 +917,6 @@ export function generarTelemetriaInicialParaDocente(doc: DocenteData): PayloadTe
       timestamp: baseTs - 170000,
       fechaHoraRegistro: "25/2/2027, 09:10:00 AM",
       tokenAntiFraude: `TOK-7MO-${docId}-08`,
-    },
-
-    // 8VO AÑO — SECCIÓN 8-1
-    {
-      idResultado: `RES-8VO-${docId}-001`,
-      webAppId: "diagnostico_8vo_modulo01_docente_evaluador",
-      webAppTitulo: "Evaluación Diagnóstica — 8° Año (PNFT)",
-      docenteId: docId,
-      docenteNombre: docNom,
-      docenteCedula: docCed,
-      institucionNombre: instNom,
-      dreCodigo: dre,
-      estudianteNombre: "Gabriel Brenes Elizondo",
-      estudianteCedula: "1-2035-0211",
-      seccionOGrupo: "Sección 8-1",
-      nivel: "8°",
-      puntaje: 14,
-      puntajeMaximo: 14,
-      porcentaje: 100,
-      nivelLogro: "Avanzado",
-      tiempoSegundos: 180,
-      totalReactivos: 14,
-      aciertos: 14,
-      fallos: 0,
-      subareasDetalle: { sub1_apropiacion: 5, sub2_algoritmos: 7, sub3_robotica: 2 },
-      socioafectivo: { s1: "A", s2: "A", s3: "A", s4: "A" },
-      psicomotor: { p1: "A", p2: "A", p3: "A", p4: "A", p5: "A" },
-      fortalezas: "Apropiación tecnológica, Algoritmos, Computación física",
-      prioridades: "Ninguna",
-      estadoProgreso: "completado",
-      timestamp: baseTs - 50000,
-      fechaHoraRegistro: "25/2/2027, 09:20:00 AM",
-      tokenAntiFraude: `TOK-8VO-${docId}-01`,
-    },
-    {
-      idResultado: `RES-8VO-${docId}-002`,
-      webAppId: "diagnostico_8vo_modulo01_docente_evaluador",
-      webAppTitulo: "Evaluación Diagnóstica — 8° Año (PNFT)",
-      docenteId: docId,
-      docenteNombre: docNom,
-      docenteCedula: docCed,
-      institucionNombre: instNom,
-      dreCodigo: dre,
-      estudianteNombre: "Mariana Umaña Chacón",
-      estudianteCedula: "1-2035-0212",
-      seccionOGrupo: "Sección 8-1",
-      nivel: "8°",
-      puntaje: 12,
-      puntajeMaximo: 14,
-      porcentaje: 86,
-      nivelLogro: "Avanzado",
-      tiempoSegundos: 210,
-      totalReactivos: 14,
-      aciertos: 12,
-      fallos: 2,
-      subareasDetalle: { sub1_apropiacion: 5, sub2_algoritmos: 5, sub3_robotica: 2 },
-      socioafectivo: { s1: "A", s2: "A", s3: "B", s4: "A" },
-      psicomotor: { p1: "A", p2: "A", p3: "A", p4: "B", p5: "A" },
-      fortalezas: "Hardware, Robótica básica",
-      prioridades: "Algoritmos condicionales",
-      estadoProgreso: "completado",
-      timestamp: baseTs - 60000,
-      fechaHoraRegistro: "25/2/2027, 09:25:00 AM",
-      tokenAntiFraude: `TOK-8VO-${docId}-02`,
-    },
-    {
-      idResultado: `RES-8VO-${docId}-003`,
-      webAppId: "diagnostico_8vo_modulo01_docente_evaluador",
-      webAppTitulo: "Evaluación Diagnóstica — 8° Año (PNFT)",
-      docenteId: docId,
-      docenteNombre: docNom,
-      docenteCedula: docCed,
-      institucionNombre: instNom,
-      dreCodigo: dre,
-      estudianteNombre: "Santiago Delgado Vega",
-      estudianteCedula: "1-2035-0213",
-      seccionOGrupo: "Sección 8-1",
-      nivel: "8°",
-      puntaje: 10,
-      puntajeMaximo: 14,
-      porcentaje: 71,
-      nivelLogro: "Intermedio",
-      tiempoSegundos: 250,
-      totalReactivos: 14,
-      aciertos: 10,
-      fallos: 4,
-      subareasDetalle: { sub1_apropiacion: 4, sub2_algoritmos: 4, sub3_robotica: 2 },
-      socioafectivo: { s1: "B", s2: "A", s3: "B", s4: "B" },
-      psicomotor: { p1: "A", p2: "B", p3: "B", p4: "B", p5: "B" },
-      fortalezas: "Tipos de software, Redes y almacenamiento",
-      prioridades: "Programación de robots",
-      estadoProgreso: "completado",
-      timestamp: baseTs - 70000,
-      fechaHoraRegistro: "25/2/2027, 09:30:00 AM",
-      tokenAntiFraude: `TOK-8VO-${docId}-03`,
-    },
-    {
-      idResultado: `RES-8VO-${docId}-004`,
-      webAppId: "diagnostico_8vo_modulo01_docente_evaluador",
-      webAppTitulo: "Evaluación Diagnóstica — 8° Año (PNFT)",
-      docenteId: docId,
-      docenteNombre: docNom,
-      docenteCedula: docCed,
-      institucionNombre: instNom,
-      dreCodigo: dre,
-      estudianteNombre: "Lucía Fonseca Monge",
-      estudianteCedula: "1-2035-0214",
-      seccionOGrupo: "Sección 8-1",
-      nivel: "8°",
-      puntaje: 9,
-      puntajeMaximo: 14,
-      porcentaje: 64,
-      nivelLogro: "Intermedio",
-      tiempoSegundos: 270,
-      totalReactivos: 14,
-      aciertos: 9,
-      fallos: 5,
-      subareasDetalle: { sub1_apropiacion: 4, sub2_algoritmos: 4, sub3_robotica: 1 },
-      socioafectivo: { s1: "B", s2: "B", s3: "B", s4: "B" },
-      psicomotor: { p1: "B", p2: "B", p3: "B", p4: "B", p5: "B" },
-      fortalezas: "Internet de las cosas, Multimedia",
-      prioridades: "Componentes del robot, Algoritmos",
-      estadoProgreso: "completado",
-      timestamp: baseTs - 80000,
-      fechaHoraRegistro: "25/2/2027, 09:35:00 AM",
-      tokenAntiFraude: `TOK-8VO-${docId}-04`,
-    },
-    {
-      idResultado: `RES-8VO-${docId}-005`,
-      webAppId: "diagnostico_8vo_modulo01_docente_evaluador",
-      webAppTitulo: "Evaluación Diagnóstica — 8° Año (PNFT)",
-      docenteId: docId,
-      docenteNombre: docNom,
-      docenteCedula: docCed,
-      institucionNombre: instNom,
-      dreCodigo: dre,
-      estudianteNombre: "Kevin Cordero Soto",
-      estudianteCedula: "1-2035-0215",
-      seccionOGrupo: "Sección 8-1",
-      nivel: "8°",
-      puntaje: 7,
-      puntajeMaximo: 14,
-      porcentaje: 50,
-      nivelLogro: "Inicial",
-      tiempoSegundos: 310,
-      totalReactivos: 14,
-      aciertos: 7,
-      fallos: 7,
-      subareasDetalle: { sub1_apropiacion: 3, sub2_algoritmos: 3, sub3_robotica: 1 },
-      socioafectivo: { s1: "C", s2: "B", s3: "C", s4: "C" },
-      psicomotor: { p1: "C", p2: "C", p3: "C", p4: "C", p5: "B" },
-      fortalezas: "Hardware básico",
-      prioridades: "Robótica, Algoritmos, Conexión de dispositivos",
-      estadoProgreso: "completado",
-      timestamp: baseTs - 90000,
-      fechaHoraRegistro: "25/2/2027, 09:40:00 AM",
-      tokenAntiFraude: `TOK-8VO-${docId}-05`,
     },
 
     // 9NO AÑO — SECCIÓN 9-1
@@ -1527,85 +1318,7 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       }
     } catch {}
 
-    // 2. Cargar evaluaciones locales de 8vo vinculadas estrictamente a este docente
-    try {
-      const raw8vo = cedClean ? SafeStorage.getItem(`MEP_DOCENTE_8VO_EVALUATIONS_${cedClean}`) : null;
-      if (raw8vo) {
-        const list8vo = JSON.parse(raw8vo);
-        if (Array.isArray(list8vo)) {
-          list8vo.forEach((ev: any) => {
-            const evDocId = (ev.docenteId || "").trim().toLowerCase();
-            const evDocCed = (ev.docenteCedula || "").trim().toLowerCase();
-            const evDocNom = (ev.docenteNombre || "").trim().toLowerCase();
-            const evDocCedClean = evDocCed.replace(/\D/g, "");
-
-            const pertenece =
-              (docenteId && (evDocId === docenteId.toLowerCase() || evDocId.includes(docenteId.toLowerCase()))) ||
-              (cedClean && (evDocCedClean === cedClean || evDocId === cedClean)) ||
-              (nombreDoc && (evDocNom === nombreDoc || evDocNom.includes(nombreDoc))) ||
-              Boolean(cedClean && SafeStorage.getItem(`MEP_DOCENTE_8VO_EVALUATIONS_${cedClean}`));
-
-            if (!pertenece) return;
-
-            const estNombre = ev.nombre || ev.estudianteNombre || "Estudiante 8°";
-            const sec = normalizarSeccion(ev.seccion || ev.seccionOGrupo || "8-1");
-            const puntos = ev.puntaje !== undefined && ev.puntaje <= 14 ? ev.puntaje : (ev.totalPuntos !== undefined && ev.totalPuntos <= 14 ? ev.totalPuntos : Math.round(((ev.porcentaje || 80) / 100) * 14));
-            const score = ev.porcentaje ?? Math.round((puntos / 14) * 100);
-
-            const sub1Val = ev.sub1 !== undefined ? ev.sub1 : (ev.subareasDetalle?.sub1_apropiacion ?? Math.min(5, Math.round((puntos / 14) * 5)));
-            const sub2Val = ev.sub2 !== undefined ? ev.sub2 : (ev.subareasDetalle?.sub2_algoritmos ?? Math.min(7, Math.round((puntos / 14) * 7)));
-            const sub3Val = ev.sub3 !== undefined ? ev.sub3 : (ev.subareasDetalle?.sub3_robotica ?? Math.min(2, Math.max(0, puntos - sub1Val - sub2Val)));
-
-            const ts = ev.timestamp || Date.now();
-            const d = new Date(ts);
-            const fechaLocalCR = !isNaN(d.getTime()) ? d.toLocaleString("es-CR", { timeZone: "America/Costa_Rica" }) : new Date().toLocaleString("es-CR");
-            const fechaCorta = !isNaN(d.getTime()) ? d.toLocaleDateString("es-CR", { timeZone: "America/Costa_Rica" }) : new Date().toLocaleDateString("es-CR");
-            const horaCorta = !isNaN(d.getTime()) ? d.toLocaleTimeString("es-CR", { timeZone: "America/Costa_Rica" }) : new Date().toLocaleTimeString("es-CR");
-
-            const rec: PayloadTelemetria = {
-              idResultado: ev.id || `eval-8vo-${ts}`,
-              webAppId: "diagnostico_8vo_modulo01_docente_evaluador",
-              webAppTitulo: "Evaluación Diagnóstica — 8° Año (PNFT)",
-              docenteId: ev.docenteId || docenteId || doc.idDocente,
-              docenteNombre: ev.docenteNombre || doc.nombreCompleto || "Docente Evaluador",
-              docenteCedula: ev.docenteCedula || cedulaDoc || doc.cedula || "—",
-              docenteEmail: ev.docenteEmail || correoDoc || "",
-              institucionNombre: ev.institucionNombre || doc.institucionNombre || "Centro Educativo MEP",
-              dreCodigo: ev.dreCodigo || doc.dreCodigo || "DRE-01",
-              estudianteNombre: estNombre,
-              estudianteCedula: ev.cedula || "—",
-              seccionOGrupo: sec,
-              nivel: "8°",
-              puntaje: puntos,
-              puntajeMaximo: 14,
-              porcentaje: score,
-              totalReactivos: 14,
-              aciertos: puntos,
-              fallos: Math.max(0, 14 - puntos),
-              nivelLogro: score >= 80 ? "Avanzado" : score <= 59 ? "Inicial" : "Intermedio",
-              subareasDetalle: {
-                sub1_apropiacion: sub1Val,
-                sub2_algoritmos: sub2Val,
-                sub3_robotica: sub3Val,
-              },
-              socioafectivo: ev.socioafectivo || { soc1: "Demostrado", soc2: "Demostrado", soc3: "Demostrado", soc4: "Demostrado" },
-              psicomotor: ev.psicomotor || { psi1: "Demostrado", psi2: "Demostrado", psi3: "Demostrado", psi4: "Demostrado" },
-              tiempoSegundos: 120,
-              estadoProgreso: "completado",
-              timestamp: ts,
-              fechaIngreso: ev.fechaIngreso || fechaLocalCR,
-              fechaHoraRegistro: ev.fechaHoraRegistro || `${fechaCorta}, ${horaCorta}`,
-              fechaEntrega: ev.fechaEntrega || fechaCorta,
-              horaEntrega: ev.horaEntrega || horaCorta,
-              tokenAntiFraude: `TOKEN-8VO-${ts}`,
-            };
-            mapa.set(normalizarClave(rec), rec);
-          });
-        }
-      }
-    } catch {}
-
-    // 3. Cargar telemetría del caché local si pertenece
+    // 2. Cargar telemetría del caché local si pertenece
     try {
       const rawTeleCache = cedClean ? SafeStorage.getItem(`telemetria_registros_${cedClean}`) : null;
       if (rawTeleCache) {
@@ -2501,7 +2214,7 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
           autorRol: docente?.rol || "Docente Secundaria",
           autorDRE: docente?.dreNombre || "San José Central",
           autorCorreo: docente?.correoInstitucional || "alberto.bustos.ortega@mep.go.cr",
-          nivel: (webapp.nivel.startsWith("7") ? "7° Año" : webapp.nivel.startsWith("8") ? "8° Año" : "9° Año") as any,
+          nivel: (webapp.nivel.startsWith("7") ? "7° Año" : "9° Año") as any,
           area: (webapp as any).asignatura || (webapp as any).area || "Tecnología Educativa",
           saberTitulo: (webapp as any).saberTitulo || "Saber Curricular",
           saberConceptual: (webapp as any).saberConceptual || webapp.titulo,

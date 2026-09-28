@@ -538,7 +538,7 @@ export default function PanelDocenteSimplificado() {
   const [seccionActivaMenu, setSeccionActivaMenu] = useState<SeccionPanel>("enlaces");
 
   // Filtros de Nivel y Sección
-  const [nivelActivo, setNivelActivo] = useState<"7mo" | "8vo" | "9no">("7mo");
+  const [nivelActivo, setNivelActivo] = useState<"7mo" | "9no">("7mo");
   const [seccionActiva, setSeccionActiva] = useState<string>("7-1");
   const [centroIdx, setCentroIdx] = useState<number>(0);
   const [busqueda, setBusqueda] = useState("");
@@ -604,7 +604,7 @@ export default function PanelDocenteSimplificado() {
 
   // Centros Educativos del Docente
   const centrosDocente = useMemo(() => {
-    const nivelKey = nivelActivo === "7mo" ? "7" : nivelActivo === "8vo" ? "8" : "9";
+    const nivelKey = nivelActivo === "7mo" ? "7" : "9";
     if (
       docente?.centrosEducativos &&
       Array.isArray(docente.centrosEducativos) &&
@@ -646,8 +646,6 @@ export default function PanelDocenteSimplificado() {
         secciones:
           nivelActivo === "7mo"
             ? ["7-1", "7-2", "7-3"]
-            : nivelActivo === "8vo"
-            ? ["8-1", "8-2", "8-3"]
             : ["9-1", "9-2", "9-3"],
       },
     ];
@@ -657,7 +655,7 @@ export default function PanelDocenteSimplificado() {
 
   // Secciones disponibles
   const seccionesDisponibles = useMemo(() => {
-    const nivelNum = nivelActivo === "7mo" ? "7" : nivelActivo === "8vo" ? "8" : "9";
+    const nivelNum = nivelActivo === "7mo" ? "7" : "9";
     if (centroActivo?.secciones && centroActivo.secciones.length > 0) {
       const filtradas = centroActivo.secciones.filter((s) => s.startsWith(nivelNum));
       if (filtradas.length > 0) return filtradas;
@@ -666,9 +664,9 @@ export default function PanelDocenteSimplificado() {
   }, [centroActivo, nivelActivo]);
 
   // Al cambiar de nivel
-  const handleCambiarNivel = (nuevoNivel: "7mo" | "8vo" | "9no") => {
+  const handleCambiarNivel = (nuevoNivel: "7mo" | "9no") => {
     setNivelActivo(nuevoNivel);
-    const nivelNum = nuevoNivel === "7mo" ? "7" : nuevoNivel === "8vo" ? "8" : "9";
+    const nivelNum = nuevoNivel === "7mo" ? "7" : "9";
     setSeccionActiva(`${nivelNum}-1`);
   };
 
@@ -681,8 +679,6 @@ export default function PanelDocenteSimplificado() {
     const appArchivo =
       nivelActivo === "7mo"
         ? "diagnostico_7mo_modulo01_en_linea.html"
-        : nivelActivo === "8vo"
-        ? "diagnostico_8vo_modulo01_en_linea.html"
         : "diagnostico_9no_modulo01_en_linea.html";
 
     const payloadRaw = {
@@ -700,7 +696,7 @@ export default function PanelDocenteSimplificado() {
       sec: seccionActiva,
       seccion: seccionActiva,
       secciones: centroActivo.secciones || [seccionActiva],
-      nivel: nivelActivo === "7mo" ? "7°" : nivelActivo === "8vo" ? "8°" : "9°",
+      nivel: nivelActivo === "7mo" ? "7°" : "9°",
     };
 
     let token = "";
@@ -717,8 +713,6 @@ export default function PanelDocenteSimplificado() {
   const archivoOfflineDescarga = useMemo(() => {
     return nivelActivo === "7mo"
       ? "/webapps/diagnostico_7mo_modulo01_desconectado_offline.html"
-      : nivelActivo === "8vo"
-      ? "/webapps/diagnostico_8vo_modulo01_desconectado_offline.html"
       : "/webapps/diagnostico_9no_modulo01_desconectado_offline.html";
   }, [nivelActivo]);
 
@@ -742,14 +736,13 @@ export default function PanelDocenteSimplificado() {
 
   // Configuración y reactivos oficiales del nivel
   const configNivel = useMemo(() => {
-    const nivelLetra: NivelEducativo =
-      nivelActivo === "7mo" ? "7°" : nivelActivo === "8vo" ? "8°" : "9°";
+    const nivelLetra: NivelEducativo = nivelActivo === "7mo" ? "7°" : "9°";
     return obtenerDiagnosticoPorNivel(nivelLetra);
   }, [nivelActivo]);
 
   // Telemetría filtrada para la sección activa
   const registrosSeccion = useMemo(() => {
-    const nivelNum = nivelActivo === "7mo" ? "7" : nivelActivo === "8vo" ? "8" : "9";
+    const nivelNum = nivelActivo === "7mo" ? "7" : "9";
     return (telemetria || []).filter((r) => {
       if (!r) return false;
       const nom = (r.estudianteNombre || (r as any).nombreEstudiante || "").toLowerCase();
@@ -930,7 +923,7 @@ export default function PanelDocenteSimplificado() {
   // Exportar a Excel y PDF
   const handleDescargarExcel = () => {
     exportarAExcel(registrosSeccion, {
-      nivel: nivelActivo === "7mo" ? "7.° Año" : nivelActivo === "8vo" ? "8.° Año" : "9.° Año",
+      nivel: nivelActivo === "7mo" ? "7.° Año" : "9.° Año",
       seccion: `Sección ${seccionActiva}`,
       institucion: centroActivo?.nombre || docente?.institucionNombre || "Centro Educativo MEP",
       docente: docente?.nombreCompleto || "Docente MEP",
@@ -940,7 +933,7 @@ export default function PanelDocenteSimplificado() {
 
   const handleDescargarPDF = () => {
     exportarAPDF(registrosSeccion, {
-      nivel: nivelActivo === "7mo" ? "7.° Año" : nivelActivo === "8vo" ? "8.° Año" : "9.° Año",
+      nivel: nivelActivo === "7mo" ? "7.° Año" : "9.° Año",
       seccion: `Sección ${seccionActiva}`,
       institucion: centroActivo?.nombre || docente?.institucionNombre || "Centro Educativo MEP",
       docente: docente?.nombreCompleto || "Docente MEP",
@@ -989,7 +982,7 @@ export default function PanelDocenteSimplificado() {
                   docenteId: docente?.idDocente || "DOC-IMPORT",
                   estudianteNombre: nombreEst,
                   seccionOGrupo: sec.startsWith("Sección ") ? sec : `Sección ${sec}`,
-                  nivel: nivelActivo === "7mo" ? "7°" : (nivelActivo === "8vo" ? "8°" : "9°"),
+                  nivel: nivelActivo === "7mo" ? "7°" : "9°",
                   puntaje: Math.round((porc / 100) * 10),
                   puntajeMaximo: 10,
                   porcentaje: porc,
@@ -1052,7 +1045,7 @@ export default function PanelDocenteSimplificado() {
             Panel de Evaluación
           </span>
 
-          {/* Selector Rápido de Nivel Superior (7.°, 8.° y 9.° Año) */}
+          {/* Selector Rápido de Nivel Superior (7.° y 9.° Año) */}
           <div className="flex items-center gap-1 p-0.5 sm:p-1 bg-white rounded-xl border border-slate-300 shadow-2xs">
             <button
               type="button"
@@ -1065,18 +1058,6 @@ export default function PanelDocenteSimplificado() {
               title="Evaluar 7.° Año (Sétimo)"
             >
               7.° AÑO
-            </button>
-            <button
-              type="button"
-              onClick={() => handleCambiarNivel("8vo")}
-              className={`px-2.5 sm:px-3 py-1 rounded-lg text-xs font-black transition-all cursor-pointer ${
-                nivelActivo === "8vo"
-                  ? "bg-[#1B5E59] text-white shadow-xs"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
-              }`}
-              title="Evaluar 8.° Año (Octavo)"
-            >
-              8.° AÑO
             </button>
             <button
               type="button"
@@ -1740,8 +1721,6 @@ export default function PanelDocenteSimplificado() {
                           <span className="px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 text-[10px] font-black uppercase tracking-wider border border-teal-300">
                             {nivelActivo === "7mo"
                               ? "Programación y algoritmos • Apropiación tecnológica y digital"
-                              : nivelActivo === "8vo"
-                              ? "Apropiación Tecnológica • Programación y algoritmos"
                               : "Computación física, robótica y automatización • Programación y algoritmos"}
                           </span>
                         </div>
@@ -2923,7 +2902,7 @@ export default function PanelDocenteSimplificado() {
                                 Análisis Pedagógico Psicomotor con IA
                               </h3>
                               <p className="text-[11px] text-slate-500">
-                                Sección {seccionActiva} • {nivelActivo === "7mo" ? "7.° Año" : nivelActivo === "8vo" ? "8.° Año" : "9.° Año"}
+                                Sección {seccionActiva} • {nivelActivo === "7mo" ? "7.° Año" : "9.° Año"}
                               </p>
                             </div>
                           </div>
@@ -3140,8 +3119,8 @@ export default function PanelDocenteSimplificado() {
 
           {/* Footer Informativo Simplificado */}
           <footer className="mt-8 pt-3 pb-20 md:pb-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between text-[11px] sm:text-xs text-slate-500 gap-1 text-center sm:text-left">
-            <span>Ministerio de Educación Pública (MEP) • PFT 2027</span>
-            <span className="font-semibold text-slate-600">Suite Diagnóstica 7.°, 8.° y 9.° Año</span>
+            <span>Ministerio de Educación Pública (MEP) • PNFT 2027</span>
+            <span className="font-semibold text-slate-600">Suite Diagnóstica 7.° y 9.° Año</span>
           </footer>
         </main>
 
@@ -3244,9 +3223,9 @@ export default function PanelDocenteSimplificado() {
           abierto={modalProyeccion}
           alCerrar={() => setModalProyeccion(false)}
           urlWebApp={urlEstudiante}
-          titulo={`Diagnóstico ${nivelActivo === "7mo" ? "7.° Año" : nivelActivo === "8vo" ? "8.° Año" : "9.° Año"} — Sección ${seccionActiva}`}
+          titulo={`Diagnóstico ${nivelActivo === "7mo" ? "7.° Año" : "9.° Año"} — Sección ${seccionActiva}`}
           asignatura="Formación Tecnológica"
-          nivel={nivelActivo === "7mo" ? "7.° Año" : nivelActivo === "8vo" ? "8.° Año" : "9.° Año"}
+          nivel={nivelActivo === "7mo" ? "7.° Año" : "9.° Año"}
           docenteNombre={docente?.nombreCompleto}
         />
       )}
@@ -3274,7 +3253,7 @@ export default function PanelDocenteSimplificado() {
           abierto={modalInstalacionMovil}
           alCerrar={() => setModalInstalacionMovil(false)}
           urlApp={urlEstudiante}
-          nombreApp={`Diagnóstico ${nivelActivo === "7mo" ? "7.° Año" : nivelActivo === "8vo" ? "8.° Año" : "9.° Año"}`}
+          nombreApp={`Diagnóstico ${nivelActivo === "7mo" ? "7.° Año" : "9.° Año"}`}
         />
       )}
 
@@ -3282,7 +3261,7 @@ export default function PanelDocenteSimplificado() {
         <ModalArticulacionCurricular
           abierto={modalArticulacion}
           onCerrar={() => setModalArticulacion(false)}
-          nivelInicial={nivelActivo === "8vo" ? "9no" : nivelActivo}
+          nivelInicial={nivelActivo}
         />
       )}
 

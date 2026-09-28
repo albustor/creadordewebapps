@@ -353,7 +353,7 @@ export default function HomePage() {
               </h1>
 
               <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto font-medium leading-relaxed">
-                Recurso oficial para el desarrollo del diagnóstico formativo en <strong>7.°, 8.° y 9.° Año</strong> con base en el Programa Nacional de Formación Tecnológica (PNFT).
+                Recurso oficial para el desarrollo del diagnóstico formativo en <strong>7.° y 9.° Año</strong> con base en el Programa Nacional de Formación Tecnológica (PNFT).
               </p>
             </div>
 
