@@ -85,7 +85,7 @@ export default function Navbar() {
               </span>
               <span className="text-[11px] font-bold text-[#1B5E59] tracking-wider uppercase leading-none mt-1.5 whitespace-nowrap flex items-center gap-1.5 font-sans">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                Evaluación MEP • 7.° y 9.° Año
+                Evaluación MEP • 7.°, 8.° y 9.° Año
               </span>
             </div>
           </Link>

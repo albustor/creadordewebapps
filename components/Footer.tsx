@@ -1,53 +1,51 @@
 "use client";
 
 import React from "react";
+import { Sparkle } from "@phosphor-icons/react";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#F8FAFC] text-slate-600 border-t border-slate-200 mt-auto py-5 select-none">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3">
-        
-        {/* Fila Horizontal Compacta: Elaborado por Asesorías Nacionales */}
-        <div className="bg-white rounded-xl border border-slate-200 p-3 sm:px-5 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-2 shrink-0">
-            <span className="font-extrabold text-[#0f2d4a] uppercase tracking-wider text-[11px] sm:text-xs">
-              Elaborado por:
+    <footer className="bg-[#FCFBF9] border-t border-slate-200 mt-auto py-8 select-none">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="space-y-4 max-w-4xl">
+          
+          {/* Cabecera con ícono estrella, texto y línea divisoria */}
+          <div className="flex items-center gap-2">
+            <Sparkle size={20} weight="fill" className="text-amber-500 shrink-0" />
+            <span className="text-sm sm:text-base font-black text-[#002b49] tracking-wider uppercase">
+              ELABORADO POR:
             </span>
+            <div className="flex-1 h-[1.5px] bg-slate-200 ml-1" />
           </div>
 
-          {/* Sétimo y Noveno en una sola línea horizontal */}
-          <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-5 gap-y-2 text-slate-700">
-            {/* Sétimo */}
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <strong className="text-teal-900 font-bold">Diagnóstico Sétimo:</strong>
-              <span>Heidy María Cascante Cruz</span>
-              <span className="text-slate-300">•</span>
-              <span>Rodolfo Juárez Pérez</span>
-            </div>
-
-            <span className="hidden md:inline text-slate-300">|</span>
-
-            {/* Noveno */}
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <strong className="text-emerald-900 font-bold">Diagnóstico Noveno:</strong>
-              <span>Allan Morera Araya</span>
-              <span className="text-slate-300">•</span>
-              <span>Alberto Bustos Ortega</span>
-            </div>
+          {/* Línea horizontal de nombres con separador | */}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs sm:text-sm font-bold text-[#002b49]">
+            <span>Heidy María Cascante Cruz</span>
+            <span className="text-slate-300 font-light">|</span>
+            <span>Rodolfo Juárez Pérez</span>
+            <span className="text-slate-300 font-light">|</span>
+            <span>Alberto Bustos Ortega</span>
+            <span className="text-slate-300 font-light">|</span>
+            <span>Allan Morera Araya</span>
           </div>
-        </div>
 
-        {/* Fila Institucional Horizontal Compacta */}
-        <div className="text-center text-[11px] text-slate-500 font-medium flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
-          <span className="font-bold text-slate-700">Ministerio de Educación Pública (MEP)</span>
-          <span>•</span>
-          <span>Dirección de Recursos Tecnológicos en Educación (DRTE)</span>
-          <span>•</span>
-          <span>Departamento de Investigación, Desarrollo e Implementación (DIDI)</span>
-        </div>
+          {/* Bloque Institucional */}
+          <div className="space-y-1 text-xs sm:text-sm font-medium text-[#002b49] leading-relaxed">
+            <p>Asesores Nacionales del Programa Nacional de Formación Tecnológica</p>
+            <p>Departamento de Investigación, Desarrollo e Implementación</p>
+            <p>Dirección de Recursos Tecnológicos en Educación</p>
+            <p>Ministerio de Educación Pública</p>
+          </div>
 
+          {/* Fecha */}
+          <div className="pt-2 text-xs sm:text-sm font-bold text-[#002b49]">
+            <p>Febrero 2027.</p>
+          </div>
+
+        </div>
       </div>
     </footer>
   );
 }
+
 

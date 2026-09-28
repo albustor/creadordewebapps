@@ -33,21 +33,10 @@ import {
   EyeSlash,
   Phone,
   Info,
-  DeviceMobile,
-  DeviceTablet,
-  Desktop,
-  ArrowsClockwise,
-  QrCode,
 } from "@phosphor-icons/react";
 
 export default function HomePage() {
   const { docente, isInitialized, iniciarSesionConPIN, registrarDocente, cerrarSesion, telemetria } = useDocente();
-
-  // Estados del Simulador Multidispositivo de Saberes Diagnósticos
-  const [saberSimuladorNivel, setSaberSimuladorNivel] = useState<"7mo" | "9no">("7mo");
-  const [modoDispositivoHome, setModoDispositivoHome] = useState<"mobile" | "tablet" | "desktop">("desktop");
-  const [recargarHomeSimKey, setRecargarHomeSimKey] = useState(0);
-  const [mostrarSimuladorHome, setMostrarSimuladorHome] = useState(true);
 
   // Estado del formulario de autenticación
   const [tabAuth, setTabAuth] = useState<"login" | "registro">("login");
@@ -191,6 +180,10 @@ export default function HomePage() {
     setLoginCredencial(correo);
     setLoginPin(pin);
     setLoginMensaje(null);
+    const res = iniciarSesionConPIN(correo, pin);
+    if (res.exito) {
+      setLoginMensaje({ tipo: "exito", texto: res.mensaje });
+    }
   };
 
   // Autocompletar demo de pruebas
@@ -346,7 +339,7 @@ export default function HomePage() {
       {/* Si el docente NO ha iniciado sesión, mostrar pasarela de login / registro con PIN */}
       {!docente ? (
         <section className="relative overflow-hidden pt-8 pb-16 px-4 sm:px-6 lg:px-8">
-          <div className="relative max-w-xl mx-auto space-y-6">
+          <div className="relative max-w-3xl mx-auto space-y-6">
             
             {/* Título de la Plataforma */}
             <div className="text-center space-y-3">
@@ -798,151 +791,6 @@ export default function HomePage() {
                     </span>
                   </button>
                 ))}
-              </div>
-            </div>
-
-            {/* ========================================================= */}
-            {/* SIMULADOR MULTIDISPOSITIVO EN VIVO (CELULAR / TABLETA / PC) */}
-            {/* ========================================================= */}
-            <div id="simulador" className="bg-slate-900 border-2 border-slate-700 rounded-3xl p-4 sm:p-6 shadow-2xl space-y-4 text-white">
-              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
-                <div className="flex items-center gap-2.5">
-                  <span className="w-3 h-3 rounded-full bg-emerald-400 animate-pulse" />
-                  <div>
-                    <h2 className="text-sm sm:text-base font-black text-white flex items-center gap-2">
-                      <span>Simulador Interactivo de Saberes Diagnósticos</span>
-                    </h2>
-                    <p className="text-[11px] text-slate-400 font-medium">
-                      Visualización oficial en tiempo real para <strong>7.° y 9.° Año</strong>
-                    </p>
-                  </div>
-                </div>
-
-                {/* Selector de Nivel de Saber */}
-                <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-xl border border-slate-800">
-                  <button
-                    type="button"
-                    onClick={() => setSaberSimuladorNivel("7mo")}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${
-                      saberSimuladorNivel === "7mo"
-                        ? "bg-teal-600 text-white shadow-xs"
-                        : "text-slate-400 hover:text-white"
-                    }`}
-                  >
-                    ⚡ 7.° Año (Saber 1)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setSaberSimuladorNivel("9no")}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${
-                      saberSimuladorNivel === "9no"
-                        ? "bg-teal-600 text-white shadow-xs"
-                        : "text-slate-400 hover:text-white"
-                    }`}
-                  >
-                    ⚡ 9.° Año (Saber 1)
-                  </button>
-                </div>
-
-                {/* Selector de Modos de Dispositivo */}
-                <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800">
-                  <button
-                    type="button"
-                    onClick={() => setModoDispositivoHome("mobile")}
-                    className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                      modoDispositivoHome === "mobile"
-                        ? "bg-emerald-600 text-white shadow-xs font-black"
-                        : "text-slate-400 hover:text-white"
-                    }`}
-                    title="Simular pantalla de Celular (380px)"
-                  >
-                    <DeviceMobile size={15} weight={modoDispositivoHome === "mobile" ? "bold" : "regular"} />
-                    <span>Celular</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setModoDispositivoHome("tablet")}
-                    className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                      modoDispositivoHome === "tablet"
-                        ? "bg-emerald-600 text-white shadow-xs font-black"
-                        : "text-slate-400 hover:text-white"
-                    }`}
-                    title="Simular pantalla de Tableta (768px)"
-                  >
-                    <DeviceTablet size={15} weight={modoDispositivoHome === "tablet" ? "bold" : "regular"} />
-                    <span>Tableta</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setModoDispositivoHome("desktop")}
-                    className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                      modoDispositivoHome === "desktop"
-                        ? "bg-emerald-600 text-white shadow-xs font-black"
-                        : "text-slate-400 hover:text-white"
-                    }`}
-                    title="Simular pantalla de Computadora / Escritorio"
-                  >
-                    <Desktop size={15} weight={modoDispositivoHome === "desktop" ? "bold" : "regular"} />
-                    <span>Computadora</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Contenedor del Simulador con Marco Real */}
-              <div className="bg-slate-950/80 rounded-2xl p-3 sm:p-5 flex flex-col items-center justify-center min-h-[580px] overflow-x-auto">
-                <div
-                  className={`transition-all duration-300 bg-white shadow-2xl overflow-hidden flex flex-col ${
-                    modoDispositivoHome === "mobile"
-                      ? "w-[380px] h-[640px] rounded-[36px] border-[10px] border-slate-800 ring-2 ring-slate-700 shrink-0"
-                      : modoDispositivoHome === "tablet"
-                      ? "w-[720px] h-[640px] rounded-[24px] border-[10px] border-slate-800 ring-2 ring-slate-700 shrink-0"
-                      : "w-full h-[640px] rounded-xl border border-slate-700"
-                  }`}
-                >
-                  {/* Notch para móvil */}
-                  {modoDispositivoHome === "mobile" && (
-                    <div className="bg-slate-900 h-5 flex items-center justify-center shrink-0">
-                      <div className="w-20 h-3 bg-slate-800 rounded-b-xl" />
-                    </div>
-                  )}
-
-                  <iframe
-                    key={`${saberSimuladorNivel}-${recargarHomeSimKey}`}
-                    src={saberSimuladorNivel === "7mo" ? "/diagnostico_7mo_modulo01_en_linea.html" : "/diagnostico_9no_modulo01_en_linea.html"}
-                    title={`Diagnóstico ${saberSimuladorNivel}`}
-                    className="w-full flex-1 border-0 bg-white"
-                    sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
-                  />
-                </div>
-              </div>
-
-              {/* Barra de Acciones Inferior del Simulador */}
-              <div className="flex flex-wrap items-center justify-between gap-2 pt-1 text-xs text-slate-400">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                  <span>Saber activo: <strong className="text-white font-bold">{saberSimuladorNivel === "7mo" ? "7.° Año (Sistemas Informáticos y Redes)" : "9.° Año (Algoritmos y Datos)"}</strong></span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setRecargarHomeSimKey((prev) => prev + 1)}
-                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition-colors cursor-pointer font-bold"
-                  >
-                    <ArrowsClockwise size={14} />
-                    <span>Reiniciar Saber</span>
-                  </button>
-                  <a
-                    href={saberSimuladorNivel === "7mo" ? "/diagnostico_7mo_modulo01_en_linea.html" : "/diagnostico_9no_modulo01_en_linea.html"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-teal-800 hover:bg-teal-700 text-white transition-colors font-bold"
-                  >
-                    <span>Abrir en Pestaña Completa</span>
-                    <ArrowSquareOut size={14} />
-                  </a>
-                </div>
               </div>
             </div>
 

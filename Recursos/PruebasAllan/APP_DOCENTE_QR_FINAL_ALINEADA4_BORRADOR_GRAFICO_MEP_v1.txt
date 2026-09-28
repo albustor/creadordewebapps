@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -5200,7 +5200,7 @@ function interpretarQR(
 
         /*
            La sección también es un valor alfanumérico.
-           Ejemplos válidos: 9-1, 9-2, 9-4, 9-6.
+           Ejemplos válidos: 9-6, 7-1, 8-3.
            Nunca debe interpretarse como fecha ni como número.
            Se conserva exactamente como aparece en el QR.
         */

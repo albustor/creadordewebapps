@@ -1052,7 +1052,7 @@ export default function PanelDocenteSimplificado() {
             Panel de Evaluación
           </span>
 
-          {/* Selector Rápido de Nivel Superior (7.° y 9.° Año) */}
+          {/* Selector Rápido de Nivel Superior (7.°, 8.° y 9.° Año) */}
           <div className="flex items-center gap-1 p-0.5 sm:p-1 bg-white rounded-xl border border-slate-300 shadow-2xs">
             <button
               type="button"
@@ -1065,6 +1065,18 @@ export default function PanelDocenteSimplificado() {
               title="Evaluar 7.° Año (Sétimo)"
             >
               7.° AÑO
+            </button>
+            <button
+              type="button"
+              onClick={() => handleCambiarNivel("8vo")}
+              className={`px-2.5 sm:px-3 py-1 rounded-lg text-xs font-black transition-all cursor-pointer ${
+                nivelActivo === "8vo"
+                  ? "bg-[#1B5E59] text-white shadow-xs"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+              }`}
+              title="Evaluar 8.° Año (Octavo)"
+            >
+              8.° AÑO
             </button>
             <button
               type="button"
@@ -3129,7 +3141,7 @@ export default function PanelDocenteSimplificado() {
           {/* Footer Informativo Simplificado */}
           <footer className="mt-8 pt-3 pb-20 md:pb-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between text-[11px] sm:text-xs text-slate-500 gap-1 text-center sm:text-left">
             <span>Ministerio de Educación Pública (MEP) • PFT 2027</span>
-            <span className="font-semibold text-slate-600">Suite Diagnóstica 7.° y 9.° Año</span>
+            <span className="font-semibold text-slate-600">Suite Diagnóstica 7.°, 8.° y 9.° Año</span>
           </footer>
         </main>
 
@@ -3232,9 +3244,9 @@ export default function PanelDocenteSimplificado() {
           abierto={modalProyeccion}
           alCerrar={() => setModalProyeccion(false)}
           urlWebApp={urlEstudiante}
-          titulo={`Diagnóstico ${nivelActivo === "7mo" ? "7.° Año" : "9.° Año"} — Sección ${seccionActiva}`}
+          titulo={`Diagnóstico ${nivelActivo === "7mo" ? "7.° Año" : nivelActivo === "8vo" ? "8.° Año" : "9.° Año"} — Sección ${seccionActiva}`}
           asignatura="Formación Tecnológica"
-          nivel={nivelActivo === "7mo" ? "7.° Año" : "9.° Año"}
+          nivel={nivelActivo === "7mo" ? "7.° Año" : nivelActivo === "8vo" ? "8.° Año" : "9.° Año"}
           docenteNombre={docente?.nombreCompleto}
         />
       )}
@@ -3262,7 +3274,7 @@ export default function PanelDocenteSimplificado() {
           abierto={modalInstalacionMovil}
           alCerrar={() => setModalInstalacionMovil(false)}
           urlApp={urlEstudiante}
-          nombreApp={`Diagnóstico ${nivelActivo === "7mo" ? "7.° Año" : "9.° Año"}`}
+          nombreApp={`Diagnóstico ${nivelActivo === "7mo" ? "7.° Año" : nivelActivo === "8vo" ? "8.° Año" : "9.° Año"}`}
         />
       )}
 
