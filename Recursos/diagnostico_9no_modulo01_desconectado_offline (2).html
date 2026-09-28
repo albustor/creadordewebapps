@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-title" content="Diagnóstico FT 9°">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#2e1065">
-  <title>Diagnóstico 9° (MEP - Formación Tecnológica 2027)</title>
+  <title>Diagnóstico 9° [DESCONECTADO - OFFLINE] (Laboratorio sin Internet)</title>
   
   <style>
     :root {
@@ -820,7 +820,17 @@
 <body>
 
   <!-- HEADER OFICIAL (CENTRADO Y ALINEADO CON DATOS) -->
-  <header>
+  
+    <!-- BANNER MODALIDAD DESCONECTADA (OFFLINE) -->
+    <div style="background: linear-gradient(90deg, #1e293b, #334155); color: white; padding: 6px 14px; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #64748b;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="display: inline-block; width: 8px; height: 8px; background: #f59e0b; border-radius: 50%;"></span>
+        <span>💾 <strong>MODALIDAD DESCONECTADA (OFFLINE)</strong> • Funciona 100% sin internet en esta computadora. Al finalizar muestra tu código QR a tu docente.</span>
+      </div>
+      <span style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 6px; font-size: 10px;">💻 Uso exclusivo en PC / Laptop</span>
+    </div>
+
+    <header>
     <div class="header-container">
       <div style="display: flex; align-items: center; gap: 10px;">
         <div style="width: 34px; height: 34px; border-radius: 8px; background: white; display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); border: 1px solid #d8b4fe;">
@@ -1432,10 +1442,13 @@
         </div>
       </div>
 
-            <!-- BOTÓN DE ACCIÓN ÚNICO: GUARDAR Y ENVIAR RESPUESTAS -->
-      <div style="display: flex; justify-content: center; margin-top: 16px;">
-        <button class="btn" style="background: #dc2626; color: #ffffff; font-weight: 900; font-size: 14px; padding: 14px 28px; border-radius: 12px; box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35); cursor: pointer; border: none; width: 100%; max-width: 400px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: 0.3px; transition: transform 0.15s ease, background-color 0.15s ease;" onclick="cerrarVentanaDiagnostico()">
-          💾 Guardar y Enviar Respuestas
+      <!-- BOTONES DE ACCIÓN: FINALIZAR SESIÓN / NUEVA PRUEBA EN BLANCO -->
+      <div style="display: flex; justify-content: center; gap: 12px; margin-top: 14px; flex-wrap: wrap;">
+        <button class="btn" style="background: #dc2626; color: white; font-weight: 900; font-size: 13px; padding: 12px 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25); cursor: pointer; border: none;" onclick="cerrarVentanaDiagnostico()">
+          🚪 Cerrar Ventana y Finalizar Sesión
+        </button>
+        <button class="btn btn-secondary" style="font-weight: 800; font-size: 13px; padding: 12px 20px; border-radius: 12px; border: 1.5px solid #cbd5e1; cursor: pointer;" onclick="prepararSiguienteEstudiante(true)">
+          🔄 Nueva Prueba / Reiniciar en Blanco
         </button>
       </div>
     </div>

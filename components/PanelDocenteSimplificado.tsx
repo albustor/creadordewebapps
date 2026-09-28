@@ -1559,29 +1559,36 @@ export default function PanelDocenteSimplificado() {
                       <button
                         type="button"
                         onClick={() => setAcordeonOnlineExpandido(!acordeonOnlineExpandido)}
-                        className="w-full p-3 sm:p-3.5 flex items-center justify-between gap-3 text-left hover:bg-[#e4ecf7] transition-colors cursor-pointer select-none"
+                        className="w-full p-3.5 flex flex-col gap-2 text-left hover:bg-[#e4ecf7] transition-colors cursor-pointer select-none"
                         aria-expanded={acordeonOnlineExpandido}
                       >
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          <div className="w-8 h-8 rounded-xl bg-[#1F3F78] text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-xs">
-                            <Globe size={18} weight="bold" />
+                        {/* Fila superior: Badges e indicador de colapso */}
+                        <div className="flex items-center justify-between gap-2 w-full">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="px-2 py-0.5 rounded-md bg-[#1F3F78] text-white text-[10px] font-black tracking-wide uppercase shadow-2xs">
+                              OPCIÓN A
+                            </span>
+                            <span className="px-2 py-0.5 rounded-md bg-white border border-[#D9DFE8] text-[10px] font-black text-[#1F3F78]">
+                              ⚡ Telemetría en vivo (0ms)
+                            </span>
                           </div>
-                          <div className="min-w-0">
-                            <h3 className="text-xs sm:text-[13px] font-black uppercase tracking-wider text-[#1F3F78] truncate">
-                              OPCIÓN A: CON INTERNET (EN LÍNEA)
-                            </h3>
-                            <p className="text-[11px] text-[#2E3552] font-bold truncate">
-                              Diagnóstico PNFT {nivelActivo} • Sección {seccionActiva}
-                            </p>
+                          <div className={`w-6 h-6 rounded-full bg-white flex items-center justify-center text-[#1F3F78] shadow-2xs transition-transform duration-200 shrink-0 ${acordeonOnlineExpandido ? "rotate-180" : ""}`}>
+                            <CaretDown size={14} weight="bold" />
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-2 shrink-0">
-                          <span className="hidden sm:inline-block px-2 py-0.5 rounded-full bg-white/90 border border-[#D9DFE8] text-[10px] font-black text-[#1F3F78]">
-                            Telemetría en 0ms
-                          </span>
-                          <div className={`w-6 h-6 rounded-full bg-white flex items-center justify-center text-[#1F3F78] shadow-2xs transition-transform duration-200 ${acordeonOnlineExpandido ? "rotate-180" : ""}`}>
-                            <CaretDown size={14} weight="bold" />
+                        {/* Fila inferior: Ícono, Título completo y Subtítulo */}
+                        <div className="flex items-start gap-2.5 pt-0.5">
+                          <div className="w-8 h-8 rounded-xl bg-[#1F3F78] text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-xs mt-0.5">
+                            <Globe size={18} weight="bold" />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <h3 className="text-sm font-black text-[#1F3F78] leading-tight">
+                              Con Internet (En Línea)
+                            </h3>
+                            <p className="text-[11.5px] text-[#2E3552] font-semibold mt-0.5 leading-snug">
+                              Diagnóstico PNFT {nivelActivo} • Sección {seccionActiva}
+                            </p>
                           </div>
                         </div>
                       </button>
@@ -1660,29 +1667,36 @@ export default function PanelDocenteSimplificado() {
                       <button
                         type="button"
                         onClick={() => setAcordeonOfflineExpandido(!acordeonOfflineExpandido)}
-                        className="w-full p-3 sm:p-3.5 flex items-center justify-between gap-3 text-left hover:bg-[#fae7da] transition-colors cursor-pointer select-none"
+                        className="w-full p-3.5 flex flex-col gap-2 text-left hover:bg-[#fae7da] transition-colors cursor-pointer select-none"
                         aria-expanded={acordeonOfflineExpandido}
                       >
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          <div className="w-8 h-8 rounded-xl bg-[#E07A2C] text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-xs">
-                            <Lightning size={18} weight="fill" />
+                        {/* Fila superior: Badges e indicador de colapso */}
+                        <div className="flex items-center justify-between gap-2 w-full">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="px-2 py-0.5 rounded-md bg-[#E07A2C] text-white text-[10px] font-black tracking-wide uppercase shadow-2xs">
+                              OPCIÓN B
+                            </span>
+                            <span className="px-2 py-0.5 rounded-md bg-white border border-[#FBD0B6] text-[10px] font-black text-[#E07A2C]">
+                              📦 100% Offline / USB
+                            </span>
                           </div>
-                          <div className="min-w-0">
-                            <h3 className="text-xs sm:text-[13px] font-black uppercase tracking-wider text-[#974800] truncate">
-                              OPCIÓN B: SIN INTERNET (DESCONECTADO QR)
-                            </h3>
-                            <p className="text-[11px] text-[#E07A2C] font-bold truncate">
-                              100% Offline • Escáner con cámara celular
-                            </p>
+                          <div className={`w-6 h-6 rounded-full bg-white flex items-center justify-center text-[#974800] shadow-2xs transition-transform duration-200 shrink-0 ${acordeonOfflineExpandido ? "rotate-180" : ""}`}>
+                            <CaretDown size={14} weight="bold" />
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-2 shrink-0">
-                          <span className="hidden sm:inline-block px-2 py-0.5 rounded-full bg-white/90 border border-[#FBD0B6] text-[10px] font-black text-[#E07A2C]">
-                            Modo Offline / USB
-                          </span>
-                          <div className={`w-6 h-6 rounded-full bg-white flex items-center justify-center text-[#974800] shadow-2xs transition-transform duration-200 ${acordeonOfflineExpandido ? "rotate-180" : ""}`}>
-                            <CaretDown size={14} weight="bold" />
+                        {/* Fila inferior: Ícono, Título completo y Subtítulo */}
+                        <div className="flex items-start gap-2.5 pt-0.5">
+                          <div className="w-8 h-8 rounded-xl bg-[#E07A2C] text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-xs mt-0.5">
+                            <Lightning size={18} weight="fill" />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <h3 className="text-sm font-black text-[#974800] leading-tight">
+                              Sin Internet (Desconectado QR)
+                            </h3>
+                            <p className="text-[11.5px] text-[#E07A2C] font-semibold mt-0.5 leading-snug">
+                              Escáner con cámara celular o USB
+                            </p>
                           </div>
                         </div>
                       </button>
@@ -1757,29 +1771,36 @@ export default function PanelDocenteSimplificado() {
                       <button
                         type="button"
                         onClick={() => setAcordeonImpresoExpandido(!acordeonImpresoExpandido)}
-                        className="w-full p-3 sm:p-3.5 flex items-center justify-between gap-3 text-left hover:bg-[#ede9fe] transition-colors cursor-pointer select-none"
+                        className="w-full p-3.5 flex flex-col gap-2 text-left hover:bg-[#ede9fe] transition-colors cursor-pointer select-none"
                         aria-expanded={acordeonImpresoExpandido}
                       >
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          <div className="w-8 h-8 rounded-xl bg-[#6366F1] text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-xs">
-                            <FilePdf size={18} weight="fill" />
+                        {/* Fila superior: Badges e indicador de colapso */}
+                        <div className="flex items-center justify-between gap-2 w-full">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="px-2 py-0.5 rounded-md bg-[#6366F1] text-white text-[10px] font-black tracking-wide uppercase shadow-2xs">
+                              OPCIÓN C
+                            </span>
+                            <span className="px-2 py-0.5 rounded-md bg-white border border-[#DDD6FE] text-[10px] font-black text-[#6366F1]">
+                              📄 PDF Fotocopiable
+                            </span>
                           </div>
-                          <div className="min-w-0">
-                            <h3 className="text-xs sm:text-[13px] font-black uppercase tracking-wider text-[#4338CA] truncate">
-                              OPCIÓN C: EN PAPEL (PDF IMPRIMIBLE)
-                            </h3>
-                            <p className="text-[11px] text-[#6366F1] font-bold truncate">
-                              100% Físico • Sin dispositivos ni conexión
-                            </p>
+                          <div className={`w-6 h-6 rounded-full bg-white flex items-center justify-center text-[#4338CA] shadow-2xs transition-transform duration-200 shrink-0 ${acordeonImpresoExpandido ? "rotate-180" : ""}`}>
+                            <CaretDown size={14} weight="bold" />
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-2 shrink-0">
-                          <span className="hidden sm:inline-block px-2 py-0.5 rounded-full bg-white/90 border border-[#DDD6FE] text-[10px] font-black text-[#6366F1]">
-                            PDF Fotocopiable
-                          </span>
-                          <div className={`w-6 h-6 rounded-full bg-white flex items-center justify-center text-[#4338CA] shadow-2xs transition-transform duration-200 ${acordeonImpresoExpandido ? "rotate-180" : ""}`}>
-                            <CaretDown size={14} weight="bold" />
+                        {/* Fila inferior: Ícono, Título completo y Subtítulo */}
+                        <div className="flex items-start gap-2.5 pt-0.5">
+                          <div className="w-8 h-8 rounded-xl bg-[#6366F1] text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-xs mt-0.5">
+                            <FilePdf size={18} weight="fill" />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <h3 className="text-sm font-black text-[#4338CA] leading-tight">
+                              En Papel (PDF Imprimible)
+                            </h3>
+                            <p className="text-[11.5px] text-[#6366F1] font-semibold mt-0.5 leading-snug">
+                              100% Físico • Sin conexión ni equipos
+                            </p>
                           </div>
                         </div>
                       </button>

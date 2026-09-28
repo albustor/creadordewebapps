@@ -29,14 +29,16 @@ import {
   ListDashes,
   GlobeHemisphereWest,
   NotePencil,
+  ListChecks,
 } from "@phosphor-icons/react";
 import AuthGuard from "@/components/AuthGuard";
 import ObservatorioMacroNacional from "@/components/ObservatorioMacroNacional";
+import ChecklistAuditoriaForense from "@/components/ChecklistAuditoriaForense";
 import { LISTA_DRE_MEP } from "@/lib/dreCircuitos";
 
 export default function AdminPage() {
   const { docente } = useDocente();
-  const [tabActiva, setTabActiva] = useState<"observatorio" | "solicitudes" | "docentes" | "historico" | "recursos" | "nueva_solicitud">("observatorio");
+  const [tabActiva, setTabActiva] = useState<"observatorio" | "solicitudes" | "docentes" | "protocolo_forense" | "historico" | "recursos" | "nueva_solicitud">("observatorio");
   const [usuarios, setUsuarios] = useState<any[]>([]);
   const [historico, setHistorico] = useState<any[]>([]);
   const [cargando, setCargando] = useState(false);
@@ -367,6 +369,18 @@ export default function AdminPage() {
         >
           <UsersThree size={16} weight="bold" />
           <span>Padrón y Gestión de Cuentas</span>
+        </button>
+
+        <button
+          onClick={() => setTabActiva("protocolo_forense")}
+          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+            tabActiva === "protocolo_forense"
+              ? "bg-indigo-900 text-white shadow-xs font-extrabold"
+              : "text-indigo-900 hover:text-indigo-950 hover:bg-indigo-50/80 font-bold"
+          }`}
+        >
+          <ListChecks size={16} weight="bold" className="text-cyan-400" />
+          <span>Protocolo Forense & Checklist 360°</span>
         </button>
 
         <button
@@ -709,6 +723,13 @@ export default function AdminPage() {
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {/* TAB: PROTOCOLO FORENSE & CHECKLIST SECUENCIAL (JIM 360°) */}
+      {tabActiva === "protocolo_forense" && (
+        <div className="animate-fadeIn">
+          <ChecklistAuditoriaForense />
         </div>
       )}
 
