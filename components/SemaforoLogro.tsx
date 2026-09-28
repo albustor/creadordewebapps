@@ -8,7 +8,7 @@ import { CheckCircle, Warning, XCircle, Users, Sparkle, Article, Gauge } from "@
 interface SemaforoLogroProps {
   registros: PayloadTelemetria[];
   configuracion?: ConfiguracionDashboardDocente;
-  nivel?: "todos" | "7mo" | "8vo" | "9no";
+  nivel?: "todos" | "7mo" | "9no";
 }
 
 export default function SemaforoLogro({ registros, configuracion, nivel = "todos" }: SemaforoLogroProps) {
@@ -21,8 +21,6 @@ export default function SemaforoLogro({ registros, configuracion, nivel = "todos
   const nivelEtiqueta =
     nivel === "7mo"
       ? "7.° Año (CyberQuest)"
-      : nivel === "8vo"
-      ? "8.° Año (PNFT)"
       : nivel === "9no"
       ? "9.° Año (Aula Inteligente)"
       : "Consolidado Institucional";

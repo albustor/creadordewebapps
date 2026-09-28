@@ -74,7 +74,6 @@ export type VistaCicloEducativo =
   | "II_CICLO"
   | "III_CICLO"
   | "7mo"
-  | "8vo"
   | "9no"
   | "DIVERSIFICADA";
 
@@ -447,9 +446,9 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
       {
         id: 3,
         codigo: "III CICLO",
-        nombre: "III Ciclo (7.°, 8.° y 9.° Secundaria): Módulos Activos de Evaluación Diagnóstica",
-        subarea: "Educación General Básica III Ciclo • 30 Reactivos Oficiales",
-        saberes: "7° CyberQuest (6 ítems) • 8° Robótica (14 ítems) • 9° Aula Inteligente IoT (10 ítems)",
+        nombre: "III Ciclo (7.° y 9.° Secundaria): Módulos Activos de Evaluación Diagnóstica",
+        subarea: "Educación General Básica III Ciclo • Reactivos Oficiales",
+        saberes: "7° CyberQuest (6 ítems) • 9° Aula Inteligente IoT (10 ítems)",
         peso: 30,
         pctLogro: telemetriaReal.length > 0 ? metricasMacro.promedioNacional : 0,
         estado: telemetriaReal.length > 0 ? `${telemetriaReal.length} Evaluaciones en Vivo` : "Suite Diagnóstica Activa",
@@ -696,7 +695,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
             type="button"
             onClick={() => setVistaActiva("III_CICLO")}
             className={`flex flex-col justify-between p-3.5 rounded-2xl border transition-all text-left cursor-pointer ${
-              vistaActiva === "III_CICLO" || vistaActiva === "7mo" || vistaActiva === "8vo" || vistaActiva === "9no"
+              vistaActiva === "III_CICLO" || vistaActiva === "7mo" || vistaActiva === "9no"
                 ? "bg-purple-900 text-white border-purple-600 shadow-md ring-2 ring-purple-400 scale-[1.02]"
                 : "bg-purple-50/50 hover:bg-purple-50 text-slate-800 border-purple-200"
             }`}
@@ -706,17 +705,17 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
                 <GraduationCap size={18} weight="bold" />
               </span>
               <span className={`px-2 py-0.5 rounded-full text-[10px] font-black ${
-                vistaActiva === "III_CICLO" || vistaActiva === "7mo" || vistaActiva === "8vo" || vistaActiva === "9no"
+                vistaActiva === "III_CICLO" || vistaActiva === "7mo" || vistaActiva === "9no"
                   ? "bg-purple-300 text-purple-950"
                   : "bg-purple-100 text-purple-800"
               }`}>
-                7.°, 8.° y 9.°
+                7.° y 9.°
               </span>
             </div>
             <div className="mt-2.5">
               <div className="text-xs font-black uppercase tracking-wider">III Ciclo Secundaria</div>
               <p className={`text-[10.5px] font-medium leading-tight mt-0.5 ${
-                vistaActiva === "III_CICLO" || vistaActiva === "7mo" || vistaActiva === "8vo" || vistaActiva === "9no"
+                vistaActiva === "III_CICLO" || vistaActiva === "7mo" || vistaActiva === "9no"
                   ? "text-purple-200"
                   : "text-slate-500"
               }`}>
@@ -754,7 +753,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
           </button>
         </div>
 
-        {/* Bloque 2: Sub-selector Específico para III Ciclo (Niveles 7°, 8° y 9°) */}
+        {/* Bloque 2: Sub-selector Específico para III Ciclo (Niveles 7° y 9°) */}
         <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
           <div className="flex items-center gap-2">
             <span className="text-xs font-black text-slate-700 uppercase tracking-wider">
@@ -773,7 +772,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
                   : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
               }`}
             >
-              Consolidado III Ciclo (7°-9°)
+              Consolidado III Ciclo (7.° y 9.°)
             </button>
 
             {/* Botón 7.° Año */}
@@ -788,20 +787,6 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
             >
               <GameController size={15} weight="bold" />
               <span>7.° CyberQuest ({eval7mo})</span>
-            </button>
-
-            {/* Botón 8.° Año */}
-            <button
-              type="button"
-              onClick={() => setVistaActiva("8vo")}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
-                vistaActiva === "8vo"
-                  ? "bg-teal-700 text-white shadow-xs"
-                  : "bg-teal-50 text-teal-900 border border-teal-200 hover:bg-teal-100"
-              }`}
-            >
-              <Robot size={15} weight="bold" />
-              <span>8.° Robótica ({eval8vo})</span>
             </button>
 
             {/* Botón 9.° Año */}
@@ -843,11 +828,9 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
                 : vistaActiva === "II_CICLO"
                 ? "Analítica Curricular: II Ciclo (4.°, 5.° y 6.° Primaria)"
                 : vistaActiva === "III_CICLO"
-                ? "Analítica Macro: III Ciclo Completo (7.°, 8.° y 9.° Secundaria)"
+                ? "Analítica Macro: III Ciclo Completo (7.° y 9.° Secundaria)"
                 : vistaActiva === "7mo"
                 ? "Analítica Macro: 7.° Año (CyberQuest — Ciudadanía & Hardware)"
-                : vistaActiva === "8vo"
-                ? "Analítica Macro: 8.° Año (Robótica & Automatización — Redes & E-P-S)"
                 : vistaActiva === "9no"
                 ? "Analítica Macro: 9.° Año (Aula Inteligente IoT — Circuitos & Sensores)"
                 : "Analítica Curricular: Educación Diversificada & CTP (10.°, 11.° y 12.°)"}
@@ -950,11 +933,9 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
                   : vistaActiva === "II_CICLO"
                   ? "Matriz Curricular de II Ciclo (4.°, 5.° y 6.° Primaria — PNFT)"
                   : vistaActiva === "III_CICLO"
-                  ? "Matriz Macro Nacional de III Ciclo (7.°, 8.° y 9.° Secundaria — Suite Diagnóstica)"
+                  ? "Matriz Macro Nacional de III Ciclo (7.° y 9.° Secundaria — Suite Diagnóstica)"
                   : vistaActiva === "7mo"
                   ? "Matriz Macro Nacional de Indicadores y Saberes Previos (7.° Año — CyberQuest)"
-                  : vistaActiva === "8vo"
-                  ? "Matriz Macro Nacional de Indicadores y Saberes Previos (8.° Año — Robótica & Redes)"
                   : vistaActiva === "9no"
                   ? "Matriz Macro Nacional de Indicadores y Saberes Previos (9.° Año — Aula Inteligente IoT)"
                   : "Matriz Curricular de Educación Diversificada y CTP (10.°, 11.° y 12.°)"}
@@ -1209,7 +1190,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
                         <div>
                           <span>{item.totalEstudiantes}</span>
                           <span className="block text-[9.5px] text-slate-400 font-normal">
-                            (7°: {item.estudiantes7mo} | 8°: {item.estudiantes8vo} | 9°: {item.estudiantes9no})
+                            (7°: {item.estudiantes7mo} | 9°: {item.estudiantes9no})
                           </span>
                         </div>
                       ) : (

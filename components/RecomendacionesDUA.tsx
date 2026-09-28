@@ -55,7 +55,7 @@ interface AIAnalisisResponse {
 interface RecomendacionesDUAProps {
   registros: PayloadTelemetria[];
   configuracion?: ConfiguracionDashboardDocente;
-  nivel?: "todos" | "7mo" | "8vo" | "9no";
+  nivel?: "todos" | "7mo" | "9no";
   seccionSeleccionada?: string;
 }
 
@@ -83,8 +83,6 @@ export default function RecomendacionesDUA({
   const nivelEtiqueta =
     nivel === "7mo"
       ? "7.° Año (CyberQuest)"
-      : nivel === "8vo"
-      ? "8.° Año (PNFT)"
       : nivel === "9no"
       ? "9.° Año (Aula Inteligente)"
       : "General";
@@ -123,36 +121,26 @@ export default function RecomendacionesDUA({
     nivel:
       nivel === "7mo"
         ? "7° Año - Secundaria"
-        : nivel === "8vo"
-        ? "8° Año - Secundaria"
         : nivel === "9no"
         ? "9° Año - Secundaria"
         : configuracion?.nivelEducativo || "Secundaria - MEP",
     saberConceptual:
       nivel === "7mo"
         ? "Fundamentos de hardware, software, sistemas operativos y algoritmos básicos"
-        : nivel === "8vo"
-        ? "Lógica algorítmica, variables, estructuras condicionales dobles y bucles"
         : configuracion?.saberConceptual ||
           "Fundamentos y conceptos clave de circuitos, sensores y microcontroladores",
     saberProcedimental:
       nivel === "7mo"
         ? "Resolución de retos conceptuales, clasificación de componentes y secuencias"
-        : nivel === "8vo"
-        ? "Construcción de diagramas de flujo y depuración de código interactivo"
         : "Formulación de algoritmos, análisis y conexionado práctico en simulador 2D",
     saberActitudinal: "Pensamiento crítico, perseverancia y aprendizaje reflexivo del error",
     indicadorCodigo:
       nivel === "7mo"
         ? "SEC.7MO.DIAG.01"
-        : nivel === "8vo"
-        ? "SEC.8VO.DIAG.01"
         : configuracion?.indicadorCodigo || "SEC.9NO.DIAG.01",
     indicadorNombre:
       nivel === "7mo"
         ? "CyberQuest 7°: Diagnóstico de Fundamentos Digitales"
-        : nivel === "8vo"
-        ? "Diagnóstico 8° PNFT: Pensamiento Computacional"
         : configuracion?.nombreInstrumento || "Diagnóstico Integrado 9°: «Aula Inteligente»",
     porcentajePromedio: promedioPuntaje,
     tasaRezago: tasaAlerta,
@@ -306,7 +294,7 @@ export default function RecomendacionesDUA({
               ✨ Asistente IA Multi-Proveedor
             </span>
             <span className="text-xs text-indigo-200/80 font-semibold">
-              Formación Tecnológica • {nivel === "7mo" ? "7.° Año (CyberQuest)" : nivel === "8vo" ? "8.° Año" : "9.° Año"}
+              Formación Tecnológica • {nivel === "7mo" ? "7.° Año (CyberQuest)" : "9.° Año"}
             </span>
             {metaIA && (
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 flex items-center gap-1">
@@ -641,7 +629,7 @@ export default function RecomendacionesDUA({
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-emerald-200 pb-3">
               <div className="flex items-center gap-2 text-emerald-950 font-black text-sm">
                 <FileText size={20} className="text-emerald-800" weight="fill" />
-                <span>4. Integración en el Planeamiento Didáctico Oficial (Diagnóstico {nivel === "7mo" ? "7.°" : nivel === "8vo" ? "8.°" : "9.°"})</span>
+                <span>4. Integración en el Planeamiento Didáctico Oficial (Diagnóstico {nivel === "7mo" ? "7.°" : "9.°"})</span>
               </div>
               <span className="px-2.5 py-1 bg-emerald-100 text-emerald-900 text-[11px] font-bold rounded-lg border border-emerald-200">
                 Orientaciones Curriculares MEP & DUA
