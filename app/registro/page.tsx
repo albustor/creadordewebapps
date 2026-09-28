@@ -61,6 +61,9 @@ export default function RegistroDocentePage() {
     iniciarSesionConPIN,
     solicitarRecuperacionPIN,
     verificarOTP,
+    solicitarValidacionCelular,
+    verificarCelularOTP,
+    solicitarVerificacionFirebase,
     cerrarSesion,
   } = useDocente();
 
@@ -151,16 +154,27 @@ export default function RegistroDocentePage() {
   const [loginMensaje, setLoginMensaje] = useState<{ tipo: "exito" | "error"; texto: string } | null>(null);
 
   // ==========================================
-  // CAMPOS DE RECUPERACIÓN DE PIN (OTP)
+  // CAMPOS DE RECUPERACIÓN DE PIN & VALIDACIÓN
   // ==========================================
   const [recuperarCredencial, setRecuperarCredencial] = useState("");
-  const [recuperarCanal, setRecuperarCanal] = useState<"correo" | "whatsapp">("correo");
+  const [recuperarCanal, setRecuperarCanal] = useState<"firebase" | "whatsapp" | "correo">("firebase");
   const [otpEnviado, setOtpEnviado] = useState(false);
   const [otpCodigo, setOtpCodigo] = useState("");
   const [otpNuevoPin, setOtpNuevoPin] = useState("");
   const [otpNuevoPinConfirmar, setOtpNuevoPinConfirmar] = useState("");
   const [recuperarMensaje, setRecuperarMensaje] = useState<{ tipo: "exito" | "error"; texto: string } | null>(null);
   const [cargandoRecuperacion, setCargandoRecuperacion] = useState(false);
+
+  // Estados de validación de celular por WhatsApp (Evolution API)
+  const [mostrarModalValidarCelular, setMostrarModalValidarCelular] = useState(false);
+  const [celularOtpInput, setCelularOtpInput] = useState("");
+  const [celularOtpDespachado, setCelularOtpDespachado] = useState(false);
+  const [cargandoValidacionCelular, setCargandoValidacionCelular] = useState(false);
+  const [mensajeValidacionCelular, setMensajeValidacionCelular] = useState<{ tipo: "exito" | "error"; texto: string } | null>(null);
+
+  // Estados de verificación de correo por Firebase
+  const [cargandoVerificacionCorreo, setCargandoVerificacionCorreo] = useState(false);
+  const [mensajeVerificacionCorreo, setMensajeVerificacionCorreo] = useState<{ tipo: "exito" | "error"; texto: string } | null>(null);
 
   // Sincronizar datos si ya hay sesión activa
   useEffect(() => {
@@ -634,14 +648,14 @@ export default function RegistroDocentePage() {
   };
 
   // ==========================================
-  // RECUPERACIÓN DE PIN (OTP)
+  // RECUPERACIÓN DE PIN & CUENTA
   // ==========================================
   const handleSolicitarOTP = async (e: React.FormEvent) => {
     e.preventDefault();
     setRecuperarMensaje(null);
 
     if (!recuperarCredencial.trim()) {
-      setRecuperarMensaje({ tipo: "error", texto: "Ingrese su cédula o correo MEP para recibir el código." });
+      setRecuperarMensaje({ tipo: "error", texto: "Ingrese su cédula o correo MEP para tramitar la recuperación." });
       return;
     }
 
@@ -649,13 +663,18 @@ export default function RegistroDocentePage() {
     try {
       const res = await solicitarRecuperacionPIN(recuperarCredencial, recuperarCanal);
       if (res.exito) {
-        setOtpEnviado(true);
-        setRecuperarMensaje({ tipo: "exito", texto: res.mensaje });
+        if (recuperarCanal === "firebase") {
+          setOtpEnviado(false);
+          setRecuperarMensaje({ tipo: "exito", texto: res.mensaje });
+        } else {
+          setOtpEnviado(true);
+          setRecuperarMensaje({ tipo: "exito", texto: res.mensaje });
+        }
       } else {
         setRecuperarMensaje({ tipo: "error", texto: res.mensaje });
       }
     } catch {
-      setRecuperarMensaje({ tipo: "error", texto: "Error al solicitar el código de recuperación." });
+      setRecuperarMensaje({ tipo: "error", texto: "Error al solicitar la recuperación de acceso." });
     }
     setCargandoRecuperacion(false);
   };
@@ -683,11 +702,74 @@ export default function RegistroDocentePage() {
     if (res.exito) {
       setRecuperarMensaje({ tipo: "exito", texto: res.mensaje });
       setTimeout(() => {
-        setPestanaActiva("registro");
+        setPestanaActiva("login");
       }, 2000);
     } else {
       setRecuperarMensaje({ tipo: "error", texto: res.mensaje });
     }
+  };
+
+  // Validaciones en Perfil: Celular (Evolution API) y Correo (Firebase)
+  const handleDespacharValidacionCelular = async () => {
+    const tel = telefono.trim() || docente?.telefono?.trim() || "";
+    if (!tel || tel.length < 8) {
+      setMensajeValidacionCelular({ tipo: "error", texto: "Debe ingresar un número de celular válido para recibir el código de WhatsApp." });
+      return;
+    }
+    setCargandoValidacionCelular(true);
+    setMensajeValidacionCelular(null);
+    try {
+      const res = await solicitarValidacionCelular(tel, nombre.trim() || docente?.nombreCompleto);
+      if (res.exito) {
+        setCelularOtpDespachado(true);
+        setMensajeValidacionCelular({ tipo: "exito", texto: res.mensaje });
+      } else {
+        setMensajeValidacionCelular({ tipo: "error", texto: res.mensaje });
+      }
+    } catch {
+      setMensajeValidacionCelular({ tipo: "error", texto: "Error al enviar código de WhatsApp mediante Evolution API." });
+    }
+    setCargandoValidacionCelular(false);
+  };
+
+  const handleConfirmarValidacionCelular = () => {
+    const tel = telefono.trim() || docente?.telefono?.trim() || "";
+    if (!celularOtpInput.trim() || celularOtpInput.trim().length !== 4) {
+      setMensajeValidacionCelular({ tipo: "error", texto: "Ingrese el código de 4 dígitos enviado por WhatsApp." });
+      return;
+    }
+    const res = verificarCelularOTP(tel, celularOtpInput.trim());
+    if (res.exito) {
+      setMensajeValidacionCelular({ tipo: "exito", texto: res.mensaje });
+      setTimeout(() => {
+        setMostrarModalValidarCelular(false);
+        setCelularOtpDespachado(false);
+        setCelularOtpInput("");
+      }, 2200);
+    } else {
+      setMensajeValidacionCelular({ tipo: "error", texto: res.mensaje });
+    }
+  };
+
+  const handleVerificarCorreoFirebase = async () => {
+    const targetEmail = correo.trim() || docente?.correoInstitucional?.trim() || "";
+    if (!targetEmail || !targetEmail.includes("@")) {
+      setMensajeVerificacionCorreo({ tipo: "error", texto: "Debe ingresar un correo electrónico institucional válido." });
+      return;
+    }
+    setCargandoVerificacionCorreo(true);
+    setMensajeVerificacionCorreo(null);
+    try {
+      const res = await solicitarVerificacionFirebase(targetEmail);
+      if (res.exito) {
+        setMensajeVerificacionCorreo({ tipo: "exito", texto: res.mensaje });
+      } else {
+        setMensajeVerificacionCorreo({ tipo: "error", texto: res.mensaje });
+      }
+    } catch {
+      setMensajeVerificacionCorreo({ tipo: "error", texto: "Error al enviar solicitud a Firebase Auth." });
+    }
+    setCargandoVerificacionCorreo(false);
   };
 
   const copiarID = () => {
@@ -935,36 +1017,84 @@ export default function RegistroDocentePage() {
                     <span>Debe tener formato oficial con puntos: <code>nombre.apellido.apellido@mep.go.cr</code></span>
                   </p>
                 )}
-                <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl text-[11.5px] text-blue-950 font-medium flex items-start gap-2 mt-2">
-                  <Info size={16} className="text-blue-700 shrink-0 mt-0.5" weight="fill" />
-                  <span>
-                    <strong>Validez Oficial:</strong> Toda la comunicación oficial y formal del MEP se remitirá siempre a esta cuenta de correo institucional.
-                  </span>
+                <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl text-[11.5px] text-blue-950 font-medium flex items-center justify-between gap-2 mt-2">
+                  <div className="flex items-start gap-2">
+                    <Info size={16} className="text-blue-700 shrink-0 mt-0.5" weight="fill" />
+                    <span>
+                      <strong>Validez Oficial:</strong> Toda la comunicación oficial del MEP se remitirá a esta cuenta.
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleVerificarCorreoFirebase}
+                    disabled={cargandoVerificacionCorreo}
+                    className="px-3 py-1.5 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-[11px] font-black shrink-0 transition-colors flex items-center gap-1 cursor-pointer"
+                  >
+                    {cargandoVerificacionCorreo ? (
+                      <ArrowClockwise size={14} className="animate-spin" />
+                    ) : (
+                      <Sparkle size={14} weight="bold" />
+                    )}
+                    <span>Validar con Firebase</span>
+                  </button>
                 </div>
+                {mensajeVerificacionCorreo && (
+                  <div
+                    className={`p-3 rounded-xl text-[11.5px] font-bold mt-1.5 ${
+                      mensajeVerificacionCorreo.tipo === "exito"
+                        ? "bg-emerald-50 border border-emerald-300 text-emerald-950"
+                        : "bg-rose-50 border border-rose-300 text-rose-950"
+                    }`}
+                  >
+                    {mensajeVerificacionCorreo.texto}
+                  </div>
+                )}
               </div>
 
               {/* Teléfono de Contacto */}
               <div className="space-y-2 md:col-span-2">
                 <label className="block text-xs font-black text-slate-800 uppercase tracking-wider flex items-center justify-between">
-                  <span>Teléfono Móvil de Contacto (Opcional)</span>
-                  <span className="text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                    Opcional • Apoyo Docente
-                  </span>
+                  <span>Teléfono Móvil de Contacto (WhatsApp)</span>
+                  <div className="flex items-center gap-2">
+                    {docente?.telefonoVerificado ? (
+                      <span className="text-[10.5px] font-black text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300 flex items-center gap-1">
+                        <CheckCircle size={13} weight="fill" />
+                        <span>Verificado (Evolution API)</span>
+                      </span>
+                    ) : (
+                      <span className="text-[10.5px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
+                        Pendiente Validación
+                      </span>
+                    )}
+                  </div>
                 </label>
-                <div className="relative">
-                  <input
-                    type="tel"
-                    value={telefono}
-                    onChange={(e) => setTelefono(e.target.value)}
-                    placeholder="Ej: 8888-9999"
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 outline-hidden transition-all"
-                  />
-                  <Phone size={18} className="absolute right-4 top-3.5 text-slate-400" />
+                <div className="relative flex items-center gap-2">
+                  <div className="relative flex-1">
+                    <input
+                      type="tel"
+                      value={telefono}
+                      onChange={(e) => setTelefono(e.target.value)}
+                      placeholder="Ej: 8888-9999"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 outline-hidden transition-all"
+                    />
+                    <Phone size={18} className="absolute right-4 top-3.5 text-slate-400" />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMostrarModalValidarCelular(true);
+                      setMensajeValidacionCelular(null);
+                    }}
+                    className="px-4 py-3 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-black shrink-0 transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
+                  >
+                    <Phone size={16} weight="bold" />
+                    <span>Validar con WhatsApp</span>
+                  </button>
                 </div>
                 <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-[11.5px] text-slate-700 font-medium space-y-2 mt-1.5 shadow-2xs">
                   <div className="flex items-center gap-2 font-bold text-slate-900">
                     <ShieldCheck size={16} className="text-emerald-700 shrink-0" weight="bold" />
-                    <span>Compromiso de Privacidad y Apoyo Pedagógico Sincrónico</span>
+                    <span>Compromiso de Privacidad y Apoyo Pedagógico Sincrónico (Evolution API)</span>
                   </div>
                   <p className="text-slate-600 leading-relaxed text-[11px]">
                     El canal de mensajería móvil es <strong>opcional</strong> y de uso estrictamente profesional para facilitar el restablecimiento ágil de credenciales docentes, así como una <strong>forma de comunicación adicional desde la Asesoría con el docente para brindar apoyo pedagógico sincrónico</strong> y acompañamiento en su labor educativa.
@@ -1697,17 +1827,17 @@ export default function RegistroDocentePage() {
       )}
 
       {/* ============================================================ */}
-      {/* VISTA 3: RECUPERACIÓN DE PIN (OTP CORREO / WHATSAPP)         */}
+      {/* VISTA 3: RECUPERACIÓN DE PIN & VALIDACIÓN DE CUENTA          */}
       {/* ============================================================ */}
       {pestanaActiva === "recuperar" && (
-        <div className="max-w-lg mx-auto bg-white border-2 border-slate-300 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl">
+        <div className="max-w-xl mx-auto bg-white border-2 border-slate-300 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl">
           <div className="text-center space-y-2">
             <div className="w-14 h-14 bg-emerald-50 border-2 border-emerald-200 text-emerald-700 rounded-2xl flex items-center justify-center mx-auto shadow-xs">
               <ShieldCheck size={30} weight="bold" />
             </div>
-            <h3 className="text-xl font-black text-slate-900">Recuperación de PIN</h3>
+            <h3 className="text-xl font-black text-slate-900">Recuperación y Validación de Acceso</h3>
             <p className="text-xs text-slate-500 font-medium">
-              Recibe un código temporal de 4 dígitos para restablecer tu PIN
+              Selecciona el método oficial para validar tu identidad y restablecer tus credenciales
             </p>
           </div>
 
@@ -1720,19 +1850,19 @@ export default function RegistroDocentePage() {
               }`}
             >
               {recuperarMensaje.tipo === "exito" ? (
-                <Check size={18} className="text-emerald-700 shrink-0" weight="bold" />
+                <Check size={18} className="text-emerald-700 shrink-0 mt-0.5" weight="bold" />
               ) : (
-                <WarningCircle size={18} className="text-rose-700 shrink-0" weight="fill" />
+                <WarningCircle size={18} className="text-rose-700 shrink-0 mt-0.5" weight="fill" />
               )}
               <div className="leading-relaxed">{recuperarMensaje.texto}</div>
             </div>
           )}
 
           {!otpEnviado ? (
-            <form onSubmit={handleSolicitarOTP} className="space-y-4">
+            <form onSubmit={handleSolicitarOTP} className="space-y-5">
               <div className="space-y-1.5">
                 <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
-                  Cédula o Correo MEP Registrado
+                  Cédula o Correo MEP Registrado <span className="text-rose-600">*</span>
                 </label>
                 <input
                   type="text"
@@ -1744,56 +1874,108 @@ export default function RegistroDocentePage() {
                 />
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-2.5">
                 <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
-                  ¿Por cuál canal deseas recibir el código?
+                  ¿Cómo deseas recibir tu acceso?
                 </label>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                  {/* Opción 1: Firebase Auth Recovery */}
                   <button
                     type="button"
-                    onClick={() => setRecuperarCanal("correo")}
-                    className={`p-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 transition-all ${
-                      recuperarCanal === "correo"
-                        ? "bg-blue-50 border-blue-500 text-blue-950 shadow-xs"
+                    onClick={() => setRecuperarCanal("firebase")}
+                    className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                      recuperarCanal === "firebase"
+                        ? "bg-amber-50/80 border-amber-500 text-amber-950 ring-2 ring-amber-400/30 shadow-xs"
                         : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100"
                     }`}
                   >
-                    <EnvelopeSimple size={18} className="text-blue-600" weight="bold" />
-                    <span>Correo MEP (@mep.go.cr)</span>
+                    <div className="flex items-center gap-1.5 font-black text-[11.5px] text-amber-900">
+                      <Sparkle size={16} className="text-amber-600 shrink-0" weight="fill" />
+                      <span>Enlace Firebase</span>
+                    </div>
+                    <p className="text-[10px] text-slate-500 mt-1 leading-tight">
+                      Enlace oficial directo al correo @mep.go.cr
+                    </p>
                   </button>
 
+                  {/* Opción 2: WhatsApp con Evolution API */}
                   <button
                     type="button"
                     onClick={() => setRecuperarCanal("whatsapp")}
-                    className={`p-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 transition-all ${
+                    className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
                       recuperarCanal === "whatsapp"
-                        ? "bg-emerald-50 border-emerald-500 text-emerald-950 shadow-xs"
+                        ? "bg-emerald-50 border-emerald-500 text-emerald-950 ring-2 ring-emerald-400/30 shadow-xs"
                         : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100"
                     }`}
                   >
-                    <Phone size={18} className="text-emerald-600" />
-                    <span>Mensajería Móvil (WhatsApp)</span>
+                    <div className="flex items-center gap-1.5 font-black text-[11.5px] text-emerald-900">
+                      <Phone size={16} className="text-emerald-600 shrink-0" weight="bold" />
+                      <span>WhatsApp Móvil</span>
+                    </div>
+                    <p className="text-[10px] text-slate-500 mt-1 leading-tight">
+                      Código de 4 dígitos vía Evolution API
+                    </p>
+                  </button>
+
+                  {/* Opción 3: Correo MEP OTP */}
+                  <button
+                    type="button"
+                    onClick={() => setRecuperarCanal("correo")}
+                    className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                      recuperarCanal === "correo"
+                        ? "bg-blue-50 border-blue-500 text-blue-950 ring-2 ring-blue-400/30 shadow-xs"
+                        : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100"
+                    }`}
+                  >
+                    <div className="flex items-center gap-1.5 font-black text-[11.5px] text-blue-900">
+                      <EnvelopeSimple size={16} className="text-blue-600 shrink-0" weight="bold" />
+                      <span>Código por Correo</span>
+                    </div>
+                    <p className="text-[10px] text-slate-500 mt-1 leading-tight">
+                      Código de 4 dígitos a tu bandeja MEP
+                    </p>
                   </button>
                 </div>
-                <p className="text-[11px] text-slate-500 font-medium leading-relaxed">
-                  * El canal de mensajería móvil es opcional y de uso estrictamente profesional para facilitar el restablecimiento ágil de credenciales docentes y como forma de comunicación adicional desde la Asesoría para apoyo pedagógico sincrónico (el docente da el visto bueno para su uso educativo).
-                </p>
+
+                <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-[11px] text-slate-600 leading-relaxed">
+                  {recuperarCanal === "firebase" && (
+                    <span>
+                      🔥 <strong>Firebase Auth:</strong> Se enviará un correo institucional con el enlace oficial de restablecimiento generado por Google Firebase.
+                    </span>
+                  )}
+                  {recuperarCanal === "whatsapp" && (
+                    <span>
+                      📱 <strong>Evolution API:</strong> Se enviará un mensaje institucional con un código de seguridad de 4 dígitos al número celular registrado del docente.
+                    </span>
+                  )}
+                  {recuperarCanal === "correo" && (
+                    <span>
+                      ✉️ <strong>Correo MEP:</strong> Se enviará un código numérico temporal de 4 dígitos con validez de 10 minutos a tu correo electrónico institucional.
+                    </span>
+                  )}
+                </div>
               </div>
 
               <button
                 type="submit"
                 disabled={cargandoRecuperacion}
-                className="w-full py-3.5 bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2"
+                className="w-full py-3.5 bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 {cargandoRecuperacion ? (
                   <>
                     <ArrowClockwise size={18} className="animate-spin" />
-                    <span>Despachando código...</span>
+                    <span>Procesando solicitud...</span>
                   </>
                 ) : (
                   <>
                     <ShieldCheck size={18} weight="bold" />
-                    <span>Enviar Código de 4 Dígitos</span>
+                    <span>
+                      {recuperarCanal === "firebase"
+                        ? "Enviar Enlace de Recuperación (Firebase)"
+                        : recuperarCanal === "whatsapp"
+                        ? "Enviar Código por WhatsApp (Evolution API)"
+                        : "Enviar Código por Correo MEP"}
+                    </span>
                   </>
                 )}
               </button>
@@ -1848,7 +2030,7 @@ export default function RegistroDocentePage() {
 
               <button
                 type="submit"
-                className="w-full py-3.5 bg-indigo-700 hover:bg-indigo-800 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2"
+                className="w-full py-3.5 bg-indigo-700 hover:bg-indigo-800 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Check size={18} weight="bold" />
                 <span>Restablecer PIN e Iniciar Sesión</span>
@@ -1857,12 +2039,108 @@ export default function RegistroDocentePage() {
               <button
                 type="button"
                 onClick={() => setOtpEnviado(false)}
-                className="w-full text-center text-xs font-bold text-slate-500 hover:text-slate-800"
+                className="w-full text-center text-xs font-bold text-slate-500 hover:text-slate-800 cursor-pointer"
               >
                 Volver a solicitar código
               </button>
             </form>
           )}
+        </div>
+      )}
+
+      {/* ============================================================ */}
+      {/* MODAL DE VALIDACIÓN DE CELULAR CON EVOLUTION API             */}
+      {/* ============================================================ */}
+      {mostrarModalValidarCelular && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fadeIn">
+          <div className="relative w-full max-w-md bg-white rounded-3xl border border-slate-200 shadow-2xl p-6 sm:p-7 space-y-5">
+            <div className="text-center space-y-2">
+              <div className="w-12 h-12 bg-emerald-50 border-2 border-emerald-200 text-emerald-700 rounded-2xl flex items-center justify-center mx-auto shadow-xs">
+                <Phone size={26} weight="bold" />
+              </div>
+              <h3 className="text-lg font-black text-slate-900">Validación de Celular con WhatsApp</h3>
+              <p className="text-xs text-slate-500 font-medium">
+                Verifica tu número mediante el motor de <strong>Evolution API</strong>
+              </p>
+            </div>
+
+            <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs space-y-1 text-center">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Número Registrado:</span>
+              <span className="text-base font-mono font-black text-slate-900">
+                {telefono || docente?.telefono || "No definido"}
+              </span>
+            </div>
+
+            {mensajeValidacionCelular && (
+              <div
+                className={`p-3.5 rounded-xl text-xs font-bold flex items-start gap-2 ${
+                  mensajeValidacionCelular.tipo === "exito"
+                    ? "bg-emerald-50 border border-emerald-300 text-emerald-950"
+                    : "bg-rose-50 border border-rose-300 text-rose-950"
+                }`}
+              >
+                {mensajeValidacionCelular.tipo === "exito" ? (
+                  <Check size={16} className="text-emerald-700 shrink-0 mt-0.5" weight="bold" />
+                ) : (
+                  <WarningCircle size={16} className="text-rose-700 shrink-0 mt-0.5" weight="fill" />
+                )}
+                <div className="leading-relaxed">{mensajeValidacionCelular.texto}</div>
+              </div>
+            )}
+
+            {!celularOtpDespachado ? (
+              <button
+                type="button"
+                onClick={handleDespacharValidacionCelular}
+                disabled={cargandoValidacionCelular}
+                className="w-full py-3.5 bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                {cargandoValidacionCelular ? (
+                  <>
+                    <ArrowClockwise size={18} className="animate-spin" />
+                    <span>Conectando con Evolution API...</span>
+                  </>
+                ) : (
+                  <>
+                    <Phone size={18} weight="bold" />
+                    <span>Enviar Código de Validación por WhatsApp</span>
+                  </>
+                )}
+              </button>
+            ) : (
+              <div className="space-y-3.5">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-black text-slate-800 uppercase tracking-wider text-center">
+                    Ingresa el Código de 4 Dígitos Recibido en WhatsApp
+                  </label>
+                  <input
+                    type="text"
+                    maxLength={4}
+                    value={celularOtpInput}
+                    onChange={(e) => setCelularOtpInput(e.target.value.replace(/[^0-9]/g, ""))}
+                    placeholder="1234"
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-center text-xl font-mono font-black tracking-widest text-slate-900 focus:bg-white focus:border-emerald-600 outline-hidden transition-all"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={handleConfirmarValidacionCelular}
+                  className="w-full py-3 bg-indigo-700 hover:bg-indigo-800 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <Check size={18} weight="bold" />
+                  <span>Confirmar y Validar Celular</span>
+                </button>
+              </div>
+            )}
+
+            <button
+              type="button"
+              onClick={() => setMostrarModalValidarCelular(false)}
+              className="w-full text-center text-xs font-bold text-slate-500 hover:text-slate-800 cursor-pointer"
+            >
+              Cerrar
+            </button>
+          </div>
         </div>
       )}
 

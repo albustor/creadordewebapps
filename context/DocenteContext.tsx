@@ -45,6 +45,9 @@ export interface DocenteData {
   fechaRegistro: string;
   contrasena?: string;
   pin?: string; // PIN numérico de 4 dígitos para acceso ágil en laboratorio
+  telefonoVerificado?: boolean;
+  correoVerificado?: boolean;
+  metodoRecuperacion?: "firebase" | "correo" | "whatsapp";
 }
 
 export interface WebAppInfo {
@@ -76,8 +79,11 @@ interface DocenteContextType {
   compartirEnComunidad: (webapp: WebAppInfo | WebAppComunidad) => void;
   iniciarSesion: (correoOUsuario: string, contrasenaOPin: string) => { exito: boolean; mensaje: string; intentosRestantes?: number; bloqueado?: boolean };
   iniciarSesionConPIN: (cedulaOCorreo: string, pin: string) => { exito: boolean; mensaje: string; intentosRestantes?: number; bloqueado?: boolean };
-  solicitarRecuperacionPIN: (cedulaOCorreo: string, canal: "correo" | "whatsapp") => Promise<{ exito: boolean; mensaje: string; codigoSimulado?: string }>;
+  solicitarRecuperacionPIN: (cedulaOCorreo: string, canal: "firebase" | "correo" | "whatsapp") => Promise<{ exito: boolean; mensaje: string; codigoSimulado?: string; canal?: string }>;
   verificarOTP: (cedulaOCorreo: string, codigoOTP: string, nuevoPIN: string) => { exito: boolean; mensaje: string };
+  solicitarValidacionCelular: (telefono: string, nombreDocente?: string) => Promise<{ exito: boolean; mensaje: string; codigoSimulado?: string }>;
+  verificarCelularOTP: (telefono: string, codigoOTP: string) => { exito: boolean; mensaje: string };
+  solicitarVerificacionFirebase: (correo: string) => Promise<{ exito: boolean; mensaje: string }>;
   cerrarSesion: () => void;
   agregarResultadoTelemetria: (res: PayloadTelemetria) => void;
   actualizarResultadoTelemetria: (timestamp: number, datosActualizados: Partial<PayloadTelemetria>) => void;
@@ -1652,12 +1658,12 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
 
   const solicitarRecuperacionPIN = async (
     cedulaOCorreo: string,
-    canal: "correo" | "whatsapp"
-  ): Promise<{ exito: boolean; mensaje: string; codigoSimulado?: string }> => {
+    canal: "firebase" | "correo" | "whatsapp"
+  ): Promise<{ exito: boolean; mensaje: string; codigoSimulado?: string; canal?: string }> => {
     const credLimpia = cedulaOCorreo.trim().toLowerCase();
     const codigoOTP = Math.floor(1000 + Math.random() * 9000).toString();
 
-    // Guardar OTP con 10 minutos de validez
+    // Guardar OTP con 10 minutos de validez para validaciones locales
     const recoveryKey = `otp_recovery_${credLimpia}`;
     SafeStorage.setItem(
       recoveryKey,
@@ -1691,14 +1697,31 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
     const telefonoDestino = docenteEncontrado?.telefono || (soloDigitos.length >= 8 ? soloDigitos : undefined);
     const nombreDestino = docenteEncontrado?.nombreCompleto || "Docente MEP";
 
-    // Intentar despacho en el servidor
+    // 1. Canal Directo Firebase Auth
+    if (canal === "firebase" && correoDestino) {
+      try {
+        const { enviarRecuperacionFirebase } = await import("@/lib/firebase");
+        const respFb = await enviarRecuperacionFirebase(correoDestino);
+        if (respFb.exito) {
+          return {
+            exito: true,
+            mensaje: respFb.mensaje,
+            canal: "firebase",
+          };
+        }
+      } catch (err) {
+        console.warn("Error con Firebase Auth SDK en cliente, procediendo con backend:", err);
+      }
+    }
+
+    // 2. Despacho por Backend (Evolution API para WhatsApp / Resend / Firebase Toolkit)
     try {
       const res = await fetch("/api/auth/recuperar-pin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           cedulaOCorreo: correoDestino || credLimpia,
-          canal,
+          canal: canal === "firebase" ? "firebase-correo" : canal,
           telefono: telefonoDestino,
           codigoOTP,
           nombreDocente: nombreDestino,
@@ -1709,19 +1732,138 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
         const data = await res.json();
         return {
           exito: true,
-          mensaje: data.mensaje || `Código de 4 dígitos despachado exitosamente.`,
+          mensaje: data.mensaje || `Código de seguridad despachado exitosamente.`,
+          codigoSimulado: data.detalles?.codigoOTP || (canal === "correo" ? codigoOTP : undefined),
+          canal: data.canal || canal,
         };
       } else {
         const data = await res.json().catch(() => ({}));
         return {
           exito: false,
-          mensaje: data.mensaje || "No fue posible despachar el código por el canal seleccionado. Por favor intente con el Correo MEP.",
+          mensaje: data.mensaje || "No fue posible despachar la solicitud por el canal seleccionado.",
         };
       }
     } catch {
       return {
         exito: false,
-        mensaje: "Error de conexión al intentar despachar el código de seguridad. Por favor intente de nuevo.",
+        mensaje: "Error de conexión al intentar despachar la solicitud. Por favor intente de nuevo.",
+      };
+    }
+  };
+
+  const solicitarValidacionCelular = async (
+    telefono: string,
+    nombreDocente?: string
+  ): Promise<{ exito: boolean; mensaje: string; codigoSimulado?: string }> => {
+    const telefonoLimpio = telefono.replace(/[^0-9]/g, "");
+    if (!telefonoLimpio || telefonoLimpio.length < 8) {
+      return { exito: false, mensaje: "El número de teléfono debe contener al menos 8 dígitos." };
+    }
+
+    const codigoOTP = Math.floor(1000 + Math.random() * 9000).toString();
+    const recoveryKey = `otp_phone_verify_${telefonoLimpio}`;
+    SafeStorage.setItem(
+      recoveryKey,
+      JSON.stringify({
+        otp: codigoOTP,
+        expira: Date.now() + 10 * 60 * 1000,
+      })
+    );
+
+    try {
+      const res = await fetch("/api/auth/validar-cuenta", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          tipo: "celular",
+          telefono: telefonoLimpio,
+          codigoOTP,
+          nombreDocente: nombreDocente || docente?.nombreCompleto || "Docente MEP",
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        return {
+          exito: true,
+          mensaje: data.mensaje || "Código de verificación enviado por WhatsApp usando Evolution API.",
+          codigoSimulado: codigoOTP,
+        };
+      } else {
+        const data = await res.json().catch(() => ({}));
+        return {
+          exito: false,
+          mensaje: data.mensaje || "No se pudo despachar el mensaje por Evolution API.",
+        };
+      }
+    } catch {
+      return {
+        exito: false,
+        mensaje: "Error de conexión con el servicio de mensajería.",
+      };
+    }
+  };
+
+  const verificarCelularOTP = (
+    telefono: string,
+    codigoOTP: string
+  ): { exito: boolean; mensaje: string } => {
+    const telefonoLimpio = telefono.replace(/[^0-9]/g, "");
+    const recoveryKey = `otp_phone_verify_${telefonoLimpio}`;
+    const raw = SafeStorage.getItem(recoveryKey);
+
+    if (!raw) {
+      return { exito: false, mensaje: "No hay una validación activa para este número telefónico." };
+    }
+
+    try {
+      const data = JSON.parse(raw);
+      if (Date.now() > data.expira) {
+        SafeStorage.removeItem(recoveryKey);
+        return { exito: false, mensaje: "El código de verificación ha expirado. Solicite uno nuevo." };
+      }
+
+      if (data.otp !== codigoOTP.trim()) {
+        return { exito: false, mensaje: "Código de verificación de WhatsApp incorrecto." };
+      }
+
+      // Marcar verificado en el docente actual
+      if (docente) {
+        const docenteActualizado = {
+          ...docente,
+          telefono,
+          telefonoVerificado: true,
+        };
+        guardarDocente(docenteActualizado);
+      }
+
+      SafeStorage.removeItem(recoveryKey);
+      return { exito: true, mensaje: "¡Número de celular verificado exitosamente mediante Evolution API!" };
+    } catch {
+      return { exito: false, mensaje: "Error al procesar la verificación del código." };
+    }
+  };
+
+  const solicitarVerificacionFirebase = async (correo: string): Promise<{ exito: boolean; mensaje: string }> => {
+    const correoLimpio = correo.trim().toLowerCase();
+    if (!correoLimpio || !correoLimpio.includes("@")) {
+      return { exito: false, mensaje: "Debe proporcionar un correo electrónico válido." };
+    }
+
+    try {
+      const { enviarRecuperacionFirebase } = await import("@/lib/firebase");
+      const respFb = await enviarRecuperacionFirebase(correoLimpio);
+      if (respFb.exito) {
+        if (docente) {
+          guardarDocente({ ...docente, correoVerificado: true });
+        }
+        return respFb;
+      }
+      return respFb;
+    } catch (err: any) {
+      return {
+        exito: false,
+        mensaje: err?.message || "Error al solicitar validación por correo con Firebase.",
       };
     }
   };
@@ -2105,6 +2247,9 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
         iniciarSesionConPIN,
         solicitarRecuperacionPIN,
         verificarOTP,
+        solicitarValidacionCelular,
+        verificarCelularOTP,
+        solicitarVerificacionFirebase,
         cerrarSesion,
         agregarResultadoTelemetria,
         actualizarResultadoTelemetria,

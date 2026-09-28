@@ -5,6 +5,7 @@
 
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore, Firestore } from "firebase/firestore";
+import { getAuth, Auth, sendPasswordResetEmail, sendEmailVerification } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyDemoDummyKeyForLocalPreview12345",
@@ -15,19 +16,73 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "1:1234567890:web:abcdef123456",
 };
 
-let app;
+let app: any = null;
 let db: Firestore | null = null;
+let auth: Auth | null = null;
 
 try {
   if (typeof window !== "undefined" || process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
     app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
     db = getFirestore(app);
+    auth = getAuth(app);
   }
 } catch (error) {
   console.warn("Firebase no inicializado con credenciales remotas. Activando SafeStorage Local.", error);
 }
 
-export { app, db };
+/**
+ * Solicita el restablecimiento de contraseña usando el servicio oficial de Firebase Auth.
+ */
+export async function enviarRecuperacionFirebase(correo: string): Promise<{ exito: boolean; mensaje: string }> {
+  try {
+    if (auth && typeof window !== "undefined") {
+      await sendPasswordResetEmail(auth, correo);
+      return {
+        exito: true,
+        mensaje: `Se ha enviado un enlace oficial de recuperación de Firebase al correo ${correo}. Revisa tu bandeja de entrada y spam.`,
+      };
+    }
+
+    // Fallback a API REST de Firebase Identity Toolkit si no hay instancia cliente
+    const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
+    if (apiKey) {
+      const res = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${apiKey}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          requestType: "PASSWORD_RESET",
+          email: correo,
+        }),
+      });
+      if (res.ok) {
+        return {
+          exito: true,
+          mensaje: `Enlace de restablecimiento de Firebase enviado exitosamente a ${correo}.`,
+        };
+      } else {
+        const errData = await res.json().catch(() => ({}));
+        const errMsg = errData?.error?.message || "Error al solicitar recuperación con Firebase";
+        return {
+          exito: false,
+          mensaje: `Firebase Auth: ${errMsg}`,
+        };
+      }
+    }
+
+    return {
+      exito: true,
+      mensaje: `[Simulación Local] Enlace de recuperación Firebase enviado a ${correo}. En producción se conecta con Firebase Auth.`,
+    };
+  } catch (error: any) {
+    console.error("Error en enviarRecuperacionFirebase:", error);
+    return {
+      exito: false,
+      mensaje: error?.message || "Ocurrió un error al enviar el correo de recuperación con Firebase.",
+    };
+  }
+}
+
+export { app, db, auth };
 
 // ============================================================================
 // SAFESTORAGE: Persistencia en RAM / LocalStorage ante restricciones locales
