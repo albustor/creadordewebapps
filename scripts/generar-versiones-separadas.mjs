@@ -15,7 +15,7 @@ let contenidoEnLinea = baseContent;
 // Reemplazar títulos y badges
 contenidoEnLinea = contenidoEnLinea.replace(
   /<title>.*?<\/title>/,
-  "<title>Diagnóstico 9° [EN LÍNEA] - «Aula Inteligente» (Sincronización en Tiempo Real)</title>"
+  "<title>Diagnóstico 9° [EN LÍNEA] (Sincronización en Tiempo Real)</title>"
 );
 
 // Agregar banner distintivo en línea
@@ -49,7 +49,7 @@ let contenidoOffline = baseContent;
 // Reemplazar títulos y badges
 contenidoOffline = contenidoOffline.replace(
   /<title>.*?<\/title>/,
-  "<title>Diagnóstico 9° [DESCONECTADO - OFFLINE] - «Aula Inteligente» (Laboratorio sin Internet)</title>"
+  "<title>Diagnóstico 9° [DESCONECTADO - OFFLINE] (Laboratorio sin Internet)</title>"
 );
 
 // Agregar banner distintivo desconectado

@@ -7,7 +7,7 @@
 # PROPUESTA TÉCNICA Y PEDAGÓGICA: ARQUITECTURA DE CÓDIGOS QR, EVALUACIÓN FORMATIVA Y SISTEMATIZACIÓN DIAGNÓSTICA (9° AÑO - MÓDULO 1)
 
 **Fecha:** 21 de septiembre de 2027  
-**Documento Base:** Diagnóstico Integral de Formación Tecnológica 9° Año - Módulo 1: *«Aula Inteligente y Sistemas Embebidos»*  
+**Documento Base:** Diagnóstico Integral de Formación Tecnológica 9° Año - Módulo 1: *«Diagnóstico 9° y Sistemas Embebidos»*  
 **Autor:** Alberto Bustos Ortega  
 **Modalidad Operativa:** Dual (En Línea y 100% Desconectado / Local)
 
@@ -47,7 +47,7 @@ Ambos recursos están concebidos bajo el principio de **Resiliencia Operativa y 
                        │                                                                    │
                        ▼                                                                    ▼
         ┌─────────────────────────────┐                                      ┌─────────────────────────────┐
-        │  WebApp: Aula Inteligente   │                                      │ 1. Asistente Primer Ingreso │
+        │  WebApp: Diagnóstico 9°   │                                      │ 1. Asistente Primer Ingreso │
         │  • 10 Criterios Cognitivos  │                                      │ 2. Carga Nómina (Excel/CSV) │
         │  • Simulador 2D de Circuitos│                                      │ 3. Opción PWA (Instalar App)│
         │  • Reflexión Parte C        │                                      │ 4. Escáner QR de Alumnos    │

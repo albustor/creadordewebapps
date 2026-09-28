@@ -1347,7 +1347,7 @@
         lote.push({
           idResultado: "doc-eval-" + est.nombre.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase() + "-" + secNorm.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase(),
           webAppId: "diagnostico_9no_modulo01_aula_inteligente",
-          webAppTitulo: "Diagnóstico Integrado 9°: «Aula Inteligente»",
+          webAppTitulo: "Diagnóstico 9°",
           docenteId: docId,
           estudianteNombre: est.nombre.trim(),
           seccionOGrupo: secNorm,
@@ -1493,7 +1493,7 @@
             if (!match.cog || match.cog.every(function(x){ return x === "ED"; })) {
               match.cog = rec.cog && Array.isArray(rec.cog) ? rec.cog.slice() : Array(10).fill("L");
             }
-            var desc = "Completó diagnóstico web («Aula Inteligente»).";
+            var desc = "Completó diagnóstico web («Automatización e Iluminación Sostenible»).";
             if (rec.retosPracticos) {
               desc += " Retos: " + (rec.retosPracticos.reto1Conexion || "5/5") + ", Actuador: " + (rec.retosPracticos.reto2Actuador || "LED") + ", Depuración: " + (rec.retosPracticos.reto3Diagnostico || "Completada") + ".";
             }
@@ -1507,7 +1507,7 @@
           }
         } else {
           // Agregar nuevo estudiante detectado en la base de datos o telemetría
-          var descNuevo = esCompletado ? "Completó diagnóstico web («Aula Inteligente»)." : "Estudiante registrado al iniciar prueba diagnóstica.";
+          var descNuevo = esCompletado ? "Completó diagnóstico web («Automatización e Iluminación Sostenible»)." : "Estudiante registrado al iniciar prueba diagnóstica.";
           if (rec.retosPracticos) {
             descNuevo += " Retos: " + (rec.retosPracticos.reto1Conexion || "5/5") + ", Actuador: " + (rec.retosPracticos.reto2Actuador || "LED") + ", Depuración: " + (rec.retosPracticos.reto3Diagnostico || "Completada") + ".";
           }
@@ -2303,7 +2303,7 @@
 
         // Generar texto personalizado si es el genérico inicial
         var descDefault = est.descripcionDesempeno || "";
-        var esGenerico = !descDefault || descDefault.startsWith("Identifica conceptos de microcontroladores y sensores con autonomía") || descDefault.startsWith("Completó diagnóstico web («Aula Inteligente»)") || descDefault.startsWith("Diagnóstico inicial");
+        var esGenerico = !descDefault || descDefault.startsWith("Identifica conceptos de microcontroladores y sensores con autonomía") || descDefault.startsWith("Completó diagnóstico web («Automatización e Iluminación Sostenible»)") || descDefault.startsWith("Diagnóstico inicial");
 
         if (esGenerico) {
           var numL = (est.cog || []).filter(function(x){ return x === "L"; }).length;
@@ -2376,7 +2376,7 @@
         estudiantes: estadoDocente.estudiantes,
         seccion: filtroSec,
         docente: docNombre,
-        indicador: "Diagnóstico 9° Módulo 1 («Aula Inteligente»)"
+        indicador: "Diagnóstico 9° Módulo 1 («Automatización e Iluminación Sostenible»)"
       };
 
       try {

@@ -397,7 +397,7 @@ export default function SelectorVersionesDiagnostico({
               className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-stone-100 text-slate-800 rounded-xl border border-stone-300 font-bold transition-all text-xs cursor-pointer"
             >
               <DeviceMobileCamera size={14} className="text-purple-600" weight="bold" />
-              <span>Manual PWA Móvil (iOS / Android)</span>
+              <span>Manual de Instalación (iPhone / Android / Huawei)</span>
               <Info size={12} />
             </button>
           </div>

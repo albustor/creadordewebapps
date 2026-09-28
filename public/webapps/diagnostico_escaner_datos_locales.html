@@ -1114,15 +1114,15 @@ input:focus, select:focus {
 <div class="container">
 
   <!-- BANNER DE INTEGRACIÓN E INSTALACIÓN TIPO APP (PWA) Y DESCARGA HTML -->
-  <div class="pwa-install-banner">
+  <div class="pwa-install-banner" id="pwaBanner">
     <div class="pwa-install-info">
-      <div class="pwa-badge">📱 APLICACIÓN WEB PROGRESIVA (PWA) • MEP</div>
-      <div class="pwa-title">Instalar Escáner en Celular o Descargar HTML</div>
-      <div class="pwa-desc">Úsalo como App nativa en Android, iPhone o Huawei 100% sin internet, o descarga el archivo HTML para uso local en computadoras y USB.</div>
+      <div class="pwa-badge" id="pwaBadge">📱 APLICACIÓN WEB PROGRESIVA (PWA) • MEP</div>
+      <div class="pwa-title" id="pwaTitle">Instalar Escáner en Celular o Descargar HTML</div>
+      <div class="pwa-desc" id="pwaDesc">Úsalo como App nativa en Android, iPhone o Huawei 100% sin internet, o descarga el archivo HTML para uso local en computadoras y USB.</div>
     </div>
-    <div class="pwa-actions-group">
-      <button type="button" id="btnInstalarPWA" class="btn-install-pwa" onclick="solicitarInstalacionPWA()">
-        <span>📲 Instalar en Celular (Android / iOS)</span>
+    <div class="pwa-actions-group" id="pwaActionsGroup">
+      <button type="button" id="btnInstalarPWA" class="btn-install-pwa" onclick="solicitarInstalacionSegunSO()">
+        <span id="btnInstalarPWAText">📲 Instalar en Celular (Android / iOS)</span>
       </button>
       <a href="/webapps/diagnostico_escaner_datos_locales.html" download="diagnostico_escaner_datos_locales.html" class="btn-download-html" title="Descargar archivo HTML autocontenido">
         <span>⬇ Descargar HTML Offline</span>
@@ -1131,10 +1131,10 @@ input:focus, select:focus {
   </div>
 
   <!-- ACORDEÓN PLEGABLE: GUÍA DE CELULARES (CERRADO POR DEFECTO PARA NO QUITAR VISIBILIDAD) -->
-  <div class="guide-accordion">
+  <div class="guide-accordion" id="guideAccordionSection">
     <div class="guide-accordion-header" onclick="alternarGuiaInstalacion()">
       <div class="guide-accordion-title">
-        <span>📖 ¿Cómo instalar y usar en iPhone / Android / Huawei?</span>
+        <span>📖 Guía de Instalación según Dispositivo (iPhone / Android / Huawei)</span>
       </div>
       <span id="guideArrow" class="guide-accordion-badge">▼ Ver Instrucciones</span>
     </div>
@@ -1158,41 +1158,43 @@ input:focus, select:focus {
 
       <!-- Pestaña iOS -->
       <div id="paneIos" class="guide-pane">
-        <h3 style="font-size: 13px; font-weight: 900; color: #002b49; margin-bottom: 4px;">
-          Manual Visual de Instalación en iPhone y iPad (iOS Safari)
-        </h3>
-        <p style="font-size: 11.5px; color: #475569;">
-          Configura el Escáner en la pantalla de inicio para ejecutarlo a pantalla completa y sin consumo de internet.
-        </p>
+        <div style="background:#eff6ff; border:1.5px solid #bfdbfe; border-radius:12px; padding:12px 14px; margin-bottom:12px;">
+          <h3 style="font-size: 13.5px; font-weight: 900; color: #1e3a8a; margin: 0 0 4px 0; display:flex; align-items:center; gap:6px;">
+            <span>🍎 Pasos Obligatorios para Instalar en iPhone / iPad (iOS Safari)</span>
+          </h3>
+          <p style="font-size: 11.5px; color: #1e40af; margin:0; line-height: 1.5;">
+            <strong>Apple no permite la descarga directa de archivos instaladores (APK)</strong>. Para usar el escáner como App a pantalla completa y sin internet en tu iPhone, sigue estos 3 sencillos pasos desde <strong>Safari</strong>:
+          </p>
+        </div>
 
         <div class="guide-step-grid">
-          <div class="guide-step-card">
+          <div class="guide-step-card" style="border-top: 4px solid #0284c7;">
             <div class="guide-step-header">
-              <span class="step-pill" style="background:#0284c7;">Paso 1: Safari</span>
-              <h4>Abrir y Compartir</h4>
-              <p>Abre el enlace en Safari y toca el botón <strong>Compartir (📤)</strong> abajo.</p>
+              <span class="step-pill" style="background:#0284c7;">Paso 1: En Safari</span>
+              <h4>1. Tocar Compartir (📤)</h4>
+              <p>Abre el enlace en <strong>Safari</strong> y toca el botón <strong>Compartir</strong> (icono de cuadrado con flecha hacia arriba) en la barra inferior.</p>
             </div>
             <div class="guide-step-img-wrap">
               <img src="/guias/iphone/paso1_instrucciones_ios.png" alt="Paso 1 iOS" class="guide-img" onerror="this.style.display='none'">
             </div>
           </div>
 
-          <div class="guide-step-card">
+          <div class="guide-step-card" style="border-top: 4px solid #7c3aed;">
             <div class="guide-step-header">
-              <span class="step-pill" style="background:#7c3aed;">Paso 2: Menú</span>
-              <h4>Agregar a Inicio</h4>
-              <p>Desliza y selecciona la opción <strong>[+] "Agregar a Inicio"</strong>.</p>
+              <span class="step-pill" style="background:#7c3aed;">Paso 2: Menú iOS</span>
+              <h4>2. "Agregar a Inicio" [+]</h4>
+              <p>Desliza las opciones hacia abajo y selecciona <strong>[+] "Agregar a Inicio"</strong> (<em>Add to Home Screen</em>).</p>
             </div>
             <div class="guide-step-img-wrap">
               <img src="/guias/iphone/paso2_menu_compartir.png" alt="Paso 2 iOS" class="guide-img" onerror="this.style.display='none'">
             </div>
           </div>
 
-          <div class="guide-step-card">
+          <div class="guide-step-card" style="border-top: 4px solid #059669;">
             <div class="guide-step-header">
-              <span class="step-pill" style="background:#059669;">Paso 3: Guardar</span>
-              <h4>Abrir como App Web</h4>
-              <p>Activa <em>"Abrir como app web"</em> (verde) y pulsa <strong>"Agregar"</strong>.</p>
+              <span class="step-pill" style="background:#059669;">Paso 3: Confirmar</span>
+              <h4>3. Tocar "Agregar"</h4>
+              <p>Confirma tocando <strong>"Agregar"</strong> en la esquina superior derecha. ¡Listo! Se abrirá como App nativa 100% offline.</p>
             </div>
             <div class="guide-step-img-wrap">
               <img src="/guias/iphone/paso3_agregar_inicio.png" alt="Paso 3 iOS" class="guide-img" onerror="this.style.display='none'">
@@ -1200,40 +1202,42 @@ input:focus, select:focus {
           </div>
         </div>
 
-        <div class="guide-note-box">
-          <strong>✨ Ventaja:</strong> Ejecución a pantalla completa sin barras de navegador, con retroalimentación sonora/vibración y guardado local sin internet.
+        <div class="guide-note-box" style="margin-top:12px;">
+          <strong>✨ Ventaja en iPhone:</strong> Ejecución a pantalla completa sin barras de navegación, sonido y vibración al escanear, y captura de datos 100% offline sin gastar datos celulares.
         </div>
       </div>
 
       <!-- Pestaña Android -->
       <div id="paneAndroid" class="guide-pane hidden">
-        <h3 style="font-size: 13px; font-weight: 900; color: #002b49; margin-bottom: 4px;">
-          Instalación en Android (Google Chrome)
-        </h3>
-        <p style="font-size: 11.5px; color: #475569;">
-          Instalación instantánea PWA desconectada.
-        </p>
+        <div style="background:#ecfdf5; border:1.5px solid #a7f3d0; border-radius:12px; padding:12px 14px; margin-bottom:12px;">
+          <h3 style="font-size: 13.5px; font-weight: 900; color: #065f46; margin: 0 0 4px 0; display:flex; align-items:center; gap:6px;">
+            <span>🤖 Instalación Directa en Android (Google Chrome)</span>
+          </h3>
+          <p style="font-size: 11.5px; color: #047857; margin:0; line-height: 1.5;">
+            En Android la instalación se realiza con 1 solo toque o mediante el menú oficial de Chrome:
+          </p>
+        </div>
 
         <div class="guide-step-grid">
-          <div class="guide-step-card">
+          <div class="guide-step-card" style="border-top: 4px solid #059669;">
             <div class="guide-step-header" style="height:100%;">
-              <span class="step-pill" style="background:#059669;">Paso 1</span>
-              <h4>Abrir en Chrome</h4>
-              <p>Abre el enlace del escáner en tu navegador Chrome.</p>
+              <span class="step-pill" style="background:#059669;">Método 1</span>
+              <h4>1 Toque Directo</h4>
+              <p>Presiona el botón verde <strong>"🤖 Instalar App en Android"</strong> en la parte superior.</p>
             </div>
           </div>
-          <div class="guide-step-card">
+          <div class="guide-step-card" style="border-top: 4px solid #0284c7;">
             <div class="guide-step-header" style="height:100%;">
-              <span class="step-pill" style="background:#059669;">Paso 2</span>
-              <h4>Menú (⋮)</h4>
-              <p>Toca los tres puntos arriba a la derecha.</p>
+              <span class="step-pill" style="background:#0284c7;">Método 2</span>
+              <h4>Menú Chrome (⋮)</h4>
+              <p>Toca los tres puntos (⋮) arriba a la derecha en Google Chrome.</p>
             </div>
           </div>
-          <div class="guide-step-card">
+          <div class="guide-step-card" style="border-top: 4px solid #7c3aed;">
             <div class="guide-step-header" style="height:100%;">
-              <span class="step-pill" style="background:#059669;">Paso 3</span>
-              <h4>Instalar</h4>
-              <p>Elige <strong>"Instalar aplicación"</strong> o <strong>"Agregar a pantalla principal"</strong>.</p>
+              <span class="step-pill" style="background:#7c3aed;">Método 3</span>
+              <h4>Instalar App</h4>
+              <p>Selecciona <strong>"Instalar aplicación"</strong> o <strong>"Agregar a pantalla principal"</strong>.</p>
             </div>
           </div>
         </div>
@@ -1241,33 +1245,35 @@ input:focus, select:focus {
 
       <!-- Pestaña Huawei -->
       <div id="paneHuawei" class="guide-pane hidden">
-        <h3 style="font-size: 13px; font-weight: 900; color: #002b49; margin-bottom: 4px;">
-          Instalación en Dispositivos Huawei (Petal Browser)
-        </h3>
-        <p style="font-size: 11.5px; color: #475569;">
-          Configuración en EMUI y HarmonyOS.
-        </p>
+        <div style="background:#fff1f2; border:1.5px solid #fecdd3; border-radius:12px; padding:12px 14px; margin-bottom:12px;">
+          <h3 style="font-size: 13.5px; font-weight: 900; color: #9f1239; margin: 0 0 4px 0; display:flex; align-items:center; gap:6px;">
+            <span>📱 Instalación en Dispositivos Huawei (Petal / Huawei Browser)</span>
+          </h3>
+          <p style="font-size: 11.5px; color: #be123c; margin:0; line-height: 1.5;">
+            Configuración para dispositivos con EMUI y HarmonyOS:
+          </p>
+        </div>
 
         <div class="guide-step-grid">
-          <div class="guide-step-card">
+          <div class="guide-step-card" style="border-top: 4px solid #dc2626;">
             <div class="guide-step-header" style="height:100%;">
               <span class="step-pill" style="background:#dc2626;">Paso 1</span>
-              <h4>Navegador</h4>
-              <p>Abre el enlace en Huawei Browser.</p>
+              <h4>Navegador Huawei</h4>
+              <p>Abre el enlace en el navegador oficial de Huawei (Huawei Browser / Petal).</p>
             </div>
           </div>
-          <div class="guide-step-card">
+          <div class="guide-step-card" style="border-top: 4px solid #ea580c;">
             <div class="guide-step-header" style="height:100%;">
-              <span class="step-pill" style="background:#dc2626;">Paso 2</span>
+              <span class="step-pill" style="background:#ea580c;">Paso 2</span>
               <h4>Menú (≡ / ⠇)</h4>
-              <p>Abre el menú de ajustes del navegador.</p>
+              <p>Toca el botón de menú en la barra de herramientas.</p>
             </div>
           </div>
-          <div class="guide-step-card">
+          <div class="guide-step-card" style="border-top: 4px solid #b91c1c;">
             <div class="guide-step-header" style="height:100%;">
-              <span class="step-pill" style="background:#dc2626;">Paso 3</span>
+              <span class="step-pill" style="background:#b91c1c;">Paso 3</span>
               <h4>Acceso Directo</h4>
-              <p>Toca <strong>"Agregar a pantalla de inicio"</strong>.</p>
+              <p>Selecciona <strong>"Agregar a pantalla de inicio"</strong>.</p>
             </div>
           </div>
         </div>
@@ -1283,7 +1289,7 @@ input:focus, select:focus {
             <strong>🌐 En Línea (HTTPS):</strong> Activa cámara trasera continua en vivo.
           </div>
           <div style="padding:10px; background:#fef3c7; border-radius:10px; font-size:11.5px;">
-            <strong>📸 Foto Directa:</strong> Si no hay HTTPS, use el botón <em>"Tomar foto / Cargar QR"</em>.
+            <strong>📸 Foto Directa:</strong> Si la cámara en vivo no inicia, use el botón <em>"Tomar foto con cámara"</em>.
           </div>
           <div style="padding:10px; background:#ecfdf5; border-radius:10px; font-size:11.5px;">
             <strong>📂 Llave Maya / USB:</strong> Use el botón <em>"Importar JSONs (USB)"</em> para cargar archivos del grupo de una sola vez.
@@ -1338,7 +1344,7 @@ input:focus, select:focus {
     </button>
   </nav>
 
-  <!-- PASO 2: SESIÓN ACTIVA Y CÁMARA (VISTA ULTRA-LIMPIA) -->
+  <!-- PASO 2: SESIÓN ACTIVA Y CÁMARA (VISTA ULTRA-LIMPIA CON RESILIENCIA MULTICAPA) -->
   <section id="vistaSesion" class="card hidden">
     <h2>📷 Escaneo de QR Estudiantes</h2>
 
@@ -1348,19 +1354,37 @@ input:focus, select:focus {
       Estudiantes Registrados: 0
     </div>
 
-    <!-- Botón de apertura de cámara -->
-    <button type="button" id="btnActivarCamara" class="btn-primary" onclick="iniciarCamaraUniversal()">
-      <span>📷 Activar Cámara para Escanear</span>
-    </button>
+    <!-- BOTONES PRINCIPALES DE CAPTURA DE CÁMARA -->
+    <div style="display:flex; flex-direction:column; gap:8px;">
+      <button type="button" id="btnActivarCamara" class="btn-primary" onclick="iniciarCamaraUniversal()">
+        <span>📷 Activar Cámara Continua en Vivo</span>
+      </button>
 
-    <button type="button" id="btnDetenerCamara" class="btn-secondary hidden" onclick="detenerCamara()" style="margin-top: 8px;">
-      <span>⏹️ Pausar Cámara</span>
-    </button>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+        <label class="btn-emerald" style="margin:0; cursor:pointer; font-size:12px; height:44px; text-align:center;">
+          <span>📸 Tomar Foto con Cámara</span>
+          <input type="file" accept="image/*" capture="environment" class="hidden" onchange="procesarArchivoImagen(event)">
+        </label>
 
-    <!-- Contenedor del video -->
-    <div id="reader" class="hidden" playsinline webkit-playsinline></div>
+        <label class="btn-secondary" style="margin:0; cursor:pointer; font-size:12px; height:44px; text-align:center;">
+          <span>📂 Cargar Foto / QR</span>
+          <input type="file" accept="image/*" class="hidden" onchange="procesarArchivoImagen(event)">
+        </label>
+      </div>
 
-    <div id="mensajeCamara"></div>
+      <button type="button" id="btnTorch" class="btn-secondary hidden" onclick="alternarLinterna()" style="margin-top: 2px;">
+        <span>💡 Encender Linterna</span>
+      </button>
+
+      <button type="button" id="btnDetenerCamara" class="btn-secondary hidden" onclick="detenerCamara()" style="margin-top: 2px;">
+        <span>⏹️ Pausar Cámara</span>
+      </button>
+    </div>
+
+    <!-- Contenedor del video y canvas -->
+    <div id="reader" class="hidden" playsinline webkit-playsinline style="margin-top:12px;"></div>
+
+    <div id="mensajeCamara" style="margin-top:10px;"></div>
 
     <!-- Acciones rápidas de navegación -->
     <div class="button-grid" style="margin-top: 16px;">
@@ -1564,8 +1588,24 @@ function emitirBeepExito() {
   }
 }
 
+var streamCamara = null;
+var trackVideo = null;
+var linternaActiva = false;
+var barcodeDetectorInstance = null;
+var animFrameId = null;
+
 document.addEventListener("DOMContentLoaded", function() {
+  inicializarBannerSO();
   actualizarContador();
+  
+  // Inicializar BarcodeDetector si está disponible en el navegador
+  try {
+    if ("BarcodeDetector" in window) {
+      barcodeDetectorInstance = new BarcodeDetector({ formats: ["qr_code"] });
+    }
+  } catch (e) {
+    barcodeDetectorInstance = null;
+  }
 });
 
 // Control del acordeón de guía
@@ -1640,8 +1680,9 @@ function iniciarSesionDocente() {
   actualizarContador();
 }
 
+// ACTIVACIÓN DE CÁMARA UNIVERSAL (MULTICAPA Y COMPATIBLE CON SAFARI / CHROME)
 async function iniciarCamaraUniversal() {
-  if (html5QrCodeInstance) return;
+  if (streamCamara || html5QrCodeInstance) return;
   procesandoLectura = false;
 
   var readerEl = document.getElementById("reader");
@@ -1650,58 +1691,175 @@ async function iniciarCamaraUniversal() {
   document.getElementById("btnDetenerCamara").classList.remove("hidden");
 
   document.getElementById("mensajeCamara").innerHTML =
-    '<div class="alert alert-info">📸 Apunte la cámara hacia el código QR en la pantalla de la computadora del estudiante.</div>';
+    '<div class="alert alert-info">📸 Iniciando cámara... Apunte hacia el código QR en la pantalla del estudiante.</div>';
 
-  try {
-    if (typeof Html5Qrcode === "undefined") {
-      throw new Error("Librería QR no disponible en este entorno.");
+  var constraintsList = [
+    { video: { facingMode: { ideal: "environment" }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false },
+    { video: { facingMode: "environment" }, audio: false },
+    { video: true, audio: false }
+  ];
+
+  var streamObtenido = null;
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    for (var i = 0; i < constraintsList.length; i++) {
+      try {
+        streamObtenido = await navigator.mediaDevices.getUserMedia(constraintsList[i]);
+        if (streamObtenido) break;
+      } catch (eConstraints) {}
     }
+  }
 
-    html5QrCodeInstance = new Html5Qrcode("reader");
+  if (streamObtenido) {
+    streamCamara = streamObtenido;
+    var videoEl = document.createElement("video");
+    videoEl.setAttribute("autoplay", "true");
+    videoEl.setAttribute("playsinline", "true");
+    videoEl.setAttribute("webkit-playsinline", "true");
+    videoEl.setAttribute("muted", "true");
+    videoEl.style.width = "100%";
+    videoEl.style.borderRadius = "14px";
+    videoEl.style.display = "block";
+    videoEl.srcObject = streamObtenido;
 
-    var qrConfig = {
-      fps: 15,
-      qrbox: function(viewWidth, viewHeight) {
-        var edge = Math.min(viewWidth, viewHeight);
-        return { width: Math.floor(edge * 0.8), height: Math.floor(edge * 0.8) };
-      },
-      aspectRatio: 1.0,
-      experimentalFeatures: {
-        useBarCodeDetectorIfSupported: true
-      }
-    };
+    readerEl.innerHTML = "";
+    readerEl.appendChild(videoEl);
 
-    // Cascada de permisos: 1) facingMode environment -> 2) enumerar cámaras
     try {
-      await html5QrCodeInstance.start(
-        { facingMode: "environment" },
-        qrConfig,
-        onQRDetectado,
-        function() {}
-      );
-    } catch (errFacing) {
-      console.warn("Fallo con facingMode environment, intentando con lista de cámaras...", errFacing);
-      var cameras = await Html5Qrcode.getCameras();
-      if (cameras && cameras.length > 0) {
-        var backCam = cameras[cameras.length - 1];
-        await html5QrCodeInstance.start(backCam.id, qrConfig, onQRDetectado, function() {});
-      } else {
-        throw new Error("No se detectaron cámaras en este dispositivo móvil.");
+      await videoEl.play();
+    } catch (errPlay) {}
+
+    var track = streamObtenido.getVideoTracks()[0];
+    trackVideo = track;
+    if (track && typeof track.getCapabilities === "function") {
+      var caps = track.getCapabilities();
+      if (caps && caps.torch) {
+        document.getElementById("btnTorch").classList.remove("hidden");
       }
     }
-  } catch (error) {
-    console.error("Error al activar cámara:", error);
-    await detenerCamara();
+
     document.getElementById("mensajeCamara").innerHTML =
-      '<div class="alert alert-error">' +
-      '<strong>⚠️ No fue posible activar la cámara continua.</strong><br>' +
-      '• Si el navegador bloquea permisos en archivos locales, use el botón <strong>"📸 Tomar foto / Cargar QR"</strong> para usar la cámara nativa del celular.<br>' +
-      '• Si tiene internet, abra el enlace HTTPS oficial para acceso automático a la cámara.' +
-      '</div>';
+      '<div class="alert alert-info">📸 <strong>Cámara Activa:</strong> Apunte hacia el código QR en la pantalla del estudiante.</div>';
+
+    iniciarBucleEscaneoVideo(videoEl);
+    return;
+  }
+
+  // Fallback 2: Intentar con Html5Qrcode Library
+  try {
+    if (typeof Html5Qrcode !== "undefined") {
+      html5QrCodeInstance = new Html5Qrcode("reader");
+      var qrConfig = {
+        fps: 15,
+        qrbox: function(w, h) {
+          var edge = Math.min(w, h);
+          return { width: Math.floor(edge * 0.8), height: Math.floor(edge * 0.8) };
+        },
+        aspectRatio: 1.0,
+        experimentalFeatures: { useBarCodeDetectorIfSupported: true }
+      };
+
+      try {
+        await html5QrCodeInstance.start({ facingMode: "environment" }, qrConfig, onQRDetectado, function() {});
+        return;
+      } catch (errFacing) {
+        var cameras = await Html5Qrcode.getCameras();
+        if (cameras && cameras.length > 0) {
+          var backCam = cameras[cameras.length - 1];
+          await html5QrCodeInstance.start(backCam.id, qrConfig, onQRDetectado, function() {});
+          return;
+        }
+      }
+    }
+  } catch (errHtml5) {}
+
+  // Si falló el streaming continuo por políticas del navegador (por ejemplo en file:// o permisos)
+  await detenerCamara();
+  document.getElementById("mensajeCamara").innerHTML =
+    '<div class="alert alert-error" style="border-left: 4px solid #dc2626;">' +
+    '<strong>⚠️ Cámara en vivo no permitida en este entorno.</strong><br>' +
+    '• Para escanear inmediatamente, use el botón verde <strong>"📸 Tomar Foto con Cámara"</strong>.<br>' +
+    '• Esto abre la cámara nativa de su teléfono (iPhone / Android) y procesa el QR con 100% de efectividad.' +
+    '</div>';
+}
+
+function alternarLinterna() {
+  if (trackVideo && typeof trackVideo.applyConstraints === "function") {
+    linternaActiva = !linternaActiva;
+    trackVideo.applyConstraints({
+      advanced: [{ torch: linternaActiva }]
+    }).catch(function() {});
+    document.getElementById("btnTorch").innerHTML = linternaActiva ? "<span>🚫 Apagar Linterna</span>" : "<span>💡 Encender Linterna</span>";
   }
 }
 
+function iniciarBucleEscaneoVideo(videoEl) {
+  var canvas = document.createElement("canvas");
+  var ctx = canvas.getContext("2d", { willReadFrequently: true });
+
+  async function escanearFrame() {
+    if (!streamCamara || procesandoLectura) return;
+
+    if (videoEl.readyState >= 2 && videoEl.videoWidth > 0) {
+      var w = videoEl.videoWidth;
+      var h = videoEl.videoHeight;
+      var minSide = Math.min(w, h);
+      var cropSize = Math.floor(minSide * 0.8);
+      var sx = Math.floor((w - cropSize) / 2);
+      var sy = Math.floor((h - cropSize) / 2);
+      var canvasSize = 640;
+
+      canvas.width = canvasSize;
+      canvas.height = canvasSize;
+      ctx.drawImage(videoEl, sx, sy, cropSize, cropSize, 0, 0, canvasSize, canvasSize);
+
+      var textoQR = null;
+
+      // 1. Detección por BarcodeDetector nativo (Ultra rápida)
+      if (barcodeDetectorInstance) {
+        try {
+          var detecciones = await barcodeDetectorInstance.detect(canvas);
+          if (detecciones && detecciones.length > 0) {
+            textoQR = detecciones[0].rawValue;
+          }
+        } catch (eBD) {}
+      }
+
+      // 2. Detección por Html5Qrcode si BarcodeDetector no halló nada
+      if (!textoQR && typeof Html5Qrcode !== "undefined") {
+        try {
+          if (!window.__tempQrReader) {
+            window.__tempQrReader = new Html5Qrcode("reader");
+          }
+        } catch (eH5) {}
+      }
+
+      if (textoQR) {
+        onQRDetectado(textoQR);
+        return;
+      }
+    }
+
+    animFrameId = requestAnimationFrame(escanearFrame);
+  }
+
+  animFrameId = requestAnimationFrame(escanearFrame);
+}
+
 async function detenerCamara() {
+  if (animFrameId) {
+    cancelAnimationFrame(animFrameId);
+    animFrameId = null;
+  }
+
+  if (streamCamara) {
+    try {
+      streamCamara.getTracks().forEach(function(t) { t.stop(); });
+    } catch (e) {}
+    streamCamara = null;
+  }
+  trackVideo = null;
+  linternaActiva = false;
+
   if (html5QrCodeInstance) {
     try {
       await html5QrCodeInstance.stop();
@@ -1711,9 +1869,24 @@ async function detenerCamara() {
     } catch (e) {}
     html5QrCodeInstance = null;
   }
-  document.getElementById("reader").classList.add("hidden");
-  document.getElementById("btnActivarCamara").classList.remove("hidden");
-  document.getElementById("btnDetenerCamara").classList.add("hidden");
+
+  var readerEl = document.getElementById("reader");
+  if (readerEl) {
+    readerEl.innerHTML = "";
+    readerEl.classList.add("hidden");
+  }
+  
+  var btnAct = document.getElementById("btnActivarCamara");
+  if (btnAct) btnAct.classList.remove("hidden");
+  
+  var btnDet = document.getElementById("btnDetenerCamara");
+  if (btnDet) btnDet.classList.add("hidden");
+
+  var btnTorch = document.getElementById("btnTorch");
+  if (btnTorch) {
+    btnTorch.classList.add("hidden");
+    btnTorch.innerHTML = "<span>💡 Encender Linterna</span>";
+  }
 }
 
 async function onQRDetectado(textoQR) {
@@ -1734,7 +1907,7 @@ async function onQRDetectado(textoQR) {
   }
 }
 
-// Fallback 1: Escaneo de foto cargada desde galería o app de cámara nativa
+// Fallback universal: Escaneo de foto tomada con cámara nativa o cargada desde galería
 async function procesarArchivoImagen(e) {
   var file = e.target.files && e.target.files[0];
   if (!file) return;
@@ -1743,13 +1916,37 @@ async function procesarArchivoImagen(e) {
     '<div class="alert alert-info">⌛ Procesando imagen del código QR...</div>';
 
   try {
-    var html5QrCode = new Html5Qrcode("reader");
-    var decodedText = await html5QrCode.scanFile(file, true);
-    await html5QrCode.clear();
-    onQRDetectado(decodedText);
+    var textoDecodificado = null;
+
+    // 1. Probar con BarcodeDetector sobre ImageBitmap
+    if ("BarcodeDetector" in window && typeof createImageBitmap === "function") {
+      try {
+        var bmp = await createImageBitmap(file);
+        var bd = new BarcodeDetector({ formats: ["qr_code"] });
+        var res = await bd.detect(bmp);
+        if (res && res.length > 0) {
+          textoDecodificado = res[0].rawValue;
+        }
+      } catch (errBD) {}
+    }
+
+    // 2. Probar con Html5Qrcode.scanFile
+    if (!textoDecodificado && typeof Html5Qrcode !== "undefined") {
+      try {
+        var html5QrCode = new Html5Qrcode("reader");
+        textoDecodificado = await html5QrCode.scanFile(file, true);
+        await html5QrCode.clear();
+      } catch (errH5) {}
+    }
+
+    if (textoDecodificado) {
+      onQRDetectado(textoDecodificado);
+    } else {
+      throw new Error("No se detectó el código QR con suficiente nitidez.");
+    }
   } catch (err) {
     document.getElementById("mensajeCamara").innerHTML =
-      '<div class="alert alert-error"><strong>⚠️ No se detectó un código QR legible en la imagen.</strong> Intente tomar una foto más nítida y centrada.</div>';
+      '<div class="alert alert-error"><strong>⚠️ No se detectó un código QR legible en la foto.</strong><br>Asegúrese de enfocar bien la pantalla y que el código QR no tenga reflejos de luz.</div>';
   }
 }
 
@@ -2116,7 +2313,7 @@ function interpretarPayloadQR(raw) {
     "RA": "Requiere Acompañamiento"
   };
 
-  // 1. Soporte formato oficial D2 (Diagnóstico Oficial 9.° año / Aula Inteligente)
+  // 1. Soporte formato oficial D2 (Diagnóstico Oficial 9.° año)
   if (texto.startsWith("D2|") || (texto.startsWith("D") && texto.includes("|C:") && texto.includes("|P:"))) {
     var partes = texto.split("|");
     var estD2 = partes[1] || (sesionActiva.estudianteInicial || "Allan");
@@ -3012,7 +3209,7 @@ function finalizarSesion() {
 }
 
 // ==========================================================================
-// PWA INSTALLATION HOOK & NATIVE APP HANDLER
+// DETECCIÓN INTELIGENTE DE SISTEMA OPERATIVO Y MANEJADOR PWA MULTIPLATAFORMA
 // ==========================================================================
 var deferredPrompt = null;
 window.addEventListener("beforeinstallprompt", function(e) {
@@ -3024,32 +3221,97 @@ window.addEventListener("beforeinstallprompt", function(e) {
   }
 });
 
-function solicitarInstalacionPWA() {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(function(choiceResult) {
-      if (choiceResult.outcome === "accepted") {
-        console.log("El usuario aceptó la instalación de la PWA.");
-      }
-      deferredPrompt = null;
-    });
-  } else {
-    var body = document.getElementById("guideContentBody");
-    var arrow = document.getElementById("guideArrow");
-    if (body && arrow) {
-      body.style.display = "block";
-      arrow.textContent = "▲ Ocultar Instrucciones";
-      
-      var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-      if (isIOS) {
-        cambiarPestanaGuia('ios');
-        alert("📲 En iPhone / iPad:\n1. Toca el botón Compartir (📤) en Safari abajo.\n2. Selecciona 'Agregar al inicio (+)' para usarla a pantalla completa sin internet.");
-      } else {
-        cambiarPestanaGuia('android');
-        alert("📲 Para instalar en tu celular:\n1. Toca los 3 puntos (⋮) de tu navegador.\n2. Selecciona 'Instalar aplicación' o 'Agregar a la pantalla principal'.");
-      }
-      body.scrollIntoView({ behavior: 'smooth' });
+function detectarSO() {
+  var ua = navigator.userAgent || navigator.vendor || window.opera || "";
+  var isIOS = (/iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) && !window.MSStream;
+  var isHuawei = /Huawei|Honor|HMSCore|Petal/i.test(ua);
+  var isAndroid = /Android/i.test(ua) && !isHuawei;
+  if (isIOS) return "ios";
+  if (isHuawei) return "huawei";
+  if (isAndroid) return "android";
+  return "desktop";
+}
+
+function inicializarBannerSO() {
+  var so = detectarSO();
+  var badge = document.getElementById("pwaBadge");
+  var title = document.getElementById("pwaTitle");
+  var desc = document.getElementById("pwaDesc");
+  var btnText = document.getElementById("btnInstalarPWAText");
+  var btnInstalar = document.getElementById("btnInstalarPWA");
+
+  if (so === "ios") {
+    if (badge) badge.innerHTML = "🍎 DETECTADO: iPhone / iPad (iOS Safari)";
+    if (title) title.innerHTML = "Instalación en iPhone (iOS Safari)";
+    if (desc) desc.innerHTML = "iOS no admite descarga directa de APKs. Sigue los 3 sencillos pasos en Safari para tener el Escáner a pantalla completa y 100% sin conexión.";
+    if (btnText) btnText.innerHTML = "🍎 Ver Pasos de Instalación en iPhone";
+    if (btnInstalar) {
+      btnInstalar.style.background = "linear-gradient(135deg, #4338ca 0%, #312e81 100%)";
+      btnInstalar.style.border = "1.5px solid #818cf8";
     }
+  } else if (so === "android") {
+    if (badge) badge.innerHTML = "🤖 DETECTADO: Android (Google Chrome)";
+    if (title) title.innerHTML = "Instalar Escáner como App Nativa en Android";
+    if (desc) desc.innerHTML = "Instala la aplicación con 1 toque en Android para escanear 100% desconectado en el laboratorio o descarga el archivo HTML.";
+    if (btnText) btnText.innerHTML = "🤖 Instalar App en Android (1 Toque)";
+    if (btnInstalar) {
+      btnInstalar.style.background = "linear-gradient(135deg, #059669 0%, #047857 100%)";
+    }
+  } else if (so === "huawei") {
+    if (badge) badge.innerHTML = "📱 DETECTADO: Huawei (HarmonyOS / EMUI)";
+    if (title) title.innerHTML = "Instalación en Dispositivos Huawei";
+    if (desc) desc.innerHTML = "Agrega el acceso directo en Huawei Browser desde el Menú de Opciones para usar el escáner sin internet.";
+    if (btnText) btnText.innerHTML = "📱 Ver Pasos para Huawei";
+    if (btnInstalar) {
+      btnInstalar.style.background = "linear-gradient(135deg, #dc2626 0%, #991b1b 100%)";
+    }
+  } else {
+    if (badge) badge.innerHTML = "💻 ACCESO EN COMPUTADORA / USB";
+    if (title) title.innerHTML = "Instalar Escáner en Celular o Descargar HTML";
+    if (desc) desc.innerHTML = "Abre este enlace en tu celular (Android / iPhone / Huawei) para usar la cámara o descarga el archivo HTML para computadoras y llaves USB.";
+    if (btnText) btnText.innerHTML = "📱 Guía de Instalación para Celulares";
+  }
+}
+
+function solicitarInstalacionSegunSO() {
+  var so = detectarSO();
+  var body = document.getElementById("guideContentBody");
+  var arrow = document.getElementById("guideArrow");
+  
+  if (body && arrow) {
+    body.style.display = "block";
+    arrow.textContent = "▲ Ocultar Instrucciones";
+  }
+
+  if (so === "ios") {
+    cambiarPestanaGuia('ios');
+    var el = document.getElementById("paneIos");
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    alert("🍎 PASOS PARA INSTALAR EN IPHONE (SAFARI):\n\n1. Asegúrate de estar en el navegador Safari.\n2. Toca el botón Compartir (📤) en la barra inferior de Safari.\n3. Desliza hacia abajo y selecciona [+] 'Agregar a Inicio' (Add to Home Screen).\n4. Toca 'Agregar' arriba a la derecha.\n\n¡La App quedará lista en tu pantalla de inicio y funcionará sin internet!");
+  } else if (so === "android") {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(function(choiceResult) {
+        if (choiceResult.outcome === "accepted") {
+          console.log("El usuario aceptó la instalación de la PWA en Android.");
+        }
+        deferredPrompt = null;
+      });
+    } else {
+      cambiarPestanaGuia('android');
+      var el = document.getElementById("paneAndroid");
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      alert("🤖 INSTALACIÓN EN ANDROID (CHROME):\n\n1. Toca los 3 puntos (⋮) arriba a la derecha en Google Chrome.\n2. Selecciona 'Instalar aplicación' o 'Agregar a la pantalla principal'.\n3. Confirma tocando 'Instalar'.\n\n¡El escáner funcionará 100% sin conexión a internet!");
+    }
+  } else if (so === "huawei") {
+    cambiarPestanaGuia('huawei');
+    var el = document.getElementById("paneHuawei");
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    alert("📱 INSTALACIÓN EN HUAWEI:\n\n1. Abre en Huawei Browser.\n2. Toca el menú (⠇ / ≡).\n3. Selecciona 'Agregar a pantalla de inicio'.");
+  } else {
+    cambiarPestanaGuia('ios');
+    var el = document.getElementById("guideAccordionSection");
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
 

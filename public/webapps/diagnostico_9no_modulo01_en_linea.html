@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-title" content="Diagnóstico FT 9°">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#2e1065">
-  <title>Diagnóstico 9° (MEP - Formación Tecnológica 2027)</title>
+  <title>Diagnóstico 9° [EN LÍNEA] (Sincronización en Tiempo Real)</title>
   
   <style>
     :root {
@@ -820,7 +820,17 @@
 <body>
 
   <!-- HEADER OFICIAL (CENTRADO Y ALINEADO CON DATOS) -->
-  <header>
+  
+    <!-- BANNER MODALIDAD EN LÍNEA -->
+    <div style="background: linear-gradient(90deg, #064e3b, #047857); color: white; padding: 6px 14px; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #10b981;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="display: inline-block; width: 8px; height: 8px; background: #34d399; border-radius: 50%; box-shadow: 0 0 8px #34d399;"></span>
+        <span>🌐 <strong>MODALIDAD EN LÍNEA (CONECTADO)</strong> • Sincronización automática de respuestas e indicadores en tiempo real con el Dashboard Docente.</span>
+      </div>
+      <span style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 6px; font-size: 10px;">💻 Uso exclusivo en PC / Laptop</span>
+    </div>
+
+    <header>
     <div class="header-container">
       <div style="display: flex; align-items: center; gap: 10px;">
         <div style="width: 34px; height: 34px; border-radius: 8px; background: white; display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); border: 1px solid #d8b4fe;">
@@ -838,7 +848,7 @@
     </div>
   </header>
 
-  <!-- NAVEGADOR DE 5 ETAPAS OFICIALES MEP -->
+  <!-- NAVEGADOR DE 4 ETAPAS -->
   <nav class="nav-tabs">
     <div class="nav-tab activa" id="tabSec1" onclick="irASeccion(1)">
       <span id="tabSec1Label">1. Identificación</span>
@@ -853,11 +863,7 @@
       <span>Reto práctico</span>
     </div>
     <div class="nav-tab" id="tabSec4" onclick="irASeccion(4)">
-      <span>4. Parte C</span>
-      <span>Reflexión MEP</span>
-    </div>
-    <div class="nav-tab" id="tabSec5" onclick="irASeccion(5)">
-      <span>5. Informe</span>
+      <span>4. Informe</span>
       <span>Evidencia QR</span>
     </div>
   </nav>
@@ -999,7 +1005,7 @@
         </span>
       </div>
 
-      <!-- SITUACIÓN-PROBLEMA: AULA INTELIGENTE (CONTEXTO GENERAL DE EVALUACIÓN) -->
+      <!-- SITUACIÓN-PROBLEMA: AUTOMATIZACIÓN (CONTEXTO GENERAL DE EVALUACIÓN) -->
       <div class="situacion-box" style="margin-bottom: 20px;">
         <h2 style="font-size: 1.15rem; color: #0369a1; margin-bottom: 6px; font-weight: 800;">
           🏫 Situación-problema: Automatización e Iluminación Sostenible
@@ -1008,7 +1014,7 @@
           El laboratorio desea implementar un sistema que permita <strong>encender una luz automáticamente cuando exista poca iluminación</strong>. Para ello se dispone de un <strong>microcontrolador</strong>, un <strong>sensor</strong> y un <strong>actuador</strong>. Tu tarea será analizar la situación y realizar una primera propuesta de solución a través de los siguientes reactivos y la simulación práctica.
         </p>
         <div style="background: #ffffff; border-left: 3.5px solid #0284c7; padding: 10px 12px; border-radius: 6px; font-size: 11.5px; color: #0369a1;">
-          <strong>Propósito Formativo del Diagnóstico:</strong> Esta herramienta permite explorar tus conocimientos y habilidades prácticas. No constituye una calificación sumativa o punitiva. Responde y experimenta con tranquilidad: lo que ya conoces es un logro, y lo que aún no conoces representa una valiosa oportunidad para aprender durante el curso lectivo.
+          <strong>Importante:</strong> durante esta actividad el docente observará tu proceso de trabajo. No se espera que todo quede perfecto; interesa conocer cómo piensas, cómo pruebas una solución y cómo reaccionas cuando algo no funciona.
         </div>
       </div>
 
@@ -1380,98 +1386,15 @@
       <div style="display: flex; justify-content: space-between; margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px; flex-wrap: wrap; gap: 6px;">
         <button class="btn btn-outline" onclick="irASeccion(2)">⬅️ Parte A: 10 reactivos</button>
         <button class="btn btn-accent" style="padding: 9px 22px; font-size: 13.5px; font-weight: 800; background: linear-gradient(135deg, #059669 0%, #047857 100%); border-color: #047857; color: white;" onclick="irASeccion(4)">
-          Continuar a la Parte C (Reflexión) ➔
-        </button>
-      </div>
-    </div>
-
-    <!-- ==================================================================== -->
-    <!-- ETAPA 4: PARTE C – REFLEXIÓN SOCIOAFECTIVA (4 PREGUNTAS OFICIALES)   -->
-    <!-- ==================================================================== -->
-    <div id="seccion4" class="card" style="display: none;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
-        <div>
-          <span class="mep-badge" style="background: #fdf2f8; border-color: #f472b6; color: #db2777;">
-            Parte C • Área Socioafectiva (MEP Oficial)
-          </span>
-          <h2 style="font-size: 1.15rem; color: #0f172a; margin-top: 2px; font-weight: 900;">
-            Reflexión Formativa: Autopercepción de Actitudes
-          </h2>
-        </div>
-        <span style="font-size: 11px; color: #db2777; font-weight: 800; background: #fdf2f8; padding: 4px 8px; border-radius: 6px; border: 1px solid #f472b6;">
-          ❤️ 4 Preguntas de Cierre
-        </span>
-      </div>
-
-      <div style="background: #fdf2f8; border: 1.5px solid #fbcfe8; padding: 12px 14px; border-radius: 10px; margin-bottom: 16px; font-size: 12px; color: #9d174d; line-height: 1.5;">
-        <strong>Instrucciones:</strong> Selecciona con total sinceridad la opción que mejor describa tu experiencia y actitud durante el desarrollo de los reactivos y la simulación práctica.
-      </div>
-
-      <!-- S1 -->
-      <div class="item-card" style="border-left: 4px solid #db2777; margin-bottom: 12px;">
-        <div class="item-header"><span class="item-num" style="background: #db2777;">S1. Gusto por la Precisión y Calidad</span></div>
-        <p style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #0f172a;">
-          «Al responder los reactivos y verificar el circuito, ¿revisó los detalles con minuciosidad?»
-        </p>
-        <div id="optsSocio1">
-          <button class="opcion-btn" id="btnSocio_s1_A" onclick="seleccionarSocioafectivo('s1', 'A')">A. Revisé minuciosamente cada conexión, polaridad y respuesta antes de avanzar.</button>
-          <button class="opcion-btn" id="btnSocio_s1_B" onclick="seleccionarSocioafectivo('s1', 'B')">B. Revisé solo algunas partes principales del reto.</button>
-          <button class="opcion-btn" id="btnSocio_s1_C" onclick="seleccionarSocioafectivo('s1', 'C')">C. Respondí y conecté rápido sin revisar los detalles.</button>
-        </div>
-      </div>
-
-      <!-- S2 -->
-      <div class="item-card" style="border-left: 4px solid #db2777; margin-bottom: 12px;">
-        <div class="item-header"><span class="item-num" style="background: #db2777;">S2. Aprender del Error (Resiliencia en Debugging)</span></div>
-        <p style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #0f172a;">
-          «Ante una falla o cuando el circuito no funcionó como esperaba, ¿cuál fue su actitud y método de resolución?»
-        </p>
-        <div id="optsSocio2">
-          <button class="opcion-btn" id="btnSocio_s2_A" onclick="seleccionarSocioafectivo('s2', 'A')">A. Analicé el monitor serial/fallo con calma, busqué mi error, lo corregí y aprendí algo.</button>
-          <button class="opcion-btn" id="btnSocio_s2_B" onclick="seleccionarSocioafectivo('s2', 'B')">B. Intenté corregirlo con apoyo o pistas del simulador.</button>
-          <button class="opcion-btn" id="btnSocio_s2_C" onclick="seleccionarSocioafectivo('s2', 'C')">C. Me costó identificar el error o sentí desánimo.</button>
-        </div>
-      </div>
-
-      <!-- S3 -->
-      <div class="item-card" style="border-left: 4px solid #db2777; margin-bottom: 12px;">
-        <div class="item-header"><span class="item-num" style="background: #db2777;">S3. Flexibilidad y Trabajo Colaborativo</span></div>
-        <p style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #0f172a;">
-          «Cuando un sensor o actuador no respondía como esperaba, ¿cómo coordinó la solución?»
-        </p>
-        <div id="optsSocio3">
-          <button class="opcion-btn" id="btnSocio_s3_A" onclick="seleccionarSocioafectivo('s3', 'A')">A. Probé caminos alternos (multímetro/otro orden) y escuché aportes de mi compañero/a.</button>
-          <button class="opcion-btn" id="btnSocio_s3_B" onclick="seleccionarSocioafectivo('s3', 'B')">B. Acepté modificar la conexión al recibir una sugerencia.</button>
-          <button class="opcion-btn" id="btnSocio_s3_C" onclick="seleccionarSocioafectivo('s3', 'C')">C. Seguí insistiendo en la misma conexión aunque no funcionaba.</button>
-        </div>
-      </div>
-
-      <!-- S4 -->
-      <div class="item-card" style="border-left: 4px solid #db2777; margin-bottom: 12px;">
-        <div class="item-header"><span class="item-num" style="background: #db2777;">S4. Tolerancia a la Frustración y Perseverancia</span></div>
-        <p style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #0f172a;">
-          «Ante la dificultad de integrar hardware físico y programación, ¿cómo gestionó la perseverancia?»
-        </p>
-        <div id="optsSocio4">
-          <button class="opcion-btn" id="btnSocio_s4_A" onclick="seleccionarSocioafectivo('s4', 'A')">A. Mantuve la calma y persistí sistemáticamente hasta que todo funcionó.</button>
-          <button class="opcion-btn" id="btnSocio_s4_B" onclick="seleccionarSocioafectivo('s4', 'B')">B. Me costó un poco, pero continué con entusiasmo tras recibir apoyo.</button>
-          <button class="opcion-btn" id="btnSocio_s4_C" onclick="seleccionarSocioafectivo('s4', 'C')">C. Sentí frustración o deseos de no continuar.</button>
-        </div>
-      </div>
-
-      <!-- BOTONES DE NAVEGACIÓN -->
-      <div style="display: flex; justify-content: space-between; margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px; flex-wrap: wrap; gap: 6px;">
-        <button class="btn btn-outline" onclick="irASeccion(3)">⬅️ Regresar a la Parte B</button>
-        <button class="btn btn-accent" style="padding: 9px 22px; font-size: 13.5px; font-weight: 800; background: linear-gradient(135deg, #059669 0%, #047857 100%); border-color: #047857; color: white;" onclick="irASeccion(5)">
           Finalizar y generar informe oficial ➔
         </button>
       </div>
     </div>
 
     <!-- ==================================================================== -->
-    <!-- ETAPA 5: COMPROBANTE DE ENTREGA Y CONFIRMACIÓN DOCENTE               -->
+    <!-- ETAPA 4: COMPROBANTE DE ENTREGA Y CONFIRMACIÓN DOCENTE               -->
     <!-- ==================================================================== -->
-    <div id="seccion5" class="card" style="display: none; text-align: center; max-width: 680px; margin: 0 auto;">
+    <div id="seccion4" class="card" style="display: none; text-align: center; max-width: 680px; margin: 0 auto;">
       <div style="font-size: 38px; margin-bottom: 6px;">🎉</div>
       <h2 style="font-size: 1.4rem; color: #0369a1; font-weight: 900; margin-bottom: 14px;">
         ¡Diagnóstico Completado con Éxito!
@@ -2210,29 +2133,6 @@
       });
     }
 
-    function seleccionarSocioafectivo(criterio, valor) {
-      if (!estado.socioafectivo) {
-        estado.socioafectivo = { s1: 'A', s2: 'A', s3: 'A', s4: 'A' };
-      }
-      estado.socioafectivo[criterio] = valor;
-
-      var opciones = ['A', 'B', 'C'];
-      opciones.forEach(function(opt) {
-        var btn = document.getElementById("btnSocio_" + criterio + "_" + opt);
-        if (btn) {
-          if (opt === valor) {
-            btn.className = "opcion-btn seleccionada";
-          } else {
-            btn.className = "opcion-btn";
-          }
-        }
-      });
-
-      playBeep(520, "sine", 0.08);
-      guardarProgresoEnLocalStorage();
-      enviarProgresoEnTiempoReal();
-    }
-
     function irASeccion(num) {
       if (num === 1 && estado.datosBloqueados) {
         alert("🔒 Los datos de identificación ya fueron validados y registrados. No es posible modificarlos.");
@@ -2249,8 +2149,10 @@
         return;
       }
 
+
+
       estado.seccionActual = num;
-      for (var i = 1; i <= 5; i++) {
+      for (var i = 1; i <= 4; i++) {
         var sec = document.getElementById("seccion" + i);
         var tab = document.getElementById("tabSec" + i);
         if (sec) sec.style.display = (i === num ? "block" : "none");
@@ -2282,21 +2184,6 @@
           iniciarAnimacionAula();
         }, 120);
       } else if (num === 4) {
-        // Inicializar selecciones por defecto si aún no han sido tocadas
-        if (!estado.socioafectivo) {
-          estado.socioafectivo = { s1: 'A', s2: 'A', s3: 'A', s4: 'A' };
-        }
-        ['s1', 's2', 's3', 's4'].forEach(function(crit) {
-          var val = estado.socioafectivo[crit] || 'A';
-          ['A', 'B', 'C'].forEach(function(opt) {
-            var btn = document.getElementById("btnSocio_" + crit + "_" + opt);
-            if (btn) {
-              if (opt === val) btn.className = "opcion-btn seleccionada";
-              else btn.className = "opcion-btn";
-            }
-          });
-        });
-      } else if (num === 5) {
         finalizarDiagnostico();
       }
     }
@@ -2340,10 +2227,10 @@
         estudianteCorreo: estado.estudianteCorreo || "",
         seccionOGrupo: seccionEst,
         tipoActividad: "diagnostico",
-        estadoProgreso: estado.seccionActual === 5 ? "completado" : "en_progreso",
+        estadoProgreso: estado.seccionActual === 4 ? "completado" : "en_progreso",
         fechaEntrega: fechaStr,
         horaInicio: estado.horaInicio || horaStr,
-        horaEntrega: estado.seccionActual === 5 ? horaStr : "",
+        horaEntrega: estado.seccionActual === 4 ? horaStr : "",
         timestampEpoch: timeEpoch,
         timestamp: timeEpoch,
         puntaje: porc,
@@ -2355,7 +2242,6 @@
         aciertos: aciertos,
         fallos: totalRespondidas - aciertos,
         cog: cogVec,
-        socioafectivo: estado.socioafectivo || { s1: 'A', s2: 'A', s3: 'A', s4: 'A' },
         retosPracticos: {
           reto1Conexion: (Object.values(estado.cables || {}).filter(Boolean).length) + "/5 terminales validados",
           reto2Actuador: "LED",
@@ -3312,7 +3198,6 @@
         aciertos: aciertos,
         fallos: CONFIG.totalItems - aciertos,
         cog: calcularVectorCognitivo(),
-        socioafectivo: estado.socioafectivo || { s1: 'A', s2: 'A', s3: 'A', s4: 'A' },
         hashVerificacion: hashToken,
         tokenAntiFraude: hashToken,
         dimensiones: {
