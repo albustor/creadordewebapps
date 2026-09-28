@@ -32,40 +32,93 @@ try {
 
 /**
  * Autentica o valida la identidad del docente directamente con su cuenta institucional de Microsoft 365 (@mep.go.cr).
- * No envía correos, valida directamente con el proveedor de identidad de Microsoft / Entra ID.
+ * Requiere interacción real con el proveedor de identidad de Microsoft / Entra ID.
  */
-export async function autenticarConMicrosoftMEP(): Promise<{ exito: boolean; mensaje: string; correo?: string; nombre?: string }> {
+export async function autenticarConMicrosoftMEP(
+  correoEsperado?: string
+): Promise<{ exito: boolean; mensaje: string; correo?: string; nombre?: string }> {
   try {
-    if (auth && typeof window !== "undefined" && process.env.NEXT_PUBLIC_FIREBASE_API_KEY && !process.env.NEXT_PUBLIC_FIREBASE_API_KEY.includes("DummyKey")) {
-      const provider = new OAuthProvider("microsoft.com");
-      provider.setCustomParameters({
-        prompt: "select_account",
-        tenant: "common",
-      });
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
+    if (!auth || typeof window === "undefined" || !process.env.NEXT_PUBLIC_FIREBASE_API_KEY || process.env.NEXT_PUBLIC_FIREBASE_API_KEY.includes("DummyKey")) {
       return {
-        exito: true,
-        mensaje: "Identidad institucional validada exitosamente con Microsoft 365.",
-        correo: user.email || undefined,
-        nombre: user.displayName || undefined,
+        exito: false,
+        mensaje: "El servicio de autenticación institucional de Microsoft 365 no está inicializado.",
       };
     }
+
+    const provider = new OAuthProvider("microsoft.com");
+    provider.setCustomParameters({
+      prompt: "select_account",
+      tenant: "common",
+    });
+
+    if (correoEsperado && correoEsperado.includes("@mep.go.cr")) {
+      provider.setCustomParameters({
+        prompt: "select_account",
+        login_hint: correoEsperado.trim().toLowerCase(),
+        tenant: "common",
+      });
+    }
+
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    const emailAutenticado = (user.email || "").trim().toLowerCase();
+    const nombreAutenticado = user.displayName || undefined;
+
+    if (!emailAutenticado) {
+      return {
+        exito: false,
+        mensaje: "Microsoft no retornó una dirección de correo válida para esta sesión.",
+      };
+    }
+
+    if (!emailAutenticado.endsWith("@mep.go.cr")) {
+      return {
+        exito: false,
+        mensaje: `La cuenta autenticada (${emailAutenticado}) no pertenece al dominio oficial @mep.go.cr.`,
+      };
+    }
+
+    if (correoEsperado) {
+      const esperadoNorm = correoEsperado.trim().toLowerCase();
+      if (emailAutenticado !== esperadoNorm) {
+        return {
+          exito: false,
+          mensaje: `El correo autenticado con Microsoft (${emailAutenticado}) no coincide con el correo ingresado (${esperadoNorm}).`,
+          correo: emailAutenticado,
+        };
+      }
+    }
+
+    return {
+      exito: true,
+      mensaje: `Identidad institucional (@mep.go.cr) validada exitosamente con Microsoft 365 para ${emailAutenticado}.`,
+      correo: emailAutenticado,
+      nombre: nombreAutenticado,
+    };
   } catch (err: any) {
     if (err?.code === "auth/popup-closed-by-user") {
       return {
         exito: false,
-        mensaje: "Se canceló la ventana de validación de Microsoft. Por favor intente de nuevo.",
+        mensaje: "Se canceló la ventana de inicio de sesión de Microsoft 365. Validación requerida para continuar.",
       };
     }
-    console.warn("Aviso en autenticación remota Microsoft (modo local activo):", err?.message || err);
+    if (err?.code === "auth/cancelled-popup-request") {
+      return {
+        exito: false,
+        mensaje: "La solicitud de autenticación fue cancelada. Intente de nuevo.",
+      };
+    }
+    if (err?.code === "auth/operation-not-allowed" || err?.code === "auth/configuration-not-found") {
+      return {
+        exito: false,
+        mensaje: "El proveedor Microsoft 365 no se encuentra habilitado en el proyecto institucional.",
+      };
+    }
+    return {
+      exito: false,
+      mensaje: `Error de autenticación con Microsoft 365: ${err?.message || "No se pudo verificar la cuenta institucional."}`,
+    };
   }
-
-  // Modo local / demostración institucional seguro
-  return {
-    exito: true,
-    mensaje: "Identidad verificada exitosamente mediante el portal seguro de Microsoft 365 (@mep.go.cr).",
-  };
 }
 
 /**

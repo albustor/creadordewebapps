@@ -250,16 +250,13 @@ export const SABERES_COGNITIVOS_MAP: Record<"7mo" | "8vo" | "9no", SaberCognitiv
     { id: 6, nombre: "Almacenamiento de datos (Pregunta 10)", saber: "Almacenamiento de datos", pregunta: "Pregunta 10", areaCurricular: "Ciencia de datos e IA" },
   ],
   "7mo": [
-    { id: 1, nombre: "Hardware y periféricos (Pregunta 1)", saber: "Hardware", pregunta: "Pregunta 1", areaCurricular: "Apropiación tecnológica" },
-    { id: 2, nombre: "Software y utilitarios (Pregunta 2)", saber: "Software", pregunta: "Pregunta 2", areaCurricular: "Apropiación tecnológica" },
-    { id: 3, nombre: "Sistema Operativo (Pregunta 3)", saber: "Sistema operativo", pregunta: "Pregunta 3", areaCurricular: "Apropiación tecnológica" },
-    { id: 4, nombre: "Redes locales LAN (Pregunta 4)", saber: "Redes de comunicación", pregunta: "Pregunta 4", areaCurricular: "Conectividad" },
-    { id: 5, nombre: "Formatos de archivos (Pregunta 5)", saber: "Gestión de archivos", pregunta: "Pregunta 5", areaCurricular: "Apropiación tecnológica" },
-    { id: 6, nombre: "Edición multimedia (Pregunta 6)", saber: "Multimedia", pregunta: "Pregunta 6", areaCurricular: "Apropiación tecnológica" },
-    { id: 7, nombre: "Eventos en programación (Pregunta 7)", saber: "Evento", pregunta: "Pregunta 7", areaCurricular: "Programación y algoritmos" },
-    { id: 8, nombre: "Traza de variables (Pregunta 8)", saber: "Algoritmo", pregunta: "Pregunta 8", areaCurricular: "Programación y algoritmos" },
-    { id: 9, nombre: "Estructuras condicionales (Pregunta 9)", saber: "Condición", pregunta: "Pregunta 9", areaCurricular: "Programación y algoritmos" },
-    { id: 10, nombre: "Operadores lógicos (Pregunta 10)", saber: "Lógica", pregunta: "Pregunta 10", areaCurricular: "Programación y algoritmos" },
+    { id: 1, nombre: "Redes de comunicación (Pregunta 4)", saber: "Redes de comunicación", pregunta: "Pregunta 4", areaCurricular: "Conectividad" },
+    { id: 2, nombre: "Gestión de archivos (Pregunta 5)", saber: "Gestión de archivos", pregunta: "Pregunta 5", areaCurricular: "Apropiación tecnológica y digital" },
+    { id: 3, nombre: "Herramientas de creación de contenido multimedia (editor de gráficos) (Pregunta 6)", saber: "Multimedia (Editor de gráficos)", pregunta: "Pregunta 6", areaCurricular: "Apropiación tecnológica y digital" },
+    { id: 4, nombre: "Evento (Pregunta 7)", saber: "Evento", pregunta: "Pregunta 7", areaCurricular: "Programación y algoritmos" },
+    { id: 5, nombre: "Variable y estructuras repetitivas (Pregunta 8)", saber: "Variable y estructuras repetitivas", pregunta: "Pregunta 8", areaCurricular: "Programación y algoritmos" },
+    { id: 6, nombre: "Estructuras condicionales (Pregunta 9)", saber: "Estructuras condicionales", pregunta: "Pregunta 9", areaCurricular: "Programación y algoritmos" },
+    { id: 7, nombre: "Operadores relacionales y operadores aritméticos (Pregunta 10)", saber: "Operadores relacionales y aritméticos", pregunta: "Pregunta 10", areaCurricular: "Programación y algoritmos" },
   ],
   "8vo": [
     { id: 1, nombre: "Hardware y periféricos (Pregunta 1)", saber: "Hardware", pregunta: "Pregunta 1", areaCurricular: "Apropiación tecnológica" },
@@ -375,7 +372,6 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
       id: "p1",
       codigo: "P1. Orientación Espacial",
       titulo: "Orientación Espacial y Desplazamiento en Cuadrícula",
-      areaCurricular: "Apropiación tecnológica y digital",
       preguntaGuia: "«¿Cómo se desplaza en la cuadrícula lógica y resuelve la orientación espacial aplicando lateralidad sin obstáculos?»",
       desc: "Coordinación espacial, lateralidad y desplazamiento secuencial en laberinto / cuadrícula lógica 4x4.",
       escalaA: "Logrado (L): Navegación precisa y fluida aplicando lateralidad sin desorientación espacial.",
@@ -388,7 +384,6 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
       id: "p2",
       codigo: "P2. Ritmo, tiempo y pausa",
       titulo: "Ritmo, tiempo y pausa (sensor de reflejos y semáforo)",
-      areaCurricular: "Apropiación tecnológica y digital",
       preguntaGuia: "«¿Cómo reacciona ante los cambios de estímulo del semáforo con control de ritmo, tiempo y pausa sin impulsividad?»",
       desc: "Control de ritmo, tiempo y pausa motriz ante estímulos cromáticos y temporales.",
       escalaA: "Logrado (L): Reacción sincronizada sin falsos impulsos o clics erráticos.",
@@ -401,7 +396,6 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
       id: "p3",
       codigo: "P3. Pulso y Precisión",
       titulo: "Pulso y Precisión Digital en Canal Estrecho",
-      areaCurricular: "Apropiación tecnológica y digital",
       preguntaGuia: "«¿Cómo mantiene el pulso continuo y el control del puntero sin salirse del canal de precisión?»",
       desc: "Estabilidad de pulso, precisión manual y control del puntero en trayectorias estrechas.",
       escalaA: "Logrado (L): Trazo limpio y controlado sin colisiones en las paredes del canal.",
@@ -414,7 +408,6 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "8vo" | "9no", Criterio
       id: "p4",
       codigo: "P4. Motricidad Fina",
       titulo: "Motricidad Fina y Destreza con Periféricos",
-      areaCurricular: "Apropiación tecnológica y digital",
       preguntaGuia: "«¿Con qué soltura, coordinación óculo-manual y postura ergonómica opera los periféricos de entrada al trazar?»",
       desc: "Coordinación óculo-manual en dibujo, captura de trazo y soltura en el manejo de periféricos.",
       escalaA: "Logrado (L): Trazo continuo, definido y manipulación ágil de dispositivos de entrada.",
@@ -1907,6 +1900,26 @@ export default function PanelDocenteSimplificado() {
 
                   {acordeonDimensionesCognitivo && (
                     <div className="p-4 sm:p-5 bg-slate-50/60 border-t border-slate-200/80 animate-fadeIn">
+                      {nivelActivo === "7mo" && (
+                        <div className="mb-4 bg-emerald-50/90 border border-emerald-200/90 rounded-xl p-3.5 flex items-start gap-3 text-emerald-950 shadow-2xs">
+                          <div className="w-7 h-7 rounded-lg bg-emerald-200 text-emerald-900 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">
+                            <CheckCircle size={16} weight="fill" />
+                          </div>
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap mb-0.5">
+                              <span className="text-xs font-black uppercase tracking-wide text-emerald-900">
+                                Saber Procedimental Transversal
+                              </span>
+                              <span className="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.2 rounded-full border border-emerald-300">
+                                Articulación Curricular MEP
+                              </span>
+                            </div>
+                            <p className="text-[11.5px] text-emerald-800 font-medium leading-relaxed">
+                              Los saberes procedimentales se abordan de manera transversal en el Área Cognitiva y en las estaciones de ejecución interactiva.
+                            </p>
+                          </div>
+                        </div>
+                      )}
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
                         {(SABERES_COGNITIVOS_MAP[nivelActivo] || SABERES_COGNITIVOS_MAP["9no"]).map((saber) => (
                           <div
@@ -2080,12 +2093,12 @@ export default function PanelDocenteSimplificado() {
                       <div className="w-8 h-8 rounded-lg bg-[#D1EBE7] text-[#1B5E59] flex items-center justify-center font-bold text-sm shrink-0">
                         <Heart size={18} weight="fill" />
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <h4 className="text-xs sm:text-sm font-black text-slate-900 uppercase tracking-wide">
                           Criterios Módulo 1
                         </h4>
                         <span className="px-2 py-0.5 rounded-full bg-teal-100 text-[#1B5E59] font-bold text-[10px] border border-teal-300">
-                          Socioafectivo
+                          {nivelActivo === "7mo" ? "Socioafectivo • Saberes Actitudinales" : "Socioafectivo"}
                         </span>
                       </div>
                     </div>
@@ -2683,7 +2696,7 @@ export default function PanelDocenteSimplificado() {
                               Criterios Módulo 1
                             </h4>
                             <span className="px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 text-[10px] font-black uppercase tracking-wider border border-teal-300">
-                              Psicomotor / Procedimental
+                              {nivelActivo === "7mo" ? "Psicomotor" : "Psicomotor / Procedimental"}
                             </span>
                           </div>
                           <p className="text-[11px] text-slate-500 font-medium mt-0.5">

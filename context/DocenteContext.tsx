@@ -84,7 +84,7 @@ interface DocenteContextType {
   iniciarSesionConPIN: (cedulaOCorreo: string, pin: string) => { exito: boolean; mensaje: string; intentosRestantes?: number; bloqueado?: boolean };
   solicitarRecuperacionPIN: (cedulaOCorreo: string, canal: "microsoft" | "correo_respaldo" | "clave_rescate" | "firebase" | "correo" | "whatsapp") => Promise<{ exito: boolean; mensaje: string; codigoSimulado?: string; canal?: string; correoRespaldoOfuscado?: string }>;
   verificarOTP: (cedulaOCorreo: string, codigoOTP: string, nuevoPIN: string) => { exito: boolean; mensaje: string };
-  validarConMicrosoft: () => Promise<{ exito: boolean; mensaje: string; correo?: string; nombre?: string }>;
+  validarConMicrosoft: (correoEsperado?: string) => Promise<{ exito: boolean; mensaje: string; correo?: string; nombre?: string }>;
   recuperarConClaveRescate: (cedulaOCorreo: string, claveRescate: string, nuevoPIN: string) => { exito: boolean; mensaje: string };
   solicitarValidacionCelular: (telefono: string, nombreDocente?: string) => Promise<{ exito: boolean; mensaje: string; codigoSimulado?: string }>;
   verificarCelularOTP: (telefono: string, codigoOTP: string) => { exito: boolean; mensaje: string };
@@ -1120,14 +1120,17 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
     return iniciarSesion(cedulaOCorreo, pin);
   };
 
-  const validarConMicrosoft = async (): Promise<{ exito: boolean; mensaje: string; correo?: string; nombre?: string }> => {
+  const validarConMicrosoft = async (
+    correoEsperado?: string
+  ): Promise<{ exito: boolean; mensaje: string; correo?: string; nombre?: string }> => {
     try {
       const { autenticarConMicrosoftMEP } = await import("@/lib/firebase");
-      const res = await autenticarConMicrosoftMEP();
-      if (res.exito) {
+      const res = await autenticarConMicrosoftMEP(correoEsperado);
+      if (res.exito && res.correo) {
         if (docente) {
           guardarDocente({
             ...docente,
+            correoInstitucional: res.correo,
             correoVerificado: true,
             microsoftVinculado: true,
           });
@@ -1273,7 +1276,7 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
 
     // 1. Canal Directo Microsoft 365
     if (canal === "microsoft") {
-      const resMs = await validarConMicrosoft();
+      const resMs = await validarConMicrosoft(correoInstitucional || credLimpia);
       return {
         exito: resMs.exito,
         mensaje: resMs.mensaje,

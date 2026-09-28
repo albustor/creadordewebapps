@@ -83,10 +83,15 @@ function cargarRegistrosServidor() {
   try {
     if (fs.existsSync(CACHE_TELEMETRIA_PATH)) {
       const data = fs.readFileSync(CACHE_TELEMETRIA_PATH, "utf8");
-      if (data && data.trim().length > 0) {
+      if (data && data.trim().length > 1) {
         try {
-          registrosTelemetriaMemoria = JSON.parse(data);
-          deduplicarRegistrosEnMemoria();
+          const parsed = JSON.parse(data);
+          if (Array.isArray(parsed)) {
+            registrosTelemetriaMemoria = parsed;
+            deduplicarRegistrosEnMemoria();
+          } else {
+            registrosTelemetriaMemoria = [...TODOS_LOS_REGISTROS_DEFAULT];
+          }
         } catch {
           registrosTelemetriaMemoria = [...TODOS_LOS_REGISTROS_DEFAULT];
         }

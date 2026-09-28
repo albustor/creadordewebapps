@@ -673,13 +673,13 @@ export default function RegistroDocentePage() {
     setCargandoRecuperacion(true);
     try {
       if (recuperarCanal === "microsoft") {
-        const resMs = await validarConMicrosoft();
-        if (resMs.exito) {
+        const resMs = await validarConMicrosoft(recuperarCredencial);
+        if (resMs.exito && resMs.correo) {
           setMicrosoftVerificadoDirecto(true);
           setOtpEnviado(true);
           setRecuperarMensaje({
             tipo: "exito",
-            texto: "✓ Identidad institucional validada exitosamente con Microsoft 365. Define tu nuevo PIN a continuación.",
+            texto: `✓ Identidad institucional (${resMs.correo}) validada exitosamente con Microsoft 365. Define tu nuevo PIN a continuación.`,
           });
         } else {
           setRecuperarMensaje({ tipo: "error", texto: resMs.mensaje });
@@ -764,8 +764,8 @@ export default function RegistroDocentePage() {
 
   // Validación oficial directa con Microsoft 365 en Registro
   const handleValidarMicrosoftRegistro = async () => {
-    const targetEmail = correo.trim() || docente?.correoInstitucional?.trim() || "";
-    if (!targetEmail || !targetEmail.includes("@mep.go.cr")) {
+    const targetEmail = correo.trim().toLowerCase();
+    if (!targetEmail || !targetEmail.endsWith("@mep.go.cr")) {
       setMensajeVerificacionMicrosoft({
         tipo: "error",
         texto: "Debe ingresar una dirección de correo institucional válida (@mep.go.cr) antes de validar con Microsoft.",
@@ -775,18 +775,27 @@ export default function RegistroDocentePage() {
     setCargandoVerificacionMicrosoft(true);
     setMensajeVerificacionMicrosoft(null);
     try {
-      const res = await validarConMicrosoft();
-      if (res.exito) {
+      const res = await validarConMicrosoft(targetEmail);
+      if (res.exito && res.correo) {
         setCorreoValidado(true);
+        setCorreo(res.correo);
+        if (res.nombre && !nombre.trim()) {
+          setNombre(res.nombre);
+        }
         setMensajeVerificacionMicrosoft({
           tipo: "exito",
-          texto: `✓ Identidad institucional validada exitosamente con Microsoft 365 para la cuenta ${targetEmail}.`,
+          texto: `✓ Identidad institucional validada exitosamente con Microsoft 365 para la cuenta ${res.correo}.`,
         });
       } else {
-        setMensajeVerificacionMicrosoft({ tipo: "error", texto: res.mensaje });
+        setCorreoValidado(false);
+        setMensajeVerificacionMicrosoft({
+          tipo: "error",
+          texto: res.mensaje || "No se pudo verificar la cuenta institucional con Microsoft 365.",
+        });
       }
     } catch {
-      setMensajeVerificacionMicrosoft({ tipo: "error", texto: "Error al validar la cuenta institucional con Microsoft 365." });
+      setCorreoValidado(false);
+      setMensajeVerificacionMicrosoft({ tipo: "error", texto: "Error de conexión al validar la cuenta institucional con Microsoft 365." });
     }
     setCargandoVerificacionMicrosoft(false);
   };
