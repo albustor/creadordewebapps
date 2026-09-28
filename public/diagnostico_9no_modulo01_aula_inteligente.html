@@ -1406,29 +1406,29 @@
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 10px;">
             <div>
               <span style="color: #64748b; font-size: 11px; font-weight: 700;">👨‍🏫 DOCENTE EVALUADOR:</span><br>
-              <strong style="color: #0f172a; font-size: 13.5px;" id="etiquetaDocenteConfirmacion">Prof. Luis López Rueda</strong>
+              <strong style="color: #0f172a; font-size: 13.5px;" id="etiquetaDocenteConfirmacion">—</strong>
             </div>
             <div>
               <span style="color: #64748b; font-size: 11px; font-weight: 700;">🏫 INSTITUCIÓN EDUCATIVA:</span><br>
-              <strong style="color: #0369a1; font-size: 13px;" id="etiquetaInstitucionConfirmacion">Liceo / CTP MEP</strong>
+              <strong style="color: #0369a1; font-size: 13px;" id="etiquetaInstitucionConfirmacion">—</strong>
             </div>
           </div>
 
           <div style="border-top: 1px solid #e2e8f0; padding-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
             <div>
               <span style="color: #64748b; font-size: 11px; font-weight: 700;">🎓 PERSONA ESTUDIANTE:</span><br>
-              <strong style="color: #0f172a; font-size: 13.5px;" id="etiquetaEstudianteConfirmacion">Estudiante 9° Año</strong>
+              <strong style="color: #0f172a; font-size: 13.5px;" id="etiquetaEstudianteConfirmacion">—</strong>
             </div>
             <div>
               <span style="color: #64748b; font-size: 11px; font-weight: 700;">🏷️ SECCIÓN / GRUPO:</span><br>
-              <strong style="color: #0284c7; font-size: 13.5px;" id="etiquetaSeccionConfirmacion">Sección 9-1</strong>
+              <strong style="color: #0284c7; font-size: 13.5px;" id="etiquetaSeccionConfirmacion">—</strong>
             </div>
           </div>
         </div>
 
         <!-- HASH DE SEGURIDAD Y HORA FINAL DE ENVÍO -->
         <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 10px 14px; font-size: 11.5px; color: #166534;" id="tokenHashLabelFinal">
-          <strong>🔒 HASH DE SEGURIDAD:</strong> <span style="color: #047857; font-family: monospace; font-weight: 800;" id="valorHashSeguridadFinal">DIAG9-VALIDADO</span> • <strong>HORA FINAL:</strong> <span id="valorHoraFinalEnvio">02:00:00 p.m.</span>
+          <strong>🔒 HASH DE SEGURIDAD:</strong> <span style="color: #047857; font-family: monospace; font-weight: 800;" id="valorHashSeguridadFinal">—</span> • <strong>HORA FINAL:</strong> <span id="valorHoraFinalEnvio">—</span>
         </div>
       </div>
 
@@ -3135,11 +3135,41 @@
     function finalizarDiagnostico() {
       estado.tiempoTotal = Math.round((Date.now() - estado.tiempoInicio) / 1000);
 
-      var nombreEst = estado.estudianteNombre || "Estudiante 9° Año";
-      var seccionEst = estado.seccionGrupo || "Sección 9-1";
+      // Capturar datos directos del formulario y de la sesión activa
+      var nomInput = document.getElementById("inputEstudianteNombre");
+      var secInput = document.getElementById("selectSeccion");
+      var cedInput = document.getElementById("inputEstudianteCedula");
+      var corInput = document.getElementById("inputEstudianteCorreo");
 
-      document.getElementById("etiquetaEstudianteResumen").innerHTML = 
-        "Estudiante: <strong style='color: white; font-size: 13px;'>" + nombreEst + "</strong> • Sección: <strong style='color: #38bdf8; font-size: 13px;'>" + seccionEst + "</strong>";
+      if (nomInput && nomInput.value && nomInput.value.trim()) {
+        estado.estudianteNombre = nomInput.value.trim();
+      }
+      if (secInput && secInput.value && secInput.value.trim()) {
+        estado.seccionGrupo = secInput.value.trim();
+      }
+      if (cedInput && cedInput.value && cedInput.value.trim()) {
+        estado.estudianteCedula = cedInput.value.trim();
+      }
+      if (corInput && corInput.value && corInput.value.trim()) {
+        estado.estudianteCorreo = corInput.value.trim();
+      }
+
+      var infoDoc = typeof obtenerDocenteEInstitucionActiva === "function" ? obtenerDocenteEInstitucionActiva() : null;
+      if (infoDoc) {
+        if (infoDoc.docenteNombre) estado.docenteNombre = infoDoc.docenteNombre;
+        if (infoDoc.instNombre) estado.centroEducativo = infoDoc.instNombre;
+        if (infoDoc.docenteId) CONFIG.docenteId = infoDoc.docenteId;
+      }
+
+      var nombreEst = estado.estudianteNombre || (nomInput ? nomInput.value.trim() : "") || "Persona Estudiante";
+      var seccionEst = estado.seccionGrupo || (secInput ? secInput.value.trim() : "") || "Sección 9-1";
+      var nombreDoc = estado.docenteNombre || (infoDoc ? infoDoc.docenteNombre : "") || "Docente Evaluador";
+      var instDoc = estado.centroEducativo || (infoDoc ? infoDoc.instNombre : "") || "Centro Educativo MEP";
+
+      var elRes = document.getElementById("etiquetaEstudianteResumen");
+      if (elRes) {
+        elRes.innerHTML = "Estudiante: <strong style='color: white; font-size: 13px;'>" + nombreEst + "</strong> • Sección: <strong style='color: #38bdf8; font-size: 13px;'>" + seccionEst + "</strong>";
+      }
 
       var aciertos = 0;
       var respondidas = 0;
@@ -3201,6 +3231,20 @@
         }
       };
 
+      // Actualizar tarjeta de confirmación en pantalla
+      var elDocC = document.getElementById("etiquetaDocenteConfirmacion");
+      if (elDocC) elDocC.textContent = (nombreDoc.toLowerCase().startsWith("prof") ? "" : "Prof. ") + nombreDoc;
+      var elInstC = document.getElementById("etiquetaInstitucionConfirmacion");
+      if (elInstC) elInstC.textContent = instDoc;
+      var elEstC = document.getElementById("etiquetaEstudianteConfirmacion");
+      if (elEstC) elEstC.textContent = nombreEst;
+      var elSecC = document.getElementById("etiquetaSeccionConfirmacion");
+      if (elSecC) elSecC.textContent = seccionEst;
+      var elHashC = document.getElementById("valorHashSeguridadFinal");
+      if (elHashC) elHashC.textContent = hashToken;
+      var elHoraC = document.getElementById("valorHoraFinalEnvio");
+      if (elHoraC) elHoraC.textContent = horaStr;
+
       // Renderizar QR en pantalla con payload real
       generarQRDetallado(payload);
 
@@ -3231,22 +3275,6 @@
         else registrosPrevios.push(payload);
         localStorage.setItem("diagnosticos_mep_9no", JSON.stringify(registrosPrevios));
       } catch(e) {}
-
-      var nombreDoc = estado.docenteNombre || "Docente Evaluador";
-      var instDoc = estado.centroEducativo || "Liceo / CTP MEP";
-
-      var elDocC = document.getElementById("etiquetaDocenteConfirmacion");
-      if (elDocC) elDocC.textContent = "Prof. " + nombreDoc;
-      var elInstC = document.getElementById("etiquetaInstitucionConfirmacion");
-      if (elInstC) elInstC.textContent = instDoc;
-      var elEstC = document.getElementById("etiquetaEstudianteConfirmacion");
-      if (elEstC) elEstC.textContent = nombreEst;
-      var elSecC = document.getElementById("etiquetaSeccionConfirmacion");
-      if (elSecC) elSecC.textContent = seccionEst;
-      var elHashC = document.getElementById("valorHashSeguridadFinal");
-      if (elHashC) elHashC.textContent = hashToken;
-      var elHoraC = document.getElementById("valorHoraFinalEnvio");
-      if (elHoraC) elHoraC.textContent = horaStr;
 
       fetch(CONFIG.urlTelemetria, {
         method: "POST",
@@ -3354,10 +3382,10 @@
         lbl.innerHTML = "<strong>HASH: " + payload.hashVerificacion + "</strong> | " + payload.estudianteNombre + " (" + payload.horaEntrega + ")";
       }
 
-      var lblFinal = document.getElementById("tokenHashLabelFinal");
-      if (lblFinal) {
-        lblFinal.innerHTML = "<strong>HASH DE SEGURIDAD:</strong> <span style='color: #34d399; font-family: monospace; font-size: 13px; font-weight: bold;'>" + payload.hashVerificacion + "</span> • " + payload.horaEntrega;
-      }
+      var elHashC = document.getElementById("valorHashSeguridadFinal");
+      if (elHashC) elHashC.textContent = payload.hashVerificacion;
+      var elHoraC = document.getElementById("valorHoraFinalEnvio");
+      if (elHoraC) elHoraC.textContent = payload.horaEntrega;
     }
 
     function dibujarMatrizQR(ctx, texto, size) {

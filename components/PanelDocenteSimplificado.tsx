@@ -773,6 +773,28 @@ export default function PanelDocenteSimplificado() {
         return false;
       }
 
+      // Aislamiento Multi-Inquilino Estricto por Docente
+      const esAsesorNacional = docente?.tipoRol === "Asesor Nacional" || docente?.correoInstitucional?.toLowerCase().includes("alberto.bustos");
+      if (!esAsesorNacional && docente) {
+        const docId = (docente.idDocente || "").toLowerCase().trim();
+        const docCed = (docente.cedula || "").replace(/\D/g, "");
+        const docCor = (docente.correoInstitucional || "").toLowerCase().trim();
+        const docNom = (docente.nombreCompleto || "").toLowerCase().trim();
+
+        const rDocId = (r.docenteId || "").toLowerCase().trim();
+        const rDocCed = ((r as any).docenteCedula || "").replace(/\D/g, "");
+        const rDocCor = ((r as any).docenteCorreo || (r as any).docenteEmail || "").toLowerCase().trim();
+        const rDocNom = ((r as any).docenteNombre || "").toLowerCase().trim();
+
+        const pertenece =
+          (docId && rDocId && (rDocId === docId || rDocId.includes(docId))) ||
+          (docCed && rDocCed && (rDocCed === docCed || rDocId === docCed)) ||
+          (docCor && rDocCor && rDocCor === docCor) ||
+          (docNom && rDocNom && (rDocNom === docNom || docNom.includes(rDocNom) || rDocNom.includes(docNom)));
+
+        if (!pertenece) return false;
+      }
+
       const coincideNivel =
         !niv || niv.includes(nivelNum) || tit.includes(nivelNum) || sec.includes(`${nivelNum}-`);
 

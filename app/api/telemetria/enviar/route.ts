@@ -827,35 +827,18 @@ export async function GET(req: NextRequest) {
     const corNorm = (correo || "").trim().toLowerCase();
     const nomNorm = (nombre || "").trim().toLowerCase();
     const cedClean = cedNorm.replace(/\D/g, "");
-
-    const esDocentePrueba = 
-      docIdNorm.includes("prueba") || 
-      docIdNorm.includes("demo") || 
-      docIdNorm.includes("asesor") || 
-      docIdNorm.includes("admin") || 
-      docIdNorm.includes("5-0305-0179") || 
-      docIdNorm.includes("0-0000-0001") ||
-      docIdNorm === "00000001" ||
-      nomNorm.includes("prueba") || 
-      nomNorm.includes("demo") || 
-      nomNorm.includes("san josé") ||
-      nomNorm.includes("san jose") ||
-      corNorm.includes("prueba") || 
-      corNorm.includes("docente.1") ||
-      corNorm.includes("docente1") ||
-      corNorm.includes("demo");
+    const docIdClean = docIdNorm.replace(/\D/g, "");
 
     datos = registrosTelemetriaMemoria.filter((r) => {
-      if (esDocentePrueba) return true; // Cuentas demo y docentes de prueba visualizan el padrón de pruebas completo (7mo, 8vo y 9no)
-
       const rDocId = (r.docenteId || "").trim().toLowerCase();
       const rDocCed = (r.docenteCedula || "").trim().toLowerCase();
-      const rDocEmail = (r.docenteEmail || "").trim().toLowerCase();
+      const rDocEmail = ((r as any).docenteEmail || (r as any).docenteCorreo || "").trim().toLowerCase();
       const rDocNom = (r.docenteNombre || "").trim().toLowerCase();
       const rDocCedClean = rDocCed.replace(/\D/g, "");
+      const rDocIdClean = rDocId.replace(/\D/g, "");
 
-      const matchId = docIdNorm && (rDocId === docIdNorm || rDocId.includes(docIdNorm));
-      const matchCed = cedClean && (rDocCedClean === cedClean || rDocId === cedClean);
+      const matchId = docIdNorm && (rDocId === docIdNorm || (docIdClean && rDocIdClean === docIdClean));
+      const matchCed = cedClean && (rDocCedClean === cedClean || rDocIdClean === cedClean);
       const matchEmail = corNorm && (rDocEmail === corNorm || rDocEmail.includes(corNorm));
       const matchNom = nomNorm && (rDocNom === nomNorm || rDocNom.includes(nomNorm));
 
