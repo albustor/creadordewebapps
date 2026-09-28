@@ -88,48 +88,52 @@ export async function POST(req: NextRequest) {
       (canal === "whatsapp" || canal === "celular" || canal === "mensajeria") &&
       evolutionUrl &&
       evolutionApiKey &&
-      evolutionInstance &&
       telefonoLimpio
     ) {
-      try {
-        const mensajeTexto = `🇨🇷 *MEP • Formación Tecnológica (III Ciclo)*\n\nEstimado(a) *${nombreDocente || "Docente"}*,\n\nTu código de verificación y recuperación de acceso es:\n\n🔑 *${codigoOTP}*\n\n⏱️ *Vigencia:* 10 minutos.\n🔒 _Por seguridad, no compartas este código con ninguna persona._\n\n_Ministerio de Educación Pública de Costa Rica_`;
+      const mensajeTexto = `🇨🇷 *MEP • Programa de Formación Tecnológica*\n\nEstimado(a) *${nombreDocente || "Docente"}*,\n\nTu código de verificación y recuperación de acceso es:\n\n🔑 *${codigoOTP}*\n\n⏱️ *Vigencia:* 10 minutos.\n🔒 _Por seguridad, no compartas este código con ninguna persona._`;
 
-        const resWp = await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
-          method: "POST",
-          signal: AbortSignal.timeout(7000),
-          headers: {
-            apikey: evolutionApiKey,
-            apiKey: evolutionApiKey,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            number: telefonoLimpio,
-            text: mensajeTexto,
-            textMessage: {
+      const instancesToTry = Array.from(new Set([
+        evolutionInstance,
+        "cs-cst-evolution-api-d149db45",
+        "curiol_agents"
+      ].filter(Boolean)));
+
+      for (const inst of instancesToTry) {
+        try {
+          const resWp = await fetch(`${evolutionUrl}/message/sendText/${inst}`, {
+            method: "POST",
+            signal: AbortSignal.timeout(6000),
+            headers: {
+              apikey: evolutionApiKey,
+              apiKey: evolutionApiKey,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              number: telefonoLimpio,
               text: mensajeTexto,
-            },
-            options: {
-              delay: 1000,
-              presence: "composing",
-              linkPreview: false,
-            },
-          }),
-        });
-
-        if (resWp.ok) {
-          despachoWhatsAppExitoso = true;
-          return NextResponse.json({
-            exito: true,
-            mensaje: `Código de seguridad enviado exitosamente por WhatsApp al número (+${telefonoLimpio}) usando Evolution API.`,
-            canal: "whatsapp",
-            detalles: { despachoWhatsApp: true, telefono: telefonoLimpio },
+              textMessage: {
+                text: mensajeTexto,
+              },
+              options: {
+                delay: 500,
+                presence: "composing",
+                linkPreview: false,
+              },
+            }),
           });
-        } else {
-          const errBody = await resWp.text().catch(() => "");
-          console.error(`Evolution API status ${resWp.status}:`, errBody);
+
+          if (resWp.ok) {
+            despachoWhatsAppExitoso = true;
+            return NextResponse.json({
+              exito: true,
+              mensaje: `Código de seguridad enviado exitosamente por WhatsApp al número (+${telefonoLimpio}).`,
+              canal: "whatsapp",
+              detalles: { despachoWhatsApp: true, telefono: telefonoLimpio, instancia: inst },
+            });
+          }
+        } catch (err: any) {
+          console.error(`Error al despachar por Evolution API (${inst}):`, err?.message || err);
         }
-      } catch (err: any) {
-        console.error("Error al despachar por Evolution API:", err?.message || err);
       }
     }
 

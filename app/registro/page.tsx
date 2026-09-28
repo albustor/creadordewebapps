@@ -476,7 +476,7 @@ export default function RegistroDocentePage() {
 
     if (!correoValidado) {
       setErrorValidacion(
-        "Por protocolo de seguridad institucional, debe validar su correo institucional @mep.go.cr con Firebase primero para habilitar el registro y validar su número celular."
+        "Por protocolo de seguridad institucional, debe validar su correo institucional @mep.go.cr primero para habilitar el registro y la validación de su número celular."
       );
       return;
     }
@@ -717,7 +717,7 @@ export default function RegistroDocentePage() {
     }
   };
 
-  // Validaciones en Perfil: Celular (Evolution API) y Correo (Firebase)
+  // Validaciones en Perfil: Celular (WhatsApp Oficial) y Correo Institucional MEP
   const handleDespacharValidacionCelular = async () => {
     const tel = telefono.trim() || docente?.telefono?.trim() || "";
     if (!tel || tel.length < 8) {
@@ -735,7 +735,7 @@ export default function RegistroDocentePage() {
         setMensajeValidacionCelular({ tipo: "error", texto: res.mensaje });
       }
     } catch {
-      setMensajeValidacionCelular({ tipo: "error", texto: "Error al enviar código de WhatsApp mediante Evolution API." });
+      setMensajeValidacionCelular({ tipo: "error", texto: "Error al enviar código de seguridad por WhatsApp." });
     }
     setCargandoValidacionCelular(false);
   };
@@ -773,13 +773,13 @@ export default function RegistroDocentePage() {
         setCorreoValidado(true);
         setMensajeVerificacionCorreo({
           tipo: "exito",
-          texto: `✓ Correo institucional verificado con Firebase Auth (${targetEmail}). Ahora puede registrar y validar su número de celular.`,
+          texto: `✓ Correo institucional verificado exitosamente (${targetEmail}). Ahora puede registrar y validar su número de celular para comunicación sincrónica.`,
         });
       } else {
         setMensajeVerificacionCorreo({ tipo: "error", texto: res.mensaje });
       }
     } catch {
-      setMensajeVerificacionCorreo({ tipo: "error", texto: "Error al enviar solicitud a Firebase Auth." });
+      setMensajeVerificacionCorreo({ tipo: "error", texto: "Error al enviar solicitud de validación de correo oficial." });
     }
     setCargandoVerificacionCorreo(false);
   };
@@ -977,7 +977,7 @@ export default function RegistroDocentePage() {
                   <span>Correo MEP</span>
                 </div>
                 <p className="text-[11px] text-slate-200 leading-snug">
-                  Ingresa tu correo oficial <code>@mep.go.cr</code> y presiona <strong>«Validar con Firebase»</strong>.
+                  Ingresa tu correo oficial <code>@mep.go.cr</code> y presiona <strong>«Validar Correo Oficial»</strong>.
                 </p>
               </div>
 
@@ -987,7 +987,7 @@ export default function RegistroDocentePage() {
                   <span>Celular WhatsApp</span>
                 </div>
                 <p className="text-[11px] text-slate-200 leading-snug">
-                  Tras validar el correo, se habilita el celular para confirmar el código OTP vía <strong>Evolution API</strong>.
+                  Tras validar el correo, se habilita el registro de celular para comunicación sincrónica y código por WhatsApp.
                 </p>
               </div>
 
@@ -1007,7 +1007,7 @@ export default function RegistroDocentePage() {
                   <span>Recuperación</span>
                 </div>
                 <p className="text-[11px] text-slate-200 leading-snug">
-                  Recupera tu acceso en cualquier momento mediante Firebase (Correo) o WhatsApp (Evolution API).
+                  Recupera tu acceso en cualquier momento mediante enlace oficial a tu correo o código por WhatsApp.
                 </p>
               </div>
             </div>
@@ -1078,7 +1078,7 @@ export default function RegistroDocentePage() {
                   {correoValidado ? (
                     <span className="text-[10.5px] font-black text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300 flex items-center gap-1">
                       <CheckCircle size={13} weight="fill" />
-                      <span>Correo Validado (Firebase)</span>
+                      <span>Correo Validado</span>
                     </span>
                   ) : (
                     <span className="text-[10.5px] font-bold text-rose-800 bg-rose-50 px-2 py-0.5 rounded-md border border-rose-200">
@@ -1112,7 +1112,7 @@ export default function RegistroDocentePage() {
                   <div className="flex items-start gap-2">
                     <Info size={16} className="text-blue-700 shrink-0 mt-0.5" weight="fill" />
                     <span>
-                      <strong>Paso 1 Obligatorio:</strong> Valida tu cuenta institucional con Firebase para desbloquear el registro de tu celular.
+                      <strong>Paso 1 Obligatorio:</strong> Valida tu cuenta institucional oficial para habilitar el registro de tu celular.
                     </span>
                   </div>
                   <button
@@ -1126,7 +1126,7 @@ export default function RegistroDocentePage() {
                     ) : (
                       <Sparkle size={14} weight="bold" />
                     )}
-                    <span>Validar con Firebase</span>
+                    <span>Validar Correo Oficial</span>
                   </button>
                 </div>
                 {mensajeVerificacionCorreo && (
@@ -1145,12 +1145,12 @@ export default function RegistroDocentePage() {
               {/* Teléfono de Contacto - Habilitado ÚNICAMENTE si el correo está validado */}
               <div className="space-y-2 md:col-span-2">
                 <label className="block text-xs font-black text-slate-800 uppercase tracking-wider flex items-center justify-between">
-                  <span>Teléfono Móvil de Contacto (WhatsApp)</span>
+                  <span>Teléfono Móvil de Contacto (Opcional - Canal de Apoyo Sincrónico)</span>
                   <div className="flex items-center gap-2">
                     {docente?.telefonoVerificado ? (
                       <span className="text-[10.5px] font-black text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300 flex items-center gap-1">
                         <CheckCircle size={13} weight="fill" />
-                        <span>Verificado (Evolution API)</span>
+                        <span>Celular Verificado</span>
                       </span>
                     ) : correoValidado ? (
                       <span className="text-[10.5px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
@@ -1168,7 +1168,7 @@ export default function RegistroDocentePage() {
                   <div className="p-3 bg-amber-50 border border-amber-300 rounded-xl text-xs font-bold text-amber-950 flex items-start gap-2.5 shadow-2xs">
                     <WarningCircle size={18} className="text-amber-700 shrink-0 mt-0.5" weight="fill" />
                     <div className="leading-relaxed">
-                      <strong>Paso Previo Requerido:</strong> El registro y validación del número de celular se habilitará automáticamente en cuanto valides tu correo institucional MEP arriba con el botón <strong>«Validar con Firebase»</strong>.
+                      <strong>⚠️ Paso previo requerido:</strong> Valida primero tu correo institucional MEP (@mep.go.cr) presionando el botón &quot;Validar Correo Oficial&quot;. Una vez confirmado, se habilitará el registro y la validación de tu número celular.
                     </div>
                   </div>
                 )}
@@ -1201,13 +1201,13 @@ export default function RegistroDocentePage() {
                 <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-[11.5px] text-slate-700 font-medium space-y-2 mt-1.5 shadow-2xs">
                   <div className="flex items-center gap-2 font-bold text-slate-900">
                     <ShieldCheck size={16} className="text-emerald-700 shrink-0" weight="bold" />
-                    <span>Compromiso de Privacidad y Apoyo Pedagógico Sincrónico (Evolution API)</span>
+                    <span>Compromiso de Privacidad y Apoyo Pedagógico Sincrónico de la Asesoría</span>
                   </div>
                   <p className="text-slate-600 leading-relaxed text-[11px]">
-                    El canal de mensajería móvil es <strong>opcional</strong> y de uso estrictamente profesional para facilitar el restablecimiento ágil de credenciales docentes, así como una <strong>forma de comunicación adicional desde la Asesoría con el docente para brindar apoyo pedagógico sincrónico</strong> y acompañamiento en su labor educativa.
+                    El registro del número de celular es <strong>opcional</strong>, pero de gran relevancia institucional como canal de comunicación sincrónica para que la Asesoría Nacional brinde <strong>acompañamiento pedagógico inmediato, soporte técnico y atención rápida de consultas</strong> en el aula o laboratorio.
                   </p>
                   <p className="text-slate-600 leading-relaxed text-[11px]">
-                    Los datos son tratados bajo rigurosa confidencialidad institucional para fines de apoyo educativo y laboral, <strong>sin ninguna exposición comercial ni de otra índole</strong>. Al suministrar su número, el docente otorga su visto bueno para su utilización exclusiva en este marco de soporte profesional.
+                    Los datos son tratados bajo rigurosa confidencialidad institucional exclusivamente para fines de apoyo educativo y laboral, <strong>sin ninguna exposición comercial ni de otra índole</strong>. Al suministrar su número, el docente otorga su visto bueno para su utilización en este marco de soporte profesional.
                   </p>
                 </div>
               </div>
@@ -1986,7 +1986,7 @@ export default function RegistroDocentePage() {
                   ¿Cómo deseas recibir tu acceso?
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                  {/* Opción 1: Firebase Auth Recovery */}
+                  {/* Opción 1: Enlace Oficial al Correo MEP */}
                   <button
                     type="button"
                     onClick={() => setRecuperarCanal("firebase")}
@@ -1998,14 +1998,14 @@ export default function RegistroDocentePage() {
                   >
                     <div className="flex items-center gap-1.5 font-black text-[11.5px] text-amber-900">
                       <Sparkle size={16} className="text-amber-600 shrink-0" weight="fill" />
-                      <span>Enlace Firebase</span>
+                      <span>Enlace al Correo MEP</span>
                     </div>
                     <p className="text-[10px] text-slate-500 mt-1 leading-tight">
-                      Enlace oficial directo al correo @mep.go.cr
+                      Enlace oficial directo a tu bandeja @mep.go.cr
                     </p>
                   </button>
 
-                  {/* Opción 2: WhatsApp con Evolution API */}
+                  {/* Opción 2: Mensajería WhatsApp Oficial */}
                   <button
                     type="button"
                     onClick={() => setRecuperarCanal("whatsapp")}
@@ -2017,10 +2017,10 @@ export default function RegistroDocentePage() {
                   >
                     <div className="flex items-center gap-1.5 font-black text-[11.5px] text-emerald-900">
                       <Phone size={16} className="text-emerald-600 shrink-0" weight="bold" />
-                      <span>WhatsApp Móvil</span>
+                      <span>Mensajería WhatsApp</span>
                     </div>
                     <p className="text-[10px] text-slate-500 mt-1 leading-tight">
-                      Código de 4 dígitos vía Evolution API
+                      Código de seguridad de 4 dígitos
                     </p>
                   </button>
 
@@ -2047,17 +2047,17 @@ export default function RegistroDocentePage() {
                 <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-[11px] text-slate-600 leading-relaxed">
                   {recuperarCanal === "firebase" && (
                     <span>
-                      🔥 <strong>Firebase Auth:</strong> Se enviará un correo institucional con el enlace oficial de restablecimiento generado por Google Firebase.
+                      🔐 <strong>Enlace Oficial al Correo:</strong> Se enviará un correo institucional con el enlace oficial de restablecimiento seguro para tu cuenta MEP.
                     </span>
                   )}
                   {recuperarCanal === "whatsapp" && (
                     <span>
-                      📱 <strong>Evolution API:</strong> Se enviará un mensaje institucional con un código de seguridad de 4 dígitos al número celular registrado del docente.
+                      📱 <strong>Mensajería WhatsApp Oficial:</strong> Se enviará un mensaje institucional con un código de seguridad de 4 dígitos al número celular registrado del docente.
                     </span>
                   )}
                   {recuperarCanal === "correo" && (
                     <span>
-                      ✉️ <strong>Correo MEP:</strong> Se enviará un código numérico temporal de 4 dígitos con validez de 10 minutos a tu correo electrónico institucional.
+                      ✉️ <strong>Código por Correo MEP:</strong> Se enviará un código numérico temporal de 4 dígitos con validez de 10 minutos a tu correo electrónico institucional.
                     </span>
                   )}
                 </div>
@@ -2078,9 +2078,9 @@ export default function RegistroDocentePage() {
                     <ShieldCheck size={18} weight="bold" />
                     <span>
                       {recuperarCanal === "firebase"
-                        ? "Enviar Enlace de Recuperación (Firebase)"
+                        ? "Enviar Enlace de Recuperación al Correo MEP"
                         : recuperarCanal === "whatsapp"
-                        ? "Enviar Código por WhatsApp (Evolution API)"
+                        ? "Enviar Código por WhatsApp Oficial"
                         : "Enviar Código por Correo MEP"}
                     </span>
                   </>
@@ -2167,7 +2167,7 @@ export default function RegistroDocentePage() {
               </div>
               <h3 className="text-lg font-black text-slate-900">Validación de Celular con WhatsApp</h3>
               <p className="text-xs text-slate-500 font-medium">
-                Verifica tu número mediante el motor de <strong>Evolution API</strong>
+                Verifica tu número móvil para soporte y comunicación sincrónica con la Asesoría
               </p>
             </div>
 
@@ -2205,7 +2205,7 @@ export default function RegistroDocentePage() {
                 {cargandoValidacionCelular ? (
                   <>
                     <ArrowClockwise size={18} className="animate-spin" />
-                    <span>Conectando con Evolution API...</span>
+                    <span>Enviando código de verificación...</span>
                   </>
                 ) : (
                   <>

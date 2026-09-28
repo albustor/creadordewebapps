@@ -43,44 +43,62 @@ export async function POST(req: NextRequest) {
         );
       }
 
-      const mensajeTexto = `🇨🇷 *MEP • Validación de Cuenta Docente*\n\nHola *${nombreDocente || "Docente"}*,\n\nPara validar y activar tu número de celular en la plataforma de Formación Tecnológica, ingresa este código de verificación:\n\n📲 *${codigoOTP}*\n\n⏱️ _Válido por 10 minutos._\n\n_Ministerio de Educación Pública de Costa Rica_`;
+      const mensajeTexto = `🇨🇷 *MEP • Programa de Formación Tecnológica*\n\nHola *${nombreDocente || "Docente"}*,\n\nPara validar tu número de contacto para soporte sincrónico en la plataforma de Formación Tecnológica, ingresa este código de verificación:\n\n📲 *${codigoOTP}*\n\n⏱️ _Válido por 10 minutos._`;
 
-      const resWp = await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
-        method: "POST",
-        signal: AbortSignal.timeout(7000),
-        headers: {
-          apikey: evolutionApiKey,
-          apiKey: evolutionApiKey,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          number: telefonoLimpio,
-          text: mensajeTexto,
-          textMessage: {
-            text: mensajeTexto,
-          },
-          options: {
-            delay: 1000,
-            presence: "composing",
-            linkPreview: false,
-          },
-        }),
-      });
+      const instancesToTry = Array.from(new Set([
+        evolutionInstance,
+        "cs-cst-evolution-api-d149db45",
+        "curiol_agents"
+      ].filter(Boolean)));
 
-      if (resWp.ok) {
-        return NextResponse.json({
-          exito: true,
-          mensaje: `Código de validación enviado por WhatsApp a (+${telefonoLimpio}) con Evolution API.`,
-          detalles: { telefono: telefonoLimpio, canal: "evolution-api" },
-        });
-      } else {
-        const errBody = await resWp.text().catch(() => "");
-        console.error(`Evolution API status ${resWp.status}:`, errBody);
+      let despachoExitoso = false;
+      let ultimoError = "";
+
+      for (const inst of instancesToTry) {
+        try {
+          const resWp = await fetch(`${evolutionUrl}/message/sendText/${inst}`, {
+            method: "POST",
+            signal: AbortSignal.timeout(6000),
+            headers: {
+              apikey: evolutionApiKey,
+              apiKey: evolutionApiKey,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              number: telefonoLimpio,
+              text: mensajeTexto,
+              textMessage: {
+                text: mensajeTexto,
+              },
+              options: {
+                delay: 500,
+                presence: "composing",
+                linkPreview: false,
+              },
+            }),
+          });
+
+          if (resWp.ok) {
+            despachoExitoso = true;
+            return NextResponse.json({
+              exito: true,
+              mensaje: `Código de validación enviado por WhatsApp a (+${telefonoLimpio}).`,
+              detalles: { telefono: telefonoLimpio, canal: "whatsapp-oficial", instancia: inst },
+            });
+          } else {
+            ultimoError = await resWp.text().catch(() => "");
+          }
+        } catch (e: any) {
+          ultimoError = e?.message || "Error de conexión";
+        }
+      }
+
+      if (!despachoExitoso) {
         return NextResponse.json(
           {
             exito: false,
-            mensaje: "Evolution API no pudo entregar el mensaje en WhatsApp. Verifique el número telefónico.",
-            detalles: { error: errBody },
+            mensaje: "No se pudo entregar el mensaje por WhatsApp. Verifique el número telefónico.",
+            detalles: { error: ultimoError },
           },
           { status: 502 }
         );
@@ -109,7 +127,7 @@ export async function POST(req: NextRequest) {
               signal: AbortSignal.timeout(6000),
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
-                requestType: "VERIFY_EMAIL",
+                requestType: "PASSWORD_RESET",
                 email: correo.trim().toLowerCase(),
               }),
             }
@@ -118,12 +136,12 @@ export async function POST(req: NextRequest) {
           if (resFb.ok) {
             return NextResponse.json({
               exito: true,
-              mensaje: `Correo de verificación de cuenta enviado mediante Firebase Auth a ${correo}.`,
-              detalles: { canal: "firebase-email-verify" },
+              mensaje: `Correo oficial de validación y verificación enviado exitosamente a ${correo}. Revisa tu bandeja de entrada o spam.`,
+              detalles: { canal: "correo-verificacion-oficial" },
             });
           }
         } catch (err: any) {
-          console.error("Error al enviar verificación con Firebase:", err);
+          console.error("Error al enviar verificación de correo:", err);
         }
       }
 

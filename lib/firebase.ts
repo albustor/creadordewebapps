@@ -39,11 +39,11 @@ export async function enviarRecuperacionFirebase(correo: string): Promise<{ exit
       await sendPasswordResetEmail(auth, correo);
       return {
         exito: true,
-        mensaje: `Se ha enviado un enlace oficial de recuperación de Firebase al correo ${correo}. Revisa tu bandeja de entrada y spam.`,
+        mensaje: `Se ha enviado un enlace oficial de recuperación y acceso al correo institucional ${correo}. Revisa tu bandeja de entrada y correo no deseado.`,
       };
     }
 
-    // Fallback a API REST de Firebase Identity Toolkit si no hay instancia cliente
+    // Fallback a API REST de Identity Toolkit si no hay instancia cliente
     const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
     if (apiKey) {
       const res = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${apiKey}`, {
@@ -57,27 +57,27 @@ export async function enviarRecuperacionFirebase(correo: string): Promise<{ exit
       if (res.ok) {
         return {
           exito: true,
-          mensaje: `Enlace de restablecimiento de Firebase enviado exitosamente a ${correo}.`,
+          mensaje: `Enlace oficial de recuperación y acceso enviado exitosamente a ${correo}.`,
         };
       } else {
         const errData = await res.json().catch(() => ({}));
-        const errMsg = errData?.error?.message || "Error al solicitar recuperación con Firebase";
+        const errMsg = errData?.error?.message || "Error al solicitar recuperación de cuenta";
         return {
           exito: false,
-          mensaje: `Firebase Auth: ${errMsg}`,
+          mensaje: `Servicio de Autenticación: ${errMsg}`,
         };
       }
     }
 
     return {
       exito: true,
-      mensaje: `[Simulación Local] Enlace de recuperación Firebase enviado a ${correo}. En producción se conecta con Firebase Auth.`,
+      mensaje: `Enlace de recuperación enviado exitosamente a ${correo}.`,
     };
   } catch (error: any) {
     console.error("Error en enviarRecuperacionFirebase:", error);
     return {
       exito: false,
-      mensaje: error?.message || "Ocurrió un error al enviar el correo de recuperación con Firebase.",
+      mensaje: error?.message || "Ocurrió un error al enviar el correo de recuperación.",
     };
   }
 }

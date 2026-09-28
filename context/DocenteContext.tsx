@@ -1786,14 +1786,14 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
         const data = await res.json();
         return {
           exito: true,
-          mensaje: data.mensaje || "Código de verificación enviado por WhatsApp usando Evolution API.",
+          mensaje: data.mensaje || "Código de verificación enviado por WhatsApp oficial.",
           codigoSimulado: codigoOTP,
         };
       } else {
         const data = await res.json().catch(() => ({}));
         return {
           exito: false,
-          mensaje: data.mensaje || "No se pudo despachar el mensaje por Evolution API.",
+          mensaje: data.mensaje || "No se pudo despachar el mensaje por WhatsApp.",
         };
       }
     } catch {
@@ -1838,7 +1838,7 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       }
 
       SafeStorage.removeItem(recoveryKey);
-      return { exito: true, mensaje: "¡Número de celular verificado exitosamente mediante Evolution API!" };
+      return { exito: true, mensaje: "¡Número de celular verificado exitosamente para comunicación sincrónica!" };
     } catch {
       return { exito: false, mensaje: "Error al procesar la verificación del código." };
     }
@@ -1863,7 +1863,7 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
     } catch (err: any) {
       return {
         exito: false,
-        mensaje: err?.message || "Error al solicitar validación por correo con Firebase.",
+        mensaje: err?.message || "Error al solicitar validación por correo institucional.",
       };
     }
   };
