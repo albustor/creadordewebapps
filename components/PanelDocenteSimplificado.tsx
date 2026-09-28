@@ -557,7 +557,7 @@ export default function PanelDocenteSimplificado() {
   // Estados para acordeón y pestañas de Enlaces Estudiante (móvil y escritorio)
   const [acordeonOnlineExpandido, setAcordeonOnlineExpandido] = useState(true);
   const [acordeonOfflineExpandido, setAcordeonOfflineExpandido] = useState(true);
-  const [filtroModoEnlaces, setFiltroModoEnlaces] = useState<"todos" | "online" | "offline">("todos");
+  const [filtroModoEnlaces, setFiltroModoEnlaces] = useState<"online" | "offline">("online");
 
   // Estado del Simulador Multidispositivo (Celular, Tableta, Computadora)
   const [modalSimuladorDispositivo, setModalSimuladorDispositivo] = useState(false);
@@ -1112,21 +1112,33 @@ export default function PanelDocenteSimplificado() {
           </span>
         </div>
 
-        {/* Acciones Rápidas en Cabecera (Lado Derecho) */}
-        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-          {/* Botón de Importación de Lote USB / Archivos JSON o CSV */}
-          <label className="inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:py-2 rounded-xl bg-[#1F3F78] hover:bg-[#2E3552] text-white text-xs font-bold shadow-xs transition-all cursor-pointer">
-            <DownloadSimple size={16} weight="bold" />
-            <span className="hidden sm:inline">Importar JSON/CSV (USB)</span>
-            <input
-              type="file"
-              accept=".json,.csv,.txt"
-              multiple
-              className="hidden"
-              onChange={handleImportarArchivosLote}
-            />
-          </label>
-        </div>
+        {/* Acciones Rápidas en Cabecera (Lado Derecho) - Solo visibles en modo Desconectado/Offline */}
+        {filtroModoEnlaces === "offline" && (
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 animate-fadeIn">
+            <a
+              href="/diagnostico_escaner_datos_locales.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 sm:py-2 rounded-xl bg-white text-[#1F3F78] border border-[#D9DFE8] hover:bg-[#EEF3FA] text-xs font-bold shadow-xs transition-all"
+              title="Abrir Escáner de Datos en una pestaña nueva"
+            >
+              <QrCode size={16} weight="bold" />
+              <span className="hidden sm:inline">Escáner de Datos</span>
+            </a>
+            {/* Botón de Importación de Lote USB / Archivos JSON o CSV */}
+            <label className="inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:py-2 rounded-xl bg-[#1F3F78] hover:bg-[#2E3552] text-white text-xs font-bold shadow-xs transition-all cursor-pointer">
+              <DownloadSimple size={16} weight="bold" />
+              <span className="hidden sm:inline">Importar JSON/CSV (USB)</span>
+              <input
+                type="file"
+                accept=".json,.csv,.txt"
+                multiple
+                className="hidden"
+                onChange={handleImportarArchivosLote}
+              />
+            </label>
+          </div>
+        )}
       </header>
 
       {/* 2. APP SHELL — Sidebar + Main Content Canvas */}
@@ -1158,7 +1170,7 @@ export default function PanelDocenteSimplificado() {
 
             {/* Menú de Navegación Modular */}
             <nav className="space-y-1" aria-label="Menú Docente Multifuncional">
-              {/* 1. Enlaces Estudiante */}
+              {/* 1. Modalidades de Aplicación */}
               <button
                 type="button"
                 onClick={() => setSeccionActivaMenu("enlaces")}
@@ -1169,7 +1181,7 @@ export default function PanelDocenteSimplificado() {
                 }`}
               >
                 <LinkIcon size={18} weight={seccionActivaMenu === "enlaces" ? "bold" : "regular"} className={seccionActivaMenu === "enlaces" ? "text-[#1F3F78]" : "text-[#667085]"} />
-                <span>Enlaces Estudiante</span>
+                <span>Modalidades de Aplicación</span>
               </button>
 
               {/* 2. Área Cognitiva */}
@@ -1303,7 +1315,7 @@ export default function PanelDocenteSimplificado() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <h1 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 uppercase">
-                  {seccionActivaMenu === "enlaces" && "ENLACES ESTUDIANTE"}
+                  {seccionActivaMenu === "enlaces" && "MODALIDADES DE APLICACIÓN"}
                   {seccionActivaMenu === "cognitivo" && "ÁREA COGNITIVA — EVALUACIÓN DEL SABER"}
                   {seccionActivaMenu === "socioafectivo" && "ÁREA SOCIOAFECTIVA — EL SER & CONVIVIR"}
                   {seccionActivaMenu === "psicomotriz" && "ÁREA PSICOMOTORA — EL SABER HACER & HARDWARE"}
@@ -1311,7 +1323,7 @@ export default function PanelDocenteSimplificado() {
                   {seccionActivaMenu === "analitica" && "ANÁLISIS GENERAL & TELEMETRÍA EN TIEMPO REAL"}
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">
-                  {seccionActivaMenu === "enlaces" && "Genere enlaces y códigos QR en línea o descargue el archivo para PCs sin conexión."}
+                  {seccionActivaMenu === "enlaces" && "Seleccione la modalidad de aplicación: Con Internet (En Línea) o Desconectado (Offline / QR / USB) según las condiciones de su institución."}
                   {seccionActivaMenu === "cognitivo" && "Registro y monitoreo de respuestas, nivel de logro y criterios oficiales del programa MEP."}
                   {seccionActivaMenu === "socioafectivo" && "Registro y seguimiento de los 4 criterios socioafectivos oficiales (S1: Precisión, S2: Error, S3: Flexibilidad, S4: Confort)."}
                   {seccionActivaMenu === "psicomotriz" && "Registro y evaluación de destrezas operativas, conexionado circuital (MCU, LDR, Actuador) y motricidad fina."}
@@ -1418,40 +1430,27 @@ export default function PanelDocenteSimplificado() {
             </section>
 
             {/* ========================================================= */}
-            {/* SECCIÓN 1: ENLACES ESTUDIANTE (Opción A y Opción B)       */}
+            {/* SECCIÓN 1: MODALIDADES DE APLICACIÓN                      */}
             {/* ========================================================= */}
             {seccionActivaMenu === "enlaces" && (
-              <div className="space-y-4 animate-fadeIn">
+              <div className="space-y-5 animate-fadeIn">
                 
-                {/* BARRA DE PESTAÑAS / CONTROL DE VISTA RÁPIDA (MÓVIL Y ESCRITORIO) */}
-                <div className="bg-white rounded-2xl p-2 sm:p-3 border border-slate-200 shadow-2xs flex flex-wrap items-center justify-between gap-2">
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    <button
-                      type="button"
-                      onClick={() => setFiltroModoEnlaces("todos")}
-                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                        filtroModoEnlaces === "todos"
-                          ? "bg-slate-900 text-white shadow-xs"
-                          : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                      }`}
-                    >
-                      <Compass size={14} weight={filtroModoEnlaces === "todos" ? "bold" : "regular"} />
-                      <span>Todas las opciones</span>
-                    </button>
-
+                {/* BARRA DE MODALIDADES DE APLICACIÓN (CENTRADOS Y DE MAYOR TAMAÑO) */}
+                <div className="bg-white rounded-2xl p-4 sm:p-5 border border-[#D9DFE8] shadow-xs flex flex-col items-center justify-center gap-4">
+                  <div className="flex items-center justify-center gap-3 sm:gap-5 flex-wrap w-full max-w-2xl">
                     <button
                       type="button"
                       onClick={() => {
                         setFiltroModoEnlaces("online");
                         setAcordeonOnlineExpandido(true);
                       }}
-                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                      className={`flex-1 min-w-[200px] sm:min-w-[240px] inline-flex items-center justify-center gap-3 px-6 py-4 rounded-2xl text-sm sm:text-base font-black transition-all cursor-pointer shadow-xs ${
                         filtroModoEnlaces === "online"
-                          ? "bg-[#1B5E59] text-white shadow-xs"
-                          : "bg-[#D7EFEA]/60 text-[#004641] hover:bg-[#D7EFEA]"
+                          ? "bg-[#1F3F78] hover:bg-[#2E3552] text-white shadow-md scale-[1.02] ring-4 ring-[#EEF3FA]"
+                          : "bg-[#EEF3FA] text-[#2E3552] hover:bg-[#D9DFE8] hover:scale-[1.01]"
                       }`}
                     >
-                      <Globe size={14} weight={filtroModoEnlaces === "online" ? "bold" : "regular"} />
+                      <Globe size={22} weight={filtroModoEnlaces === "online" ? "bold" : "regular"} />
                       <span>🌐 Con Internet</span>
                     </button>
 
@@ -1461,93 +1460,89 @@ export default function PanelDocenteSimplificado() {
                         setFiltroModoEnlaces("offline");
                         setAcordeonOfflineExpandido(true);
                       }}
-                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                      className={`flex-1 min-w-[200px] sm:min-w-[240px] inline-flex items-center justify-center gap-3 px-6 py-4 rounded-2xl text-sm sm:text-base font-black transition-all cursor-pointer shadow-xs ${
                         filtroModoEnlaces === "offline"
-                          ? "bg-[#E07A2C] text-white shadow-xs"
-                          : "bg-[#FFF3EB] text-[#974800] hover:bg-[#FFE3D0]"
+                          ? "bg-[#A97C2A] hover:bg-[#8F661F] text-white shadow-md scale-[1.02] ring-4 ring-[#FFF8E7]"
+                          : "bg-[#FFF8E7] text-[#A97C2A] hover:bg-[#FFE3D0] hover:scale-[1.01]"
                       }`}
                     >
-                      <Lightning size={14} weight={filtroModoEnlaces === "offline" ? "bold" : "regular"} />
+                      <Lightning size={22} weight={filtroModoEnlaces === "offline" ? "bold" : "regular"} />
                       <span>⚡ Desconectado QR</span>
                     </button>
                   </div>
 
-                  {/* Acciones Rápidas y Plegado / Desplegado Global */}
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const nuevoEstado = !(acordeonOnlineExpandido && acordeonOfflineExpandido);
-                        setAcordeonOnlineExpandido(nuevoEstado);
-                        setAcordeonOfflineExpandido(nuevoEstado);
-                      }}
-                      className="text-[11px] font-semibold text-[#667085] hover:text-[#20283B] bg-[#F5F7FA] hover:bg-[#EEF3FA] px-2.5 py-1.5 rounded-lg border border-[#D9DFE8] transition-colors cursor-pointer inline-flex items-center gap-1"
-                    >
-                      <span>{acordeonOnlineExpandido && acordeonOfflineExpandido ? "Contraer todo" : "Expandir todo"}</span>
-                    </button>
+                  {/* Estado Contextual Activo */}
+                  <div className="flex items-center justify-center gap-2 text-xs font-semibold text-[#667085]">
+                    {filtroModoEnlaces === "online" ? (
+                      <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#EEF8F2] text-[#2E7D57] border border-[#2E7D57]/20 font-bold text-xs">
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#2E7D57] animate-pulse" />
+                        Modalidad Con Internet Activa • Telemetría en Tiempo Real
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FFF8E7] text-[#A97C2A] border border-[#D4AF5A]/30 font-bold text-xs">
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#A97C2A]" />
+                        Modalidad 100% Desconectada Activa • Escáner QR y Archivos USB Habilitados
+                      </span>
+                    )}
                   </div>
                 </div>
 
-                {/* CONTENEDOR DE TARJETAS (ACORDEONES) */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 items-start">
+                {/* CONTENEDOR DE TARJETAS SEGÚN MODO ACTIVO */}
+                <div className="space-y-4">
                   
-                  {/* TARJETA 1: OPCIÓN A (CON INTERNET / EN LÍNEA - COLOR INSTITUCIONAL) */}
-                  {(filtroModoEnlaces === "todos" || filtroModoEnlaces === "online") && (
-                    <div className="bg-[#EEF3FA]/70 rounded-2xl border-2 border-[#D9DFE8] shadow-xs overflow-hidden transition-all">
-                      {/* Cabecera Plegable Opción A */}
-                      <button
-                        type="button"
-                        onClick={() => setAcordeonOnlineExpandido(!acordeonOnlineExpandido)}
-                        className="w-full p-3 sm:p-3.5 flex items-center justify-between gap-3 text-left hover:bg-[#e4ecf7] transition-colors cursor-pointer select-none"
-                        aria-expanded={acordeonOnlineExpandido}
-                      >
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          <div className="w-8 h-8 rounded-xl bg-[#1F3F78] text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-xs">
-                            <Globe size={18} weight="bold" />
+                  {/* TARJETA 1: MODO CON INTERNET (EN LÍNEA) */}
+                  {filtroModoEnlaces === "online" && (
+                    <div className="bg-[#EEF3FA]/70 rounded-2xl border-2 border-[#D9DFE8] shadow-xs overflow-hidden transition-all animate-fadeIn">
+                      {/* Cabecera Opción A */}
+                      <div className="w-full p-4 sm:p-5 flex items-center justify-between gap-3 text-left bg-white border-b border-[#D9DFE8]">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="w-10 h-10 rounded-xl bg-[#1F3F78] text-white flex items-center justify-center font-bold text-base shrink-0 shadow-xs">
+                            <Globe size={22} weight="bold" />
                           </div>
                           <div className="min-w-0">
-                            <h3 className="text-xs sm:text-[13px] font-black uppercase tracking-wider text-[#1F3F78] truncate">
-                              OPCIÓN A: CON INTERNET (EN LÍNEA)
+                            <h3 className="text-sm sm:text-base font-black uppercase tracking-wider text-[#1F3F78] truncate">
+                              OPCIÓN A: EVALUACIÓN CON INTERNET (EN LÍNEA)
                             </h3>
-                            <p className="text-[11px] text-[#2E3552] font-bold truncate">
-                              Diagnóstico PNFT {nivelActivo} • Sección {seccionActiva}
+                            <p className="text-xs text-[#2E3552] font-semibold truncate">
+                              Diagnóstico PNFT {nivelActivo} • Sección {seccionActiva} • {centroActivo.nombre}
                             </p>
                           </div>
                         </div>
 
                         <div className="flex items-center gap-2 shrink-0">
-                          <span className="hidden sm:inline-block px-2 py-0.5 rounded-full bg-white/90 border border-[#D9DFE8] text-[10px] font-black text-[#1F3F78]">
+                          <span className="px-2.5 py-1 rounded-full bg-[#EEF3FA] border border-[#D9DFE8] text-[11px] font-black text-[#1F3F78]">
                             Telemetría en 0ms
                           </span>
-                          <div className={`w-6 h-6 rounded-full bg-white flex items-center justify-center text-[#1F3F78] shadow-2xs transition-transform duration-200 ${acordeonOnlineExpandido ? "rotate-180" : ""}`}>
-                            <CaretDown size={14} weight="bold" />
-                          </div>
                         </div>
-                      </button>
+                      </div>
 
-                      {/* Contenido Plegable Opción A */}
-                      {acordeonOnlineExpandido ? (
-                        <div className="p-3 sm:p-3.5 pt-0">
-                          <div className="bg-white rounded-xl p-3 sm:p-4 shadow-2xs border border-[#D9DFE8] space-y-2.5">
-                            <p className="text-xs text-[#667085] font-medium leading-relaxed">
-                              Los alumnos abren el enlace en sus computadoras o dispositivos. Las respuestas y telemetría se transmiten en vivo a este panel.
-                            </p>
+                      {/* Contenido Opción A */}
+                      <div className="p-4 sm:p-5">
+                        <div className="bg-white rounded-xl p-4 sm:p-5 shadow-2xs border border-[#D9DFE8] space-y-4">
+                          <p className="text-xs sm:text-sm text-[#667085] font-medium leading-relaxed">
+                            Los estudiantes abren el enlace directamente en sus computadoras, tabletas o celulares con acceso a internet. Sus respuestas y telemetría se transmitirán en tiempo real a este panel.
+                          </p>
 
-                            {/* Botones de Acción Opción A */}
-                            <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                          {/* Enlace y Botones de Acción Opción A */}
+                          <div className="p-3 bg-[#F5F7FA] rounded-xl border border-[#D9DFE8] flex flex-col sm:flex-row items-center justify-between gap-3">
+                            <div className="w-full sm:flex-1 font-mono text-xs text-[#20283B] truncate px-2 select-all bg-white py-2 rounded-lg border border-[#D9DFE8]">
+                              {urlEstudiante}
+                            </div>
+                            
+                            <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto shrink-0">
                               <button
                                 type="button"
                                 onClick={handleCopiarEnlace}
-                                className="inline-flex items-center justify-center gap-1.5 bg-[#1F3F78] hover:bg-[#2E3552] text-white text-xs font-bold px-3 py-2 rounded-lg transition-colors shadow-2xs cursor-pointer active:scale-95"
+                                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 bg-[#1F3F78] hover:bg-[#2E3552] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all shadow-xs cursor-pointer active:scale-95"
                               >
                                 {copiado ? (
                                   <>
-                                    <CheckCircle size={15} weight="fill" className="text-emerald-300" />
+                                    <CheckCircle size={16} weight="fill" className="text-emerald-300" />
                                     <span>¡Enlace Copiado!</span>
                                   </>
                                 ) : (
                                   <>
-                                    <Copy size={15} className="text-blue-200" />
+                                    <Copy size={16} className="text-blue-200" />
                                     <span>Copiar Enlace</span>
                                   </>
                                 )}
@@ -1556,9 +1551,9 @@ export default function PanelDocenteSimplificado() {
                               <button
                                 type="button"
                                 onClick={() => setModalProyeccion(true)}
-                                className="inline-flex items-center justify-center gap-1 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 text-xs font-bold px-2.5 py-2 rounded-lg transition-colors shadow-2xs cursor-pointer"
+                                className="inline-flex items-center justify-center gap-1.5 bg-white hover:bg-[#F5F7FA] text-[#20283B] border border-[#D9DFE8] text-xs font-bold px-3.5 py-2.5 rounded-xl transition-all shadow-xs cursor-pointer"
                               >
-                                <QrCode size={15} className="text-slate-500" />
+                                <QrCode size={16} className="text-[#1F3F78]" />
                                 <span>Proyectar QR</span>
                               </button>
 
@@ -1566,126 +1561,112 @@ export default function PanelDocenteSimplificado() {
                                 href={urlEstudiante}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center justify-center gap-1 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 text-xs font-bold px-2.5 py-2 rounded-lg transition-colors"
+                                className="inline-flex items-center justify-center gap-1.5 bg-[#EEF3FA] hover:bg-[#D9DFE8] text-[#1F3F78] border border-[#D9DFE8] text-xs font-bold px-3 py-2.5 rounded-xl transition-all"
                               >
                                 <span>Abrir</span>
-                                <ArrowSquareOut size={13} />
+                                <ArrowSquareOut size={14} />
                               </a>
                             </div>
                           </div>
                         </div>
-                      ) : (
-                        <div className="px-3 pb-2.5 flex items-center justify-between gap-2 text-xs">
-                          <span className="text-[#004641] font-bold text-[11px]">
-                            Enlace listo para {seccionActiva}
-                          </span>
-                          <button
-                            type="button"
-                            onClick={handleCopiarEnlace}
-                            className="bg-[#1B5E59] text-white text-[11px] font-black px-2.5 py-1 rounded-md hover:bg-[#144642] transition-colors cursor-pointer inline-flex items-center gap-1 shadow-2xs"
-                          >
-                            <Copy size={12} />
-                            <span>Copiar enlace</span>
-                          </button>
-                        </div>
-                      )}
+                      </div>
                     </div>
                   )}
 
-                  {/* TARJETA 2: OPCIÓN B (SIN INTERNET / DESCONECTADO QR - COLOR NARANJA) */}
-                  {(filtroModoEnlaces === "todos" || filtroModoEnlaces === "offline") && (
-                    <div className="bg-[#FFF3EB] rounded-2xl border-2 border-[#FBD0B6] shadow-xs overflow-hidden transition-all">
-                      {/* Cabecera Plegable Opción B */}
-                      <button
-                        type="button"
-                        onClick={() => setAcordeonOfflineExpandido(!acordeonOfflineExpandido)}
-                        className="w-full p-3 sm:p-3.5 flex items-center justify-between gap-3 text-left hover:bg-[#fae7da] transition-colors cursor-pointer select-none"
-                        aria-expanded={acordeonOfflineExpandido}
-                      >
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          <div className="w-8 h-8 rounded-xl bg-[#E07A2C] text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-xs">
-                            <Lightning size={18} weight="fill" />
+                  {/* TARJETA 2: MODO DESCONECTADO (OFFLINE / QR / USB) */}
+                  {filtroModoEnlaces === "offline" && (
+                    <div className="bg-[#FFF8E7]/60 rounded-2xl border-2 border-[#D4AF5A] shadow-xs overflow-hidden transition-all animate-fadeIn">
+                      {/* Cabecera Opción B */}
+                      <div className="w-full p-4 sm:p-5 flex items-center justify-between gap-3 text-left bg-white border-b border-[#D4AF5A]/40">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="w-10 h-10 rounded-xl bg-[#A97C2A] text-white flex items-center justify-center font-bold text-base shrink-0 shadow-xs">
+                            <Lightning size={22} weight="fill" />
                           </div>
                           <div className="min-w-0">
-                            <h3 className="text-xs sm:text-[13px] font-black uppercase tracking-wider text-[#974800] truncate">
-                              OPCIÓN B: SIN INTERNET (DESCONECTADO QR)
+                            <h3 className="text-sm sm:text-base font-black uppercase tracking-wider text-[#A97C2A] truncate">
+                              OPCIÓN B: EVALUACIÓN SIN INTERNET (DESCONECTADO QR & USB)
                             </h3>
-                            <p className="text-[11px] text-[#E07A2C] font-bold truncate">
-                              100% Offline • Escáner con cámara celular
+                            <p className="text-xs text-[#20283B] font-semibold truncate">
+                              100% Offline • Diagnóstico {nivelActivo} • Sección {seccionActiva}
                             </p>
                           </div>
                         </div>
 
                         <div className="flex items-center gap-2 shrink-0">
-                          <span className="hidden sm:inline-block px-2 py-0.5 rounded-full bg-white/90 border border-[#FBD0B6] text-[10px] font-black text-[#E07A2C]">
+                          <span className="px-2.5 py-1 rounded-full bg-[#FFF8E7] border border-[#D4AF5A] text-[11px] font-black text-[#A97C2A]">
                             Modo Offline / USB
                           </span>
-                          <div className={`w-6 h-6 rounded-full bg-white flex items-center justify-center text-[#974800] shadow-2xs transition-transform duration-200 ${acordeonOfflineExpandido ? "rotate-180" : ""}`}>
-                            <CaretDown size={14} weight="bold" />
-                          </div>
                         </div>
-                      </button>
+                      </div>
 
-                      {/* Contenido Plegable Opción B */}
-                      {acordeonOfflineExpandido ? (
-                        <div className="p-3 sm:p-3.5 pt-0">
-                          <div className="bg-white rounded-xl p-3 sm:p-4 shadow-2xs border border-orange-100 space-y-2.5">
-                            <p className="text-xs text-slate-600 font-medium leading-relaxed">
-                              Los alumnos ejecutan el archivo sin internet. Al finalizar, genera un <strong>Código QR Seguro</strong> que el docente escanea con su celular.
+                      {/* Contenido Opción B */}
+                      <div className="p-4 sm:p-5 space-y-4">
+                        <div className="bg-white rounded-xl p-4 sm:p-5 shadow-2xs border border-[#D9DFE8] space-y-4">
+                          <div className="space-y-1">
+                            <h4 className="text-xs sm:text-sm font-bold text-[#20283B]">
+                              Herramientas para Entornos sin Conexión a Internet
+                            </h4>
+                            <p className="text-xs text-[#667085] font-medium leading-relaxed">
+                              Descargue el archivo autocontenido para ejecutar en computadoras del laboratorio sin red. Al finalizar, los alumnos pueden generar un <strong>Código QR Seguro</strong> para ser escaneado con la cámara del docente o exportar sus resultados en <strong>JSON / CSV</strong> para cargarlos por llave USB.
                             </p>
+                          </div>
 
-                            {/* Botones de Acción Opción B */}
-                            <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                              <a
-                                href={archivoOfflineDescarga}
-                                download={`diagnostico_${nivelActivo}_offline.html`}
-                                className="inline-flex items-center justify-center gap-1.5 bg-[#1B5E59] hover:bg-[#144642] text-white text-xs font-bold px-3 py-2 rounded-lg transition-colors shadow-2xs"
-                              >
-                                <DownloadSimple size={15} className="text-white" />
-                                <span>Descargar offline</span>
-                              </a>
+                          {/* Botones de Acción Opción B */}
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                            {/* 1. Descargar Archivo Offline */}
+                            <a
+                              href={archivoOfflineDescarga}
+                              download={`diagnostico_${nivelActivo}_offline.html`}
+                              className="inline-flex items-center justify-center gap-2 bg-[#2E7D57] hover:bg-[#246345] text-white text-xs font-bold px-4 py-3 rounded-xl transition-all shadow-xs text-center"
+                            >
+                              <DownloadSimple size={18} weight="bold" />
+                              <span>1. Descargar offline (.html)</span>
+                            </a>
 
-                              <a
-                                href="/diagnostico_escaner_datos_locales.html"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center justify-center gap-1.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 text-xs font-bold px-3 py-2 rounded-lg transition-colors shadow-2xs"
-                                title="Abrir Escáner de Datos en una pestaña nueva"
-                              >
-                                <ArrowSquareOut size={15} className="text-slate-500" />
-                                <span>Escáner de Datos</span>
-                              </a>
+                            {/* 2. Abrir Escáner de Datos */}
+                            <a
+                              href="/diagnostico_escaner_datos_locales.html"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center justify-center gap-2 bg-[#1F3F78] hover:bg-[#2E3552] text-white text-xs font-bold px-4 py-3 rounded-xl transition-all shadow-xs text-center"
+                              title="Abrir Escáner de Datos en una pestaña nueva"
+                            >
+                              <QrCode size={18} weight="bold" />
+                              <span>2. Escáner de Datos QR</span>
+                            </a>
 
-                              <label className="inline-flex items-center justify-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-2 rounded-lg transition-colors shadow-2xs cursor-pointer">
-                                <DownloadSimple size={15} weight="bold" className="text-blue-100" />
-                                <span>Importar JSON/CSV (USB)</span>
-                                <input
-                                  type="file"
-                                  accept=".json,.csv,.txt"
-                                  multiple
-                                  className="hidden"
-                                  onChange={handleImportarArchivosLote}
-                                />
-                              </label>
-                            </div>
+                            {/* 3. Importar Lote JSON / CSV */}
+                            <label className="inline-flex items-center justify-center gap-2 bg-[#D4AF5A] hover:bg-[#B9923F] text-[#20283B] text-xs font-black px-4 py-3 rounded-xl transition-all shadow-xs cursor-pointer text-center">
+                              <DownloadSimple size={18} weight="bold" />
+                              <span>3. Importar JSON/CSV (USB)</span>
+                              <input
+                                type="file"
+                                accept=".json,.csv,.txt"
+                                multiple
+                                className="hidden"
+                                onChange={handleImportarArchivosLote}
+                              />
+                            </label>
                           </div>
                         </div>
-                      ) : (
-                        <div className="px-3 pb-2.5 flex items-center justify-between gap-2 text-xs">
-                          <span className="text-[#974800] font-bold text-[11px]">
-                            Modo fuera de línea listo
-                          </span>
-                          <a
-                            href="/diagnostico_escaner_datos_locales.html"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="bg-[#1B5E59] text-white text-[11px] font-black px-2.5 py-1 rounded-md hover:bg-[#144642] transition-colors cursor-pointer inline-flex items-center gap-1 shadow-2xs"
+
+                        {/* Guía Rápida de Sincronización Móvil Offline */}
+                        <div className="bg-white rounded-xl p-4 border border-[#D9DFE8] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                          <div className="flex items-center gap-2.5 text-[#20283B]">
+                            <DeviceMobile size={20} weight="bold" className="text-[#1F3F78] shrink-0" />
+                            <span>
+                              <strong>Compatibilidad Móvil Offline:</strong> Funciona con cámaras nativas de Android, iPhone y Huawei para captura masiva de datos en 0ms.
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setModalInstalacionMovil(true)}
+                            className="text-[11px] font-bold text-[#1F3F78] hover:underline whitespace-nowrap cursor-pointer"
                           >
-                            <ArrowSquareOut size={12} />
-                            <span>Escáner de Datos</span>
-                          </a>
+                            Ver guía de instalación →
+                          </button>
                         </div>
-                      )}
+                      </div>
                     </div>
                   )}
 
