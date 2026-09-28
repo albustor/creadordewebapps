@@ -15,6 +15,7 @@ import {
   SignOut,
   SignIn,
   Lightning,
+  GraduationCap,
   DeviceMobile,
   FilePdf,
   Info,
@@ -79,7 +80,7 @@ export default function Navbar() {
             title="Diagnóstico Secundaria - Tecnologías de la Información"
           >
             <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-[#EEF3FA] border border-[#D9DFE8] flex items-center justify-center text-[#1F3F78] shadow-xs group-hover:scale-105 transition-all">
-              <Lightning size={24} weight="fill" className="text-[#D4AF5A]" />
+              <GraduationCap size={24} weight="fill" className="text-[#1F3F78]" />
             </div>
             <div className="flex flex-col justify-center">
               <span className="font-black text-base sm:text-lg tracking-tight text-[#2E3552] leading-none whitespace-nowrap">

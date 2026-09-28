@@ -344,7 +344,7 @@ export default function HomePage() {
             {/* Título de la Plataforma */}
             <div className="text-center space-y-3">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EEF3FA] border border-[#D9DFE8] text-[#1F3F78] text-xs font-extrabold shadow-xs">
-                <Lightning size={16} weight="fill" className="text-[#D4AF5A]" />
+                <GraduationCap size={16} weight="fill" className="text-[#1F3F78]" />
                 <span>Formación Tecnológica • Ministerio de Educación Pública</span>
               </div>
 
