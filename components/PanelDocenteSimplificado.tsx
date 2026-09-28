@@ -1476,22 +1476,12 @@ export default function PanelDocenteSimplificado() {
                   <div className="flex items-center gap-1.5 flex-wrap">
                     <button
                       type="button"
-                      onClick={() => setModalSimuladorDispositivo(true)}
-                      className="text-[11px] font-bold text-teal-800 hover:text-teal-950 bg-teal-50 hover:bg-teal-100 px-2.5 py-1.5 rounded-lg border border-teal-200 transition-colors cursor-pointer inline-flex items-center gap-1.5 shadow-2xs"
-                      title="Probar en vista Celular, Tableta o Computadora"
-                    >
-                      <DeviceMobile size={14} weight="bold" />
-                      <span>Modo Celular / Tableta / PC</span>
-                    </button>
-
-                    <button
-                      type="button"
                       onClick={() => {
                         const nuevoEstado = !(acordeonOnlineExpandido && acordeonOfflineExpandido);
                         setAcordeonOnlineExpandido(nuevoEstado);
                         setAcordeonOfflineExpandido(nuevoEstado);
                       }}
-                      className="text-[11px] font-semibold text-slate-500 hover:text-slate-900 bg-slate-50 hover:bg-slate-100 px-2.5 py-1.5 rounded-lg border border-slate-200 transition-colors cursor-pointer inline-flex items-center gap-1"
+                      className="text-[11px] font-semibold text-[#667085] hover:text-[#20283B] bg-[#F5F7FA] hover:bg-[#EEF3FA] px-2.5 py-1.5 rounded-lg border border-[#D9DFE8] transition-colors cursor-pointer inline-flex items-center gap-1"
                     >
                       <span>{acordeonOnlineExpandido && acordeonOfflineExpandido ? "Contraer todo" : "Expandir todo"}</span>
                     </button>
@@ -1501,35 +1491,35 @@ export default function PanelDocenteSimplificado() {
                 {/* CONTENEDOR DE TARJETAS (ACORDEONES) */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 items-start">
                   
-                  {/* TARJETA 1: OPCIÓN A (CON INTERNET / EN LÍNEA - COLOR VERDE INSTITUCIONAL) */}
+                  {/* TARJETA 1: OPCIÓN A (CON INTERNET / EN LÍNEA - COLOR INSTITUCIONAL) */}
                   {(filtroModoEnlaces === "todos" || filtroModoEnlaces === "online") && (
-                    <div className="bg-[#D7EFEA]/80 rounded-2xl border-2 border-[#9FD1C9] shadow-xs overflow-hidden transition-all">
+                    <div className="bg-[#EEF3FA]/70 rounded-2xl border-2 border-[#D9DFE8] shadow-xs overflow-hidden transition-all">
                       {/* Cabecera Plegable Opción A */}
                       <button
                         type="button"
                         onClick={() => setAcordeonOnlineExpandido(!acordeonOnlineExpandido)}
-                        className="w-full p-3 sm:p-3.5 flex items-center justify-between gap-3 text-left hover:bg-[#c4ebe3] transition-colors cursor-pointer select-none"
+                        className="w-full p-3 sm:p-3.5 flex items-center justify-between gap-3 text-left hover:bg-[#e4ecf7] transition-colors cursor-pointer select-none"
                         aria-expanded={acordeonOnlineExpandido}
                       >
                         <div className="flex items-center gap-2.5 min-w-0">
-                          <div className="w-8 h-8 rounded-xl bg-[#004641] text-emerald-300 flex items-center justify-center font-bold text-sm shrink-0 shadow-xs">
+                          <div className="w-8 h-8 rounded-xl bg-[#1F3F78] text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-xs">
                             <Globe size={18} weight="bold" />
                           </div>
                           <div className="min-w-0">
-                            <h3 className="text-xs sm:text-[13px] font-black uppercase tracking-wider text-[#004641] truncate">
+                            <h3 className="text-xs sm:text-[13px] font-black uppercase tracking-wider text-[#1F3F78] truncate">
                               OPCIÓN A: CON INTERNET (EN LÍNEA)
                             </h3>
-                            <p className="text-[11px] text-[#1B5E59] font-bold truncate">
-                              Diagnóstico PFT {nivelActivo} • Sección {seccionActiva}
+                            <p className="text-[11px] text-[#2E3552] font-bold truncate">
+                              Diagnóstico PNFT {nivelActivo} • Sección {seccionActiva}
                             </p>
                           </div>
                         </div>
 
                         <div className="flex items-center gap-2 shrink-0">
-                          <span className="hidden sm:inline-block px-2 py-0.5 rounded-full bg-white/90 border border-[#9FD1C9] text-[10px] font-black text-[#1B5E59]">
+                          <span className="hidden sm:inline-block px-2 py-0.5 rounded-full bg-white/90 border border-[#D9DFE8] text-[10px] font-black text-[#1F3F78]">
                             Telemetría en 0ms
                           </span>
-                          <div className={`w-6 h-6 rounded-full bg-white flex items-center justify-center text-[#004641] shadow-2xs transition-transform duration-200 ${acordeonOnlineExpandido ? "rotate-180" : ""}`}>
+                          <div className={`w-6 h-6 rounded-full bg-white flex items-center justify-center text-[#1F3F78] shadow-2xs transition-transform duration-200 ${acordeonOnlineExpandido ? "rotate-180" : ""}`}>
                             <CaretDown size={14} weight="bold" />
                           </div>
                         </div>
@@ -1538,8 +1528,8 @@ export default function PanelDocenteSimplificado() {
                       {/* Contenido Plegable Opción A */}
                       {acordeonOnlineExpandido ? (
                         <div className="p-3 sm:p-3.5 pt-0">
-                          <div className="bg-white rounded-xl p-3 sm:p-4 shadow-2xs border border-teal-100 space-y-2.5">
-                            <p className="text-xs text-slate-600 font-medium leading-relaxed">
+                          <div className="bg-white rounded-xl p-3 sm:p-4 shadow-2xs border border-[#D9DFE8] space-y-2.5">
+                            <p className="text-xs text-[#667085] font-medium leading-relaxed">
                               Los alumnos abren el enlace en sus computadoras o dispositivos. Las respuestas y telemetría se transmiten en vivo a este panel.
                             </p>
 
@@ -1548,7 +1538,7 @@ export default function PanelDocenteSimplificado() {
                               <button
                                 type="button"
                                 onClick={handleCopiarEnlace}
-                                className="inline-flex items-center justify-center gap-1.5 bg-[#1B5E59] hover:bg-[#144642] text-white text-xs font-bold px-3 py-2 rounded-lg transition-colors shadow-2xs cursor-pointer active:scale-95"
+                                className="inline-flex items-center justify-center gap-1.5 bg-[#1F3F78] hover:bg-[#2E3552] text-white text-xs font-bold px-3 py-2 rounded-lg transition-colors shadow-2xs cursor-pointer active:scale-95"
                               >
                                 {copiado ? (
                                   <>
@@ -1557,7 +1547,7 @@ export default function PanelDocenteSimplificado() {
                                   </>
                                 ) : (
                                   <>
-                                    <Copy size={15} className="text-teal-200" />
+                                    <Copy size={15} className="text-blue-200" />
                                     <span>Copiar Enlace</span>
                                   </>
                                 )}
@@ -1570,19 +1560,6 @@ export default function PanelDocenteSimplificado() {
                               >
                                 <QrCode size={15} className="text-slate-500" />
                                 <span>Proyectar QR</span>
-                              </button>
-
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setModoVistaDispositivo("desktop");
-                                  setModalSimuladorDispositivo(true);
-                                }}
-                                className="inline-flex items-center justify-center gap-1 bg-[#004641] hover:bg-[#00332f] text-white text-xs font-bold px-2.5 py-2 rounded-lg transition-colors shadow-2xs cursor-pointer"
-                                title="Ver en vista Celular, Tableta o PC"
-                              >
-                                <Desktop size={15} className="text-teal-200" />
-                                <span>Vista Previa</span>
                               </button>
 
                               <a
