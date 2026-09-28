@@ -120,26 +120,23 @@ export default function ModalGuiaPWA({ isOpen, onClose, nivel = "9.° Año" }: M
             <div className="space-y-3.5">
               <div className="flex items-center gap-2 text-indigo-300 font-black text-sm">
                 <AppleLogo size={18} weight="fill" />
-                <span>Instalación en iPhone (Safari / iOS)</span>
+                <span>Secuencia Oficial de Instalación en iPhone (iOS)</span>
               </div>
               <p className="text-xs text-slate-300 leading-relaxed">
-                Apple requiere que las Web Apps se abran exclusivamente desde <strong>Safari</strong> para habilitar los permisos de cámara y funcionamiento sin conexión:
+                Sigue este orden exacto de 4 pasos para instalar el Escáner como App de pantalla completa sin internet en tu iPhone:
               </p>
               <ol className="list-decimal list-inside space-y-2 text-xs text-slate-200">
                 <li className="leading-relaxed">
-                  Abre el enlace del escáner en el navegador <strong>Safari</strong>.
+                  <strong>Tres puntitos (•••):</strong> Toca los tres puntitos o el icono de menú de tu navegador.
                 </li>
                 <li className="leading-relaxed">
-                  Toca el botón <strong>Compartir</strong> (icono de cuadrado con una flecha hacia arriba <span className="font-mono bg-slate-800 px-1.5 py-0.5 rounded text-[11px]">↑</span> en la barra inferior).
+                  <strong>Compartir:</strong> Toca la opción <strong>Compartir</strong> (📤).
                 </li>
                 <li className="leading-relaxed">
-                  Desplázate hacia abajo en el menú y selecciona <strong>"Agregar a inicio"</strong> (<em>Add to Home Screen</em>).
+                  <strong>Ver más:</strong> Desliza las opciones o pulsa <strong>"Ver más"</strong>.
                 </li>
                 <li className="leading-relaxed">
-                  Toca <strong>"Agregar"</strong> en la esquina superior derecha.
-                </li>
-                <li className="leading-relaxed">
-                  ¡Listo! Abre el icono creado en tu pantalla de inicio y concede el permiso de cámara cuando te lo solicite.
+                  <strong>Agregar a Inicio:</strong> Selecciona <strong>[+] "Agregar a Inicio"</strong> (<em>Add to Home Screen</em>) y confirma tocando <strong>"Agregar"</strong> en la esquina superior derecha.
                 </li>
               </ol>
             </div>

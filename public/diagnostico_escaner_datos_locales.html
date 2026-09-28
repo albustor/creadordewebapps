@@ -1160,50 +1160,49 @@ input:focus, select:focus {
       <div id="paneIos" class="guide-pane">
         <div style="background:#eff6ff; border:1.5px solid #bfdbfe; border-radius:12px; padding:12px 14px; margin-bottom:12px;">
           <h3 style="font-size: 13.5px; font-weight: 900; color: #1e3a8a; margin: 0 0 4px 0; display:flex; align-items:center; gap:6px;">
-            <span>🍎 Pasos Obligatorios para Instalar en iPhone / iPad (iOS Safari)</span>
+            <span>🍎 Secuencia Oficial de Instalación en iPhone / iPad (iOS)</span>
           </h3>
           <p style="font-size: 11.5px; color: #1e40af; margin:0; line-height: 1.5;">
-            <strong>Apple no permite la descarga directa de archivos instaladores (APK)</strong>. Para usar el escáner como App a pantalla completa y sin internet en tu iPhone, sigue estos 3 sencillos pasos desde <strong>Safari</strong>:
+            Sigue este orden exacto de 4 pasos para instalar el Escáner como App de pantalla completa sin conexión:
           </p>
         </div>
 
-        <div class="guide-step-grid">
+        <div class="guide-step-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
           <div class="guide-step-card" style="border-top: 4px solid #0284c7;">
-            <div class="guide-step-header">
-              <span class="step-pill" style="background:#0284c7;">Paso 1: En Safari</span>
-              <h4>1. Tocar Compartir (📤)</h4>
-              <p>Abre el enlace en <strong>Safari</strong> y toca el botón <strong>Compartir</strong> (icono de cuadrado con flecha hacia arriba) en la barra inferior.</p>
-            </div>
-            <div class="guide-step-img-wrap">
-              <img src="/guias/iphone/paso1_instrucciones_ios.png" alt="Paso 1 iOS" class="guide-img" onerror="this.style.display='none'">
+            <div class="guide-step-header" style="height:100%;">
+              <span class="step-pill" style="background:#0284c7;">Paso 1</span>
+              <h4>1. Tres Puntitos (•••)</h4>
+              <p>Toca los <strong>tres puntitos (•••)</strong> o el icono de menú del navegador en tu iPhone.</p>
             </div>
           </div>
 
           <div class="guide-step-card" style="border-top: 4px solid #7c3aed;">
-            <div class="guide-step-header">
-              <span class="step-pill" style="background:#7c3aed;">Paso 2: Menú iOS</span>
-              <h4>2. "Agregar a Inicio" [+]</h4>
-              <p>Desliza las opciones hacia abajo y selecciona <strong>[+] "Agregar a Inicio"</strong> (<em>Add to Home Screen</em>).</p>
+            <div class="guide-step-header" style="height:100%;">
+              <span class="step-pill" style="background:#7c3aed;">Paso 2</span>
+              <h4>2. Compartir (📤)</h4>
+              <p>Toca la opción <strong>Compartir</strong> en la lista de acciones.</p>
             </div>
-            <div class="guide-step-img-wrap">
-              <img src="/guias/iphone/paso2_menu_compartir.png" alt="Paso 2 iOS" class="guide-img" onerror="this.style.display='none'">
+          </div>
+
+          <div class="guide-step-card" style="border-top: 4px solid #ea580c;">
+            <div class="guide-step-header" style="height:100%;">
+              <span class="step-pill" style="background:#ea580c;">Paso 3</span>
+              <h4>3. Ver Más</h4>
+              <p>Desliza hacia abajo o pulsa <strong>"Ver más"</strong> para desplegar todas las opciones.</p>
             </div>
           </div>
 
           <div class="guide-step-card" style="border-top: 4px solid #059669;">
-            <div class="guide-step-header">
-              <span class="step-pill" style="background:#059669;">Paso 3: Confirmar</span>
-              <h4>3. Tocar "Agregar"</h4>
-              <p>Confirma tocando <strong>"Agregar"</strong> en la esquina superior derecha. ¡Listo! Se abrirá como App nativa 100% offline.</p>
-            </div>
-            <div class="guide-step-img-wrap">
-              <img src="/guias/iphone/paso3_agregar_inicio.png" alt="Paso 3 iOS" class="guide-img" onerror="this.style.display='none'">
+            <div class="guide-step-header" style="height:100%;">
+              <span class="step-pill" style="background:#059669;">Paso 4</span>
+              <h4>4. Agregar a Inicio</h4>
+              <p>Selecciona <strong>[+] "Agregar a Inicio"</strong> y toca <strong>"Agregar"</strong> arriba a la derecha.</p>
             </div>
           </div>
         </div>
 
         <div class="guide-note-box" style="margin-top:12px;">
-          <strong>✨ Ventaja en iPhone:</strong> Ejecución a pantalla completa sin barras de navegación, sonido y vibración al escanear, y captura de datos 100% offline sin gastar datos celulares.
+          <strong>✨ ¡Listo!:</strong> Ahora tienes el icono del <strong>Escáner MEP</strong> en tu pantalla de inicio. Se abre a pantalla completa, con acceso a cámara instantáneo y 100% libre de internet.
         </div>
       </div>
 
@@ -3287,7 +3286,7 @@ function solicitarInstalacionSegunSO() {
     cambiarPestanaGuia('ios');
     var el = document.getElementById("paneIos");
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    alert("🍎 PASOS PARA INSTALAR EN IPHONE (SAFARI):\n\n1. Asegúrate de estar en el navegador Safari.\n2. Toca el botón Compartir (📤) en la barra inferior de Safari.\n3. Desliza hacia abajo y selecciona [+] 'Agregar a Inicio' (Add to Home Screen).\n4. Toca 'Agregar' arriba a la derecha.\n\n¡La App quedará lista en tu pantalla de inicio y funcionará sin internet!");
+    alert("🍎 PASOS OFICIALES PARA IPHONE:\n\n1. Toca los Tres Puntitos (•••) del navegador.\n2. Selecciona la opción 'Compartir' (📤).\n3. Toca 'Ver más' (o desliza las opciones).\n4. Selecciona [+] 'Agregar a Inicio' (Add to Home Screen) y confirma con 'Agregar'.\n\n¡Listo! La App quedará instalada en la pantalla de tu iPhone y funcionará 100% sin conexión a internet.");
   } else if (so === "android") {
     if (deferredPrompt) {
       deferredPrompt.prompt();
