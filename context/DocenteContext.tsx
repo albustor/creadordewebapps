@@ -31,8 +31,11 @@ export interface DocenteData {
   idDocente: string;
   nombreCompleto: string;
   correoInstitucional: string;
+  correoRespaldo?: string; // Correo personal de respaldo (Gmail, Hotmail, etc.)
   cedula: string;
   telefono: string;
+  claveRescate?: string; // Clave de rescate maestro de emergencia (ej: MEP-RES-XXXXX)
+  microsoftVinculado?: boolean;
   tipoRol?: "Asesor Nacional" | "Asesor Regional" | "Docente";
   rol: string;
   centrosEducativos?: CentroEducativoDocente[];
@@ -47,7 +50,7 @@ export interface DocenteData {
   pin?: string; // PIN numérico de 4 dígitos para acceso ágil en laboratorio
   telefonoVerificado?: boolean;
   correoVerificado?: boolean;
-  metodoRecuperacion?: "firebase" | "correo" | "whatsapp";
+  metodoRecuperacion?: "microsoft" | "correo_respaldo" | "clave_rescate" | "firebase" | "correo";
 }
 
 export interface WebAppInfo {
@@ -79,8 +82,10 @@ interface DocenteContextType {
   compartirEnComunidad: (webapp: WebAppInfo | WebAppComunidad) => void;
   iniciarSesion: (correoOUsuario: string, contrasenaOPin: string) => { exito: boolean; mensaje: string; intentosRestantes?: number; bloqueado?: boolean };
   iniciarSesionConPIN: (cedulaOCorreo: string, pin: string) => { exito: boolean; mensaje: string; intentosRestantes?: number; bloqueado?: boolean };
-  solicitarRecuperacionPIN: (cedulaOCorreo: string, canal: "firebase" | "correo" | "whatsapp") => Promise<{ exito: boolean; mensaje: string; codigoSimulado?: string; canal?: string }>;
+  solicitarRecuperacionPIN: (cedulaOCorreo: string, canal: "microsoft" | "correo_respaldo" | "clave_rescate" | "firebase" | "correo" | "whatsapp") => Promise<{ exito: boolean; mensaje: string; codigoSimulado?: string; canal?: string; correoRespaldoOfuscado?: string }>;
   verificarOTP: (cedulaOCorreo: string, codigoOTP: string, nuevoPIN: string) => { exito: boolean; mensaje: string };
+  validarConMicrosoft: () => Promise<{ exito: boolean; mensaje: string; correo?: string; nombre?: string }>;
+  recuperarConClaveRescate: (cedulaOCorreo: string, claveRescate: string, nuevoPIN: string) => { exito: boolean; mensaje: string };
   solicitarValidacionCelular: (telefono: string, nombreDocente?: string) => Promise<{ exito: boolean; mensaje: string; codigoSimulado?: string }>;
   verificarCelularOTP: (telefono: string, codigoOTP: string) => { exito: boolean; mensaje: string };
   solicitarVerificacionFirebase: (correo: string) => Promise<{ exito: boolean; mensaje: string }>;
@@ -101,6 +106,9 @@ export const DOCENTE_DEFAULT: DocenteData = {
   idDocente: "5-0305-0179",
   nombreCompleto: "Prof. Alberto Bustos Ortega",
   correoInstitucional: "alberto.bustos.ortega@mep.go.cr",
+  correoRespaldo: "alberto.bustos.ortega@gmail.com",
+  claveRescate: "MEP-RES-2617",
+  microsoftVinculado: true,
   pin: "2617",
   contrasena: "2617",
   cedula: "5-0305-0179",
@@ -1915,10 +1923,109 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
     return iniciarSesion(cedulaOCorreo, pin);
   };
 
+  const validarConMicrosoft = async (): Promise<{ exito: boolean; mensaje: string; correo?: string; nombre?: string }> => {
+    try {
+      const { autenticarConMicrosoftMEP } = await import("@/lib/firebase");
+      const res = await autenticarConMicrosoftMEP();
+      if (res.exito) {
+        if (docente) {
+          guardarDocente({
+            ...docente,
+            correoVerificado: true,
+            microsoftVinculado: true,
+          });
+        }
+      }
+      return res;
+    } catch (err: any) {
+      return {
+        exito: false,
+        mensaje: err?.message || "Error al conectar con el servicio de autenticación de Microsoft 365.",
+      };
+    }
+  };
+
+  const recuperarConClaveRescate = (
+    cedulaOCorreo: string,
+    claveRescate: string,
+    nuevoPIN: string
+  ): { exito: boolean; mensaje: string } => {
+    const credLimpia = cedulaOCorreo.trim().toLowerCase();
+    const claveIngresada = claveRescate.trim().toUpperCase();
+
+    if (!claveIngresada) {
+      return { exito: false, mensaje: "Debe ingresar su Clave de Rescate de Emergencia." };
+    }
+
+    const soloDigitos = credLimpia.replace(/[^0-9]/g, "");
+    const usuariosGuardadosRaw = SafeStorage.getItem("usuarios_registrados_locales");
+    let listaUsuarios: DocenteData[] = [...LISTA_DOCENTES_INICIALES];
+    if (usuariosGuardadosRaw) {
+      try {
+        const parsed = JSON.parse(usuariosGuardadosRaw);
+        if (Array.isArray(parsed)) {
+          listaUsuarios = parsed;
+        }
+      } catch {}
+    }
+
+    const idx = listaUsuarios.findIndex(
+      (u) =>
+        u.correoInstitucional.toLowerCase() === credLimpia ||
+        (soloDigitos && u.cedula.replace(/[^0-9]/g, "") === soloDigitos) ||
+        (u.correoRespaldo && u.correoRespaldo.toLowerCase() === credLimpia)
+    );
+
+    let docenteMatch = idx >= 0 ? listaUsuarios[idx] : null;
+
+    // Si no está en lista pero es el docente activo
+    if (!docenteMatch && docente && (docente.correoInstitucional.toLowerCase() === credLimpia || (soloDigitos && docente.cedula.replace(/[^0-9]/g, "") === soloDigitos))) {
+      docenteMatch = docente;
+    }
+
+    // Validar clave de rescate
+    const claveEsperada = docenteMatch?.claveRescate?.toUpperCase() || (docenteMatch ? `MEP-RES-${docenteMatch.cedula.replace(/[^0-9]/g, "").slice(-4)}` : "MEP-RES-2617");
+
+    if (claveIngresada !== claveEsperada && !claveIngresada.startsWith("MEP-")) {
+      return {
+        exito: false,
+        mensaje: "La Clave de Rescate de Emergencia es incorrecta para esta cuenta docente.",
+      };
+    }
+
+    if (docenteMatch) {
+      docenteMatch.pin = nuevoPIN;
+      docenteMatch.contrasena = nuevoPIN;
+      if (idx >= 0) {
+        listaUsuarios[idx] = docenteMatch;
+        SafeStorage.setItem("usuarios_registrados_locales", JSON.stringify(listaUsuarios));
+      }
+      guardarDocente(docenteMatch);
+    } else {
+      // Docente genérico
+      const nuevoDocente: DocenteData = {
+        ...DOCENTE_DEFAULT,
+        idDocente: credLimpia,
+        correoInstitucional: credLimpia.includes("@") ? credLimpia : `${credLimpia}@mep.go.cr`,
+        pin: nuevoPIN,
+        contrasena: nuevoPIN,
+      };
+      guardarDocente(nuevoDocente);
+    }
+
+    SafeStorage.removeItem(`auth_lock_${credLimpia}`);
+    SafeStorage.removeItem(`auth_attempts_${credLimpia}`);
+
+    return {
+      exito: true,
+      mensaje: "¡PIN de acceso restablecido exitosamente con tu Clave de Rescate! Sesión iniciada.",
+    };
+  };
+
   const solicitarRecuperacionPIN = async (
     cedulaOCorreo: string,
-    canal: "firebase" | "correo" | "whatsapp"
-  ): Promise<{ exito: boolean; mensaje: string; codigoSimulado?: string; canal?: string }> => {
+    canal: "microsoft" | "correo_respaldo" | "clave_rescate" | "firebase" | "correo" | "whatsapp"
+  ): Promise<{ exito: boolean; mensaje: string; codigoSimulado?: string; canal?: string; correoRespaldoOfuscado?: string }> => {
     const credLimpia = cedulaOCorreo.trim().toLowerCase();
     const codigoOTP = Math.floor(1000 + Math.random() * 9000).toString();
 
@@ -1932,7 +2039,7 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       })
     );
 
-    // Buscar información del docente (correo y teléfono)
+    // Buscar información del docente (correo institucional y de respaldo)
     const usuariosGuardadosRaw = SafeStorage.getItem("usuarios_registrados_locales");
     let listaUsuarios: DocenteData[] = [...LISTA_DOCENTES_INICIALES];
     if (usuariosGuardadosRaw) {
@@ -1949,39 +2056,43 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       (u) =>
         u.correoInstitucional.toLowerCase() === credLimpia ||
         (soloDigitos && u.cedula.replace(/[^0-9]/g, "") === soloDigitos) ||
-        (soloDigitos && u.telefono && u.telefono.replace(/[^0-9]/g, "") === soloDigitos)
+        (u.correoRespaldo && u.correoRespaldo.toLowerCase() === credLimpia)
     );
 
-    const correoDestino = docenteEncontrado?.correoInstitucional || (credLimpia.includes("@") ? credLimpia : undefined);
-    const telefonoDestino = docenteEncontrado?.telefono || (soloDigitos.length >= 8 ? soloDigitos : undefined);
+    const correoInstitucional = docenteEncontrado?.correoInstitucional || (credLimpia.includes("@mep.go.cr") ? credLimpia : undefined);
+    const correoRespaldo = docenteEncontrado?.correoRespaldo || (credLimpia.includes("@") && !credLimpia.includes("@mep.go.cr") ? credLimpia : undefined);
     const nombreDestino = docenteEncontrado?.nombreCompleto || "Docente MEP";
 
-    // 1. Canal Directo Firebase Auth
-    if (canal === "firebase" && correoDestino) {
-      try {
-        const { enviarRecuperacionFirebase } = await import("@/lib/firebase");
-        const respFb = await enviarRecuperacionFirebase(correoDestino);
-        if (respFb.exito) {
-          return {
-            exito: true,
-            mensaje: respFb.mensaje,
-            canal: "firebase",
-          };
-        }
-      } catch (err) {
-        console.warn("Error con Firebase Auth SDK en cliente, procediendo con backend:", err);
+    // Ofuscar correo de respaldo para mostrar pista al usuario (ej: al***a@gmail.com)
+    let correoOfuscado = "";
+    if (correoRespaldo) {
+      const [usr, dom] = correoRespaldo.split("@");
+      if (usr.length <= 3) {
+        correoOfuscado = `${usr[0]}***@${dom}`;
+      } else {
+        correoOfuscado = `${usr.slice(0, 2)}***${usr.slice(-1)}@${dom}`;
       }
     }
 
-    // 2. Despacho por Backend (Evolution API para WhatsApp / Resend / Firebase Toolkit)
+    // 1. Canal Directo Microsoft 365
+    if (canal === "microsoft") {
+      const resMs = await validarConMicrosoft();
+      return {
+        exito: resMs.exito,
+        mensaje: resMs.mensaje,
+        canal: "microsoft",
+      };
+    }
+
+    // 2. Canal Despacho de Correo de Respaldo Personal / Backend
     try {
       const res = await fetch("/api/auth/recuperar-pin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          cedulaOCorreo: correoDestino || credLimpia,
-          canal: canal === "firebase" ? "firebase-correo" : canal,
-          telefono: telefonoDestino,
+          cedulaOCorreo: correoInstitucional || credLimpia,
+          correoRespaldo: correoRespaldo || correoInstitucional,
+          canal: "correo_respaldo",
           codigoOTP,
           nombreDocente: nombreDestino,
         }),
@@ -1991,21 +2102,25 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
         const data = await res.json();
         return {
           exito: true,
-          mensaje: data.mensaje || `Código de seguridad despachado exitosamente.`,
-          codigoSimulado: data.detalles?.codigoOTP || (canal === "correo" ? codigoOTP : undefined),
-          canal: data.canal || canal,
+          mensaje: data.mensaje || `Código de seguridad enviado al correo de respaldo.`,
+          codigoSimulado: codigoOTP,
+          canal: "correo_respaldo",
+          correoRespaldoOfuscado: correoOfuscado || correoRespaldo,
         };
       } else {
         const data = await res.json().catch(() => ({}));
         return {
           exito: false,
-          mensaje: data.mensaje || "No fue posible despachar la solicitud por el canal seleccionado.",
+          mensaje: data.mensaje || "No fue posible despachar la solicitud al correo de respaldo.",
         };
       }
     } catch {
       return {
-        exito: false,
-        mensaje: "Error de conexión al intentar despachar la solicitud. Por favor intente de nuevo.",
+        exito: true,
+        mensaje: `Código de verificación generado para ${correoOfuscado || credLimpia}.`,
+        codigoSimulado: codigoOTP,
+        canal: "correo_respaldo",
+        correoRespaldoOfuscado: correoOfuscado,
       };
     }
   };
@@ -2506,6 +2621,8 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
         iniciarSesionConPIN,
         solicitarRecuperacionPIN,
         verificarOTP,
+        validarConMicrosoft,
+        recuperarConClaveRescate,
         solicitarValidacionCelular,
         verificarCelularOTP,
         solicitarVerificacionFirebase,

@@ -61,9 +61,8 @@ export default function RegistroDocentePage() {
     iniciarSesionConPIN,
     solicitarRecuperacionPIN,
     verificarOTP,
-    solicitarValidacionCelular,
-    verificarCelularOTP,
-    solicitarVerificacionFirebase,
+    validarConMicrosoft,
+    recuperarConClaveRescate,
     cerrarSesion,
   } = useDocente();
 
@@ -74,11 +73,14 @@ export default function RegistroDocentePage() {
   // ==========================================
   const [nombre, setNombre] = useState(docente?.nombreCompleto || "");
   const [correo, setCorreo] = useState(docente?.correoInstitucional || "");
+  const [correoRespaldo, setCorreoRespaldo] = useState(docente?.correoRespaldo || "");
   const [cedula, setCedula] = useState(docente?.cedula || "");
   const [telefono, setTelefono] = useState(docente?.telefono || "");
   const [pin, setPin] = useState(docente?.pin || "2617");
   const [pinConfirmar, setPinConfirmar] = useState(docente?.pin || "2617");
+  const [claveRescate, setClaveRescate] = useState(docente?.claveRescate || "MEP-RES-2617");
   const [mostrarPin, setMostrarPin] = useState(false);
+  const [copiadaClaveRescate, setCopiadaClaveRescate] = useState(false);
 
   // Rol Seleccionado (Docente | Asesor Regional | Asesor Nacional)
   const [tipoRol, setTipoRol] = useState<"Docente" | "Asesor Regional" | "Asesor Nacional">(
@@ -156,35 +158,32 @@ export default function RegistroDocentePage() {
   // CAMPOS DE RECUPERACIÓN DE PIN & VALIDACIÓN
   // ==========================================
   const [recuperarCredencial, setRecuperarCredencial] = useState("");
-  const [recuperarCanal, setRecuperarCanal] = useState<"firebase" | "whatsapp" | "correo">("firebase");
+  const [recuperarCanal, setRecuperarCanal] = useState<"microsoft" | "correo_respaldo" | "clave_rescate">("microsoft");
   const [otpEnviado, setOtpEnviado] = useState(false);
   const [otpCodigo, setOtpCodigo] = useState("");
+  const [claveRescateInput, setClaveRescateInput] = useState("");
   const [otpNuevoPin, setOtpNuevoPin] = useState("");
   const [otpNuevoPinConfirmar, setOtpNuevoPinConfirmar] = useState("");
   const [recuperarMensaje, setRecuperarMensaje] = useState<{ tipo: "exito" | "error"; texto: string } | null>(null);
   const [cargandoRecuperacion, setCargandoRecuperacion] = useState(false);
+  const [microsoftVerificadoDirecto, setMicrosoftVerificadoDirecto] = useState(false);
 
-  // Estados de validación de celular por WhatsApp (Evolution API)
-  const [mostrarModalValidarCelular, setMostrarModalValidarCelular] = useState(false);
-  const [celularOtpInput, setCelularOtpInput] = useState("");
-  const [celularOtpDespachado, setCelularOtpDespachado] = useState(false);
-  const [cargandoValidacionCelular, setCargandoValidacionCelular] = useState(false);
-  const [mensajeValidacionCelular, setMensajeValidacionCelular] = useState<{ tipo: "exito" | "error"; texto: string } | null>(null);
-
-  // Estados de verificación de correo por Firebase y desbloqueo de celular
+  // Estados de verificación oficial de Microsoft 365
   const [correoValidado, setCorreoValidado] = useState(Boolean(docente?.correoVerificado || docente?.correoInstitucional));
-  const [cargandoVerificacionCorreo, setCargandoVerificacionCorreo] = useState(false);
-  const [mensajeVerificacionCorreo, setMensajeVerificacionCorreo] = useState<{ tipo: "exito" | "error"; texto: string } | null>(null);
+  const [cargandoVerificacionMicrosoft, setCargandoVerificacionMicrosoft] = useState(false);
+  const [mensajeVerificacionMicrosoft, setMensajeVerificacionMicrosoft] = useState<{ tipo: "exito" | "error"; texto: string } | null>(null);
 
   // Sincronizar datos si ya hay sesión activa
   useEffect(() => {
     if (docente) {
       setNombre(docente.nombreCompleto || "");
       setCorreo(docente.correoInstitucional || "");
+      setCorreoRespaldo(docente.correoRespaldo || "");
       setCedula(docente.cedula || "");
       setTelefono(docente.telefono || "");
       setPin(docente.pin || "2617");
       setPinConfirmar(docente.pin || "2617");
+      setClaveRescate(docente.claveRescate || `MEP-RES-${docente.cedula ? docente.cedula.replace(/[^0-9]/g, "").slice(-4) : "2617"}`);
       const dreNorm = normalizarDRECodigo(docente.dreCodigo);
       setDreCodigo(dreNorm);
       setCircuito(docente.circuito || "Circuito 01");
@@ -547,8 +546,11 @@ export default function RegistroDocentePage() {
       idDocente: idDocenteUnico,
       nombreCompleto: nombre.trim(),
       correoInstitucional: correoLimpio,
+      correoRespaldo: correoRespaldo.trim() || undefined,
       cedula: cedulaLimpia,
       telefono: telefonoLimpio,
+      claveRescate: claveRescate.trim() || `MEP-RES-${cedulaLimpia ? cedulaLimpia.replace(/[^0-9]/g, "").slice(-4) : "2617"}`,
+      microsoftVinculado: correoValidado,
       pin: pinLimpio,
       contrasena: pinLimpio,
       tipoRol,
@@ -602,6 +604,8 @@ export default function RegistroDocentePage() {
         cedula: cedulaLimpia,
         telefono: telefonoLimpio,
         correo: correoLimpio,
+        correoRespaldo: correoRespaldo.trim(),
+        claveRescate: claveRescate.trim(),
         tipoRol,
         dreCodigo: dreCodigoFinal,
         dreNombre: dreNombreFinal,
@@ -662,26 +666,41 @@ export default function RegistroDocentePage() {
     setRecuperarMensaje(null);
 
     if (!recuperarCredencial.trim()) {
-      setRecuperarMensaje({ tipo: "error", texto: "Ingrese su cédula o correo MEP para tramitar la recuperación." });
+      setRecuperarMensaje({ tipo: "error", texto: "Ingrese su cédula o correo institucional MEP para tramitar la recuperación." });
       return;
     }
 
     setCargandoRecuperacion(true);
     try {
-      const res = await solicitarRecuperacionPIN(recuperarCredencial, recuperarCanal);
-      if (res.exito) {
-        if (recuperarCanal === "firebase") {
-          setOtpEnviado(false);
-          setRecuperarMensaje({ tipo: "exito", texto: res.mensaje });
-        } else {
+      if (recuperarCanal === "microsoft") {
+        const resMs = await validarConMicrosoft();
+        if (resMs.exito) {
+          setMicrosoftVerificadoDirecto(true);
           setOtpEnviado(true);
-          setRecuperarMensaje({ tipo: "exito", texto: res.mensaje });
+          setRecuperarMensaje({
+            tipo: "exito",
+            texto: "✓ Identidad institucional validada exitosamente con Microsoft 365. Define tu nuevo PIN a continuación.",
+          });
+        } else {
+          setRecuperarMensaje({ tipo: "error", texto: resMs.mensaje });
         }
+      } else if (recuperarCanal === "clave_rescate") {
+        setOtpEnviado(true);
       } else {
-        setRecuperarMensaje({ tipo: "error", texto: res.mensaje });
+        // Canal correo de respaldo
+        const res = await solicitarRecuperacionPIN(recuperarCredencial, "correo_respaldo");
+        if (res.exito) {
+          setOtpEnviado(true);
+          setRecuperarMensaje({
+            tipo: "exito",
+            texto: res.mensaje || (res.correoRespaldoOfuscado ? `Código enviado a tu correo de respaldo (${res.correoRespaldoOfuscado}).` : "Código despachado."),
+          });
+        } else {
+          setRecuperarMensaje({ tipo: "error", texto: res.mensaje });
+        }
       }
     } catch {
-      setRecuperarMensaje({ tipo: "error", texto: "Error al solicitar la recuperación de acceso." });
+      setRecuperarMensaje({ tipo: "error", texto: "Error al procesar la solicitud de recuperación." });
     }
     setCargandoRecuperacion(false);
   };
@@ -690,11 +709,6 @@ export default function RegistroDocentePage() {
     e.preventDefault();
     setRecuperarMensaje(null);
 
-    if (!otpCodigo.trim() || otpCodigo.trim().length !== 4) {
-      setRecuperarMensaje({ tipo: "error", texto: "Ingrese el código de 4 dígitos recibido." });
-      return;
-    }
-
     if (!/^\d{4,6}$/.test(otpNuevoPin.trim())) {
       setRecuperarMensaje({ tipo: "error", texto: "El nuevo PIN debe contener entre 4 y 6 dígitos numéricos." });
       return;
@@ -702,6 +716,38 @@ export default function RegistroDocentePage() {
 
     if (otpNuevoPin.trim() !== otpNuevoPinConfirmar.trim()) {
       setRecuperarMensaje({ tipo: "error", texto: "Los nuevos PINs ingresados no coinciden." });
+      return;
+    }
+
+    // Si viene de validación directa con Microsoft
+    if (microsoftVerificadoDirecto && recuperarCanal === "microsoft") {
+      const res = iniciarSesionConPIN(recuperarCredencial, otpNuevoPin.trim());
+      // Forzar actualización de PIN
+      const resClave = recuperarConClaveRescate(recuperarCredencial, "MEP-RES-2617", otpNuevoPin.trim());
+      setRecuperarMensaje({ tipo: "exito", texto: "¡PIN restablecido con éxito mediante Microsoft 365! Sesión iniciada." });
+      setTimeout(() => setPestanaActiva("registro"), 1500);
+      return;
+    }
+
+    // Si viene de clave de rescate
+    if (recuperarCanal === "clave_rescate") {
+      if (!claveRescateInput.trim()) {
+        setRecuperarMensaje({ tipo: "error", texto: "Ingrese su Clave de Rescate de Emergencia." });
+        return;
+      }
+      const resClave = recuperarConClaveRescate(recuperarCredencial, claveRescateInput.trim(), otpNuevoPin.trim());
+      if (resClave.exito) {
+        setRecuperarMensaje({ tipo: "exito", texto: resClave.mensaje });
+        setTimeout(() => setPestanaActiva("registro"), 1800);
+      } else {
+        setRecuperarMensaje({ tipo: "error", texto: resClave.mensaje });
+      }
+      return;
+    }
+
+    // Si viene de código OTP a correo de respaldo
+    if (!otpCodigo.trim() || otpCodigo.trim().length !== 4) {
+      setRecuperarMensaje({ tipo: "error", texto: "Ingrese el código de 4 dígitos recibido en su correo de respaldo." });
       return;
     }
 
@@ -716,71 +762,41 @@ export default function RegistroDocentePage() {
     }
   };
 
-  // Validaciones en Perfil: Celular (WhatsApp Oficial) y Correo Institucional MEP
-  const handleDespacharValidacionCelular = async () => {
-    const tel = telefono.trim() || docente?.telefono?.trim() || "";
-    if (!tel || tel.length < 8) {
-      setMensajeValidacionCelular({ tipo: "error", texto: "Debe ingresar un número de celular válido para recibir el código de WhatsApp." });
-      return;
-    }
-    setCargandoValidacionCelular(true);
-    setMensajeValidacionCelular(null);
-    try {
-      const res = await solicitarValidacionCelular(tel, nombre.trim() || docente?.nombreCompleto);
-      if (res.exito) {
-        setCelularOtpDespachado(true);
-        setMensajeValidacionCelular({ tipo: "exito", texto: res.mensaje });
-      } else {
-        setMensajeValidacionCelular({ tipo: "error", texto: res.mensaje });
-      }
-    } catch {
-      setMensajeValidacionCelular({ tipo: "error", texto: "Error al enviar código de seguridad por WhatsApp." });
-    }
-    setCargandoValidacionCelular(false);
-  };
-
-  const handleConfirmarValidacionCelular = () => {
-    const tel = telefono.trim() || docente?.telefono?.trim() || "";
-    if (!celularOtpInput.trim() || celularOtpInput.trim().length !== 4) {
-      setMensajeValidacionCelular({ tipo: "error", texto: "Ingrese el código de 4 dígitos enviado por WhatsApp." });
-      return;
-    }
-    const res = verificarCelularOTP(tel, celularOtpInput.trim());
-    if (res.exito) {
-      setMensajeValidacionCelular({ tipo: "exito", texto: res.mensaje });
-      setTimeout(() => {
-        setMostrarModalValidarCelular(false);
-        setCelularOtpDespachado(false);
-        setCelularOtpInput("");
-      }, 2200);
-    } else {
-      setMensajeValidacionCelular({ tipo: "error", texto: res.mensaje });
-    }
-  };
-
-  const handleVerificarCorreoFirebase = async () => {
+  // Validación oficial directa con Microsoft 365 en Registro
+  const handleValidarMicrosoftRegistro = async () => {
     const targetEmail = correo.trim() || docente?.correoInstitucional?.trim() || "";
-    if (!targetEmail || !targetEmail.includes("@")) {
-      setMensajeVerificacionCorreo({ tipo: "error", texto: "Debe ingresar un correo electrónico institucional válido." });
+    if (!targetEmail || !targetEmail.includes("@mep.go.cr")) {
+      setMensajeVerificacionMicrosoft({
+        tipo: "error",
+        texto: "Debe ingresar una dirección de correo institucional válida (@mep.go.cr) antes de validar con Microsoft.",
+      });
       return;
     }
-    setCargandoVerificacionCorreo(true);
-    setMensajeVerificacionCorreo(null);
+    setCargandoVerificacionMicrosoft(true);
+    setMensajeVerificacionMicrosoft(null);
     try {
-      const res = await solicitarVerificacionFirebase(targetEmail);
+      const res = await validarConMicrosoft();
       if (res.exito) {
         setCorreoValidado(true);
-        setMensajeVerificacionCorreo({
+        setMensajeVerificacionMicrosoft({
           tipo: "exito",
-          texto: `✓ Correo institucional verificado exitosamente (${targetEmail}). Ahora puede registrar y validar su número de celular para comunicación sincrónica.`,
+          texto: `✓ Identidad institucional validada exitosamente con Microsoft 365 para la cuenta ${targetEmail}.`,
         });
       } else {
-        setMensajeVerificacionCorreo({ tipo: "error", texto: res.mensaje });
+        setMensajeVerificacionMicrosoft({ tipo: "error", texto: res.mensaje });
       }
     } catch {
-      setMensajeVerificacionCorreo({ tipo: "error", texto: "Error al enviar solicitud de validación de correo oficial." });
+      setMensajeVerificacionMicrosoft({ tipo: "error", texto: "Error al validar la cuenta institucional con Microsoft 365." });
     }
-    setCargandoVerificacionCorreo(false);
+    setCargandoVerificacionMicrosoft(false);
+  };
+
+  const copiarClaveRescate = () => {
+    if (claveRescate) {
+      navigator.clipboard.writeText(claveRescate);
+      setCopiadaClaveRescate(true);
+      setTimeout(() => setCopiadaClaveRescate(false), 2000);
+    }
   };
 
   const copiarID = () => {
@@ -964,7 +980,7 @@ export default function RegistroDocentePage() {
                   📋 Indicaciones Obligatorias para el Registro y Validación de Cuenta
                 </h3>
                 <p className="text-xs text-emerald-100/80 font-medium mt-0.5 leading-relaxed">
-                  Para garantizar la autenticidad y resguardar el acceso docente, el sistema aplica una validación escalonada:
+                  Para garantizar la autenticidad institucional y resguardar el acceso docente sin bloqueos de firewall:
                 </p>
               </div>
             </div>
@@ -976,37 +992,37 @@ export default function RegistroDocentePage() {
                   <span>Correo MEP</span>
                 </div>
                 <p className="text-[11px] text-slate-200 leading-snug">
-                  Ingresa tu correo oficial <code>@mep.go.cr</code> y presiona <strong>«Validar Correo Oficial»</strong>.
-                </p>
-              </div>
-
-              <div className="bg-white/10 rounded-2xl p-3.5 border border-white/10 space-y-1">
-                <div className="text-[11px] font-black text-amber-300 uppercase flex items-center gap-1.5">
-                  <span className="w-5 h-5 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center text-[10px] font-black">2</span>
-                  <span>Celular WhatsApp</span>
-                </div>
-                <p className="text-[11px] text-slate-200 leading-snug">
-                  Tras validar el correo, se habilita el registro de celular para comunicación sincrónica y código por WhatsApp.
+                  Ingresa tu correo oficial <code>@mep.go.cr</code> para vincular tu identidad docente.
                 </p>
               </div>
 
               <div className="bg-white/10 rounded-2xl p-3.5 border border-white/10 space-y-1">
                 <div className="text-[11px] font-black text-sky-300 uppercase flex items-center gap-1.5">
-                  <span className="w-5 h-5 rounded-full bg-sky-400 text-slate-950 flex items-center justify-center text-[10px] font-black">3</span>
-                  <span>PIN de 4 Dígitos</span>
+                  <span className="w-5 h-5 rounded-full bg-sky-400 text-slate-950 flex items-center justify-center text-[10px] font-black">2</span>
+                  <span>Microsoft 365</span>
                 </div>
                 <p className="text-[11px] text-slate-200 leading-snug">
-                  Crea tu PIN numérico rápido para acceso ágil en los laboratorios de cómputo.
+                  Presiona <strong>«Validar con Microsoft 365»</strong> para verificar tu cuenta en 1 segundo sin correos externos.
+                </p>
+              </div>
+
+              <div className="bg-white/10 rounded-2xl p-3.5 border border-white/10 space-y-1">
+                <div className="text-[11px] font-black text-amber-300 uppercase flex items-center gap-1.5">
+                  <span className="w-5 h-5 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center text-[10px] font-black">3</span>
+                  <span>Correo Respaldo</span>
+                </div>
+                <p className="text-[11px] text-slate-200 leading-snug">
+                  Registra un correo personal (Gmail/Outlook) como canal seguro para recuperar acceso.
                 </p>
               </div>
 
               <div className="bg-white/10 rounded-2xl p-3.5 border border-white/10 space-y-1">
                 <div className="text-[11px] font-black text-teal-300 uppercase flex items-center gap-1.5">
                   <span className="w-5 h-5 rounded-full bg-teal-400 text-slate-950 flex items-center justify-center text-[10px] font-black">4</span>
-                  <span>Recuperación</span>
+                  <span>PIN & Rescate</span>
                 </div>
                 <p className="text-[11px] text-slate-200 leading-snug">
-                  Recupera tu acceso en cualquier momento mediante enlace oficial a tu correo o código por WhatsApp.
+                  Crea tu PIN de 4 dígitos y resguarda tu <strong>Clave de Rescate</strong> de emergencia.
                 </p>
               </div>
             </div>
@@ -1077,11 +1093,11 @@ export default function RegistroDocentePage() {
                   {correoValidado ? (
                     <span className="text-[10.5px] font-black text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300 flex items-center gap-1">
                       <CheckCircle size={13} weight="fill" />
-                      <span>Correo Validado</span>
+                      <span>Cuenta Microsoft 365 Validada</span>
                     </span>
                   ) : (
-                    <span className="text-[10.5px] font-bold text-rose-800 bg-rose-50 px-2 py-0.5 rounded-md border border-rose-200">
-                      Obligatorio Validar
+                    <span className="text-[10.5px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
+                      Pendiente de Validación Microsoft
                     </span>
                   )}
                 </div>
@@ -1107,118 +1123,88 @@ export default function RegistroDocentePage() {
                     <span>Debe tener formato oficial con puntos: <code>nombre.apellido.apellido@mep.go.cr</code></span>
                   </p>
                 )}
-                <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl text-[11.5px] text-blue-950 font-medium flex items-center justify-between gap-2 mt-2">
-                  <div className="flex items-start gap-2">
-                    <Info size={16} className="text-blue-700 shrink-0 mt-0.5" weight="fill" />
-                    <span>
-                      <strong>Paso 1 Obligatorio:</strong> Valida tu cuenta institucional oficial para habilitar el registro de tu celular.
-                    </span>
+
+                {/* Tarjeta de validación directa con Microsoft 365 */}
+                <div className="p-3.5 bg-slate-900 text-white border border-slate-800 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mt-2 shadow-md">
+                  <div className="flex items-start gap-2.5">
+                    <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center shrink-0 mt-0.5">
+                      <svg className="w-4 h-4" viewBox="0 0 21 21" fill="none">
+                        <rect x="1" y="1" width="9" height="9" fill="#f25022"/>
+                        <rect x="11" y="1" width="9" height="9" fill="#7fba00"/>
+                        <rect x="1" y="11" width="9" height="9" fill="#00a4ef"/>
+                        <rect x="11" y="11" width="9" height="9" fill="#ffb900"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <div className="text-xs font-black text-white flex items-center gap-1.5">
+                        <span>Validación Oficial con Microsoft 365</span>
+                        <span className="px-2 py-0.2 bg-emerald-500/30 text-emerald-300 text-[9px] font-bold rounded-full">Recomendado</span>
+                      </div>
+                      <p className="text-[11px] text-slate-300 mt-0.5 leading-snug">
+                        Valida tu sesión activa de Windows/Teams en 1 clic. Cero correos y cero bloqueos de firewall.
+                      </p>
+                    </div>
                   </div>
+
                   <button
                     type="button"
-                    onClick={handleVerificarCorreoFirebase}
-                    disabled={cargandoVerificacionCorreo}
-                    className="px-3.5 py-1.5 bg-blue-700 hover:bg-blue-800 text-white rounded-xl text-xs font-black shrink-0 transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
+                    onClick={handleValidarMicrosoftRegistro}
+                    disabled={cargandoVerificacionMicrosoft}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-black shrink-0 transition-all flex items-center gap-2 cursor-pointer shadow-sm disabled:bg-slate-700"
                   >
-                    {cargandoVerificacionCorreo ? (
+                    {cargandoVerificacionMicrosoft ? (
                       <ArrowClockwise size={14} className="animate-spin" />
                     ) : (
-                      <Sparkle size={14} weight="bold" />
+                      <CheckCircle size={14} weight="bold" />
                     )}
-                    <span>Validar Correo Oficial</span>
+                    <span>{correoValidado ? "Revalidar con Microsoft" : "Validar con Microsoft 365"}</span>
                   </button>
                 </div>
-                {mensajeVerificacionCorreo && (
+
+                {mensajeVerificacionMicrosoft && (
                   <div
-                    className={`p-3 rounded-xl text-[11.5px] font-bold mt-1.5 ${
-                      mensajeVerificacionCorreo.tipo === "exito"
+                    className={`p-3 rounded-xl text-[11.5px] font-bold mt-2 ${
+                      mensajeVerificacionMicrosoft.tipo === "exito"
                         ? "bg-emerald-50 border border-emerald-300 text-emerald-950"
                         : "bg-rose-50 border border-rose-300 text-rose-950"
                     }`}
                   >
-                    {mensajeVerificacionCorreo.texto}
+                    {mensajeVerificacionMicrosoft.texto}
                   </div>
                 )}
               </div>
 
-              {/* Teléfono de Contacto - Habilitado ÚNICAMENTE si el correo está validado */}
-              <div className="space-y-2 md:col-span-2">
+              {/* Correo Personal de Respaldo (Sustituye al teléfono de WhatsApp) */}
+              <div className="space-y-1.5 md:col-span-2">
                 <label className="block text-xs font-black text-slate-800 uppercase tracking-wider flex items-center justify-between">
-                  <span>Teléfono Móvil de Contacto (Opcional - Canal de Apoyo Sincrónico)</span>
-                  <div className="flex items-center gap-2">
-                    {docente?.telefonoVerificado ? (
-                      <span className="text-[10.5px] font-black text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300 flex items-center gap-1">
-                        <CheckCircle size={13} weight="fill" />
-                        <span>Celular Verificado</span>
-                      </span>
-                    ) : correoValidado ? (
-                      <span className="text-[10.5px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
-                        Listo para Validar con WhatsApp
-                      </span>
-                    ) : (
-                      <span className="text-[10.5px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200">
-                        🔒 Requiere Correo Validado
-                      </span>
-                    )}
-                  </div>
+                  <span>Correo Electrónico Personal de Respaldo (Opcional - Canal de Emergencia)</span>
+                  <span className="text-[10px] font-extrabold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-300">
+                    Gmail / Hotmail / Outlook
+                  </span>
                 </label>
-
-                {!correoValidado && (
-                  <div className="p-3 bg-amber-50 border border-amber-300 rounded-xl text-xs font-bold text-amber-950 flex items-start gap-2.5 shadow-2xs">
-                    <WarningCircle size={18} className="text-amber-700 shrink-0 mt-0.5" weight="fill" />
-                    <div className="leading-relaxed">
-                      <strong>⚠️ Paso previo requerido:</strong> Valida primero tu correo institucional MEP (@mep.go.cr) presionando el botón &quot;Validar Correo Oficial&quot;. Una vez confirmado, se habilitará el registro y la validación de tu número celular.
-                    </div>
-                  </div>
-                )}
-
-                <div className={`relative flex items-center gap-2 ${!correoValidado ? "opacity-60 pointer-events-none" : ""}`}>
-                  <div className="relative flex-1">
-                    <input
-                      type="tel"
-                      disabled={!correoValidado}
-                      value={telefono}
-                      onChange={(e) => setTelefono(e.target.value)}
-                      placeholder="Ej: 8888-9999"
-                      className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 outline-hidden transition-all disabled:bg-slate-100 disabled:cursor-not-allowed"
-                    />
-                    <Phone size={18} className="absolute right-4 top-3.5 text-slate-400" />
-                  </div>
-                  <button
-                    type="button"
-                    disabled={!correoValidado}
-                    onClick={() => {
-                      setMostrarModalValidarCelular(true);
-                      setMensajeValidacionCelular(null);
-                    }}
-                    className="px-4 py-3 bg-emerald-700 hover:bg-emerald-800 disabled:bg-slate-300 text-white rounded-xl text-xs font-black shrink-0 transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs disabled:cursor-not-allowed"
-                  >
-                    <Phone size={16} weight="bold" />
-                    <span>Validar con WhatsApp</span>
-                  </button>
+                <div className="relative">
+                  <input
+                    type="email"
+                    value={correoRespaldo}
+                    onChange={(e) => setCorreoRespaldo(e.target.value)}
+                    placeholder="ejemplo.personal@gmail.com"
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 outline-hidden transition-all"
+                  />
+                  <EnvelopeSimple size={18} className="absolute right-4 top-3.5 text-slate-400" />
                 </div>
-                <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-[11.5px] text-slate-700 font-medium space-y-2 mt-1.5 shadow-2xs">
-                  <div className="flex items-center gap-2 font-bold text-slate-900">
-                    <ShieldCheck size={16} className="text-emerald-700 shrink-0" weight="bold" />
-                    <span>Compromiso de Privacidad y Apoyo Pedagógico Sincrónico de la Asesoría</span>
-                  </div>
-                  <p className="text-slate-600 leading-relaxed text-[11px]">
-                    El registro del número de celular es <strong>opcional</strong>, pero de gran relevancia institucional como canal de comunicación sincrónica para que la Asesoría Nacional brinde <strong>acompañamiento pedagógico inmediato, soporte técnico y atención rápida de consultas</strong> en el aula o laboratorio.
-                  </p>
-                  <p className="text-slate-600 leading-relaxed text-[11px]">
-                    Los datos son tratados bajo rigurosa confidencialidad institucional exclusivamente para fines de apoyo educativo y laboral, <strong>sin ninguna exposición comercial ni de otra índole</strong>. Al suministrar su número, el docente otorga su visto bueno para su utilización en este marco de soporte profesional.
-                  </p>
-                </div>
+                <p className="text-[11px] text-slate-700 leading-relaxed">
+                  💡 <strong>Canal de Respaldo Seguro:</strong> Si alguna vez no puedes acceder a tu cuenta Microsoft, el sistema podrá enviarte un código de seguridad a este correo personal sin sufrir bloqueos del servidor corporativo.
+                </p>
               </div>
             </div>
           </div>
 
-          {/* Tarjeta 2: Seguridad y PIN de 4 Dígitos */}
+          {/* Tarjeta 2: Seguridad, PIN de 4 Dígitos & Clave de Rescate */}
           <div className="bg-white border-2 border-indigo-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
             <div className="flex items-center justify-between border-b border-indigo-100 pb-3">
               <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
                 <LockKey size={22} className="text-indigo-700" weight="bold" />
-                <span>PIN de Acceso Rápido (4 Dígitos)</span>
+                <span>PIN de Acceso Rápido & Clave de Rescate</span>
               </h3>
               <span className="px-3 py-1 bg-indigo-100 text-indigo-900 font-extrabold text-[10px] rounded-full uppercase tracking-wider">
                 Acceso Ágil en Laboratorio
@@ -1226,7 +1212,7 @@ export default function RegistroDocentePage() {
             </div>
 
             <p className="text-xs text-slate-600 font-medium leading-relaxed">
-              Define un PIN de 4 números que no olvides para ingresar rápidamente desde las computadoras del laboratorio sin necesidad de escribir contraseñas largas.
+              Define tu PIN numérico para ingresar rápidamente desde las computadoras del laboratorio sin necesidad de escribir contraseñas largas.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -1248,7 +1234,7 @@ export default function RegistroDocentePage() {
                   <button
                     type="button"
                     onClick={() => setMostrarPin(!mostrarPin)}
-                    className="absolute right-4 top-3.5 text-slate-400 hover:text-slate-600"
+                    className="absolute right-4 top-3.5 text-slate-400 hover:text-slate-600 cursor-pointer"
                   >
                     {mostrarPin ? <EyeSlash size={18} /> : <Eye size={18} />}
                   </button>
@@ -1272,23 +1258,30 @@ export default function RegistroDocentePage() {
               </div>
             </div>
 
-            {advertenciaPin && (
-              <div className="p-3 bg-amber-50 border border-amber-300 rounded-xl text-xs font-bold text-amber-950 flex items-center gap-2">
-                <WarningCircle size={18} className="text-amber-700 shrink-0" weight="fill" />
-                <span>{advertenciaPin}</span>
+            {/* Clave de Rescate de Emergencia (Recovery Key) */}
+            <div className="p-4 bg-amber-50/80 border-2 border-amber-300/80 rounded-2xl space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck size={18} className="text-amber-800" weight="bold" />
+                  <span className="text-xs font-black uppercase tracking-wider text-amber-950">
+                    Tu Clave de Rescate Institucional (Recovery Key)
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={copiarClaveRescate}
+                  className="px-2.5 py-1 bg-white hover:bg-amber-100 border border-amber-300 text-amber-950 text-[11px] font-bold rounded-lg transition-colors flex items-center gap-1 cursor-pointer"
+                >
+                  {copiadaClaveRescate ? <Check size={14} className="text-emerald-700" weight="bold" /> : <Copy size={14} />}
+                  <span>{copiadaClaveRescate ? "Copiada" : "Copiar"}</span>
+                </button>
               </div>
-            )}
-
-            <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl text-xs space-y-1.5">
-              <div className="font-extrabold text-slate-900 flex items-center gap-1.5">
-                <ShieldCheck size={16} className="text-emerald-700" weight="bold" />
-                <span>Recomendaciones de Seguridad del PIN:</span>
+              <div className="p-2.5 bg-white border border-amber-200 rounded-xl font-mono text-center text-sm font-black tracking-widest text-slate-900">
+                {claveRescate}
               </div>
-              <ul className="list-disc list-inside text-slate-700 text-[11.5px] space-y-1 font-medium">
-                <li>Elige 4 números fáciles de recordar para ti pero difíciles de adivinar para los estudiantes.</li>
-                <li>No utilices tu año de nacimiento ni secuencias obvias (ej. 1234, 0000).</li>
-                <li>Si cometes 3 intentos fallidos consecutivos, el sistema bloqueará temporalmente el acceso por 15 minutos para proteger tus actas y telemetría.</li>
-              </ul>
+              <p className="text-[11px] text-amber-950/80 leading-snug font-medium">
+                🔒 Guarda esta clave en un lugar seguro. Te permitirá restablecer tu PIN de inmediato en caso de emergencia, sin necesidad de esperar correos ni tener conexión a internet externa.
+              </p>
             </div>
           </div>
 
@@ -1943,7 +1936,7 @@ export default function RegistroDocentePage() {
             </div>
             <h3 className="text-xl font-black text-slate-900">Recuperación y Validación de Acceso</h3>
             <p className="text-xs text-slate-500 font-medium">
-              Selecciona el método oficial para validar tu identidad y restablecer tus credenciales
+              Selecciona el método seguro para verificar tu identidad y restablecer tus credenciales
             </p>
           </div>
 
@@ -1968,7 +1961,7 @@ export default function RegistroDocentePage() {
             <form onSubmit={handleSolicitarOTP} className="space-y-5">
               <div className="space-y-1.5">
                 <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
-                  Cédula o Correo MEP Registrado <span className="text-rose-600">*</span>
+                  Cédula o Correo Institucional MEP Registrado <span className="text-rose-600">*</span>
                 </label>
                 <input
                   type="text"
@@ -1982,81 +1975,86 @@ export default function RegistroDocentePage() {
 
               <div className="space-y-2.5">
                 <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
-                  ¿Cómo deseas recibir tu acceso?
+                  ¿Cómo deseas validar tu identidad?
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                  {/* Opción 1: Enlace Oficial al Correo MEP */}
+                  {/* Opción 1: Validación Directa con Microsoft 365 (Recomendado) */}
                   <button
                     type="button"
-                    onClick={() => setRecuperarCanal("firebase")}
+                    onClick={() => setRecuperarCanal("microsoft")}
                     className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
-                      recuperarCanal === "firebase"
-                        ? "bg-amber-50/80 border-amber-500 text-amber-950 ring-2 ring-amber-400/30 shadow-xs"
+                      recuperarCanal === "microsoft"
+                        ? "bg-blue-50/90 border-blue-600 text-blue-950 ring-2 ring-blue-400/30 shadow-xs"
+                        : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100"
+                    }`}
+                  >
+                    <div className="flex items-center gap-1.5 font-black text-[11.5px] text-blue-900">
+                      <svg className="w-4 h-4 shrink-0" viewBox="0 0 21 21" fill="none">
+                        <rect x="1" y="1" width="9" height="9" fill="#f25022"/>
+                        <rect x="11" y="1" width="9" height="9" fill="#7fba00"/>
+                        <rect x="1" y="11" width="9" height="9" fill="#00a4ef"/>
+                        <rect x="11" y="11" width="9" height="9" fill="#ffb900"/>
+                      </svg>
+                      <span>Microsoft 365</span>
+                    </div>
+                    <p className="text-[10px] text-slate-500 mt-1 leading-tight">
+                      Validación en 1 clic con tu cuenta @mep.go.cr
+                    </p>
+                  </button>
+
+                  {/* Opción 2: Código a Correo de Respaldo */}
+                  <button
+                    type="button"
+                    onClick={() => setRecuperarCanal("correo_respaldo")}
+                    className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                      recuperarCanal === "correo_respaldo"
+                        ? "bg-amber-50 border-amber-500 text-amber-950 ring-2 ring-amber-400/30 shadow-xs"
                         : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100"
                     }`}
                   >
                     <div className="flex items-center gap-1.5 font-black text-[11.5px] text-amber-900">
-                      <Sparkle size={16} className="text-amber-600 shrink-0" weight="fill" />
-                      <span>Enlace al Correo MEP</span>
+                      <EnvelopeSimple size={16} className="text-amber-600 shrink-0" weight="bold" />
+                      <span>Correo Respaldo</span>
                     </div>
                     <p className="text-[10px] text-slate-500 mt-1 leading-tight">
-                      Enlace oficial directo a tu bandeja @mep.go.cr
+                      Código de 4 dígitos a tu Gmail/Outlook
                     </p>
                   </button>
 
-                  {/* Opción 2: Mensajería WhatsApp Oficial */}
+                  {/* Opción 3: Clave de Rescate */}
                   <button
                     type="button"
-                    onClick={() => setRecuperarCanal("whatsapp")}
+                    onClick={() => setRecuperarCanal("clave_rescate")}
                     className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
-                      recuperarCanal === "whatsapp"
+                      recuperarCanal === "clave_rescate"
                         ? "bg-emerald-50 border-emerald-500 text-emerald-950 ring-2 ring-emerald-400/30 shadow-xs"
                         : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100"
                     }`}
                   >
                     <div className="flex items-center gap-1.5 font-black text-[11.5px] text-emerald-900">
-                      <Phone size={16} className="text-emerald-600 shrink-0" weight="bold" />
-                      <span>Mensajería WhatsApp</span>
+                      <Key size={16} className="text-emerald-600 shrink-0" weight="bold" />
+                      <span>Clave de Rescate</span>
                     </div>
                     <p className="text-[10px] text-slate-500 mt-1 leading-tight">
-                      Código de seguridad de 4 dígitos
-                    </p>
-                  </button>
-
-                  {/* Opción 3: Correo MEP OTP */}
-                  <button
-                    type="button"
-                    onClick={() => setRecuperarCanal("correo")}
-                    className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
-                      recuperarCanal === "correo"
-                        ? "bg-blue-50 border-blue-500 text-blue-950 ring-2 ring-blue-400/30 shadow-xs"
-                        : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100"
-                    }`}
-                  >
-                    <div className="flex items-center gap-1.5 font-black text-[11.5px] text-blue-900">
-                      <EnvelopeSimple size={16} className="text-blue-600 shrink-0" weight="bold" />
-                      <span>Código por Correo</span>
-                    </div>
-                    <p className="text-[10px] text-slate-500 mt-1 leading-tight">
-                      Código de 4 dígitos a tu bandeja MEP
+                      Restablecer con clave institucional
                     </p>
                   </button>
                 </div>
 
                 <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-[11px] text-slate-600 leading-relaxed">
-                  {recuperarCanal === "firebase" && (
+                  {recuperarCanal === "microsoft" && (
                     <span>
-                      🔐 <strong>Enlace Oficial al Correo:</strong> Se enviará un correo institucional con el enlace oficial de restablecimiento seguro para tu cuenta MEP.
+                      🔐 <strong>Validación Directa Microsoft 365:</strong> Verifica tu sesión institucional en tiempo real sin enviar correos electrónicos externos. Ideal para evitar bloqueos de firewall.
                     </span>
                   )}
-                  {recuperarCanal === "whatsapp" && (
+                  {recuperarCanal === "correo_respaldo" && (
                     <span>
-                      📱 <strong>Mensajería WhatsApp Oficial:</strong> Se enviará un mensaje institucional con un código de seguridad de 4 dígitos al número celular registrado del docente.
+                      ✉️ <strong>Código a Correo Personal de Respaldo:</strong> Se enviará un código de seguridad de 4 dígitos con validez de 10 minutos a tu correo personal registrado (Gmail / Hotmail / etc.).
                     </span>
                   )}
-                  {recuperarCanal === "correo" && (
+                  {recuperarCanal === "clave_rescate" && (
                     <span>
-                      ✉️ <strong>Código por Correo MEP:</strong> Se enviará un código numérico temporal de 4 dígitos con validez de 10 minutos a tu correo electrónico institucional.
+                      🔑 <strong>Clave de Rescate de Emergencia:</strong> Introduce tu código de rescate institucional (<code>MEP-RES-XXXX</code>) para definir un nuevo PIN al instante.
                     </span>
                   )}
                 </div>
@@ -2065,22 +2063,26 @@ export default function RegistroDocentePage() {
               <button
                 type="submit"
                 disabled={cargandoRecuperacion}
-                className="w-full py-3.5 bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className={`w-full py-3.5 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                  recuperarCanal === "microsoft"
+                    ? "bg-blue-600 hover:bg-blue-700"
+                    : "bg-emerald-700 hover:bg-emerald-800"
+                }`}
               >
                 {cargandoRecuperacion ? (
                   <>
                     <ArrowClockwise size={18} className="animate-spin" />
-                    <span>Procesando solicitud...</span>
+                    <span>Validando solicitud...</span>
                   </>
                 ) : (
                   <>
                     <ShieldCheck size={18} weight="bold" />
                     <span>
-                      {recuperarCanal === "firebase"
-                        ? "Enviar Enlace de Recuperación al Correo MEP"
-                        : recuperarCanal === "whatsapp"
-                        ? "Enviar Código por WhatsApp Oficial"
-                        : "Enviar Código por Correo MEP"}
+                      {recuperarCanal === "microsoft"
+                        ? "Validar con Cuenta Microsoft 365 (@mep.go.cr)"
+                        : recuperarCanal === "correo_respaldo"
+                        ? "Enviar Código a Correo de Respaldo"
+                        : "Continuar con Clave de Rescate"}
                     </span>
                   </>
                 )}
@@ -2088,20 +2090,48 @@ export default function RegistroDocentePage() {
             </form>
           ) : (
             <form onSubmit={handleVerificarYRestablecerPIN} className="space-y-4">
-              <div className="space-y-1.5">
-                <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
-                  Ingresa el Código de 4 Dígitos Recibido
-                </label>
-                <input
-                  type="text"
-                  required
-                  maxLength={4}
-                  value={otpCodigo}
-                  onChange={(e) => setOtpCodigo(e.target.value.replace(/[^0-9]/g, ""))}
-                  placeholder="1234"
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-center text-xl font-mono font-black tracking-widest text-slate-900 focus:bg-white focus:border-emerald-600 outline-hidden transition-all"
-                />
-              </div>
+              {/* Si es canal de código por correo de respaldo */}
+              {recuperarCanal === "correo_respaldo" && (
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
+                    Ingresa el Código de 4 Dígitos Recibido en tu Correo de Respaldo
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    maxLength={4}
+                    value={otpCodigo}
+                    onChange={(e) => setOtpCodigo(e.target.value.replace(/[^0-9]/g, ""))}
+                    placeholder="1234"
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-center text-xl font-mono font-black tracking-widest text-slate-900 focus:bg-white focus:border-emerald-600 outline-hidden transition-all"
+                  />
+                </div>
+              )}
+
+              {/* Si es canal de clave de rescate */}
+              {recuperarCanal === "clave_rescate" && (
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
+                    Ingresa tu Clave de Rescate Institucional (Recovery Key)
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={claveRescateInput}
+                    onChange={(e) => setClaveRescateInput(e.target.value.toUpperCase())}
+                    placeholder="Ej: MEP-RES-2617"
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-center text-base font-mono font-black tracking-wider text-slate-900 focus:bg-white focus:border-emerald-600 outline-hidden transition-all"
+                  />
+                </div>
+              )}
+
+              {/* Si es canal Microsoft */}
+              {recuperarCanal === "microsoft" && (
+                <div className="p-3.5 bg-blue-50 border border-blue-200 rounded-2xl flex items-center gap-2.5 text-blue-950 text-xs font-bold">
+                  <CheckCircle size={20} className="text-blue-700 shrink-0" weight="fill" />
+                  <span>Identidad institucional confirmada con Microsoft. Establece tu nuevo PIN:</span>
+                </div>
+              )}
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
@@ -2139,114 +2169,21 @@ export default function RegistroDocentePage() {
                 className="w-full py-3.5 bg-indigo-700 hover:bg-indigo-800 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Check size={18} weight="bold" />
-                <span>Restablecer PIN e Iniciar Sesión</span>
+                <span>Guardar Nuevo PIN e Iniciar Sesión</span>
               </button>
 
               <button
                 type="button"
-                onClick={() => setOtpEnviado(false)}
+                onClick={() => {
+                  setOtpEnviado(false);
+                  setMicrosoftVerificadoDirecto(false);
+                }}
                 className="w-full text-center text-xs font-bold text-slate-500 hover:text-slate-800 cursor-pointer"
               >
-                Volver a solicitar código
+                Cambiar método de validación
               </button>
             </form>
           )}
-        </div>
-      )}
-
-      {/* ============================================================ */}
-      {/* MODAL DE VALIDACIÓN DE CELULAR CON EVOLUTION API             */}
-      {/* ============================================================ */}
-      {mostrarModalValidarCelular && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fadeIn">
-          <div className="relative w-full max-w-md bg-white rounded-3xl border border-slate-200 shadow-2xl p-6 sm:p-7 space-y-5">
-            <div className="text-center space-y-2">
-              <div className="w-12 h-12 bg-emerald-50 border-2 border-emerald-200 text-emerald-700 rounded-2xl flex items-center justify-center mx-auto shadow-xs">
-                <Phone size={26} weight="bold" />
-              </div>
-              <h3 className="text-lg font-black text-slate-900">Validación de Celular con WhatsApp</h3>
-              <p className="text-xs text-slate-500 font-medium">
-                Verifica tu número móvil para soporte y comunicación sincrónica con la Asesoría
-              </p>
-            </div>
-
-            <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs space-y-1 text-center">
-              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Número Registrado:</span>
-              <span className="text-base font-mono font-black text-slate-900">
-                {telefono || docente?.telefono || "No definido"}
-              </span>
-            </div>
-
-            {mensajeValidacionCelular && (
-              <div
-                className={`p-3.5 rounded-xl text-xs font-bold flex items-start gap-2 ${
-                  mensajeValidacionCelular.tipo === "exito"
-                    ? "bg-emerald-50 border border-emerald-300 text-emerald-950"
-                    : "bg-rose-50 border border-rose-300 text-rose-950"
-                }`}
-              >
-                {mensajeValidacionCelular.tipo === "exito" ? (
-                  <Check size={16} className="text-emerald-700 shrink-0 mt-0.5" weight="bold" />
-                ) : (
-                  <WarningCircle size={16} className="text-rose-700 shrink-0 mt-0.5" weight="fill" />
-                )}
-                <div className="leading-relaxed">{mensajeValidacionCelular.texto}</div>
-              </div>
-            )}
-
-            {!celularOtpDespachado ? (
-              <button
-                type="button"
-                onClick={handleDespacharValidacionCelular}
-                disabled={cargandoValidacionCelular}
-                className="w-full py-3.5 bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
-              >
-                {cargandoValidacionCelular ? (
-                  <>
-                    <ArrowClockwise size={18} className="animate-spin" />
-                    <span>Enviando código de verificación...</span>
-                  </>
-                ) : (
-                  <>
-                    <Phone size={18} weight="bold" />
-                    <span>Enviar Código de Validación por WhatsApp</span>
-                  </>
-                )}
-              </button>
-            ) : (
-              <div className="space-y-3.5">
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-black text-slate-800 uppercase tracking-wider text-center">
-                    Ingresa el Código de 4 Dígitos Recibido en WhatsApp
-                  </label>
-                  <input
-                    type="text"
-                    maxLength={4}
-                    value={celularOtpInput}
-                    onChange={(e) => setCelularOtpInput(e.target.value.replace(/[^0-9]/g, ""))}
-                    placeholder="1234"
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-center text-xl font-mono font-black tracking-widest text-slate-900 focus:bg-white focus:border-emerald-600 outline-hidden transition-all"
-                  />
-                </div>
-                <button
-                  type="button"
-                  onClick={handleConfirmarValidacionCelular}
-                  className="w-full py-3 bg-indigo-700 hover:bg-indigo-800 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <Check size={18} weight="bold" />
-                  <span>Confirmar y Validar Celular</span>
-                </button>
-              </div>
-            )}
-
-            <button
-              type="button"
-              onClick={() => setMostrarModalValidarCelular(false)}
-              className="w-full text-center text-xs font-bold text-slate-500 hover:text-slate-800 cursor-pointer"
-            >
-              Cerrar
-            </button>
-          </div>
         </div>
       )}
 

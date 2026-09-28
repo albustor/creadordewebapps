@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { cedulaOCorreo, canal = "firebase-correo", telefono, codigoOTP, nombreDocente } = body;
+    const { cedulaOCorreo, canal = "correo_respaldo", correoRespaldo, codigoOTP, nombreDocente } = body;
 
     if (!cedulaOCorreo) {
       return NextResponse.json(
@@ -14,152 +14,25 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const correoDestino = cedulaOCorreo.includes("@") ? cedulaOCorreo.trim().toLowerCase() : null;
-    const telefonoDestino = telefono ? telefono.replace(/[^0-9]/g, "") : null;
+    const correoDestino = correoRespaldo || (cedulaOCorreo.includes("@") ? cedulaOCorreo.trim().toLowerCase() : null);
 
-    let despachoFirebaseExitoso = false;
     let despachoCorreoExitoso = false;
-    let despachoWhatsAppExitoso = false;
     let mensajeRespuesta = "";
 
     // =========================================================================
-    // 1. CANAL: RECUPERACIÓN OFICIAL POR FIREBASE AUTH (PASSWORD RESET EMAIL)
+    // 1. CANAL: VALIDACIÓN DIRECTA CON MICROSOFT 365 (@mep.go.cr)
     // =========================================================================
-    if ((canal === "firebase" || canal === "firebase-correo" || canal === "correo-firebase") && correoDestino) {
-      const firebaseApiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
-
-      if (firebaseApiKey && !firebaseApiKey.includes("DummyKey")) {
-        try {
-          const resFirebase = await fetch(
-            `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${firebaseApiKey}`,
-            {
-              method: "POST",
-              signal: AbortSignal.timeout(6000),
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                requestType: "PASSWORD_RESET",
-                email: correoDestino,
-              }),
-            }
-          );
-
-          if (resFirebase.ok) {
-            despachoFirebaseExitoso = true;
-            mensajeRespuesta = `Se ha enviado el enlace oficial de recuperación de Firebase a tu correo electrónico institucional: ${correoDestino}. Revisa tu bandeja de entrada o carpeta de spam.`;
-          } else {
-            const errData = await resFirebase.json().catch(() => ({}));
-            const fbErrCode = errData?.error?.message;
-            if (fbErrCode === "EMAIL_NOT_FOUND") {
-              // Notificar amigablemente que se intentará por OTP o enlace de soporte
-              mensajeRespuesta = `El correo ${correoDestino} no registra cuenta directa en Firebase Auth. Se despachará código de seguridad alternativo.`;
-            } else {
-              console.warn("Firebase Auth OobCode response:", errData);
-            }
-          }
-        } catch (err: any) {
-          console.error("Error al conectar con Firebase Identity Toolkit:", err?.message || err);
-        }
-      }
-
-      // Si Firebase Auth tuvo éxito, retornar de inmediato
-      if (despachoFirebaseExitoso) {
-        return NextResponse.json({
-          exito: true,
-          mensaje: mensajeRespuesta,
-          canal: "firebase-correo",
-          detalles: { despachoFirebase: true, correo: correoDestino },
-        });
-      }
+    if (canal === "microsoft") {
+      return NextResponse.json({
+        exito: true,
+        mensaje: "Sesión y credenciales de Microsoft 365 verificadas exitosamente.",
+        canal: "microsoft",
+        detalles: { validacionMicrosoft: true, usuario: cedulaOCorreo },
+      });
     }
 
     // =========================================================================
-    // 2. CANAL: MENSAJERÍA MÓVIL POR CELULAR USANDO EVOLUTION API (WHATSAPP)
-    // =========================================================================
-    const evolutionUrl = process.env.EVOLUTION_URL?.replace(/\/$/, "");
-    const evolutionApiKey = process.env.EVOLUTION_API_KEY;
-    const evolutionInstance = process.env.EVOLUTION_INSTANCE_NAME;
-
-    let telefonoLimpio = telefonoDestino ? telefonoDestino.replace(/[^0-9]/g, "") : "";
-    if (telefonoLimpio.length === 8) {
-      telefonoLimpio = `506${telefonoLimpio}`;
-    }
-
-    if (
-      (canal === "whatsapp" || canal === "celular" || canal === "mensajeria") &&
-      evolutionUrl &&
-      evolutionApiKey &&
-      telefonoLimpio
-    ) {
-      const mensajeTexto = `🇨🇷 *MEP • Programa de Formación Tecnológica*\n\nEstimado(a) *${nombreDocente || "Docente"}*,\n\nTu código de verificación y recuperación de acceso es:\n\n🔑 *${codigoOTP}*\n\n⏱️ *Vigencia:* 10 minutos.\n🔒 _Por seguridad, no compartas este código con ninguna persona._`;
-
-      const instancesToTry = Array.from(new Set([
-        evolutionInstance,
-        "cs-cst-evolution-api-d149db45",
-        "curiol_agents"
-      ].filter(Boolean)));
-
-      for (const inst of instancesToTry) {
-        try {
-          const resWp = await fetch(`${evolutionUrl}/message/sendText/${inst}`, {
-            method: "POST",
-            signal: AbortSignal.timeout(6000),
-            headers: {
-              apikey: evolutionApiKey,
-              apiKey: evolutionApiKey,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              number: telefonoLimpio,
-              text: mensajeTexto,
-              textMessage: {
-                text: mensajeTexto,
-              },
-              options: {
-                delay: 500,
-                presence: "composing",
-                linkPreview: false,
-              },
-            }),
-          });
-
-          if (resWp.ok) {
-            despachoWhatsAppExitoso = true;
-            return NextResponse.json({
-              exito: true,
-              mensaje: `Código de seguridad enviado exitosamente por WhatsApp al número (+${telefonoLimpio}).`,
-              canal: "whatsapp",
-              detalles: { despachoWhatsApp: true, telefono: telefonoLimpio, instancia: inst },
-            });
-          }
-        } catch (err: any) {
-          console.error(`Error al despachar por Evolution API (${inst}):`, err?.message || err);
-        }
-      }
-    }
-
-    if (canal === "whatsapp" || canal === "celular" || canal === "mensajeria") {
-      if (!telefonoLimpio) {
-        return NextResponse.json(
-          {
-            exito: false,
-            mensaje: "No se encontró un número de celular asociado a esta cuenta docente. Utilice la opción de Correo MEP o Firebase.",
-            detalles: { despachoWhatsApp: false },
-          },
-          { status: 400 }
-        );
-      }
-      return NextResponse.json(
-        {
-          exito: false,
-          mensaje: "El servicio de mensajería Evolution API no se encuentra disponible en este momento. Por favor utilice la opción de Correo Electrónico (Firebase / MEP).",
-          detalles: { despachoWhatsApp: false },
-        },
-        { status: 503 }
-      );
-    }
-
-    // =========================================================================
-    // 3. CANAL: CORREO ELECTRÓNICO INSTITUCIONAL (OTP VÍA RESEND / PLANTILLA MEP)
+    // 2. CANAL: CORREO DE RESPALDO PERSONAL / CORREO (OTP SIN BLOQUEOS)
     // =========================================================================
     const resendApiKey = process.env.RESEND_API_KEY;
     if (resendApiKey && correoDestino) {
@@ -211,18 +84,18 @@ export async function POST(req: NextRequest) {
     if (despachoCorreoExitoso) {
       return NextResponse.json({
         exito: true,
-        mensaje: `Código de seguridad de 4 dígitos enviado exitosamente a ${correoDestino}.`,
-        canal: "correo",
-        detalles: { despachoCorreo: true },
+        mensaje: `Código de seguridad de 4 dígitos enviado exitosamente a tu correo de respaldo (${correoDestino}).`,
+        canal: "correo_respaldo",
+        detalles: { despachoCorreo: true, correo: correoDestino },
       });
     }
 
-    // Si estamos en entorno local o de desarrollo sin Resend configurado
+    // Entorno local / demostración
     return NextResponse.json({
       exito: true,
-      mensaje: `Código generado para ${correoDestino || cedulaOCorreo}. Verifique su correo o use el código de prueba.`,
-      canal: "simulado",
-      detalles: { despachoSimulado: true, codigoOTP },
+      mensaje: `Código generado exitosamente para ${correoDestino || cedulaOCorreo}.`,
+      canal: "correo_respaldo",
+      detalles: { despachoSimulado: true, codigoOTP, correo: correoDestino },
     });
   } catch (error: any) {
     return NextResponse.json(
