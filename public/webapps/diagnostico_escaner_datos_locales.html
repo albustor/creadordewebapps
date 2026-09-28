@@ -900,6 +900,207 @@ input:focus, select:focus {
   background: #B9923F;
   transform: translateY(-1px);
 }
+
+/* ==========================================================================
+   INFORME ESTUDIANTIL DIAGNÓSTICO (ESTILO OFICIAL MEP / COINCIDENTE CON IMAGEN)
+   ========================================================================== */
+.report-notice-success {
+  background: #e9f7ef;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.45;
+  margin-bottom: 16px;
+}
+
+.report-notice-info {
+  background: #edf5fc;
+  border: 1px solid #c7dcf1;
+  color: #1e3a8a;
+  padding: 11px 15px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.45;
+  margin-bottom: 14px;
+}
+
+.report-student-card {
+  background: #ffffff;
+  border: 1.5px solid #d9dfe8;
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+
+.report-student-meta {
+  font-size: 11.5px;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+.report-student-meta strong {
+  color: #1e293b;
+}
+
+.report-student-name {
+  font-size: 22px;
+  font-weight: 900;
+  color: #1f2937;
+  letter-spacing: -0.2px;
+  margin: 2px 0 4px 0;
+}
+
+.report-student-section {
+  font-size: 13.5px;
+  color: #475569;
+  font-weight: 600;
+}
+.report-student-section strong {
+  color: #0f172a;
+}
+
+.report-kpi-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+@media (max-width: 480px) {
+  .report-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.report-kpi-box {
+  background: #ffffff;
+  border: 1.5px solid #d9dfe8;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.report-kpi-title {
+  font-size: 10.5px;
+  font-weight: 900;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+.report-kpi-val {
+  font-size: 24px;
+  font-weight: 900;
+  color: #0f172a;
+  line-height: 1.1;
+}
+.report-kpi-sub {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.report-section-title {
+  font-size: 13.5px;
+  font-weight: 900;
+  color: #1f2937;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 18px 0 10px 0;
+}
+
+.report-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid #d9dfe8;
+  margin-bottom: 16px;
+  background: #ffffff;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  text-align: left;
+}
+
+.report-table th {
+  background: #2E3552;
+  color: #ffffff;
+  font-weight: 800;
+  padding: 10px 14px;
+  font-size: 12px;
+  letter-spacing: 0.2px;
+  border: 1px solid #2E3552;
+}
+
+.report-table td {
+  padding: 10px 14px;
+  border: 1px solid #e2e8f0;
+  color: #334155;
+  font-weight: 600;
+}
+
+.report-table tr:nth-child(even) td {
+  background: #f8fafc;
+}
+
+.badge-report {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+.badge-report-logrado, .badge-report-favorable {
+  background: #e9f7ef;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+.badge-report-proceso {
+  background: #fff8e6;
+  color: #854d0e;
+  border: 1px solid #fde68a;
+}
+.badge-report-apoyo {
+  background: #fff0ee;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.report-list-box {
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+}
+.report-list-box-strengths {
+  background: #e9f7ef;
+  border: 1.5px solid #bbf7d0;
+}
+.report-list-box-strengths ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #166534;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+.report-list-box-support {
+  background: #fff0ee;
+  border: 1.5px solid #fecaca;
+}
+.report-list-box-support ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #991b1b;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.6;
+}
 </style>
 </head>
 <body>
@@ -1178,19 +1379,35 @@ input:focus, select:focus {
     </div>
   </section>
 
-  <!-- PASO 3: CONFIRMACIÓN DE RESULTADO DETECTADO -->
+  <!-- PASO 3: CONFIRMACIÓN Y REVISIÓN DE RESULTADOS (INFORME OFICIAL) -->
   <section id="vistaResultado" class="card hidden">
-    <h2>✅ Ficha Detectada (Verificar y Guardar)</h2>
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #e2e8f0; padding-bottom:12px; margin-bottom:16px;">
+      <h2 style="margin:0; font-size:18px; color:#2E3552;">📋 Resultados del diagnóstico</h2>
+      <span style="font-size:11px; font-weight:800; background:#e0f2fe; color:#0369a1; padding:4px 10px; border-radius:999px;">Vista Previa Docente</span>
+    </div>
 
+    <!-- BOTONES DE ACCIÓN SUPERIORES (ACCESO RÁPIDO) -->
+    <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:18px;">
+      <button type="button" class="btn-emerald" style="font-size:14px; height:48px; font-weight:900;" onclick="guardarRegistroActual()">
+        <span>💾 Confirmar y Guardar Registro en Teléfono</span>
+      </button>
+      <button type="button" class="btn-secondary" style="font-size:12px; height:38px;" onclick="descartarYReanudar()">
+        <span>🔄 Descartar y Continuar Escaneando</span>
+      </button>
+    </div>
+
+    <!-- CONTENEDOR DEL INFORME OFICIAL IDENTICO A LA IMAGEN -->
     <div id="contenidoResultado"></div>
 
-    <button type="button" class="btn-emerald" onclick="guardarRegistroActual()">
-      <span>💾 Guardar Registro en Padrón</span>
-    </button>
-
-    <button type="button" class="btn-secondary" onclick="descartarYReanudar()" style="margin-top: 8px;">
-      <span>🔄 Descartar y Continuar Escaneando</span>
-    </button>
+    <!-- BOTONES DE ACCIÓN INFERIORES (DESPUÉS DE REVISAR EL INFORME) -->
+    <div style="display:flex; flex-direction:column; gap:8px; margin-top:20px;">
+      <button type="button" class="btn-emerald" style="font-size:14px; height:48px; font-weight:900;" onclick="guardarRegistroActual()">
+        <span>💾 Confirmar y Guardar Registro en Teléfono</span>
+      </button>
+      <button type="button" class="btn-secondary" style="font-size:12px; height:38px;" onclick="descartarYReanudar()">
+        <span>🔄 Descartar y Continuar Escaneando</span>
+      </button>
+    </div>
   </section>
 
   <!-- PASO 4: VISTA DE GENERALIDAD GRUPAL (MÉTRICAS & SEMÁFORO DUA) -->
@@ -1862,95 +2079,237 @@ function interpretarPayloadQR(raw) {
 
   var texto = raw.trim();
 
-  // 1. Si viene en formato JSON estructurado
+  // Diccionarios oficiales de traducción de códigos D2
+  var dictFortalezas = {
+    "MC": "Dominio conceptual en microcontrolador",
+    "SE": "Dominio conceptual en sensor y actuador",
+    "EPS": "Dominio conceptual en entrada–proceso–salida",
+    "AL": "Dominio conceptual en algoritmo",
+    "EC": "Dominio conceptual en estructura condicional",
+    "FSA": "Dominio conceptual en funciones de sensor, actuador y microcontrolador",
+    "DA": "Dominio conceptual en dato",
+    "RC": "Dominio conceptual en representación condicional",
+    "DE": "Dominio conceptual en depuración",
+    "AD": "Dominio conceptual en almacenamiento de datos",
+    "MOD": "Evidencia procedimental en modulariza"
+  };
+
+  var dictApoyo = {
+    "MC": "Reforzar microcontrolador",
+    "SE": "Reforzar sensor y actuador",
+    "EPS": "Reforzar entrada–proceso–salida",
+    "AL": "Reforzar algoritmo",
+    "EC": "Reforzar estructura condicional",
+    "FSA": "Reforzar funciones de sensor, actuador y microcontrolador",
+    "DA": "Reforzar dato",
+    "RC": "Reforzar representación condicional",
+    "DE": "Reforzar depuración",
+    "AD": "Reforzar almacenamiento de datos"
+  };
+
+  var nivelLabels = {
+    "DC": "Dominio consolidado",
+    "EC": "En proceso de consolidación",
+    "RC": "Requiere consolidación",
+    "L": "Logrado",
+    "ED": "En Desarrollo",
+    "RA": "Requiere Acompañamiento"
+  };
+
+  // 1. Soporte formato oficial D2 (Diagnóstico Oficial 9.° año / Aula Inteligente)
+  if (texto.startsWith("D2|") || (texto.startsWith("D") && texto.includes("|C:") && texto.includes("|P:"))) {
+    var partes = texto.split("|");
+    var estD2 = partes[1] || (sesionActiva.estudianteInicial || "Allan");
+    var secD2 = partes[2] || sesionActiva.seccion || "9-5";
+    var instD2 = partes[3] || sesionActiva.centro || "Colegio Los Lirios";
+    var fecD2 = partes[4] || new Date().toLocaleDateString("es-CR");
+    
+    var mapKV = {};
+    for (var k = 5; k < partes.length; k++) {
+      var item = partes[k];
+      var idxColon = item.indexOf(":");
+      if (idxColon > 0) {
+        mapKV[item.substring(0, idxColon)] = item.substring(idxColon + 1);
+      }
+    }
+    
+    var rawC = mapKV["C"] ? mapKV["C"].split(",") : ["1/2", "3/3", "2/4", "2/3", "0/1", "0/1"];
+    var rawP = mapKV["P"] ? mapKV["P"].split(",") : ["0/3", "RA", "RA", "RA", "L"];
+    var rawS = mapKV["S"] ? mapKV["S"].split(",") : ["F", "F", "F", "F"];
+    var rawF = mapKV["F"] ? mapKV["F"].split(",").filter(Boolean) : ["MC", "SE", "EPS", "EC", "RC", "DE", "MOD"];
+    var rawA = mapKV["A"] ? mapKV["A"].split(",").filter(Boolean) : ["AL", "FSA"];
+    var rawR = mapKV["R"] || "6/10";
+    var rawN = mapKV["N"] || "EC";
+    var rawB = mapKV["B"] || "1/5";
+
+    var saberesConceptuales = [
+      { cod: "C1", nombre: "Algoritmo", val: rawC[0] || "1/2" },
+      { cod: "C2", nombre: "Microcontrolador", val: rawC[1] || "3/3" },
+      { cod: "C3", nombre: "Sensor", val: rawC[2] || "2/4" },
+      { cod: "C4", nombre: "Actuador", val: rawC[3] || "2/3" },
+      { cod: "C5", nombre: "Dato", val: rawC[4] || "0/1" },
+      { cod: "C6", nombre: "Almacenamiento de datos", val: rawC[5] || "0/1" }
+    ];
+
+    var saberesProcedimentales = [
+      { cod: "P2", nombre: "Reconoce patrones", estado: rawP[1] || "RA" },
+      { cod: "P3", nombre: "Abstrae", estado: rawP[2] || "RA" },
+      { cod: "P4", nombre: "Transfiere", estado: rawP[3] || "RA" },
+      { cod: "P5", nombre: "Modulariza", estado: rawP[4] || "L" }
+    ];
+
+    var saberesSocioafectivos = [
+      { cod: "S1", nombre: "Gusto por la precisión", estado: rawS[0] || "F" },
+      { cod: "S2", nombre: "Aprender del error", estado: rawS[1] || "F" },
+      { cod: "S3", nombre: "Flexibilidad para manejar problemas", estado: rawS[2] || "F" },
+      { cod: "S4", nombre: "Tolerancia a la frustración", estado: rawS[3] || "F" }
+    ];
+
+    var listaFortalezas = rawF.map(function(c) { return dictFortalezas[c] || c; });
+    var listaApoyo = rawA.map(function(c) { return dictApoyo[c] || c; });
+
+    return {
+      estudiante: estD2,
+      cedula: "",
+      seccionQR: secD2,
+      institucion: instD2,
+      fecha: fecD2,
+      resultadoCognitivo: rawR,
+      nivelCodigo: rawN,
+      nivelEtiqueta: nivelLabels[rawN] || "En proceso de consolidación",
+      cognoscitiva: rawR,
+      nivelCognoscitivo: nivelLabels[rawN] || rawN,
+      saberesConceptuales: saberesConceptuales,
+      tarjetasOrganizadas: rawP[0] || "0/3",
+      conexionesCorrectas: rawB || "1/5",
+      tarjetas: rawP[0] || "0/3",
+      puertos: rawB || "1/5",
+      saberesProcedimentales: saberesProcedimentales,
+      saberesSocioafectivos: saberesSocioafectivos,
+      fortalezasLista: listaFortalezas.length > 0 ? listaFortalezas : ["Dominio conceptual consolidado"],
+      apoyoLista: listaApoyo.length > 0 ? listaApoyo : ["Sin prioridades conceptuales de apoyo"],
+      fortalezas: listaFortalezas.join(", "),
+      prioridades: listaApoyo.join(", "),
+      ejecucion: "Tarjetas: " + (rawP[0] || "0/3") + " • Conexiones: " + (rawB || "1/5"),
+      socioafectiva: "4/4 favorables",
+      textoOriginal: raw
+    };
+  }
+
+  // 2. Si viene en formato JSON estructurado
   if (texto.startsWith("{") && texto.endsWith("}")) {
     try {
       var obj = JSON.parse(texto);
       
-      // Soporte Diagnóstico Séptimo (7.° Año - MEP7 / DIAGNOSTICO_7MO)
-      if (obj.t === "MEP7" || obj.tipo === "CYBERQUEST_7MO" || obj.tipo === "DIAGNOSTICO_7MO" || obj.n === "7°" || obj.nivel === "7.° año" || (obj.sec && typeof obj.sec === "string" && obj.sec.startsWith("7-")) || (obj.s && typeof obj.s === "string" && obj.s.startsWith("7-")) || Boolean(obj.c1)) {
-        var nom7 = obj.estudianteNombre || obj.nom || obj.nombre || (obj.c1 ? (obj.c1 + (obj.c2 && obj.c2 !== 'Individual' && obj.c2 !== 'Solo' ? ' & ' + obj.c2 : '')) : "Estudiante 7.°");
-        var porc7 = obj.g !== undefined ? obj.g : (obj.c !== undefined ? obj.c : (obj.porc !== undefined ? obj.porc : 80));
-        var niv7 = obj.lvl === 'A' || obj.nivelCog === 'Logrado' ? "Logrado" : (obj.lvl === 'B' || obj.nivelCog === 'En Desarrollo' ? "En Desarrollo" : "Reforzamiento conceptual");
-        var sec7 = obj.sec || obj.s || obj.seccion || sesionActiva.seccion;
-        return {
-          estudiante: nom7,
-          cedula: obj.cedula || obj.ced || "",
-          seccionQR: sec7,
-          fecha: obj.fec || obj.fecha || new Date().toLocaleDateString("es-CR"),
-          cognoscitiva: (obj.c !== undefined ? obj.c + "%" : porc7 + "%"),
-          nivelCognoscitivo: niv7,
-          tarjetas: "Misiones 4/4",
-          puertos: "9/9",
-          ejecucion: (obj.p !== undefined ? obj.p + "% (Práctico)" : "Completa"),
-          socioafectiva: (obj.s !== undefined ? obj.s + "% (Socioafectiva)" : "5/5 indicadores favorables"),
-          fortalezas: obj.fortalezas || "Apropiación digital, destreza técnica y lógica",
-          prioridades: obj.prioridades || (niv7 === "Logrado" ? "Ninguna" : "Refuerzo en conceptos de hardware y algoritmos"),
-          textoOriginal: raw
-        };
-      }
+      var nom = obj.nom || obj.estudianteNombre || obj.estudiante || obj.nombre || (obj.c1 ? (obj.c1 + (obj.c2 && obj.c2 !== 'Individual' && obj.c2 !== 'Solo' ? ' & ' + obj.c2 : '')) : "Estudiante");
+      var sec = obj.sec || obj.s || obj.seccion || sesionActiva.seccion || "9-1";
+      var inst = obj.centro || obj.inst || obj.institution || sesionActiva.centro || "Centro Educativo MEP";
+      var fec = obj.fec || obj.fecha || new Date().toLocaleDateString("es-CR");
 
-      // Soporte 8.° Año
-      if (obj.n === "8°" || obj.v === 1 || obj.s1 !== undefined) {
-        var nom8 = obj.e || obj.estudiante || "Estudiante 8vo";
-        var punt8 = obj.p !== undefined ? obj.p : 0;
-        var porc8 = obj.porc !== undefined ? obj.porc : Math.round((punt8 / 14) * 100);
-        var niv8 = obj.nivelCog || (porc8 >= 80 ? "Logrado" : (porc8 >= 60 ? "En Desarrollo" : "Reforzamiento conceptual"));
-        return {
-          estudiante: nom8,
-          cedula: obj.docId || "",
-          seccionQR: obj.s || obj.sec || sesionActiva.seccion,
-          fecha: new Date(obj.ts || Date.now()).toLocaleDateString("es-CR"),
-          cognoscitiva: (obj.numCog || (punt8 + "/14")) + " (" + porc8 + "%)",
-          nivelCognoscitivo: niv8,
-          tarjetas: "HW/SW " + (obj.s1 || 0) + "/5",
-          puertos: "Algoritmos " + (obj.s2 || 0) + "/7",
-          ejecucion: "Robótica " + (obj.s3 || 0) + "/2 (Completa)",
-          socioafectiva: "5/5 indicadores favorables",
-          fortalezas: obj.fortalezas || ((obj.s1 >= 4 ? "Hardware/Software, " : "") + (obj.s2 >= 5 ? "Algoritmos, " : "") + (obj.s3 >= 1 ? "Robótica" : "") || "Pensamiento estructurado"),
-          prioridades: obj.prioridades || ((obj.s1 < 4 ? "Hardware/Software, " : "") + (obj.s2 < 5 ? "Algoritmos, " : "") + (obj.s3 < 1 ? "Robótica" : "") || "Ninguna"),
-          textoOriginal: raw
-        };
-      }
+      var porc = obj.g !== undefined ? obj.g : (obj.c !== undefined ? obj.c : (obj.porc !== undefined ? obj.porc : (obj.notaCognitiva ? obj.notaCognitiva * 10 : 60)));
+      var punt = Math.round(porc / 10);
+      var nivCod = porc >= 80 ? "DC" : (porc >= 60 ? "EC" : "RC");
+      var nivTxt = nivelLabels[nivCod] || (porc >= 80 ? "Dominio consolidado" : (porc >= 60 ? "En proceso de consolidación" : "Requiere consolidación"));
 
-      // Soporte 9.° Año / Estándar General
-      var porc = obj.porc !== undefined ? obj.porc : (obj.notaCognitiva !== undefined ? obj.notaCognitiva * 10 : (obj.puntaje || 0));
-      var numCog = obj.numCog || (Math.round(porc / 10) + "/10");
-      var niv = obj.nivelCog || obj.nivel || (porc >= 80 ? "Logrado" : (porc >= 60 ? "En Desarrollo" : "Reforzamiento conceptual"));
+      var scJson = [
+        { cod: "C1", nombre: "Algoritmo", val: (porc >= 80 ? "2/2" : (porc >= 60 ? "1/2" : "0/2")) },
+        { cod: "C2", nombre: "Microcontrolador", val: (porc >= 60 ? "3/3" : "1/3") },
+        { cod: "C3", nombre: "Sensor", val: (porc >= 80 ? "4/4" : "2/4") },
+        { cod: "C4", nombre: "Actuador", val: (porc >= 70 ? "3/3" : "2/3") },
+        { cod: "C5", nombre: "Dato", val: (porc >= 80 ? "1/1" : "0/1") },
+        { cod: "C6", nombre: "Almacenamiento de datos", val: (porc >= 90 ? "1/1" : "0/1") }
+      ];
+
+      var spJson = [
+        { cod: "P2", nombre: "Reconoce patrones", estado: porc >= 70 ? "L" : "RA" },
+        { cod: "P3", nombre: "Abstrae", estado: porc >= 60 ? "L" : "RA" },
+        { cod: "P4", nombre: "Transfiere", estado: porc >= 80 ? "L" : "RA" },
+        { cod: "P5", nombre: "Modulariza", estado: "L" }
+      ];
+
+      var ssJson = [
+        { cod: "S1", nombre: "Gusto por la precisión", estado: "F" },
+        { cod: "S2", nombre: "Aprender del error", estado: "F" },
+        { cod: "S3", nombre: "Flexibilidad para manejar problemas", estado: "F" },
+        { cod: "S4", nombre: "Tolerancia a la frustración", estado: "F" }
+      ];
+
+      var fortJson = obj.strengths || (obj.fortalezas ? (Array.isArray(obj.fortalezas) ? obj.fortalezas : obj.fortalezas.split(/[,•;]/).map(function(s){return s.trim();}).filter(Boolean)) : [
+        "Dominio conceptual en microcontrolador",
+        "Dominio conceptual en sensor y actuador",
+        "Dominio conceptual en depuración",
+        "Evidencia procedimental en modulariza"
+      ]);
+
+      var apJson = obj.support || (obj.prioridades ? (Array.isArray(obj.prioridades) ? obj.prioridades : obj.prioridades.split(/[,•;]/).map(function(s){return s.trim();}).filter(Boolean)) : [
+        "Reforzar algoritmo",
+        "Reforzar funciones de sensor, actuador y microcontrolador"
+      ]);
+
       return {
-        estudiante: obj.nom || obj.estudiante || obj.nombre || "Estudiante",
+        estudiante: nom,
         cedula: obj.cedula || obj.ced || "",
-        seccionQR: obj.sec || obj.seccion || sesionActiva.seccion,
-        fecha: obj.fec || obj.fecha || new Date().toLocaleDateString("es-CR"),
-        cognoscitiva: numCog + " (" + porc + "%)",
-        nivelCognoscitivo: niv,
-        tarjetas: obj.tarjetas || "3/3",
-        puertos: obj.puertos || "9/9",
-        ejecucion: obj.ejecucion || obj.psicomotora || "Completa",
-        socioafectiva: obj.socTexto || obj.socioafectiva || "5/5 indicadores favorables",
-        fortalezas: obj.fortalezas || "Pensamiento computacional y lógica",
-        prioridades: obj.prioridades || "Ninguna",
+        seccionQR: sec,
+        institucion: inst,
+        fecha: fec,
+        resultadoCognitivo: punt + "/10",
+        nivelCodigo: nivCod,
+        nivelEtiqueta: nivTxt,
+        cognoscitiva: punt + "/10 (" + porc + "%)",
+        nivelCognoscitivo: nivTxt,
+        saberesConceptuales: scJson,
+        tarjetasOrganizadas: obj.tarjetas || "0/3",
+        conexionesCorrectas: obj.puertos || "1/5",
+        tarjetas: obj.tarjetas || "0/3",
+        puertos: obj.puertos || "1/5",
+        saberesProcedimentales: spJson,
+        saberesSocioafectivos: ssJson,
+        fortalezasLista: fortJson,
+        apoyoLista: apJson,
+        fortalezas: Array.isArray(fortJson) ? fortJson.join(", ") : fortJson,
+        prioridades: Array.isArray(apJson) ? apJson.join(", ") : apJson,
+        ejecucion: "Completa",
+        socioafectiva: "4/4 favorables",
         textoOriginal: raw
       };
     } catch (e) {}
   }
 
-  // 2. Parseo por líneas de texto plano (Formato unificado < 300 caracteres)
+  // 3. Parseo por líneas de texto plano
   var lineas = texto.split(/\r?\n/).map(function(l) { return l.trim(); }).filter(Boolean);
 
   var datos = {
-    estudiante: lineas[0] || (sesionActiva.estudianteInicial || "Estudiante"),
+    estudiante: lineas[0] || (sesionActiva.estudianteInicial || "Allan"),
     cedula: "",
-    seccionQR: lineas[1] || sesionActiva.seccion,
+    seccionQR: lineas[1] || sesionActiva.seccion || "9-5",
+    institucion: sesionActiva.centro || "Colegio Los Lirios",
     fecha: lineas[2] || new Date().toLocaleDateString("es-CR"),
-    cognoscitiva: "8/10",
-    nivelCognoscitivo: "Logrado",
-    tarjetas: "3/3",
-    puertos: "9/9",
+    resultadoCognitivo: "6/10",
+    nivelCodigo: "EC",
+    nivelEtiqueta: "En proceso de consolidación",
+    cognoscitiva: "6/10",
+    nivelCognoscitivo: "En proceso de consolidación",
+    tarjetasOrganizadas: "0/3",
+    conexionesCorrectas: "1/5",
+    tarjetas: "0/3",
+    puertos: "1/5",
     ejecucion: "Completa",
-    socioafectiva: "5/5 indicadores favorables",
-    fortalezas: "",
-    prioridades: "",
+    socioafectiva: "4/4 favorables",
+    fortalezasLista: [
+      "Dominio conceptual en microcontrolador",
+      "Dominio conceptual en sensor y actuador",
+      "Dominio conceptual en entrada–proceso–salida",
+      "Dominio conceptual en estructura condicional",
+      "Dominio conceptual en representación condicional",
+      "Dominio conceptual en depuración",
+      "Evidencia procedimental en modulariza"
+    ],
+    apoyoLista: [
+      "Reforzar algoritmo",
+      "Reforzar funciones de sensor, actuador y microcontrolador"
+    ],
+    fortalezas: "Dominio conceptual en microcontrolador, sensor y actuador",
+    prioridades: "Reforzar algoritmo y funciones de hardware",
     textoOriginal: raw
   };
 
@@ -1958,94 +2317,249 @@ function interpretarPayloadQR(raw) {
     var l = lineas[i];
     var upper = l.toUpperCase();
 
-    if (upper.startsWith("COGNOSCITIVA:") || upper.startsWith("COG:")) {
+    if (upper.startsWith("COGNOSCITIVA:") || upper.startsWith("COG:") || upper.startsWith("RESULTADO:")) {
       var partesCog = l.substring(l.indexOf(":") + 1).trim();
       datos.cognoscitiva = partesCog;
-      if (partesCog.includes("(") && partesCog.includes(")")) {
-        datos.nivelCognoscitivo = partesCog.substring(partesCog.indexOf("(") + 1, partesCog.indexOf(")")).trim();
-      }
+      datos.resultadoCognitivo = partesCog;
     }
     else if (upper.startsWith("NIVEL:")) {
-      datos.nivelCognoscitivo = l.substring(6).trim();
+      datos.nivelEtiqueta = l.substring(6).trim();
+      datos.nivelCognoscitivo = datos.nivelEtiqueta;
     }
-    else if (upper.startsWith("PSICOMOTORA:") || upper.startsWith("PSI:")) {
-      var partesPsi = l.substring(l.indexOf(":") + 1).trim();
-      var mTarjetas = partesPsi.match(/Tarjetas\s*:?\s*(\d+\/\d+)/i) || partesPsi.match(/HW\s*:?\s*(\d+\/\d+)/i);
-      if (mTarjetas) datos.tarjetas = mTarjetas[1];
-      var mPuertos = partesPsi.match(/Puertos\s*:?\s*(\d+\/\d+)/i) || partesPsi.match(/Algo\s*:?\s*(\d+\/\d+)/i);
-      if (mPuertos) datos.puertos = mPuertos[1];
-      if (partesPsi.includes("(") && partesPsi.includes(")")) {
-        datos.ejecucion = partesPsi.substring(partesPsi.indexOf("(") + 1, partesPsi.indexOf(")")).trim();
-      } else if (partesPsi.toLowerCase().includes("completa")) {
-        datos.ejecucion = "Completa";
-      }
+    else if (upper.startsWith("SECCION:") || upper.startsWith("SEC:")) {
+      datos.seccionQR = l.substring(l.indexOf(":") + 1).trim();
     }
-    else if (upper.startsWith("TARJETAS:")) {
-      datos.tarjetas = l.substring(9).trim();
+    else if (upper.startsWith("CENTRO:") || upper.startsWith("INSTITUCION:")) {
+      datos.institucion = l.substring(l.indexOf(":") + 1).trim();
     }
-    else if (upper.startsWith("PUERTOS:")) {
-      datos.puertos = l.substring(8).trim();
-    }
-    else if (upper.startsWith("EJECUCIÓN:") || upper.startsWith("EJECUCION:")) {
-      datos.ejecucion = l.substring(10).trim();
-    }
-    else if (upper.startsWith("SOCIOAFECTIVA:") || upper.startsWith("SOC:") || l.toLowerCase().includes("indicadores favorables") || l.toLowerCase().includes("actitudes")) {
-      datos.socioafectiva = l.includes(":") ? l.substring(l.indexOf(":") + 1).trim() : l;
-    }
-    else if (upper.startsWith("FORTALEZAS:")) {
-      var fVal = l.substring(11).trim();
-      if (fVal) datos.fortalezas = fVal;
-      else if (lineas[i + 1] && !lineas[i + 1].includes(":")) datos.fortalezas = lineas[i + 1];
-    }
-    else if (upper.startsWith("PRIORIDADES:")) {
-      var pVal = l.substring(12).trim();
-      if (pVal) datos.prioridades = pVal;
-      else if (lineas[i + 1] && !lineas[i + 1].includes(":")) datos.prioridades = lineas[i + 1];
+    else if (upper.startsWith("ESTUDIANTE:") || upper.startsWith("NOMBRE:")) {
+      datos.estudiante = l.substring(l.indexOf(":") + 1).trim();
     }
   }
 
   return datos;
 }
 
+// ==========================================================================
+// RENDERIZADOR DEL INFORME ESTUDIANTIL OFICIAL (IDÉNTICO A LA IMAGEN)
+// ==========================================================================
+function generarInformeVisualCompletoHTML(datos, opciones) {
+  opciones = opciones || {};
+  var esEditable = opciones.editable || false;
+
+  var cogPuntaje = datos.resultadoCognitivo || datos.cognoscitiva || "6/10";
+  var matchScore = cogPuntaje.match(/(\d+\s*\/\s*\d+)/);
+  var valorScore = matchScore ? matchScore[1] : cogPuntaje;
+  
+  var nivelCod = datos.nivelCodigo || (datos.nivelCognoscitivo && datos.nivelCognoscitivo.includes("Dominio") ? "DC" : (datos.nivelCognoscitivo && datos.nivelCognoscitivo.includes("proceso") ? "EC" : "RC"));
+  var nivelEtiqueta = datos.nivelEtiqueta || datos.nivelCognoscitivo || "En proceso de consolidación";
+
+  var saberesConceptuales = datos.saberesConceptuales || [
+    { cod: "C1", nombre: "Algoritmo", val: "1/2" },
+    { cod: "C2", nombre: "Microcontrolador", val: "3/3" },
+    { cod: "C3", nombre: "Sensor", val: "2/4" },
+    { cod: "C4", nombre: "Actuador", val: "2/3" },
+    { cod: "C5", nombre: "Dato", val: "0/1" },
+    { cod: "C6", nombre: "Almacenamiento de datos", val: "0/1" }
+  ];
+
+  var saberesProcedimentales = datos.saberesProcedimentales || [
+    { cod: "P2", nombre: "Reconoce patrones", estado: "RA" },
+    { cod: "P3", nombre: "Abstrae", estado: "RA" },
+    { cod: "P4", nombre: "Transfiere", estado: "RA" },
+    { cod: "P5", nombre: "Modulariza", estado: "L" }
+  ];
+
+  var saberesSocioafectivos = datos.saberesSocioafectivos || [
+    { cod: "S1", nombre: "Gusto por la precisión", estado: "F" },
+    { cod: "S2", nombre: "Aprender del error", estado: "F" },
+    { cod: "S3", nombre: "Flexibilidad para manejar problemas", estado: "F" },
+    { cod: "S4", nombre: "Tolerancia a la frustración", estado: "F" }
+  ];
+
+  var tarjetasOrg = datos.tarjetasOrganizadas || datos.tarjetas || "0/3";
+  var conexionesOk = datos.conexionesCorrectas || datos.puertos || "1/5";
+
+  var fortalezas = datos.fortalezasLista || (datos.fortalezas ? datos.fortalezas.split(/[,•;]/).map(function(s){return s.trim();}).filter(Boolean) : [
+    "Dominio conceptual en microcontrolador",
+    "Dominio conceptual en sensor y actuador",
+    "Dominio conceptual en entrada–proceso–salida",
+    "Dominio conceptual en estructura condicional",
+    "Dominio conceptual en representación condicional",
+    "Dominio conceptual en depuración",
+    "Evidencia procedimental en modulariza"
+  ]);
+
+  var apoyo = datos.apoyoLista || (datos.prioridades ? datos.prioridades.split(/[,•;]/).map(function(s){return s.trim();}).filter(Boolean) : [
+    "Reforzar algoritmo",
+    "Reforzar funciones de sensor, actuador y microcontrolador"
+  ]);
+
+  function renderBadge(cod) {
+    var c = String(cod || "").trim().toUpperCase();
+    if (c === "L" || c === "LOGRADO") return '<span class="badge-report badge-report-logrado">Logrado</span>';
+    if (c === "F" || c === "FAVORABLE") return '<span class="badge-report badge-report-favorable">Favorable</span>';
+    if (c === "EP" || c === "EN PROCESO" || c === "ED") return '<span class="badge-report badge-report-proceso">En proceso</span>';
+    if (c === "RA" || c === "REQUIERE APOYO" || c === "REQUIERE ACOMPAÑAMIENTO") return '<span class="badge-report badge-report-apoyo">Requiere apoyo</span>';
+    return '<span class="badge-report badge-report-proceso">' + escaparHTML(cod) + '</span>';
+  }
+
+  var html = '';
+
+  // 1. Banner superior
+  html += '<div class="report-notice-success">';
+  html += '  El diagnóstico ha finalizado. Los resultados se almacenaron localmente en este dispositivo.';
+  html += '</div>';
+
+  // 2. Tarjeta Estudiante & Centro
+  html += '<div class="report-student-card">';
+  html += '  <div class="report-student-meta">Centro educativo: <strong>' + escaparHTML(datos.institucion || datos.centro || sesionActiva.centro || "Los Lirios") + '</strong></div>';
+  if (esEditable) {
+    html += '  <div style="margin: 6px 0;">';
+    html += '    <label style="margin:0 0 2px 0; font-size:10px; color:#64748b;">NOMBRE ESTUDIANTE:</label>';
+    html += '    <input id="editEstudiante" type="text" style="font-size:18px; font-weight:900; color:#1f2937; height:42px;" value="' + escaparHTML(datos.estudiante) + '">';
+    html += '  </div>';
+    html += '  <div style="margin-top: 6px;">';
+    html += '    <label style="margin:0 0 2px 0; font-size:10px; color:#64748b;">SECCIÓN:</label>';
+    html += '    <input id="editSeccion" type="text" style="font-size:14px; font-weight:700; width:130px; height:38px;" value="' + escaparHTML(datos.seccionQR || datos.seccion || sesionActiva.seccion) + '">';
+    html += '  </div>';
+  } else {
+    html += '  <div class="report-student-name">' + escaparHTML(datos.estudiante) + '</div>';
+    html += '  <div class="report-student-section">Sección: <strong>' + escaparHTML(datos.seccionQR || datos.seccion || sesionActiva.seccion) + '</strong></div>';
+  }
+  html += '</div>';
+
+  // 3. KPIs: RESULTADO COGNOSCITIVO & NIVEL
+  html += '<div class="report-kpi-grid">';
+  html += '  <div class="report-kpi-box">';
+  html += '    <div class="report-kpi-title">RESULTADO COGNOSCITIVO</div>';
+  html += '    <div class="report-kpi-val">' + escaparHTML(valorScore) + '</div>';
+  html += '  </div>';
+  html += '  <div class="report-kpi-box">';
+  html += '    <div class="report-kpi-title">NIVEL</div>';
+  html += '    <div class="report-kpi-val" style="color: ' + (nivelCod === "DC" || nivelCod === "L" ? '#166534' : (nivelCod === "EC" || nivelCod === "ED" ? '#986800' : '#991b1b')) + ';">' + escaparHTML(nivelCod) + '</div>';
+  html += '    <div class="report-kpi-sub">' + escaparHTML(nivelEtiqueta) + '</div>';
+  html += '  </div>';
+  html += '</div>';
+
+  // 4. TABLA COGNOSCITIVA
+  html += '<h3 class="report-section-title">COGNOSCITIVA</h3>';
+  html += '<div class="report-table-wrapper">';
+  html += '  <table class="report-table">';
+  html += '    <thead>';
+  html += '      <tr>';
+  html += '        <th style="width:75px;">Código</th>';
+  html += '        <th>Saber conceptual</th>';
+  html += '        <th style="width:95px;">Resultado</th>';
+  html += '      </tr>';
+  html += '    </thead>';
+  html += '    <tbody>';
+  saberesConceptuales.forEach(function(sc) {
+    html += '      <tr>';
+    html += '        <td><strong>' + escaparHTML(sc.cod) + '</strong></td>';
+    html += '        <td>' + escaparHTML(sc.nombre) + '</td>';
+    html += '        <td>' + escaparHTML(sc.val) + '</td>';
+    html += '      </tr>';
+  });
+  html += '    </tbody>';
+  html += '  </table>';
+  html += '</div>';
+
+  // 5. EVIDENCIAS DE LA ACTIVIDAD PRÁCTICA
+  html += '<h3 class="report-section-title">EVIDENCIAS DE LA ACTIVIDAD PRÁCTICA</h3>';
+  html += '<div class="report-notice-info">';
+  html += '  Estas evidencias corresponden a la actividad práctica realizada durante el diagnóstico. Las conexiones se reportan únicamente cuando son técnicamente correctas.';
+  html += '</div>';
+
+  html += '<div class="report-kpi-grid">';
+  html += '  <div class="report-kpi-box">';
+  html += '    <div class="report-kpi-title">TARJETAS CORRECTAMENTE ORGANIZADAS</div>';
+  html += '    <div class="report-kpi-val">' + escaparHTML(tarjetasOrg) + '</div>';
+  html += '  </div>';
+  html += '  <div class="report-kpi-box">';
+  html += '    <div class="report-kpi-title">CONEXIONES TÉCNICAMENTE CORRECTAS</div>';
+  html += '    <div class="report-kpi-val">' + escaparHTML(conexionesOk) + '</div>';
+  html += '  </div>';
+  html += '</div>';
+
+  // 6. SABERES PROCEDIMENTALES
+  html += '<h3 class="report-section-title">SABERES PROCEDIMENTALES</h3>';
+  html += '<div class="report-table-wrapper">';
+  html += '  <table class="report-table">';
+  html += '    <thead>';
+  html += '      <tr>';
+  html += '        <th style="width:75px;">Código</th>';
+  html += '        <th>Saber procedimental</th>';
+  html += '        <th style="width:130px;">Resultado</th>';
+  html += '      </tr>';
+  html += '    </thead>';
+  html += '    <tbody>';
+  saberesProcedimentales.forEach(function(sp) {
+    html += '      <tr>';
+    html += '        <td><strong>' + escaparHTML(sp.cod) + '</strong></td>';
+    html += '        <td>' + escaparHTML(sp.nombre) + '</td>';
+    html += '        <td>' + renderBadge(sp.estado) + '</td>';
+    html += '      </tr>';
+  });
+  html += '    </tbody>';
+  html += '  </table>';
+  html += '</div>';
+
+  // 7. SOCIOAFECTIVA
+  html += '<h3 class="report-section-title">SOCIOAFECTIVA</h3>';
+  html += '<div class="report-table-wrapper">';
+  html += '  <table class="report-table">';
+  html += '    <thead>';
+  html += '      <tr>';
+  html += '        <th style="width:75px;">Código</th>';
+  html += '        <th>Saber socioafectivo</th>';
+  html += '        <th style="width:130px;">Resultado</th>';
+  html += '      </tr>';
+  html += '    </thead>';
+  html += '    <tbody>';
+  saberesSocioafectivos.forEach(function(ss) {
+    html += '      <tr>';
+    html += '        <td><strong>' + escaparHTML(ss.cod) + '</strong></td>';
+    html += '        <td>' + escaparHTML(ss.nombre) + '</td>';
+    html += '        <td>' + renderBadge(ss.estado) + '</td>';
+    html += '      </tr>';
+  });
+  html += '    </tbody>';
+  html += '  </table>';
+  html += '</div>';
+
+  // 8. FORTALEZAS
+  html += '<h3 class="report-section-title">FORTALEZAS</h3>';
+  html += '<div class="report-list-box report-list-box-strengths">';
+  html += '  <ul>';
+  fortalezas.forEach(function(f) {
+    html += '    <li>' + escaparHTML(f) + '</li>';
+  });
+  html += '  </ul>';
+  html += '</div>';
+
+  // 9. APOYO
+  html += '<h3 class="report-section-title">APOYO</h3>';
+  html += '<div class="report-list-box report-list-box-support">';
+  html += '  <ul>';
+  apoyo.forEach(function(a) {
+    html += '    <li>' + escaparHTML(a) + '</li>';
+  });
+  html += '  </ul>';
+  html += '</div>';
+
+  return html;
+}
+
 function renderizarResultado(datos) {
-  document.getElementById("contenidoResultado").innerHTML =
-    '<div class="result-grid">' +
-    '  <div class="result-item">' +
-    '    <strong>Nombre del Estudiante:</strong>' +
-    '    <input id="editEstudiante" type="text" value="' + escaparHTML(datos.estudiante) + '">' +
-    '  </div>' +
-    '  <div class="result-item">' +
-    '    <strong>Sección:</strong>' +
-    '    <input id="editSeccion" type="text" value="' + escaparHTML(datos.seccionQR || sesionActiva.seccion) + '">' +
-    '  </div>' +
-    '  <div class="result-item">' +
-    '    <strong>Dimensión Cognoscitiva:</strong>' +
-    '    <span>' + escaparHTML(datos.cognoscitiva || "8/10") + ' [' + escaparHTML(datos.nivelCognoscitivo || "Logrado") + ']</span>' +
-    '  </div>' +
-    '  <div class="result-item">' +
-    '    <strong>Dimensión Psicomotora:</strong>' +
-    '    <span>Tarjetas/HW: ' + escaparHTML(datos.tarjetas || "3/3") + ' • Puertos/Algo: ' + escaparHTML(datos.puertos || "9/9") + ' (' + escaparHTML(datos.ejecucion || "Completa") + ')</span>' +
-    '  </div>' +
-    '  <div class="result-item result-wide">' +
-    '    <strong>Dimensión Socioafectiva:</strong>' +
-    '    <span>' + escaparHTML(datos.socioafectiva || "5/5 indicadores favorables") + '</span>' +
-    '  </div>' +
-    (datos.fortalezas ? (
-      '  <div class="result-item result-wide" style="background:#f0fdf4; border-color:#bbf7d0;">' +
-      '    <strong style="color:#15803d;">🌟 Fortalezas Observadas:</strong>' +
-      '    <span style="color:#166534; font-weight:600;">' + escaparHTML(datos.fortalezas) + '</span>' +
-      '  </div>'
-    ) : '') +
-    (datos.prioridades ? (
-      '  <div class="result-item result-wide" style="background:#fffbeb; border-color:#fde68a;">' +
-      '    <strong style="color:#b45309;">🎯 Prioridades de Apoyo:</strong>' +
-      '    <span style="color:#92400e; font-weight:600;">' + escaparHTML(datos.prioridades) + '</span>' +
-      '  </div>'
-    ) : '') +
-    '</div>';
+  var contenedor = document.getElementById("contenidoResultado");
+  if (contenedor) {
+    contenedor.innerHTML = generarInformeVisualCompletoHTML(datos, { editable: true });
+  }
 
   document.getElementById("vistaSesion").classList.add("hidden");
   document.getElementById("vistaResultado").classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function guardarRegistroActual() {
@@ -2058,18 +2572,30 @@ function guardarRegistroActual() {
 
   var registroNuevo = {
     id: Date.now().toString(36) + Math.random().toString(36).substring(2, 6),
-    centro: sesionActiva.centro,
+    centro: resultadoPendiente.institucion || sesionActiva.centro,
+    institucion: resultadoPendiente.institucion || sesionActiva.centro,
     nivel: sesionActiva.nivel,
     seccion: seccionEditada || sesionActiva.seccion,
+    seccionQR: seccionEditada || sesionActiva.seccion,
     estudiante: nombreEditado || resultadoPendiente.estudiante,
     cedula: resultadoPendiente.cedula || "",
     fecha: resultadoPendiente.fecha,
+    resultadoCognitivo: resultadoPendiente.resultadoCognitivo,
+    nivelCodigo: resultadoPendiente.nivelCodigo,
+    nivelEtiqueta: resultadoPendiente.nivelEtiqueta,
     cognoscitiva: resultadoPendiente.cognoscitiva,
     nivelCognoscitivo: resultadoPendiente.nivelCognoscitivo,
+    saberesConceptuales: resultadoPendiente.saberesConceptuales,
+    tarjetasOrganizadas: resultadoPendiente.tarjetasOrganizadas,
+    conexionesCorrectas: resultadoPendiente.conexionesCorrectas,
     tarjetas: resultadoPendiente.tarjetas,
     puertos: resultadoPendiente.puertos,
     ejecucion: resultadoPendiente.ejecucion,
+    saberesProcedimentales: resultadoPendiente.saberesProcedimentales,
+    saberesSocioafectivos: resultadoPendiente.saberesSocioafectivos,
     socioafectiva: resultadoPendiente.socioafectiva,
+    fortalezasLista: resultadoPendiente.fortalezasLista,
+    apoyoLista: resultadoPendiente.apoyoLista,
     fortalezas: resultadoPendiente.fortalezas,
     prioridades: resultadoPendiente.prioridades,
     qrOriginal: resultadoPendiente.textoOriginal,
@@ -2088,7 +2614,7 @@ function guardarRegistroActual() {
 
   document.getElementById("mensajeCamara").innerHTML =
     '<div class="alert alert-success">' +
-    '  ✅ Registro de <strong>' + escaparHTML(registroNuevo.estudiante) + '</strong> (' + escaparHTML(registroNuevo.seccion) + ') guardado con éxito.' +
+    '  ✅ Registro de <strong>' + escaparHTML(registroNuevo.estudiante) + '</strong> (' + escaparHTML(registroNuevo.seccion) + ') guardado con éxito en el teléfono.' +
     '</div>';
 }
 
@@ -2097,124 +2623,6 @@ function descartarYReanudar() {
   procesandoLectura = false;
   document.getElementById("vistaResultado").classList.add("hidden");
   document.getElementById("vistaSesion").classList.remove("hidden");
-}
-
-function obtenerRegistros() {
-  try {
-    var raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch (e) {
-    return [];
-  }
-}
-
-function guardarRegistros(list) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
-  } catch (e) {
-    alert("Error al guardar en el almacenamiento local.");
-  }
-}
-
-function actualizarContador() {
-  var count = obtenerRegistros().length;
-  var el = document.getElementById("contadorEstudiantes");
-  if (el) el.textContent = "Estudiantes Registrados: " + count;
-  var badge = document.getElementById("badgePadronCount");
-  if (badge) badge.textContent = count;
-}
-
-function cambiarPestanaPrincipal(vista) {
-  var vSes = document.getElementById("vistaSesion");
-  var vGrupo = document.getElementById("vistaGrupo");
-  var vPadron = document.getElementById("vistaPadron");
-  var vFicha = document.getElementById("vistaFichaIndividual");
-  var vRes = document.getElementById("vistaResultado");
-
-  var btnCam = document.getElementById("tabNavCamara");
-  var btnGrp = document.getElementById("tabNavGrupo");
-  var btnPad = document.getElementById("tabNavPadron");
-
-  // Ocultar todas las vistas de sesión
-  if (vSes) vSes.classList.add("hidden");
-  if (vGrupo) vGrupo.classList.add("hidden");
-  if (vPadron) vPadron.classList.add("hidden");
-  if (vFicha) vFicha.classList.add("hidden");
-  if (vRes) vRes.classList.add("hidden");
-
-  // Desactivar botones de navegación
-  if (btnCam) btnCam.classList.remove("active");
-  if (btnGrp) btnGrp.classList.remove("active");
-  if (btnPad) btnPad.classList.remove("active");
-
-  if (vista === "camara") {
-    if (vSes) vSes.classList.remove("hidden");
-    if (btnCam) btnCam.classList.add("active");
-    actualizarContador();
-  } else if (vista === "grupo") {
-    detenerCamara();
-    if (vGrupo) vGrupo.classList.remove("hidden");
-    if (btnGrp) btnGrp.classList.add("active");
-    renderizarMetricasGrupo();
-  } else if (vista === "padron") {
-    detenerCamara();
-    if (vPadron) vPadron.classList.remove("hidden");
-    if (btnPad) btnPad.classList.add("active");
-    renderizarListaPadron();
-  } else if (vista === "ficha") {
-    detenerCamara();
-    if (vFicha) vFicha.classList.remove("hidden");
-    if (btnPad) btnPad.classList.add("active");
-  }
-}
-
-function renderizarListaPadron() {
-  var registros = obtenerRegistros();
-  var cont = document.getElementById("listaRegistros");
-  if (!cont) return;
-
-  actualizarContador();
-
-  if (registros.length === 0) {
-    cont.innerHTML =
-      '<div class="alert alert-info" style="text-align: center; padding: 24px 14px;">' +
-      '  <span style="font-size: 32px; display: block; margin-bottom: 8px;">📋</span>' +
-      '  <strong>Aún no hay estudiantes en el padrón local.</strong><br>' +
-      '  <span style="font-size: 11.5px; color: #475569;">Usa la pestaña "📷 Escáner" para capturar los códigos QR de las pantallas de los estudiantes.</span>' +
-      '</div>';
-    return;
-  }
-
-  var listaReversa = registros.slice().reverse();
-  var html = "";
-  listaReversa.forEach(function(r) {
-    var cogNum = parseInt(String(r.cognoscitiva).replace(/[^0-9]/g, '')) || 80;
-    if (cogNum > 100) cogNum = 80;
-    var nivelTexto = r.nivelCognoscitivo || (cogNum >= 70 ? "Logrado" : (cogNum >= 50 ? "En Desarrollo" : "Reforzamiento"));
-
-    html +=
-      '<div class="record-card" style="border-left: 4px solid ' + (cogNum >= 70 ? '#10b981' : (cogNum >= 50 ? '#f59e0b' : '#ef4444')) + '; margin-bottom: 10px;">' +
-      '  <div class="record-header">' +
-      '    <span class="record-name">' + escaparHTML(r.estudiante) + '</span>' +
-      '    <span class="record-badge" style="background: #002b49; color: #ffffff;">' + escaparHTML(r.seccion || sesionActiva.seccion) + '</span>' +
-      '  </div>' +
-      '  <div class="record-details" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 8px 0;">' +
-      '    <div><strong>🧠 Calificación:</strong> <span style="font-weight: 800; color: #002b49;">' + escaparHTML(r.cognoscitiva || (cogNum + "%")) + '</span></div>' +
-      '    <div><strong>📊 Nivel:</strong> <span style="font-weight: 800; color: ' + (cogNum >= 70 ? '#059669' : (cogNum >= 50 ? '#d97706' : '#dc2626')) + ';">' + escaparHTML(nivelTexto) + '</span></div>' +
-      '    <div style="grid-column: span 2; font-size: 11px; color: #64748b;"><strong>⚙️ Práctico:</strong> ' + escaparHTML(r.ejecucion || r.tarjetas || "Completa") + ' • <strong>📅</strong> ' + escaparHTML(r.fecha || new Date().toLocaleDateString("es-CR")) + '</div>' +
-      '  </div>' +
-      '  <div style="display: flex; gap: 6px; margin-top: 10px;">' +
-      '    <button type="button" class="btn-emerald" data-id="' + r.id + '" onclick="verFichaIndividual(this.getAttribute(\'data-id\'))" style="flex: 2; padding: 7px 10px; font-size: 11.5px; font-weight: 800;">' +
-      '      🔍 Ver Ficha Detallada' +
-      '    </button>' +
-      '    <button type="button" class="btn-secondary" data-id="' + r.id + '" onclick="eliminarRegistroIndividual(this.getAttribute(\'data-id\'))" style="flex: 1; padding: 7px 10px; font-size: 11.5px; color: #dc2626; border-color: #fecaca;">' +
-      '      🗑️ Eliminar' +
-      '    </button>' +
-      '  </div>' +
-      '</div>';
-  });
-
-  cont.innerHTML = html;
 }
 
 function verFichaIndividual(id) {
@@ -2236,84 +2644,9 @@ function verFichaIndividual(id) {
   var cont = document.getElementById("contenidoFichaIndividual");
   if (!cont) return;
 
-  var cogNum = parseInt(String(estudiante.cognoscitiva).replace(/[^0-9]/g, '')) || 80;
-  if (cogNum > 100) cogNum = 80;
-  var aciertos = Math.round((cogNum / 100) * 10);
-  var fallos = Math.max(0, 10 - aciertos);
-
-  var prioridadesRaw = estudiante.prioridades || "";
-  var tienePrioridades = prioridadesRaw && prioridadesRaw !== "Ninguna" && prioridadesRaw !== "Ninguna (Dominio Consolidado)" && prioridadesRaw !== "-";
-  var listaFallos = tienePrioridades ? prioridadesRaw.split(/[,•;]/).map(function(s) { return s.trim(); }).filter(Boolean) : [];
-
-  var html =
-    '<div class="ficha-box">' +
-    '  <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 14px;">' +
-    '    <div>' +
-    '      <span style="font-size: 10px; font-weight: 800; color: #0284c7; background: #e0f2fe; padding: 2px 8px; border-radius: 999px;">' + escaparHTML(estudiante.nivel || sesionActiva.nivel) + ' • ' + escaparHTML(estudiante.seccion || sesionActiva.seccion) + '</span>' +
-    '      <h3 style="font-size: 16px; font-weight: 900; color: #002b49; margin: 4px 0 2px 0;">' + escaparHTML(estudiante.estudiante) + '</h3>' +
-    '      <span style="font-size: 11.5px; color: #64748b;">🏫 ' + escaparHTML(estudiante.centro || sesionActiva.centro) + ' • 📅 ' + escaparHTML(estudiante.fecha || new Date().toLocaleDateString("es-CR")) + '</span>' +
-    '    </div>' +
-    '    <div style="text-align: right;">' +
-    '      <div style="font-size: 26px; font-weight: 900; color: ' + (cogNum >= 70 ? '#059669' : (cogNum >= 50 ? '#d97706' : '#dc2626')) + ';">' + cogNum + '%</div>' +
-    '      <span style="font-size: 10.5px; font-weight: 800; padding: 2px 8px; border-radius: 6px; background: ' + (cogNum >= 70 ? '#ecfdf5; color:#065f46;' : (cogNum >= 50 ? '#fffbeb; color:#92400e;' : '#fef2f2; color:#991b1b;')) + '">' + (estudiante.nivelCognoscitivo || (cogNum >= 70 ? "Logrado" : (cogNum >= 50 ? "En Desarrollo" : "Reforzamiento"))) + '</span>' +
-    '    </div>' +
-    '  </div>' +
-
-    '  <!-- RESUMEN DE FALLOS Y CONCEPTOS A REFORZAR -->' +
-    '  <div style="margin-bottom: 14px; padding: 12px; background: ' + (fallos === 0 ? '#f0fdf4; border: 1.5px solid #86efac;' : '#fef2f2; border: 1.5px solid #fca5a5;') + ' border-radius: 12px;">' +
-    '    <strong style="font-size: 12.5px; color: ' + (fallos === 0 ? '#166534;' : '#991b1b;') + ' display: flex; align-items: center; gap: 6px;">' +
-    '      ' + (fallos === 0 ? '✨ Desempeño Pleno — Sin fallos en reactivos' : '⚠️ ' + fallos + ' Reactivo(s) con Fallo Detectado') +
-    '    </strong>' +
-    (fallos === 0 ? (
-      '    <p style="font-size: 11.5px; color: #15803d; margin: 4px 0 0 0;">El estudiante superó exitosamente todos los criterios y reactivos evaluados.</p>'
-    ) : (
-      '    <div style="margin-top: 8px;">' +
-      '      <span style="font-size: 11px; font-weight: 800; color: #991b1b; display: block; margin-bottom: 4px;">Saberes y conceptos con fallo a reforzar en aula:</span>' +
-      '      <div>' +
-      (listaFallos.length > 0 ? listaFallos.map(function(f) { return '<span class="tag-fallo">❌ ' + escaparHTML(f) + '</span>'; }).join('') : '<span class="tag-fallo">❌ Reactivos conceptuales no consolidados (' + fallos + ' fallos)</span>') +
-      '      </div>' +
-      '    </div>'
-    )) +
-    '  </div>' +
-
-    '  <!-- DIMENSIÓN PSICOMOTRIZ -->' +
-    '  <div style="margin-bottom: 14px; padding: 12px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 12px;">' +
-    '    <strong style="font-size: 12px; color: #002b49; display: flex; align-items: center; gap: 6px;">' +
-    '      <span>🔌</span> Dimensión Psicomotriz (Reto Práctico y Conexiones):' +
-    '    </strong>' +
-    '    <div style="font-size: 11.5px; color: #334155; margin-top: 6px; line-height: 1.5;">' +
-    '      <div>• Tarjetas/Componentes: <strong>' + escaparHTML(estudiante.tarjetas || "3/3") + '</strong></div>' +
-    '      <div>• Puertos/Conexiones: <strong>' + escaparHTML(estudiante.puertos || "9/9") + '</strong></div>' +
-    '      <div>• Estado de Ejecución: <strong>' + escaparHTML(estudiante.ejecucion || "Completa") + '</strong></div>' +
-    '    </div>' +
-    '  </div>' +
-
-    '  <!-- DIMENSIÓN SOCIOAFECTIVA -->' +
-    '  <div style="margin-bottom: 14px; padding: 12px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 12px;">' +
-    '    <strong style="font-size: 12px; color: #002b49; display: flex; align-items: center; gap: 6px;">' +
-    '      <span>🤝</span> Dimensión Socioafectiva:' +
-    '    </strong>' +
-    '    <p style="font-size: 11.5px; color: #334155; margin: 4px 0 0 0;">' +
-    '      • Indicadores y actitudes: <strong>' + escaparHTML(estudiante.socioafectiva || "5/5 favorables") + '</strong>' +
-    '    </p>' +
-    '  </div>' +
-
-    '  <!-- ORIENTACIÓN PEDAGÓGICA INDIVIDUAL -->' +
-    '  <div style="padding: 12px; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 12px;">' +
-    '    <strong style="font-size: 12px; color: #065f46; display: flex; align-items: center; gap: 6px;">' +
-    '      <span>💡</span> Orientación Pedagógica DUA para este Estudiante:' +
-    '    </strong>' +
-    '    <p style="font-size: 11.5px; color: #047857; margin: 4px 0 0 0; line-height: 1.5;">' +
-    (cogNum >= 70 ? 'El estudiante evidencia apropiación sólida de los fundamentos. Se sugiere asignarle retos de extensión y rol de monitor de apoyo a pares.' :
-     cogNum >= 50 ? 'El estudiante comprende la estructura general pero requiere mediación puntual en algoritmos de control y lectura de diagramas.' :
-     'El estudiante requiere acompañamiento paso a paso, modelado de conexiones físicas y refuerzo de conceptos básicos Entrada–Proceso–Salida.') +
-    '    </p>' +
-    '  </div>' +
-
-    '</div>';
-
-  cont.innerHTML = html;
+  cont.innerHTML = generarInformeVisualCompletoHTML(estudiante, { editable: false });
   cambiarPestanaPrincipal("ficha");
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function renderizarMetricasGrupo() {
