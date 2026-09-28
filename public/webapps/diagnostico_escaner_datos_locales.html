@@ -806,6 +806,100 @@ input:focus, select:focus {
   font-weight: 700;
   margin: 3px;
 }
+.pwa-install-banner {
+  background: linear-gradient(135deg, #1F3F78 0%, #2E3552 100%);
+  border: 1.5px solid #D4AF5A;
+  border-radius: var(--radio, 16px);
+  padding: 14px 18px;
+  color: #ffffff;
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 4px 14px rgba(31, 63, 120, 0.25);
+}
+@media (min-width: 640px) {
+  .pwa-install-banner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+.pwa-install-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.pwa-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #D4AF5A;
+}
+.pwa-title {
+  font-size: 14px;
+  font-weight: 900;
+  color: #ffffff;
+}
+.pwa-desc {
+  font-size: 11.5px;
+  color: #EEF3FA;
+  line-height: 1.4;
+}
+.pwa-actions-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.btn-install-pwa {
+  background: #2E7D57;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(46, 125, 87, 0.4);
+  text-decoration: none;
+}
+.btn-install-pwa:hover {
+  background: #236345;
+  transform: translateY(-1px);
+}
+.btn-download-html {
+  background: #D4AF5A;
+  color: #20283B;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(212, 175, 90, 0.4);
+  text-decoration: none;
+}
+.btn-download-html:hover {
+  background: #B9923F;
+  transform: translateY(-1px);
+}
 </style>
 </head>
 <body>
@@ -817,6 +911,23 @@ input:focus, select:focus {
 </header>
 
 <div class="container">
+
+  <!-- BANNER DE INTEGRACIÓN E INSTALACIÓN TIPO APP (PWA) Y DESCARGA HTML -->
+  <div class="pwa-install-banner">
+    <div class="pwa-install-info">
+      <div class="pwa-badge">📱 APLICACIÓN WEB PROGRESIVA (PWA) • MEP</div>
+      <div class="pwa-title">Instalar Escáner en Celular o Descargar HTML</div>
+      <div class="pwa-desc">Úsalo como App nativa en Android, iPhone o Huawei 100% sin internet, o descarga el archivo HTML para uso local en computadoras y USB.</div>
+    </div>
+    <div class="pwa-actions-group">
+      <button type="button" id="btnInstalarPWA" class="btn-install-pwa" onclick="solicitarInstalacionPWA()">
+        <span>📲 Instalar en Celular (Android / iOS)</span>
+      </button>
+      <a href="/webapps/diagnostico_escaner_datos_locales.html" download="diagnostico_escaner_datos_locales.html" class="btn-download-html" title="Descargar archivo HTML autocontenido">
+        <span>⬇ Descargar HTML Offline</span>
+      </a>
+    </div>
+  </div>
 
   <!-- ACORDEÓN PLEGABLE: GUÍA DE CELULARES (CERRADO POR DEFECTO PARA NO QUITAR VISIBILIDAD) -->
   <div class="guide-accordion">
@@ -2565,6 +2676,48 @@ function finalizarSesion() {
   if (nav) nav.classList.add("hidden");
 
   document.getElementById("vistaConfig").classList.remove("hidden");
+}
+
+// ==========================================================================
+// PWA INSTALLATION HOOK & NATIVE APP HANDLER
+// ==========================================================================
+var deferredPrompt = null;
+window.addEventListener("beforeinstallprompt", function(e) {
+  e.preventDefault();
+  deferredPrompt = e;
+  var btn = document.getElementById("btnInstalarPWA");
+  if (btn) {
+    btn.style.display = "inline-flex";
+  }
+});
+
+function solicitarInstalacionPWA() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function(choiceResult) {
+      if (choiceResult.outcome === "accepted") {
+        console.log("El usuario aceptó la instalación de la PWA.");
+      }
+      deferredPrompt = null;
+    });
+  } else {
+    var body = document.getElementById("guideContentBody");
+    var arrow = document.getElementById("guideArrow");
+    if (body && arrow) {
+      body.style.display = "block";
+      arrow.textContent = "▲ Ocultar Instrucciones";
+      
+      var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      if (isIOS) {
+        cambiarPestanaGuia('ios');
+        alert("📲 En iPhone / iPad:\n1. Toca el botón Compartir (📤) en Safari abajo.\n2. Selecciona 'Agregar al inicio (+)' para usarla a pantalla completa sin internet.");
+      } else {
+        cambiarPestanaGuia('android');
+        alert("📲 Para instalar en tu celular:\n1. Toca los 3 puntos (⋮) de tu navegador.\n2. Selecciona 'Instalar aplicación' o 'Agregar a la pantalla principal'.");
+      }
+      body.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
 }
 
 </script>
