@@ -51,6 +51,7 @@ import {
   DeviceMobile,
   Check,
   X,
+  List,
   Compass,
   CaretDown,
   CaretUp,
@@ -537,6 +538,7 @@ export default function PanelDocenteSimplificado() {
   const [filtroEstado, setFiltroEstado] = useState<"todos" | "apoyo" | "proceso" | "logrado">("todos");
 
   // Estados visuales y modales
+  const [drawerMovilAbierto, setDrawerMovilAbierto] = useState(false);
   const [copiado, setCopiado] = useState(false);
   const [modalProyeccion, setModalProyeccion] = useState(false);
   const [modalEscaner, setModalEscaner] = useState(false);
@@ -1015,16 +1017,28 @@ export default function PanelDocenteSimplificado() {
     <div className="w-full max-w-7xl mx-auto bg-white rounded-2xl shadow-cardLg border border-[#CBD5E1]/80 overflow-hidden flex flex-col min-h-[750px]">
       
       {/* 1. TOP BAR — Barra de Navegación del Sistema */}
-      <header className="bg-[#F0F3F6] border-b border-[#CBD5E1]/80 px-4 py-3 flex items-center justify-between gap-3 select-none">
-        {/* Controles de ventana decorativos + Título Panel de Evaluación + Selector de Nivel (7.° y 9.°) */}
-        <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap">
-          <div className="flex items-center space-x-2">
+      <header className="bg-[#F0F3F6] border-b border-[#CBD5E1]/80 px-3 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-3 select-none">
+        {/* Controles de ventana decorativos + Botón Menú Móvil + Título Panel de Evaluación + Selector de Nivel (7.° y 9.°) */}
+        <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+          {/* Botón Menú Hamburguesa para Móvil */}
+          <button
+            type="button"
+            onClick={() => setDrawerMovilAbierto(true)}
+            className="md:hidden p-1.5 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer shadow-2xs"
+            title="Abrir menú docente y utilidades"
+            aria-label="Abrir menú"
+          >
+            <List size={18} weight="bold" />
+          </button>
+
+          {/* Controles de ventana decorativos (Solo Desktop) */}
+          <div className="hidden md:flex items-center space-x-2">
             <span className="w-3 h-3 rounded-full bg-[#FF5F57] border border-[#E0443E] inline-block" />
             <span className="w-3 h-3 rounded-full bg-[#FEBC2E] border border-[#D89E24] inline-block" />
             <span className="w-3 h-3 rounded-full bg-[#28C840] border border-[#1AAB29] inline-block" />
           </div>
 
-          <span className="text-xs sm:text-sm font-black text-slate-800 tracking-tight pl-1.5 sm:pl-2 border-l border-slate-300">
+          <span className="text-xs sm:text-sm font-black text-slate-800 tracking-tight pl-1 sm:pl-2 md:border-l md:border-slate-300 truncate max-w-[130px] sm:max-w-none">
             Panel de Evaluación
           </span>
 
@@ -1033,7 +1047,7 @@ export default function PanelDocenteSimplificado() {
             <button
               type="button"
               onClick={() => handleCambiarNivel("7mo")}
-              className={`px-3 py-1 rounded-lg text-xs font-black transition-all cursor-pointer ${
+              className={`px-2.5 sm:px-3 py-1 rounded-lg text-xs font-black transition-all cursor-pointer ${
                 nivelActivo === "7mo"
                   ? "bg-[#1B5E59] text-white shadow-xs"
                   : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
@@ -1045,7 +1059,7 @@ export default function PanelDocenteSimplificado() {
             <button
               type="button"
               onClick={() => handleCambiarNivel("9no")}
-              className={`px-3 py-1 rounded-lg text-xs font-black transition-all cursor-pointer ${
+              className={`px-2.5 sm:px-3 py-1 rounded-lg text-xs font-black transition-all cursor-pointer ${
                 nivelActivo === "9no"
                   ? "bg-[#1B5E59] text-white shadow-xs"
                   : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
@@ -1058,9 +1072,9 @@ export default function PanelDocenteSimplificado() {
         </div>
 
         {/* Acciones Rápidas en Cabecera */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           {/* Botón de Importación de Lote USB / Archivos JSON o CSV */}
-          <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs transition-all cursor-pointer">
+          <label className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs transition-all cursor-pointer">
             <DownloadSimple size={16} weight="bold" />
             <span className="hidden md:inline">Importar JSON/CSV (USB)</span>
             <input
@@ -1075,7 +1089,7 @@ export default function PanelDocenteSimplificado() {
           <button
             type="button"
             onClick={() => setModalEscaner(true)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#E07A2C] hover:bg-[#C8661D] text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-[#E07A2C] hover:bg-[#C8661D] text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
             title="Abrir escáner de datos (cámara, CSV y métricas)"
           >
             <Camera size={16} weight="bold" />
@@ -1085,7 +1099,7 @@ export default function PanelDocenteSimplificado() {
           <button
             type="button"
             onClick={() => setModalProyeccion(true)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1B5E59] hover:bg-[#144642] text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-[#1B5E59] hover:bg-[#144642] text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
             title="Proyectar QR en pantalla completa para los estudiantes"
           >
             <QrCode size={16} weight="bold" />
@@ -1094,13 +1108,254 @@ export default function PanelDocenteSimplificado() {
         </div>
       </header>
 
+      {/* ========================================================= */}
+      {/* DRAWER MÓVIL DESLIZANTE (Para herramientas secundarias)   */}
+      {/* ========================================================= */}
+      {drawerMovilAbierto && (
+        <div className="fixed inset-0 z-50 md:hidden animate-fadeIn">
+          {/* Fondo oscuro traslúcido */}
+          <div
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity"
+            onClick={() => setDrawerMovilAbierto(false)}
+          />
+
+          {/* Panel lateral */}
+          <div className="fixed inset-y-0 left-0 max-w-xs w-full bg-white shadow-2xl z-10 flex flex-col justify-between p-5 overflow-y-auto animate-fadeIn">
+            <div className="space-y-5">
+              {/* Header Drawer */}
+              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-[#1B5E59] text-white flex items-center justify-center font-bold text-sm shadow-xs ring-2 ring-[#D1EBE7]">
+                    {(() => {
+                      const n = docente?.nombreCompleto || "MD";
+                      return n.substring(0, 2).toUpperCase();
+                    })()}
+                  </div>
+                  <div className="overflow-hidden">
+                    <h2 className="font-bold text-sm text-[#0D1C2E] truncate leading-tight">
+                      {docente?.nombreCompleto || "Docente MEP"}
+                    </h2>
+                    <p className="text-[11px] text-slate-500 font-mono truncate">
+                      {docente?.idDocente || "DOC-7729"}
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setDrawerMovilAbierto(false)}
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+                >
+                  <X size={20} weight="bold" />
+                </button>
+              </div>
+
+              {/* Selector de Nivel en Drawer */}
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80 space-y-2">
+                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
+                  Nivel en Evaluación
+                </span>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleCambiarNivel("7mo");
+                      setDrawerMovilAbierto(false);
+                    }}
+                    className={`py-2 px-3 rounded-lg text-xs font-black transition-all cursor-pointer text-center ${
+                      nivelActivo === "7mo"
+                        ? "bg-[#1B5E59] text-white shadow-xs"
+                        : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
+                    }`}
+                  >
+                    7.° AÑO
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleCambiarNivel("9no");
+                      setDrawerMovilAbierto(false);
+                    }}
+                    className={`py-2 px-3 rounded-lg text-xs font-black transition-all cursor-pointer text-center ${
+                      nivelActivo === "9no"
+                        ? "bg-[#1B5E59] text-white shadow-xs"
+                        : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
+                    }`}
+                  >
+                    9.° AÑO
+                  </button>
+                </div>
+              </div>
+
+              {/* Menú de Navegación Modular en Drawer */}
+              <nav className="space-y-1.5" aria-label="Navegación Móvil Drawer">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block px-1">
+                  Áreas Curriculares
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSeccionActivaMenu("enlaces");
+                    setDrawerMovilAbierto(false);
+                  }}
+                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left ${
+                    seccionActivaMenu === "enlaces"
+                      ? "bg-[#D1EBE7] text-[#1B5E59] font-bold shadow-2xs border border-[#9FD1C9]"
+                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                  }`}
+                >
+                  <LinkIcon size={18} weight={seccionActivaMenu === "enlaces" ? "bold" : "regular"} className={seccionActivaMenu === "enlaces" ? "text-[#1B5E59]" : "text-slate-500"} />
+                  <span>Enlaces Estudiante</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSeccionActivaMenu("cognitivo");
+                    setDrawerMovilAbierto(false);
+                  }}
+                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left ${
+                    seccionActivaMenu === "cognitivo"
+                      ? "bg-[#D1EBE7] text-[#1B5E59] font-bold shadow-2xs border border-[#9FD1C9]"
+                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                  }`}
+                >
+                  <BookOpen size={18} weight={seccionActivaMenu === "cognitivo" ? "bold" : "regular"} className={seccionActivaMenu === "cognitivo" ? "text-[#1B5E59]" : "text-slate-500"} />
+                  <span>Área Cognitiva</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSeccionActivaMenu("socioafectivo");
+                    setDrawerMovilAbierto(false);
+                  }}
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left ${
+                    seccionActivaMenu === "socioafectivo"
+                      ? "bg-[#D1EBE7] text-[#1B5E59] font-bold shadow-2xs border border-[#9FD1C9]"
+                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                  }`}
+                >
+                  <div className="flex items-center gap-3 truncate">
+                    <Heart size={18} weight={seccionActivaMenu === "socioafectivo" ? "fill" : "regular"} className={seccionActivaMenu === "socioafectivo" ? "text-[#1B5E59]" : "text-slate-500"} />
+                    <span className="truncate">Área Socioafectiva</span>
+                  </div>
+                  {metricasCohorte.alertasTempranas > 0 && (
+                    <span className="w-2 h-2 rounded-full bg-[#E07A2C] animate-ping shrink-0" />
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSeccionActivaMenu("psicomotriz");
+                    setDrawerMovilAbierto(false);
+                  }}
+                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left ${
+                    seccionActivaMenu === "psicomotriz"
+                      ? "bg-[#D1EBE7] text-[#1B5E59] font-bold shadow-2xs border border-[#9FD1C9]"
+                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                  }`}
+                >
+                  <Pulse size={18} weight={seccionActivaMenu === "psicomotriz" ? "bold" : "regular"} className={seccionActivaMenu === "psicomotriz" ? "text-[#1B5E59]" : "text-slate-500"} />
+                  <span>Área Psicomotora</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSeccionActivaMenu("sistematizacion");
+                    setDrawerMovilAbierto(false);
+                  }}
+                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left ${
+                    seccionActivaMenu === "sistematizacion"
+                      ? "bg-[#D1EBE7] text-[#1B5E59] font-bold shadow-2xs border border-[#9FD1C9]"
+                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                  }`}
+                >
+                  <Users size={18} weight={seccionActivaMenu === "sistematizacion" ? "bold" : "regular"} className={seccionActivaMenu === "sistematizacion" ? "text-[#1B5E59]" : "text-slate-500"} />
+                  <span>Resultados por Sección</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSeccionActivaMenu("analitica");
+                    setDrawerMovilAbierto(false);
+                  }}
+                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left ${
+                    seccionActivaMenu === "analitica"
+                      ? "bg-[#D1EBE7] text-[#1B5E59] font-bold shadow-2xs border border-[#9FD1C9]"
+                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                  }`}
+                >
+                  <ChartBar size={18} weight={seccionActivaMenu === "analitica" ? "bold" : "regular"} className={seccionActivaMenu === "analitica" ? "text-[#1B5E59]" : "text-slate-500"} />
+                  <span>Análisis General & IA</span>
+                </button>
+              </nav>
+            </div>
+
+            {/* Footer Drawer */}
+            <div className="pt-4 border-t border-slate-100 space-y-2 mt-4">
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block px-1">
+                Recursos y Soporte
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  setModalDocumentacion(true);
+                  setDrawerMovilAbierto(false);
+                }}
+                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold text-sky-900 bg-sky-50 hover:bg-sky-100/80 border border-sky-200 transition-colors cursor-pointer"
+              >
+                <FilePdf size={16} weight="bold" className="text-rose-600" />
+                <span>Documentación Técnica (PDFs)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setModalAyuda(true);
+                  setDrawerMovilAbierto(false);
+                }}
+                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer"
+              >
+                <Info size={16} />
+                <span>Guía Rápida Docente</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setModalInstalacionMovil(true);
+                  setDrawerMovilAbierto(false);
+                }}
+                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold text-emerald-900 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200 transition-colors cursor-pointer"
+              >
+                <DeviceMobile size={16} weight="bold" className="text-emerald-700" />
+                <span>Instalar WebApp en Celular</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setModalArticulacion(true);
+                  setDrawerMovilAbierto(false);
+                }}
+                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold text-teal-800 bg-teal-50 hover:bg-teal-100/80 border border-teal-200 transition-colors cursor-pointer"
+              >
+                <Compass size={16} weight="fill" className="text-teal-700" />
+                <span>Articulación Curricular MEP</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* 2. APP SHELL — Sidebar + Main Content Canvas */}
       <div className="flex flex-col md:flex-row flex-1 bg-white">
         
         {/* ========================================================= */}
         {/* SIDEBAR DE NAVEGACIÓN DOCENTE (Aula Clara / Stitch Tokens) */}
         {/* ========================================================= */}
-        <aside className="w-full md:w-64 lg:w-72 bg-white border-r border-[#E2E8F0] shrink-0 p-4 lg:p-5 flex flex-col justify-between select-none">
+        <aside className="hidden md:flex w-full md:w-64 lg:w-72 bg-white border-r border-[#E2E8F0] shrink-0 p-4 lg:p-5 flex-col justify-between select-none">
           <div className="space-y-5">
             
             {/* Header Perfil Docente */}
@@ -1261,7 +1516,7 @@ export default function PanelDocenteSimplificado() {
         {/* ========================================================= */}
         {/* MAIN CANVAS — ÁREA DE TRABAJO PRINCIPAL                   */}
         {/* ========================================================= */}
-        <main className="flex-1 bg-[#FBFDFE] p-4 sm:p-6 lg:p-8 flex flex-col justify-between overflow-y-auto">
+        <main className="flex-1 bg-[#FBFDFE] p-4 sm:p-6 lg:p-8 flex flex-col justify-between overflow-y-auto pb-24 md:pb-8">
           <div className="space-y-6">
             
             {/* Header del Canvas */}
@@ -2832,6 +3087,95 @@ export default function PanelDocenteSimplificado() {
         </main>
 
       </div>
+
+      {/* ========================================================= */}
+      {/* BOTÓN FLOTANTE (FAB) PARA ESCÁNER QR EN MÓVIL             */}
+      {/* ========================================================= */}
+      <button
+        type="button"
+        onClick={() => setModalEscaner(true)}
+        aria-label="Abrir escáner de datos"
+        title="Abrir escáner de datos (cámara, CSV y métricas)"
+        className="md:hidden fixed bottom-20 right-4 z-40 bg-[#E07A2C] hover:bg-[#C8661D] text-white p-3.5 rounded-full shadow-xl flex items-center justify-center cursor-pointer active:scale-95 transition-all ring-4 ring-white"
+      >
+        <Camera size={24} weight="bold" />
+      </button>
+
+      {/* ========================================================= */}
+      {/* BARRA DE NAVEGACIÓN INFERIOR FIJA EN MÓVIL (BOTTOM NAV)   */}
+      {/* ========================================================= */}
+      <nav
+        aria-label="Navegación Móvil"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-2 py-1.5 flex items-center justify-around shadow-2xl select-none"
+      >
+        <button
+          type="button"
+          onClick={() => setSeccionActivaMenu("enlaces")}
+          className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all cursor-pointer ${
+            seccionActivaMenu === "enlaces"
+              ? "bg-[#D1EBE7] text-[#1B5E59] font-black scale-105"
+              : "text-slate-500 hover:text-slate-900"
+          }`}
+        >
+          <LinkIcon size={19} weight={seccionActivaMenu === "enlaces" ? "bold" : "regular"} />
+          <span className="text-[10px] tracking-tight mt-0.5">Enlaces</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setSeccionActivaMenu("cognitivo")}
+          className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all cursor-pointer ${
+            seccionActivaMenu === "cognitivo"
+              ? "bg-[#D1EBE7] text-[#1B5E59] font-black scale-105"
+              : "text-slate-500 hover:text-slate-900"
+          }`}
+        >
+          <BookOpen size={19} weight={seccionActivaMenu === "cognitivo" ? "bold" : "regular"} />
+          <span className="text-[10px] tracking-tight mt-0.5">Cognitivo</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setSeccionActivaMenu("socioafectivo")}
+          className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all cursor-pointer relative ${
+            seccionActivaMenu === "socioafectivo"
+              ? "bg-[#D1EBE7] text-[#1B5E59] font-black scale-105"
+              : "text-slate-500 hover:text-slate-900"
+          }`}
+        >
+          <Heart size={19} weight={seccionActivaMenu === "socioafectivo" ? "fill" : "regular"} />
+          <span className="text-[10px] tracking-tight mt-0.5">Socioafectivo</span>
+          {metricasCohorte.alertasTempranas > 0 && (
+            <span className="absolute top-1 right-2 w-2 h-2 rounded-full bg-[#E07A2C] animate-ping" />
+          )}
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setSeccionActivaMenu("psicomotriz")}
+          className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all cursor-pointer ${
+            seccionActivaMenu === "psicomotriz"
+              ? "bg-[#D1EBE7] text-[#1B5E59] font-black scale-105"
+              : "text-slate-500 hover:text-slate-900"
+          }`}
+        >
+          <Pulse size={19} weight={seccionActivaMenu === "psicomotriz" ? "bold" : "regular"} />
+          <span className="text-[10px] tracking-tight mt-0.5">Psicomotor</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setSeccionActivaMenu("sistematizacion")}
+          className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all cursor-pointer ${
+            seccionActivaMenu === "sistematizacion"
+              ? "bg-[#D1EBE7] text-[#1B5E59] font-black scale-105"
+              : "text-slate-500 hover:text-slate-900"
+          }`}
+        >
+          <Users size={19} weight={seccionActivaMenu === "sistematizacion" ? "bold" : "regular"} />
+          <span className="text-[10px] tracking-tight mt-0.5">Resultados</span>
+        </button>
+      </nav>
 
       {/* ========================================================= */}
       {/* MODALES DEL SISTEMA (Proyección QR, Escáner Móvil, Ayuda) */}
