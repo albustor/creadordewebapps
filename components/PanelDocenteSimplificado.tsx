@@ -49,6 +49,9 @@ import {
   Cpu,
   ArrowsClockwise,
   DeviceMobile,
+  DeviceTablet,
+  Desktop,
+  ArrowsOut,
   Check,
   X,
   List,
@@ -555,6 +558,11 @@ export default function PanelDocenteSimplificado() {
   const [acordeonOnlineExpandido, setAcordeonOnlineExpandido] = useState(true);
   const [acordeonOfflineExpandido, setAcordeonOfflineExpandido] = useState(true);
   const [filtroModoEnlaces, setFiltroModoEnlaces] = useState<"todos" | "online" | "offline">("todos");
+
+  // Estado del Simulador Multidispositivo (Celular, Tableta, Computadora)
+  const [modalSimuladorDispositivo, setModalSimuladorDispositivo] = useState(false);
+  const [modoVistaDispositivo, setModoVistaDispositivo] = useState<"mobile" | "tablet" | "desktop">("desktop");
+  const [recargarSimuladorKey, setRecargarSimuladorKey] = useState(0);
 
   // Estados de la Guía y Detalle Psicomotriz y Socioafectivo
   const [guiaSimbologiaAbierta, setGuiaSimbologiaAbierta] = useState(false);
@@ -1700,8 +1708,18 @@ export default function PanelDocenteSimplificado() {
                     </button>
                   </div>
 
-                  {/* Acciones de Plegado / Desplegado Global */}
-                  <div className="flex items-center gap-1.5">
+                  {/* Acciones Rápidas y Plegado / Desplegado Global */}
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <button
+                      type="button"
+                      onClick={() => setModalSimuladorDispositivo(true)}
+                      className="text-[11px] font-bold text-teal-800 hover:text-teal-950 bg-teal-50 hover:bg-teal-100 px-2.5 py-1.5 rounded-lg border border-teal-200 transition-colors cursor-pointer inline-flex items-center gap-1.5 shadow-2xs"
+                      title="Probar en vista Celular, Tableta o Computadora"
+                    >
+                      <DeviceMobile size={14} weight="bold" />
+                      <span>Modo Celular / Tableta / PC</span>
+                    </button>
+
                     <button
                       type="button"
                       onClick={() => {
@@ -1793,6 +1811,19 @@ export default function PanelDocenteSimplificado() {
                               >
                                 <QrCode size={16} className="text-slate-500" />
                                 <span>Proyectar QR</span>
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setModoVistaDispositivo("desktop");
+                                  setModalSimuladorDispositivo(true);
+                                }}
+                                className="inline-flex items-center justify-center gap-1.5 bg-[#004641] hover:bg-[#00332f] text-white text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg transition-colors shadow-2xs cursor-pointer"
+                                title="Ver en vista Celular, Tableta o PC"
+                              >
+                                <Desktop size={15} className="text-teal-200" />
+                                <span>Vista Previa Multidispositivo</span>
                               </button>
 
                               <a
@@ -3386,6 +3417,142 @@ export default function PanelDocenteSimplificado() {
           abierto={modalDocumentacion}
           alCerrar={() => setModalDocumentacion(false)}
         />
+      )}
+
+      {/* ========================================================= */}
+      {/* MODAL SIMULADOR MULTIDISPOSITIVO (CELULAR, TABLETA, PC)  */}
+      {/* ========================================================= */}
+      {modalSimuladorDispositivo && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 backdrop-blur-md p-2 sm:p-4 md:p-6 animate-fadeIn">
+          <div className="bg-slate-900 rounded-3xl shadow-2xl border border-slate-700 w-full max-w-6xl h-[92vh] flex flex-col overflow-hidden">
+            
+            {/* Cabecera del Simulador */}
+            <div className="bg-slate-950 px-4 py-3 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3 text-white">
+              <div className="flex items-center gap-2.5">
+                <span className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse inline-block" />
+                <div>
+                  <h3 className="text-xs sm:text-sm font-black text-white tracking-wide flex items-center gap-2">
+                    <span>Simulador Multidispositivo MEP</span>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-900/80 text-teal-200 border border-teal-700">
+                      Diagnóstico {nivelActivo} ({seccionActiva})
+                    </span>
+                  </h3>
+                </div>
+              </div>
+
+              {/* Selector de Dispositivos (Celular / Tableta / Computadora) */}
+              <div className="flex items-center gap-1 bg-slate-900 p-1 rounded-xl border border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setModoVistaDispositivo("mobile")}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${
+                    modoVistaDispositivo === "mobile"
+                      ? "bg-emerald-600 text-white shadow-xs"
+                      : "text-slate-400 hover:text-white"
+                  }`}
+                  title="Simular en teléfono móvil (380px)"
+                >
+                  <DeviceMobile size={16} weight={modoVistaDispositivo === "mobile" ? "bold" : "regular"} />
+                  <span className="hidden sm:inline">📱 Celular</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setModoVistaDispositivo("tablet")}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${
+                    modoVistaDispositivo === "tablet"
+                      ? "bg-emerald-600 text-white shadow-xs"
+                      : "text-slate-400 hover:text-white"
+                  }`}
+                  title="Simular en tableta (768px)"
+                >
+                  <DeviceTablet size={16} weight={modoVistaDispositivo === "tablet" ? "bold" : "regular"} />
+                  <span className="hidden sm:inline">💻 Tableta</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setModoVistaDispositivo("desktop")}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${
+                    modoVistaDispositivo === "desktop"
+                      ? "bg-emerald-600 text-white shadow-xs"
+                      : "text-slate-400 hover:text-white"
+                  }`}
+                  title="Simular en computadora de escritorio / laboratorio"
+                >
+                  <Desktop size={16} weight={modoVistaDispositivo === "desktop" ? "bold" : "regular"} />
+                  <span className="hidden sm:inline">🖥️ Computadora</span>
+                </button>
+              </div>
+
+              {/* Acciones Rápidas del Simulador */}
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setRecargarSimuladorKey((prev) => prev + 1)}
+                  className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 transition-colors cursor-pointer"
+                  title="Recargar vista previa"
+                >
+                  <ArrowsClockwise size={16} />
+                </button>
+
+                <a
+                  href={urlEstudiante}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 transition-colors"
+                  title="Abrir en pestaña completa"
+                >
+                  <ArrowSquareOut size={16} />
+                </a>
+
+                <button
+                  type="button"
+                  onClick={() => setModalSimuladorDispositivo(false)}
+                  className="p-2 rounded-xl bg-slate-800 hover:bg-rose-600 text-white transition-colors cursor-pointer ml-1"
+                  title="Cerrar simulador"
+                >
+                  <X size={16} weight="bold" />
+                </button>
+              </div>
+            </div>
+
+            {/* Contenedor del Simulador con Marcos Reales */}
+            <div className="flex-1 bg-slate-950/60 p-4 flex items-center justify-center overflow-auto">
+              <div
+                className={`transition-all duration-300 bg-white shadow-2xl overflow-hidden flex flex-col ${
+                  modoVistaDispositivo === "mobile"
+                    ? "w-[380px] h-[700px] rounded-[36px] border-[10px] border-slate-800 ring-2 ring-slate-700"
+                    : modoVistaDispositivo === "tablet"
+                    ? "w-[768px] h-[720px] rounded-[24px] border-[10px] border-slate-800 ring-2 ring-slate-700"
+                    : "w-full h-full rounded-xl border border-slate-700"
+                }`}
+              >
+                {/* Notch / Barra de estado decorativa para móvil */}
+                {modoVistaDispositivo === "mobile" && (
+                  <div className="bg-slate-900 h-6 flex items-center justify-center shrink-0">
+                    <div className="w-20 h-3.5 bg-slate-800 rounded-b-xl" />
+                  </div>
+                )}
+
+                <iframe
+                  key={recargarSimuladorKey}
+                  src={urlEstudiante}
+                  title={`Simulador Diagnóstico ${nivelActivo}`}
+                  className="w-full flex-1 border-0 bg-white"
+                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                />
+              </div>
+            </div>
+
+            {/* Barra Inferior del Simulador */}
+            <div className="bg-slate-950 px-4 py-2 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
+              <span>Modo actual: <strong className="text-emerald-400 capitalize">{modoVistaDispositivo === "mobile" ? "Celular (380px)" : modoVistaDispositivo === "tablet" ? "Tableta (768px)" : "Computadora (100%)"}</strong></span>
+              <span className="font-mono text-slate-500 text-[10px]">URL: {urlEstudiante}</span>
+            </div>
+
+          </div>
+        </div>
       )}
 
     </div>

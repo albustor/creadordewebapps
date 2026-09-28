@@ -95,15 +95,117 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     }
   };
 
+  // Lista de usuarios y docentes predefinidos para pruebas oficiales
+  const USUARIOS_PRUEBA_DEMO = [
+    {
+      nombre: "Prof. Alberto Bustos Ortega",
+      tag: "Asesor / Super Admin",
+      correo: "alberto.bustos.ortega@mep.go.cr",
+      cedula: "5-0305-0179",
+      pin: "2617",
+      colorTag: "bg-emerald-100 text-emerald-950 border-emerald-400 hover:bg-emerald-200",
+    },
+    {
+      nombre: "Docente Prueba San José",
+      tag: "San José Central",
+      correo: "prueba.docente1.docente.1@mep.go.cr",
+      cedula: "0-0000-0001",
+      pin: "110011",
+      colorTag: "bg-teal-50 text-teal-900 border-teal-300 hover:bg-teal-100",
+    },
+    {
+      nombre: "Docente Prueba Alajuela",
+      tag: "Alajuela",
+      correo: "prueba.docente2.docente.2@mep.go.cr",
+      cedula: "0-0000-0002",
+      pin: "221111",
+      colorTag: "bg-indigo-50 text-indigo-900 border-indigo-300 hover:bg-indigo-100",
+    },
+    {
+      nombre: "Docente Prueba Cartago",
+      tag: "Cartago",
+      correo: "prueba.docente3.docente.3@mep.go.cr",
+      cedula: "0-0000-0003",
+      pin: "332211",
+      colorTag: "bg-amber-50 text-amber-900 border-amber-300 hover:bg-amber-100",
+    },
+    {
+      nombre: "Docente Prueba Heredia",
+      tag: "Heredia",
+      correo: "prueba.docente4.docente.4@mep.go.cr",
+      cedula: "0-0000-0004",
+      pin: "443311",
+      colorTag: "bg-emerald-50 text-emerald-900 border-emerald-300 hover:bg-emerald-100",
+    },
+    {
+      nombre: "Docente Prueba Guanacaste",
+      tag: "Liberia",
+      correo: "prueba.docente5.docente.5@mep.go.cr",
+      cedula: "0-0000-0005",
+      pin: "554411",
+      colorTag: "bg-sky-50 text-sky-900 border-sky-300 hover:bg-sky-100",
+    },
+    {
+      nombre: "Docente Prueba Puntarenas",
+      tag: "Puntarenas",
+      correo: "prueba.docente6.docente.6@mep.go.cr",
+      cedula: "0-0000-0006",
+      pin: "665511",
+      colorTag: "bg-orange-50 text-orange-900 border-orange-300 hover:bg-orange-100",
+    },
+    {
+      nombre: "Docente Prueba Limón",
+      tag: "Limón",
+      correo: "prueba.docente7.docente.7@mep.go.cr",
+      cedula: "0-0000-0007",
+      pin: "776611",
+      colorTag: "bg-lime-50 text-lime-900 border-lime-300 hover:bg-lime-100",
+    },
+    {
+      nombre: "Docente Prueba Pérez Zeledón",
+      tag: "Pérez Zeledón",
+      correo: "prueba.docente8.docente.8@mep.go.cr",
+      cedula: "0-0000-0008",
+      pin: "887711",
+      colorTag: "bg-purple-50 text-purple-900 border-purple-300 hover:bg-purple-100",
+    },
+    {
+      nombre: "Docente Prueba San Carlos",
+      tag: "San Carlos",
+      correo: "prueba.docente9.docente.9@mep.go.cr",
+      cedula: "0-0000-0009",
+      pin: "998811",
+      colorTag: "bg-rose-50 text-rose-900 border-rose-300 hover:bg-rose-100",
+    },
+    {
+      nombre: "Docente Prueba Occidente",
+      tag: "Occidente",
+      correo: "prueba.docente10.docente.10@mep.go.cr",
+      cedula: "0-0000-0010",
+      pin: "100911",
+      colorTag: "bg-cyan-50 text-cyan-900 border-cyan-300 hover:bg-cyan-100",
+    },
+  ];
+
+  const seleccionarUsuarioPrueba = (correo: string, pin: string, autoIngresar = true) => {
+    try {
+      localStorage.removeItem(`auth_lock_${correo.toLowerCase()}`);
+      localStorage.removeItem(`auth_attempts_${correo.toLowerCase()}`);
+    } catch (e) {}
+    setTab("login");
+    setLoginCredencial(correo);
+    setLoginPin(pin);
+    setLoginMensaje(null);
+    if (autoIngresar) {
+      setTimeout(() => {
+        iniciarSesionConPIN(correo, pin);
+      }, 50);
+    }
+  };
+
   // Handler for Demo Credentials fill
   const rellenarDemo = () => {
-    try {
-      localStorage.removeItem("auth_lock_alberto.bustos.ortega@mep.go.cr");
-      localStorage.removeItem("auth_attempts_alberto.bustos.ortega@mep.go.cr");
-    } catch (e) {}
-    setLoginCredencial("alberto.bustos.ortega@mep.go.cr");
-    setLoginPin("2617");
-    setLoginMensaje(null);
+    seleccionarUsuarioPrueba("alberto.bustos.ortega@mep.go.cr", "2617", true);
   };
 
   // Handler for Registro
@@ -345,11 +447,46 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                 <div className="pt-2">
                   <button
                     type="submit"
-                    className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all active:scale-[0.98]"
+                    className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all active:scale-[0.98] cursor-pointer"
                   >
                     <SignIn size={18} weight="bold" />
                     <span>Ingresar con PIN</span>
                   </button>
+                </div>
+
+                {/* SECCIÓN: CUENTAS Y USUARIOS PREDEFINIDOS PARA PRUEBAS (1 CLIC) */}
+                <div className="mt-5 pt-4 border-t border-slate-200">
+                  <div className="flex items-center justify-between mb-2.5">
+                    <span className="text-[11px] font-black uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+                      <Sparkle size={15} weight="fill" className="text-amber-500" />
+                      <span>Cuentas Predefinidas para Pruebas (1 Clic)</span>
+                    </span>
+                    <span className="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                      Auto-ingreso
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 max-h-52 overflow-y-auto pr-1">
+                    {USUARIOS_PRUEBA_DEMO.map((u, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => seleccionarUsuarioPrueba(u.correo, u.pin, true)}
+                        className={`text-left p-2 rounded-xl border transition-all cursor-pointer flex flex-col justify-between ${u.colorTag}`}
+                      >
+                        <div className="flex items-center justify-between gap-1">
+                          <span className="font-extrabold text-[11px] truncate">{u.nombre}</span>
+                          <span className="text-[9px] font-mono font-black bg-white/80 px-1 rounded">
+                            PIN: {u.pin}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between text-[10px] opacity-80 mt-0.5">
+                          <span className="truncate">{u.tag}</span>
+                          <span className="font-bold text-[9px] text-emerald-800">⚡ Ingresar</span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="pt-3 border-t border-slate-100 text-center">
@@ -357,7 +494,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                   <button
                     type="button"
                     onClick={() => setTab("registro")}
-                    className="text-xs font-black text-emerald-800 hover:text-emerald-900 hover:underline"
+                    className="text-xs font-black text-emerald-800 hover:text-emerald-900 hover:underline cursor-pointer"
                   >
                     Regístrate aquí
                   </button>
