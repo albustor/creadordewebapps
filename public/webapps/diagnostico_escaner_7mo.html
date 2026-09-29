@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Escáner de Diagnóstico — 7.° Año (Sétimo) | MEP</title>
 <link rel="manifest" href="/manifest_escaner_7mo.json">
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
 <meta name="mobile-web-app-capable" content="yes">
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/sw.js').then(function(reg) {
-      console.log('SW PWA registrado correctamente:', reg.scope);
-    }).catch(function(err) {
-      console.log('SW PWA no registrado:', err);
-    });
-  });
-}
-</script>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Escáner FT 7.º">
 <meta name="theme-color" content="#002b49">
-<title>Escáner de Diagnóstico FT 7.° Año — Formación Tecnológica MEP</title>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js').then(function(reg) {
+      console.log('SW PWA 7mo registrado:', reg.scope);
+    }).catch(function(err) {
+      console.log('SW no registrado:', err);
+    });
+  });
+}
+</script>
 
 <!-- LIBRERÍA QR EMBEBIDA 100% OFFLINE (CERO DEPENDENCIAS EXTERNAS) -->
 <script>
@@ -32,1090 +32,374 @@ var __Html5QrcodeLibrary__;(()=>{var t={449:function(t,e,r){!function(t){"use st
 
 <style>
 :root {
-  --azul: #2E3552;          /* Azul institucional profundo (textos, títulos, cabeceras de tablas) */
-  --azul2: #1F3F78;         /* Azul marino de contraste y acento secundario */
-  --azul-claro: #EEF3FA;    /* Azul tenue de fondo para avisos y paneles */
-  --dorado: #D4AF5A;        /* Dorado oficial MEP (bordes superiores de tarjetas, barras de progreso) */
-  --dorado2: #B9923F;       /* Dorado medio para bordes activos, hover y foco */
-  --blanco: #FFFFFF;
-  --verde: #2E7D57;         /* Verde institucional para logros y fortalezas */
-  --verde-claro: #EEF8F2;   /* Fondo verde suave */
-  --rojo: #A9473D;          /* Rojo terracota institucional para apoyo */
-  --rojo-claro: #FCEFED;    /* Fondo rojo suave */
-  --amarillo: #A97C2A;      /* Amarillo ocre para estados "En proceso" */
-  --amarillo-claro: #FFF8E7;/* Fondo amarillo suave */
-  --gris: #667085;          /* Gris para subtítulos y metadatos */
-  --gris-claro: #F5F7FA;    /* Fondo neutro de apoyo */
-  --borde: #D9DFE8;         /* Color perimetral de bordes de tarjetas */
-  --texto: #20283B;         /* Color de texto principal */
-  --sombra: 0 10px 28px rgba(34,45,76,.10);
-  --radio: 16px;
-
-  /* Aliases para compatibilidad interna */
-  --mep-azul: var(--azul);
-  --mep-azul-card: var(--azul2);
-  --mep-verde: var(--verde);
-  --mep-verde-dark: #246345;
-  --mep-verde-light: var(--verde-claro);
-  --mep-amber: var(--amarillo);
-  --mep-amber-light: var(--amarillo-claro);
-  --mep-rojo: var(--rojo);
-  --mep-rojo-light: var(--rojo-claro);
-  --mep-bg: #F0F4F8;
-  --mep-card: var(--blanco);
-  --mep-texto: var(--texto);
-  --mep-subtexto: var(--gris);
-  --mep-borde: var(--borde);
-  --mep-borde-focus: var(--azul2);
+  --azul-mep: #002b49;
+  --azul-mep-claro: #1F3F78;
+  --dorado-mep: #D4AF5A;
+  --dorado-mep-dark: #B9923F;
+  --verde-exito: #166534;
+  --verde-bg: #ecfdf5;
+  --verde-border: #86efac;
+  --ambar: #ca8a04;
+  --rojo: #dc2626;
+  --bg-app: #f8fafc;
+  --texto: #1e293b;
+  --borde: #e2e8f0;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  -webkit-tap-highlight-color: transparent;
-}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background: var(--mep-bg);
-  color: var(--mep-texto);
-  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg-app);
+  color: var(--texto);
   min-height: 100vh;
-  padding: 16px 12px 60px;
+  padding-bottom: 50px;
 }
 
-header, .app-header {
-  background: linear-gradient(135deg, var(--azul) 0%, var(--azul2) 100%);
-  color: var(--blanco);
-  padding: 22px 18px 20px;
+header {
+  background: linear-gradient(135deg, #002b49 0%, #1F3F78 100%);
+  color: #ffffff;
+  padding: 20px 16px;
   text-align: center;
-  border-radius: var(--radio);
-  border: 1.5px solid var(--borde);
-  border-top: 4px solid var(--dorado);
-  box-shadow: var(--sombra);
-  margin-bottom: 16px;
+  border-bottom: 4px solid var(--dorado-mep);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .badge-header {
   display: inline-block;
-  background: rgba(212, 175, 90, 0.20);
-  border: 1px solid var(--dorado);
-  color: #FFFFFF;
-  font-size: 11px;
+  background: rgba(212, 175, 90, 0.25);
+  color: #D4AF5A;
+  border: 1px solid #D4AF5A;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 10.5px;
   font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
-  padding: 3.5px 12px;
-  border-radius: 9999px;
-  margin-bottom: 8px;
-}
-
-header h1, .app-header h1 {
-  font-size: 20px;
-  font-weight: 900;
-  letter-spacing: -0.3px;
-  margin-bottom: 4px;
-  color: var(--blanco);
-}
-
-header p, .app-header p {
-  font-size: 12px;
-  color: #E2E8F0;
-  font-weight: 500;
-  max-width: 580px;
-  margin: 0 auto;
-}
-
-.container {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 0 4px;
-}
-
-.card {
-  background: var(--mep-card);
-  border: 1.5px solid var(--mep-borde);
-  border-radius: var(--radio);
-  padding: 18px;
-  margin-bottom: 16px;
-  box-shadow: var(--sombra);
-}
-
-.card h2 {
-  font-size: 16.5px;
-  font-weight: 900;
-  color: var(--azul);
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-label {
-  display: block;
-  font-size: 11.5px;
-  font-weight: 800;
-  color: var(--mep-texto);
-  margin-top: 10px;
-  margin-bottom: 4px;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
-
-input, select {
-  width: 100%;
-  height: 44px;
-  padding: 8px 12px;
-  border: 1.5px solid var(--mep-borde);
-  border-radius: 12px;
-  font-size: 14.5px;
-  font-weight: 600;
-  background: #ffffff;
-  color: var(--mep-texto);
-  transition: all 0.2s;
-}
-
-input:focus, select:focus {
-  outline: none;
-  border-color: var(--mep-borde-focus);
-  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
-}
-
-.btn-main, .btn-primary, .btn-emerald, .btn-indigo, .btn-danger, .btn-secondary {
-  width: 100%;
-  height: 46px;
-  border: none;
-  border-radius: 14px;
-  padding: 10px 16px;
-  font-size: 13.5px;
-  font-weight: 800;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: all 0.15s ease;
-  user-select: none;
-}
-
-.btn-main:active, .btn-primary:active, .btn-emerald:active, .btn-indigo:active, .btn-danger:active, .btn-secondary:active {
-  transform: scale(0.98);
-}
-
-.btn-primary { background: #0284c7; color: #ffffff; }
-.btn-primary:hover { background: #0369a1; }
-.btn-emerald { background: var(--mep-verde); color: #ffffff; }
-.btn-emerald:hover { background: var(--mep-verde-dark); }
-.btn-indigo { background: #4f46e5; color: #ffffff; }
-.btn-indigo:hover { background: #4338ca; }
-.btn-danger { background: var(--mep-rojo); color: #ffffff; }
-.btn-secondary { background: #f1f5f9; color: var(--mep-texto); border: 1px solid #cbd5e1; }
-.btn-secondary:hover { background: #e2e8f0; }
-
-.session-box {
-  background: #f0f9ff;
-  border-left: 4px solid #0284c7;
-  border-radius: 12px;
-  padding: 12px 14px;
-  font-size: 12.5px;
-  line-height: 1.5;
-  margin-bottom: 12px;
-}
-
-.counter-badge {
-  text-align: center;
-  font-size: 15px;
-  font-weight: 900;
-  color: var(--mep-azul);
-  padding: 8px 12px;
-  background: #f8fafc;
-  border: 1px dashed var(--mep-borde);
-  border-radius: 12px;
-  margin-bottom: 12px;
-}
-
-#reader {
-  width: 100%;
-  max-width: 460px;
-  margin: 14px auto;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 2px solid var(--mep-azul);
-  background: #000000;
-}
-
-#reader video {
-  width: 100% !important;
-  height: auto !important;
-  border-radius: 14px;
-}
-
-.alert {
-  padding: 12px 14px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1.5;
-  margin-top: 10px;
-}
-.alert-info { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
-.alert-success { background: var(--mep-verde-light); color: #065f46; border: 1px solid #a7f3d0; }
-.alert-error { background: var(--mep-rojo-light); color: #991b1b; border: 1px solid #fecaca; }
-
-.result-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 10px;
-  margin-bottom: 14px;
-}
-
-.result-item {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 10px 12px;
-  font-size: 12px;
-}
-
-.result-item strong {
-  display: block;
-  font-size: 10px;
-  text-transform: uppercase;
-  color: #64748b;
-  margin-bottom: 3px;
-  letter-spacing: 0.3px;
-}
-
-.result-item span, .result-item input {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--mep-texto);
-}
-
-.result-wide { grid-column: 1 / -1; }
-
-.record-card {
-  background: #ffffff;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 12px 14px;
-  margin-bottom: 10px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-}
-
-.record-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #f1f5f9;
-  padding-bottom: 6px;
+  letter-spacing: 0.8px;
   margin-bottom: 6px;
 }
 
-.record-name {
-  font-size: 13.5px;
+header h1 {
+  margin: 4px 0;
+  font-size: clamp(20px, 4vw, 24px);
   font-weight: 900;
-  color: var(--mep-azul);
 }
 
-.record-badge {
-  font-size: 11px;
-  font-weight: 800;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: #e0f2fe;
-  color: #0369a1;
-}
-
-.record-details {
-  font-size: 11.5px;
-  color: var(--mep-subtexto);
-  line-height: 1.5;
-}
-
-.button-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.button-grid-3 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.hidden { display: none !important; }
-
-.file-upload-wrapper {
-  margin-top: 10px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 8px;
-}
-.file-upload-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  font-size: 11.5px;
-  font-weight: 700;
-  color: #0284c7;
-  padding: 8px 10px;
-  background: #f0f9ff;
-  border: 1px dashed #0284c7;
-  border-radius: 10px;
-  cursor: pointer;
-  width: 100%;
-  text-align: center;
-  transition: all 0.15s ease;
-  user-select: none;
-}
-.file-upload-btn:hover {
-  background: #e0f2fe;
-  border-color: #0369a1;
-}
-
-/* Tarjeta de Métricas y Estadísticas DUA */
-.metrics-card {
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border: 1.5px solid #cbd5e1;
-  border-radius: 14px;
-  padding: 14px;
-  margin-bottom: 14px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-}
-.metrics-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #e2e8f0;
-}
-.metrics-title {
-  font-size: 13px;
-  font-weight: 900;
-  color: #002b49;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.metrics-kpis {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-  gap: 8px;
-  margin-bottom: 10px;
-}
-.kpi-box {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  padding: 8px 6px;
-  text-align: center;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-}
-.kpi-val {
-  font-size: 16px;
-  font-weight: 900;
-  color: #002b49;
-}
-.kpi-label {
-  font-size: 9.5px;
-  font-weight: 700;
-  color: #64748b;
-  text-transform: uppercase;
-  margin-top: 2px;
-}
-.dua-semaphore {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-.dua-bar-wrap {
-  display: flex;
-  height: 12px;
-  border-radius: 6px;
-  overflow: hidden;
-  background: #e2e8f0;
-  margin: 6px 0;
-}
-.dua-seg-logrado { background: #16a34a; transition: width 0.3s ease; }
-.dua-seg-desarrollo { background: #ca8a04; transition: width 0.3s ease; }
-.dua-seg-refuerzo { background: #dc2626; transition: width 0.3s ease; }
-.dua-legend {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 4px;
-  font-size: 10.5px;
-  font-weight: 700;
-  margin-top: 4px;
-}
-.dua-tag {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.tag-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  display: inline-block;
-  flex-shrink: 0;
-}
-.chips-cloud {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-top: 5px;
-}
-.chip {
-  font-size: 10.5px;
-  font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 999px;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-.chip-green { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
-.chip-amber { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
-
-/* Acordeón de Guía Plegable (Cerrado por defecto) */
-.guide-accordion {
-  background: #ffffff;
-  border: 1.5px solid #cbd5e1;
-  border-radius: 16px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-  overflow: hidden;
-}
-
-.guide-accordion-header {
-  padding: 12px 16px;
-  background: #f8fafc;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  user-select: none;
-  border-bottom: 1px solid transparent;
-  transition: background 0.15s ease;
-}
-
-.guide-accordion-header:hover {
-  background: #f1f5f9;
-}
-
-.guide-accordion-title {
+header p {
+  margin: 2px 0 0;
   font-size: 12.5px;
-  font-weight: 800;
-  color: var(--mep-azul);
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  opacity: 0.9;
 }
 
-.guide-accordion-badge {
-  font-size: 11.5px;
-  font-weight: 800;
-  color: #0284c7;
-  background: #e0f2fe;
-  padding: 3px 8px;
-  border-radius: 8px;
+.container {
+  width: min(960px, 94%);
+  margin: 16px auto;
 }
 
-.guide-content-body {
-  padding: 14px;
-  display: none; /* Cerrado por defecto */
-  border-top: 1px solid #e2e8f0;
-  background: #ffffff;
-}
-
-.guide-nav-bar {
-  display: flex;
-  gap: 6px;
-  overflow-x: auto;
-  padding-bottom: 8px;
-  margin-bottom: 12px;
-  border-bottom: 1.5px solid #e2e8f0;
-}
-
-.guide-tab-btn {
-  width: auto !important;
-  height: auto !important;
-  min-height: 34px;
-  padding: 6px 12px !important;
-  font-size: 11.5px !important;
-  font-weight: 800 !important;
-  color: #475569 !important;
-  background: #f1f5f9 !important;
-  border: 1px solid #cbd5e1 !important;
-  border-radius: 10px !important;
-  cursor: pointer !important;
-  white-space: nowrap !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 6px !important;
-  flex-shrink: 0 !important;
-  transition: all 0.15s ease !important;
-}
-
-.guide-tab-btn.active {
-  background: #002b49 !important;
-  color: #ffffff !important;
-  border-color: #002b49 !important;
-  box-shadow: 0 2px 6px rgba(0,43,73,0.2) !important;
-}
-
-.guide-step-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.guide-step-card {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.guide-step-header {
-  padding: 10px;
-  background: #ffffff;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.guide-step-header h4 {
-  font-size: 12px;
-  font-weight: 800;
-  color: #0f172a;
-  margin-top: 2px;
-}
-
-.guide-step-header p {
-  font-size: 11px;
-  color: #475569;
-  margin-top: 2px;
-  line-height: 1.4;
-}
-
-.guide-step-img-wrap {
-  padding: 8px;
-  background: #0f172a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 140px;
-}
-
-.guide-img {
-  max-width: 100%;
-  max-height: 200px;
-  border-radius: 6px;
-  object-fit: contain;
-}
-
-.guide-note-box {
-  background: #ecfdf5;
-  border: 1px solid #a7f3d0;
-  border-radius: 10px;
-  padding: 10px 12px;
-  font-size: 11px;
-  color: #065f46;
-  margin-top: 12px;
-  line-height: 1.45;
-}
-
-.step-pill {
-  display: inline-block;
-  background: #0284c7;
-  color: #fff;
-  font-weight: 800;
-  font-size: 9.5px;
-  padding: 1px 6px;
-  border-radius: 5px;
-  margin-bottom: 3px;
-}
-
-/* FOOTER INSTITUCIONAL MEP */
-.app-mep-footer {
-  margin-top: 36px;
-  padding: 22px 24px;
+/* BANNER PWA */
+.pwa-banner {
   background: #ffffff;
   border: 1.5px solid #cbd5e1;
-  border-top: 4px solid #002b49;
-  border-radius: 16px;
-  box-shadow: 0 2px 10px rgba(0, 43, 73, 0.04);
-}
-.footer-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-.footer-section {
-  flex: 1 1 280px;
-}
-.footer-title {
-  font-size: 1.05rem;
-  font-weight: 900;
-  color: #002b49;
-  margin: 0 0 8px 0;
-  letter-spacing: -0.01em;
-}
-.footer-text {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin: 0 0 4px 0;
-  line-height: 1.4;
-}
-.footer-subtext {
-  font-size: 0.83rem;
-  color: #475569;
-  margin: 0 0 3px 0;
-  line-height: 1.35;
-}
-.footer-credits {
-  text-align: right;
-}
-@media (max-width: 640px) {
-  .footer-credits {
-    text-align: left;
-  }
-}
-.footer-authors {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: flex-end;
-  margin: 0 0 6px 0;
-}
-@media (max-width: 640px) {
-  .footer-authors {
-    justify-content: flex-start;
-  }
-}
-.author-badge {
-  display: inline-block;
-  background: #f0fdf4;
-  color: #166534;
-  border: 1px solid #bbf7d0;
-  font-size: 0.84rem;
-  font-weight: 800;
-  padding: 4px 12px;
-  border-radius: 999px;
-}
-.footer-date {
-  font-size: 0.85rem;
-  font-weight: 800;
-  color: #64748b;
-  margin: 4px 0 0 0;
-}
-
-/* ==========================================================================
-   NAVEGACIÓN PRINCIPAL Y PESTAÑAS
-   ========================================================================== */
-.main-nav-bar {
-  display: flex;
-  background: #ffffff;
-  border: 1.5px solid #cbd5e1;
+  border-left: 5px solid #059669;
   border-radius: 14px;
-  padding: 6px;
-  gap: 6px;
+  padding: 14px;
   margin-bottom: 16px;
-  box-shadow: 0 4px 12px rgba(0, 43, 73, 0.08);
-  position: sticky;
-  top: 8px;
-  z-index: 50;
-}
-.nav-tab-btn {
-  flex: 1;
-  padding: 10px 8px;
-  border: 1.5px solid transparent;
-  background: #f8fafc;
-  color: #475569;
-  border-radius: 10px;
-  font-size: 12px;
-  font-weight: 800;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  transition: all 0.18s ease;
-  white-space: nowrap;
-}
-.nav-tab-btn:hover {
-  background: #f1f5f9;
-  color: #0f172a;
-}
-.nav-tab-btn.active {
-  background: #002b49;
-  color: #ffffff;
-  border-color: #002b49;
-  box-shadow: 0 2px 8px rgba(0, 43, 73, 0.25);
-}
-.back-header-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 14px;
-  padding-bottom: 10px;
-  border-bottom: 1.5px solid #e2e8f0;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.btn-back {
-  background: #f8fafc;
-  color: #0f172a;
-  border: 1.5px solid #cbd5e1;
-  border-radius: 10px;
-  padding: 8px 14px;
-  font-size: 12px;
-  font-weight: 800;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.15s ease;
-}
-.btn-back:hover {
-  background: #e2e8f0;
-  border-color: #94a3b8;
-}
-.tag-fallo {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: #fef2f2;
-  color: #991b1b;
-  border: 1px solid #fecaca;
-  padding: 4px 8px;
-  border-radius: 8px;
-  font-size: 11px;
-  font-weight: 700;
-  margin: 3px;
-}
-.tag-acierto {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: #f0fdf4;
-  color: #166534;
-  border: 1px solid #bbf7d0;
-  padding: 4px 8px;
-  border-radius: 8px;
-  font-size: 11px;
-  font-weight: 700;
-  margin: 3px;
-}
-.pwa-install-banner {
-  background: linear-gradient(135deg, #1F3F78 0%, #2E3552 100%);
-  border: 1.5px solid #D4AF5A;
-  border-radius: var(--radio, 16px);
-  padding: 14px 18px;
-  color: #ffffff;
-  margin-bottom: 14px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  box-shadow: 0 4px 14px rgba(31, 63, 120, 0.25);
+  gap: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
+
 @media (min-width: 640px) {
-  .pwa-install-banner {
+  .pwa-banner {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
   }
 }
-.pwa-install-info {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-.pwa-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 10px;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #D4AF5A;
-}
+
 .pwa-title {
   font-size: 14px;
-  font-weight: 900;
-  color: #ffffff;
+  font-weight: 800;
+  color: #065f46;
+  margin: 0 0 2px;
 }
+
 .pwa-desc {
-  font-size: 11.5px;
-  color: #EEF3FA;
-  line-height: 1.4;
-}
-.pwa-actions-group {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-.btn-install-pwa {
-  background: #2E7D57;
-  color: #ffffff;
-  border: none;
-  border-radius: 12px;
-  padding: 10px 16px;
   font-size: 12px;
-  font-weight: 900;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  transition: all 0.15s ease;
-  white-space: nowrap;
-  box-shadow: 0 2px 8px rgba(46, 125, 87, 0.4);
-  text-decoration: none;
-}
-.btn-install-pwa:hover {
-  background: #236345;
-  transform: translateY(-1px);
-}
-.btn-download-html {
-  background: #D4AF5A;
-  color: #20283B;
-  border: none;
-  border-radius: 12px;
-  padding: 10px 16px;
-  font-size: 12px;
-  font-weight: 900;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  transition: all 0.15s ease;
-  white-space: nowrap;
-  box-shadow: 0 2px 8px rgba(212, 175, 90, 0.4);
-  text-decoration: none;
-}
-.btn-download-html:hover {
-  background: #B9923F;
-  transform: translateY(-1px);
-}
-
-/* ==========================================================================
-   INFORME ESTUDIANTIL DIAGNÓSTICO (ESTILO OFICIAL MEP / COINCIDENTE CON IMAGEN)
-   ========================================================================== */
-.report-notice-success {
-  background: #e9f7ef;
-  border: 1px solid #bbf7d0;
-  color: #166534;
-  padding: 12px 16px;
-  border-radius: 12px;
-  font-size: 12.5px;
-  font-weight: 700;
-  line-height: 1.45;
-  margin-bottom: 16px;
-}
-
-.report-notice-info {
-  background: #edf5fc;
-  border: 1px solid #c7dcf1;
-  color: #1e3a8a;
-  padding: 11px 15px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1.45;
-  margin-bottom: 14px;
-}
-
-.report-student-card {
-  background: #ffffff;
-  border: 1.5px solid #d9dfe8;
-  border-radius: 14px;
-  padding: 16px 18px;
-  margin-bottom: 16px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
-}
-
-.report-student-meta {
-  font-size: 11.5px;
-  color: #64748b;
-  margin-bottom: 4px;
-}
-.report-student-meta strong {
-  color: #1e293b;
-}
-
-.report-student-name {
-  font-size: 22px;
-  font-weight: 900;
-  color: #1f2937;
-  letter-spacing: -0.2px;
-  margin: 2px 0 4px 0;
-}
-
-.report-student-section {
-  font-size: 13.5px;
   color: #475569;
-  font-weight: 600;
-}
-.report-student-section strong {
-  color: #0f172a;
+  margin: 0;
 }
 
-.report-kpi-grid {
+.btn-install {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 13px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 6px rgba(5,150,105,0.25);
+  text-decoration: none;
+  justify-content: center;
+}
+
+/* NAVEGACIÓN SUPERIOR FIJA / TABS */
+.main-nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 6px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+
+.nav-tab {
+  background: transparent;
+  border: none;
+  padding: 10px 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  transition: all 0.2s;
+}
+
+.nav-tab.active {
+  background: #002b49;
+  color: #ffffff;
+}
+
+/* TARJETAS */
+.card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+}
+
+.card h2 {
+  margin: 0 0 14px;
+  font-size: 17px;
+  color: var(--azul-mep);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* BOTONES */
+.btn-primary {
+  background: #002b49;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 14px;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-emerald {
+  background: #059669;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 13.5px;
+  padding: 11px 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-secondary {
+  background: #f1f5f9;
+  color: #334155;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-danger {
+  background: #dc2626;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-grid-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 18px;
-}
-@media (max-width: 480px) {
-  .report-kpi-grid {
-    grid-template-columns: 1fr;
-  }
+  gap: 10px;
+  margin-top: 10px;
 }
 
-.report-kpi-box {
-  background: #ffffff;
-  border: 1.5px solid #d9dfe8;
-  border-radius: 12px;
-  padding: 14px 16px;
-}
-.report-kpi-title {
-  font-size: 10.5px;
-  font-weight: 900;
-  color: #64748b;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 6px;
-}
-.report-kpi-val {
-  font-size: 24px;
-  font-weight: 900;
-  color: #0f172a;
-  line-height: 1.1;
-}
-.report-kpi-sub {
-  font-size: 12px;
-  color: #64748b;
-  font-weight: 600;
-  margin-top: 4px;
+.btn-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
 }
 
-.report-section-title {
-  font-size: 13.5px;
-  font-weight: 900;
-  color: #1f2937;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin: 18px 0 10px 0;
+/* CÁMARA Y SCANNER */
+#scannerArea {
+  position: relative;
+  background: #0f172a;
+  border-radius: 14px;
+  overflow: hidden;
+  margin: 12px 0;
+  min-height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.report-table-wrapper {
+#scannerArea video {
   width: 100%;
-  overflow-x: auto;
-  border-radius: 10px;
-  border: 1px solid #d9dfe8;
-  margin-bottom: 16px;
-  background: #ffffff;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+  display: block;
 }
 
-.report-table {
+.scanner-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scanner-box {
+  width: 220px;
+  height: 220px;
+  border: 3px solid #D4AF5A;
+  border-radius: 16px;
+  box-shadow: 0 0 0 4000px rgba(0,0,0,0.45);
+  animation: pulseBox 2s infinite;
+}
+
+@keyframes pulseBox {
+  0%, 100% { border-color: #D4AF5A; }
+  50% { border-color: #86efac; }
+}
+
+.alert {
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  margin: 8px 0;
+  line-height: 1.45;
+}
+.alert-info { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+.alert-success { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+.alert-warning { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+
+/* INFORME Y TABLAS */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.kpi-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+}
+
+.kpi-label { font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; }
+.kpi-value { font-size: 18px; font-weight: 900; color: #002b49; margin-top: 2px; }
+
+.table-custom {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12.5px;
+  font-size: 12px;
+  margin: 10px 0;
+}
+
+.table-custom th, .table-custom td {
+  padding: 8px 10px;
+  border: 1px solid #e2e8f0;
   text-align: left;
 }
 
-.report-table th {
-  background: #2E3552;
-  color: #ffffff;
-  font-weight: 800;
-  padding: 10px 14px;
-  font-size: 12px;
-  letter-spacing: 0.2px;
-  border: 1px solid #2E3552;
-}
-
-.report-table td {
-  padding: 10px 14px;
-  border: 1px solid #e2e8f0;
+.table-custom th {
+  background: #f1f5f9;
   color: #334155;
-  font-weight: 600;
-}
-
-.report-table tr:nth-child(even) td {
-  background: #f8fafc;
-}
-
-.badge-report {
-  display: inline-block;
-  padding: 3px 10px;
-  border-radius: 999px;
-  font-size: 11px;
   font-weight: 800;
-  letter-spacing: 0.2px;
-}
-.badge-report-logrado, .badge-report-favorable {
-  background: #e9f7ef;
-  color: #166534;
-  border: 1px solid #bbf7d0;
-}
-.badge-report-proceso {
-  background: #fff8e6;
-  color: #854d0e;
-  border: 1px solid #fde68a;
-}
-.badge-report-apoyo {
-  background: #fff0ee;
-  color: #991b1b;
-  border: 1px solid #fecaca;
 }
 
-.report-list-box {
+.badge-status {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 800;
+}
+
+.badge-logrado { background: #dcfce7; color: #166534; }
+.badge-proceso { background: #fef3c7; color: #92400e; }
+.badge-apoyo { background: #fee2e2; color: #991b1b; }
+
+.record-card {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-left: 4px solid #0284c7;
   border-radius: 12px;
-  padding: 14px 18px;
-  margin-bottom: 16px;
+  padding: 12px;
+  margin-bottom: 10px;
 }
-.report-list-box-strengths {
-  background: #e9f7ef;
-  border: 1.5px solid #bbf7d0;
-}
-.report-list-box-strengths ul {
-  margin: 0;
-  padding-left: 20px;
-  color: #166534;
-  font-size: 12.5px;
-  font-weight: 600;
-  line-height: 1.6;
-}
-.report-list-box-support {
-  background: #fff0ee;
-  border: 1.5px solid #fecaca;
-}
-.report-list-box-support ul {
-  margin: 0;
-  padding-left: 20px;
-  color: #991b1b;
-  font-size: 12.5px;
-  font-weight: 600;
-  line-height: 1.6;
+
+.hidden { display: none !important; }
+
+/* FOOTER */
+footer {
+  margin-top: 30px;
+  padding: 18px;
+  text-align: center;
+  font-size: 11px;
+  color: #64748b;
+  border-top: 1px solid #e2e8f0;
 }
 </style>
 </head>
@@ -1123,453 +407,226 @@ input:focus, select:focus {
 
 <header>
   <span class="badge-header">MEP • FORMACIÓN TECNOLÓGICA</span>
-  <h1>Escáner de Datos Locales</h1>
-  <p>Captura de resultados QR sin conexión para Diagnóstico Séptimo (7.°) y Diagnóstico Noveno (9.°)</p>
+  <h1>📱 Escáner de Diagnóstico — 7.° Año (Sétimo)</h1>
+  <p>Herramienta Oficial 100% Offline • Captura de QR por Parejas / Individual • Módulo 1 (7.° Año)</p>
 </header>
 
 <div class="container">
 
-  <!-- BANNER DE INTEGRACIÓN E INSTALACIÓN TIPO APP (PWA) Y DESCARGA HTML -->
-  <div class="pwa-install-banner" id="pwaBanner">
-    <div class="pwa-install-info">
-      <div class="pwa-badge" id="pwaBadge">📱 APLICACIÓN WEB PROGRESIVA (PWA) • MEP</div>
-      <div class="pwa-title" id="pwaTitle">Instalar Escáner en Celular o Descargar HTML</div>
-      <div class="pwa-desc" id="pwaDesc">Úsalo como App nativa en Android, iPhone o Huawei 100% sin internet, o descarga el archivo HTML para uso local en computadoras y USB.</div>
+  <!-- BANNER PWA CON DETECCIÓN INTELIGENTE -->
+  <div class="pwa-banner" id="pwaBanner">
+    <div>
+      <div class="pwa-title" id="pwaTitle">📲 App 100% Offline para Celular</div>
+      <div class="pwa-desc" id="pwaDesc">Instala el escáner como app nativa en tu teléfono para escanear en el laboratorio sin conexión.</div>
     </div>
-    <div class="pwa-actions-group" id="pwaActionsGroup">
-      <button type="button" id="btnInstalarPWA" class="btn-install-pwa" onclick="solicitarInstalacionSegunSO()">
-        <span id="btnInstalarPWAText">📲 Instalar en Celular (Android / iOS)</span>
+    <div style="display:flex; gap:8px;">
+      <button type="button" id="btnInstalarPWA" class="btn-install" onclick="instalarAppPWA()">
+        <span>⚡ Instalar App</span>
       </button>
-      <a href="/webapps/diagnostico_escaner_datos_locales.html" download="diagnostico_escaner_datos_locales.html" class="btn-download-html" title="Descargar archivo HTML autocontenido">
-        <span>⬇ Descargar HTML Offline</span>
-      </a>
     </div>
   </div>
 
-  <!-- ACORDEÓN PLEGABLE: GUÍA DE CELULARES (CERRADO POR DEFECTO PARA NO QUITAR VISIBILIDAD) -->
-  <div class="guide-accordion" id="guideAccordionSection">
-    <div class="guide-accordion-header" onclick="alternarGuiaInstalacion()">
-      <div class="guide-accordion-title">
-        <span>📖 Guía de Instalación según Dispositivo (iPhone / Android / Huawei)</span>
-      </div>
-      <span id="guideArrow" class="guide-accordion-badge">▼ Ver Instrucciones</span>
-    </div>
-
-    <div id="guideContentBody" class="guide-content-body">
-      <!-- Barra de navegación de pestañas -->
-      <div class="guide-nav-bar">
-        <button type="button" id="tabBtnIos" class="guide-tab-btn active" onclick="cambiarPestanaGuia('ios')">
-          <span>🍎 iPhone (iOS Safari)</span>
-        </button>
-        <button type="button" id="tabBtnAndroid" class="guide-tab-btn" onclick="cambiarPestanaGuia('android')">
-          <span>🤖 Android (Chrome)</span>
-        </button>
-        <button type="button" id="tabBtnHuawei" class="guide-tab-btn" onclick="cambiarPestanaGuia('huawei')">
-          <span>📱 Huawei / HarmonyOS</span>
-        </button>
-        <button type="button" id="tabBtnModos" class="guide-tab-btn" onclick="cambiarPestanaGuia('modos')">
-          <span>⚡ Modos & USB</span>
-        </button>
-      </div>
-
-      <!-- Pestaña iOS -->
-      <div id="paneIos" class="guide-pane">
-        <div style="background:#eff6ff; border:1.5px solid #bfdbfe; border-radius:12px; padding:12px 14px; margin-bottom:12px;">
-          <h3 style="font-size: 13.5px; font-weight: 900; color: #1e3a8a; margin: 0 0 4px 0; display:flex; align-items:center; gap:6px;">
-            <span>🍎 Secuencia Oficial de Instalación en iPhone / iPad (iOS)</span>
-          </h3>
-          <p style="font-size: 11.5px; color: #1e40af; margin:0; line-height: 1.5;">
-            Sigue este orden exacto de 4 pasos para instalar el Escáner como App de pantalla completa sin conexión:
-          </p>
-        </div>
-
-        <div class="guide-step-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
-          <div class="guide-step-card" style="border-top: 4px solid #0284c7;">
-            <div class="guide-step-header" style="height:100%;">
-              <span class="step-pill" style="background:#0284c7;">Paso 1</span>
-              <h4>1. Tres Puntitos (•••)</h4>
-              <p>Toca los <strong>tres puntitos (•••)</strong> o el icono de menú del navegador en tu iPhone.</p>
-            </div>
-          </div>
-
-          <div class="guide-step-card" style="border-top: 4px solid #7c3aed;">
-            <div class="guide-step-header" style="height:100%;">
-              <span class="step-pill" style="background:#7c3aed;">Paso 2</span>
-              <h4>2. Compartir (📤)</h4>
-              <p>Toca la opción <strong>Compartir</strong> en la lista de acciones.</p>
-            </div>
-          </div>
-
-          <div class="guide-step-card" style="border-top: 4px solid #ea580c;">
-            <div class="guide-step-header" style="height:100%;">
-              <span class="step-pill" style="background:#ea580c;">Paso 3</span>
-              <h4>3. Ver Más</h4>
-              <p>Desliza hacia abajo o pulsa <strong>"Ver más"</strong> para desplegar todas las opciones.</p>
-            </div>
-          </div>
-
-          <div class="guide-step-card" style="border-top: 4px solid #059669;">
-            <div class="guide-step-header" style="height:100%;">
-              <span class="step-pill" style="background:#059669;">Paso 4</span>
-              <h4>4. Agregar a Inicio</h4>
-              <p>Selecciona <strong>[+] "Agregar a Inicio"</strong> y toca <strong>"Agregar"</strong> arriba a la derecha.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="guide-note-box" style="margin-top:12px;">
-          <strong>✨ ¡Listo!:</strong> Ahora tienes el icono del <strong>Escáner MEP</strong> en tu pantalla de inicio. Se abre a pantalla completa, con acceso a cámara instantáneo y 100% libre de internet.
-        </div>
-      </div>
-
-      <!-- Pestaña Android -->
-      <div id="paneAndroid" class="guide-pane hidden">
-        <div style="background:#ecfdf5; border:1.5px solid #a7f3d0; border-radius:12px; padding:12px 14px; margin-bottom:12px;">
-          <h3 style="font-size: 13.5px; font-weight: 900; color: #065f46; margin: 0 0 4px 0; display:flex; align-items:center; gap:6px;">
-            <span>🤖 Instalación Directa en Android (Google Chrome)</span>
-          </h3>
-          <p style="font-size: 11.5px; color: #047857; margin:0; line-height: 1.5;">
-            En Android la instalación se realiza con 1 solo toque o mediante el menú oficial de Chrome:
-          </p>
-        </div>
-
-        <div class="guide-step-grid">
-          <div class="guide-step-card" style="border-top: 4px solid #059669;">
-            <div class="guide-step-header" style="height:100%;">
-              <span class="step-pill" style="background:#059669;">Método 1</span>
-              <h4>1 Toque Directo</h4>
-              <p>Presiona el botón verde <strong>"🤖 Instalar App en Android"</strong> en la parte superior.</p>
-            </div>
-          </div>
-          <div class="guide-step-card" style="border-top: 4px solid #0284c7;">
-            <div class="guide-step-header" style="height:100%;">
-              <span class="step-pill" style="background:#0284c7;">Método 2</span>
-              <h4>Menú Chrome (⋮)</h4>
-              <p>Toca los tres puntos (⋮) arriba a la derecha en Google Chrome.</p>
-            </div>
-          </div>
-          <div class="guide-step-card" style="border-top: 4px solid #7c3aed;">
-            <div class="guide-step-header" style="height:100%;">
-              <span class="step-pill" style="background:#7c3aed;">Método 3</span>
-              <h4>Instalar App</h4>
-              <p>Selecciona <strong>"Instalar aplicación"</strong> o <strong>"Agregar a pantalla principal"</strong>.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Pestaña Huawei -->
-      <div id="paneHuawei" class="guide-pane hidden">
-        <div style="background:#fff1f2; border:1.5px solid #fecdd3; border-radius:12px; padding:12px 14px; margin-bottom:12px;">
-          <h3 style="font-size: 13.5px; font-weight: 900; color: #9f1239; margin: 0 0 4px 0; display:flex; align-items:center; gap:6px;">
-            <span>📱 Instalación en Dispositivos Huawei (Petal / Huawei Browser)</span>
-          </h3>
-          <p style="font-size: 11.5px; color: #be123c; margin:0; line-height: 1.5;">
-            Configuración para dispositivos con EMUI y HarmonyOS:
-          </p>
-        </div>
-
-        <div class="guide-step-grid">
-          <div class="guide-step-card" style="border-top: 4px solid #dc2626;">
-            <div class="guide-step-header" style="height:100%;">
-              <span class="step-pill" style="background:#dc2626;">Paso 1</span>
-              <h4>Navegador Huawei</h4>
-              <p>Abre el enlace en el navegador oficial de Huawei (Huawei Browser / Petal).</p>
-            </div>
-          </div>
-          <div class="guide-step-card" style="border-top: 4px solid #ea580c;">
-            <div class="guide-step-header" style="height:100%;">
-              <span class="step-pill" style="background:#ea580c;">Paso 2</span>
-              <h4>Menú (≡ / ⠇)</h4>
-              <p>Toca el botón de menú en la barra de herramientas.</p>
-            </div>
-          </div>
-          <div class="guide-step-card" style="border-top: 4px solid #b91c1c;">
-            <div class="guide-step-header" style="height:100%;">
-              <span class="step-pill" style="background:#b91c1c;">Paso 3</span>
-              <h4>Acceso Directo</h4>
-              <p>Selecciona <strong>"Agregar a pantalla de inicio"</strong>.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Pestaña Modos & USB -->
-      <div id="paneModos" class="guide-pane hidden">
-        <h3 style="font-size: 13px; font-weight: 900; color: #002b49; margin-bottom: 4px;">
-          Modos de Conectividad y Contingencias
-        </h3>
-        <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
-          <div style="padding:10px; background:#e0f2fe; border-radius:10px; font-size:11.5px;">
-            <strong>🌐 En Línea (HTTPS):</strong> Activa cámara trasera continua en vivo.
-          </div>
-          <div style="padding:10px; background:#fef3c7; border-radius:10px; font-size:11.5px;">
-            <strong>📸 Foto Directa:</strong> Si la cámara en vivo no inicia, use el botón <em>"Tomar foto con cámara"</em>.
-          </div>
-          <div style="padding:10px; background:#ecfdf5; border-radius:10px; font-size:11.5px;">
-            <strong>📂 Llave Maya / USB:</strong> Use el botón <em>"Importar JSONs (USB)"</em> para cargar archivos del grupo de una sola vez.
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PASO 1: CONFIGURACIÓN INICIAL (VISIBLE Y DESTACADO) -->
-  <section id="vistaConfig" class="card">
-    <h2>⚙️ Configuración del Grupo y Docente</h2>
-    
-    <label for="inputCentro">Centro Educativo:</label>
-    <input id="inputCentro" type="text" placeholder="Ej. Colegio de Secundaria MEP" value="Colegio de Secundaria MEP">
-
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-      <div>
-        <label for="inputNivel">Nivel Educativo:</label>
-        <select id="inputNivel">
-          <option value="7.° año">Diagnóstico Séptimo (7.° Año)</option>
-          <option value="9.° año" selected>Diagnóstico Noveno (9.° Año)</option>
-        </select>
-      </div>
-      <div>
-        <label for="inputSeccion">Sección por Defecto:</label>
-        <input id="inputSeccion" type="text" placeholder="Ej. 7-1, 9-1" value="7-1">
-      </div>
-    </div>
-
-    <div style="margin-top: 12px; padding: 10px 12px; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 10px; font-size: 11.5px; color: #065f46; line-height: 1.45;">
-      ✨ <strong>Detección Automática:</strong> No es necesario escribir nombres de estudiantes. Cada código QR generado en las computadoras contiene automáticamente el nombre del estudiante, su sección y todas sus respuestas.
-    </div>
-
-    <div style="margin-top: 18px;">
-      <button type="button" class="btn-emerald" onclick="iniciarSesionDocente()">
-        <span>🚀 Iniciar Sesión de Escaneo</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- BARRA DE NAVEGACIÓN PRINCIPAL ENTRE VISTAS -->
-  <nav id="navBarSesion" class="main-nav-bar hidden">
-    <button type="button" id="tabNavCamara" class="nav-tab-btn active" onclick="cambiarPestanaPrincipal('camara')">
-      <span>📷 Escáner</span>
+  <!-- NAVEGACIÓN SUPERIOR ENTRE VISTAS -->
+  <nav class="main-nav">
+    <button type="button" id="tabNavCamara" class="nav-tab active" onclick="cambiarPestanaPrincipal('camara')">
+      <span style="font-size:16px;">📷</span>
+      <span>Escáner</span>
     </button>
-    <button type="button" id="tabNavGrupo" class="nav-tab-btn" onclick="cambiarPestanaPrincipal('grupo')">
-      <span>📊 General Grupal</span>
+    <button type="button" id="tabNavGrupo" class="nav-tab" onclick="cambiarPestanaPrincipal('grupo')">
+      <span style="font-size:16px;">📊</span>
+      <span>General</span>
     </button>
-    <button type="button" id="tabNavPadron" class="nav-tab-btn" onclick="cambiarPestanaPrincipal('padron')">
-      <span>📋 Padrón (<span id="badgePadronCount">0</span>)</span>
+    <button type="button" id="tabNavPadron" class="nav-tab" onclick="cambiarPestanaPrincipal('padron')">
+      <span style="font-size:16px;">📋</span>
+      <span>Padrón (<span id="badgePadronCount">0</span>)</span>
+    </button>
+    <button type="button" id="tabNavConfig" class="nav-tab" onclick="cambiarPestanaPrincipal('config')">
+      <span style="font-size:16px;">⚙️</span>
+      <span>Ajustes</span>
     </button>
   </nav>
 
-  <!-- PASO 2: SESIÓN ACTIVA Y CÁMARA (VISTA ULTRA-LIMPIA CON RESILIENCIA MULTICAPA) -->
-  <section id="vistaSesion" class="card hidden">
-    <h2>📷 Escaneo de QR Estudiantes</h2>
+  <!-- ========================================================================= -->
+  <!-- VISTA 1: ESCÁNER / CÁMARA (VISTA PRINCIPAL POR DEFECTO) -->
+  <!-- ========================================================================= -->
+  <section id="vistaCamara" class="card">
+    <h2>
+      <span>📷 Escaneo de Códigos QR (7.° Año)</span>
+      <span id="txtSeccionBadge" style="font-size:11px; background:#e0f2fe; color:#0369a1; padding:3px 8px; border-radius:999px;">Sección 7-1</span>
+    </h2>
 
-    <div id="sessionInfo" class="session-box"></div>
-
-    <div id="contadorEstudiantes" class="counter-badge">
-      Estudiantes Registrados: 0
-    </div>
-
-    <!-- BOTONES PRINCIPALES DE CAPTURA DE CÁMARA -->
-    <div style="display:flex; flex-direction:column; gap:8px;">
-      <button type="button" id="btnActivarCamara" class="btn-primary" onclick="iniciarCamaraUniversal()">
-        <span>📷 Activar Cámara Continua en Vivo</span>
-      </button>
-
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
-        <label class="btn-emerald" style="margin:0; cursor:pointer; font-size:12px; height:44px; text-align:center;">
-          <span>📸 Tomar Foto con Cámara</span>
-          <input type="file" accept="image/*" capture="environment" class="hidden" onchange="procesarArchivoImagen(event)">
-        </label>
-
-        <label class="btn-secondary" style="margin:0; cursor:pointer; font-size:12px; height:44px; text-align:center;">
-          <span>📂 Cargar Foto / QR</span>
-          <input type="file" accept="image/*" class="hidden" onchange="procesarArchivoImagen(event)">
-        </label>
+    <div id="mensajeCamara">
+      <div class="alert alert-info">
+        ✨ <strong>Listo para escanear:</strong> Presiona el botón verde para activar la cámara o carga una foto de la pantalla.
       </div>
+    </div>
 
-      <button type="button" id="btnTorch" class="btn-secondary hidden" onclick="alternarLinterna()" style="margin-top: 2px;">
-        <span>💡 Encender Linterna</span>
+    <div id="scannerArea" class="hidden">
+      <div id="reader" style="width:100%;"></div>
+      <div class="scanner-overlay">
+        <div class="scanner-box"></div>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:8px; margin-top:10px;">
+      <button type="button" id="btnActivarCamara" class="btn-emerald" style="height:48px; font-size:15px;" onclick="iniciarCamaraUniversal()">
+        <span>📷 ACTIVAR CÁMARA CONTINUA EN VIVO</span>
       </button>
-
-      <button type="button" id="btnDetenerCamara" class="btn-secondary hidden" onclick="detenerCamara()" style="margin-top: 2px;">
-        <span>⏹️ Pausar Cámara</span>
+      <button type="button" id="btnDetenerCamara" class="btn-danger hidden" onclick="detenerCamara()">
+        <span>⏹️ Detener Cámara</span>
+      </button>
+      <button type="button" id="btnFlash" class="btn-secondary hidden" onclick="alternarLinterna()">
+        <span>💡 Linterna</span>
       </button>
     </div>
 
-    <!-- Contenedor del video y canvas -->
-    <div id="reader" class="hidden" playsinline webkit-playsinline style="margin-top:12px;"></div>
-
-    <div id="mensajeCamara" style="margin-top:10px;"></div>
-
-    <!-- Acciones rápidas de navegación -->
-    <div class="button-grid" style="margin-top: 16px;">
-      <button type="button" class="btn-secondary" onclick="cambiarPestanaPrincipal('grupo')">
-        <span>📊 Ver General Grupal</span>
-      </button>
-      <button type="button" class="btn-emerald" onclick="cambiarPestanaPrincipal('padron')">
-        <span>📋 Ver Padrón de Estudiantes</span>
-      </button>
-    </div>
-
-    <div style="margin-top: 10px;">
-      <button type="button" class="btn-secondary" onclick="finalizarSesion()" style="color: #64748b; font-size: 12px; height: 38px;">
-        <span>🔄 Cambiar de Sección / Nivel / Centro</span>
-      </button>
+    <div class="btn-grid-2">
+      <label class="btn-secondary" style="cursor:pointer;">
+        <span>📁 Cargar / Tomar Foto QR</span>
+        <input type="file" accept="image/*" capture="environment" style="display:none;" onchange="procesarArchivoImagen(event)">
+      </label>
+      <label class="btn-secondary" style="cursor:pointer;">
+        <span>📂 Importar JSON / CSV</span>
+        <input type="file" accept=".json,.csv,.txt" multiple style="display:none;" onchange="importarArchivos(event)">
+      </label>
     </div>
   </section>
 
-  <!-- PASO 3: CONFIRMACIÓN Y REVISIÓN DE RESULTADOS (INFORME OFICIAL) -->
+  <!-- ========================================================================= -->
+  <!-- VISTA 2: RESULTADO ESCANEADO (REVISIÓN INMEDIATA) -->
+  <!-- ========================================================================= -->
   <section id="vistaResultado" class="card hidden">
-    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #e2e8f0; padding-bottom:12px; margin-bottom:16px;">
-      <h2 style="margin:0; font-size:18px; color:#2E3552;">📋 Resultados del diagnóstico</h2>
-      <span style="font-size:11px; font-weight:800; background:#e0f2fe; color:#0369a1; padding:4px 10px; border-radius:999px;">Vista Previa Docente</span>
+    <h2>
+      <span>📋 Resultado del Diagnóstico (7.° Año)</span>
+      <span style="font-size:11px; background:#dcfce7; color:#166534; padding:3px 8px; border-radius:999px;">Captura Exitosa</span>
+    </h2>
+
+    <div class="btn-grid-2" style="margin-bottom:12px;">
+      <button type="button" class="btn-emerald" onclick="guardarRegistroActual()">
+        <span>💾 Confirmar y Guardar</span>
+      </button>
+      <button type="button" class="btn-secondary" onclick="descartarYReanudar()">
+        <span>🔄 Descartar y Continuar</span>
+      </button>
     </div>
 
-    <!-- BOTONES DE ACCIÓN SUPERIORES (ACCESO RÁPIDO) -->
-    <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:18px;">
-      <button type="button" class="btn-emerald" style="font-size:14px; height:48px; font-weight:900;" onclick="guardarRegistroActual()">
-        <span>💾 Confirmar y Guardar Registro en Teléfono</span>
-      </button>
-      <button type="button" class="btn-secondary" style="font-size:12px; height:38px;" onclick="descartarYReanudar()">
-        <span>🔄 Descartar y Continuar Escaneando</span>
-      </button>
-    </div>
-
-    <!-- CONTENEDOR DEL INFORME OFICIAL IDENTICO A LA IMAGEN -->
     <div id="contenidoResultado"></div>
 
-    <!-- BOTONES DE ACCIÓN INFERIORES (DESPUÉS DE REVISAR EL INFORME) -->
-    <div style="display:flex; flex-direction:column; gap:8px; margin-top:20px;">
-      <button type="button" class="btn-emerald" style="font-size:14px; height:48px; font-weight:900;" onclick="guardarRegistroActual()">
-        <span>💾 Confirmar y Guardar Registro en Teléfono</span>
+    <div class="btn-grid-2" style="margin-top:14px;">
+      <button type="button" class="btn-emerald" onclick="guardarRegistroActual()">
+        <span>💾 Confirmar y Guardar</span>
       </button>
-      <button type="button" class="btn-secondary" style="font-size:12px; height:38px;" onclick="descartarYReanudar()">
-        <span>🔄 Descartar y Continuar Escaneando</span>
+      <button type="button" class="btn-secondary" onclick="descartarYReanudar()">
+        <span>🔄 Descartar y Continuar</span>
       </button>
     </div>
   </section>
 
-  <!-- PASO 4: VISTA DE GENERALIDAD GRUPAL (MÉTRICAS & SEMÁFORO DUA) -->
+  <!-- ========================================================================= -->
+  <!-- VISTA 3: GENERAL GRUPAL (MÉTRICAS & SEMÁFORO DUA) -->
+  <!-- ========================================================================= -->
   <section id="vistaGrupo" class="card hidden">
-    <div class="back-header-bar">
-      <h2 style="margin: 0;">📊 Generalidad Grupal (Métricas Consolidadas)</h2>
-      <button type="button" class="btn-back" onclick="cambiarPestanaPrincipal('camara')">
+    <h2>
+      <span>📊 Generalidad Grupal (Métricas DUA)</span>
+      <button type="button" class="btn-secondary" style="width:auto; padding:4px 10px; font-size:11px;" onclick="cambiarPestanaPrincipal('camara')">
         <span>⬅ Volver al Escáner</span>
       </button>
-    </div>
+    </h2>
 
     <div id="contenedorMetricasGrupo"></div>
 
-    <!-- SINCRONIZACIÓN DIFERIDA -->
-    <div style="margin-top: 14px; padding: 14px; background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 12px; text-align: center;">
-      <h4 style="font-size: 13px; font-weight: 800; color: #166534; margin: 0 0 6px 0;">📡 Sincronización diferida (cuando haya internet)</h4>
+    <!-- Sincronización Diferida -->
+    <div style="margin-top: 14px; padding: 14px; background: #ecfdf5; border: 1.5px solid #86efac; border-radius: 12px; text-align: center;">
+      <h4 style="font-size: 13px; font-weight: 800; color: #166534; margin: 0 0 6px 0;">📡 Sincronización con Dashboard Central</h4>
       <p style="font-size: 11.5px; color: #15803d; margin: 0 0 10px 0;">
-        Los datos se almacenan de forma 100% segura en este celular. Al conectarte a Wi-Fi o datos, presiona para sincronizar con el panel central:
+        Los datos están seguros en este celular. Al tener internet, presiona para sincronizar:
       </p>
-      <button type="button" id="btnSincronizar" class="btn-emerald" style="width: 100%; font-weight: 900; font-size: 13px; padding: 10px;" onclick="sincronizarConDashboard()">
-        <span>📡 Sincronizar datos con el dashboard central</span>
-      </button>
-    </div>
-
-    <div class="button-grid" style="margin-top: 14px;">
-      <button type="button" class="btn-secondary" onclick="cambiarPestanaPrincipal('padron')">
-        <span>📋 Ir al Padrón de Estudiantes</span>
-      </button>
-      <button type="button" class="btn-primary" onclick="cambiarPestanaPrincipal('camara')">
-        <span>📷 Continuar Escaneando</span>
+      <button type="button" id="btnSincronizar" class="btn-emerald" onclick="sincronizarConDashboard()">
+        <span>📡 Sincronizar con Dashboard Central</span>
       </button>
     </div>
   </section>
 
-  <!-- PASO 5: VISTA DE PADRÓN ESTUDIANTIL -->
+  <!-- ========================================================================= -->
+  <!-- VISTA 4: PADRÓN DE ESTUDIANTES / PAREJAS -->
+  <!-- ========================================================================= -->
   <section id="vistaPadron" class="card hidden">
-    <div class="back-header-bar">
-      <div>
-        <h2 style="margin: 0;">📋 Padrón de Estudiantes</h2>
-        <span style="font-size: 11px; color: #64748b;">Toca "Ver Ficha Detallada" en cualquier estudiante para ver sus fallos específicos</span>
-      </div>
-      <button type="button" class="btn-back" onclick="cambiarPestanaPrincipal('camara')">
+    <h2>
+      <span>📋 Padrón de Parejas / Estudiantes</span>
+      <button type="button" class="btn-secondary" style="width:auto; padding:4px 10px; font-size:11px;" onclick="cambiarPestanaPrincipal('camara')">
         <span>⬅ Volver al Escáner</span>
       </button>
-    </div>
+    </h2>
 
-    <div id="listaRegistros"></div>
+    <div id="listaPadronContenedor"></div>
 
-    <div class="button-grid-3" style="margin-top: 14px;">
+    <div class="btn-grid-3" style="margin-top:14px;">
       <button type="button" class="btn-emerald" onclick="exportarCSV()">
-        <span>📊 Descargar CSV (Excel)</span>
+        <span>📊 Exportar CSV</span>
       </button>
-      <button type="button" class="btn-indigo" onclick="exportarJSON()">
-        <span>💾 Descargar JSON</span>
+      <button type="button" class="btn-secondary" onclick="exportarJSON()">
+        <span>💾 Exportar JSON</span>
       </button>
       <button type="button" class="btn-secondary" onclick="copiarResumenPortapapeles()">
         <span>📋 Copiar Resumen</span>
       </button>
     </div>
 
-    <div class="button-grid" style="margin-top: 8px;">
-      <button type="button" class="btn-danger" onclick="eliminarTodosRegistros()">
+    <div style="margin-top:10px;">
+      <button type="button" class="btn-danger" style="width:100%;" onclick="eliminarTodosRegistros()">
         <span>🗑️ Limpiar Todo el Padrón</span>
       </button>
-      <button type="button" class="btn-secondary" onclick="cambiarPestanaPrincipal('camara')">
-        <span>⬅️ Volver al Escáner</span>
-      </button>
     </div>
   </section>
 
-  <!-- PASO 6: FICHA INDIVIDUAL DETALLADA (ANÁLISIS DE FALLOS Y ORIENTACIÓN DUA) -->
+  <!-- ========================================================================= -->
+  <!-- VISTA 5: FICHA INDIVIDUAL DETALLADA -->
+  <!-- ========================================================================= -->
   <section id="vistaFichaIndividual" class="card hidden">
-    <div class="back-header-bar">
-      <div>
-        <h2 style="margin: 0;">👤 Ficha Individual de Diagnóstico</h2>
-        <span style="font-size: 11px; color: #64748b;">Informe cualitativo y cuantitativo por dimensiones</span>
-      </div>
-      <div style="display: flex; gap: 6px;">
-        <button type="button" class="btn-back" onclick="cambiarPestanaPrincipal('padron')">
-          <span>⬅ Volver al Padrón</span>
-        </button>
-        <button type="button" class="btn-back" onclick="cambiarPestanaPrincipal('camara')">
-          <span>📷 Escáner</span>
-        </button>
-      </div>
-    </div>
+    <h2>
+      <span>👤 Ficha Detallada de Diagnóstico</span>
+      <button type="button" class="btn-secondary" style="width:auto; padding:4px 10px; font-size:11px;" onclick="cambiarPestanaPrincipal('padron')">
+        <span>⬅ Volver al Padrón</span>
+      </button>
+    </h2>
 
     <div id="contenidoFichaIndividual"></div>
+  </section>
 
-    <div class="button-grid" style="margin-top: 14px;">
-      <button type="button" class="btn-secondary" onclick="cambiarPestanaPrincipal('padron')">
-        <span>⬅ Regresar al Padrón</span>
-      </button>
-      <button type="button" class="btn-primary" onclick="cambiarPestanaPrincipal('camara')">
-        <span>📷 Escanear Siguiente Estudiante</span>
+  <!-- ========================================================================= -->
+  <!-- VISTA 6: AJUSTES DE SESIÓN -->
+  <!-- ========================================================================= -->
+  <section id="vistaConfig" class="card hidden">
+    <h2>⚙️ Ajustes de Sesión y Grupo</h2>
+
+    <label style="display:block; font-weight:bold; margin:10px 0 4px; font-size:13px;">Centro Educativo:</label>
+    <input id="inputCentro" type="text" value="Colegio de Secundaria MEP" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px; font-size:14px;">
+
+    <label style="display:block; font-weight:bold; margin:10px 0 4px; font-size:13px;">Nivel Educativo:</label>
+    <input type="text" value="7.° Año (Sétimo - Módulo 1)" disabled style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px; font-size:14px; background:#f1f5f9;">
+
+    <label style="display:block; font-weight:bold; margin:10px 0 4px; font-size:13px;">Sección por Defecto:</label>
+    <input id="inputSeccion" type="text" value="7-1" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px; font-size:14px;">
+
+    <div style="margin-top:14px;">
+      <button type="button" class="btn-emerald" onclick="guardarAjustesSesion()">
+        <span>💾 Guardar Ajustes</span>
       </button>
     </div>
   </section>
 
-  <!-- PIE DE PÁGINA INSTITUCIONAL MEP -->
-  <footer class="app-mep-footer">
-    <div class="footer-content">
-      <div class="footer-section">
-        <h4 class="footer-title">Elaborado por:</h4>
-        <p class="footer-text">Asesores Nacionales del Programa Nacional de Formación Tecnológica</p>
-        <p class="footer-subtext">Departamento de Investigación, Desarrollo e Implementación</p>
-        <p class="footer-subtext">Dirección de Recursos Tecnológicos en Educación</p>
-        <p class="footer-subtext">Ministerio de Educación Pública</p>
-      </div>
-      <div class="footer-section footer-credits">
-        <h4 class="footer-title">Elaborado por:</h4>
-        <p class="footer-authors">
-          <span class="author-badge">Allan Morera Araya</span>
-          <span class="author-badge">Alberto Bustos Ortega</span>
-        </p>
-        <p class="footer-date">Febrero 2027.</p>
-      </div>
-    </div>
+  <footer>
+    <strong>Ministerio de Educación Pública de Costa Rica</strong><br>
+    Programa Nacional de Formación Tecnológica • Dirección de Recursos Tecnológicos en Educación<br>
+    Escáner de Datos 7.° Año (Sétimo) • 100% Offline
   </footer>
 
 </div>
 
 <script>
+// =========================================================================
+// VARIABLES Y ESTADO GLOBAL DE 7MO
+// =========================================================================
 var STORAGE_KEY = "mep_diagnostico_escaner_7mo_v2";
 
 var sesionActiva = {
@@ -1578,721 +635,102 @@ var sesionActiva = {
   seccion: "7-1"
 };
 
-var html5QrCodeInstance = null;
 var resultadoPendiente = null;
-var procesandoLectura = false;
-
-// Audio Beep Feedback (Web Audio API)
-function emitirBeepExito() {
-  try {
-    var ctx = new (window.AudioContext || window.webkitAudioContext)();
-    var osc = ctx.createOscillator();
-    var gain = ctx.createGain();
-    osc.type = "sine";
-    osc.frequency.setValueAtTime(880, ctx.currentTime);
-    gain.gain.setValueAtTime(0.2, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.start();
-    osc.stop(ctx.currentTime + 0.15);
-  } catch (e) {}
-
-  if (typeof navigator !== "undefined" && navigator.vibrate) {
-    try { navigator.vibrate(150); } catch (e) {}
-  }
-}
-
 var streamCamara = null;
 var trackVideo = null;
 var linternaActiva = false;
-var barcodeDetectorInstance = null;
-var animFrameId = null;
+var html5QrCodeInstance = null;
+var deferredPrompt = null;
 
-document.addEventListener("DOMContentLoaded", function() {
-  inicializarBannerSO();
-  actualizarContador();
-  
-  // Inicializar BarcodeDetector si está disponible en el navegador
+// =========================================================================
+// GESTIÓN DE ALMACENAMIENTO LOCAL (PADRÓN)
+// =========================================================================
+function obtenerRegistros() {
   try {
-    if ("BarcodeDetector" in window) {
-      barcodeDetectorInstance = new BarcodeDetector({ formats: ["qr_code"] });
-    }
+    var raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
   } catch (e) {
-    barcodeDetectorInstance = null;
-  }
-});
-
-// Control del acordeón de guía
-function alternarGuiaInstalacion() {
-  var body = document.getElementById("guideContentBody");
-  var arrow = document.getElementById("guideArrow");
-  if (!body || !arrow) return;
-
-  if (body.style.display === "block") {
-    body.style.display = "none";
-    arrow.textContent = "▼ Ver Instrucciones";
-  } else {
-    body.style.display = "block";
-    arrow.textContent = "▲ Ocultar Instrucciones";
+    return [];
   }
 }
 
-// Control de pestañas del acordeón
-function cambiarPestanaGuia(tab) {
-  var panes = ["paneIos", "paneAndroid", "paneHuawei", "paneModos"];
-  var btns = ["tabBtnIos", "tabBtnAndroid", "tabBtnHuawei", "tabBtnModos"];
+function guardarRegistros(lista) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
+  } catch (e) {}
+}
 
-  panes.forEach(function(p) {
-    var el = document.getElementById(p);
-    if (el) el.classList.add("hidden");
-  });
+function actualizarContador() {
+  var regs = obtenerRegistros();
+  var badge = document.getElementById("badgePadronCount");
+  if (badge) badge.textContent = regs.length;
+}
 
-  btns.forEach(function(b) {
-    var el = document.getElementById(b);
-    if (el) el.classList.remove("active");
-  });
+// =========================================================================
+// NAVEGACIÓN PRINCIPAL ENTRE PESTAÑAS
+// =========================================================================
+function cambiarPestanaPrincipal(tab) {
+  var vCamara = document.getElementById("vistaCamara");
+  var vResultado = document.getElementById("vistaResultado");
+  var vGrupo = document.getElementById("vistaGrupo");
+  var vPadron = document.getElementById("vistaPadron");
+  var vFicha = document.getElementById("vistaFichaIndividual");
+  var vConfig = document.getElementById("vistaConfig");
 
-  if (tab === "ios") {
-    var p = document.getElementById("paneIos");
-    var b = document.getElementById("tabBtnIos");
-    if (p) p.classList.remove("hidden");
-    if (b) b.classList.add("active");
-  } else if (tab === "android") {
-    var p = document.getElementById("paneAndroid");
-    var b = document.getElementById("tabBtnAndroid");
-    if (p) p.classList.remove("hidden");
-    if (b) b.classList.add("active");
-  } else if (tab === "huawei") {
-    var p = document.getElementById("paneHuawei");
-    var b = document.getElementById("tabBtnHuawei");
-    if (p) p.classList.remove("hidden");
-    if (b) b.classList.add("active");
-  } else if (tab === "modos") {
-    var p = document.getElementById("paneModos");
-    var b = document.getElementById("tabBtnModos");
-    if (p) p.classList.remove("hidden");
-    if (b) b.classList.add("active");
+  // Ocultar todas
+  if (vCamara) vCamara.classList.add("hidden");
+  if (vResultado) vResultado.classList.add("hidden");
+  if (vGrupo) vGrupo.classList.add("hidden");
+  if (vPadron) vPadron.classList.add("hidden");
+  if (vFicha) vFicha.classList.add("hidden");
+  if (vConfig) vConfig.classList.add("hidden");
+
+  // Reset tabs activas
+  document.querySelectorAll(".nav-tab").forEach(function(b) { b.classList.remove("active"); });
+
+  if (tab === "camara") {
+    if (vCamara) vCamara.classList.remove("hidden");
+    var btn = document.getElementById("tabNavCamara");
+    if (btn) btn.classList.add("active");
+  } else if (tab === "grupo") {
+    if (vGrupo) vGrupo.classList.remove("hidden");
+    var btn = document.getElementById("tabNavGrupo");
+    if (btn) btn.classList.add("active");
+    renderizarMetricasGrupo();
+  } else if (tab === "padron") {
+    if (vPadron) vPadron.classList.remove("hidden");
+    var btn = document.getElementById("tabNavPadron");
+    if (btn) btn.classList.add("active");
+    renderizarPadron();
+  } else if (tab === "config") {
+    if (vConfig) vConfig.classList.remove("hidden");
+    var btn = document.getElementById("tabNavConfig");
+    if (btn) btn.classList.add("active");
+  } else if (tab === "resultado") {
+    if (vResultado) vResultado.classList.remove("hidden");
+  } else if (tab === "ficha") {
+    if (vFicha) vFicha.classList.remove("hidden");
   }
 }
 
-function iniciarSesionDocente() {
-  var centro = (document.getElementById("inputCentro").value || "").trim() || "Colegio de Secundaria MEP";
-  var nivel = document.getElementById("inputNivel").value || "9.° año";
-  var seccion = (document.getElementById("inputSeccion").value || "").trim() || "7-1";
+function guardarAjustesSesion() {
+  var c = document.getElementById("inputCentro").value.trim();
+  var s = document.getElementById("inputSeccion").value.trim();
+  if (c) sesionActiva.centro = c;
+  if (s) sesionActiva.seccion = s;
 
-  sesionActiva.centro = centro;
-  sesionActiva.nivel = nivel;
-  sesionActiva.seccion = seccion;
+  var b = document.getElementById("txtSeccionBadge");
+  if (b) b.textContent = "Sección " + sesionActiva.seccion;
 
-  document.getElementById("sessionInfo").innerHTML =
-    "<strong>🏫 Centro:</strong> " + escaparHTML(sesionActiva.centro) + "<br>" +
-    "<strong>📚 Nivel:</strong> " + escaparHTML(sesionActiva.nivel) + " &nbsp;|&nbsp; <strong>👥 Sección:</strong> " + escaparHTML(sesionActiva.seccion);
-
-  document.getElementById("vistaConfig").classList.add("hidden");
-  document.getElementById("navBarSesion").classList.remove("hidden");
+  alert("✅ Ajustes actualizados: " + sesionActiva.centro + " (Sección " + sesionActiva.seccion + ")");
   cambiarPestanaPrincipal("camara");
-  actualizarContador();
 }
 
-// ACTIVACIÓN DE CÁMARA UNIVERSAL (MULTICAPA Y COMPATIBLE CON SAFARI / CHROME)
-async function iniciarCamaraUniversal() {
-  if (streamCamara || html5QrCodeInstance) return;
-  procesandoLectura = false;
-
-  var readerEl = document.getElementById("reader");
-  readerEl.classList.remove("hidden");
-  document.getElementById("btnActivarCamara").classList.add("hidden");
-  document.getElementById("btnDetenerCamara").classList.remove("hidden");
-
-  document.getElementById("mensajeCamara").innerHTML =
-    '<div class="alert alert-info">📸 Iniciando cámara... Apunte hacia el código QR en la pantalla del estudiante.</div>';
-
-  var constraintsList = [
-    { video: { facingMode: { ideal: "environment" }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false },
-    { video: { facingMode: "environment" }, audio: false },
-    { video: true, audio: false }
-  ];
-
-  var streamObtenido = null;
-  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    for (var i = 0; i < constraintsList.length; i++) {
-      try {
-        streamObtenido = await navigator.mediaDevices.getUserMedia(constraintsList[i]);
-        if (streamObtenido) break;
-      } catch (eConstraints) {}
-    }
-  }
-
-  if (streamObtenido) {
-    streamCamara = streamObtenido;
-    var videoEl = document.createElement("video");
-    videoEl.setAttribute("autoplay", "true");
-    videoEl.setAttribute("playsinline", "true");
-    videoEl.setAttribute("webkit-playsinline", "true");
-    videoEl.setAttribute("muted", "true");
-    videoEl.style.width = "100%";
-    videoEl.style.borderRadius = "14px";
-    videoEl.style.display = "block";
-    videoEl.srcObject = streamObtenido;
-
-    readerEl.innerHTML = "";
-    readerEl.appendChild(videoEl);
-
-    try {
-      await videoEl.play();
-    } catch (errPlay) {}
-
-    var track = streamObtenido.getVideoTracks()[0];
-    trackVideo = track;
-    if (track && typeof track.getCapabilities === "function") {
-      var caps = track.getCapabilities();
-      if (caps && caps.torch) {
-        document.getElementById("btnTorch").classList.remove("hidden");
-      }
-    }
-
-    document.getElementById("mensajeCamara").innerHTML =
-      '<div class="alert alert-info">📸 <strong>Cámara Activa:</strong> Apunte hacia el código QR en la pantalla del estudiante.</div>';
-
-    iniciarBucleEscaneoVideo(videoEl);
-    return;
-  }
-
-  // Fallback 2: Intentar con Html5Qrcode Library
-  try {
-    if (typeof Html5Qrcode !== "undefined") {
-      html5QrCodeInstance = new Html5Qrcode("reader");
-      var qrConfig = {
-        fps: 15,
-        qrbox: function(w, h) {
-          var edge = Math.min(w, h);
-          return { width: Math.floor(edge * 0.8), height: Math.floor(edge * 0.8) };
-        },
-        aspectRatio: 1.0,
-        experimentalFeatures: { useBarCodeDetectorIfSupported: true }
-      };
-
-      try {
-        await html5QrCodeInstance.start({ facingMode: "environment" }, qrConfig, onQRDetectado, function() {});
-        return;
-      } catch (errFacing) {
-        var cameras = await Html5Qrcode.getCameras();
-        if (cameras && cameras.length > 0) {
-          var backCam = cameras[cameras.length - 1];
-          await html5QrCodeInstance.start(backCam.id, qrConfig, onQRDetectado, function() {});
-          return;
-        }
-      }
-    }
-  } catch (errHtml5) {}
-
-  // Si falló el streaming continuo por políticas del navegador (por ejemplo en file:// o permisos)
-  await detenerCamara();
-  document.getElementById("mensajeCamara").innerHTML =
-    '<div class="alert alert-error" style="border-left: 4px solid #dc2626;">' +
-    '<strong>⚠️ Cámara en vivo no permitida en este entorno.</strong><br>' +
-    '• Para escanear inmediatamente, use el botón verde <strong>"📸 Tomar Foto con Cámara"</strong>.<br>' +
-    '• Esto abre la cámara nativa de su teléfono (iPhone / Android) y procesa el QR con 100% de efectividad.' +
-    '</div>';
-}
-
-function alternarLinterna() {
-  if (trackVideo && typeof trackVideo.applyConstraints === "function") {
-    linternaActiva = !linternaActiva;
-    trackVideo.applyConstraints({
-      advanced: [{ torch: linternaActiva }]
-    }).catch(function() {});
-    document.getElementById("btnTorch").innerHTML = linternaActiva ? "<span>🚫 Apagar Linterna</span>" : "<span>💡 Encender Linterna</span>";
-  }
-}
-
-function iniciarBucleEscaneoVideo(videoEl) {
-  var canvas = document.createElement("canvas");
-  var ctx = canvas.getContext("2d", { willReadFrequently: true });
-
-  async function escanearFrame() {
-    if (!streamCamara || procesandoLectura) return;
-
-    if (videoEl.readyState >= 2 && videoEl.videoWidth > 0) {
-      var w = videoEl.videoWidth;
-      var h = videoEl.videoHeight;
-      var minSide = Math.min(w, h);
-      var cropSize = Math.floor(minSide * 0.8);
-      var sx = Math.floor((w - cropSize) / 2);
-      var sy = Math.floor((h - cropSize) / 2);
-      var canvasSize = 640;
-
-      canvas.width = canvasSize;
-      canvas.height = canvasSize;
-      ctx.drawImage(videoEl, sx, sy, cropSize, cropSize, 0, 0, canvasSize, canvasSize);
-
-      var textoQR = null;
-
-      // 1. Detección por BarcodeDetector nativo (Ultra rápida)
-      if (barcodeDetectorInstance) {
-        try {
-          var detecciones = await barcodeDetectorInstance.detect(canvas);
-          if (detecciones && detecciones.length > 0) {
-            textoQR = detecciones[0].rawValue;
-          }
-        } catch (eBD) {}
-      }
-
-      // 2. Detección por Html5Qrcode si BarcodeDetector no halló nada
-      if (!textoQR && typeof Html5Qrcode !== "undefined") {
-        try {
-          if (!window.__tempQrReader) {
-            window.__tempQrReader = new Html5Qrcode("reader");
-          }
-        } catch (eH5) {}
-      }
-
-      if (textoQR) {
-        onQRDetectado(textoQR);
-        return;
-      }
-    }
-
-    animFrameId = requestAnimationFrame(escanearFrame);
-  }
-
-  animFrameId = requestAnimationFrame(escanearFrame);
-}
-
-async function detenerCamara() {
-  if (animFrameId) {
-    cancelAnimationFrame(animFrameId);
-    animFrameId = null;
-  }
-
-  if (streamCamara) {
-    try {
-      streamCamara.getTracks().forEach(function(t) { t.stop(); });
-    } catch (e) {}
-    streamCamara = null;
-  }
-  trackVideo = null;
-  linternaActiva = false;
-
-  if (html5QrCodeInstance) {
-    try {
-      await html5QrCodeInstance.stop();
-    } catch (e) {}
-    try {
-      await html5QrCodeInstance.clear();
-    } catch (e) {}
-    html5QrCodeInstance = null;
-  }
-
-  var readerEl = document.getElementById("reader");
-  if (readerEl) {
-    readerEl.innerHTML = "";
-    readerEl.classList.add("hidden");
-  }
-  
-  var btnAct = document.getElementById("btnActivarCamara");
-  if (btnAct) btnAct.classList.remove("hidden");
-  
-  var btnDet = document.getElementById("btnDetenerCamara");
-  if (btnDet) btnDet.classList.add("hidden");
-
-  var btnTorch = document.getElementById("btnTorch");
-  if (btnTorch) {
-    btnTorch.classList.add("hidden");
-    btnTorch.innerHTML = "<span>💡 Encender Linterna</span>";
-  }
-}
-
-async function onQRDetectado(textoQR) {
-  if (procesandoLectura) return;
-  procesandoLectura = true;
-
-  emitirBeepExito();
-  await detenerCamara();
-
-  try {
-    var datos = interpretarPayloadQR(textoQR);
-    resultadoPendiente = datos;
-    renderizarResultado(datos);
-  } catch (e) {
-    procesandoLectura = false;
-    document.getElementById("mensajeCamara").innerHTML =
-      '<div class="alert alert-error"><strong>⚠️ Código QR leído pero no reconocido:</strong> ' + escaparHTML(e.message) + '</div>';
-  }
-}
-
-// Fallback universal: Escaneo de foto tomada con cámara nativa o cargada desde galería
-async function procesarArchivoImagen(e) {
-  var file = e.target.files && e.target.files[0];
-  if (!file) return;
-
-  document.getElementById("mensajeCamara").innerHTML =
-    '<div class="alert alert-info">⌛ Procesando imagen del código QR...</div>';
-
-  try {
-    var textoDecodificado = null;
-
-    // 1. Probar con BarcodeDetector sobre ImageBitmap
-    if ("BarcodeDetector" in window && typeof createImageBitmap === "function") {
-      try {
-        var bmp = await createImageBitmap(file);
-        var bd = new BarcodeDetector({ formats: ["qr_code"] });
-        var res = await bd.detect(bmp);
-        if (res && res.length > 0) {
-          textoDecodificado = res[0].rawValue;
-        }
-      } catch (errBD) {}
-    }
-
-    // 2. Probar con Html5Qrcode.scanFile
-    if (!textoDecodificado && typeof Html5Qrcode !== "undefined") {
-      try {
-        var html5QrCode = new Html5Qrcode("reader");
-        textoDecodificado = await html5QrCode.scanFile(file, true);
-        await html5QrCode.clear();
-      } catch (errH5) {}
-    }
-
-    if (textoDecodificado) {
-      onQRDetectado(textoDecodificado);
-    } else {
-      throw new Error("No se detectó el código QR con suficiente nitidez.");
-    }
-  } catch (err) {
-    document.getElementById("mensajeCamara").innerHTML =
-      '<div class="alert alert-error"><strong>⚠️ No se detectó un código QR legible en la foto.</strong><br>Asegúrese de enfocar bien la pantalla y que el código QR no tenga reflejos de luz.</div>';
-  }
-}
-
-// Fallback 2: Importación de fichas JSON recopiladas por llave maya USB
-async function importarArchivosJSON(e) {
-  var files = e.target.files;
-  if (!files || files.length === 0) return;
-
-  var importados = 0;
-  var registrosActuales = obtenerRegistros();
-
-  for (var i = 0; i < files.length; i++) {
-    var file = files[i];
-    try {
-      var text = await file.text();
-      var datos = interpretarPayloadQR(text);
-      
-      var registroNuevo = {
-        id: Date.now().toString(36) + Math.random().toString(36).substring(2, 6),
-        centro: sesionActiva.centro || datos.inst || "Centro Educativo MEP",
-        nivel: sesionActiva.nivel || "9.° año",
-        seccion: sesionActiva.seccion || datos.seccionQR || "9-1",
-        estudiante: datos.estudiante,
-        cedula: datos.cedula || "",
-        fecha: datos.fecha,
-        cognoscitiva: datos.cognoscitiva,
-        nivelCognoscitivo: datos.nivelCognoscitivo,
-        tarjetas: datos.tarjetas,
-        puertos: datos.puertos,
-        ejecucion: datos.ejecucion,
-        socioafectiva: datos.socioafectiva,
-        fortalezas: datos.fortalezas,
-        prioridades: datos.prioridades,
-        qrOriginal: text,
-        timestamp: new Date().toISOString()
-      };
-
-      registrosActuales.push(registroNuevo);
-      importados++;
-    } catch (err) {
-      console.warn("Archivo no válido:", file.name, err);
-    }
-  }
-
-  e.target.value = "";
-
-  if (importados > 0) {
-    guardarRegistros(registrosActuales);
-    actualizarContador();
-    alert("✅ Se importaron " + importados + " ficha(s) estudiantil(es) correctamente al padrón.");
-    alternarVistaRegistros();
-  } else {
-    alert("No se pudieron importar registros válidos de los archivos seleccionados.");
-  }
-}
-
-// Fallback 3: Importación y Análisis Masivo de Archivos CSV (Excel / Padrón)
-async function importarArchivosCSV(e) {
-  var files = e.target.files;
-  if (!files || files.length === 0) return;
-
-  var totalNuevos = 0;
-  var registrosActuales = obtenerRegistros();
-  var logImportacion = [];
-
-  for (var i = 0; i < files.length; i++) {
-    var file = files[i];
-    try {
-      var text = await file.text();
-      var procesados = procesarTextoCSV(text, file.name);
-      if (procesados && procesados.length > 0) {
-        procesados.forEach(function(reg) {
-          registrosActuales.push(reg);
-          totalNuevos++;
-        });
-        logImportacion.push("• " + file.name + ": " + procesados.length + " estudiantes.");
-      }
-    } catch (err) {
-      console.warn("Error al procesar archivo CSV:", file.name, err);
-    }
-  }
-
-  // Reset del input file para permitir seleccionar el mismo archivo nuevamente
-  e.target.value = "";
-
-  if (totalNuevos > 0) {
-    guardarRegistros(registrosActuales);
-    actualizarContador();
-    
-    // Calcular métricas para el mensaje
-    var met = calcularMetricasPadron(registrosActuales);
-    var mensajeAlerta = "✅ ¡Importación y Análisis Completado!\n\n" +
-      "Se procesaron " + totalNuevos + " registros de estudiantes.\n" +
-      logImportacion.join("\n") + "\n\n" +
-      "📊 Métricas Globales del Padrón:\n" +
-      "• Total Estudiantes: " + met.total + "\n" +
-      "• Promedio Cognitivo: " + met.promedio + "%\n" +
-      "• 🟢 Logrado (≥80%): " + met.logrado + " (" + met.pctLogrado + "%)\n" +
-      "• 🟡 En Desarrollo (60-79%): " + met.desarrollo + " (" + met.pctDesarrollo + "%)\n" +
-      "• 🔴 Reforzamiento (<60%): " + met.refuerzo + " (" + met.pctRefuerzo + "%)\n" +
-      "• ⚙️ Psicomotor Completo: " + met.psicoCompleto + " (" + met.pctPsico + "%)\n\n" +
-      "Los datos han sido incorporados a las métricas del padrón.";
-
-    alert(mensajeAlerta);
-
-    // Si no estábamos en la vista de registros, cambiar a ella para ver las métricas
-    var vReg = document.getElementById("vistaRegistros");
-    var vSes = document.getElementById("vistaSesion");
-    if (vReg && vReg.classList.contains("hidden")) {
-      detenerCamara();
-      vSes.classList.add("hidden");
-      vReg.classList.remove("hidden");
-    }
-    renderizarListaPadron();
-  } else {
-    alert("⚠️ No se pudieron extraer datos válidos de los archivos CSV seleccionados.\nPor favor verifique que contenga columnas como: Estudiante, Sección, Cognoscitiva, etc.");
-  }
-}
-
-function parsearLineaCSV(linea, sep) {
-  var res = [];
-  var cur = "";
-  var inQuotes = false;
-  for (var i = 0; i < linea.length; i++) {
-    var c = linea[i];
-    if (c === '"') {
-      if (inQuotes && linea[i + 1] === '"') {
-        cur += '"';
-        i++;
-      } else {
-        inQuotes = !inQuotes;
-      }
-    } else if (c === sep && !inQuotes) {
-      res.push(cur.trim());
-      cur = "";
-    } else {
-      cur += c;
-    }
-  }
-  res.push(cur.trim());
-  return res;
-}
-
-function detectarSeparadorCSV(linea) {
-  var counts = { ';': 0, ',': 0, '\t': 0, '|': 0 };
-  var inQuotes = false;
-  for (var i = 0; i < linea.length; i++) {
-    var c = linea[i];
-    if (c === '"') {
-      if (inQuotes && linea[i + 1] === '"') i++;
-      else inQuotes = !inQuotes;
-    } else if (!inQuotes && counts[c] !== undefined) {
-      counts[c]++;
-    }
-  }
-  var sep = ';';
-  var max = -1;
-  for (var k in counts) {
-    if (counts[k] > max) {
-      max = counts[k];
-      sep = k;
-    }
-  }
-  return max > 0 ? sep : ';';
-}
-
-function procesarTextoCSV(texto, nombreArchivo) {
-  if (!texto || !texto.trim()) return [];
-
-  // Eliminar BOM UTF-8 si existe
-  var raw = texto.replace(/^\uFEFF/, "").trim();
-  var lineas = raw.split(/\r?\n/).map(function(l) { return l.trim(); }).filter(Boolean);
-  if (lineas.length < 2) return [];
-
-  var sep = detectarSeparadorCSV(lineas[0]);
-  var headers = parsearLineaCSV(lineas[0], sep).map(function(h) {
-    return h.replace(/^["']|["']$/g, "").trim().toLowerCase()
-      .normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Quitar acentos
-  });
-
-  // Mapeo inteligente de encabezados
-  var colIdx = {
-    centro: -1,
-    nivel: -1,
-    seccion: -1,
-    estudiante: -1,
-    cedula: -1,
-    fecha: -1,
-    cognoscitiva: -1,
-    nivelCognoscitivo: -1,
-    tarjetas: -1,
-    puertos: -1,
-    ejecucion: -1,
-    socioafectiva: -1,
-    fortalezas: -1,
-    prioridades: -1
-  };
-
-  headers.forEach(function(h, idx) {
-    if (h.includes("centro") || h.includes("colegio") || h.includes("escuela") || h.includes("institucion")) colIdx.centro = idx;
-    else if (h === "nivel" || h.includes("nivel educ") || h.includes("grado")) colIdx.nivel = idx;
-    else if (h.includes("seccion") || h.includes("grupo") || h === "sec") colIdx.seccion = idx;
-    else if (h.includes("estudiante") || h.includes("nombre") || h.includes("alumno") || h.includes("cadete")) colIdx.estudiante = idx;
-    else if (h.includes("cedula") || h.includes("identificacion") || h === "id" || h === "docid") colIdx.cedula = idx;
-    else if (h.includes("fecha") || h.includes("timestamp") || h === "fec") colIdx.fecha = idx;
-    else if (h.includes("nivel cogn") || h.includes("nivel general") || h.includes("nivel de")) colIdx.nivelCognoscitivo = idx;
-    else if (h.includes("cognoscitiva") || h.includes("cognitivo") || h.includes("puntaje") || h.includes("nota") || h.includes("porcentaje") || h === "cog") colIdx.cognoscitiva = idx;
-    else if (h.includes("tarjeta") || h.includes("hw") || h.includes("misiones")) colIdx.tarjetas = idx;
-    else if (h.includes("puerto") || h.includes("algo") || h.includes("conexion")) colIdx.puertos = idx;
-    else if (h.includes("ejecucion") || h.includes("psicomot") || h === "psi") colIdx.ejecucion = idx;
-    else if (h.includes("socioafect") || h.includes("actitud") || h.includes("indicador") || h === "soc") colIdx.socioafectiva = idx;
-    else if (h.includes("fortaleza") || h.includes("dominio")) colIdx.fortalezas = idx;
-    else if (h.includes("prioridad") || h.includes("apoyo") || h.includes("reforzamiento")) colIdx.prioridades = idx;
-  });
-
-  // Si no se detectó estudiante, asumir columna 0 o 3
-  if (colIdx.estudiante === -1) {
-    if (headers.length > 3 && colIdx.centro !== -1) colIdx.estudiante = 3;
-    else colIdx.estudiante = 0;
-  }
-
-  var registros = [];
-
-  for (var i = 1; i < lineas.length; i++) {
-    var valores = parsearLineaCSV(lineas[i], sep).map(function(v) {
-      return v.replace(/^["']|["']$/g, "").trim();
-    });
-
-    if (valores.length === 0 || (valores.length === 1 && !valores[0])) continue;
-
-    var nomEstudiante = (colIdx.estudiante !== -1 && valores[colIdx.estudiante]) ? valores[colIdx.estudiante] : ("Estudiante " + i);
-    if (!nomEstudiante || nomEstudiante.toLowerCase() === "estudiante" || nomEstudiante.toLowerCase() === "nombre") continue;
-
-    var centroVal = (colIdx.centro !== -1 && valores[colIdx.centro]) ? valores[colIdx.centro] : (sesionActiva.centro || "Colegio de Secundaria MEP");
-    var nivelVal = (colIdx.nivel !== -1 && valores[colIdx.nivel]) ? valores[colIdx.nivel] : (sesionActiva.nivel || "9.° año");
-    var seccionVal = (colIdx.seccion !== -1 && valores[colIdx.seccion]) ? valores[colIdx.seccion] : (sesionActiva.seccion || "9-1");
-    var cedulaVal = (colIdx.cedula !== -1 && valores[colIdx.cedula]) ? valores[colIdx.cedula] : "";
-    var fechaVal = (colIdx.fecha !== -1 && valores[colIdx.fecha]) ? valores[colIdx.fecha] : new Date().toLocaleDateString("es-CR");
-
-    var rawCog = (colIdx.cognoscitiva !== -1 && valores[colIdx.cognoscitiva]) ? valores[colIdx.cognoscitiva] : "8/10";
-    var rawNivCog = (colIdx.nivelCognoscitivo !== -1 && valores[colIdx.nivelCognoscitivo]) ? valores[colIdx.nivelCognoscitivo] : "";
-
-    // Normalizar datos cognitivos y nivel DUA
-    var infoCog = normalizarCognitivo(rawCog, rawNivCog);
-
-    var tarjetasVal = (colIdx.tarjetas !== -1 && valores[colIdx.tarjetas]) ? valores[colIdx.tarjetas] : "3/3";
-    var puertosVal = (colIdx.puertos !== -1 && valores[colIdx.puertos]) ? valores[colIdx.puertos] : "9/9";
-    var ejecucionVal = (colIdx.ejecucion !== -1 && valores[colIdx.ejecucion]) ? valores[colIdx.ejecucion] : "Completa";
-    var socioVal = (colIdx.socioafectiva !== -1 && valores[colIdx.socioafectiva]) ? valores[colIdx.socioafectiva] : "5/5 indicadores favorables";
-    var fortalezasVal = (colIdx.fortalezas !== -1 && valores[colIdx.fortalezas]) ? valores[colIdx.fortalezas] : "Pensamiento computacional y lógica";
-    var prioridadesVal = (colIdx.prioridades !== -1 && valores[colIdx.prioridades]) ? valores[colIdx.prioridades] : (infoCog.nivel === "Logrado" ? "Ninguna" : "Reforzamiento conceptual");
-
-    var nuevo = {
-      id: Date.now().toString(36) + Math.random().toString(36).substring(2, 6) + "_" + i,
-      centro: centroVal,
-      nivel: nivelVal,
-      seccion: seccionVal,
-      estudiante: nomEstudiante,
-      cedula: cedulaVal,
-      fecha: fechaVal,
-      cognoscitiva: infoCog.texto,
-      nivelCognoscitivo: infoCog.nivel,
-      tarjetas: tarjetasVal,
-      puertos: puertosVal,
-      ejecucion: ejecucionVal,
-      socioafectiva: socioVal,
-      fortalezas: fortalezasVal,
-      prioridades: prioridadesVal,
-      qrOriginal: "CSV_IMPORT:" + (nombreArchivo || "archivo.csv") + " | " + nomEstudiante,
-      timestamp: new Date().toISOString()
-    };
-
-    registros.push(nuevo);
-  }
-
-  return registros;
-}
-
-function normalizarCognitivo(rawCog, rawNivCog) {
-  var texto = String(rawCog).trim();
-  var nivel = rawNivCog ? String(rawNivCog).trim() : "";
-  var porcentaje = 80;
-
-  // Extraer porcentaje o fracción
-  var matchFrac = texto.match(/(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)/);
-  var matchPct = texto.match(/(\d+(?:\.\d+)?)\s*%/);
-
-  if (matchFrac) {
-    var num = parseFloat(matchFrac[1]);
-    var den = parseFloat(matchFrac[2]) || 1;
-    porcentaje = Math.round((num / den) * 100);
-  } else if (matchPct) {
-    porcentaje = Math.round(parseFloat(matchPct[1]));
-  } else {
-    var numPuro = parseFloat(texto);
-    if (!isNaN(numPuro)) {
-      if (numPuro <= 10) {
-        porcentaje = Math.round((numPuro / 10) * 100);
-        texto = numPuro + "/10 (" + porcentaje + "%)";
-      } else if (numPuro <= 14 && sesionActiva.nivel && sesionActiva.nivel.includes("8")) {
-        porcentaje = Math.round((numPuro / 14) * 100);
-        texto = numPuro + "/14 (" + porcentaje + "%)";
-      } else if (numPuro <= 100) {
-        porcentaje = Math.round(numPuro);
-        texto = porcentaje + "%";
-      }
-    }
-  }
-
-  if (!nivel) {
-    if (porcentaje >= 80) nivel = "Logrado";
-    else if (porcentaje >= 60) nivel = "En Desarrollo";
-    else nivel = "Reforzamiento conceptual";
-  }
-
-  return {
-    texto: texto.includes("%") ? texto : (texto + " (" + porcentaje + "%)"),
-    nivel: nivel,
-    porcentaje: porcentaje
-  };
-}
-
-
-// ==========================================================================
-// DECODIFICADOR OFICIAL PARA 7.° AÑO (SÉTIMO) - PAREJAS, PSICOMOTRIZ Y 10 SABERES
-// ==========================================================================
+// =========================================================================
+// DECODIFICADOR OFICIAL 7.° AÑO (SÉTIMO) - PAREJAS Y 10 SABERES
+// =========================================================================
 function interpretarPayloadQR(raw) {
-  if (!raw || !raw.trim()) {
-    throw new Error("El código QR está vacío.");
-  }
-
+  if (!raw || !raw.trim()) throw new Error("Código QR vacío.");
   var texto = raw.trim();
 
   var saberesOficiales7mo = [
@@ -2317,79 +755,64 @@ function interpretarPayloadQR(raw) {
     "RA": "Requiere Acompañamiento"
   };
 
-  // 1. FORMATO JSON (OFICIAL 7MO: MEP7 / CYBERQUEST / DIAGNOSTICO_7MO)
+  // 1. JSON
   if (texto.startsWith("{") && texto.endsWith("}")) {
     try {
       var obj = JSON.parse(texto);
-      
-      var c1 = obj.c1 || obj.estudianteNombre || obj.estudiante || obj.nombre || "Estudiante 1";
+      var c1 = obj.c1 || obj.estudianteNombre || obj.estudiante || obj.nombre || "Cadete 1";
       var a1 = obj.a1 || "";
       var c2 = obj.c2 || (obj.pareja ? obj.pareja : "");
       var a2 = obj.a2 || "";
       var esPareja = c2 && c2 !== "Individual" && c2 !== "Solo" && c2.trim() !== "";
-      var nombreMostrar = esPareja ? (c1 + " & " + c2) : c1;
+      var nombreEstudiante = esPareja ? (c1 + " & " + c2) : c1;
 
       var sec = obj.sec || obj.s || obj.seccion || sesionActiva.seccion || "7-1";
-      var inst = obj.centro || obj.inst || obj.institution || sesionActiva.centro || "Colegio de Secundaria MEP";
+      var inst = obj.centro || obj.inst || sesionActiva.centro || "Colegio MEP";
       var fec = obj.fec || obj.fecha || new Date().toLocaleDateString("es-CR");
 
-      var porcCog = obj.c !== undefined ? obj.c : (obj.porcCog !== undefined ? obj.porcCog : (obj.notaCognitiva ? obj.notaCognitiva * 10 : 80));
-      var porcPsi = obj.p !== undefined ? obj.p : (obj.porcPsi !== undefined ? obj.porcPsi : 85);
-      var porcSoc = obj.s !== undefined ? obj.s : (obj.porcSoc !== undefined ? obj.porcSoc : 90);
+      var porcCog = obj.c !== undefined ? obj.c : (obj.porcCog !== undefined ? obj.porcCog : 80);
+      var porcPsi = obj.p !== undefined ? obj.p : 85;
+      var porcSoc = obj.s !== undefined ? obj.s : 90;
       var porcGlo = obj.g !== undefined ? obj.g : Math.round((porcCog + porcPsi + porcSoc) / 3);
 
-      var puntajeCog = obj.cog && obj.cog.correctas !== undefined ? (obj.cog.correctas + "/" + (obj.cog.total || 10)) : (Math.round(porcCog / 10) + "/10");
+      var puntajeCog = obj.cog && obj.cog.correctas !== undefined ? (obj.cog.correctas + "/10") : (Math.round(porcCog / 10) + "/10");
       var nivCod = obj.lvl || (porcGlo >= 80 ? "DC" : (porcGlo >= 60 ? "EC" : "RC"));
-      var nivTxt = nivelLabels[nivCod] || (porcGlo >= 80 ? "Dominio consolidado" : (porcGlo >= 60 ? "En proceso de consolidación" : "Requiere consolidación"));
+      var nivTxt = nivelLabels[nivCod] || (porcGlo >= 80 ? "Dominio consolidado" : "En proceso de consolidación");
 
-      // Construir 10 Saberes Cognitivos
-      var saberesConceptuales = [];
+      var saberes = [];
       if (obj.cog && Array.isArray(obj.cog.saberes) && obj.cog.saberes.length > 0) {
-        saberesConceptuales = obj.cog.saberes;
+        saberes = obj.cog.saberes;
       } else {
-        saberesConceptuales = saberesOficiales7mo.map(function(s, idx) {
-          var val = (idx < Math.round(porcCog / 10)) ? "1/1" : "0/1";
-          return { cod: s.cod, nombre: s.nombre, val: val };
+        saberes = saberesOficiales7mo.map(function(s, idx) {
+          return { cod: s.cod, nombre: s.nombre, val: idx < Math.round(porcCog / 10) ? "1/1" : "0/1" };
         });
       }
 
-      // Construir Psicomotriz (P1-P4)
       var psiObj = obj.psi || {};
-      var saberesProcedimentales = [
-        { cod: "P1", nombre: "Lateralidad y Orientación Espacial", estado: psiObj.p1 || (porcPsi >= 80 ? "L" : (porcPsi >= 60 ? "ED" : "RA")) },
-        { cod: "P2", nombre: "Ritmo y Coordinación Óculo-Manual", estado: psiObj.p2 || (porcPsi >= 70 ? "L" : (porcPsi >= 50 ? "ED" : "RA")) },
-        { cod: "P3", nombre: "Pulso y Precisión Motriz Fina", estado: psiObj.p3 || (porcPsi >= 85 ? "L" : (porcPsi >= 60 ? "ED" : "RA")) },
+      var procedimentales = [
+        { cod: "P1", nombre: "Lateralidad y Orientación Espacial", estado: psiObj.p1 || (porcPsi >= 80 ? "L" : "ED") },
+        { cod: "P2", nombre: "Ritmo y Coordinación Óculo-Manual", estado: psiObj.p2 || (porcPsi >= 70 ? "L" : "ED") },
+        { cod: "P3", nombre: "Pulso y Precisión Motriz Fina", estado: psiObj.p3 || (porcPsi >= 85 ? "L" : "ED") },
         { cod: "P4", nombre: "Plano de Computadora y Componentes", estado: psiObj.p4 || (porcPsi >= 60 ? "L" : "ED") }
       ];
 
-      // Construir Socioafectiva (S1-S4)
       var socObj = obj.soc || {};
-      var saberesSocioafectivos = [
-        { cod: "S1", nombre: "Gusto por la precisión", estado: socObj.s1 || (porcSoc >= 60 ? "F" : "EP") },
-        { cod: "S2", nombre: "Aprender del error (Depuración)", estado: socObj.s2 || (porcSoc >= 70 ? "F" : "EP") },
-        { cod: "S3", nombre: "Flexibilidad para resolver desafíos", estado: socObj.s3 || (porcSoc >= 60 ? "F" : "EP") },
-        { cod: "S4", nombre: "Tolerancia a la frustración", estado: socObj.s4 || (porcSoc >= 50 ? "F" : "EP") }
-      ];
-
-      var fortalezas = obj.strengths || obj.fortalezas || [
-        "Comprensión de Algoritmos y Lógica de Bloques",
-        "Coordinación motriz en la interfaz gráfica",
-        "Disposición favorable para aprender del error"
-      ];
-
-      var apoyo = obj.support || obj.apoyo || [
-        "Fortalecer estructuras repetitivas y variables",
-        "Revisar conceptos de redes y gestión de archivos"
+      var socioafectivos = [
+        { cod: "S1", nombre: "Gusto por la precisión", estado: socObj.s1 || "F" },
+        { cod: "S2", nombre: "Aprender del error (Depuración)", estado: socObj.s2 || "F" },
+        { cod: "S3", nombre: "Flexibilidad para resolver desafíos", estado: socObj.s3 || "F" },
+        { cod: "S4", nombre: "Tolerancia a la frustración", estado: socObj.s4 || "F" }
       ];
 
       return {
-        estudiante: nombreMostrar,
+        estudiante: nombreEstudiante,
         cadete1: c1,
         avatar1: a1,
         cadete2: esPareja ? c2 : "Individual",
         avatar2: a2,
         esPareja: esPareja,
         cedula: obj.ced || "",
+        seccion: sec,
         seccionQR: sec,
         institucion: inst,
         fecha: fec,
@@ -2398,101 +821,33 @@ function interpretarPayloadQR(raw) {
         porcentajePsicomotor: porcPsi,
         porcentajeSocioafectivo: porcSoc,
         resultadoCognitivo: puntajeCog,
+        cognoscitiva: puntajeCog,
         nivelCodigo: nivCod,
         nivelEtiqueta: nivTxt,
-        cognoscitiva: puntajeCog,
         nivelCognoscitivo: nivTxt,
-        saberesConceptuales: saberesConceptuales,
-        saberesProcedimentales: saberesProcedimentales,
-        saberesSocioafectivos: saberesSocioafectivos,
-        fortalezasLista: Array.isArray(fortalezas) ? fortalezas : [fortalezas],
-        apoyoLista: Array.isArray(apoyo) ? apoyo : [apoyo],
-        fortalezas: Array.isArray(fortalezas) ? fortalezas.join(", ") : fortalezas,
-        prioridades: Array.isArray(apoyo) ? apoyo.join(", ") : apoyo,
-        ejecucion: "Desafíos Psicomotores: " + porcPsi + "% completados",
-        socioafectiva: "Actitud evaluada en " + porcSoc + "%",
+        saberesConceptuales: saberes,
+        saberesProcedimentales: procedimentales,
+        saberesSocioafectivos: socioafectivos,
+        fortalezas: "Dominio en Algoritmos y lógica de bloques",
+        prioridades: "Reforzar estructuras repetitivas y redes",
         textoOriginal: raw
       };
-    } catch (eJSON) {
-      console.warn("Fallo parseo JSON 7mo, intentando formato Pipe/Texto:", eJSON);
-    }
+    } catch (eJSON) {}
   }
 
-  // 2. FORMATO PIPE (MEP7|SEC|CADETE1|CADETE2|...)
-  if (texto.startsWith("MEP7|") || texto.startsWith("CQ7|") || texto.startsWith("D7|")) {
-    var p = texto.split("|");
-    var secP = p[1] || sesionActiva.seccion || "7-1";
-    var c1P = p[2] || "Cadete 1";
-    var c2P = p[3] || "Individual";
-    var gloP = parseInt(p[4]) || 85;
-    var cogP = parseInt(p[5]) || 80;
-    var psiP = parseInt(p[6]) || 90;
-    var socP = parseInt(p[7]) || 85;
-    var lvlP = p[8] || (gloP >= 80 ? "DC" : (gloP >= 60 ? "EC" : "RC"));
-
-    var esPar = c2P && c2P !== "Individual" && c2P !== "Solo" && c2P.trim() !== "";
-    var nomP = esPar ? (c1P + " & " + c2P) : c1P;
-
-    var saberesP = saberesOficiales7mo.map(function(s, idx) {
-      var val = (idx < Math.round(cogP / 10)) ? "1/1" : "0/1";
-      return { cod: s.cod, nombre: s.nombre, val: val };
-    });
-
-    return {
-      estudiante: nomP,
-      cadete1: c1P,
-      avatar1: "",
-      cadete2: c2P,
-      avatar2: "",
-      esPareja: esPar,
-      cedula: "",
-      seccionQR: secP,
-      institucion: sesionActiva.centro || "Colegio de Secundaria MEP",
-      fecha: new Date().toLocaleDateString("es-CR"),
-      porcentajeGlobal: gloP,
-      porcentajeCognitivo: cogP,
-      porcentajePsicomotor: psiP,
-      porcentajeSocioafectivo: socP,
-      resultadoCognitivo: Math.round(cogP / 10) + "/10",
-      nivelCodigo: lvlP,
-      nivelEtiqueta: nivelLabels[lvlP] || "En proceso de consolidación",
-      cognoscitiva: Math.round(cogP / 10) + "/10",
-      nivelCognoscitivo: nivelLabels[lvlP] || "En proceso de consolidación",
-      saberesConceptuales: saberesP,
-      saberesProcedimentales: [
-        { cod: "P1", nombre: "Lateralidad y Orientación Espacial", estado: psiP >= 80 ? "L" : "ED" },
-        { cod: "P2", nombre: "Ritmo y Coordinación Óculo-Manual", estado: psiP >= 70 ? "L" : "ED" },
-        { cod: "P3", nombre: "Pulso y Precisión Motriz Fina", estado: psiP >= 85 ? "L" : "ED" },
-        { cod: "P4", nombre: "Plano de Computadora y Componentes", estado: psiP >= 60 ? "L" : "ED" }
-      ],
-      saberesSocioafectivos: [
-        { cod: "S1", nombre: "Gusto por la precisión", estado: socP >= 60 ? "F" : "EP" },
-        { cod: "S2", nombre: "Aprender del error (Depuración)", estado: socP >= 70 ? "F" : "EP" },
-        { cod: "S3", nombre: "Flexibilidad para resolver desafíos", estado: socP >= 60 ? "F" : "EP" },
-        { cod: "S4", nombre: "Tolerancia a la frustración", estado: socP >= 50 ? "F" : "EP" }
-      ],
-      fortalezasLista: ["Dominio conceptual en algoritmos", "Evidencia de coordinación psicomotriz"],
-      apoyoLista: ["Reforzar estructuras repetitivas y gestión de archivos"],
-      fortalezas: "Dominio conceptual en algoritmos, Evidencia de coordinación psicomotriz",
-      prioridades: "Reforzar estructuras repetitivas y gestión de archivos",
-      ejecucion: "Completado (" + psiP + "%)",
-      socioafectiva: "Favorable (" + socP + "%)",
-      textoOriginal: raw
-    };
-  }
-
-  // 3. TEXTO GENÉRICO / LÍNEA POR LÍNEA
-  var lineas = texto.split(/\r?\n/);
-  var nomGen = lineas[0] || "Estudiante 7mo";
+  // 2. PIPE / TEXTO GENÉRICO
+  var p = texto.split("|");
+  var nomP = p[2] || p[1] || "Cadete 7mo";
   return {
-    estudiante: nomGen,
-    cadete1: nomGen,
+    estudiante: nomP,
+    cadete1: nomP,
     avatar1: "",
-    cadete2: "Individual",
+    cadete2: p[3] || "Individual",
     avatar2: "",
-    esPareja: false,
+    esPareja: p[3] && p[3] !== "Individual",
     cedula: "",
-    seccionQR: sesionActiva.seccion || "7-1",
+    seccion: p[1] || sesionActiva.seccion || "7-1",
+    seccionQR: p[1] || sesionActiva.seccion || "7-1",
     institucion: sesionActiva.centro || "Colegio MEP",
     fecha: new Date().toLocaleDateString("es-CR"),
     porcentajeGlobal: 80,
@@ -2500,9 +855,9 @@ function interpretarPayloadQR(raw) {
     porcentajePsicomotor: 80,
     porcentajeSocioafectivo: 80,
     resultadoCognitivo: "8/10",
+    cognoscitiva: "8/10",
     nivelCodigo: "DC",
     nivelEtiqueta: "Dominio consolidado",
-    cognoscitiva: "8/10",
     nivelCognoscitivo: "Dominio consolidado",
     saberesConceptuales: saberesOficiales7mo.map(function(s){ return { cod: s.cod, nombre: s.nombre, val: "1/1" }; }),
     saberesProcedimentales: [
@@ -2517,795 +872,488 @@ function interpretarPayloadQR(raw) {
       { cod: "S3", nombre: "Flexibilidad para resolver desafíos", estado: "F" },
       { cod: "S4", nombre: "Tolerancia a la frustración", estado: "F" }
     ],
-    fortalezasLista: ["Comprensión básica de programación y entorno digital"],
-    apoyoLista: ["Reforzar nociones de redes y variables"],
-    fortalezas: "Comprensión básica de programación y entorno digital",
-    prioridades: "Reforzar nociones de redes y variables",
-    ejecucion: "Completado",
-    socioafectiva: "Favorable",
+    fortalezas: "Dominio en Algoritmos y Lógica",
+    prioridades: "Reforzar gestión de archivos",
     textoOriginal: raw
   };
 }
 
-
-// ==========================================================================
-// RENDERIZADOR DEL INFORME ESTUDIANTIL OFICIAL (IDÉNTICO A LA IMAGEN)
-// ==========================================================================
-function generarInformeVisualCompletoHTML(datos, opciones) {
-  opciones = opciones || {};
-  var esEditable = opciones.editable || false;
-
-  var cogPuntaje = datos.resultadoCognitivo || datos.cognoscitiva || "6/10";
-  var matchScore = cogPuntaje.match(/(\d+\s*\/\s*\d+)/);
-  var valorScore = matchScore ? matchScore[1] : cogPuntaje;
-  
-  var nivelCod = datos.nivelCodigo || (datos.nivelCognoscitivo && datos.nivelCognoscitivo.includes("Dominio") ? "DC" : (datos.nivelCognoscitivo && datos.nivelCognoscitivo.includes("proceso") ? "EC" : "RC"));
-  var nivelEtiqueta = datos.nivelEtiqueta || datos.nivelCognoscitivo || "En proceso de consolidación";
-
-  var saberesConceptuales = datos.saberesConceptuales || [
-    { cod: "C1", nombre: "Algoritmo", val: "1/2" },
-    { cod: "C2", nombre: "Microcontrolador", val: "3/3" },
-    { cod: "C3", nombre: "Sensor", val: "2/4" },
-    { cod: "C4", nombre: "Actuador", val: "2/3" },
-    { cod: "C5", nombre: "Dato", val: "0/1" },
-    { cod: "C6", nombre: "Almacenamiento de datos", val: "0/1" }
-  ];
-
-  var saberesProcedimentales = datos.saberesProcedimentales || [
-    { cod: "P2", nombre: "Reconoce patrones", estado: "RA" },
-    { cod: "P3", nombre: "Abstrae", estado: "RA" },
-    { cod: "P4", nombre: "Transfiere", estado: "RA" },
-    { cod: "P5", nombre: "Modulariza", estado: "L" }
-  ];
-
-  var saberesSocioafectivos = datos.saberesSocioafectivos || [
-    { cod: "S1", nombre: "Gusto por la precisión", estado: "F" },
-    { cod: "S2", nombre: "Aprender del error", estado: "F" },
-    { cod: "S3", nombre: "Flexibilidad para manejar problemas", estado: "F" },
-    { cod: "S4", nombre: "Tolerancia a la frustración", estado: "F" }
-  ];
-
-  var tarjetasOrg = datos.tarjetasOrganizadas || datos.tarjetas || "0/3";
-  var conexionesOk = datos.conexionesCorrectas || datos.puertos || "1/5";
-
-  var fortalezas = datos.fortalezasLista || (datos.fortalezas ? datos.fortalezas.split(/[,•;]/).map(function(s){return s.trim();}).filter(Boolean) : [
-    "Dominio conceptual en microcontrolador",
-    "Dominio conceptual en sensor y actuador",
-    "Dominio conceptual en entrada–proceso–salida",
-    "Dominio conceptual en estructura condicional",
-    "Dominio conceptual en representación condicional",
-    "Dominio conceptual en depuración",
-    "Evidencia procedimental en modulariza"
-  ]);
-
-  var apoyo = datos.apoyoLista || (datos.prioridades ? datos.prioridades.split(/[,•;]/).map(function(s){return s.trim();}).filter(Boolean) : [
-    "Reforzar algoritmo",
-    "Reforzar funciones de sensor, actuador y microcontrolador"
-  ]);
-
-  function renderBadge(cod) {
-    var c = String(cod || "").trim().toUpperCase();
-    if (c === "L" || c === "LOGRADO") return '<span class="badge-report badge-report-logrado">Logrado</span>';
-    if (c === "F" || c === "FAVORABLE") return '<span class="badge-report badge-report-favorable">Favorable</span>';
-    if (c === "EP" || c === "EN PROCESO" || c === "ED") return '<span class="badge-report badge-report-proceso">En proceso</span>';
-    if (c === "RA" || c === "REQUIERE APOYO" || c === "REQUIERE ACOMPAÑAMIENTO") return '<span class="badge-report badge-report-apoyo">Requiere apoyo</span>';
-    return '<span class="badge-report badge-report-proceso">' + escaparHTML(cod) + '</span>';
-  }
-
-  var html = '';
-
-  // 1. Banner superior
-  html += '<div class="report-notice-success">';
-  html += '  El diagnóstico ha finalizado. Los resultados se almacenaron localmente en este dispositivo.';
-  html += '</div>';
-
-  // 2. Tarjeta Estudiante & Centro
-  html += '<div class="report-student-card">';
-  html += '  <div class="report-student-meta">Centro educativo: <strong>' + escaparHTML(datos.institucion || datos.centro || sesionActiva.centro || "Los Lirios") + '</strong></div>';
-  if (esEditable) {
-    html += '  <div style="margin: 6px 0;">';
-    html += '    <label style="margin:0 0 2px 0; font-size:10px; color:#64748b;">NOMBRE ESTUDIANTE:</label>';
-    html += '    <input id="editEstudiante" type="text" style="font-size:18px; font-weight:900; color:#1f2937; height:42px;" value="' + escaparHTML(datos.estudiante) + '">';
-    html += '  </div>';
-    html += '  <div style="margin-top: 6px;">';
-    html += '    <label style="margin:0 0 2px 0; font-size:10px; color:#64748b;">SECCIÓN:</label>';
-    html += '    <input id="editSeccion" type="text" style="font-size:14px; font-weight:700; width:130px; height:38px;" value="' + escaparHTML(datos.seccionQR || datos.seccion || sesionActiva.seccion) + '">';
-    html += '  </div>';
-  } else {
-    html += '  <div class="report-student-name">' + escaparHTML(datos.estudiante) + '</div>';
-    html += '  <div class="report-student-section">Sección: <strong>' + escaparHTML(datos.seccionQR || datos.seccion || sesionActiva.seccion) + '</strong></div>';
-  }
-  html += '</div>';
-
-  // 3. KPIs: RESULTADO COGNOSCITIVO & NIVEL
-  html += '<div class="report-kpi-grid">';
-  html += '  <div class="report-kpi-box">';
-  html += '    <div class="report-kpi-title">RESULTADO COGNOSCITIVO</div>';
-  html += '    <div class="report-kpi-val">' + escaparHTML(valorScore) + '</div>';
-  html += '  </div>';
-  html += '  <div class="report-kpi-box">';
-  html += '    <div class="report-kpi-title">NIVEL</div>';
-  html += '    <div class="report-kpi-val" style="color: ' + (nivelCod === "DC" || nivelCod === "L" ? '#166534' : (nivelCod === "EC" || nivelCod === "ED" ? '#986800' : '#991b1b')) + ';">' + escaparHTML(nivelCod) + '</div>';
-  html += '    <div class="report-kpi-sub">' + escaparHTML(nivelEtiqueta) + '</div>';
-  html += '  </div>';
-  html += '</div>';
-
-  // 4. TABLA COGNOSCITIVA
-  html += '<h3 class="report-section-title">COGNOSCITIVA</h3>';
-  html += '<div class="report-table-wrapper">';
-  html += '  <table class="report-table">';
-  html += '    <thead>';
-  html += '      <tr>';
-  html += '        <th style="width:75px;">Código</th>';
-  html += '        <th>Saber conceptual</th>';
-  html += '        <th style="width:95px;">Resultado</th>';
-  html += '      </tr>';
-  html += '    </thead>';
-  html += '    <tbody>';
-  saberesConceptuales.forEach(function(sc) {
-    html += '      <tr>';
-    html += '        <td><strong>' + escaparHTML(sc.cod) + '</strong></td>';
-    html += '        <td>' + escaparHTML(sc.nombre) + '</td>';
-    html += '        <td>' + escaparHTML(sc.val) + '</td>';
-    html += '      </tr>';
-  });
-  html += '    </tbody>';
-  html += '  </table>';
-  html += '</div>';
-
-  // 5. EVIDENCIAS DE LA ACTIVIDAD PRÁCTICA
-  html += '<h3 class="report-section-title">EVIDENCIAS DE LA ACTIVIDAD PRÁCTICA</h3>';
-  html += '<div class="report-notice-info">';
-  html += '  Estas evidencias corresponden a la actividad práctica realizada durante el diagnóstico. Las conexiones se reportan únicamente cuando son técnicamente correctas.';
-  html += '</div>';
-
-  html += '<div class="report-kpi-grid">';
-  html += '  <div class="report-kpi-box">';
-  html += '    <div class="report-kpi-title">TARJETAS CORRECTAMENTE ORGANIZADAS</div>';
-  html += '    <div class="report-kpi-val">' + escaparHTML(tarjetasOrg) + '</div>';
-  html += '  </div>';
-  html += '  <div class="report-kpi-box">';
-  html += '    <div class="report-kpi-title">CONEXIONES TÉCNICAMENTE CORRECTAS</div>';
-  html += '    <div class="report-kpi-val">' + escaparHTML(conexionesOk) + '</div>';
-  html += '  </div>';
-  html += '</div>';
-
-  // 6. SABERES PROCEDIMENTALES
-  html += '<h3 class="report-section-title">SABERES PROCEDIMENTALES</h3>';
-  html += '<div class="report-table-wrapper">';
-  html += '  <table class="report-table">';
-  html += '    <thead>';
-  html += '      <tr>';
-  html += '        <th style="width:75px;">Código</th>';
-  html += '        <th>Saber procedimental</th>';
-  html += '        <th style="width:130px;">Resultado</th>';
-  html += '      </tr>';
-  html += '    </thead>';
-  html += '    <tbody>';
-  saberesProcedimentales.forEach(function(sp) {
-    html += '      <tr>';
-    html += '        <td><strong>' + escaparHTML(sp.cod) + '</strong></td>';
-    html += '        <td>' + escaparHTML(sp.nombre) + '</td>';
-    html += '        <td>' + renderBadge(sp.estado) + '</td>';
-    html += '      </tr>';
-  });
-  html += '    </tbody>';
-  html += '  </table>';
-  html += '</div>';
-
-  // 7. SOCIOAFECTIVA
-  html += '<h3 class="report-section-title">SOCIOAFECTIVA</h3>';
-  html += '<div class="report-table-wrapper">';
-  html += '  <table class="report-table">';
-  html += '    <thead>';
-  html += '      <tr>';
-  html += '        <th style="width:75px;">Código</th>';
-  html += '        <th>Saber socioafectivo</th>';
-  html += '        <th style="width:130px;">Resultado</th>';
-  html += '      </tr>';
-  html += '    </thead>';
-  html += '    <tbody>';
-  saberesSocioafectivos.forEach(function(ss) {
-    html += '      <tr>';
-    html += '        <td><strong>' + escaparHTML(ss.cod) + '</strong></td>';
-    html += '        <td>' + escaparHTML(ss.nombre) + '</td>';
-    html += '        <td>' + renderBadge(ss.estado) + '</td>';
-    html += '      </tr>';
-  });
-  html += '    </tbody>';
-  html += '  </table>';
-  html += '</div>';
-
-  // 8. FORTALEZAS
-  html += '<h3 class="report-section-title">FORTALEZAS</h3>';
-  html += '<div class="report-list-box report-list-box-strengths">';
-  html += '  <ul>';
-  fortalezas.forEach(function(f) {
-    html += '    <li>' + escaparHTML(f) + '</li>';
-  });
-  html += '  </ul>';
-  html += '</div>';
-
-  // 9. APOYO
-  html += '<h3 class="report-section-title">APOYO</h3>';
-  html += '<div class="report-list-box report-list-box-support">';
-  html += '  <ul>';
-  apoyo.forEach(function(a) {
-    html += '    <li>' + escaparHTML(a) + '</li>';
-  });
-  html += '  </ul>';
-  html += '</div>';
-
-  return html;
-}
-
-function renderizarResultado(datos) {
-  var contenedor = document.getElementById("contenidoResultado");
-  if (contenedor) {
-    contenedor.innerHTML = generarInformeVisualCompletoHTML(datos, { editable: true });
-  }
-
-  document.getElementById("vistaSesion").classList.add("hidden");
-  document.getElementById("vistaResultado").classList.remove("hidden");
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function guardarRegistroActual() {
-  if (!resultadoPendiente) return;
-
-  var nombreEditado = document.getElementById("editEstudiante") ? document.getElementById("editEstudiante").value.trim() : resultadoPendiente.estudiante;
-  var seccionEditada = document.getElementById("editSeccion") ? document.getElementById("editSeccion").value.trim() : resultadoPendiente.seccionQR;
-
-  var registros = obtenerRegistros();
-
-  var registroNuevo = {
-    id: Date.now().toString(36) + Math.random().toString(36).substring(2, 6),
-    centro: resultadoPendiente.institucion || sesionActiva.centro,
-    institucion: resultadoPendiente.institucion || sesionActiva.centro,
-    nivel: sesionActiva.nivel,
-    seccion: seccionEditada || sesionActiva.seccion,
-    seccionQR: seccionEditada || sesionActiva.seccion,
-    estudiante: nombreEditado || resultadoPendiente.estudiante,
-    cedula: resultadoPendiente.cedula || "",
-    fecha: resultadoPendiente.fecha,
-    resultadoCognitivo: resultadoPendiente.resultadoCognitivo,
-    nivelCodigo: resultadoPendiente.nivelCodigo,
-    nivelEtiqueta: resultadoPendiente.nivelEtiqueta,
-    cognoscitiva: resultadoPendiente.cognoscitiva,
-    nivelCognoscitivo: resultadoPendiente.nivelCognoscitivo,
-    saberesConceptuales: resultadoPendiente.saberesConceptuales,
-    tarjetasOrganizadas: resultadoPendiente.tarjetasOrganizadas,
-    conexionesCorrectas: resultadoPendiente.conexionesCorrectas,
-    tarjetas: resultadoPendiente.tarjetas,
-    puertos: resultadoPendiente.puertos,
-    ejecucion: resultadoPendiente.ejecucion,
-    saberesProcedimentales: resultadoPendiente.saberesProcedimentales,
-    saberesSocioafectivos: resultadoPendiente.saberesSocioafectivos,
-    socioafectiva: resultadoPendiente.socioafectiva,
-    fortalezasLista: resultadoPendiente.fortalezasLista,
-    apoyoLista: resultadoPendiente.apoyoLista,
-    fortalezas: resultadoPendiente.fortalezas,
-    prioridades: resultadoPendiente.prioridades,
-    qrOriginal: resultadoPendiente.textoOriginal,
-    timestamp: new Date().toISOString()
-  };
-
-  registros.push(registroNuevo);
-  guardarRegistros(registros);
-
-  resultadoPendiente = null;
-  procesandoLectura = false;
-
-  document.getElementById("vistaResultado").classList.add("hidden");
-  document.getElementById("vistaSesion").classList.remove("hidden");
-  actualizarContador();
+// =========================================================================
+// MOTOR DE CÁMARA Y ESCANEO CONTINUO
+// =========================================================================
+async function iniciarCamaraUniversal() {
+  var area = document.getElementById("scannerArea");
+  area.classList.remove("hidden");
+  document.getElementById("btnActivarCamara").classList.add("hidden");
+  document.getElementById("btnDetenerCamara").classList.remove("hidden");
 
   document.getElementById("mensajeCamara").innerHTML =
-    '<div class="alert alert-success">' +
-    '  ✅ Registro de <strong>' + escaparHTML(registroNuevo.estudiante) + '</strong> (' + escaparHTML(registroNuevo.seccion) + ') guardado con éxito en el teléfono.' +
-    '</div>';
-}
+    '<div class="alert alert-info">📸 Apunte la cámara hacia el código QR en la pantalla del estudiante.</div>';
 
-function descartarYReanudar() {
-  resultadoPendiente = null;
-  procesandoLectura = false;
-  document.getElementById("vistaResultado").classList.add("hidden");
-  document.getElementById("vistaSesion").classList.remove("hidden");
-}
-
-function verFichaIndividual(id) {
-  var registros = obtenerRegistros();
-  var estudiante = null;
-
-  for (var i = 0; i < registros.length; i++) {
-    if (registros[i].id === id) {
-      estudiante = registros[i];
-      break;
+  try {
+    if (typeof Html5Qrcode !== "undefined") {
+      html5QrCodeInstance = new Html5Qrcode("reader");
+      await html5QrCodeInstance.start(
+        { facingMode: "environment" },
+        { fps: 15, qrbox: { width: 240, height: 240 } },
+        function(qrMessage) {
+          emitirBeep();
+          detenerCamara();
+          procesarQRDetectado(qrMessage);
+        },
+        function() {}
+      );
+      return;
     }
+  } catch (errHtml5) {
+    console.warn("Html5Qrcode falló, usando getUserMedia nativo:", errHtml5);
   }
 
-  if (!estudiante) {
-    alert("Estudiante no encontrado en el padrón.");
-    return;
-  }
+  // Fallback con getUserMedia nativo
+  try {
+    var stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { ideal: "environment" } },
+      audio: false
+    });
+    streamCamara = stream;
+    var readerDiv = document.getElementById("reader");
+    readerDiv.innerHTML = "";
+    var videoEl = document.createElement("video");
+    videoEl.autoplay = true;
+    videoEl.playsInline = true;
+    videoEl.srcObject = stream;
+    readerDiv.appendChild(videoEl);
+    await videoEl.play();
 
-  var cont = document.getElementById("contenidoFichaIndividual");
+    trackVideo = stream.getVideoTracks()[0];
+    if (trackVideo && trackVideo.getCapabilities && trackVideo.getCapabilities().torch) {
+      document.getElementById("btnFlash").classList.remove("hidden");
+    }
+
+    if ("BarcodeDetector" in window) {
+      var detector = new BarcodeDetector({ formats: ["qr_code"] });
+      var bucle = async function() {
+        if (!streamCamara) return;
+        try {
+          var barcodes = await detector.detect(videoEl);
+          if (barcodes && barcodes.length > 0) {
+            emitirBeep();
+            detenerCamara();
+            procesarQRDetectado(barcodes[0].rawValue);
+            return;
+          }
+        } catch (e) {}
+        requestAnimationFrame(bucle);
+      };
+      requestAnimationFrame(bucle);
+    }
+  } catch (errNative) {
+    alert("⚠️ No se pudo acceder a la cámara. Por favor use el botón 'Cargar / Tomar Foto QR'.");
+    detenerCamara();
+  }
+}
+
+function detenerCamara() {
+  if (html5QrCodeInstance) {
+    try { html5QrCodeInstance.stop(); } catch(e){}
+    html5QrCodeInstance = null;
+  }
+  if (streamCamara) {
+    streamCamara.getTracks().forEach(function(t) { t.stop(); });
+    streamCamara = null;
+  }
+  trackVideo = null;
+  var area = document.getElementById("scannerArea");
+  if (area) area.classList.add("hidden");
+  var btnAct = document.getElementById("btnActivarCamara");
+  if (btnAct) btnAct.classList.remove("hidden");
+  var btnDet = document.getElementById("btnDetenerCamara");
+  if (btnDet) btnDet.classList.add("hidden");
+  var btnFlash = document.getElementById("btnFlash");
+  if (btnFlash) btnFlash.classList.add("hidden");
+}
+
+function alternarLinterna() {
+  if (trackVideo && typeof trackVideo.applyConstraints === "function") {
+    linternaActiva = !linternaActiva;
+    trackVideo.applyConstraints({ advanced: [{ torch: linternaActiva }] }).catch(function(){});
+  }
+}
+
+function emitirBeep() {
+  try {
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    gain.gain.setValueAtTime(0.2, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.15);
+    if (navigator.vibrate) navigator.vibrate(120);
+  } catch (e) {}
+}
+
+// =========================================================================
+// PROCESAMIENTO DE QR Y RENDERIZADO DEL INFORME
+// =========================================================================
+function procesarQRDetectado(textoQR) {
+  try {
+    var datos = interpretarPayloadQR(textoQR);
+    resultadoPendiente = datos;
+    renderizarInformeResultado(datos);
+    cambiarPestanaPrincipal("resultado");
+  } catch (err) {
+    alert("⚠️ No se pudo interpretar el código QR: " + err.message);
+    cambiarPestanaPrincipal("camara");
+  }
+}
+
+function renderizarInformeResultado(datos) {
+  var cont = document.getElementById("contenidoResultado");
   if (!cont) return;
 
-  cont.innerHTML = generarInformeVisualCompletoHTML(estudiante, { editable: false });
-  cambiarPestanaPrincipal("ficha");
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+  var html = '';
+  html += '<div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:12px; padding:12px; margin-bottom:12px;">';
+  html += '  <div style="font-size:11px; font-weight:800; color:#64748b;">ESTUDIANTE / PAREJA (7.° AÑO):</div>';
+  html += '  <div style="font-size:17px; font-weight:900; color:#002b49; margin:2px 0;">' + escaparHTML(datos.estudiante) + '</div>';
+  html += '  <div style="font-size:12px; color:#475569;">Centro: <strong>' + escaparHTML(datos.institucion) + '</strong> | Sección: <strong>' + escaparHTML(datos.seccion) + '</strong></div>';
+  html += '</div>';
 
-function renderizarMetricasGrupo() {
-  var registros = obtenerRegistros();
-  var cont = document.getElementById("contenedorMetricasGrupo");
-  if (!cont) return;
+  html += '<div class="kpi-grid">';
+  html += '  <div class="kpi-card"><div class="kpi-label">Nota Global</div><div class="kpi-value" style="color:#059669;">' + datos.porcentajeGlobal + '%</div></div>';
+  html += '  <div class="kpi-card"><div class="kpi-label">Cognitivo</div><div class="kpi-value" style="color:#0284c7;">' + datos.resultadoCognitivo + '</div></div>';
+  html += '  <div class="kpi-card"><div class="kpi-label">Nivel DUA</div><div class="kpi-value" style="color:#ca8a04; font-size:14px;">' + datos.nivelCodigo + '</div></div>';
+  html += '</div>';
 
-  if (registros.length === 0) {
-    cont.innerHTML =
-      '<div class="alert alert-info" style="text-align: center; padding: 24px 14px;">' +
-      '  <span style="font-size: 32px; display: block; margin-bottom: 8px;">📊</span>' +
-      '  <strong>Aún no hay datos escaneados para calcular promedios grupales.</strong><br>' +
-      '  <span style="font-size: 11.5px; color: #475569;">Usa el escáner para registrar a los estudiantes de la sección.</span>' +
-      '</div>';
-    return;
-  }
-
-  var met = calcularMetricasPadron(registros);
-  renderizarMetricasDashboard(met);
-}
-
-function calcularMetricasPadron(registros) {
-  if (!registros || registros.length === 0) {
-    return {
-      total: 0,
-      promedio: 0,
-      logrado: 0,
-      pctLogrado: 0,
-      desarrollo: 0,
-      pctDesarrollo: 0,
-      refuerzo: 0,
-      pctRefuerzo: 0,
-      psicoCompleto: 0,
-      pctPsico: 0,
-      topFortalezas: [],
-      topPrioridades: []
-    };
-  }
-
-  var total = registros.length;
-  var sumPct = 0;
-  var logrado = 0;
-  var desarrollo = 0;
-  var refuerzo = 0;
-  var psicoCompleto = 0;
-  var frecFortalezas = {};
-  var frecPrioridades = {};
-
-  registros.forEach(function(r) {
-    var cogStr = r.cognoscitiva || "";
-    var pct = 80;
-    var mPct = cogStr.match(/(\d+)%/);
-    var mFrac = cogStr.match(/(\d+)\s*\/\s*(\d+)/);
-    if (mPct) pct = parseInt(mPct[1], 10);
-    else if (mFrac) pct = Math.round((parseInt(mFrac[1], 10) / parseInt(mFrac[2], 10)) * 100);
-
-    sumPct += pct;
-
-    var niv = (r.nivelCognoscitivo || "").toLowerCase();
-    if (niv.includes("logrado") || pct >= 70) logrado++;
-    else if (niv.includes("desarrollo") || pct >= 50) desarrollo++;
-    else refuerzo++;
-
-    var psi = (r.ejecucion || r.tarjetas || "").toLowerCase();
-    if (psi.includes("completa") || psi.includes("3/3") || psi.includes("4/4") || psi.includes("100%")) psicoCompleto++;
-
-    if (r.fortalezas && r.fortalezas !== "Ninguna") {
-      r.fortalezas.split(/[,•;-]/).map(function(s) { return s.trim(); }).filter(Boolean).forEach(function(f) {
-        frecFortalezas[f] = (frecFortalezas[f] || 0) + 1;
-      });
-    }
-
-    if (r.prioridades && r.prioridades !== "Ninguna") {
-      r.prioridades.split(/[,•;-]/).map(function(s) { return s.trim(); }).filter(Boolean).forEach(function(p) {
-        frecPrioridades[p] = (frecPrioridades[p] || 0) + 1;
-      });
-    }
+  // 10 Saberes Cognitivos
+  html += '<h3 style="font-size:13px; font-weight:800; color:#002b49; margin:14px 0 6px;">🧠 10 Saberes Cognitivos (7.° Año)</h3>';
+  html += '<table class="table-custom">';
+  html += '<thead><tr><th>Código</th><th>Saber Conceptual</th><th>Puntaje</th></tr></thead><tbody>';
+  datos.saberesConceptuales.forEach(function(sc) {
+    html += '<tr><td><strong>' + sc.cod + '</strong></td><td>' + escaparHTML(sc.nombre) + '</td><td><strong>' + sc.val + '</strong></td></tr>';
   });
+  html += '</tbody></table>';
 
-  var topFort = Object.keys(frecFortalezas).sort(function(a, b) { return frecFortalezas[b] - frecFortalezas[a]; }).slice(0, 4);
-  var topPri = Object.keys(frecPrioridades).sort(function(a, b) { return frecPrioridades[b] - frecPrioridades[a]; }).slice(0, 4);
+  // Psicomotriz (P1-P4)
+  html += '<h3 style="font-size:13px; font-weight:800; color:#002b49; margin:14px 0 6px;">🕹️ Dimensión Psicomotriz (4 Desafíos)</h3>';
+  html += '<table class="table-custom">';
+  html += '<thead><tr><th>Código</th><th>Habilidad Motriz</th><th>Estado</th></tr></thead><tbody>';
+  datos.saberesProcedimentales.forEach(function(sp) {
+    var bClase = sp.estado === "L" ? "badge-logrado" : (sp.estado === "ED" ? "badge-proceso" : "badge-apoyo");
+    var bTxt = sp.estado === "L" ? "Logrado" : (sp.estado === "ED" ? "En Proceso" : "Requiere Apoyo");
+    html += '<tr><td><strong>' + sp.cod + '</strong></td><td>' + escaparHTML(sp.nombre) + '</td><td><span class="badge-status ' + bClase + '">' + bTxt + '</span></td></tr>';
+  });
+  html += '</tbody></table>';
 
-  return {
-    total: total,
-    promedio: Math.round(sumPct / total),
-    logrado: logrado,
-    pctLogrado: Math.round((logrado / total) * 100),
-    desarrollo: desarrollo,
-    pctDesarrollo: Math.round((desarrollo / total) * 100),
-    refuerzo: refuerzo,
-    pctRefuerzo: Math.round((refuerzo / total) * 100),
-    psicoCompleto: psicoCompleto,
-    pctPsico: Math.round((psicoCompleto / total) * 100),
-    topFortalezas: topFort,
-    topPrioridades: topPri
-  };
-}
-
-function renderizarMetricasDashboard(met) {
-  var cont = document.getElementById("contenedorMetricasGrupo");
-  if (!cont) return;
-
-  if (met.total === 0) {
-    cont.innerHTML = "";
-    return;
-  }
-
-  var html =
-    '<div class="metrics-card">' +
-    '  <div class="metrics-header">' +
-    '    <span class="metrics-title">📊 Métricas del Grupo (Semáforo DUA)</span>' +
-    '    <span style="font-size: 11px; font-weight: 800; color: #0284c7; background: #e0f2fe; padding: 2px 8px; border-radius: 999px;">' +
-    '      ' + met.total + ' Estudiantes' +
-    '    </span>' +
-    '  </div>' +
-    '  <div class="metrics-kpis">' +
-    '    <div class="kpi-box">' +
-    '      <div class="kpi-val" style="color: #0284c7;">' + met.promedio + '%</div>' +
-    '      <div class="kpi-label">Promedio Cog.</div>' +
-    '    </div>' +
-    '    <div class="kpi-box">' +
-    '      <div class="kpi-val" style="color: #16a34a;">' + met.logrado + ' <span style="font-size:10px; font-weight:700;">(' + met.pctLogrado + '%)</span></div>' +
-    '      <div class="kpi-label">Logrado</div>' +
-    '    </div>' +
-    '    <div class="kpi-box">' +
-    '      <div class="kpi-val" style="color: #ca8a04;">' + met.desarrollo + ' <span style="font-size:10px; font-weight:700;">(' + met.pctDesarrollo + '%)</span></div>' +
-    '      <div class="kpi-label">En Desarrollo</div>' +
-    '    </div>' +
-    '    <div class="kpi-box">' +
-    '      <div class="kpi-val" style="color: #dc2626;">' + met.refuerzo + ' <span style="font-size:10px; font-weight:700;">(' + met.pctRefuerzo + '%)</span></div>' +
-    '      <div class="kpi-label">Reforzamiento</div>' +
-    '    </div>' +
-    '  </div>' +
-    '  <div class="dua-semaphore">' +
-    '    <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:800; color:#334155;">' +
-    '      <span>Distribución DUA de Dominio Cognitivo:</span>' +
-    '      <span>Psicomotor: ' + met.pctPsico + '%</span>' +
-    '    </div>' +
-    '    <div class="dua-bar-wrap">' +
-    '      <div class="dua-seg-logrado" style="width: ' + met.pctLogrado + '%;" title="Logrado: ' + met.pctLogrado + '%"></div>' +
-    '      <div class="dua-seg-desarrollo" style="width: ' + met.pctDesarrollo + '%;" title="En Desarrollo: ' + met.pctDesarrollo + '%"></div>' +
-    '      <div class="dua-seg-refuerzo" style="width: ' + met.pctRefuerzo + '%;" title="Refuerzo: ' + met.pctRefuerzo + '%"></div>' +
-    '    </div>' +
-    '    <div class="dua-legend">' +
-    '      <div class="dua-tag" style="color:#16a34a;"><span class="tag-dot" style="background:#16a34a;"></span> Logrado: ' + met.pctLogrado + '%</div>' +
-    '      <div class="dua-tag" style="color:#ca8a04;"><span class="tag-dot" style="background:#ca8a04;"></span> Desarrollo: ' + met.pctDesarrollo + '%</div>' +
-    '      <div class="dua-tag" style="color:#dc2626;"><span class="tag-dot" style="background:#dc2626;"></span> Refuerzo: ' + met.pctRefuerzo + '%</div>' +
-    '    </div>' +
-    '  </div>' +
-    (met.topFortalezas.length > 0 ? (
-      '  <div style="margin-top: 8px;">' +
-      '    <strong style="font-size: 11px; color: #166534;">🌟 Fortalezas Recurrentes del Grupo:</strong>' +
-      '    <div class="chips-cloud">' +
-      met.topFortalezas.map(function(f) { return '<span class="chip chip-green">✓ ' + escaparHTML(f) + '</span>'; }).join('') +
-      '    </div>' +
-      '  </div>'
-    ) : '') +
-    (met.topPrioridades.length > 0 ? (
-      '  <div style="margin-top: 8px;">' +
-      '    <strong style="font-size: 11px; color: #92400e;">🎯 Prioridades de Apoyo y Refuerzo:</strong>' +
-      '    <div class="chips-cloud">' +
-      met.topPrioridades.map(function(p) { return '<span class="chip chip-amber">⚠️ ' + escaparHTML(p) + '</span>'; }).join('') +
-      '    </div>' +
-      '  </div>'
-    ) : '') +
-    '  <div style="margin-top: 12px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 10px;">' +
-    '    <strong style="font-size: 11.5px; color: #002b49; display: flex; align-items: center; gap: 4px;">💡 ¿Qué hacer? — Orientaciones pedagógicas de aula:</strong>' +
-    '    <div style="font-size: 11px; color: #334155; margin-top: 6px; line-height: 1.5;">' +
-    '      <div style="margin-bottom: 4px;"><strong>🔴 Requiere apoyo (' + met.refuerzo + '):</strong> ' + (met.refuerzo > 0 ? 'Modelado paso a paso de conexiones y diferenciación de sensores/actuadores antes de condicionales.' : 'El grupo no presenta casos críticos.') + '</div>' +
-    '      <div style="margin-bottom: 4px;"><strong>🟡 En desarrollo (' + met.desarrollo + '):</strong> Práctica colaborativa en parejas (tándem) para verificación de circuitos y diagramas.</div>' +
-    '      <div><strong>🟢 Logrado (' + met.logrado + '):</strong> Asignar retos de profundización y rol de monitores de apoyo a pares.</div>' +
-    '    </div>' +
-    '  </div>' +
-    '</div>';
+  // Socioafectivo (S1-S4)
+  html += '<h3 style="font-size:13px; font-weight:800; color:#002b49; margin:14px 0 6px;">❤️ Dimensión Socioafectiva</h3>';
+  html += '<table class="table-custom">';
+  html += '<thead><tr><th>Código</th><th>Actitud Formativa</th><th>Estado</th></tr></thead><tbody>';
+  datos.saberesSocioafectivos.forEach(function(ss) {
+    html += '<tr><td><strong>' + ss.cod + '</strong></td><td>' + escaparHTML(ss.nombre) + '</td><td><span class="badge-status badge-logrado">Favorable</span></td></tr>';
+  });
+  html += '</tbody></table>';
 
   cont.innerHTML = html;
 }
 
-function eliminarRegistroIndividual(id) {
-  if (!confirm("¿Desea eliminar el registro de este estudiante?")) return;
-  var list = obtenerRegistros().filter(function(r) { return r.id !== id; });
-  guardarRegistros(list);
+function guardarRegistroActual() {
+  if (!resultadoPendiente) return;
+  var registros = obtenerRegistros();
+  var nuevo = Object.assign({}, resultadoPendiente, {
+    id: Date.now().toString(36) + Math.random().toString(36).substring(2, 6),
+    fechaGuardado: new Date().toISOString()
+  });
+  registros.push(nuevo);
+  guardarRegistros(registros);
   actualizarContador();
-  renderizarListaPadron();
+  resultadoPendiente = null;
+  alert("✅ Registro guardado exitosamente en este celular.");
+  cambiarPestanaPrincipal("padron");
+}
+
+function descartarYReanudar() {
+  resultadoPendiente = null;
+  cambiarPestanaPrincipal("camara");
+}
+
+// =========================================================================
+// RENDERIZADO DEL PADRÓN Y MÉTRICAS
+// =========================================================================
+function renderizarPadron() {
+  var regs = obtenerRegistros();
+  var cont = document.getElementById("listaPadronContenedor");
+  if (!cont) return;
+
+  if (regs.length === 0) {
+    cont.innerHTML = '<div class="alert alert-info" style="text-align:center;">No hay registros escaneados aún. Usa el escáner para capturar diagnósticos.</div>';
+    return;
+  }
+
+  var html = '';
+  [...regs].reverse().forEach(function(r) {
+    html += '<div class="record-card">';
+    html += '  <div style="display:flex; justify-content:space-between; align-items:flex-start;">';
+    html += '    <div>';
+    html += '      <strong style="font-size:15px; color:#002b49;">' + escaparHTML(r.estudiante) + '</strong>';
+    html += '      <div style="font-size:11.5px; color:#64748b;">Sección: ' + escaparHTML(r.seccion) + ' | Centro: ' + escaparHTML(r.institucion) + '</div>';
+    html += '    </div>';
+    html += '    <span class="badge-status ' + (r.porcentajeGlobal >= 80 ? 'badge-logrado' : 'badge-proceso') + '">' + r.porcentajeGlobal + '% (' + r.nivelCodigo + ')</span>';
+    html += '  </div>';
+    html += '  <div style="font-size:11.5px; margin:6px 0; color:#334155;">Cognitivo: <strong>' + r.resultadoCognitivo + '</strong> | Psicomotor: <strong>' + r.porcentajePsicomotor + '%</strong> | Socioafectivo: <strong>' + r.porcentajeSocioafectivo + '%</strong></div>';
+    html += '  <div style="display:flex; gap:6px; margin-top:8px;">';
+    html += '    <button type="button" class="btn-secondary" style="font-size:11px; padding:4px 8px; width:auto;" onclick="verFichaIndividual(\'' + r.id + '\')">👁️ Ver Ficha</button>';
+    html += '    <button type="button" class="btn-danger" style="font-size:11px; padding:4px 8px;" onclick="eliminarRegistro(\'' + r.id + '\')">🗑️</button>';
+    html += '  </div>';
+    html += '</div>';
+  });
+
+  cont.innerHTML = html;
+}
+
+function verFichaIndividual(id) {
+  var regs = obtenerRegistros();
+  var item = regs.find(function(r) { return r.id === id; });
+  if (!item) return;
+
+  var cont = document.getElementById("contenidoFichaIndividual");
+  if (cont) {
+    cont.innerHTML = '';
+    renderizarInformeResultado(item);
+    cont.appendChild(document.getElementById("contenidoResultado").cloneNode(true));
+  }
+  cambiarPestanaPrincipal("ficha");
+}
+
+function eliminarRegistro(id) {
+  if (!confirm("¿Desea eliminar este registro del padrón?")) return;
+  var regs = obtenerRegistros().filter(function(r) { return r.id !== id; });
+  guardarRegistros(regs);
+  actualizarContador();
+  renderizarPadron();
 }
 
 function eliminarTodosRegistros() {
-  if (!confirm("⚠️ ¿Está seguro de eliminar TODOS los registros del padrón?")) return;
+  if (!confirm("⚠️ ¿Está seguro de limpiar TODO el padrón de 7.° año?")) return;
   localStorage.removeItem(STORAGE_KEY);
   actualizarContador();
-  renderizarListaPadron();
+  renderizarPadron();
 }
 
-function exportarCSV() {
-  var registros = obtenerRegistros();
-  if (registros.length === 0) {
-    alert("No hay registros para exportar. Escanee o ingrese estudiantes primero.");
+function renderizarMetricasGrupo() {
+  var regs = obtenerRegistros();
+  var cont = document.getElementById("contenedorMetricasGrupo");
+  if (!cont) return;
+
+  if (regs.length === 0) {
+    cont.innerHTML = '<div class="alert alert-info" style="text-align:center;">No hay suficientes datos para calcular métricas grupales.</div>';
     return;
   }
 
-  var encabezados = [
-    "Centro Educativo", "Nivel", "Sección", "Estudiante", "Cédula", "Fecha",
-    "Cognoscitiva", "Nivel Cognoscitivo", "Tarjetas", "Puertos", "Ejecución", "Socioafectiva", "Fortalezas", "Prioridades"
-  ];
-
-  var lineas = [];
-  lineas.push(encabezados.map(function(c) { return '"' + csvEscapar(c) + '"'; }).join(";"));
-
-  registros.forEach(function(r) {
-    var fila = [
-      r.centro, r.nivel, r.seccion, r.estudiante, r.cedula || "", r.fecha,
-      r.cognoscitiva, r.nivelCognoscitivo, r.tarjetas, r.puertos, r.ejecucion, r.socioafectiva, r.fortalezas, r.prioridades
-    ];
-    lineas.push(fila.map(function(c) { return '"' + csvEscapar(c) + '"'; }).join(";"));
+  var total = regs.length;
+  var sumGlo = 0, sumCog = 0, sumPsi = 0, sumSoc = 0;
+  regs.forEach(function(r) {
+    sumGlo += (r.porcentajeGlobal || 80);
+    sumCog += (r.porcentajeCognitivo || 80);
+    sumPsi += (r.porcentajePsicomotor || 80);
+    sumSoc += (r.porcentajeSocioafectivo || 80);
   });
 
-  var csv = "\uFEFF" + lineas.join("\r\n");
-  var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  var html = '';
+  html += '<div class="kpi-grid">';
+  html += '  <div class="kpi-card"><div class="kpi-label">Total Parejas/Alumnos</div><div class="kpi-value">' + total + '</div></div>';
+  html += '  <div class="kpi-card"><div class="kpi-label">Promedio Global</div><div class="kpi-value" style="color:#059669;">' + Math.round(sumGlo / total) + '%</div></div>';
+  html += '  <div class="kpi-card"><div class="kpi-label">Promedio Cognitivo</div><div class="kpi-value" style="color:#0284c7;">' + Math.round(sumCog / total) + '%</div></div>';
+  html += '</div>';
+
+  html += '<div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:12px; padding:12px; margin-top:10px;">';
+  html += '  <strong>📊 Promedios por Dimensión Formativa:</strong>';
+  html += '  <ul style="margin:8px 0 0; padding-left:20px; font-size:12px; line-height:1.6;">';
+  html += '    <li>🧠 Cognitiva (10 Saberes): <strong>' + Math.round(sumCog / total) + '%</strong></li>';
+  html += '    <li>🕹️ Psicomotriz (4 Desafíos): <strong>' + Math.round(sumPsi / total) + '%</strong></li>';
+  html += '    <li>❤️ Socioafectiva (4 Actitudes): <strong>' + Math.round(sumSoc / total) + '%</strong></li>';
+  html += '  </ul>';
+  html += '</div>';
+
+  cont.innerHTML = html;
+}
+
+// =========================================================================
+// EXPORTACIÓN CSV, JSON Y SINCRONIZACIÓN
+// =========================================================================
+function exportarCSV() {
+  var regs = obtenerRegistros();
+  if (regs.length === 0) { alert("No hay registros para exportar."); return; }
+
+  var headers = ["Centro", "Nivel", "Seccion", "Estudiante", "Cadete1", "Cadete2", "NotaGlobal", "NotaCognitiva", "Psicomotor", "Socioafectivo", "NivelDUA", "Fecha"];
+  var rows = regs.map(function(r) {
+    return [
+      r.institucion, r.nivel || "7.° año", r.seccion, r.estudiante, r.cadete1 || "", r.cadete2 || "",
+      r.porcentajeGlobal, r.resultadoCognitivo, r.porcentajePsicomotor, r.porcentajeSocioafectivo, r.nivelCodigo, r.fecha
+    ].map(function(v) { return '"' + String(v || '').replace(/"/g, '""') + '"'; }).join(";");
+  });
+
+  var csvContent = "﻿" + headers.join(";") + "
+" + rows.join("
+");
+  var blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
   var url = URL.createObjectURL(blob);
   var a = document.createElement("a");
   a.href = url;
-  a.download = "padron_diagnostico_FT_" + (sesionActiva.seccion || "grupo") + "_" + new Date().toISOString().slice(0, 10) + ".csv";
-  document.body.appendChild(a);
+  a.download = "padron_7mo_" + (sesionActiva.seccion || "grupo") + ".csv";
   a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
 }
 
 function exportarJSON() {
-  var registros = obtenerRegistros();
-  if (registros.length === 0) {
-    alert("No hay registros para exportar. Escanee o ingrese estudiantes primero.");
-    return;
-  }
-
-  var jsonStr = JSON.stringify(registros, null, 2);
-  var blob = new Blob([jsonStr], { type: "application/json;charset=utf-8;" });
+  var regs = obtenerRegistros();
+  if (regs.length === 0) { alert("No hay registros para exportar."); return; }
+  var blob = new Blob([JSON.stringify(regs, null, 2)], { type: "application/json;charset=utf-8;" });
   var url = URL.createObjectURL(blob);
   var a = document.createElement("a");
   a.href = url;
-  a.download = "padron_diagnostico_FT_" + (sesionActiva.seccion || "grupo") + "_" + new Date().toISOString().slice(0, 10) + ".json";
-  document.body.appendChild(a);
+  a.download = "padron_7mo_" + (sesionActiva.seccion || "grupo") + ".json";
   a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
 }
 
 function copiarResumenPortapapeles() {
-  var registros = obtenerRegistros();
-  if (registros.length === 0) {
-    alert("No hay registros para copiar.");
-    return;
-  }
+  var regs = obtenerRegistros();
+  if (regs.length === 0) { alert("No hay registros para copiar."); return; }
+  var txt = "📊 PADRÓN DIAGNÓSTICO 7.° AÑO - " + sesionActiva.centro + " (" + sesionActiva.seccion + ")
+";
+  txt += "Total Evaluados: " + regs.length + "
 
-  var lineas = [];
-  lineas.push("📊 PADRÓN DIAGNÓSTICO MEP");
-  lineas.push("🏫 Centro: " + sesionActiva.centro);
-  lineas.push("📚 Nivel: " + sesionActiva.nivel + " | Sección: " + sesionActiva.seccion);
-  lineas.push("👥 Total Estudiantes: " + registros.length);
-  lineas.push("");
-
-  registros.forEach(function(r, idx) {
-    lineas.push((idx + 1) + ". " + r.estudiante + " (" + r.seccion + ") - " + r.cognoscitiva + " [" + r.nivelCognoscitivo + "]");
+";
+  regs.forEach(function(r, i) {
+    txt += (i + 1) + ". " + r.estudiante + " — Global: " + r.porcentajeGlobal + "% [" + r.nivelCodigo + "] (Cog: " + r.resultadoCognitivo + ")
+";
   });
-
-  var texto = lineas.join("\n");
-
-  navigator.clipboard.writeText(texto).then(function() {
-    alert("✅ Resumen copiado al portapapeles listo para WhatsApp o correo.");
+  navigator.clipboard.writeText(txt).then(function() {
+    alert("✅ Resumen copiado al portapapeles.");
   }).catch(function() {
-    alert("No se pudo copiar automáticamente. Por favor use la descarga en CSV o JSON.");
+    alert("No se pudo copiar automáticamente. Use exportar CSV.");
   });
-}
-
-function csvEscapar(val) {
-  if (val === null || val === undefined) return "";
-  return String(val).replace(/"/g, '""').replace(/\r?\n/g, " ");
-}
-
-function escaparHTML(val) {
-  if (val === null || val === undefined) return "";
-  return String(val).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
 async function sincronizarConDashboard() {
-  var registros = obtenerRegistros();
-  if (registros.length === 0) {
-    alert("No hay registros en el padrón para sincronizar.");
-    return;
-  }
-
-  if (!navigator.onLine) {
-    alert("⚠️ Sin conexión a internet en este momento.\n\nLos datos (" + registros.length + " estudiantes) están guardados de forma 100% segura en la memoria de este celular. En cuanto te conectes a Wi-Fi o datos móviles, presiona nuevamente este botón para sincronizarlos con el dashboard docente central.");
-    return;
-  }
+  var regs = obtenerRegistros();
+  if (regs.length === 0) { alert("No hay registros para sincronizar."); return; }
+  if (!navigator.onLine) { alert("⚠️ Sin conexión a internet en este momento."); return; }
 
   var btn = document.getElementById("btnSincronizar");
-  if (btn) {
-    btn.disabled = true;
-    btn.innerHTML = "<span>⏳ Transmitiendo datos al dashboard...</span>";
-  }
+  if (btn) { btn.disabled = true; btn.textContent = "⏳ Transmitiendo datos..."; }
 
-  try {
-    var exitosos = 0;
-    for (var i = 0; i < registros.length; i++) {
-      var r = registros[i];
-      var payload = {
-        webAppId: "diagnostico_escaner_datos_locales",
-        webAppTitulo: "Diagnóstico Formación Tecnológica — Escáner de Datos",
-        docenteId: sesionActiva.centro || "DOCENTE-OFFLINE",
-        estudianteNombre: r.estudiante,
-        seccionOGrupo: r.seccion,
-        nivel: r.nivel,
-        puntaje: 80,
-        puntajeMaximo: 100,
-        porcentaje: parseInt(String(r.cognoscitiva).replace(/[^0-9]/g, '')) || 80,
-        nivelLogro: r.nivelCognoscitivo || "Logrado",
-        tiempoSegundos: 60,
-        totalReactivos: 10,
-        aciertos: 8,
-        fallos: 2,
-        timestamp: Date.now(),
-        tokenAntiFraude: "SYNC-" + r.id
-      };
-
-      await fetch("/api/telemetria", {
+  var exitosos = 0;
+  for (var i = 0; i < regs.length; i++) {
+    var r = regs[i];
+    var payload = {
+      tipo: "DIAGNOSTICO_7MO",
+      nivel: "7°",
+      seccion: r.seccion || sesionActiva.seccion,
+      centro: r.institucion || sesionActiva.centro,
+      estudiante: r.estudiante,
+      cadete1: r.cadete1,
+      cadete2: r.cadete2,
+      porcentaje: r.porcentajeGlobal || 80,
+      resultadoCognitivo: r.resultadoCognitivo,
+      nivelDUA: r.nivelCodigo
+    };
+    try {
+      var res = await fetch("/api/telemetria/enviar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
-      }).then(function(res) {
-        if (res.ok) exitosos++;
-      }).catch(function() {});
-    }
+      });
+      if (res.ok) exitosos++;
+    } catch(e){}
+  }
 
-    alert("✅ ¡Sincronización completada con éxito!\n\nSe han transmitido " + exitosos + " registros al dashboard central.");
-  } catch (err) {
-    alert("⚠️ No se pudo completar la transmisión. Los registros continúan guardados de forma segura en tu teléfono.");
-  } finally {
-    if (btn) {
-      btn.disabled = false;
-      btn.innerHTML = "<span>📡 Sincronizar datos con el dashboard central</span>";
-    }
+  if (btn) { btn.disabled = false; btn.textContent = "📡 Sincronizar con Dashboard Central"; }
+  alert("✅ Sincronización finalizada: " + exitosos + " de " + regs.length + " transmitidos.");
+}
+
+function procesarArchivoImagen(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  if (typeof Html5Qrcode !== "undefined") {
+    var scanner = new Html5Qrcode("reader");
+    scanner.scanFile(file, true).then(function(qrCodeMessage) {
+      emitirBeep();
+      procesarQRDetectado(qrCodeMessage);
+    }).catch(function(err) {
+      alert("⚠️ No se encontró un código QR nítido en la imagen.");
+    });
   }
 }
 
-function finalizarSesion() {
-  detenerCamara();
-  var vSes = document.getElementById("vistaSesion");
-  var vGrupo = document.getElementById("vistaGrupo");
-  var vPadron = document.getElementById("vistaPadron");
-  var vFicha = document.getElementById("vistaFichaIndividual");
-  var vRes = document.getElementById("vistaResultado");
-  var nav = document.getElementById("navBarSesion");
-
-  if (vSes) vSes.classList.add("hidden");
-  if (vGrupo) vGrupo.classList.add("hidden");
-  if (vPadron) vPadron.classList.add("hidden");
-  if (vFicha) vFicha.classList.add("hidden");
-  if (vRes) vRes.classList.add("hidden");
-  if (nav) nav.classList.add("hidden");
-
-  document.getElementById("vistaConfig").classList.remove("hidden");
+function importarArchivos(e) {
+  var files = e.target.files;
+  if (!files || files.length === 0) return;
+  var regs = obtenerRegistros();
+  var count = 0;
+  Array.from(files).forEach(function(f) {
+    var reader = new FileReader();
+    reader.onload = function(evt) {
+      try {
+        var data = JSON.parse(evt.target.result);
+        if (Array.isArray(data)) {
+          data.forEach(function(d) { regs.push(d); count++; });
+        } else {
+          regs.push(data);
+          count++;
+        }
+        guardarRegistros(regs);
+        actualizarContador();
+        renderizarPadron();
+      } catch(e){}
+    };
+    reader.readAsText(f);
+  });
+  setTimeout(function() {
+    alert("✅ Archivos procesados e importados al padrón.");
+    cambiarPestanaPrincipal("padron");
+  }, 600);
 }
 
-// ==========================================================================
-// DETECCIÓN INTELIGENTE DE SISTEMA OPERATIVO Y MANEJADOR PWA MULTIPLATAFORMA
-// ==========================================================================
-var deferredPrompt = null;
+function escaparHTML(str) {
+  if (!str) return "";
+  return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+// =========================================================================
+// PWA INSTALACIÓN DIRECTA
+// =========================================================================
 window.addEventListener("beforeinstallprompt", function(e) {
   e.preventDefault();
   deferredPrompt = e;
   var btn = document.getElementById("btnInstalarPWA");
-  if (btn) {
-    btn.style.display = "inline-flex";
-  }
+  if (btn) btn.style.display = "inline-flex";
 });
 
-function detectarSO() {
-  var ua = navigator.userAgent || navigator.vendor || window.opera || "";
-  var isIOS = (/iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) && !window.MSStream;
-  var isHuawei = /Huawei|Honor|HMSCore|Petal/i.test(ua);
-  var isAndroid = /Android/i.test(ua) && !isHuawei;
-  if (isIOS) return "ios";
-  if (isHuawei) return "huawei";
-  if (isAndroid) return "android";
-  return "desktop";
-}
-
-function inicializarBannerSO() {
-  var so = detectarSO();
-  var badge = document.getElementById("pwaBadge");
-  var title = document.getElementById("pwaTitle");
-  var desc = document.getElementById("pwaDesc");
-  var btnText = document.getElementById("btnInstalarPWAText");
-  var btnInstalar = document.getElementById("btnInstalarPWA");
-
-  if (so === "ios") {
-    if (badge) badge.innerHTML = "🍎 DETECTADO: iPhone / iPad (iOS Safari)";
-    if (title) title.innerHTML = "Instalación en iPhone (iOS Safari)";
-    if (desc) desc.innerHTML = "iOS no admite descarga directa de APKs. Sigue los 3 sencillos pasos en Safari para tener el Escáner a pantalla completa y 100% sin conexión.";
-    if (btnText) btnText.innerHTML = "🍎 Ver Pasos de Instalación en iPhone";
-    if (btnInstalar) {
-      btnInstalar.style.background = "linear-gradient(135deg, #4338ca 0%, #312e81 100%)";
-      btnInstalar.style.border = "1.5px solid #818cf8";
-    }
-  } else if (so === "android") {
-    if (badge) badge.innerHTML = "🤖 DETECTADO: Android (Google Chrome)";
-    if (title) title.innerHTML = "Instalar Escáner como App Nativa en Android";
-    if (desc) desc.innerHTML = "Instala la aplicación con 1 toque en Android para escanear 100% desconectado en el laboratorio o descarga el archivo HTML.";
-    if (btnText) btnText.innerHTML = "🤖 Instalar App en Android (1 Toque)";
-    if (btnInstalar) {
-      btnInstalar.style.background = "linear-gradient(135deg, #059669 0%, #047857 100%)";
-    }
-  } else if (so === "huawei") {
-    if (badge) badge.innerHTML = "📱 DETECTADO: Huawei (HarmonyOS / EMUI)";
-    if (title) title.innerHTML = "Instalación en Dispositivos Huawei";
-    if (desc) desc.innerHTML = "Agrega el acceso directo en Huawei Browser desde el Menú de Opciones para usar el escáner sin internet.";
-    if (btnText) btnText.innerHTML = "📱 Ver Pasos para Huawei";
-    if (btnInstalar) {
-      btnInstalar.style.background = "linear-gradient(135deg, #dc2626 0%, #991b1b 100%)";
-    }
+function instalarAppPWA() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function(choice) {
+      if (choice.outcome === "accepted") {
+        console.log("PWA 7mo instalada");
+      }
+      deferredPrompt = null;
+    });
   } else {
-    if (badge) badge.innerHTML = "💻 ACCESO EN COMPUTADORA / USB";
-    if (title) title.innerHTML = "Instalar Escáner en Celular o Descargar HTML";
-    if (desc) desc.innerHTML = "Abre este enlace en tu celular (Android / iPhone / Huawei) para usar la cámara o descarga el archivo HTML para computadoras y llaves USB.";
-    if (btnText) btnText.innerHTML = "📱 Guía de Instalación para Celulares";
+    alert("🤖 INSTALACIÓN EN ANDROID / IOS:
+
+• En Android: Toca los 3 puntos (⋮) en Chrome y elige 'Instalar aplicación'.
+• En iPhone: Toca 'Compartir' (📤) en Safari y elige 'Agregar a Inicio'.");
   }
 }
 
-function solicitarInstalacionSegunSO() {
-  var so = detectarSO();
-  var body = document.getElementById("guideContentBody");
-  var arrow = document.getElementById("guideArrow");
-  
-  if (body && arrow) {
-    body.style.display = "block";
-    arrow.textContent = "▲ Ocultar Instrucciones";
-  }
-
-  if (so === "ios") {
-    cambiarPestanaGuia('ios');
-    var el = document.getElementById("paneIos");
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    alert("🍎 PASOS OFICIALES PARA IPHONE:\n\n1. Toca los Tres Puntitos (•••) del navegador.\n2. Selecciona la opción 'Compartir' (📤).\n3. Toca 'Ver más' (o desliza las opciones).\n4. Selecciona [+] 'Agregar a Inicio' (Add to Home Screen) y confirma con 'Agregar'.\n\n¡Listo! La App quedará instalada en la pantalla de tu iPhone y funcionará 100% sin conexión a internet.");
-  } else if (so === "android") {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then(function(choiceResult) {
-        if (choiceResult.outcome === "accepted") {
-          console.log("El usuario aceptó la instalación de la PWA en Android.");
-        }
-        deferredPrompt = null;
-      });
-    } else {
-      cambiarPestanaGuia('android');
-      var el = document.getElementById("paneAndroid");
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      alert("🤖 INSTALACIÓN EN ANDROID (CHROME):\n\n1. Toca los 3 puntos (⋮) arriba a la derecha en Google Chrome.\n2. Selecciona 'Instalar aplicación' o 'Agregar a la pantalla principal'.\n3. Confirma tocando 'Instalar'.\n\n¡El escáner funcionará 100% sin conexión a internet!");
-    }
-  } else if (so === "huawei") {
-    cambiarPestanaGuia('huawei');
-    var el = document.getElementById("paneHuawei");
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    alert("📱 INSTALACIÓN EN HUAWEI:\n\n1. Abre en Huawei Browser.\n2. Toca el menú (⠇ / ≡).\n3. Selecciona 'Agregar a pantalla de inicio'.");
-  } else {
-    cambiarPestanaGuia('ios');
-    var el = document.getElementById("guideAccordionSection");
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-}
-
+document.addEventListener("DOMContentLoaded", function() {
+  actualizarContador();
+  cambiarPestanaPrincipal("camara");
+});
 </script>
 </body>
 </html>
