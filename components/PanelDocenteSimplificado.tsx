@@ -1882,26 +1882,6 @@ export default function PanelDocenteSimplificado() {
 
                   {acordeonDimensionesCognitivo && (
                     <div className="p-4 sm:p-5 bg-slate-50/60 border-t border-slate-200/80 animate-fadeIn">
-                      {nivelActivo === "7mo" && (
-                        <div className="mb-4 bg-emerald-50/90 border border-emerald-200/90 rounded-xl p-3.5 flex items-start gap-3 text-emerald-950 shadow-2xs">
-                          <div className="w-7 h-7 rounded-lg bg-emerald-200 text-emerald-900 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">
-                            <CheckCircle size={16} weight="fill" />
-                          </div>
-                          <div className="min-w-0">
-                            <div className="flex items-center gap-2 flex-wrap mb-0.5">
-                              <span className="text-xs font-black uppercase tracking-wide text-emerald-900">
-                                Saber Procedimental Transversal
-                              </span>
-                              <span className="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.2 rounded-full border border-emerald-300">
-                                Articulación Curricular MEP
-                              </span>
-                            </div>
-                            <p className="text-[11.5px] text-emerald-800 font-medium leading-relaxed">
-                              Los saberes procedimentales se abordan de manera transversal en el Área Cognitiva y en las estaciones de ejecución interactiva.
-                            </p>
-                          </div>
-                        </div>
-                      )}
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
                         {(SABERES_COGNITIVOS_MAP[nivelActivo] || SABERES_COGNITIVOS_MAP["9no"]).map((saber) => (
                           <div
