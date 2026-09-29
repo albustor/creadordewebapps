@@ -521,7 +521,6 @@ var videoTrack = null;
 var animFrameId = null;
 var deferredPromptAndroid = null;
 
-// Heurística de Detección de Plataforma
 var plataformaCliente = (function() {
   var ua = navigator.userAgent || navigator.vendor || window.opera;
   var isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
@@ -611,7 +610,6 @@ function ejecutarInstalacionSegunSO() {
   }
 }
 
-// SECUENCIA ESTRICTA SAFARI / IOS
 function abrirModalGuiaIOS() {
   document.getElementById("modalGuiadoTitulo").textContent = "Instalación en iPhone / iPad (Safari)";
   
@@ -651,7 +649,6 @@ function cerrarModalGuia() {
   document.getElementById("modalInstalacionGuiada").classList.add("hidden");
 }
 
-// MOTOR VISUAL REACTIVO POR NIVEL
 function aplicarTemaNivel(nivel) {
   var root = document.documentElement;
   var metaTheme = document.getElementById("themeColorMeta");
@@ -661,7 +658,6 @@ function aplicarTemaNivel(nivel) {
   sesion.nivel = nivel;
 
   if (nivel === "9") {
-    // 9.° Año: Celeste Tecnológico + Icono Circuito
     root.style.setProperty("--nivel-primario", "#0284c7");
     root.style.setProperty("--nivel-primario-rgb", "2, 132, 199");
     root.style.setProperty("--nivel-bg-light", "#f0f9ff");
@@ -672,7 +668,6 @@ function aplicarTemaNivel(nivel) {
     txtSub.textContent = "Módulo 3 — 9.° Año • Funcionamiento Autónomo 100% Offline";
     document.title = "DIAGNÓSTICO NOVENO — MEP | Versión Local";
   } else {
-    // 7.° Año: Verde Esmeralda + Icono Brote
     root.style.setProperty("--nivel-primario", "#059669");
     root.style.setProperty("--nivel-primario-rgb", "5, 150, 105");
     root.style.setProperty("--nivel-bg-light", "#ecfdf5");
@@ -715,7 +710,6 @@ function cambiarPestana(vista) {
   }
 }
 
-// PERSISTENCIA LOCAL
 function cargarEstadoLocal() {
   var cfgRaw = localStorage.getItem(STORAGE_KEY + "_config");
   if (cfgRaw) {
@@ -745,7 +739,6 @@ function actualizarBadges() {
   document.getElementById("badgeSeccionActiva").textContent = "Sección " + sesion.seccion;
 }
 
-// ENTORNO DE CAPTURA VISUAL
 function iniciarCamara() {
   var video = document.getElementById("videoFeed");
   var area = document.getElementById("scannerArea");
@@ -825,7 +818,6 @@ function procesarArchivoQR(evt) {
   reader.readAsDataURL(file);
 }
 
-// INGESTA Y COMPROBACIÓN DE ESQUEMA
 function ingresarPayload(rawString) {
   try {
     var data = JSON.parse(rawString);
@@ -875,7 +867,6 @@ function ingresarPayload(rawString) {
   }
 }
 
-// GENERADOR QR LOCAL
 function construirQROffline() {
   var est1 = document.getElementById("genEstudiante1").value.trim();
   var est2 = document.getElementById("genEstudiante2").value.trim();
@@ -937,7 +928,6 @@ function descargarPNGQR() {
   a.click();
 }
 
-// MÉTRICAS Y REPORTES
 function calcularMetricas() {
   var cont = document.getElementById("metricasContenedor");
   if (padron.length === 0) {
@@ -1044,7 +1034,6 @@ function importarPadronJSON(evt) {
   reader.readAsText(file);
 }
 
-// INICIALIZACIÓN
 document.addEventListener("DOMContentLoaded", function() {
   cargarEstadoLocal();
   gestionarEstadoBanner();
