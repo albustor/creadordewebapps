@@ -16,12 +16,6 @@ export async function GET(req: NextRequest) {
       fechaActualizacion: new Date().toISOString(),
     };
 
-    // Formato de reporte para WhatsApp
-    const mensajeWhatsApp = `🩺 *REPORTE DIARIO DE AUDITORÍA Y SALUD IA (5:00 AM)*\n\n📅 *Fecha:* ${new Date().toLocaleString("es-CR", { timeZone: "America/Costa_Rica" })}\n🎯 *Total Niveles Auditados:* ${auditoria.totalModelosAuditados}\n✅ *Operativos:* ${auditoria.operativos}\n⚠️ *Deprecados:* ${auditoria.deprecadosODadosDeBaja}\n\n*Detalles de Capas de Procesamiento:*\n${auditoria.detalles.map((d) => {
-      const capa = d.proveedor.includes("Gemini") || d.proveedor.includes("Google") ? "Capa 1 (Primaria)" : d.proveedor.includes("Groq") ? "Capa 2 (Baja Latencia)" : d.proveedor.includes("OpenRouter") ? "Capa 3 (Redundancia)" : "Capa 4 (Contingencia)";
-      return `• ${capa} (${d.modelo}): ${d.estado} [${d.latencia}]`;
-    }).join("\n")}\n\n📋 *Integridad Evaluativa:* ${reglaCompletitud.estado}\n${reglaCompletitud.criterio}\n\n📧 Reporte oficial remitido a: alberto.bustos.ortega@mep.go.cr`;
-
     // Formato de reporte para Correo Electrónico Oficial
     const reporteEmail = {
       destinatario: "alberto.bustos.ortega@mep.go.cr",
@@ -97,35 +91,6 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // 2. Despacho real de WhatsApp por Evolution API
-    let envioWhatsAppReal = false;
-    const evolutionUrl = process.env.EVOLUTION_URL?.replace(/\/$/, "");
-    const evolutionApiKey = process.env.EVOLUTION_API_KEY;
-    const evolutionInstance = process.env.EVOLUTION_INSTANCE_NAME;
-    const adminPhone = process.env.ADMIN_WHATSAPP_NUMBER || "50688887777";
-
-    if (evolutionUrl && evolutionApiKey && evolutionInstance) {
-      try {
-        const resWp = await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
-          method: "POST",
-          headers: {
-            apikey: evolutionApiKey,
-            apiKey: evolutionApiKey,
-            "Content-Type": "application/json",
-          },
-          signal: AbortSignal.timeout(6000),
-          body: JSON.stringify({
-            number: adminPhone,
-            text: mensajeWhatsApp,
-            textMessage: { text: mensajeWhatsApp },
-          }),
-        });
-        if (resWp.ok) envioWhatsAppReal = true;
-      } catch (e) {
-        console.error("Error despachando WhatsApp de auditoría:", e);
-      }
-    }
-
     return NextResponse.json({
       success: true,
       timestamp: new Date().toISOString(),
@@ -135,11 +100,8 @@ export async function GET(req: NextRequest) {
       despachoReal: {
         emailEnviado: envioEmailReal,
         destinatarioEmail: reporteEmail.destinatario,
-        whatsAppEnviado: envioWhatsAppReal,
-        numeroWhatsApp: adminPhone,
       },
       reporteEmail,
-      payloadWhatsApp: mensajeWhatsApp,
     });
   } catch (error: any) {
     return NextResponse.json(

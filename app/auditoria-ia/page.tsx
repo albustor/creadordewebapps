@@ -6,18 +6,17 @@ import {
   CheckCircle,
   Clock,
   EnvelopeSimple,
-  WhatsappLogo,
   ArrowsClockwise,
   ShieldCheck,
   Lightning,
   Sparkle,
   WarningCircle,
+  FileText,
 } from "@phosphor-icons/react";
 
 export default function AuditoriaIAPage() {
   const [cargando, setCargando] = useState(false);
   const [datosAuditoria, setDatosAuditoria] = useState<any | null>(null);
-  const [copiadoWA, setCopiadoWA] = useState(false);
 
   const ejecutarAuditoria = async () => {
     setCargando(true);
@@ -36,14 +35,6 @@ export default function AuditoriaIAPage() {
   useEffect(() => {
     ejecutarAuditoria();
   }, []);
-
-  const copiarWhatsApp = () => {
-    if (datosAuditoria?.payloadWhatsApp) {
-      navigator.clipboard.writeText(datosAuditoria.payloadWhatsApp);
-      setCopiadoWA(true);
-      setTimeout(() => setCopiadoWA(false), 2500);
-    }
-  };
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
@@ -166,39 +157,34 @@ export default function AuditoriaIAPage() {
         )}
       </div>
 
-      {/* Destinatarios y Difusión */}
+      {/* Destinatarios y Difusión Oficial */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Email Oficial */}
         <div className="bg-slate-900 text-white rounded-2xl p-6 border border-slate-800 space-y-3">
           <div className="flex items-center gap-2 text-xs font-bold text-sky-400 uppercase">
             <EnvelopeSimple size={18} weight="bold" />
-            <span>Notificación Oficial por Correo</span>
+            <span>Notificación Oficial Institucional</span>
           </div>
           <h4 className="text-sm font-bold text-white">
             alberto.bustos.ortega@mep.go.cr
           </h4>
           <p className="text-xs text-slate-400 leading-relaxed">
-            Reporte ejecutivo con formato HTML estructurado que se remite diariamente a las 5:00 AM con el inventario de modelos.
+            Reporte ejecutivo con formato HTML estructurado que se remite automáticamente a las 5:00 AM (11:00 UTC) con el estado de salud, latencias y regla de completitud.
           </p>
         </div>
 
-        {/* WhatsApp Payload */}
-        <div className="bg-emerald-950 text-emerald-100 rounded-2xl p-6 border border-emerald-900 space-y-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-xs font-bold text-emerald-300 uppercase">
-              <WhatsappLogo size={18} weight="fill" />
-              <span>Payload Listo para WhatsApp</span>
-            </div>
-            <button
-              onClick={copiarWhatsApp}
-              className="px-2.5 py-1 bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs rounded-lg transition-colors"
-            >
-              {copiadoWA ? "¡Copiado!" : "Copiar"}
-            </button>
+        {/* Regla de Integridad de Evaluación */}
+        <div className="bg-blue-950 text-blue-100 rounded-2xl p-6 border border-blue-900 space-y-3">
+          <div className="flex items-center gap-2 text-xs font-bold text-blue-300 uppercase">
+            <ShieldCheck size={18} weight="fill" />
+            <span>Regla de Integridad y Completitud</span>
           </div>
-          <pre className="bg-slate-950/70 p-3 rounded-xl text-[11px] font-mono text-emerald-200 whitespace-pre-wrap max-h-32 overflow-y-auto">
-            {datosAuditoria?.payloadWhatsApp || "Cargando mensaje..."}
-          </pre>
+          <h4 className="text-sm font-bold text-white">
+            100% de Reactivos Evaluados Requeridos
+          </h4>
+          <p className="text-xs text-blue-200 leading-relaxed">
+            Validación criptográfica SHA-256 en cliente que exige responder la totalidad de reactivos antes de asentar telemetría en el expediente oficial docente.
+          </p>
         </div>
       </div>
     </div>
