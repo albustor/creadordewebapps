@@ -23,7 +23,6 @@ import {
   ChartBar,
   GameController,
   Lightbulb,
-  Robot,
   ChalkboardTeacher,
   IdentificationBadge,
   Check,
@@ -31,7 +30,6 @@ import {
 import * as XLSX from "xlsx";
 import {
   DIAGNOSTICO_7MO_DATA,
-  DIAGNOSTICO_8VO_DATA,
   DIAGNOSTICO_9NO_DATA,
 } from "@/lib/diagnosticos";
 
@@ -57,8 +55,8 @@ interface ObservatorioMacroNacionalProps {
   usuariosDocentes: DocenteAdmin[];
 }
 
-// Selector Exclusivo de III Ciclo de Secundaria (7°, 8° y 9° Año)
-export type VistaIIICiclo = "TODOS" | "7mo" | "8vo" | "9no";
+// Selector Exclusivo de III Ciclo de Secundaria (7.° y 9.° Año)
+export type VistaIIICiclo = "TODOS" | "7mo" | "9no";
 
 export default function ObservatorioMacroNacional({ usuariosDocentes }: ObservatorioMacroNacionalProps) {
   const [nivelActivo, setNivelActivo] = useState<VistaIIICiclo>("TODOS");
@@ -91,14 +89,13 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
     cargar();
   }, []);
 
-  // Normalizador de nivel para un registro de telemetría en III Ciclo
-  const detectarNivelRegistro = (r: any): "7mo" | "8vo" | "9no" => {
+  // Normalizador de nivel para un registro de telemetría en III Ciclo (7mo y 9no)
+  const detectarNivelRegistro = (r: any): "7mo" | "9no" => {
     const niv = (r.nivel || "").toLowerCase();
     const sec = (r.seccionOGrupo || r.seccion || "").toLowerCase();
     const webApp = (r.webAppId || r.webAppTitulo || "").toLowerCase();
 
     if (niv.includes("7") || sec.includes("7-") || webApp.includes("7mo") || webApp.includes("cyberquest")) return "7mo";
-    if (niv.includes("8") || sec.includes("8-") || webApp.includes("8vo") || webApp.includes("robotica")) return "8vo";
     return "9no";
   };
 
@@ -108,9 +105,8 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
     return telemetriaReal.filter((r) => detectarNivelRegistro(r) === nivelActivo);
   }, [telemetriaReal, nivelActivo]);
 
-  // Conteos individuales de estudiantes evaluados por cada nivel de III Ciclo
+  // Conteos individuales de estudiantes evaluados en 7mo y 9no
   const eval7mo = useMemo(() => telemetriaReal.filter((r) => detectarNivelRegistro(r) === "7mo").length, [telemetriaReal]);
-  const eval8vo = useMemo(() => telemetriaReal.filter((r) => detectarNivelRegistro(r) === "8vo").length, [telemetriaReal]);
   const eval9no = useMemo(() => telemetriaReal.filter((r) => detectarNivelRegistro(r) === "9no").length, [telemetriaReal]);
 
   // Consolidar instituciones exclusivamente de III Ciclo a partir del padrón
@@ -127,8 +123,8 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
           const clave = c.nombre.toLowerCase().trim();
           if (!mapa.has(clave)) {
             const nivelesAtendidos = c.desgloseNiveles
-              ? c.desgloseNiveles.filter((dn: any) => dn.activo).map((dn: any) => dn.nivel)
-              : ["7°", "8°", "9°"];
+              ? c.desgloseNiveles.filter((dn: any) => dn.activo && (dn.nivel.includes("7") || dn.nivel.includes("9"))).map((dn: any) => dn.nivel)
+              : ["7°", "9°"];
 
             mapa.set(clave, {
               institucion: c.nombre,
@@ -138,10 +134,9 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
               docente: u.nombreCompleto,
               correoDocente: u.correoInstitucional,
               rol: u.rol || "Docente",
-              nivelesAtendidos,
+              nivelesAtendidos: nivelesAtendidos.length > 0 ? nivelesAtendidos : ["7°", "9°"],
               totalEstudiantes: 0,
               estudiantes7mo: 0,
-              estudiantes8vo: 0,
               estudiantes9no: 0,
               promedio: 0,
               aplicado: false,
@@ -162,7 +157,6 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
           const nivReg = detectarNivelRegistro(t);
           instObj.totalEstudiantes += 1;
           if (nivReg === "7mo") instObj.estudiantes7mo += 1;
-          if (nivReg === "8vo") instObj.estudiantes8vo += 1;
           if (nivReg === "9no") instObj.estudiantes9no += 1;
           instObj.aplicado = true;
           instObj.ultimoReporte = new Date(t.timestamp || Date.now()).toISOString().split("T")[0];
@@ -176,7 +170,6 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
         const nivReg = detectarNivelRegistro(t);
         primer.totalEstudiantes += 1;
         if (nivReg === "7mo") primer.estudiantes7mo += 1;
-        if (nivReg === "8vo") primer.estudiantes8vo += 1;
         if (nivReg === "9no") primer.estudiantes9no += 1;
         primer.aplicado = true;
         primer.ultimoReporte = new Date(t.timestamp || Date.now()).toISOString().split("T")[0];
@@ -194,13 +187,12 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
     return Array.from(mapa.values());
   }, [usuariosDocentes, telemetriaReal]);
 
-  // Filtrado de instituciones por Nivel, DRE, Estado, Rol y Búsqueda
+  // Filtrado de instituciones por Nivel (7mo / 9no / Todos), DRE, Estado, Rol y Búsqueda
   const institucionesFiltradas = useMemo(() => {
     return institucionesConsolidadas.filter((item) => {
       const matchNivel =
         nivelActivo === "TODOS" ||
         (nivelActivo === "7mo" && item.nivelesAtendidos.some((n: string) => n.includes("7"))) ||
-        (nivelActivo === "8vo" && item.nivelesAtendidos.some((n: string) => n.includes("8"))) ||
         (nivelActivo === "9no" && item.nivelesAtendidos.some((n: string) => n.includes("9")));
 
       const matchDRE = filtroDRE === "TODAS" || item.dre === filtroDRE || item.dreNombre.toLowerCase().includes(filtroDRE.toLowerCase());
@@ -225,7 +217,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
     });
   }, [institucionesConsolidadas, nivelActivo, filtroDRE, filtroEstado, filtroRol, busqueda]);
 
-  // Métricas Macro Nacionales de III Ciclo
+  // Métricas Macro Nacionales de III Ciclo (7.° y 9.°)
   const metricasMacro = useMemo(() => {
     const totalInst = institucionesConsolidadas.length;
     const instAplicadas = institucionesConsolidadas.filter((i) => i.aplicado && i.totalEstudiantes > 0).length;
@@ -253,7 +245,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
     };
   }, [institucionesConsolidadas, telemetriaNivel]);
 
-  // Matriz de Indicadores de III Ciclo según el nivel activo
+  // Matriz de Indicadores de III Ciclo (Base Fundamental - Captura 2)
   const matrizIndicadores = useMemo(() => {
     const hayEvaluaciones = telemetriaNivel.length > 0;
     const prom = metricasMacro.promedioNacional;
@@ -264,22 +256,6 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
         return {
           id: idx + 1,
           codigo: `IND-7.${idx + 1}`,
-          nombre: r.indicadorTexto,
-          subarea: r.subarea,
-          saberes: r.enunciado,
-          peso: r.puntos,
-          pctLogro: logro,
-          estado: !hayEvaluaciones ? "Pendiente de Diagnóstico" : logro >= 75 ? "Consolidado Nacional" : logro >= 60 ? "En Nivelación" : "Brecha Crítica",
-        };
-      });
-    }
-
-    if (nivelActivo === "8vo") {
-      return DIAGNOSTICO_8VO_DATA.reactivos.map((r, idx) => {
-        const logro = hayEvaluaciones ? Math.round(prom) : 0;
-        return {
-          id: idx + 1,
-          codigo: `IND-8.${idx + 1}`,
           nombre: r.indicadorTexto,
           subarea: r.subarea,
           saberes: r.enunciado,
@@ -306,7 +282,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
       });
     }
 
-    // BASE FUNDAMENTAL (CAPTURA 2): Visión Consolidada de los 3 Módulos de III Ciclo
+    // BASE FUNDAMENTAL (CAPTURA 2): Visión Consolidada de los 2 Módulos Activos de III Ciclo (7.° y 9.°)
     return [
       {
         id: 1,
@@ -320,16 +296,6 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
       },
       {
         id: 2,
-        codigo: "8.° AÑO",
-        nombre: "8.° Año: Robótica y Automatización (Hardware, Software, Redes y Algoritmos E-P-S)",
-        subarea: "Módulo 1 — III Ciclo (14 reactivos oficiales)",
-        saberes: "Arquitectura de computadoras, redes, modelo E-P-S, condicionales, bucles, robótica",
-        peso: 14,
-        pctLogro: eval8vo > 0 ? metricasMacro.promedioNacional : 55,
-        estado: eval8vo > 0 ? `${eval8vo} Estudiantes Evaluados` : "Suite Diagnóstica Activa (14 ítems)",
-      },
-      {
-        id: 3,
         codigo: "9.° AÑO",
         nombre: "9.° Año: Aula Inteligente IoT (Microcontroladores, Circuitos, Sensores LDR y Ley de Ohm)",
         subarea: "Módulo 1 — III Ciclo (10 reactivos oficiales)",
@@ -339,7 +305,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
         estado: eval9no > 0 ? `${eval9no} Estudiantes Evaluados` : "Suite Diagnóstica Activa (10 ítems)",
       },
     ];
-  }, [nivelActivo, telemetriaNivel, metricasMacro, eval7mo, eval8vo, eval9no]);
+  }, [nivelActivo, telemetriaNivel, metricasMacro, eval7mo, eval9no]);
 
   // Exportar Consolidado Macro Nacional a Excel Multi-Hoja
   const exportarMacroExcel = () => {
@@ -358,7 +324,6 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
       "Estado General": item.aplicado ? "APLICADO" : "PENDIENTE",
       "Total Evaluados (III Ciclo)": item.totalEstudiantes,
       "Evaluados 7mo": item.estudiantes7mo,
-      "Evaluados 8vo": item.estudiantes8vo,
       "Evaluados 9no": item.estudiantes9no,
       "Promedio Institucional (%)": item.promedio > 0 ? `${item.promedio}%` : "N/D",
       "Fecha Último Reporte": item.ultimoReporte,
@@ -377,18 +342,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
     }));
     XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(data7mo), "Matriz_7mo_CyberQuest");
 
-    // Hoja 3: Matriz 8vo Robótica
-    const data8vo = DIAGNOSTICO_8VO_DATA.reactivos.map((r, i) => ({
-      "N°": i + 1,
-      "Código": `IND-8.${i + 1}`,
-      "Indicador Oficial MEP": r.indicadorTexto,
-      "Subárea Curricular": r.subarea,
-      "Enunciado": r.enunciado,
-      "Puntos": r.puntos,
-    }));
-    XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(data8vo), "Matriz_8vo_Robotica");
-
-    // Hoja 4: Matriz 9no Aula Inteligente
+    // Hoja 3: Matriz 9no Aula Inteligente
     const data9no = DIAGNOSTICO_9NO_DATA.reactivos.map((r, i) => ({
       "N°": i + 1,
       "Código": `IND-9.${i + 1}`,
@@ -399,7 +353,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
     }));
     XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(data9no), "Matriz_9no_AulaInteligente");
 
-    // Hoja 5: Resumen 27 DREs
+    // Hoja 4: Resumen 27 DREs
     const dataDREs = LISTA_DRE_MEP.map((dre) => {
       const instDRE = institucionesConsolidadas.filter((i) => i.dre === dre.codigo);
       const evalDRE = instDRE.reduce((acc, curr) => acc + curr.totalEstudiantes, 0);
@@ -420,7 +374,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
     <div className="space-y-8 animate-fadeIn">
       
       {/* ========================================================================= */}
-      {/* 1. SELECTOR EXCLUSIVO DE GOBERNANZA III CICLO (7°, 8° Y 9° AÑO)           */}
+      {/* 1. SELECTOR EXCLUSIVO DE GOBERNANZA III CICLO (7.° Y 9.° AÑO)             */}
       {/* ========================================================================= */}
       <div className="bg-white p-4 sm:p-5 rounded-3xl border border-stone-200 shadow-softPastel space-y-4">
         
@@ -432,7 +386,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
             </span>
             <div>
               <span className="text-xs font-black uppercase text-slate-800 tracking-wider block">
-                Gobernanza Nacional • Formación Tecnológica III Ciclo (7.°, 8.° y 9.° Año)
+                Gobernanza Nacional • Formación Tecnológica III Ciclo (7.° y 9.° Año)
               </span>
               <span className="text-[11px] text-slate-500 font-medium">
                 Monitoreo de diagnósticos activos de secundaria en las 27 Direcciones Regionales (DREs).
@@ -445,10 +399,10 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
           </div>
         </div>
 
-        {/* 4 Pestañas / Tarjetas Principales de III Ciclo */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        {/* 3 Pestañas / Tarjetas Principales de III Ciclo */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           
-          {/* TARJETA 1: CONSOLIDADO MACRO III CICLO */}
+          {/* TARJETA 1: CONSOLIDADO MACRO III CICLO (7° y 9°) */}
           <button
             type="button"
             onClick={() => setNivelActivo("TODOS")}
@@ -471,7 +425,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
             <div className="mt-3">
               <div className="text-xs font-black uppercase tracking-wider">Consolidado III Ciclo</div>
               <p className={`text-[11px] font-medium leading-tight mt-0.5 ${nivelActivo === "TODOS" ? "text-slate-300" : "text-slate-500"}`}>
-                7.°, 8.° y 9.° Año (30 reactivos)
+                7.° y 9.° Año (16 reactivos oficiales)
               </p>
             </div>
           </button>
@@ -504,35 +458,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
             </div>
           </button>
 
-          {/* TARJETA 3: 8.° AÑO ROBÓTICA */}
-          <button
-            type="button"
-            onClick={() => setNivelActivo("8vo")}
-            className={`flex flex-col justify-between p-4 rounded-2xl border transition-all text-left cursor-pointer ${
-              nivelActivo === "8vo"
-                ? "bg-teal-900 text-white border-teal-600 shadow-md ring-2 ring-teal-400 scale-[1.02]"
-                : "bg-teal-50/50 hover:bg-teal-50 text-slate-800 border-teal-200"
-            }`}
-          >
-            <div className="flex items-center justify-between w-full">
-              <span className="p-2 rounded-xl bg-teal-200 text-teal-900">
-                <Robot size={20} weight="bold" />
-              </span>
-              <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black ${
-                nivelActivo === "8vo" ? "bg-teal-300 text-teal-950" : "bg-teal-100 text-teal-900"
-              }`}>
-                {eval8vo} evals
-              </span>
-            </div>
-            <div className="mt-3">
-              <div className="text-xs font-black uppercase tracking-wider">8.° Robótica & Redes</div>
-              <p className={`text-[11px] font-medium leading-tight mt-0.5 ${nivelActivo === "8vo" ? "text-teal-200" : "text-slate-500"}`}>
-                Algoritmos E-P-S (14 reactivos)
-              </p>
-            </div>
-          </button>
-
-          {/* TARJETA 4: 9.° AÑO AULA INTELIGENTE */}
+          {/* TARJETA 3: 9.° AÑO AULA INTELIGENTE */}
           <button
             type="button"
             onClick={() => setNivelActivo("9no")}
@@ -578,11 +504,9 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
             </div>
             <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
               {nivelActivo === "TODOS"
-                ? "Analítica Macro Nacional: Consolidado III Ciclo (7.°, 8.° y 9.°)"
+                ? "Analítica Macro Nacional: Consolidado III Ciclo (7.° y 9.°)"
                 : nivelActivo === "7mo"
                 ? "Analítica Macro: 7.° Año (CyberQuest — Ciudadanía Digital & Hardware)"
-                : nivelActivo === "8vo"
-                ? "Analítica Macro: 8.° Año (Robótica & Automatización — Redes & Algoritmos)"
                 : "Analítica Macro: 9.° Año (Aula Inteligente IoT — Microcontroladores & Circuitos)"}
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed font-medium">
@@ -646,8 +570,6 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
             <div className={`text-sm font-black mt-1 line-clamp-1 ${metricasMacro.totalEstudiantes > 0 ? "text-rose-700" : "text-amber-800"}`}>
               {nivelActivo === "7mo"
                 ? "IND-7.4: Clasificación Periféricos E/S"
-                : nivelActivo === "8vo"
-                ? "IND-8.9: Bucles y Ciclos Repetitivos"
                 : "IND-08: Ley de Ohm y Circuitos"}
             </div>
             <div className="text-[11px] text-stone-500 font-medium mt-2">
@@ -669,11 +591,9 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
               </span>
               <h3 className="font-black text-lg text-slate-900">
                 {nivelActivo === "TODOS"
-                  ? "III Ciclo (7.°, 8.° y 9.° Secundaria): Módulos Activos de Evaluación Diagnóstica"
+                  ? "III Ciclo (7.° y 9.° Secundaria): Módulos Activos de Evaluación Diagnóstica"
                   : nivelActivo === "7mo"
                   ? "Matriz Macro Nacional de Indicadores y Saberes Previos (7.° Año — CyberQuest)"
-                  : nivelActivo === "8vo"
-                  ? "Matriz Macro Nacional de Indicadores y Saberes Previos (8.° Año — Robótica & Redes)"
                   : "Matriz Macro Nacional de Indicadores y Saberes Previos (9.° Año — Aula Inteligente IoT)"}
               </h3>
             </div>
@@ -893,8 +813,6 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
                               className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
                                 niv.includes("7")
                                   ? "bg-indigo-50 text-indigo-800 border border-indigo-200"
-                                  : niv.includes("8")
-                                  ? "bg-teal-50 text-teal-800 border border-teal-200"
                                   : "bg-purple-50 text-purple-800 border border-purple-200"
                               }`}
                             >
@@ -902,7 +820,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
                             </span>
                           ))
                         ) : (
-                          <span className="text-slate-400 text-[10px]">III Ciclo</span>
+                          <span className="text-slate-400 text-[10px]">7.° y 9.°</span>
                         )}
                       </div>
                     </td>
@@ -924,7 +842,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
                         <div>
                           <span>{item.totalEstudiantes}</span>
                           <span className="block text-[9.5px] text-slate-400 font-normal">
-                            (7°: {item.estudiantes7mo} | 8°: {item.estudiantes8vo} | 9°: {item.estudiantes9no})
+                            (7°: {item.estudiantes7mo} | 9°: {item.estudiantes9no})
                           </span>
                         </div>
                       ) : (
