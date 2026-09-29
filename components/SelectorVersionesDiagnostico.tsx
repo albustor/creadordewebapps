@@ -85,7 +85,7 @@ export default function SelectorVersionesDiagnostico({
   let pathOnline = "/webapps/diagnostico_setimo_ano.html";
   let pathOffline = "/webapps/diagnostico_setimo_ano_modulo01_desconectado_offline.html";
   let pathDocente = "/webapps/diagnostico_setimo_ano_modulo01_docente_evaluador.html";
-  let pathEscaner = "/diagnostico_escaner_7mo.html";
+  let pathEscaner = "/diagnostico_escaner_7mo_v2.html";
 
   if (nivel === "9°") {
     pathOnline = "/webapps/diagnostico_9no_modulo01_en_linea.html";

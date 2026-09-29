@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>DIAGNÓSTICO SÉTIMO — MEP | Versión Local</title>
+<link rel="manifest" href="/manifest_escaner_7mo.json">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Diagnóstico 7mo">
+<meta id="themeColorMeta" name="theme-color" content="#002b49">
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js').then(function(reg) {
+      console.log('SW PWA 7mo v2 registrado:', reg.scope);
+    }).catch(function(err) {
+      console.log('SW no registrado:', err);
+    });
+  });
+}
+</script>
+
+<style>
+:root {
+  --azul-mep: #002b49;
+  --azul-mep-claro: #1F3F78;
+  --dorado-mep: #D4AF5A;
+  --bg-app: #f8fafc;
+  --texto: #0f172a;
+  --texto-muted: #475569;
+  --borde: #cbd5e1;
+  --card-bg: #ffffff;
+  --peligro: #dc2626;
+
+  /* Variables dinámicas por Nivel (Default: 7.° Año) */
+  --nivel-primario: #059669;
+  --nivel-primario-rgb: 5, 150, 105;
+  --nivel-bg-light: #ecfdf5;
+  --nivel-icono: "🌱";
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+  margin: 0; padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg-app); color: var(--texto); min-height: 100vh; padding-bottom: 60px;
+}
+
+header {
+  background: linear-gradient(135deg, var(--azul-mep) 0%, var(--azul-mep-claro) 100%);
+  color: #ffffff; padding: 18px 16px; text-align: center; border-bottom: 4px solid var(--dorado-mep);
+}
+
+.brand-badge {
+  display: inline-block; background: rgba(212, 175, 90, 0.2); color: var(--dorado-mep);
+  border: 1px solid var(--dorado-mep); padding: 3px 12px; border-radius: 999px;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase;
+}
+
+.container { width: min(960px, 94%); margin: 16px auto; }
+
+/* Banners PWA */
+.pwa-box {
+  background: #ffffff; border: 1.5px solid var(--borde);
+  border-left: 5px solid var(--nivel-primario);
+  border-radius: 14px; padding: 14px; margin-bottom: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.04);
+}
+
+.pwa-box.app-instalada {
+  border-left-color: var(--dorado-mep);
+  background: linear-gradient(to right, rgba(212, 175, 90, 0.08), #ffffff);
+}
+
+.main-nav {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;
+  background: #ffffff; border: 1.5px solid var(--borde); border-radius: 14px;
+  padding: 6px; margin-bottom: 16px;
+}
+
+.nav-tab {
+  background: transparent; border: none; padding: 10px 2px; font-size: 11.5px; font-weight: 700;
+  color: var(--texto-muted); border-radius: 10px; cursor: pointer; display: flex; flex-direction: column;
+  align-items: center; gap: 4px; transition: all 0.2s ease;
+}
+
+.nav-tab.active { background: var(--azul-mep); color: #ffffff; }
+
+.card {
+  background: var(--card-bg); border: 1.5px solid var(--borde); border-radius: 16px;
+  padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+}
+
+h2 { margin-top: 0; font-size: 18px; color: var(--azul-mep); display: flex; justify-content: space-between; align-items: center; }
+
+.badge-nivel {
+  font-size: 11px; background: var(--nivel-bg-light); color: var(--nivel-primario);
+  padding: 4px 10px; border-radius: 999px; font-weight: 800; border: 1px solid var(--nivel-primario);
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.badge-nivel::before { content: var(--nivel-icono); }
+
+.btn-dinamico {
+  background: var(--nivel-primario); color: #ffffff; font-weight: 800; font-size: 13.5px; padding: 12px 16px;
+  border: none; border-radius: 10px; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+
+.btn-secondary {
+  background: #f1f5f9; color: #334155; font-weight: 700; font-size: 13px; padding: 11px 14px;
+  border: 1px solid var(--borde); border-radius: 10px; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+
+.btn-danger {
+  background: #fee2e2; color: var(--peligro); font-weight: 700; font-size: 13px; padding: 10px;
+  border: 1px solid #fca5a5; border-radius: 10px; cursor: pointer; width: 100%;
+}
+
+.form-group { margin-bottom: 14px; }
+label { display: block; font-size: 12.5px; font-weight: 700; margin-bottom: 5px; color: #334155; }
+input, select {
+  width: 100%; padding: 10px 12px; border: 1.5px solid var(--borde); border-radius: 8px;
+  font-size: 13.5px; background: #fff; color: var(--texto);
+}
+input:focus, select:focus { outline: none; border-color: var(--azul-mep-claro); }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.hidden { display: none !important; }
+
+#scannerArea {
+  position: relative; background: #000; border-radius: 12px; overflow: hidden;
+  min-height: 280px; max-height: 400px; display: flex; align-items: center; justify-content: center;
+}
+#videoFeed { width: 100%; height: 100%; object-fit: cover; }
+.scan-overlay {
+  position: absolute; width: 200px; height: 200px; border: 2px dashed var(--dorado-mep);
+  border-radius: 12px; box-shadow: 0 0 0 4000px rgba(0, 0, 0, 0.45); pointer-events: none;
+}
+
+.table-responsive { width: 100%; overflow-x: auto; margin-top: 10px; }
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; text-align: left; }
+th { background: #f1f5f9; padding: 10px; border-bottom: 2px solid var(--borde); color: #334155; }
+td { padding: 9px 10px; border-bottom: 1px solid var(--borde); }
+
+/* Modal Selector OS */
+.modal-guia {
+  position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); display: flex;
+  align-items: center; justify-content: center; z-index: 9999; padding: 16px;
+}
+.modal-content {
+  background: #ffffff; border-radius: 16px; max-width: 440px; width: 100%; padding: 22px;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+}
+.paso-item {
+  display: flex; gap: 12px; margin-bottom: 14px; align-items: flex-start;
+}
+.paso-num {
+  background: var(--azul-mep); color: #fff; width: 24px; height: 24px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; flex-shrink: 0;
+}
+.paso-txt { font-size: 13px; line-height: 1.45; color: #334155; }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="brand-badge">MEP • FORMACIÓN TECNOLÓGICA</span>
+  <h1 id="txtTituloHeader" style="margin:6px 0; font-size:21px;">DIAGNÓSTICO SÉTIMO</h1>
+  <p id="txtSubtituloHeader" style="margin:0; font-size:12px; opacity:0.9;">Módulo 1 — 7.° Año • Funcionamiento Autónomo 100% Offline</p>
+</header>
+
+<div class="container">
+
+  <!-- BANNER PWA EN NAVEGADOR -->
+  <div id="pwaBanner" class="pwa-box hidden">
+    <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;">
+      <div>
+        <div id="pwaTituloSO" style="font-weight: 800; font-size: 13.5px; color: var(--nivel-primario);">📲 Instalar Aplicación</div>
+        <div id="pwaDescSO" style="font-size: 11.5px; color: var(--texto-muted); margin-top: 2px;">Ejecuta el escáner como app independiente de forma local y autónoma.</div>
+      </div>
+      <button type="button" id="btnAccionPWA" class="btn-dinamico" style="width: auto; padding: 9px 15px;" onclick="ejecutarInstalacionSegunSO()">
+        <span id="btnAccionPWATexto">Instalar App</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- BANNER INDICADOR DE APP YA INSTALADA (STANDALONE) -->
+  <div id="pwaBannerInstalada" class="pwa-box app-instalada hidden">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span style="font-size: 24px;">📱</span>
+      <div>
+        <div style="font-weight: 800; font-size: 13.5px; color: var(--azul-mep);">Aplicación Instalada en Modo Autónomo</div>
+        <div style="font-size: 11.5px; color: var(--texto-muted); margin-top: 1px;">
+          Estás ejecutando la versión nativa local. Los diagnósticos, el padrón y la generación QR funcionan al 100% sin internet.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVEGACIÓN -->
+  <nav class="main-nav">
+    <button type="button" id="tabNavCamara" class="nav-tab active" onclick="cambiarPestana('camara')">
+      <span style="font-size:16px;">📷</span>
+      <span>Escáner</span>
+    </button>
+    <button type="button" id="tabNavGenerador" class="nav-tab" onclick="cambiarPestana('generador')">
+      <span style="font-size:16px;">⚡</span>
+      <span>Crear QR</span>
+    </button>
+    <button type="button" id="tabNavGrupo" class="nav-tab" onclick="cambiarPestana('grupo')">
+      <span style="font-size:16px;">📊</span>
+      <span>Métricas</span>
+    </button>
+    <button type="button" id="tabNavPadron" class="nav-tab" onclick="cambiarPestana('padron')">
+      <span style="font-size:16px;">📋</span>
+      <span>Padrón (<span id="badgePadron">0</span>)</span>
+    </button>
+    <button type="button" id="tabNavConfig" class="nav-tab" onclick="cambiarPestana('config')">
+      <span style="font-size:16px;">⚙️</span>
+      <span>Sesión</span>
+    </button>
+  </nav>
+
+  <!-- VISTA 1: ESCÁNER / CÁMARA LOCAL -->
+  <section id="vistaCamara" class="card">
+    <h2>
+      <span>📷 Escaneo de Diagnóstico</span>
+      <span id="badgeSeccionActiva" class="badge-nivel">Sección 7-1</span>
+    </h2>
+
+    <div id="scannerArea" class="hidden">
+      <video id="videoFeed" playsinline></video>
+      <div class="scan-overlay"></div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:8px; margin-top:12px;">
+      <button type="button" id="btnEncenderCamara" class="btn-dinamico" onclick="iniciarCamara()">
+        <span>🎥 ACTIVAR CÁMARA CONTINUA</span>
+      </button>
+      <button type="button" id="btnApagarCamara" class="btn-secondary hidden" onclick="apagarCamara()">
+        <span>⏹️ Detener Escáner</span>
+      </button>
+    </div>
+
+    <div class="grid-2" style="margin-top:12px;">
+      <label class="btn-secondary" style="cursor:pointer; margin:0;">
+        <span>📁 Procesar Foto QR</span>
+        <input type="file" accept="image/*" style="display:none;" onchange="procesarArchivoQR(event)">
+      </label>
+      <label class="btn-secondary" style="cursor:pointer; margin:0;">
+        <span>📂 Restaurar JSON</span>
+        <input type="file" accept=".json" style="display:none;" onchange="importarPadronJSON(event)">
+      </label>
+    </div>
+
+    <div id="resultadoEscaneoReciente" class="hidden" style="margin-top:16px; padding:12px; border-radius:8px; background:var(--nivel-bg-light); border:1px solid var(--nivel-primario);">
+      <div style="font-weight:800; color:var(--nivel-primario); font-size:13px;">✅ QR Validado e Incorporado al Padrón:</div>
+      <div id="txtDetalleEscaneo" style="font-size:12px; margin-top:4px; color:#1e293b;"></div>
+    </div>
+  </section>
+
+  <!-- VISTA 2: GENERADOR QR OFFLINE -->
+  <section id="vistaGenerador" class="card hidden">
+    <h2>⚡ Generador de Fichas QR (Offline)</h2>
+    <p style="font-size:12px; color:var(--texto-muted); margin-top:-6px;">Algoritmo local puro sin comunicación con servidores externos.</p>
+
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Estudiante 1 (Obligatorio):</label>
+        <input type="text" id="genEstudiante1" placeholder="Nombre completo">
+      </div>
+      <div class="form-group">
+        <label>Estudiante 2 (Pareja):</label>
+        <input type="text" id="genEstudiante2" placeholder="Opcional">
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Dispositivo Asignado:</label>
+        <select id="genDispositivo">
+          <option value="Laptop MEP">Laptop MEP</option>
+          <option value="PC Escritorio (Lab)">PC Escritorio (Lab)</option>
+          <option value="Tableta">Tableta</option>
+          <option value="Dispositivo Propio (BYOD)">Dispositivo Propio (BYOD)</option>
+          <option value="Ninguno">Ninguno</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Conectividad en Hogar:</label>
+        <select id="genInternet">
+          <option value="Fibra Óptica / Cable">Fibra Óptica / Cable</option>
+          <option value="Solo Datos Móviles">Solo Datos Móviles</option>
+          <option value="Sin Conectividad">Sin Conectividad</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Nivel de Entrada — Algoritmia:</label>
+        <select id="genHabilidad">
+          <option value="Inicial">Inicial (Sin experiencia previa)</option>
+          <option value="Intermedio">Intermedio (Bloques / Scratch)</option>
+          <option value="Avanzado">Avanzado (Código estructurado)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Observaciones DUA / Inclusión:</label>
+        <input type="text" id="genDUA" placeholder="Adecuación curricular, apoyos visuales, etc.">
+      </div>
+    </div>
+
+    <button type="button" class="btn-dinamico" onclick="construirQROffline()"><span>⚡ Generar Código QR</span></button>
+
+    <div id="contenedorCanvasQR" style="text-align:center; margin-top:16px;" class="hidden">
+      <canvas id="qrCanvasSalida" style="border:4px solid var(--azul-mep); border-radius:8px; max-width:240px;"></canvas>
+      <div style="margin-top:8px;">
+        <button type="button" class="btn-secondary" style="width:auto; margin:0 auto;" onclick="descargarPNGQR()"><span>💾 Descargar Ficha PNG</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- VISTA 3: MÉTRICAS DUA Y GRUPALES -->
+  <section id="vistaGrupo" class="card hidden">
+    <h2>📊 Resumen Diagnóstico Grupal</h2>
+    <div id="metricasContenedor"></div>
+  </section>
+
+  <!-- VISTA 4: PADRÓN DE EVALUADOS -->
+  <section id="vistaPadron" class="card hidden">
+    <h2>
+      <span>📋 Padrón de la Sección</span>
+      <button type="button" class="btn-danger" style="width:auto; padding:4px 10px; font-size:11px;" onclick="limpiarPadron()">Limpiar Padrón</button>
+    </h2>
+
+    <div class="table-responsive">
+      <table id="tablaPadron">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Estudiante(s)</th>
+            <th>Dispositivo</th>
+            <th>Nivel</th>
+            <th>DUA</th>
+          </tr>
+        </thead>
+        <tbody id="cuerpoTablaPadron"></tbody>
+      </table>
+    </div>
+
+    <div class="grid-2" style="margin-top:16px;">
+      <button type="button" class="btn-dinamico" onclick="exportarCSV()"><span>📊 Exportar a Excel (CSV)</span></button>
+      <button type="button" class="btn-secondary" onclick="exportarJSON()"><span>💾 Respaldo Crudo (JSON)</span></button>
+    </div>
+  </section>
+
+  <!-- VISTA 5: CONFIGURACIÓN Y NIVEL -->
+  <section id="vistaConfig" class="card hidden">
+    <h2>⚙️ Configuración del Módulo</h2>
+    <div class="form-group">
+      <label>Institución Educativa:</label>
+      <input type="text" id="cfgCentro" value="Liceo / CTP MEP">
+    </div>
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Nivel Académico (Aplica Tema Visual):</label>
+        <select id="cfgNivelSelect" onchange="aplicarTemaNivel(this.value)">
+          <option value="7">7.° Año (Sétimo — Verde)</option>
+          <option value="9">9.° Año (Noveno — Celeste)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Sección Activa:</label>
+        <input type="text" id="cfgSeccion" value="7-1">
+      </div>
+    </div>
+    <button type="button" class="btn-dinamico" onclick="guardarAjustes()"><span>💾 Aplicar Cambios</span></button>
+  </section>
+
+</div>
+
+<!-- MODAL GUIADO POR PLATAFORMA -->
+<div id="modalInstalacionGuiada" class="modal-guia hidden">
+  <div class="modal-content">
+    <h3 id="modalGuiadoTitulo" style="margin-top:0; color:var(--azul-mep);">Instalar en tu Dispositivo</h3>
+    <div id="modalGuiadoContenido"></div>
+    <div style="margin-top:18px; text-align:right;">
+      <button type="button" class="btn-dinamico" style="width:auto; padding:8px 18px;" onclick="cerrarModalGuia()">Entendido</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/**
+ * MOTOR QR EMBEBIDO (SIN INTERNET / ARRAYS BINARIOS PUROS)
+ */
+var QRMath = {
+  glog: function(n) { if (n < 1) throw new Error("glog(" + n + ")"); return QRMath.LOG_TABLE[n]; },
+  gexp: function(n) { while (n < 0) n += 255; while (n >= 256) n -= 255; return QRMath.EXP_TABLE[n]; },
+  EXP_TABLE: new Array(256), LOG_TABLE: new Array(256)
+};
+for (var i = 0; i < 8; i++) QRMath.EXP_TABLE[i] = 1 << i;
+for (var i = 8; i < 256; i++) QRMath.EXP_TABLE[i] = QRMath.EXP_TABLE[i - 4] ^ QRMath.EXP_TABLE[i - 5] ^ QRMath.EXP_TABLE[i - 6] ^ QRMath.EXP_TABLE[i - 8];
+for (var i = 0; i < 255; i++) QRMath.LOG_TABLE[QRMath.EXP_TABLE[i]] = i;
+
+function Polynomial(num, shift) {
+  var offset = 0;
+  while (offset < num.length && num[offset] == 0) offset++;
+  this.num = new Array(num.length - offset + shift);
+  for (var i = 0; i < num.length - offset; i++) this.num[i] = num[offset + i];
+}
+Polynomial.prototype = {
+  get: function(i) { return this.num[i]; },
+  getLength: function() { return this.num.length; },
+  multiply: function(e) {
+    var num = new Array(this.getLength() + e.getLength() - 1);
+    for (var i = 0; i < this.getLength(); i++) {
+      for (var j = 0; j < e.getLength(); j++) {
+        num[i + j] ^= QRMath.gexp(QRMath.glog(this.get(i)) + QRMath.glog(e.get(j)));
+      }
+    }
+    return new Polynomial(num, 0);
+  },
+  mod: function(e) {
+    if (this.getLength() - e.getLength() < 0) return this;
+    var ratio = QRMath.glog(this.get(0)) - QRMath.glog(e.get(0));
+    var num = new Array(this.getLength());
+    for (var i = 0; i < this.getLength(); i++) num[i] = this.get(i);
+    for (var i = 0; i < e.getLength(); i++) num[i] ^= QRMath.gexp(QRMath.glog(e.get(i)) + ratio);
+    return new Polynomial(num, 0).mod(e);
+  }
+};
+
+function QRCodeEngine(typeNumber, errorCorrectLevel) {
+  this.typeNumber = typeNumber;
+  this.errorCorrectLevel = errorCorrectLevel;
+  this.modules = null;
+  this.moduleCount = 0;
+  this.dataList = [];
+}
+QRCodeEngine.prototype = {
+  addData: function(data) { this.dataList.push(data); },
+  isDark: function(row, col) { return this.modules[row][col]; },
+  getModuleCount: function() { return this.moduleCount; },
+  make: function() {
+    this.moduleCount = this.typeNumber * 4 + 17;
+    this.modules = new Array(this.moduleCount);
+    for (var row = 0; row < this.moduleCount; row++) {
+      this.modules[row] = new Array(this.moduleCount);
+      for (var col = 0; col < this.moduleCount; col++) this.modules[row][col] = null;
+    }
+    this.setupPositionProbePattern(0, 0);
+    this.setupPositionProbePattern(this.moduleCount - 7, 0);
+    this.setupPositionProbePattern(0, this.moduleCount - 7);
+    this.mapData(this.createData());
+  },
+  setupPositionProbePattern: function(row, col) {
+    for (var r = -1; r <= 7; r++) {
+      if (row + r <= -1 || this.moduleCount <= row + r) continue;
+      for (var c = -1; c <= 7; c++) {
+        if (col + c <= -1 || this.moduleCount <= col + c) continue;
+        this.modules[row + r][col + c] = (0 <= r && r <= 6 && (c == 0 || c == 6)) || (0 <= c && c <= 6 && (r == 0 || r == 6)) || (2 <= r && r <= 4 && 2 <= c && c <= 4);
+      }
+    }
+  },
+  createData: function() {
+    var buffer = [];
+    var str = this.dataList.join("");
+    var utf8 = unescape(encodeURIComponent(str));
+    for (var i = 0; i < utf8.length; i++) buffer.push(utf8.charCodeAt(i));
+    var totalDataCount = 134;
+    var bytes = [64];
+    bytes.push(buffer.length);
+    for (var i = 0; i < buffer.length; i++) bytes.push(buffer[i]);
+    while (bytes.length < totalDataCount) { bytes.push(236); if (bytes.length < totalDataCount) bytes.push(17); }
+    var rsPoly = new Polynomial([1], 0);
+    for (var i = 0; i < 24; i++) rsPoly = rsPoly.multiply(new Polynomial([1, QRMath.gexp(i)], 0));
+    var rawPoly = new Polynomial(bytes, rsPoly.getLength() - 1);
+    var modPoly = rawPoly.mod(rsPoly);
+    var ecBytes = new Array(rsPoly.getLength() - 1);
+    for (var i = 0; i < ecBytes.length; i++) {
+      var modIndex = i + modPoly.getLength() - ecBytes.length;
+      ecBytes[i] = (modIndex >= 0) ? modPoly.get(modIndex) : 0;
+    }
+    return bytes.concat(ecBytes);
+  },
+  mapData: function(data) {
+    var inc = -1, row = this.moduleCount - 1, bitIndex = 7, byteIndex = 0;
+    for (var col = this.moduleCount - 1; col > 0; col -= 2) {
+      if (col == 6) col--;
+      while (true) {
+        for (var c = 0; c < 2; c++) {
+          if (this.modules[row][col - c] === null) {
+            var dark = false;
+            if (byteIndex < data.length) dark = (((data[byteIndex] >>> bitIndex) & 1) == 1);
+            this.modules[row][col - c] = dark;
+            bitIndex--;
+            if (bitIndex == -1) { byteIndex++; bitIndex = 7; }
+          }
+        }
+        row += inc;
+        if (row < 0 || this.moduleCount <= row) { row -= inc; inc = -inc; break; }
+      }
+    }
+  }
+};
+
+/**
+ * GOBERNANZA DE CLIENTE Y ESTADOS PWA
+ */
+var STORAGE_KEY = "mep_diagnostico_local_v3";
+var sesion = { centro: "Liceo / CTP MEP", seccion: "7-1", nivel: "7" };
+var padron = [];
+var videoTrack = null;
+var animFrameId = null;
+var deferredPromptAndroid = null;
+
+// Heurística de Detección de Plataforma
+var plataformaCliente = (function() {
+  var ua = navigator.userAgent || navigator.vendor || window.opera;
+  var isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+
+  if (isStandalone) return "STANDALONE";
+  if (/iPad|iPhone|iPod/.test(ua) && !window.MSStream) return "IOS";
+  if (/Huawei|HMA-|LYA-|POT-|HWI-|EMUI/i.test(ua)) return "HUAWEI";
+  if (/android/i.test(ua)) return "ANDROID";
+  return "DESKTOP";
+})();
+
+window.addEventListener("beforeinstallprompt", function(e) {
+  e.preventDefault();
+  deferredPromptAndroid = e;
+  if (plataformaCliente === "ANDROID") {
+    configurarBannerPWA("ANDROID");
+  }
+});
+
+function gestionarEstadoBanner() {
+  var bannerInstalacion = document.getElementById("pwaBanner");
+  var bannerInstalada = document.getElementById("pwaBannerInstalada");
+
+  if (plataformaCliente === "STANDALONE") {
+    bannerInstalacion.classList.add("hidden");
+    bannerInstalada.classList.remove("hidden");
+    return;
+  }
+  
+  bannerInstalada.classList.add("hidden");
+  configurarBannerPWA(plataformaCliente);
+}
+
+function configurarBannerPWA(so) {
+  var banner = document.getElementById("pwaBanner");
+  var titulo = document.getElementById("pwaTituloSO");
+  var desc = document.getElementById("pwaDescSO");
+  var btnTxt = document.getElementById("btnAccionPWATexto");
+
+  banner.classList.remove("hidden");
+
+  if (so === "ANDROID") {
+    titulo.textContent = "📲 Instalar App (Android)";
+    desc.textContent = "Agrega el escáner a tu pantalla principal para ejecutarlo sin navegador.";
+    btnTxt.textContent = "⚡ Instalar Directo";
+  } else if (so === "IOS") {
+    titulo.textContent = "🍏 Instalar en iPhone / iPad";
+    desc.textContent = "Configuración asistida paso a paso desde el menú de tu dispositivo.";
+    btnTxt.textContent = "📋 Ver Pasos iOS";
+  } else if (so === "HUAWEI") {
+    titulo.textContent = "🔴 Instalar en Huawei";
+    desc.textContent = "Acceso directo offline sin dependencias de servicios Google.";
+    btnTxt.textContent = "📋 Pasos Huawei";
+  } else {
+    titulo.textContent = "💻 Aplicación Local Lista";
+    desc.textContent = "Puedes usar esta herramienta directamente o crear un acceso directo.";
+    btnTxt.textContent = "ℹ️ Instrucciones";
+  }
+}
+
+function ejecutarInstalacionSegunSO() {
+  if (plataformaCliente === "ANDROID") {
+    if (deferredPromptAndroid) {
+      deferredPromptAndroid.prompt();
+      deferredPromptAndroid.userChoice.then(function(res) {
+        if (res.outcome === "accepted") {
+          document.getElementById("pwaBanner").classList.add("hidden");
+        }
+        deferredPromptAndroid = null;
+      });
+    } else {
+      alert("Abre el menú de opciones de tu navegador (•••) y presiona 'Instalar aplicación' o 'Agregar a la pantalla principal'.");
+    }
+  } else if (plataformaCliente === "IOS") {
+    abrirModalGuiaIOS();
+  } else if (plataformaCliente === "HUAWEI") {
+    abrirModalGenerico("Instalación en Navegador Huawei", [
+      { num: "1", txt: "Abre el menú del <strong>Navegador Huawei</strong> (icono de cuatro puntos o menú inferior)." },
+      { num: "2", txt: "Selecciona <strong>'Agregar a la pantalla principal'</strong>." },
+      { num: "3", txt: "Confirma el nombre y pulsa <strong>Aceptar</strong>." }
+    ]);
+  } else {
+    abrirModalGenerico("Uso Local / Escritorio", [
+      { num: "1", txt: "Presiona <strong>Ctrl + D</strong> (o Cmd + D) para guardar en marcadores." },
+      { num: "2", txt: "Para uso 100% offline, puedes guardar este archivo HTML directamente en tu equipo." }
+    ]);
+  }
+}
+
+// SECUENCIA ESTRICTA SAFARI / IOS
+function abrirModalGuiaIOS() {
+  document.getElementById("modalGuiadoTitulo").textContent = "Instalación en iPhone / iPad (Safari)";
+  
+  var pasos = [
+    { num: "1", txt: "<strong>Tres Puntitos (•••):</strong> Toca los tres puntitos (•••) o el menú del navegador en la barra inferior/superior de tu iPhone." },
+    { num: "2", txt: "<strong>Compartir (📤):</strong> Selecciona la opción Compartir (icono de un cuadro con la flecha hacia arriba) en la lista de acciones." },
+    { num: "3", txt: "<strong>Ver Más:</strong> Desliza hacia abajo o pulsa 'Ver más' para desplegar todas las opciones disponibles." },
+    { num: "4", txt: "<strong>Agregar a Inicio:</strong> Selecciona <strong>[+] 'Agregar a Inicio'</strong> y confirma tocando <strong>'Agregar'</strong> arriba a la derecha." }
+  ];
+
+  var html = "";
+  pasos.forEach(function(p) {
+    html += '<div class="paso-item">' +
+              '<div class="paso-num">' + p.num + '</div>' +
+              '<div class="paso-txt">' + p.txt + '</div>' +
+            '</div>';
+  });
+
+  document.getElementById("modalGuiadoContenido").innerHTML = html;
+  document.getElementById("modalInstalacionGuiada").classList.remove("hidden");
+}
+
+function abrirModalGenerico(titulo, pasos) {
+  document.getElementById("modalGuiadoTitulo").textContent = titulo;
+  var html = "";
+  pasos.forEach(function(p) {
+    html += '<div class="paso-item">' +
+              '<div class="paso-num">' + p.num + '</div>' +
+              '<div class="paso-txt">' + p.txt + '</div>' +
+            '</div>';
+  });
+  document.getElementById("modalGuiadoContenido").innerHTML = html;
+  document.getElementById("modalInstalacionGuiada").classList.remove("hidden");
+}
+
+function cerrarModalGuia() {
+  document.getElementById("modalInstalacionGuiada").classList.add("hidden");
+}
+
+// MOTOR VISUAL REACTIVO POR NIVEL
+function aplicarTemaNivel(nivel) {
+  var root = document.documentElement;
+  var metaTheme = document.getElementById("themeColorMeta");
+  var txtTitulo = document.getElementById("txtTituloHeader");
+  var txtSub = document.getElementById("txtSubtituloHeader");
+
+  sesion.nivel = nivel;
+
+  if (nivel === "9") {
+    // 9.° Año: Celeste Tecnológico + Icono Circuito
+    root.style.setProperty("--nivel-primario", "#0284c7");
+    root.style.setProperty("--nivel-primario-rgb", "2, 132, 199");
+    root.style.setProperty("--nivel-bg-light", "#f0f9ff");
+    root.style.setProperty("--nivel-icono", "'⚡'");
+    metaTheme.setAttribute("content", "#0284c7");
+
+    txtTitulo.textContent = "DIAGNÓSTICO NOVENO";
+    txtSub.textContent = "Módulo 3 — 9.° Año • Funcionamiento Autónomo 100% Offline";
+    document.title = "DIAGNÓSTICO NOVENO — MEP | Versión Local";
+  } else {
+    // 7.° Año: Verde Esmeralda + Icono Brote
+    root.style.setProperty("--nivel-primario", "#059669");
+    root.style.setProperty("--nivel-primario-rgb", "5, 150, 105");
+    root.style.setProperty("--nivel-bg-light", "#ecfdf5");
+    root.style.setProperty("--nivel-icono", "'🌱'");
+    metaTheme.setAttribute("content", "#002b49");
+
+    txtTitulo.textContent = "DIAGNÓSTICO SÉTIMO";
+    txtSub.textContent = "Módulo 1 — 7.° Año • Funcionamiento Autónomo 100% Offline";
+    document.title = "DIAGNÓSTICO SÉTIMO — MEP | Versión Local";
+  }
+  actualizarBadges();
+}
+
+function cambiarPestana(vista) {
+  var vistas = ["vistaCamara", "vistaGenerador", "vistaGrupo", "vistaPadron", "vistaConfig"];
+  vistas.forEach(function(v) { document.getElementById(v)?.classList.add("hidden"); });
+  document.querySelectorAll(".nav-tab").forEach(function(btn) { btn.classList.remove("active"); });
+
+  if (vista === "camara") {
+    document.getElementById("vistaCamara").classList.remove("hidden");
+    document.getElementById("tabNavCamara").classList.add("active");
+  } else if (vista === "generador") {
+    document.getElementById("vistaGenerador").classList.remove("hidden");
+    document.getElementById("tabNavGenerador").classList.add("active");
+    apagarCamara();
+  } else if (vista === "grupo") {
+    document.getElementById("vistaGrupo").classList.remove("hidden");
+    document.getElementById("tabNavGrupo").classList.add("active");
+    apagarCamara();
+    calcularMetricas();
+  } else if (vista === "padron") {
+    document.getElementById("vistaPadron").classList.remove("hidden");
+    document.getElementById("tabNavPadron").classList.add("active");
+    apagarCamara();
+    renderizarPadron();
+  } else if (vista === "config") {
+    document.getElementById("vistaConfig").classList.remove("hidden");
+    document.getElementById("tabNavConfig").classList.add("active");
+    apagarCamara();
+  }
+}
+
+// PERSISTENCIA LOCAL
+function cargarEstadoLocal() {
+  var cfgRaw = localStorage.getItem(STORAGE_KEY + "_config");
+  if (cfgRaw) {
+    sesion = JSON.parse(cfgRaw);
+    document.getElementById("cfgCentro").value = sesion.centro;
+    document.getElementById("cfgSeccion").value = sesion.seccion;
+    document.getElementById("cfgNivelSelect").value = sesion.nivel || "7";
+    aplicarTemaNivel(sesion.nivel || "7");
+  }
+  var dataRaw = localStorage.getItem(STORAGE_KEY + "_data_" + sesion.seccion);
+  padron = dataRaw ? JSON.parse(dataRaw) : [];
+  actualizarBadges();
+}
+
+function guardarAjustes() {
+  sesion.centro = document.getElementById("cfgCentro").value.trim() || "MEP";
+  sesion.seccion = document.getElementById("cfgSeccion").value.trim() || "7-1";
+  sesion.nivel = document.getElementById("cfgNivelSelect").value;
+  localStorage.setItem(STORAGE_KEY + "_config", JSON.stringify(sesion));
+  aplicarTemaNivel(sesion.nivel);
+  cargarEstadoLocal();
+  alert("Sesión sincronizada para Sección: " + sesion.seccion);
+}
+
+function actualizarBadges() {
+  document.getElementById("badgePadron").textContent = padron.length;
+  document.getElementById("badgeSeccionActiva").textContent = "Sección " + sesion.seccion;
+}
+
+// ENTORNO DE CAPTURA VISUAL
+function iniciarCamara() {
+  var video = document.getElementById("videoFeed");
+  var area = document.getElementById("scannerArea");
+
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    alert("API de cámara no disponible en este dispositivo.");
+    return;
+  }
+
+  navigator.mediaDevices.getUserMedia({
+    video: { facingMode: "environment", width: { ideal: 1280 }, height: { ideal: 720 } }
+  }).then(function(stream) {
+    videoTrack = stream;
+    video.srcObject = stream;
+    video.setAttribute("playsinline", true);
+    video.play();
+    area.classList.remove("hidden");
+    document.getElementById("btnEncenderCamara").classList.add("hidden");
+    document.getElementById("btnApagarCamara").classList.remove("hidden");
+    iniciarBucleDeteccion(video);
+  }).catch(function(err) {
+    alert("Error de acceso a cámara: " + err.message);
+  });
+}
+
+function apagarCamara() {
+  if (videoTrack) {
+    videoTrack.getTracks().forEach(function(t) { t.stop(); });
+    videoTrack = null;
+  }
+  if (animFrameId) cancelAnimationFrame(animFrameId);
+  document.getElementById("scannerArea")?.classList.add("hidden");
+  document.getElementById("btnEncenderCamara")?.classList.remove("hidden");
+  document.getElementById("btnApagarCamara")?.classList.add("hidden");
+}
+
+function iniciarBucleDeteccion(video) {
+  if (!('BarcodeDetector' in window)) return;
+  var detector = new BarcodeDetector({ formats: ['qr_code'] });
+
+  function scanFrame() {
+    if (video.readyState === video.HAVE_ENOUGH_DATA) {
+      detector.detect(video).then(function(barcodes) {
+        if (barcodes.length > 0) {
+          ingresarPayload(barcodes[0].rawValue);
+        }
+      }).catch(function() {});
+    }
+    animFrameId = requestAnimationFrame(scanFrame);
+  }
+  animFrameId = requestAnimationFrame(scanFrame);
+}
+
+function procesarArchivoQR(evt) {
+  var file = evt.target.files[0];
+  if (!file) return;
+
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = new Image();
+    img.onload = function() {
+      if ('BarcodeDetector' in window) {
+        var detector = new BarcodeDetector({ formats: ['qr_code'] });
+        detector.detect(img).then(function(barcodes) {
+          if (barcodes.length > 0) {
+            ingresarPayload(barcodes[0].rawValue);
+          } else {
+            alert("No se detectó un código QR legible en la imagen.");
+          }
+        }).catch(function() { alert("Falla al procesar la imagen."); });
+      } else {
+        alert("BarcodeDetector no soportado en este navegador para lectura estática.");
+      }
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// INGESTA Y COMPROBACIÓN DE ESQUEMA
+function ingresarPayload(rawString) {
+  try {
+    var data = JSON.parse(rawString);
+
+    if (!data.nivel || data.nivel.indexOf(sesion.nivel) === -1) {
+      alert("Validación rechazada: El QR corresponde a [" + data.nivel + "] y la sesión activa es [" + sesion.nivel + ".° Año].");
+      return;
+    }
+    if (!data.estudiante1) {
+      alert("Error: Ficha incompleta. El campo 'Estudiante 1' es obligatorio.");
+      return;
+    }
+
+    var duplicado = padron.some(function(item) {
+      return item.estudiante1.toLowerCase() === data.estudiante1.toLowerCase() &&
+             item.estudiante2.toLowerCase() === (data.estudiante2 || "").toLowerCase();
+    });
+
+    if (duplicado) {
+      alert("Registro descartado: Este estudiante/pareja ya consta en el padrón.");
+      return;
+    }
+
+    padron.unshift({
+      id: Date.now(),
+      fecha: new Date().toLocaleDateString(),
+      estudiante1: data.estudiante1,
+      estudiante2: data.estudiante2 || "Individual",
+      seccion: sesion.seccion,
+      dispositivo: data.dispositivo || "No indicado",
+      internet: data.internet || "No indicado",
+      habilidad: data.habilidad || "Inicial",
+      dua: data.dua || "Ninguna"
+    });
+
+    localStorage.setItem(STORAGE_KEY + "_data_" + sesion.seccion, JSON.stringify(padron));
+    actualizarBadges();
+
+    var box = document.getElementById("resultadoEscaneoReciente");
+    var txt = document.getElementById("txtDetalleEscaneo");
+    box.classList.remove("hidden");
+    txt.innerHTML = "<strong>Estudiante:</strong> " + data.estudiante1 + (data.estudiante2 ? " / " + data.estudiante2 : "") +
+                    "<br><strong>Dispositivo:</strong> " + data.dispositivo + " | <strong>Nivel:</strong> " + data.habilidad;
+
+  } catch (err) {
+    alert("Error de codificación: El payload decodificado no cumple el esquema JSON institucional.");
+  }
+}
+
+// GENERADOR QR LOCAL
+function construirQROffline() {
+  var est1 = document.getElementById("genEstudiante1").value.trim();
+  var est2 = document.getElementById("genEstudiante2").value.trim();
+  var disp = document.getElementById("genDispositivo").value;
+  var net = document.getElementById("genInternet").value;
+  var hab = document.getElementById("genHabilidad").value;
+  var dua = document.getElementById("genDUA").value.trim();
+
+  if (!est1) {
+    alert("Debe ingresar al menos el nombre del Estudiante 1.");
+    return;
+  }
+
+  var payload = {
+    modulo: sesion.nivel === "7" ? "M1" : "M3",
+    nivel: sesion.nivel + ".° Año",
+    estudiante1: est1,
+    estudiante2: est2,
+    dispositivo: disp,
+    internet: net,
+    habilidad: hab,
+    dua: dua
+  };
+
+  var jsonString = JSON.stringify(payload);
+  var qr = new QRCodeEngine(8, 0);
+  qr.addData(jsonString);
+  qr.make();
+
+  var canvas = document.getElementById("qrCanvasSalida");
+  var ctx = canvas.getContext("2d");
+  var modCount = qr.getModuleCount();
+  var scale = 6;
+  var margin = 4 * scale;
+
+  canvas.width = (modCount * scale) + (margin * 2);
+  canvas.height = canvas.width;
+
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = sesion.nivel === "9" ? "#0284c7" : "#002b49";
+
+  for (var r = 0; r < modCount; r++) {
+    for (var c = 0; c < modCount; c++) {
+      if (qr.isDark(r, c)) {
+        ctx.fillRect((c * scale) + margin, (r * scale) + margin, scale, scale);
+      }
+    }
+  }
+
+  document.getElementById("contenedorCanvasQR").classList.remove("hidden");
+}
+
+function descargarPNGQR() {
+  var canvas = document.getElementById("qrCanvasSalida");
+  var a = document.createElement("a");
+  a.href = canvas.toDataURL("image/png");
+  a.download = "QR_Diagnostico_" + sesion.nivel + "mo_" + Date.now() + ".png";
+  a.click();
+}
+
+// MÉTRICAS Y REPORTES
+function calcularMetricas() {
+  var cont = document.getElementById("metricasContenedor");
+  if (padron.length === 0) {
+    cont.innerHTML = "<p style='color:var(--texto-muted); font-size:13px;'>No hay datos para la sección " + sesion.seccion + ".</p>";
+    return;
+  }
+
+  var dispMap = {};
+  var habMap = {};
+
+  padron.forEach(function(i) {
+    dispMap[i.dispositivo] = (dispMap[i.dispositivo] || 0) + 1;
+    habMap[i.habilidad] = (habMap[i.habilidad] || 0) + 1;
+  });
+
+  var html = "<div style='font-size:14px; font-weight:800; color:var(--azul-mep);'>Total Evaluados: " + padron.length + "</div>";
+  html += "<h4 style='margin:12px 0 6px;'>Equipos Utilizados:</h4><ul style='font-size:12.5px; padding-left:18px;'>";
+  for (var k in dispMap) html += "<li><strong>" + k + ":</strong> " + dispMap[k] + "</li>";
+  html += "</ul><h4 style='margin:12px 0 6px;'>Nivel Competencial de Entrada:</h4><ul style='font-size:12.5px; padding-left:18px;'>";
+  for (var k in habMap) html += "<li><strong>" + k + ":</strong> " + habMap[k] + "</li>";
+  html += "</ul>";
+
+  cont.innerHTML = html;
+}
+
+function renderizarPadron() {
+  var tbody = document.getElementById("cuerpoTablaPadron");
+  tbody.innerHTML = "";
+
+  if (padron.length === 0) {
+    tbody.innerHTML = "<tr><td colspan='5' style='text-align:center; color:#94a3b8;'>Padrón sin registros.</td></tr>";
+    return;
+  }
+
+  padron.forEach(function(item, idx) {
+    var tr = document.createElement("tr");
+    tr.innerHTML = "<td>" + (idx + 1) + "</td>" +
+                   "<td><strong>" + item.estudiante1 + "</strong>" + (item.estudiante2 !== "Individual" ? "<br><small style='color:#64748b;'>Pareja: " + item.estudiante2 + "</small>" : "") + "</td>" +
+                   "<td>" + item.dispositivo + "</td>" +
+                   "<td>" + item.habilidad + "</td>" +
+                   "<td>" + item.dua + "</td>";
+    tbody.appendChild(tr);
+  });
+}
+
+function limpiarPadron() {
+  if (confirm("¿Desea limpiar los registros de la sección " + sesion.seccion + "? Esta acción no se puede deshacer.")) {
+    padron = [];
+    localStorage.removeItem(STORAGE_KEY + "_data_" + sesion.seccion);
+    actualizarBadges();
+    renderizarPadron();
+    calcularMetricas();
+  }
+}
+
+function exportarCSV() {
+  if (padron.length === 0) { alert("No hay datos cargados."); return; }
+  var lineas = ["ID,Fecha,Seccion,Estudiante 1,Estudiante 2,Dispositivo,Acceso Internet,Nivel Habilidad,Observaciones DUA"];
+  padron.forEach(function(r) {
+    lineas.push([
+      r.id, r.fecha, '"' + r.seccion + '"', '"' + r.estudiante1 + '"', '"' + r.estudiante2 + '"',
+      '"' + r.dispositivo + '"', '"' + r.internet + '"', '"' + r.habilidad + '"', '"' + r.dua + '"'
+    ].join(","));
+  });
+
+  var blob = new Blob(["\uFEFF" + lineas.join("\n")], { type: "text/csv;charset=utf-8;" });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = url;
+  a.download = "Diagnostico_" + sesion.nivel + "mo_" + sesion.seccion + "_" + Date.now() + ".csv";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function exportarJSON() {
+  if (padron.length === 0) { alert("No hay datos cargados."); return; }
+  var blob = new Blob([JSON.stringify(padron, null, 2)], { type: "application/json" });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = url;
+  a.download = "Backup_Diagnostico_" + sesion.nivel + "mo_" + sesion.seccion + ".json";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importarPadronJSON(evt) {
+  var file = evt.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var arr = JSON.parse(e.target.result);
+      if (Array.isArray(arr)) {
+        padron = arr;
+        localStorage.setItem(STORAGE_KEY + "_data_" + sesion.seccion, JSON.stringify(padron));
+        actualizarBadges();
+        renderizarPadron();
+        alert("Padrón restaurado: " + padron.length + " registros sincronizados.");
+      }
+    } catch (err) {
+      alert("El archivo no posee un formato JSON compatible.");
+    }
+  };
+  reader.readAsText(file);
+}
+
+// INICIALIZACIÓN
+document.addEventListener("DOMContentLoaded", function() {
+  cargarEstadoLocal();
+  gestionarEstadoBanner();
+  cambiarPestana("camara");
+});
+</script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 // Service Worker Oficial - Diagnóstico Secundaria MEP
-const CACHE_NAME = 'mep-diagnostico-v4';
+const CACHE_NAME = 'mep-diagnostico-v5';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
@@ -12,13 +12,8 @@ const STATIC_ASSETS = [
   '/icons/apple-touch-icon.png',
   '/favicon.png',
   '/favicon.ico',
-  '/diagnostico_escaner_7mo.html',
-  '/diagnostico_escaner_9no.html',
-  '/diagnostico_escaner_datos_locales.html',
-  '/diagnostico_9no_escaner_datos_locales.html',
-  '/diagnostico_setimo_ano.html',
-  '/diagnostico_7mo_modulo01_cyberquest.html',
-  '/diagnostico_9no_modulo01_aula_inteligente.html'
+  '/diagnostico_escaner_7mo_v2.html',
+  '/diagnostico_escaner_9no.html'
 ];
 
 self.addEventListener('install', (event) => {

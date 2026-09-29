@@ -2,7 +2,7 @@
   "name": "Escáner Diagnóstico 7.° Año - Formación Tecnológica MEP",
   "short_name": "Escáner 7.° MEP",
   "description": "Escáner de códigos QR y recopilador de datos para el Diagnóstico de 7.° Año (Módulo 1: Programación y Apropiación Tecnológica).",
-  "start_url": "/diagnostico_escaner_7mo.html",
+  "start_url": "/diagnostico_escaner_7mo_v2.html",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",

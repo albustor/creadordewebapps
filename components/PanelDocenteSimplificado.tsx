@@ -639,7 +639,7 @@ export default function PanelDocenteSimplificado() {
   // Archivo Escáner de Datos PWA según Nivel
   const archivoEscanerPWA = useMemo(() => {
     return nivelActivo === "7mo"
-      ? "/diagnostico_escaner_7mo.html"
+      ? "/diagnostico_escaner_7mo_v2.html"
       : "/diagnostico_escaner_9no.html";
   }, [nivelActivo]);
 

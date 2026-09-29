@@ -653,7 +653,7 @@ export default function QRScannerResultados({
 
           <div className="flex items-center gap-1.5">
             <a
-              href={nivelActivo === "7mo" ? "/diagnostico_escaner_7mo.html" : "/diagnostico_escaner_9no.html"}
+              href={nivelActivo === "7mo" ? "/diagnostico_escaner_7mo_v2.html" : "/diagnostico_escaner_9no.html"}
               target="_blank"
               rel="noopener noreferrer"
               className={`hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-black shadow-xs transition-all border ${
