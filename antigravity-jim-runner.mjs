@@ -136,7 +136,7 @@ async function healSourceFile(filePath, errorDetail) {
   Log.heal(`Inyectando solución técnica en: ${filePath}`);
   const originalCode = fs.readFileSync(filePath, 'utf-8');
 
-  const modelName = process.env.GEMINI_MODEL || 'gemini-2.5-pro';
+  const modelName = process.env.GEMINI_MODEL || 'gemini-3.6-flash';
   const model = genAI.getGenerativeModel({
     model: modelName,
     generationConfig: { responseMimeType: 'application/json' },
