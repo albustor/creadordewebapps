@@ -653,7 +653,7 @@ export default function QRScannerResultados({
 
           <div className="flex items-center gap-1.5">
             <a
-              href={nivelActivo === "7mo" ? "/diagnostico_escaner_7mo_v2.html" : "/diagnostico_escaner_9no.html"}
+              href="/diagnostico_escaner_v3.html"
               target="_blank"
               rel="noopener noreferrer"
               className={`hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-black shadow-xs transition-all border ${
@@ -661,9 +661,9 @@ export default function QRScannerResultados({
                   ? "bg-[#D4AF5A] hover:bg-[#c49e47] text-[#002b49] border-amber-300"
                   : "bg-emerald-500 hover:bg-emerald-400 text-white border-emerald-400"
               }`}
-              title="Abrir aplicación PWA autónoma en pantalla completa"
+              title="Abrir aplicación PWA autónoma en pantalla completa (Versión 3 Universal)"
             >
-              <span>📱 Abrir PWA {nivelActivo === "7mo" ? "7.°" : "9.°"}</span>
+              <span>📱 Abrir PWA Universal {nivelActivo === "7mo" ? "7.°" : "9.°"}</span>
             </a>
 
             <button

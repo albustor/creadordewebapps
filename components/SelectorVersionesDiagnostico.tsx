@@ -85,13 +85,13 @@ export default function SelectorVersionesDiagnostico({
   let pathOnline = "/webapps/diagnostico_setimo_ano.html";
   let pathOffline = "/webapps/diagnostico_setimo_ano_modulo01_desconectado_offline.html";
   let pathDocente = "/webapps/diagnostico_setimo_ano_modulo01_docente_evaluador.html";
-  let pathEscaner = "/diagnostico_escaner_7mo_v2.html";
+  let pathEscaner = "/diagnostico_escaner_v3.html";
 
   if (nivel === "9°") {
     pathOnline = "/webapps/diagnostico_9no_modulo01_en_linea.html";
     pathOffline = "/webapps/diagnostico_9no_modulo01_desconectado_offline.html";
     pathDocente = "/webapps/diagnostico_9no_modulo01_docente_evaluador.html";
-    pathEscaner = "/diagnostico_escaner_9no.html";
+    pathEscaner = "/diagnostico_escaner_v3.html";
   }
 
   const urlOnline =

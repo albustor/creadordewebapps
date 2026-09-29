@@ -1,5 +1,5 @@
 // Service Worker Oficial - Diagnóstico Secundaria MEP
-const CACHE_NAME = 'mep-diagnostico-v5';
+const CACHE_NAME = 'mep-diagnostico-v6';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
@@ -12,6 +12,7 @@ const STATIC_ASSETS = [
   '/icons/apple-touch-icon.png',
   '/favicon.png',
   '/favicon.ico',
+  '/diagnostico_escaner_v3.html',
   '/diagnostico_escaner_7mo_v2.html',
   '/diagnostico_escaner_9no.html'
 ];

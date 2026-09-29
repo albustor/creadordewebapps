@@ -636,12 +636,10 @@ export default function PanelDocenteSimplificado() {
       : "/webapps/diagnostico_9no_modulo01_desconectado_offline.html";
   }, [nivelActivo]);
 
-  // Archivo Escáner de Datos PWA según Nivel
+  // Archivo Escáner de Datos PWA según Nivel (Versión 3 Universal)
   const archivoEscanerPWA = useMemo(() => {
-    return nivelActivo === "7mo"
-      ? "/diagnostico_escaner_7mo_v2.html"
-      : "/diagnostico_escaner_9no.html";
-  }, [nivelActivo]);
+    return "/diagnostico_escaner_v3.html";
+  }, []);
 
   // Archivo PDF Imprimible (Modalidad en Papel / Físico)
   const archivoPDFImprimibleDescarga = useMemo(() => {
