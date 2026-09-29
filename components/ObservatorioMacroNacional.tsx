@@ -21,8 +21,6 @@ import {
   ShieldCheck,
   ArrowsClockwise,
   ChartBar,
-  GameController,
-  Lightbulb,
   ChalkboardTeacher,
   IdentificationBadge,
   Check,
@@ -95,7 +93,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
     const sec = (r.seccionOGrupo || r.seccion || "").toLowerCase();
     const webApp = (r.webAppId || r.webAppTitulo || "").toLowerCase();
 
-    if (niv.includes("7") || sec.includes("7-") || webApp.includes("7mo") || webApp.includes("cyberquest")) return "7mo";
+    if (niv.includes("7") || sec.includes("7-") || webApp.includes("7mo") || webApp.includes("setimo") || webApp.includes("cyberquest")) return "7mo";
     return "9no";
   };
 
@@ -245,7 +243,22 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
     };
   }, [institucionesConsolidadas, telemetriaNivel]);
 
-  // Matriz de Indicadores de III Ciclo (Base Fundamental - Captura 2)
+  // Obtener nombre de subárea limpia y legible
+  const resolverNombreSubarea = (subId: string, nivel: "7mo" | "9no"): string => {
+    if (nivel === "7mo") {
+      if (subId.includes("hardware") || subId.includes("sistemas")) return "Hardware, Software y Sistemas Operativos";
+      if (subId.includes("conectividad") || subId.includes("archivos")) return "Redes de Comunicación y Gestión de Archivos";
+      if (subId.includes("programacion") || subId.includes("algoritmos")) return "Pensamiento Computacional y Control Lógico";
+      return "Formación Tecnológica 7.°";
+    } else {
+      if (subId.includes("sistemas") || subId.includes("auto")) return "Sistemas Automatizados y Arquitectura de Control";
+      if (subId.includes("algoritmos") || subId.includes("iot")) return "Pensamiento Computacional y Lógica Condicional";
+      if (subId.includes("depuracion") || subId.includes("datos")) return "Depuración, Conectividad y Almacenamiento";
+      return "Formación Tecnológica 9.°";
+    }
+  };
+
+  // Matriz de Indicadores de III Ciclo Oficial MEP
   const matrizIndicadores = useMemo(() => {
     const hayEvaluaciones = telemetriaNivel.length > 0;
     const prom = metricasMacro.promedioNacional;
@@ -257,7 +270,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
           id: idx + 1,
           codigo: `IND-7.${idx + 1}`,
           nombre: r.indicadorTexto,
-          subarea: r.subarea,
+          subarea: resolverNombreSubarea(r.subarea, "7mo"),
           saberes: r.enunciado,
           peso: r.puntos,
           pctLogro: logro,
@@ -273,7 +286,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
           id: idx + 1,
           codigo: `IND-9.${idx + 1}`,
           nombre: r.indicadorTexto,
-          subarea: r.subarea,
+          subarea: resolverNombreSubarea(r.subarea, "9no"),
           saberes: r.enunciado,
           peso: r.puntos,
           pctLogro: logro,
@@ -282,24 +295,24 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
       });
     }
 
-    // BASE FUNDAMENTAL (CAPTURA 2): Visión Consolidada de los 2 Módulos Activos de III Ciclo (7.° y 9.°)
+    // BASE FUNDAMENTAL: Visión Consolidada de los 2 Módulos Activos de III Ciclo (7.° y 9.° Año)
     return [
       {
         id: 1,
         codigo: "7.° AÑO",
-        nombre: "7.° Año: CyberQuest (Ciudadanía Digital, Hardware Básico y Pensamiento Lógico)",
-        subarea: "Módulo 1 — III Ciclo (6 reactivos oficiales)",
-        saberes: "Identidad digital, contraseñas seguras, periféricos E/S, secuencias y algoritmos",
-        peso: 6,
+        nombre: "Diagnóstico 7.° Año (Formación Tecnológica • Módulo 1 — III Ciclo)",
+        subarea: "Educación General Básica III Ciclo • 10 Reactivos Oficiales",
+        saberes: "Hardware, software, sistemas operativos, redes, archivos, pensamiento computacional y algoritmia",
+        peso: 10,
         pctLogro: eval7mo > 0 ? metricasMacro.promedioNacional : 55,
-        estado: eval7mo > 0 ? `${eval7mo} Estudiantes Evaluados` : "Suite Diagnóstica Activa (6 ítems)",
+        estado: eval7mo > 0 ? `${eval7mo} Estudiantes Evaluados` : "Suite Diagnóstica Activa (10 ítems)",
       },
       {
         id: 2,
         codigo: "9.° AÑO",
-        nombre: "9.° Año: Aula Inteligente IoT (Microcontroladores, Circuitos, Sensores LDR y Ley de Ohm)",
-        subarea: "Módulo 1 — III Ciclo (10 reactivos oficiales)",
-        saberes: "Microcontroladores, pines analógicos/digitales, variables, Ley de Ohm, depuración",
+        nombre: "Diagnóstico 9.° Año (Formación Tecnológica • Módulo 1 — III Ciclo)",
+        subarea: "Educación General Básica III Ciclo • 10 Reactivos Oficiales",
+        saberes: "Sistemas automatizados, microcontroladores, sensores LDR, actuadores, Ley de Ohm, condicionales y depuración",
         peso: 10,
         pctLogro: eval9no > 0 ? metricasMacro.promedioNacional : 55,
         estado: eval9no > 0 ? `${eval9no} Estudiantes Evaluados` : "Suite Diagnóstica Activa (10 ítems)",
@@ -331,27 +344,27 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
     const wsInstituciones = XLSX.utils.json_to_sheet(dataFilas);
     XLSX.utils.book_append_sheet(workbook, wsInstituciones, "Directorio_III_Ciclo");
 
-    // Hoja 2: Matriz 7mo CyberQuest
+    // Hoja 2: Matriz 7mo Año
     const data7mo = DIAGNOSTICO_7MO_DATA.reactivos.map((r, i) => ({
       "N°": i + 1,
       "Código": `IND-7.${i + 1}`,
       "Indicador Oficial MEP": r.indicadorTexto,
-      "Subárea Curricular": r.subarea,
+      "Subárea Curricular": resolverNombreSubarea(r.subarea, "7mo"),
       "Enunciado": r.enunciado,
       "Puntos": r.puntos,
     }));
-    XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(data7mo), "Matriz_7mo_CyberQuest");
+    XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(data7mo), "Matriz_7mo_Ano");
 
-    // Hoja 3: Matriz 9no Aula Inteligente
+    // Hoja 3: Matriz 9no Año
     const data9no = DIAGNOSTICO_9NO_DATA.reactivos.map((r, i) => ({
       "N°": i + 1,
       "Código": `IND-9.${i + 1}`,
       "Indicador Oficial MEP": r.indicadorTexto,
-      "Subárea Curricular": r.subarea,
+      "Subárea Curricular": resolverNombreSubarea(r.subarea, "9no"),
       "Enunciado": r.enunciado,
       "Puntos": r.puntos,
     }));
-    XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(data9no), "Matriz_9no_AulaInteligente");
+    XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(data9no), "Matriz_9no_Ano");
 
     // Hoja 4: Resumen 27 DREs
     const dataDREs = LISTA_DRE_MEP.map((dre) => {
@@ -389,7 +402,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
                 Gobernanza Nacional • Formación Tecnológica III Ciclo (7.° y 9.° Año)
               </span>
               <span className="text-[11px] text-slate-500 font-medium">
-                Monitoreo de diagnósticos activos de secundaria en las 27 Direcciones Regionales (DREs).
+                Supervisión de instrumentos diagnósticos curriculares en las 27 Direcciones Regionales de Educación (DREs).
               </span>
             </div>
           </div>
@@ -425,12 +438,12 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
             <div className="mt-3">
               <div className="text-xs font-black uppercase tracking-wider">Consolidado III Ciclo</div>
               <p className={`text-[11px] font-medium leading-tight mt-0.5 ${nivelActivo === "TODOS" ? "text-slate-300" : "text-slate-500"}`}>
-                7.° y 9.° Año (16 reactivos oficiales)
+                7.° y 9.° Año (20 reactivos oficiales)
               </p>
             </div>
           </button>
 
-          {/* TARJETA 2: 7.° AÑO CYBERQUEST */}
+          {/* TARJETA 2: DIAGNÓSTICO 7.° AÑO */}
           <button
             type="button"
             onClick={() => setNivelActivo("7mo")}
@@ -442,7 +455,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
           >
             <div className="flex items-center justify-between w-full">
               <span className="p-2 rounded-xl bg-indigo-200 text-indigo-900">
-                <GameController size={20} weight="bold" />
+                <Cpu size={20} weight="bold" />
               </span>
               <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black ${
                 nivelActivo === "7mo" ? "bg-indigo-300 text-indigo-950" : "bg-indigo-100 text-indigo-900"
@@ -451,14 +464,14 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
               </span>
             </div>
             <div className="mt-3">
-              <div className="text-xs font-black uppercase tracking-wider">7.° CyberQuest</div>
+              <div className="text-xs font-black uppercase tracking-wider">Diagnóstico 7.° Año</div>
               <p className={`text-[11px] font-medium leading-tight mt-0.5 ${nivelActivo === "7mo" ? "text-indigo-200" : "text-slate-500"}`}>
-                Ciudadanía & Hardware (6 reactivos)
+                Formación Tecnológica (10 reactivos)
               </p>
             </div>
           </button>
 
-          {/* TARJETA 3: 9.° AÑO AULA INTELIGENTE */}
+          {/* TARJETA 3: DIAGNÓSTICO 9.° AÑO */}
           <button
             type="button"
             onClick={() => setNivelActivo("9no")}
@@ -470,7 +483,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
           >
             <div className="flex items-center justify-between w-full">
               <span className="p-2 rounded-xl bg-purple-200 text-purple-900">
-                <Lightbulb size={20} weight="bold" />
+                <Cpu size={20} weight="bold" />
               </span>
               <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black ${
                 nivelActivo === "9no" ? "bg-purple-300 text-purple-950" : "bg-purple-100 text-purple-900"
@@ -479,9 +492,9 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
               </span>
             </div>
             <div className="mt-3">
-              <div className="text-xs font-black uppercase tracking-wider">9.° Aula Inteligente IoT</div>
+              <div className="text-xs font-black uppercase tracking-wider">Diagnóstico 9.° Año</div>
               <p className={`text-[11px] font-medium leading-tight mt-0.5 ${nivelActivo === "9no" ? "text-purple-200" : "text-slate-500"}`}>
-                Microcontroladores & Circuitos (10 reactivos)
+                Formación Tecnológica (10 reactivos)
               </p>
             </div>
           </button>
@@ -504,10 +517,10 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
             </div>
             <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
               {nivelActivo === "TODOS"
-                ? "Analítica Macro Nacional: Consolidado III Ciclo (7.° y 9.°)"
+                ? "Analítica Macro Nacional: Consolidado III Ciclo (7.° y 9.° Año)"
                 : nivelActivo === "7mo"
-                ? "Analítica Macro: 7.° Año (CyberQuest — Ciudadanía Digital & Hardware)"
-                : "Analítica Macro: 9.° Año (Aula Inteligente IoT — Microcontroladores & Circuitos)"}
+                ? "Analítica Macro: Diagnóstico 7.° Año (Módulo 1 — III Ciclo)"
+                : "Analítica Macro: Diagnóstico 9.° Año (Módulo 1 — III Ciclo)"}
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed font-medium">
               Panel de supervisión general para <strong>Alberto Bustos Ortega (Super Administrador)</strong>. Permite monitorear la aplicación del diagnóstico en liceos y colegios de las 27 DREs, comparar rendimientos y detectar brechas curriculares de entrada de año.
@@ -541,7 +554,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
 
           <div className="p-4 rounded-2xl bg-[#FCFBF9] border border-stone-200 shadow-xs">
             <div className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">
-              Estudiantes Evaluados ({nivelActivo === "TODOS" ? "Total III Ciclo" : nivelActivo})
+              Estudiantes Evaluados ({nivelActivo === "TODOS" ? "Total III Ciclo" : nivelActivo === "7mo" ? "7.° Año" : "9.° Año"})
             </div>
             <div className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">
               {metricasMacro.totalEstudiantes.toLocaleString()}
@@ -569,8 +582,8 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
             </div>
             <div className={`text-sm font-black mt-1 line-clamp-1 ${metricasMacro.totalEstudiantes > 0 ? "text-rose-700" : "text-amber-800"}`}>
               {nivelActivo === "7mo"
-                ? "IND-7.4: Clasificación Periféricos E/S"
-                : "IND-08: Ley de Ohm y Circuitos"}
+                ? "IND-7.1: Dispositivos de Entrada, Salida y Almacenamiento"
+                : "IND-9.8: Ley de Ohm y Circuitos Eléctricos"}
             </div>
             <div className="text-[11px] text-stone-500 font-medium mt-2">
               Prioridad pedagógica para nivelación
@@ -580,7 +593,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
       </div>
 
       {/* ========================================================================= */}
-      {/* 3. MATRIZ MACRO NACIONAL DE INDICADORES (BASE FUNDAMENTAL: CAPTURA 2)     */}
+      {/* 3. MATRIZ MACRO NACIONAL DE INDICADORES                                   */}
       {/* ========================================================================= */}
       <div className="bg-white rounded-3xl border border-slate-200 shadow-xl p-6 sm:p-8 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
@@ -593,8 +606,8 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
                 {nivelActivo === "TODOS"
                   ? "III Ciclo (7.° y 9.° Secundaria): Módulos Activos de Evaluación Diagnóstica"
                   : nivelActivo === "7mo"
-                  ? "Matriz Macro Nacional de Indicadores y Saberes Previos (7.° Año — CyberQuest)"
-                  : "Matriz Macro Nacional de Indicadores y Saberes Previos (9.° Año — Aula Inteligente IoT)"}
+                  ? "Matriz Macro Nacional de Indicadores y Saberes Previos (7.° Año • Módulo 1)"
+                  : "Matriz Macro Nacional de Indicadores y Saberes Previos (9.° Año • Módulo 1)"}
               </h3>
             </div>
             <p className="text-xs text-slate-500 mt-1">
