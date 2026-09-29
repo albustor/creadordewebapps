@@ -25,16 +25,16 @@ export const DIAGNOSTICO_7MO_DATA: ConfiguracionDiagnosticoNivel = {
     {
       id: "sub2_conectividad_archivos",
       areaCurricular: "Apropiación tecnológica y digital",
-      nombre: "Grupo de criterios asociados 2: Conectividad, Redes y Formatos de Archivos Digitales",
-      descripcion: "Reconoce el rol de las redes locales (LAN), clasificación de extensiones de archivos digitales y herramientas de edición de medios.",
+      nombre: "Grupo de criterios asociados 2: Redes de Comunicación, Gestión de Archivos y Contenido Multimedia",
+      descripcion: "Reconoce el rol de las redes de comunicación, gestión de archivos digitales y herramientas de creación multimedia.",
       itemsIds: [4, 5, 6],
       pesoTotal: 3
     },
     {
       id: "sub1_hardware_sistemas",
       areaCurricular: "Apropiación tecnológica y digital",
-      nombre: "Grupo de criterios asociados 3: Hardware, Periféricos y Sistemas Operativos",
-      descripcion: "Identifica componentes de entrada, salida, procesamiento, reglas de cuidado y administración de recursos del sistema operativo.",
+      nombre: "Grupo de criterios asociados 3: Hardware, Software y Sistemas Operativos",
+      descripcion: "Identifica componentes de hardware, aplicaciones de software y administración de recursos del sistema operativo.",
       itemsIds: [1, 2, 3],
       pesoTotal: 3
     }

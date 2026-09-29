@@ -204,13 +204,16 @@ export const SABERES_COGNITIVOS_MAP: Record<"7mo" | "9no", SaberCognitivoOficial
     { id: 6, nombre: "Almacenamiento de datos (Pregunta 10)", saber: "Almacenamiento de datos", pregunta: "Pregunta 10", areaCurricular: "Ciencia de datos e IA" },
   ],
   "7mo": [
-    { id: 1, nombre: "Redes de comunicación (Pregunta 4)", saber: "Redes de comunicación", pregunta: "Pregunta 4", areaCurricular: "Conectividad" },
-    { id: 2, nombre: "Gestión de archivos (Pregunta 5)", saber: "Gestión de archivos", pregunta: "Pregunta 5", areaCurricular: "Apropiación tecnológica y digital" },
-    { id: 3, nombre: "Herramientas de creación de contenido multimedia (editor de gráficos) (Pregunta 6)", saber: "Multimedia (Editor de gráficos)", pregunta: "Pregunta 6", areaCurricular: "Apropiación tecnológica y digital" },
-    { id: 4, nombre: "Evento (Pregunta 7)", saber: "Evento", pregunta: "Pregunta 7", areaCurricular: "Programación y algoritmos" },
-    { id: 5, nombre: "Variable y estructuras repetitivas (Pregunta 8)", saber: "Variable y estructuras repetitivas", pregunta: "Pregunta 8", areaCurricular: "Programación y algoritmos" },
-    { id: 6, nombre: "Estructuras condicionales (Pregunta 9)", saber: "Estructuras condicionales", pregunta: "Pregunta 9", areaCurricular: "Programación y algoritmos" },
-    { id: 7, nombre: "Operadores relacionales y operadores aritméticos (Pregunta 10)", saber: "Operadores relacionales y aritméticos", pregunta: "Pregunta 10", areaCurricular: "Programación y algoritmos" },
+    { id: 1, nombre: "Hardware (Pregunta 1)", saber: "Hardware", pregunta: "Pregunta 1", areaCurricular: "Apropiación tecnológica" },
+    { id: 2, nombre: "Software (Pregunta 2)", saber: "Software", pregunta: "Pregunta 2", areaCurricular: "Apropiación tecnológica" },
+    { id: 3, nombre: "Sistema Operativo (Pregunta 3)", saber: "Sistema Operativo", pregunta: "Pregunta 3", areaCurricular: "Apropiación tecnológica" },
+    { id: 4, nombre: "Redes de comunicación (Pregunta 4)", saber: "Redes de comunicación", pregunta: "Pregunta 4", areaCurricular: "Conectividad" },
+    { id: 5, nombre: "Gestión de archivos (Pregunta 5)", saber: "Gestión de archivos", pregunta: "Pregunta 5", areaCurricular: "Apropiación tecnológica" },
+    { id: 6, nombre: "Herramientas de creación de contenido multimedia (editor de gráficos) (Pregunta 6)", saber: "Herramientas multimedia (Editor de gráficos)", pregunta: "Pregunta 6", areaCurricular: "Apropiación tecnológica" },
+    { id: 7, nombre: "Evento (Pregunta 7)", saber: "Evento", pregunta: "Pregunta 7", areaCurricular: "Programación y algoritmos" },
+    { id: 8, nombre: "Variable y estructuras repetitivas (Pregunta 8)", saber: "Variable y estructuras repetitivas", pregunta: "Pregunta 8", areaCurricular: "Programación y algoritmos" },
+    { id: 9, nombre: "Estructuras condicionales (Pregunta 9)", saber: "Estructuras condicionales", pregunta: "Pregunta 9", areaCurricular: "Programación y algoritmos" },
+    { id: 10, nombre: "Operadores relacionales y operadores aritméticos (Pregunta 10)", saber: "Operadores relacionales y aritméticos", pregunta: "Pregunta 10", areaCurricular: "Programación y algoritmos" },
   ],
 };
 

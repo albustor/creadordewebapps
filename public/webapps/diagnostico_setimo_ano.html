@@ -1752,7 +1752,7 @@
     const COGNITIVE_QUESTIONS = [
       {
         id: 'ind1',
-        title: 'Reto 1: Hardware y dispositivos',
+        title: 'Reto 1: Hardware',
         desc: 'Identifique la función de dispositivos de uso cotidiano en una computadora.',
         question: 'Un estudiante necesita escribir un texto, mover el puntero y grabar su voz en la computadora. ¿Qué grupo de dispositivos le permitiría realizar esas tres acciones?',
         options: [
@@ -1765,12 +1765,12 @@
       },
       {
         id: 'ind2',
-        title: 'Reto 2: Software y programas',
-        desc: 'Diferenciación entre aplicaciones de usuario y software utilitario.',
+        title: 'Reto 2: Software',
+        desc: 'Diferenciación entre aplicaciones de usuario y software del sistema.',
         question: 'Un estudiante necesita proteger su computadora contra virus y liberar espacio en el disco duro. ¿Qué tipo de software requiere utilizar?',
         options: [
           'Software de aplicación de usuario (por ejemplo, navegador web o Paint)',
-          'Software utilitario, de mantenimiento y seguridad',
+          'Software de mantenimiento, seguridad y utilitarios del sistema',
           'Software de videojuegos',
           'Controlador de impresora'
         ],
@@ -1778,7 +1778,7 @@
       },
       {
         id: 'ind3',
-        title: 'Reto 3: Sistemas operativos',
+        title: 'Reto 3: Sistema Operativo',
         desc: 'Funciones cardinales del sistema operativo y administración de recursos.',
         question: '¿Cuál es la función principal del sistema operativo (como Windows, Linux o macOS)?',
         options: [
@@ -1791,12 +1791,12 @@
       },
       {
         id: 'ind4',
-        title: 'Reto 4: Redes y conectividad',
-        desc: 'Reconoce situaciones cotidianas en las que varios dispositivos se conectan y comparten recursos.',
+        title: 'Reto 4: Redes de comunicación',
+        desc: 'Reconoce situaciones cotidianas en las que varios dispositivos se conectan y comparten recursos en redes de comunicación.',
         question: 'En el laboratorio de informática, varias computadoras pueden utilizar la misma impresora y acceder a Internet. ¿Qué permite que estos equipos puedan comunicarse y compartir recursos?',
         options: [
           'Que todas las computadoras sean de la misma marca.',
-          'Que las computadoras estén conectadas entre sí mediante una red.',
+          'Que las computadoras estén conectadas entre sí mediante una red de comunicación.',
           'Que cada computadora tenga conectada su propia impresora.',
           'Que todas las computadoras utilicen los mismos programas.'
         ],
@@ -1804,9 +1804,9 @@
       },
       {
         id: 'ind5',
-        title: 'Reto 5: Formatos y extensiones de archivo',
-        desc: 'Relacione los tipos de archivo y sus extensiones según el contenido que almacenan.',
-        question: 'Si un estudiante guarda una pista de audio para un pódcast escolar, ¿cuál extensión es la adecuada?',
+        title: 'Reto 5: Gestión de archivos',
+        desc: 'Relacione los tipos de archivo y sus extensiones para la gestión de archivos digitales.',
+        question: 'Si un estudiante guarda una pista de audio para un pódcast escolar, ¿cuál extensión es la adecuada para la gestión del archivo?',
         options: [
           '.png o .jpg',
           '.mp3 o .wav',
@@ -1817,9 +1817,9 @@
       },
       {
         id: 'ind6',
-        title: 'Reto 6: Imágenes digitales',
-        desc: 'Reconoce acciones básicas que se pueden realizar al trabajar con imágenes digitales.',
-        question: 'Un estudiante está preparando una imagen para un trabajo escolar. Necesita eliminar una parte que no desea mostrar y hacer que la imagen se vea más clara. ¿Qué acciones debería realizar?',
+        title: 'Reto 6: Herramientas de creación de contenido multimedia (editor de gráficos)',
+        desc: 'Reconoce acciones básicas que se pueden realizar al trabajar con herramientas de edición y creación multimedia.',
+        question: 'Un estudiante está preparando una imagen para un trabajo escolar. Necesita eliminar una parte que no desea mostrar y hacer que la imagen se vea más clara. ¿Qué acciones debería realizar en el editor de gráficos?',
         options: [
           'Recortar la imagen y ajustar su brillo.',
           'Cambiar el nombre del archivo y moverlo a otra carpeta.',
@@ -1830,9 +1830,9 @@
       },
       {
         id: 'ind7',
-        title: 'Reto 7: Algoritmos y eventos',
+        title: 'Reto 7: Evento',
         desc: 'Disparadores de acción (bloques de evento en programación por bloques).',
-        question: 'En un programa de bloques (como Scratch), ¿qué bloque se utiliza para que un personaje hable en el momento en que el usuario hace clic sobre él?',
+        question: 'En un programa de bloques (como Scratch), ¿qué bloque de evento se utiliza para que un personaje hable en el momento en que el usuario hace clic sobre él?',
         options: [
           'Al presionar la bandera verde',
           'Al hacer clic en este objeto (sprite)',
@@ -1843,10 +1843,10 @@
       },
       {
         id: 'ind8',
-        title: 'Reto 8: Variables y estructuras repetitivas (ciclos)',
-        desc: 'Siga una secuencia de acciones repetidas para determinar su resultado.',
+        title: 'Reto 8: Variable y estructuras repetitivas',
+        desc: 'Siga una secuencia de acciones repetidas para determinar el valor de la variable.',
         codeSnippet: 'puntos = 0;\nRepetir 3 veces {\n    puntos = puntos + 5;\n}\nMostrar(puntos);',
-        question: 'Al ejecutar este bloque de código, ¿qué valor final tendrá la variable "puntos"?',
+        question: 'Al ejecutar este bloque de código con estructuras repetitivas, ¿qué valor final tendrá la variable "puntos"?',
         options: [
           '5 puntos',
           '8 puntos',
@@ -1871,10 +1871,10 @@
       },
       {
         id: 'ind10',
-        title: 'Reto 10: Operadores lógicos',
-        desc: 'Interprete condiciones sencillas para determinar si se cumplen.',
+        title: 'Reto 10: Operadores relacionales y operadores aritméticos',
+        desc: 'Interprete expresiones con operadores relacionales y aritméticos para determinar su resultado de verdad.',
         codeSnippet: 'Resultado = (10 > 5) Y (4 + 2 == 6)',
-        question: '¿Cuál es el resultado de la condición lógica planteada?',
+        question: '¿Cuál es el resultado de evaluar los operadores relacionales y aritméticos en la condición lógica planteada?',
         options: [
           'Verdadero, porque se cumplen las dos condiciones.',
           'Falso, porque solamente se cumple una condición.',
