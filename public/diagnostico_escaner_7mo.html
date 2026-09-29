@@ -883,86 +883,145 @@ function interpretarPayloadQR(raw) {
 // =========================================================================
 async function iniciarCamaraUniversal() {
   var area = document.getElementById("scannerArea");
-  area.classList.remove("hidden");
-  document.getElementById("btnActivarCamara").classList.add("hidden");
-  document.getElementById("btnDetenerCamara").classList.remove("hidden");
+  if (area) area.classList.remove("hidden");
+  var btnAct = document.getElementById("btnActivarCamara");
+  if (btnAct) btnAct.classList.add("hidden");
+  var btnDet = document.getElementById("btnDetenerCamara");
+  if (btnDet) btnDet.classList.remove("hidden");
 
-  document.getElementById("mensajeCamara").innerHTML =
-    '<div class="alert alert-info">📸 Apunte la cámara hacia el código QR en la pantalla del estudiante.</div>';
+  var msgEl = document.getElementById("mensajeCamara");
+  if (msgEl) {
+    msgEl.innerHTML = '<div class="alert alert-info">📸 Apunte la cámara hacia el código QR en la pantalla del estudiante.</div>';
+  }
 
-  try {
-    if (typeof Html5Qrcode !== "undefined") {
-      html5QrCodeInstance = new Html5Qrcode("reader");
-      await html5QrCodeInstance.start(
-        { facingMode: "environment" },
-        { fps: 15, qrbox: { width: 240, height: 240 } },
-        function(qrMessage) {
-          emitirBeep();
-          detenerCamara();
-          procesarQRDetectado(qrMessage);
-        },
-        function() {}
-      );
-      return;
+  // Detener instancias previas limpiamente
+  detenerCamaraSilencioso();
+
+  var Html5QrcodeClass = window.Html5Qrcode || (window.__Html5QrcodeLibrary__ && window.__Html5QrcodeLibrary__.Html5Qrcode);
+
+  if (Html5QrcodeClass) {
+    try {
+      html5QrCodeInstance = new Html5QrcodeClass("reader");
+      var cameraConfig = { fps: 15, qrbox: { width: 240, height: 240 } };
+      
+      try {
+        await html5QrCodeInstance.start(
+          { facingMode: "environment" },
+          cameraConfig,
+          function(qrMessage) {
+            emitirBeep();
+            detenerCamara();
+            procesarQRDetectado(qrMessage);
+          },
+          function() {}
+        );
+        return;
+      } catch (errFacing) {
+        console.warn("Cámara trasera falló, intentando cámaras enumeradas:", errFacing);
+        try {
+          var cameras = await Html5QrcodeClass.getCameras();
+          if (cameras && cameras.length > 0) {
+            var rearCam = cameras.find(function(c) { return /back|rear|trasera|environment/i.test(c.label); });
+            var camId = rearCam ? rearCam.id : cameras[0].id;
+            await html5QrCodeInstance.start(
+              camId,
+              cameraConfig,
+              function(qrMessage) {
+                emitirBeep();
+                detenerCamara();
+                procesarQRDetectado(qrMessage);
+              },
+              function() {}
+            );
+            return;
+          }
+        } catch (eEnum) {
+          console.warn("Enumeración de cámaras falló:", eEnum);
+        }
+      }
+    } catch (errHtml5) {
+      console.warn("Html5Qrcode falló, probando fallback nativo:", errHtml5);
     }
-  } catch (errHtml5) {
-    console.warn("Html5Qrcode falló, usando getUserMedia nativo:", errHtml5);
   }
 
   // Fallback con getUserMedia nativo
   try {
-    var stream = await navigator.mediaDevices.getUserMedia({
+    var constraints = {
       video: { facingMode: { ideal: "environment" } },
       audio: false
-    });
+    };
+    var stream = await navigator.mediaDevices.getUserMedia(constraints);
     streamCamara = stream;
     var readerDiv = document.getElementById("reader");
-    readerDiv.innerHTML = "";
-    var videoEl = document.createElement("video");
-    videoEl.autoplay = true;
-    videoEl.playsInline = true;
-    videoEl.srcObject = stream;
-    readerDiv.appendChild(videoEl);
-    await videoEl.play();
+    if (readerDiv) {
+      readerDiv.innerHTML = "";
+      var videoEl = document.createElement("video");
+      videoEl.autoplay = true;
+      videoEl.playsInline = true;
+      videoEl.muted = true;
+      videoEl.setAttribute("playsinline", "true");
+      videoEl.setAttribute("webkit-playsinline", "true");
+      videoEl.style.width = "100%";
+      videoEl.style.height = "100%";
+      videoEl.style.objectFit = "cover";
+      videoEl.srcObject = stream;
+      readerDiv.appendChild(videoEl);
+      await videoEl.play();
 
-    trackVideo = stream.getVideoTracks()[0];
-    if (trackVideo && trackVideo.getCapabilities && trackVideo.getCapabilities().torch) {
-      document.getElementById("btnFlash").classList.remove("hidden");
-    }
+      trackVideo = stream.getVideoTracks()[0];
+      if (trackVideo && trackVideo.getCapabilities && trackVideo.getCapabilities().torch) {
+        var btnF = document.getElementById("btnFlash");
+        if (btnF) btnF.classList.remove("hidden");
+      }
 
-    if ("BarcodeDetector" in window) {
-      var detector = new BarcodeDetector({ formats: ["qr_code"] });
-      var bucle = async function() {
-        if (!streamCamara) return;
-        try {
-          var barcodes = await detector.detect(videoEl);
-          if (barcodes && barcodes.length > 0) {
-            emitirBeep();
-            detenerCamara();
-            procesarQRDetectado(barcodes[0].rawValue);
-            return;
-          }
-        } catch (e) {}
+      if ("BarcodeDetector" in window) {
+        var detector = new BarcodeDetector({ formats: ["qr_code"] });
+        var bucle = async function() {
+          if (!streamCamara) return;
+          try {
+            var barcodes = await detector.detect(videoEl);
+            if (barcodes && barcodes.length > 0) {
+              emitirBeep();
+              detenerCamara();
+              procesarQRDetectado(barcodes[0].rawValue);
+              return;
+            }
+          } catch (e) {}
+          requestAnimationFrame(bucle);
+        };
         requestAnimationFrame(bucle);
-      };
-      requestAnimationFrame(bucle);
+      }
     }
   } catch (errNative) {
-    alert("⚠️ No se pudo acceder a la cámara. Por favor use el botón 'Cargar / Tomar Foto QR'.");
+    console.error("Error de acceso a cámara:", errNative);
+    var errTxt = "⚠️ No se pudo acceder a la cámara. ";
+    if (errNative && (errNative.name === "NotAllowedError" || errNative.name === "PermissionDeniedError")) {
+      errTxt += "El permiso fue denegado en el navegador. Por favor habilite la cámara en la configuración del navegador o use 'Cargar / Tomar Foto QR'.";
+    } else {
+      errTxt += "Por favor use el botón 'Cargar / Tomar Foto QR' para tomar una foto del código.";
+    }
+    if (msgEl) msgEl.innerHTML = '<div class="alert alert-warning">' + errTxt + '</div>';
+    alert(errTxt);
     detenerCamara();
   }
 }
 
-function detenerCamara() {
+function detenerCamaraSilencioso() {
   if (html5QrCodeInstance) {
     try { html5QrCodeInstance.stop(); } catch(e){}
     html5QrCodeInstance = null;
   }
   if (streamCamara) {
-    streamCamara.getTracks().forEach(function(t) { t.stop(); });
+    try {
+      streamCamara.getTracks().forEach(function(t) { t.stop(); });
+    } catch(e){}
     streamCamara = null;
   }
   trackVideo = null;
+}
+
+function detenerCamara() {
+  detenerCamaraSilencioso();
   var area = document.getElementById("scannerArea");
   if (area) area.classList.add("hidden");
   var btnAct = document.getElementById("btnActivarCamara");
@@ -1197,9 +1256,7 @@ function exportarCSV() {
     ].map(function(v) { return '"' + String(v || '').replace(/"/g, '""') + '"'; }).join(";");
   });
 
-  var csvContent = "﻿" + headers.join(";") + "
-" + rows.join("
-");
+  var csvContent = "\uFEFF" + headers.join(";") + "\r\n" + rows.join("\r\n");
   var blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
   var url = URL.createObjectURL(blob);
   var a = document.createElement("a");
@@ -1222,14 +1279,10 @@ function exportarJSON() {
 function copiarResumenPortapapeles() {
   var regs = obtenerRegistros();
   if (regs.length === 0) { alert("No hay registros para copiar."); return; }
-  var txt = "📊 PADRÓN DIAGNÓSTICO 7.° AÑO - " + sesionActiva.centro + " (" + sesionActiva.seccion + ")
-";
-  txt += "Total Evaluados: " + regs.length + "
-
-";
+  var txt = "📊 PADRÓN DIAGNÓSTICO 7.° AÑO - " + sesionActiva.centro + " (" + sesionActiva.seccion + ")\n";
+  txt += "Total Evaluados: " + regs.length + "\n\n";
   regs.forEach(function(r, i) {
-    txt += (i + 1) + ". " + r.estudiante + " — Global: " + r.porcentajeGlobal + "% [" + r.nivelCodigo + "] (Cog: " + r.resultadoCognitivo + ")
-";
+    txt += (i + 1) + ". " + r.estudiante + " — Global: " + r.porcentajeGlobal + "% [" + r.nivelCodigo + "] (Cog: " + r.resultadoCognitivo + ")\n";
   });
   navigator.clipboard.writeText(txt).then(function() {
     alert("✅ Resumen copiado al portapapeles.");
@@ -1343,10 +1396,7 @@ function instalarAppPWA() {
       deferredPrompt = null;
     });
   } else {
-    alert("🤖 INSTALACIÓN EN ANDROID / IOS:
-
-• En Android: Toca los 3 puntos (⋮) en Chrome y elige 'Instalar aplicación'.
-• En iPhone: Toca 'Compartir' (📤) en Safari y elige 'Agregar a Inicio'.");
+    alert("🤖 INSTALACIÓN EN ANDROID / IOS:\n\n• En Android: Toca los 3 puntos (⋮) en Chrome y elige 'Instalar aplicación' o 'Agregar a la pantalla principal'.\n• En iPhone: Toca 'Compartir' (📤) en Safari y elige 'Agregar a Inicio'.");
   }
 }
 

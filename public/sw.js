@@ -1,5 +1,5 @@
 // Service Worker Oficial - Diagnóstico Secundaria MEP
-const CACHE_NAME = 'mep-diagnostico-v3';
+const CACHE_NAME = 'mep-diagnostico-v4';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
