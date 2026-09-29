@@ -81,17 +81,17 @@ export default function SelectorVersionesDiagnostico({
 
   const queryString = `?${queryParams.toString()}`;
 
-  // Rutas dinámicas según el nivel (7° y 9°) - Versión 3 (v3)
+  // Rutas dinámicas según el nivel (7° y 9°) - Versión 3.1 (v3.1)
   let pathOnline = "/webapps/diagnostico_setimo_ano.html";
-  let pathOffline = "/webapps/diagnostico_7mo_modulo01_desconectado_offline_v3.html";
+  let pathOffline = "/webapps/diagnostico_7mo_modulo01_desconectado_offline_v3_1.html";
   let pathDocente = "/webapps/diagnostico_setimo_ano_modulo01_docente_evaluador.html";
-  let pathEscaner = "/diagnostico_escaner_datos_v3.html";
+  let pathEscaner = "/diagnostico_escaner_datos_v3_1.html";
 
   if (nivel === "9°") {
     pathOnline = "/webapps/diagnostico_9no_modulo01_en_linea.html";
-    pathOffline = "/webapps/diagnostico_9no_modulo01_desconectado_offline_v3.html";
+    pathOffline = "/webapps/diagnostico_9no_modulo01_desconectado_offline_v3_1.html";
     pathDocente = "/webapps/diagnostico_9no_modulo01_docente_evaluador.html";
-    pathEscaner = "/diagnostico_escaner_datos_v3.html";
+    pathEscaner = "/diagnostico_escaner_datos_v3_1.html";
   }
 
   const urlOnline =
@@ -313,11 +313,11 @@ export default function SelectorVersionesDiagnostico({
               <div className="pt-2">
                 <a
                   href={urlOffline}
-                  download={nivel === "7°" ? "diagnostico_7mo_desconectado_offline_v3.html" : `diagnostico_${nivelNum}mo_desconectado_offline_v3.html`}
+                  download={nivel === "7°" ? "diagnostico_7mo_modulo01_desconectado_offline_v3_1.html" : `diagnostico_${nivelNum}no_modulo01_desconectado_offline_v3_1.html`}
                   className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-black transition-all shadow-xs"
                 >
                   <DownloadSimple size={16} weight="bold" />
-                  <span>Descargar Diagnóstico {nivel === "7°" ? "Sétimo Año" : `${nivel} Año`} V3 (.html)</span>
+                  <span>Descargar Diagnóstico {nivel === "7°" ? "Sétimo Año" : `${nivel} Año`} V3.1 (.html)</span>
                 </a>
               </div>
             </div>
@@ -329,7 +329,7 @@ export default function SelectorVersionesDiagnostico({
                   Paso 2: Docente
                 </span>
                 <h4 className="text-sm font-black text-purple-950 mt-1">
-                  📱 Escáner de Datos V3 {nivel === "7°" ? "7.° Año" : "9.° Año"}
+                  📱 Escáner de Datos V3.1 {nivel === "7°" ? "7.° Año" : "9.° Año"}
                 </h4>
                 <p className="text-xs text-slate-600 mt-1 leading-relaxed font-medium">
                   Abre la app en tu teléfono (iPhone / Android) para capturar los códigos QR de las pantallas. No requiere escribir nombres y exporta a Excel (.csv) y JSON.
@@ -344,7 +344,7 @@ export default function SelectorVersionesDiagnostico({
                   className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-purple-700 hover:bg-purple-800 text-white text-xs font-black transition-all shadow-xs"
                 >
                   <ArrowSquareOut size={16} weight="bold" />
-                  <span>Abrir Escáner de Datos V3 en Teléfono</span>
+                  <span>Abrir Escáner de Datos V3.1 en Teléfono</span>
                 </a>
 
                 <div className="grid grid-cols-2 gap-2">
