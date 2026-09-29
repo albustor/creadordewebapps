@@ -283,41 +283,24 @@ header p {
   border-radius: 14px;
   overflow: hidden;
   margin: 12px 0;
-  min-height: 260px;
+  min-height: 280px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-#scannerArea video {
+#reader {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+}
+
+#reader video {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 400px;
+  object-fit: cover !important;
   border-radius: 14px;
   display: block;
-}
-
-.scanner-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.scanner-box {
-  width: 220px;
-  height: 220px;
-  border: 3px solid #D4AF5A;
-  border-radius: 16px;
-  box-shadow: 0 0 0 4000px rgba(0,0,0,0.45);
-  animation: pulseBox 2s infinite;
-}
-
-@keyframes pulseBox {
-  0%, 100% { border-color: #D4AF5A; }
-  50% { border-color: #86efac; }
 }
 
 .alert {
@@ -462,10 +445,7 @@ footer {
     </div>
 
     <div id="scannerArea" class="hidden">
-      <div id="reader" style="width:100%;"></div>
-      <div class="scanner-overlay">
-        <div class="scanner-box"></div>
-      </div>
+      <div id="reader"></div>
     </div>
 
     <div style="display:flex; flex-direction:column; gap:8px; margin-top:10px;">
@@ -641,6 +621,7 @@ var trackVideo = null;
 var linternaActiva = false;
 var html5QrCodeInstance = null;
 var deferredPrompt = null;
+var scanLoopActive = false;
 
 // =========================================================================
 // GESTIÓN DE ALMACENAMIENTO LOCAL (PADRÓN)
@@ -755,7 +736,67 @@ function interpretarPayloadQR(raw) {
     "RA": "Requiere Acompañamiento"
   };
 
-  // 1. JSON
+  // 1. PIPE OFICIAL COMPACTO (MEP7|SEC|CADETE1|CADETE2|P|C|S|G|LVL|HASH)
+  if (texto.startsWith("MEP7|") || texto.startsWith("CQ7|") || texto.startsWith("D7|")) {
+    var p = texto.split("|");
+    var secP = p[1] || sesionActiva.seccion || "7-1";
+    var c1P = p[2] || "Cadete 1";
+    var c2P = p[3] || "Individual";
+    var psiP = parseInt(p[4]) || 100;
+    var cogP = parseInt(p[5]) || 80;
+    var socP = parseInt(p[6]) || 80;
+    var gloP = parseInt(p[7]) || 85;
+    var lvlP = p[8] || (gloP >= 80 ? "DC" : (gloP >= 60 ? "EC" : "RC"));
+
+    var esPar = c2P && c2P !== "Individual" && c2P !== "Solo" && c2P.trim() !== "";
+    var nomP = esPar ? (c1P + " & " + c2P) : c1P;
+
+    var saberesP = saberesOficiales7mo.map(function(s, idx) {
+      var val = (idx < Math.round(cogP / 10)) ? "1/1" : "0/1";
+      return { cod: s.cod, nombre: s.nombre, val: val };
+    });
+
+    return {
+      estudiante: nomP,
+      cadete1: c1P,
+      avatar1: "",
+      cadete2: c2P,
+      avatar2: "",
+      esPareja: esPar,
+      cedula: "",
+      seccion: secP,
+      seccionQR: secP,
+      institucion: sesionActiva.centro || "Colegio MEP",
+      fecha: new Date().toLocaleDateString("es-CR"),
+      porcentajeGlobal: gloP,
+      porcentajeCognitivo: cogP,
+      porcentajePsicomotor: psiP,
+      porcentajeSocioafectivo: socP,
+      resultadoCognitivo: Math.round(cogP / 10) + "/10",
+      cognoscitiva: Math.round(cogP / 10) + "/10",
+      nivelCodigo: lvlP,
+      nivelEtiqueta: nivelLabels[lvlP] || (gloP >= 80 ? "Dominio consolidado" : "En proceso de consolidación"),
+      nivelCognoscitivo: nivelLabels[lvlP] || (gloP >= 80 ? "Dominio consolidado" : "En proceso de consolidación"),
+      saberesConceptuales: saberesP,
+      saberesProcedimentales: [
+        { cod: "P1", nombre: "Lateralidad y Orientación Espacial", estado: psiP >= 80 ? "L" : "ED" },
+        { cod: "P2", nombre: "Ritmo y Coordinación Óculo-Manual", estado: psiP >= 70 ? "L" : "ED" },
+        { cod: "P3", nombre: "Pulso y Precisión Motriz Fina", estado: psiP >= 85 ? "L" : "ED" },
+        { cod: "P4", nombre: "Plano de Computadora y Componentes", estado: psiP >= 60 ? "L" : "ED" }
+      ],
+      saberesSocioafectivos: [
+        { cod: "S1", nombre: "Gusto por la precisión", estado: socP >= 60 ? "F" : "EP" },
+        { cod: "S2", nombre: "Aprender del error (Depuración)", estado: socP >= 70 ? "F" : "EP" },
+        { cod: "S3", nombre: "Flexibilidad para resolver desafíos", estado: socP >= 60 ? "F" : "EP" },
+        { cod: "S4", nombre: "Tolerancia a la frustración", estado: socP >= 50 ? "F" : "EP" }
+      ],
+      fortalezas: "Dominio en Algoritmos y lógica de bloques",
+      prioridades: "Reforzar estructuras repetitivas y redes",
+      textoOriginal: raw
+    };
+  }
+
+  // 2. JSON
   if (texto.startsWith("{") && texto.endsWith("}")) {
     try {
       var obj = JSON.parse(texto);
@@ -835,19 +876,19 @@ function interpretarPayloadQR(raw) {
     } catch (eJSON) {}
   }
 
-  // 2. PIPE / TEXTO GENÉRICO
-  var p = texto.split("|");
-  var nomP = p[2] || p[1] || "Cadete 7mo";
+  // 3. TEXTO GENÉRICO
+  var lineas = texto.split(/\r?\n/);
+  var nomGen = lineas[0] || "Cadete 7mo";
   return {
-    estudiante: nomP,
-    cadete1: nomP,
+    estudiante: nomGen,
+    cadete1: nomGen,
     avatar1: "",
-    cadete2: p[3] || "Individual",
+    cadete2: "Individual",
     avatar2: "",
-    esPareja: p[3] && p[3] !== "Individual",
+    esPareja: false,
     cedula: "",
-    seccion: p[1] || sesionActiva.seccion || "7-1",
-    seccionQR: p[1] || sesionActiva.seccion || "7-1",
+    seccion: sesionActiva.seccion || "7-1",
+    seccionQR: sesionActiva.seccion || "7-1",
     institucion: sesionActiva.centro || "Colegio MEP",
     fecha: new Date().toLocaleDateString("es-CR"),
     porcentajeGlobal: 80,
@@ -879,8 +920,24 @@ function interpretarPayloadQR(raw) {
 }
 
 // =========================================================================
-// MOTOR DE CÁMARA Y ESCANEO CONTINUO
+// MOTOR DE CÁMARA Y ESCANEO CONTINUO MULTI-PROVEEDOR
 // =========================================================================
+function detenerCamaraSilencioso() {
+  scanLoopActive = false;
+  if (html5QrCodeInstance) {
+    try { html5QrCodeInstance.stop(); } catch(e){}
+    html5QrCodeInstance = null;
+  }
+  if (streamCamara) {
+    try {
+      streamCamara.getTracks().forEach(function(t) { t.stop(); });
+    } catch(e){}
+    streamCamara = null;
+  }
+  trackVideo = null;
+  linternaActiva = false;
+}
+
 async function iniciarCamaraUniversal() {
   var area = document.getElementById("scannerArea");
   if (area) area.classList.remove("hidden");
@@ -894,16 +951,25 @@ async function iniciarCamaraUniversal() {
     msgEl.innerHTML = '<div class="alert alert-info">📸 Apunte la cámara hacia el código QR en la pantalla del estudiante.</div>';
   }
 
-  // Detener instancias previas limpiamente
   detenerCamaraSilencioso();
 
+  // 1. INTENTAR HTML5-QRCODE CON ENFOQUE DINÁMICO
   var Html5QrcodeClass = window.Html5Qrcode || (window.__Html5QrcodeLibrary__ && window.__Html5QrcodeLibrary__.Html5Qrcode);
 
   if (Html5QrcodeClass) {
     try {
       html5QrCodeInstance = new Html5QrcodeClass("reader");
-      var cameraConfig = { fps: 15, qrbox: { width: 240, height: 240 } };
-      
+      var cameraConfig = {
+        fps: 20,
+        qrbox: function(viewfinderWidth, viewfinderHeight) {
+          var edge = Math.min(viewfinderWidth, viewfinderHeight);
+          return { width: Math.floor(edge * 0.92), height: Math.floor(edge * 0.92) };
+        },
+        experimentalFeatures: {
+          useBarCodeDetectorIfSupported: true
+        }
+      };
+
       try {
         await html5QrCodeInstance.start(
           { facingMode: "environment" },
@@ -917,40 +983,35 @@ async function iniciarCamaraUniversal() {
         );
         return;
       } catch (errFacing) {
-        console.warn("Cámara trasera falló, intentando cámaras enumeradas:", errFacing);
-        try {
-          var cameras = await Html5QrcodeClass.getCameras();
-          if (cameras && cameras.length > 0) {
-            var rearCam = cameras.find(function(c) { return /back|rear|trasera|environment/i.test(c.label); });
-            var camId = rearCam ? rearCam.id : cameras[0].id;
-            await html5QrCodeInstance.start(
-              camId,
-              cameraConfig,
-              function(qrMessage) {
-                emitirBeep();
-                detenerCamara();
-                procesarQRDetectado(qrMessage);
-              },
-              function() {}
-            );
-            return;
-          }
-        } catch (eEnum) {
-          console.warn("Enumeración de cámaras falló:", eEnum);
+        console.warn("Cámara trasera falló por facingMode, intentando lista:", errFacing);
+        var cameras = await Html5QrcodeClass.getCameras();
+        if (cameras && cameras.length > 0) {
+          var rearCam = cameras.find(function(c) { return /back|rear|trasera|environment/i.test(c.label); });
+          var camId = rearCam ? rearCam.id : cameras[0].id;
+          await html5QrCodeInstance.start(
+            camId,
+            cameraConfig,
+            function(qrMessage) {
+              emitirBeep();
+              detenerCamara();
+              procesarQRDetectado(qrMessage);
+            },
+            function() {}
+          );
+          return;
         }
       }
     } catch (errHtml5) {
-      console.warn("Html5Qrcode falló, probando fallback nativo:", errHtml5);
+      console.warn("Html5Qrcode falló, usando fallback de hardware getUserMedia:", errHtml5);
     }
   }
 
-  // Fallback con getUserMedia nativo
+  // 2. FALLBACK ULTRA-RÁPIDO NATIVO CON BARCODEDETECTOR
   try {
-    var constraints = {
-      video: { facingMode: { ideal: "environment" } },
+    var stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { ideal: "environment" }, width: { ideal: 1280 }, height: { ideal: 720 } },
       audio: false
-    };
-    var stream = await navigator.mediaDevices.getUserMedia(constraints);
+    });
     streamCamara = stream;
     var readerDiv = document.getElementById("reader");
     if (readerDiv) {
@@ -962,8 +1023,9 @@ async function iniciarCamaraUniversal() {
       videoEl.setAttribute("playsinline", "true");
       videoEl.setAttribute("webkit-playsinline", "true");
       videoEl.style.width = "100%";
-      videoEl.style.height = "100%";
+      videoEl.style.maxHeight = "400px";
       videoEl.style.objectFit = "cover";
+      videoEl.style.borderRadius = "14px";
       videoEl.srcObject = stream;
       readerDiv.appendChild(videoEl);
       await videoEl.play();
@@ -974,50 +1036,30 @@ async function iniciarCamaraUniversal() {
         if (btnF) btnF.classList.remove("hidden");
       }
 
+      scanLoopActive = true;
+
       if ("BarcodeDetector" in window) {
         var detector = new BarcodeDetector({ formats: ["qr_code"] });
-        var bucle = async function() {
-          if (!streamCamara) return;
+        var scanNativeLoop = async function() {
+          if (!scanLoopActive || !streamCamara) return;
           try {
-            var barcodes = await detector.detect(videoEl);
-            if (barcodes && barcodes.length > 0) {
+            var codes = await detector.detect(videoEl);
+            if (codes && codes.length > 0) {
               emitirBeep();
               detenerCamara();
-              procesarQRDetectado(barcodes[0].rawValue);
+              procesarQRDetectado(codes[0].rawValue);
               return;
             }
           } catch (e) {}
-          requestAnimationFrame(bucle);
+          requestAnimationFrame(scanNativeLoop);
         };
-        requestAnimationFrame(bucle);
+        requestAnimationFrame(scanNativeLoop);
       }
     }
   } catch (errNative) {
-    console.error("Error de acceso a cámara:", errNative);
-    var errTxt = "⚠️ No se pudo acceder a la cámara. ";
-    if (errNative && (errNative.name === "NotAllowedError" || errNative.name === "PermissionDeniedError")) {
-      errTxt += "El permiso fue denegado en el navegador. Por favor habilite la cámara en la configuración del navegador o use 'Cargar / Tomar Foto QR'.";
-    } else {
-      errTxt += "Por favor use el botón 'Cargar / Tomar Foto QR' para tomar una foto del código.";
-    }
-    if (msgEl) msgEl.innerHTML = '<div class="alert alert-warning">' + errTxt + '</div>';
-    alert(errTxt);
+    alert("⚠️ No se pudo acceder a la cámara en vivo. Por favor usa la opción 'Cargar / Tomar Foto QR'.");
     detenerCamara();
   }
-}
-
-function detenerCamaraSilencioso() {
-  if (html5QrCodeInstance) {
-    try { html5QrCodeInstance.stop(); } catch(e){}
-    html5QrCodeInstance = null;
-  }
-  if (streamCamara) {
-    try {
-      streamCamara.getTracks().forEach(function(t) { t.stop(); });
-    } catch(e){}
-    streamCamara = null;
-  }
-  trackVideo = null;
 }
 
 function detenerCamara() {
@@ -1036,6 +1078,8 @@ function alternarLinterna() {
   if (trackVideo && typeof trackVideo.applyConstraints === "function") {
     linternaActiva = !linternaActiva;
     trackVideo.applyConstraints({ advanced: [{ torch: linternaActiva }] }).catch(function(){});
+    var btn = document.getElementById("btnFlash");
+    if (btn) btn.textContent = linternaActiva ? "🚫 Apagar Linterna" : "💡 Linterna";
   }
 }
 
@@ -1052,7 +1096,7 @@ function emitirBeep() {
     gain.connect(ctx.destination);
     osc.start();
     osc.stop(ctx.currentTime + 0.15);
-    if (navigator.vibrate) navigator.vibrate(120);
+    if (navigator.vibrate) navigator.vibrate(150);
   } catch (e) {}
 }
 
@@ -1256,7 +1300,9 @@ function exportarCSV() {
     ].map(function(v) { return '"' + String(v || '').replace(/"/g, '""') + '"'; }).join(";");
   });
 
-  var csvContent = "\uFEFF" + headers.join(";") + "\r\n" + rows.join("\r\n");
+  var csvContent = "﻿" + headers.join(";") + "
+" + rows.join("
+");
   var blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
   var url = URL.createObjectURL(blob);
   var a = document.createElement("a");
@@ -1279,10 +1325,14 @@ function exportarJSON() {
 function copiarResumenPortapapeles() {
   var regs = obtenerRegistros();
   if (regs.length === 0) { alert("No hay registros para copiar."); return; }
-  var txt = "📊 PADRÓN DIAGNÓSTICO 7.° AÑO - " + sesionActiva.centro + " (" + sesionActiva.seccion + ")\n";
-  txt += "Total Evaluados: " + regs.length + "\n\n";
+  var txt = "📊 PADRÓN DIAGNÓSTICO 7.° AÑO - " + sesionActiva.centro + " (" + sesionActiva.seccion + ")
+";
+  txt += "Total Evaluados: " + regs.length + "
+
+";
   regs.forEach(function(r, i) {
-    txt += (i + 1) + ". " + r.estudiante + " — Global: " + r.porcentajeGlobal + "% [" + r.nivelCodigo + "] (Cog: " + r.resultadoCognitivo + ")\n";
+    txt += (i + 1) + ". " + r.estudiante + " — Global: " + r.porcentajeGlobal + "% [" + r.nivelCodigo + "] (Cog: " + r.resultadoCognitivo + ")
+";
   });
   navigator.clipboard.writeText(txt).then(function() {
     alert("✅ Resumen copiado al portapapeles.");
@@ -1331,13 +1381,15 @@ async function sincronizarConDashboard() {
 function procesarArchivoImagen(e) {
   var file = e.target.files[0];
   if (!file) return;
-  if (typeof Html5Qrcode !== "undefined") {
-    var scanner = new Html5Qrcode("reader");
+  
+  var Html5QrcodeClass = window.Html5Qrcode || (window.__Html5QrcodeLibrary__ && window.__Html5QrcodeLibrary__.Html5Qrcode);
+  if (Html5QrcodeClass) {
+    var scanner = new Html5QrcodeClass("reader");
     scanner.scanFile(file, true).then(function(qrCodeMessage) {
       emitirBeep();
       procesarQRDetectado(qrCodeMessage);
     }).catch(function(err) {
-      alert("⚠️ No se encontró un código QR nítido en la imagen.");
+      alert("⚠️ No se encontró un código QR nítido en la foto seleccionada.");
     });
   }
 }
@@ -1396,7 +1448,10 @@ function instalarAppPWA() {
       deferredPrompt = null;
     });
   } else {
-    alert("🤖 INSTALACIÓN EN ANDROID / IOS:\n\n• En Android: Toca los 3 puntos (⋮) en Chrome y elige 'Instalar aplicación' o 'Agregar a la pantalla principal'.\n• En iPhone: Toca 'Compartir' (📤) en Safari y elige 'Agregar a Inicio'.");
+    alert("🤖 INSTALACIÓN EN ANDROID / IOS:
+
+• En Android: Toca los 3 puntos (⋮) en Chrome y elige 'Instalar aplicación'.
+• En iPhone: Toca 'Compartir' (📤) en Safari y elige 'Agregar a Inicio'.");
   }
 }
 

@@ -3299,7 +3299,7 @@ if ('serviceWorker' in navigator) {
       }, 50);
     }
 
-    function generarQR7mo(isSolo) {
+        function generarQR7mo(isSolo) {
       try {
         const metrics = calculateDiagnosticsMetrics();
         const secClean = (AppState.section || '7-1').replace(/^sección\s*/i, '').replace(/^seccion\s*/i, '').trim();
@@ -3307,80 +3307,59 @@ if ('serviceWorker' in navigator) {
         const c2 = isSolo ? 'Individual' : ((AppState.cadet2?.name || 'Cadete 2').trim());
         const hash = AppState.sessionHash || ('HASH-7MO-' + Date.now().toString(36).toUpperCase());
 
-        const qrPayloadObj = {
-          t: "MEP7",
-          tipo: "CYBERQUEST_7MO",
-          sec: secClean,
-          c1: c1,
-          a1: AppState.cadet1?.avatar || '🧑‍💻',
-          c2: c2,
-          a2: isSolo ? '' : (AppState.cadet2?.avatar || '👩‍💻'),
-          p: metrics.psicoScore !== undefined ? metrics.psicoScore : 100,
-          c: metrics.cogScore !== undefined ? metrics.cogScore : 80,
-          s: metrics.socioScore !== undefined ? metrics.socioScore : 80,
-          g: metrics.globalAvg !== undefined ? metrics.globalAvg : 85,
-          lvl: metrics.globalLevel || 'A',
-          h: hash,
-          xp: AppState.xp || 400,
-          ts: Date.now()
-        };
+        const p = metrics.psicoScore !== undefined ? metrics.psicoScore : 100;
+        const c = metrics.cogScore !== undefined ? metrics.cogScore : 80;
+        const s = metrics.socioScore !== undefined ? metrics.socioScore : 80;
+        const g = metrics.globalAvg !== undefined ? metrics.globalAvg : 85;
+        const lvl = metrics.globalLevel || 'DC';
 
-        const qrDataStr = JSON.stringify(qrPayloadObj);
+        // Formato ultra-compacto y de máxima compatibilidad óptica (Versión QR 3/4)
+        const qrCompactStr = "MEP7|" + secClean + "|" + c1 + "|" + c2 + "|" + p + "|" + c + "|" + s + "|" + g + "|" + lvl + "|" + hash;
+
         const canvas = document.getElementById("qrCanvasFinal");
         if (!canvas) return;
 
-        let qrRendered = false;
+        const QRModelClass = (typeof QRCodeModel !== "undefined") ? QRCodeModel : (typeof QRCode !== "undefined" && QRCode.QRCodeModel);
+        if (QRModelClass) {
+          // Nivel 1 = Error Correction M (15% recuperación de fallos)
+          const qr = new QRModelClass(0, 1);
+          qr.addData(qrCompactStr);
+          qr.make();
 
-        // 1. Intentar con QRCode.generateToCanvas (0 dependencias en memoria)
-        if (typeof QRCode !== "undefined" && typeof QRCode.generateToCanvas === "function") {
-          try {
-            QRCode.generateToCanvas("qrCanvasFinal", qrDataStr, 220);
-            qrRendered = true;
-          } catch(e1) {
-            console.warn("Fallo QRCode.generateToCanvas, recurriendo a QRCodeModel:", e1);
-          }
-        }
+          const count = qr.getModuleCount();
+          const margin = 4; // Margen blanco obligatorio (Quiet Zone)
+          const moduleSize = 7; // Píxeles enteros por módulo para nitidez máxima
+          const totalSize = (count + margin * 2) * moduleSize;
 
-        // 2. Fallback robusto con QRCodeModel directo y pintado pixel a pixel en Canvas (100% Offline)
-        if (!qrRendered) {
-          try {
-            const QRModelClass = (typeof QRCodeModel !== "undefined") ? QRCodeModel : (QRCode && QRCode.QRCodeModel);
-            if (QRModelClass) {
-              const qr = new QRModelClass(0, 1); // 1 = Nivel Error Correction M
-              qr.addData(qrDataStr);
-              qr.make();
+          canvas.width = totalSize;
+          canvas.height = totalSize;
+          canvas.style.width = "260px";
+          canvas.style.height = "260px";
+          canvas.style.background = "#ffffff";
+          canvas.style.padding = "10px";
+          canvas.style.borderRadius = "12px";
+          canvas.style.boxShadow = "0 0 0 4px #ffffff, 0 8px 24px rgba(0,0,0,0.3)";
 
-              const ctx = canvas.getContext("2d");
-              const size = 220;
-              const count = qr.getModuleCount();
-              const cellSize = size / count;
+          const ctx = canvas.getContext("2d");
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, totalSize, totalSize);
 
-              canvas.width = size;
-              canvas.height = size;
-              ctx.fillStyle = "#ffffff";
-              ctx.fillRect(0, 0, size, size);
-              ctx.fillStyle = "#000000";
-
-              for (let row = 0; row < count; row++) {
-                for (let col = 0; col < count; col++) {
-                  if (qr.isDark(row, col)) {
-                    ctx.fillRect(
-                      Math.round(col * cellSize),
-                      Math.round(row * cellSize),
-                      Math.ceil(cellSize),
-                      Math.ceil(cellSize)
-                    );
-                  }
-                }
+          ctx.fillStyle = "#000000";
+          for (let row = 0; row < count; row++) {
+            for (let col = 0; col < count; col++) {
+              if (qr.isDark(row, col)) {
+                ctx.fillRect(
+                  (col + margin) * moduleSize,
+                  (row + margin) * moduleSize,
+                  moduleSize,
+                  moduleSize
+                );
               }
-              qrRendered = true;
             }
-          } catch(e2) {
-            console.error("Error en fallback QRCodeModel:", e2);
           }
         }
       } catch(err) {
-        console.error("Error global generando código QR en 7mo:", err);
+        console.error("Error generando código QR nítido en 7mo:", err);
       }
     }
 
