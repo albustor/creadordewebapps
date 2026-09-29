@@ -65,8 +65,8 @@ export default function ModalInstalacionPWA({
   const urlFinal =
     urlApp ||
     (typeof window !== "undefined"
-      ? window.location.origin + "/diagnostico_escaner_datos_v3.html"
-      : "https://diagnosticosecundaria.vercel.app/diagnostico_escaner_datos_v3.html");
+      ? window.location.origin + "/diagnostico_escaner_datos_v3_1.html"
+      : "https://diagnosticosecundaria.vercel.app/diagnostico_escaner_datos_v3_1.html");
 
   const handleCopiarEnlace = () => {
     if (typeof navigator !== "undefined" && navigator.clipboard) {

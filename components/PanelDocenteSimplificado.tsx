@@ -629,16 +629,16 @@ export default function PanelDocenteSimplificado() {
     return `${baseUrl}/webapps/${appArchivo}?token=${token}`;
   }, [nivelActivo, seccionActiva, centroActivo, docente]);
 
-  // Archivo HTML Desconectado Offline (Versión 3)
+  // Archivo HTML Desconectado Offline (Versión 3.1)
   const archivoOfflineDescarga = useMemo(() => {
     return nivelActivo === "7mo"
-      ? "/webapps/diagnostico_7mo_modulo01_desconectado_offline_v3.html"
-      : "/webapps/diagnostico_9no_modulo01_desconectado_offline_v3.html";
+      ? "/webapps/diagnostico_7mo_modulo01_desconectado_offline_v3_1.html"
+      : "/webapps/diagnostico_9no_modulo01_desconectado_offline_v3_1.html";
   }, [nivelActivo]);
 
-  // Archivo Escáner de Datos PWA según Nivel (Versión 3 Universal)
+  // Archivo Escáner de Datos PWA según Nivel (Versión 3.1 Universal)
   const archivoEscanerPWA = useMemo(() => {
-    return "/diagnostico_escaner_datos_v3.html";
+    return "/diagnostico_escaner_datos_v3_1.html";
   }, []);
 
   // Archivo PDF Imprimible (Modalidad en Papel / Físico)
@@ -1708,11 +1708,11 @@ export default function PanelDocenteSimplificado() {
                             <div className="flex flex-wrap items-center gap-1.5 pt-1">
                               <a
                                 href={archivoOfflineDescarga}
-                                download={`diagnostico_${nivelActivo}_offline_v3.html`}
+                                download={nivelActivo === "7mo" ? "diagnostico_7mo_modulo01_desconectado_offline_v3_1.html" : "diagnostico_9no_modulo01_desconectado_offline_v3_1.html"}
                                 className="inline-flex items-center justify-center gap-1.5 bg-[#1B5E59] hover:bg-[#144642] text-white text-xs font-bold px-3 py-2 rounded-lg transition-colors shadow-2xs"
                               >
                                 <DownloadSimple size={15} className="text-white" />
-                                <span>Descargar offline V3</span>
+                                <span>Descargar offline V3.1</span>
                               </a>
 
                               <a
@@ -1724,10 +1724,10 @@ export default function PanelDocenteSimplificado() {
                                     ? "bg-[#002b49] hover:bg-[#113a60] text-white border border-[#1F3F78]"
                                     : "bg-[#1B5E59] hover:bg-[#144642] text-white border border-[#047857]"
                                 }`}
-                                title={`Abrir Escáner Universal de Datos V3 en una pestaña nueva`}
+                                title={`Abrir Escáner Universal de Datos V3.1 en una pestaña nueva`}
                               >
                                 <Camera size={15} weight="bold" className={nivelActivo === "7mo" ? "text-amber-300" : "text-emerald-300"} />
-                                <span>Escáner V3</span>
+                                <span>Escáner V3.1</span>
                               </a>
 
                               <label className="inline-flex items-center justify-center gap-1.5 bg-[#D4AF5A] hover:bg-[#B9923F] text-[#20283B] text-xs font-black px-3 py-2 rounded-lg transition-colors shadow-2xs cursor-pointer">

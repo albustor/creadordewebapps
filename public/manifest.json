@@ -51,10 +51,10 @@
   ],
   "shortcuts": [
     {
-      "name": "Escáner QR V3 (Universal)",
-      "short_name": "Escáner V3",
+      "name": "Escáner QR V3.1 (Universal)",
+      "short_name": "Escáner V3.1",
       "description": "Escanear QR de telemetría y diagnósticos de estudiantes",
-      "url": "/diagnostico_escaner_datos_v3.html",
+      "url": "/diagnostico_escaner_datos_v3_1.html",
       "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
     },
     {
@@ -67,7 +67,7 @@
     {
       "name": "Diagnóstico 7° Año",
       "short_name": "7° Año",
-      "description": "Diagnóstico de 7° Año CyberQuest",
+      "description": "Diagnóstico de 7° Año Formación Tecnológica",
       "url": "/diagnostico_setimo_ano.html",
       "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
     }
