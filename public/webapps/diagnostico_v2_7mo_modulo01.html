@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#090d16">
-  <title>CyberQuest 7° - Misión Tecnológica MEP 2027 | Evaluación Diagnóstica en Parejas</title>
+  <title>Diagnóstico Sétimo Año | Evaluación Diagnóstica Formación Tecnológica MEP</title>
   
   <style>
     :root {
@@ -984,7 +984,7 @@
   <header class="hud-header">
     <div class="hud-brand">
       <span class="mep-tag">MEP 2027</span>
-      <div class="cyber-title" id="hudCyberTitle">⚡ CyberQuest 7.° &bull; Misión en parejas</div>
+      <div class="cyber-title" id="hudCyberTitle">⚡ Diagnóstico Sétimo &bull; Misión en parejas</div>
     </div>
     <div class="hud-stats">
       <div class="stat-pill leader" id="hudCadet1Pill" style="display: none;">
@@ -1752,7 +1752,7 @@
     const COGNITIVE_QUESTIONS = [
       {
         id: 'ind1',
-        title: 'Reto 1: Hardware y dispositivos',
+        title: 'Reto 1: Hardware',
         desc: 'Identifique la función de dispositivos de uso cotidiano en una computadora.',
         question: 'Un estudiante necesita escribir un texto, mover el puntero y grabar su voz en la computadora. ¿Qué grupo de dispositivos le permitiría realizar esas tres acciones?',
         options: [
@@ -1765,12 +1765,12 @@
       },
       {
         id: 'ind2',
-        title: 'Reto 2: Software y programas',
-        desc: 'Diferenciación entre aplicaciones de usuario y software utilitario.',
+        title: 'Reto 2: Software',
+        desc: 'Diferenciación entre aplicaciones de usuario y software del sistema.',
         question: 'Un estudiante necesita proteger su computadora contra virus y liberar espacio en el disco duro. ¿Qué tipo de software requiere utilizar?',
         options: [
           'Software de aplicación de usuario (por ejemplo, navegador web o Paint)',
-          'Software utilitario, de mantenimiento y seguridad',
+          'Software de mantenimiento, seguridad y utilitarios del sistema',
           'Software de videojuegos',
           'Controlador de impresora'
         ],
@@ -1778,7 +1778,7 @@
       },
       {
         id: 'ind3',
-        title: 'Reto 3: Sistemas operativos',
+        title: 'Reto 3: Sistema Operativo',
         desc: 'Funciones cardinales del sistema operativo y administración de recursos.',
         question: '¿Cuál es la función principal del sistema operativo (como Windows, Linux o macOS)?',
         options: [
@@ -1791,12 +1791,12 @@
       },
       {
         id: 'ind4',
-        title: 'Reto 4: Redes y conectividad',
-        desc: 'Reconoce situaciones cotidianas en las que varios dispositivos se conectan y comparten recursos.',
+        title: 'Reto 4: Redes de comunicación',
+        desc: 'Reconoce situaciones cotidianas en las que varios dispositivos se conectan y comparten recursos en redes de comunicación.',
         question: 'En el laboratorio de informática, varias computadoras pueden utilizar la misma impresora y acceder a Internet. ¿Qué permite que estos equipos puedan comunicarse y compartir recursos?',
         options: [
           'Que todas las computadoras sean de la misma marca.',
-          'Que las computadoras estén conectadas entre sí mediante una red.',
+          'Que las computadoras estén conectadas entre sí mediante una red de comunicación.',
           'Que cada computadora tenga conectada su propia impresora.',
           'Que todas las computadoras utilicen los mismos programas.'
         ],
@@ -1804,9 +1804,9 @@
       },
       {
         id: 'ind5',
-        title: 'Reto 5: Formatos y extensiones de archivo',
-        desc: 'Relacione los tipos de archivo y sus extensiones según el contenido que almacenan.',
-        question: 'Si un estudiante guarda una pista de audio para un pódcast escolar, ¿cuál extensión es la adecuada?',
+        title: 'Reto 5: Gestión de archivos',
+        desc: 'Relacione los tipos de archivo y sus extensiones para la gestión de archivos digitales.',
+        question: 'Si un estudiante guarda una pista de audio para un pódcast escolar, ¿cuál extensión es la adecuada para la gestión del archivo?',
         options: [
           '.png o .jpg',
           '.mp3 o .wav',
@@ -1817,9 +1817,9 @@
       },
       {
         id: 'ind6',
-        title: 'Reto 6: Imágenes digitales',
-        desc: 'Reconoce acciones básicas que se pueden realizar al trabajar con imágenes digitales.',
-        question: 'Un estudiante está preparando una imagen para un trabajo escolar. Necesita eliminar una parte que no desea mostrar y hacer que la imagen se vea más clara. ¿Qué acciones debería realizar?',
+        title: 'Reto 6: Herramientas de creación de contenido multimedia (editor de gráficos)',
+        desc: 'Reconoce acciones básicas que se pueden realizar al trabajar con herramientas de edición y creación multimedia.',
+        question: 'Un estudiante está preparando una imagen para un trabajo escolar. Necesita eliminar una parte que no desea mostrar y hacer que la imagen se vea más clara. ¿Qué acciones debería realizar en el editor de gráficos?',
         options: [
           'Recortar la imagen y ajustar su brillo.',
           'Cambiar el nombre del archivo y moverlo a otra carpeta.',
@@ -1830,9 +1830,9 @@
       },
       {
         id: 'ind7',
-        title: 'Reto 7: Algoritmos y eventos',
+        title: 'Reto 7: Evento',
         desc: 'Disparadores de acción (bloques de evento en programación por bloques).',
-        question: 'En un programa de bloques (como Scratch), ¿qué bloque se utiliza para que un personaje hable en el momento en que el usuario hace clic sobre él?',
+        question: 'En un programa de bloques (como Scratch), ¿qué bloque de evento se utiliza para que un personaje hable en el momento en que el usuario hace clic sobre él?',
         options: [
           'Al presionar la bandera verde',
           'Al hacer clic en este objeto (sprite)',
@@ -1843,10 +1843,10 @@
       },
       {
         id: 'ind8',
-        title: 'Reto 8: Variables y estructuras repetitivas (ciclos)',
-        desc: 'Siga una secuencia de acciones repetidas para determinar su resultado.',
+        title: 'Reto 8: Variable y estructuras repetitivas',
+        desc: 'Siga una secuencia de acciones repetidas para determinar el valor de la variable.',
         codeSnippet: 'puntos = 0;\nRepetir 3 veces {\n    puntos = puntos + 5;\n}\nMostrar(puntos);',
-        question: 'Al ejecutar este bloque de código, ¿qué valor final tendrá la variable "puntos"?',
+        question: 'Al ejecutar este bloque de código con estructuras repetitivas, ¿qué valor final tendrá la variable "puntos"?',
         options: [
           '5 puntos',
           '8 puntos',
@@ -1871,10 +1871,10 @@
       },
       {
         id: 'ind10',
-        title: 'Reto 10: Operadores lógicos',
-        desc: 'Interprete condiciones sencillas para determinar si se cumplen.',
+        title: 'Reto 10: Operadores relacionales y operadores aritméticos',
+        desc: 'Interprete expresiones con operadores relacionales y aritméticos para determinar su resultado de verdad.',
         codeSnippet: 'Resultado = (10 > 5) Y (4 + 2 == 6)',
-        question: '¿Cuál es el resultado de la condición lógica planteada?',
+        question: '¿Cuál es el resultado de evaluar los operadores relacionales y aritméticos en la condición lógica planteada?',
         options: [
           'Verdadero, porque se cumplen las dos condiciones.',
           'Falso, porque solamente se cumple una condición.',
@@ -2440,8 +2440,8 @@
       const cyberTitleEl = document.getElementById('hudCyberTitle');
       if (cyberTitleEl) {
         cyberTitleEl.innerHTML = isIndiv 
-          ? '⚡ CyberQuest 7.° &bull; Misión individual' 
-          : '⚡ CyberQuest 7.° &bull; Misión en parejas';
+          ? '⚡ Diagnóstico Sétimo &bull; Misión individual' 
+          : '⚡ Diagnóstico Sétimo &bull; Misión en parejas';
       }
 
       const pill1 = document.getElementById('hudCadet1Pill');
@@ -2548,7 +2548,7 @@
         <div class="cyber-card">
           <div class="card-header">
             <span class="mission-badge badge-psico" id="phase0Badge">Fase inicial &bull; Datos del estudiante ${isSolo ? '(individual)' : '(misión en parejas)'}</span>
-            <h1 class="card-title">Bienvenido a CyberQuest 7.° año</h1>
+            <h1 class="card-title">Bienvenido al Diagnóstico de Sétimo Año</h1>
             <p class="card-desc">Evaluación Diagnóstica Oficial MEP 2027 - III Ciclo.</p>
           </div>
 
@@ -3233,16 +3233,16 @@
               </div>
             </div>
 
-            <!-- CÓDIGO QR PARA ESCANEO LOCAL DEL DOCENTE -->
-            <div style="background: #0d1322; border: 2px solid var(--cyan-neon); border-radius: 16px; padding: 16px 20px; margin: 8px auto; max-width: 320px; text-align: center; box-shadow: 0 0 25px rgba(0, 240, 255, 0.2);">
-              <span style="font-size: 11.5px; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 8px;">
-                📱 Código QR de Evidencia Diagnóstica
-              </span>
-              <div style="background: #ffffff; padding: 10px; border-radius: 12px; display: inline-block; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
-                <canvas id="qrCanvasFinal" width="200" height="200" style="display: block;"></canvas>
+            <!-- TARJETA DE CONFIRMACIÓN DE SINCRONIZACIÓN EN TIEMPO REAL -->
+            <div style="background: rgba(15, 23, 42, 0.85); border: 1.5px solid var(--lime-neon); border-radius: 14px; padding: 14px 18px; margin: 10px auto; max-width: 480px; text-align: center; box-shadow: 0 0 20px rgba(16, 185, 129, 0.15);">
+              <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 6px;">
+                <span style="font-size: 18px;">🌐</span>
+                <span style="font-size: 12.5px; font-weight: 800; color: #34d399; text-transform: uppercase; letter-spacing: 0.5px;">
+                  Sincronización en Tiempo Real con el Panel Docente
+                </span>
               </div>
-              <p style="font-size: 11px; color: #94a3b8; margin: 8px 0 0 0; line-height: 1.4;">
-                El docente puede escanear este código con su celular para registrar de inmediato el resultado en el panel de evaluación (con o sin internet).
+              <p style="font-size: 11.5px; color: #94a3b8; margin: 0; line-height: 1.45;">
+                Sus resultados y dimensiones psicomotriz, socioafectiva y cognitiva han sido sincronizados automáticamente con el panel del docente.
               </p>
             </div>
 
@@ -3278,7 +3278,6 @@
       `;
 
       setTimeout(() => {
-        generarQR7mo(isSolo);
         sendTelemetryToGoogleSheets('completado');
       }, 50);
     }
@@ -3579,11 +3578,60 @@
       const p3Data = AppState.psicomotriz?.p3_pulso || {};
       const p4Data = AppState.psicomotriz?.p4_dibujo || {};
 
+      // Mapeo Socioafectivo Canónico (3 -> 'A', 2 -> 'B', 1 -> 'C')
+      const s1Val = AppState.socioafectivo?.s1_precision ?? 3;
+      const s2Val = AppState.socioafectivo?.s2_resiliencia ?? 3;
+      const s3Val = AppState.socioafectivo?.s3_colaboracion ?? 3;
+      const s4Val = AppState.socioafectivo?.s4_frustracion ?? 3;
+      const socioafectivoMap = {
+        s1: s1Val === 3 ? 'A' : (s1Val === 2 ? 'B' : 'C'),
+        s2: s2Val === 3 ? 'A' : (s2Val === 2 ? 'B' : 'C'),
+        s3: s3Val === 3 ? 'A' : (s3Val === 2 ? 'B' : 'C'),
+        s4: s4Val === 3 ? 'A' : (s4Val === 2 ? 'B' : 'C')
+      };
+
+      // Mapeo Psicomotriz Canónico (P1 a P4)
+      const p1Score = p1Data.score !== undefined ? p1Data.score : (p1Data.completed ? 100 : 0);
+      const p1Lvl = p1Score >= 80 ? 'A' : (p1Score >= 60 ? 'B' : 'C');
+
+      const p2Score = p2Data.score !== undefined ? p2Data.score : (p2Data.completed ? 100 : 0);
+      const p2Lvl = p2Score >= 80 ? 'A' : (p2Score >= 60 ? 'B' : 'C');
+
+      const p3Score = p3Data.score !== undefined ? p3Data.score : (p3Data.completed ? 100 : 0);
+      const p3Lvl = p3Score >= 80 ? 'A' : (p3Score >= 60 ? 'B' : 'C');
+
+      const p4Score = p4Data.score !== undefined ? p4Data.score : (p4Data.completed ? 100 : 0);
+      const p4Lvl = (p4Data.completed || p4Score >= 70) ? 'A' : (p4Score >= 50 ? 'B' : 'C');
+
+      const psicomotorMap = {
+        p1: p1Lvl,
+        p2: p2Lvl,
+        p3: p3Lvl,
+        p4: p4Lvl
+      };
+
+      // Mapeo Cognitivo Canónico (10 reactivos: 'L' o 'RA')
+      const cogArr = Array.from({ length: 10 }).map((_, idx) => {
+        const ans = AppState.cognitivo?.answers?.[idx + 1] || AppState.cognitivo?.answers?.[String(idx + 1)];
+        return (ans && ans.isCorrect) ? 'L' : 'RA';
+      });
+
+      const detallesReactivos = Array.from({ length: 10 }).map((_, idx) => {
+        const ans = AppState.cognitivo?.answers?.[idx + 1] || AppState.cognitivo?.answers?.[String(idx + 1)];
+        return {
+          reactivoId: `r_${idx + 1}`,
+          pregunta: `Pregunta ${idx + 1}`,
+          esCorrecto: Boolean(ans && ans.isCorrect),
+          opcionSeleccionada: ans?.answer !== undefined ? ans.answer : null,
+          tiempoSegundos: ans?.timeSec || 0
+        };
+      });
+
       const fullData = {
         tipo: 'CYBERQUEST_7MO',
         idResultado: AppState.sessionHash ? `res-7mo-${AppState.sessionHash}` : `res-7mo-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
         webAppId: 'diagnostico_7mo_modulo01_cyberquest',
-        webAppTitulo: 'CyberQuest 7°: Diagnóstico de Fundamentos Digitales',
+        webAppTitulo: 'Diagnóstico Sétimo Año: Fundamentos Digitales',
         docenteId: docId,
         docenteNombre: AppState.teacher?.name || 'Alberto Bustos Ortega',
         institucionNombre: AppState.teacher?.institution || 'Liceo de Costa Rica',
@@ -3612,11 +3660,15 @@
         socioScore: isCompleted ? metrics.socioScore : null,
         globalAvg: isCompleted ? metrics.globalAvg : null,
         globalLevel: isCompleted ? metrics.globalLevel : 'EN_CURSO',
+        socioafectivo: socioafectivoMap,
+        psicomotor: psicomotorMap,
+        cog: cogArr,
+        detallesReactivos: detallesReactivos,
         psicomotorDetalle: {
-          p1: { score: p1Data.score !== undefined ? p1Data.score : (p1Data.completed ? 100 : 0), moves: p1State?.moves || 0, errors: p1State?.pathErrors || 0, completed: Boolean(p1Data.completed) },
-          p2: { score: p2Data.score !== undefined ? p2Data.score : (p2Data.completed ? 100 : 0), greenHits: p2State?.greenHits || 0, redHits: p2State?.redHits || 0, completed: Boolean(p2Data.completed) },
-          p3: { score: p3Data.score !== undefined ? p3Data.score : (p3Data.completed ? 100 : 0), completed: Boolean(p3Data.completed) },
-          p4: { score: p4Data.score !== undefined ? p4Data.score : (p4Data.completed ? 100 : 0), completed: Boolean(p4Data.completed), dataUrl: p4Data.dataUrl || '' }
+          p1: { score: p1Score, moves: p1Data.moves || 0, errors: p1Data.pathErrors || 0, completed: Boolean(p1Data.completed) },
+          p2: { score: p2Score, greenHits: p2Data.successes || 0, redHits: p2Data.falsePositives || 0, completed: Boolean(p2Data.completed) },
+          p3: { score: p3Score, completed: Boolean(p3Data.completed) },
+          p4: { score: p4Score, completed: Boolean(p4Data.completed), dataUrl: p4Data.dataUrl || '' }
         },
         tokenAntiFraude: `TOKEN-7MO-${Date.now()}`
       };
@@ -3653,6 +3705,10 @@
             socioScore: fullData.socioScore,
             globalAvg: fullData.globalAvg,
             globalLevel: fullData.globalLevel,
+            socioafectivo: fullData.socioafectivo,
+            psicomotor: fullData.psicomotor,
+            cog: fullData.cog,
+            detallesReactivos: fullData.detallesReactivos,
             psicomotorDetalle: fullData.psicomotorDetalle,
             raw: fullData
           };
