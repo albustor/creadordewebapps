@@ -636,6 +636,13 @@ export default function PanelDocenteSimplificado() {
       : "/webapps/diagnostico_9no_modulo01_desconectado_offline.html";
   }, [nivelActivo]);
 
+  // Archivo Escáner de Datos PWA según Nivel
+  const archivoEscanerPWA = useMemo(() => {
+    return nivelActivo === "7mo"
+      ? "/diagnostico_escaner_7mo.html"
+      : "/diagnostico_escaner_9no.html";
+  }, [nivelActivo]);
+
   // Archivo PDF Imprimible (Modalidad en Papel / Físico)
   const archivoPDFImprimibleDescarga = useMemo(() => {
     return nivelActivo === "7mo"
@@ -1148,7 +1155,7 @@ export default function PanelDocenteSimplificado() {
         {filtroModoEnlaces === "offline" && (
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 animate-fadeIn">
             <a
-              href="/diagnostico_escaner_datos_locales.html"
+              href={archivoEscanerPWA}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 px-3 py-1.5 sm:py-2 rounded-xl bg-white text-[#1F3F78] border border-[#D9DFE8] hover:bg-[#EEF3FA] text-xs font-bold shadow-xs transition-all"
@@ -1721,7 +1728,7 @@ export default function PanelDocenteSimplificado() {
                               </a>
 
                               <a
-                                href="/diagnostico_escaner_datos_locales.html"
+                                href={archivoEscanerPWA}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center justify-center gap-1.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 text-xs font-bold px-3 py-2 rounded-lg transition-colors shadow-2xs"
@@ -1751,7 +1758,7 @@ export default function PanelDocenteSimplificado() {
                             Modo fuera de línea listo
                           </span>
                           <a
-                            href="/diagnostico_escaner_datos_locales.html"
+                            href={archivoEscanerPWA}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="bg-[#1B5E59] text-white text-[11px] font-black px-2.5 py-1 rounded-md hover:bg-[#144642] transition-colors cursor-pointer inline-flex items-center gap-1 shadow-2xs"

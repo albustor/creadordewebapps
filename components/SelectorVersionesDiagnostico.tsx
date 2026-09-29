@@ -85,11 +85,13 @@ export default function SelectorVersionesDiagnostico({
   let pathOnline = "/webapps/diagnostico_setimo_ano.html";
   let pathOffline = "/webapps/diagnostico_setimo_ano_modulo01_desconectado_offline.html";
   let pathDocente = "/webapps/diagnostico_setimo_ano_modulo01_docente_evaluador.html";
+  let pathEscaner = "/diagnostico_escaner_7mo.html";
 
   if (nivel === "9°") {
     pathOnline = "/webapps/diagnostico_9no_modulo01_en_linea.html";
     pathOffline = "/webapps/diagnostico_9no_modulo01_desconectado_offline.html";
     pathDocente = "/webapps/diagnostico_9no_modulo01_docente_evaluador.html";
+    pathEscaner = "/diagnostico_escaner_9no.html";
   }
 
   const urlOnline =
@@ -106,8 +108,8 @@ export default function SelectorVersionesDiagnostico({
 
   const urlEscaner =
     typeof window !== "undefined"
-      ? `${window.location.origin}/diagnostico_escaner_datos_locales.html`
-      : "/diagnostico_escaner_datos_locales.html";
+      ? `${window.location.origin}${pathEscaner}`
+      : pathEscaner;
 
   const copiarEnlaceOnline = () => {
     navigator.clipboard.writeText(urlOnline);
@@ -347,8 +349,8 @@ export default function SelectorVersionesDiagnostico({
 
                 <div className="grid grid-cols-2 gap-2">
                   <a
-                    href="/webapps/diagnostico_escaner_datos_locales.html"
-                    download="diagnostico_escaner_datos_locales.html"
+                    href={pathEscaner}
+                    download={pathEscaner.replace(/^\//, "")}
                     className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-white hover:bg-purple-100/60 text-purple-900 text-[11px] font-bold border border-purple-200"
                   >
                     <DownloadSimple size={14} />

@@ -1,0 +1,52 @@
+{
+  "name": "Escáner Diagnóstico 7.° Año - Formación Tecnológica MEP",
+  "short_name": "Escáner 7.° MEP",
+  "description": "Escáner de códigos QR y recopilador de datos para el Diagnóstico de 7.° Año (Módulo 1: Programación y Apropiación Tecnológica).",
+  "start_url": "/diagnostico_escaner_7mo.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#002b49",
+  "theme_color": "#002b49",
+  "id": "cr.mep.escaner.7mo",
+  "categories": ["education", "tools", "productivity"],
+  "lang": "es-CR",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

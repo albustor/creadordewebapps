@@ -1,0 +1,52 @@
+{
+  "name": "Escáner Diagnóstico 9.° Año - Formación Tecnológica MEP",
+  "short_name": "Escáner 9.° MEP",
+  "description": "Escáner de códigos QR y recopilador de datos para el Diagnóstico de 9.° Año (Módulo 1: Sistemas Embebidos y Robótica).",
+  "start_url": "/diagnostico_escaner_9no.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#1F3F78",
+  "theme_color": "#1F3F78",
+  "id": "cr.mep.escaner.9no",
+  "categories": ["education", "tools", "productivity"],
+  "lang": "es-CR",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

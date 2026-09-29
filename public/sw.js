@@ -1,8 +1,10 @@
 // Service Worker Oficial - Diagnóstico Secundaria MEP
-const CACHE_NAME = 'mep-diagnostico-v2';
+const CACHE_NAME = 'mep-diagnostico-v3';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
+  '/manifest_escaner_7mo.json',
+  '/manifest_escaner_9no.json',
   '/icons/icon-192x192.png',
   '/icons/icon-512x512.png',
   '/icons/icon-maskable-192.png',
@@ -10,6 +12,8 @@ const STATIC_ASSETS = [
   '/icons/apple-touch-icon.png',
   '/favicon.png',
   '/favicon.ico',
+  '/diagnostico_escaner_7mo.html',
+  '/diagnostico_escaner_9no.html',
   '/diagnostico_escaner_datos_locales.html',
   '/diagnostico_9no_escaner_datos_locales.html',
   '/diagnostico_setimo_ano.html',
