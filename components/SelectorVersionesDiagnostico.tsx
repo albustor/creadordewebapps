@@ -329,7 +329,7 @@ export default function SelectorVersionesDiagnostico({
                   Paso 2: Docente
                 </span>
                 <h4 className="text-sm font-black text-purple-950 mt-1">
-                  📱 Escáner de Datos Locales
+                  📱 Escáner de Datos {nivel === "7°" ? "7.° Año" : "9.° Año"}
                 </h4>
                 <p className="text-xs text-slate-600 mt-1 leading-relaxed font-medium">
                   Abre la app en tu teléfono (iPhone / Android) para capturar los códigos QR de las pantallas. No requiere escribir nombres y exporta a Excel (.csv) y JSON.
@@ -344,7 +344,7 @@ export default function SelectorVersionesDiagnostico({
                   className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-purple-700 hover:bg-purple-800 text-white text-xs font-black transition-all shadow-xs"
                 >
                   <ArrowSquareOut size={16} weight="bold" />
-                  <span>Abrir Escáner en Teléfono</span>
+                  <span>Abrir Escáner {nivel === "7°" ? "7.° Año" : "9.° Año"} en Teléfono</span>
                 </a>
 
                 <div className="grid grid-cols-2 gap-2">

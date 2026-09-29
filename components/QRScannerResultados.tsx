@@ -30,6 +30,7 @@ interface QRScannerResultadosProps {
   alCerrar: () => void;
   alDetectarResultado: (resultado: PayloadTelemetria) => void;
   registrosExistentes?: PayloadTelemetria[];
+  nivelActivo?: "7mo" | "9no";
 }
 
 export default function QRScannerResultados({
@@ -37,6 +38,7 @@ export default function QRScannerResultados({
   alCerrar,
   alDetectarResultado,
   registrosExistentes = [],
+  nivelActivo = "7mo",
 }: QRScannerResultadosProps) {
   const [escaneando, setEscaneando] = useState(false);
   const [errorCamara, setErrorCamara] = useState<string | null>(null);
@@ -617,26 +619,64 @@ export default function QRScannerResultados({
       <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-2xl max-h-[92vh] overflow-hidden flex flex-col my-auto animate-fadeIn">
         
         {/* Cabecera del Escáner de Datos */}
-        <div className="bg-[#1B5E59] text-white p-4 flex justify-between items-center shrink-0">
+        <div className={`text-white p-4 flex flex-wrap justify-between items-center gap-3 shrink-0 ${
+          nivelActivo === "7mo"
+            ? "bg-gradient-to-r from-[#002b49] via-[#0f3458] to-[#1F3F78] border-b-2 border-[#D4AF5A]/40"
+            : "bg-gradient-to-r from-[#004641] via-[#1B5E59] to-[#047857] border-b-2 border-emerald-400/40"
+        }`}>
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-emerald-400/20 flex items-center justify-center border border-emerald-400/40">
-              <Camera size={20} className="text-emerald-200" weight="bold" />
+            <div className={`w-9 h-9 rounded-xl flex items-center justify-center border shadow-xs ${
+              nivelActivo === "7mo"
+                ? "bg-amber-400/20 border-amber-400/50 text-amber-300"
+                : "bg-emerald-400/20 border-emerald-400/50 text-emerald-200"
+            }`}>
+              <Camera size={22} weight="bold" />
             </div>
             <div>
-              <h3 className="font-extrabold text-sm sm:text-base leading-tight">Escáner de datos (modo local)</h3>
-              <p className="text-[11px] text-emerald-100 font-medium">Captura offline, padrón de notas y sincronización docente</p>
+              <div className="flex items-center gap-2">
+                <h3 className="font-extrabold text-sm sm:text-base leading-tight text-white">
+                  Escáner de Datos {nivelActivo === "7mo" ? "7.° Año" : "9.° Año"}
+                </h3>
+                <span className={`px-2 py-0.5 rounded-full text-[10px] font-black tracking-wider uppercase border shadow-2xs ${
+                  nivelActivo === "7mo"
+                    ? "bg-[#D4AF5A] text-[#002b49] border-amber-200"
+                    : "bg-emerald-400 text-emerald-950 border-emerald-200"
+                }`}>
+                  {nivelActivo === "7mo" ? "7.° Séptimo" : "9.° Noveno"}
+                </span>
+              </div>
+              <p className={`text-[11px] font-medium ${nivelActivo === "7mo" ? "text-blue-100" : "text-emerald-100"}`}>
+                Captura offline • Padrón seguro y sincronización docente MEP
+              </p>
             </div>
           </div>
-          <button
-            onClick={() => {
-              detenerEscaneo();
-              alCerrar();
-            }}
-            className="p-1.5 rounded-lg hover:bg-white/10 text-white transition-colors cursor-pointer"
-            title="Cerrar ventana"
-          >
-            <X size={20} />
-          </button>
+
+          <div className="flex items-center gap-1.5">
+            <a
+              href={nivelActivo === "7mo" ? "/diagnostico_escaner_7mo.html" : "/diagnostico_escaner_9no.html"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-black shadow-xs transition-all border ${
+                nivelActivo === "7mo"
+                  ? "bg-[#D4AF5A] hover:bg-[#c49e47] text-[#002b49] border-amber-300"
+                  : "bg-emerald-500 hover:bg-emerald-400 text-white border-emerald-400"
+              }`}
+              title="Abrir aplicación PWA autónoma en pantalla completa"
+            >
+              <span>📱 Abrir PWA {nivelActivo === "7mo" ? "7.°" : "9.°"}</span>
+            </a>
+
+            <button
+              onClick={() => {
+                detenerEscaneo();
+                alCerrar();
+              }}
+              className="p-1.5 rounded-lg hover:bg-white/10 text-white transition-colors cursor-pointer"
+              title="Cerrar ventana"
+            >
+              <X size={20} />
+            </button>
+          </div>
         </div>
 
         {/* Barra de Navegación de Pestañas (Estructura Limpia) */}
