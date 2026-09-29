@@ -187,7 +187,7 @@ td { padding: 9px 8px; border-bottom: 1px solid var(--borde); vertical-align: mi
     <div style="display: flex; align-items: center; gap: 10px;">
       <span style="font-size: 22px;">📱</span>
       <div style="font-size: 12px; color: var(--texto);">
-        <strong>Modo Autónomo Local Activo:</strong> Compatible con instrumentos de 7.° (CyberQuest) y 9.° (Circuito FT) sin consumo de red.
+        <strong>Modo Autónomo Local Activo:</strong> Compatible con instrumentos de 7.° y 9.° Año (Formación Tecnológica) sin consumo de red.
       </div>
     </div>
   </div>
@@ -264,7 +264,7 @@ td { padding: 9px 8px; border-bottom: 1px solid var(--borde); vertical-align: mi
       <div class="form-group">
         <label>Instrumento de Nivel:</label>
         <select id="genNivel" onchange="alternarCamposGenerador(this.value)">
-          <option value="7">7.° Año (CyberQuest — Psicomotriz/Cognitivo)</option>
+          <option value="7">7.° Año (Fundamentos Digitales — Psicomotriz/Cognitivo)</option>
           <option value="9">9.° Año (Circuito y Saberes Técnicos)</option>
         </select>
       </div>
@@ -591,7 +591,7 @@ function aplicarTemaNivel(nivel) {
     root.style.setProperty("--nivel-icono", "'🌱'");
     metaTheme.setAttribute("content", "#002b49");
     document.getElementById("txtTituloHeader").textContent = "ESCÁNER DIAGNÓSTICO — 7.° AÑO";
-    document.getElementById("txtSubtituloHeader").textContent = "Módulo 1: CyberQuest (MEP7) • 100% Offline";
+    document.getElementById("txtSubtituloHeader").textContent = "Módulo 1: Fundamentos Digitales (MEP7) • 100% Offline";
   }
   actualizarBadges();
 }
@@ -858,7 +858,7 @@ function procesarPayloadUniversal(raw) {
     resBox.classList.remove("hidden");
 
     if (registro.nivel === "7") {
-      resTxt.innerHTML = "<strong>7.° Año (CyberQuest)</strong><br>" +
+      resTxt.innerHTML = "<strong>7.° Año (Fundamentos Digitales)</strong><br>" +
         "Estudiante(s): <strong>" + registro.estudiante1 + (registro.estudiante2 !== "Individual" ? " / " + registro.estudiante2 : "") + "</strong><br>" +
         "Promedio: <strong>" + registro.promedio + "</strong> | Nivel: <strong>" + registro.logro + "</strong>";
     } else {

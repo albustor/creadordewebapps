@@ -20,7 +20,7 @@ if ('serviceWorker' in navigator) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#090d16">
-  <title>Diagnóstico Sétimo Año | Evaluación Diagnóstica Desconectada MEP</title>
+  <title>Diagnóstico Formación Tecnológica 7° V3 (Offline)</title>
   
   <style>
     :root {
@@ -1000,7 +1000,7 @@ if ('serviceWorker' in navigator) {
   <header class="hud-header">
     <div class="hud-brand">
       <span class="mep-tag">MEP 2027</span>
-      <div class="cyber-title" id="hudCyberTitle">⚡ Diagnóstico Sétimo &bull; Modo Desconectado</div>
+      <div class="cyber-title" id="hudCyberTitle">⚡ Formación Tecnológica 7.° &bull; Misión en parejas</div>
     </div>
     <div class="hud-stats">
       <div class="stat-pill leader" id="hudCadet1Pill" style="display: none;">
@@ -1768,7 +1768,7 @@ if ('serviceWorker' in navigator) {
     const COGNITIVE_QUESTIONS = [
       {
         id: 'ind1',
-        title: 'Reto 1: Hardware',
+        title: 'Reto 1: Hardware y dispositivos',
         desc: 'Identifique la función de dispositivos de uso cotidiano en una computadora.',
         question: 'Un estudiante necesita escribir un texto, mover el puntero y grabar su voz en la computadora. ¿Qué grupo de dispositivos le permitiría realizar esas tres acciones?',
         options: [
@@ -1781,12 +1781,12 @@ if ('serviceWorker' in navigator) {
       },
       {
         id: 'ind2',
-        title: 'Reto 2: Software',
-        desc: 'Diferenciación entre aplicaciones de usuario y software del sistema.',
+        title: 'Reto 2: Software y programas',
+        desc: 'Diferenciación entre aplicaciones de usuario y software utilitario.',
         question: 'Un estudiante necesita proteger su computadora contra virus y liberar espacio en el disco duro. ¿Qué tipo de software requiere utilizar?',
         options: [
           'Software de aplicación de usuario (por ejemplo, navegador web o Paint)',
-          'Software de mantenimiento, seguridad y utilitarios del sistema',
+          'Software utilitario, de mantenimiento y seguridad',
           'Software de videojuegos',
           'Controlador de impresora'
         ],
@@ -1794,7 +1794,7 @@ if ('serviceWorker' in navigator) {
       },
       {
         id: 'ind3',
-        title: 'Reto 3: Sistema Operativo',
+        title: 'Reto 3: Sistemas operativos',
         desc: 'Funciones cardinales del sistema operativo y administración de recursos.',
         question: '¿Cuál es la función principal del sistema operativo (como Windows, Linux o macOS)?',
         options: [
@@ -1807,12 +1807,12 @@ if ('serviceWorker' in navigator) {
       },
       {
         id: 'ind4',
-        title: 'Reto 4: Redes de comunicación',
-        desc: 'Reconoce situaciones cotidianas en las que varios dispositivos se conectan y comparten recursos en redes de comunicación.',
+        title: 'Reto 4: Redes y conectividad',
+        desc: 'Reconoce situaciones cotidianas en las que varios dispositivos se conectan y comparten recursos.',
         question: 'En el laboratorio de informática, varias computadoras pueden utilizar la misma impresora y acceder a Internet. ¿Qué permite que estos equipos puedan comunicarse y compartir recursos?',
         options: [
           'Que todas las computadoras sean de la misma marca.',
-          'Que las computadoras estén conectadas entre sí mediante una red de comunicación.',
+          'Que las computadoras estén conectadas entre sí mediante una red.',
           'Que cada computadora tenga conectada su propia impresora.',
           'Que todas las computadoras utilicen los mismos programas.'
         ],
@@ -1820,9 +1820,9 @@ if ('serviceWorker' in navigator) {
       },
       {
         id: 'ind5',
-        title: 'Reto 5: Gestión de archivos',
-        desc: 'Relacione los tipos de archivo y sus extensiones para la gestión de archivos digitales.',
-        question: 'Si un estudiante guarda una pista de audio para un pódcast escolar, ¿cuál extensión es la adecuada para la gestión del archivo?',
+        title: 'Reto 5: Formatos y extensiones de archivo',
+        desc: 'Relacione los tipos de archivo y sus extensiones según el contenido que almacenan.',
+        question: 'Si un estudiante guarda una pista de audio para un pódcast escolar, ¿cuál extensión es la adecuada?',
         options: [
           '.png o .jpg',
           '.mp3 o .wav',
@@ -1833,9 +1833,9 @@ if ('serviceWorker' in navigator) {
       },
       {
         id: 'ind6',
-        title: 'Reto 6: Herramientas de creación de contenido multimedia (editor de gráficos)',
-        desc: 'Reconoce acciones básicas que se pueden realizar al trabajar con herramientas de edición y creación multimedia.',
-        question: 'Un estudiante está preparando una imagen para un trabajo escolar. Necesita eliminar una parte que no desea mostrar y hacer que la imagen se vea más clara. ¿Qué acciones debería realizar en el editor de gráficos?',
+        title: 'Reto 6: Imágenes digitales',
+        desc: 'Reconoce acciones básicas que se pueden realizar al trabajar con imágenes digitales.',
+        question: 'Un estudiante está preparando una imagen para un trabajo escolar. Necesita eliminar una parte que no desea mostrar y hacer que la imagen se vea más clara. ¿Qué acciones debería realizar?',
         options: [
           'Recortar la imagen y ajustar su brillo.',
           'Cambiar el nombre del archivo y moverlo a otra carpeta.',
@@ -1846,9 +1846,9 @@ if ('serviceWorker' in navigator) {
       },
       {
         id: 'ind7',
-        title: 'Reto 7: Evento',
+        title: 'Reto 7: Algoritmos y eventos',
         desc: 'Disparadores de acción (bloques de evento en programación por bloques).',
-        question: 'En un programa de bloques (como Scratch), ¿qué bloque de evento se utiliza para que un personaje hable en el momento en que el usuario hace clic sobre él?',
+        question: 'En un programa de bloques (como Scratch), ¿qué bloque se utiliza para que un personaje hable en el momento en que el usuario hace clic sobre él?',
         options: [
           'Al presionar la bandera verde',
           'Al hacer clic en este objeto (sprite)',
@@ -1859,10 +1859,10 @@ if ('serviceWorker' in navigator) {
       },
       {
         id: 'ind8',
-        title: 'Reto 8: Variable y estructuras repetitivas',
-        desc: 'Siga una secuencia de acciones repetidas para determinar el valor de la variable.',
+        title: 'Reto 8: Variables y estructuras repetitivas (ciclos)',
+        desc: 'Siga una secuencia de acciones repetidas para determinar su resultado.',
         codeSnippet: 'puntos = 0;\nRepetir 3 veces {\n    puntos = puntos + 5;\n}\nMostrar(puntos);',
-        question: 'Al ejecutar este bloque de código con estructuras repetitivas, ¿qué valor final tendrá la variable "puntos"?',
+        question: 'Al ejecutar este bloque de código, ¿qué valor final tendrá la variable "puntos"?',
         options: [
           '5 puntos',
           '8 puntos',
@@ -1887,10 +1887,10 @@ if ('serviceWorker' in navigator) {
       },
       {
         id: 'ind10',
-        title: 'Reto 10: Operadores relacionales y operadores aritméticos',
-        desc: 'Interprete expresiones con operadores relacionales y aritméticos para determinar su resultado de verdad.',
+        title: 'Reto 10: Operadores lógicos',
+        desc: 'Interprete condiciones sencillas para determinar si se cumplen.',
         codeSnippet: 'Resultado = (10 > 5) Y (4 + 2 == 6)',
-        question: '¿Cuál es el resultado de evaluar los operadores relacionales y aritméticos en la condición lógica planteada?',
+        question: '¿Cuál es el resultado de la condición lógica planteada?',
         options: [
           'Verdadero, porque se cumplen las dos condiciones.',
           'Falso, porque solamente se cumple una condición.',
@@ -2456,8 +2456,8 @@ if ('serviceWorker' in navigator) {
       const cyberTitleEl = document.getElementById('hudCyberTitle');
       if (cyberTitleEl) {
         cyberTitleEl.innerHTML = isIndiv 
-          ? '⚡ Diagnóstico Sétimo &bull; Misión individual' 
-          : '⚡ Diagnóstico Sétimo &bull; Misión en parejas';
+          ? '⚡ Formación Tecnológica 7.° &bull; Misión individual' 
+          : '⚡ Formación Tecnológica 7.° &bull; Misión en parejas';
       }
 
       const pill1 = document.getElementById('hudCadet1Pill');
@@ -2564,8 +2564,8 @@ if ('serviceWorker' in navigator) {
         <div class="cyber-card">
           <div class="card-header">
             <span class="mission-badge badge-psico" id="phase0Badge">Fase inicial &bull; Datos del estudiante ${isSolo ? '(individual)' : '(misión en parejas)'}</span>
-            <h1 class="card-title">Bienvenido al Diagnóstico de Sétimo Año</h1>
-            <p class="card-desc">Evaluación Diagnóstica Oficial MEP 2027 - III Ciclo.</p>
+            <h1 class="card-title">Bienvenido al Diagnóstico de Formación Tecnológica 7.° Año (V3)</h1>
+            <p class="card-desc">Evaluación Diagnóstica Oficial MEP 2027 • III Ciclo • Modalidad Desconectada / Offline V3.</p>
           </div>
 
           <div style="background: rgba(0, 240, 255, 0.08); border: 1.5px solid var(--cyan-neon); border-radius: 12px; padding: 12px 16px; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; box-shadow: 0 4px 15px rgba(0, 240, 255, 0.08);">
@@ -3278,7 +3278,7 @@ if ('serviceWorker' in navigator) {
             <!-- BOTÓN DE CIERRE DE SESIÓN Y VENTANA SEGURO -->
             <div style="margin-top: 14px; width: 100%; display: flex; justify-content: center;">
               <button type="button" class="btn-cyber" style="background: linear-gradient(135deg, #dc2626, #991b1b); border: 1.5px solid #ef4444; color: #ffffff; font-weight: 800; font-size: 13px; padding: 12px 24px; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4); display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s;" onclick="cerrarVentana7mo()">
-                🔒 Cerrar ventana y finalizar sesión
+                💾 Guardar y Enviar Respuestas
               </button>
             </div>
           </div>
@@ -3565,7 +3565,7 @@ if ('serviceWorker' in navigator) {
         tipo: 'CYBERQUEST_7MO',
         idResultado: AppState.sessionHash ? `res-7mo-${AppState.sessionHash}` : `res-7mo-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
         webAppId: 'diagnostico_7mo_modulo01_cyberquest',
-        webAppTitulo: 'CyberQuest 7°: Diagnóstico de Fundamentos Digitales',
+        webAppTitulo: 'Diagnóstico Formación Tecnológica 7°: Fundamentos Digitales',
         docenteId: docId,
         docenteNombre: AppState.teacher?.name || 'Alberto Bustos Ortega',
         institucionNombre: AppState.teacher?.institution || 'Liceo de Costa Rica',

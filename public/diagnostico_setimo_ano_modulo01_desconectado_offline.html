@@ -20,7 +20,7 @@ if ('serviceWorker' in navigator) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#090d16">
-  <title>CyberQuest 7° - Misión Tecnológica MEP 2027 | Evaluación Diagnóstica en Parejas</title>
+  <title>Diagnóstico Formación Tecnológica 7° V3 (Offline)</title>
   
   <style>
     :root {
@@ -1000,7 +1000,7 @@ if ('serviceWorker' in navigator) {
   <header class="hud-header">
     <div class="hud-brand">
       <span class="mep-tag">MEP 2027</span>
-      <div class="cyber-title" id="hudCyberTitle">⚡ CyberQuest 7.° &bull; Misión en parejas</div>
+      <div class="cyber-title" id="hudCyberTitle">⚡ Formación Tecnológica 7.° &bull; Misión en parejas</div>
     </div>
     <div class="hud-stats">
       <div class="stat-pill leader" id="hudCadet1Pill" style="display: none;">
@@ -2456,8 +2456,8 @@ if ('serviceWorker' in navigator) {
       const cyberTitleEl = document.getElementById('hudCyberTitle');
       if (cyberTitleEl) {
         cyberTitleEl.innerHTML = isIndiv 
-          ? '⚡ CyberQuest 7.° &bull; Misión individual' 
-          : '⚡ CyberQuest 7.° &bull; Misión en parejas';
+          ? '⚡ Formación Tecnológica 7.° &bull; Misión individual' 
+          : '⚡ Formación Tecnológica 7.° &bull; Misión en parejas';
       }
 
       const pill1 = document.getElementById('hudCadet1Pill');
@@ -2564,8 +2564,8 @@ if ('serviceWorker' in navigator) {
         <div class="cyber-card">
           <div class="card-header">
             <span class="mission-badge badge-psico" id="phase0Badge">Fase inicial &bull; Datos del estudiante ${isSolo ? '(individual)' : '(misión en parejas)'}</span>
-            <h1 class="card-title">Bienvenido a CyberQuest 7.° año</h1>
-            <p class="card-desc">Evaluación Diagnóstica Oficial MEP 2027 - III Ciclo.</p>
+            <h1 class="card-title">Bienvenido al Diagnóstico de Formación Tecnológica 7.° Año (V3)</h1>
+            <p class="card-desc">Evaluación Diagnóstica Oficial MEP 2027 • III Ciclo • Modalidad Desconectada / Offline V3.</p>
           </div>
 
           <div style="background: rgba(0, 240, 255, 0.08); border: 1.5px solid var(--cyan-neon); border-radius: 12px; padding: 12px 16px; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; box-shadow: 0 4px 15px rgba(0, 240, 255, 0.08);">
@@ -3278,7 +3278,7 @@ if ('serviceWorker' in navigator) {
             <!-- BOTÓN DE CIERRE DE SESIÓN Y VENTANA SEGURO -->
             <div style="margin-top: 14px; width: 100%; display: flex; justify-content: center;">
               <button type="button" class="btn-cyber" style="background: linear-gradient(135deg, #dc2626, #991b1b); border: 1.5px solid #ef4444; color: #ffffff; font-weight: 800; font-size: 13px; padding: 12px 24px; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4); display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s;" onclick="cerrarVentana7mo()">
-                🔒 Cerrar ventana y finalizar sesión
+                💾 Guardar y Enviar Respuestas
               </button>
             </div>
           </div>
@@ -3565,7 +3565,7 @@ if ('serviceWorker' in navigator) {
         tipo: 'CYBERQUEST_7MO',
         idResultado: AppState.sessionHash ? `res-7mo-${AppState.sessionHash}` : `res-7mo-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
         webAppId: 'diagnostico_7mo_modulo01_cyberquest',
-        webAppTitulo: 'CyberQuest 7°: Diagnóstico de Fundamentos Digitales',
+        webAppTitulo: 'Diagnóstico Formación Tecnológica 7°: Fundamentos Digitales',
         docenteId: docId,
         docenteNombre: AppState.teacher?.name || 'Alberto Bustos Ortega',
         institucionNombre: AppState.teacher?.institution || 'Liceo de Costa Rica',
