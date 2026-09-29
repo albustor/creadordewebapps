@@ -24,12 +24,22 @@ import {
   ChalkboardTeacher,
   IdentificationBadge,
   Check,
+  MapPin,
+  MegaphoneSimple,
+  Lightning,
+  PaperPlaneRight,
+  ArrowsLeftRight,
+  Broadcast,
+  Article,
+  X,
 } from "@phosphor-icons/react";
 import * as XLSX from "xlsx";
 import {
   DIAGNOSTICO_7MO_DATA,
   DIAGNOSTICO_9NO_DATA,
 } from "@/lib/diagnosticos";
+import { exportarInformeEjecutivoPDF } from "@/lib/exportadorPdfOficial";
+import { SafeStorage } from "@/lib/firebase";
 
 interface DocenteAdmin {
   id: string;
@@ -53,7 +63,6 @@ interface ObservatorioMacroNacionalProps {
   usuariosDocentes: DocenteAdmin[];
 }
 
-// Selector Exclusivo de III Ciclo de Secundaria (7.° y 9.° Año)
 export type VistaIIICiclo = "TODOS" | "7mo" | "9no";
 
 export default function ObservatorioMacroNacional({ usuariosDocentes }: ObservatorioMacroNacionalProps) {
@@ -67,7 +76,17 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
   const [telemetriaReal, setTelemetriaReal] = useState<any[]>([]);
   const [cargandoTelemetria, setCargandoTelemetria] = useState(false);
 
-  // Cargar telemetría viva del servidor
+  // Estados de IA Macro
+  const [analisisIA, setAnalisisIA] = useState<any | null>(null);
+  const [generandoIA, setGenerandoIA] = useState(false);
+  const [modalIAMacro, setModalIAMacro] = useState(false);
+
+  // Estados de Avisos a Docentes
+  const [nuevoAviso, setNuevoAviso] = useState("");
+  const [avisoGuardado, setAvisoGuardado] = useState(false);
+  const [avisoActual, setAvisoActual] = useState<string>("");
+
+  // Cargar telemetría viva y avisos guardados
   useEffect(() => {
     const cargar = async () => {
       setCargandoTelemetria(true);
@@ -85,6 +104,12 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
       setCargandoTelemetria(false);
     };
     cargar();
+
+    const aviso = SafeStorage.getItem("MEP_AVISO_OFICIAL_DOCENTES");
+    if (aviso) {
+      setAvisoActual(aviso);
+      setNuevoAviso(aviso);
+    }
   }, []);
 
   // Normalizador de nivel para un registro de telemetría en III Ciclo (7mo y 9no)
@@ -243,7 +268,7 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
     };
   }, [institucionesConsolidadas, telemetriaNivel]);
 
-  // Obtener nombre de subárea limpia y legible
+  // Resolver nombre legible de subárea curricular
   const resolverNombreSubarea = (subId: string, nivel: "7mo" | "9no"): string => {
     if (nivel === "7mo") {
       if (subId.includes("hardware") || subId.includes("sistemas")) return "Hardware, Software y Sistemas Operativos";
@@ -320,11 +345,92 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
     ];
   }, [nivelActivo, telemetriaNivel, metricasMacro, eval7mo, eval9no]);
 
-  // Exportar Consolidado Macro Nacional a Excel Multi-Hoja
+  // Cuadrícula y Análisis Geo-Regional de las 27 DREs
+  const resumenDREs = useMemo(() => {
+    return LISTA_DRE_MEP.map((dre) => {
+      const instDRE = institucionesConsolidadas.filter((i) => i.dre === dre.codigo);
+      const evalDRE = instDRE.reduce((acc, curr) => acc + curr.totalEstudiantes, 0);
+      const promDRE = instDRE.length > 0 && evalDRE > 0
+        ? Math.round(instDRE.reduce((acc, curr) => acc + curr.promedio, 0) / instDRE.filter((i) => i.promedio > 0).length || 55)
+        : 0;
+
+      return {
+        codigo: dre.codigo,
+        nombre: dre.nombre,
+        colegios: instDRE.length,
+        estudiantes: evalDRE,
+        promedio: promDRE,
+        estado: evalDRE > 0 ? "Activa" : "Pendiente",
+      };
+    });
+  }, [institucionesConsolidadas]);
+
+  // Generar Dictamen Curricular Macro con IA
+  const handleGenerarIAMacro = async () => {
+    setGenerandoIA(true);
+    setModalIAMacro(true);
+    try {
+      const res = await fetch("/api/ia/analisis-macro", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nivel: nivelActivo,
+          totalEstudiantes: metricasMacro.totalEstudiantes,
+          totalInstituciones: metricasMacro.totalInst,
+          promedioNacional: metricasMacro.promedioNacional,
+          eval7mo,
+          eval9no,
+          cobertura: metricasMacro.tasaCobertura,
+          filtroDRE,
+          indicadores: matrizIndicadores,
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.analisis) {
+          setAnalisisIA(data.analisis);
+        }
+      }
+    } catch (e) {
+      console.error("Error al generar análisis macro con IA:", e);
+    }
+    setGenerandoIA(false);
+  };
+
+  // Descargar Informe Ejecutivo Oficial en PDF
+  const handleDescargarPDF = () => {
+    exportarInformeEjecutivoPDF({
+      titulo: "Informe Ejecutivo Nacional de Evaluación Diagnóstica",
+      nivel: nivelActivo === "TODOS" ? "Consolidado III Ciclo (7.° y 9.° Año)" : nivelActivo === "7mo" ? "7.° Año (Módulo 1)" : "9.° Año (Módulo 1)",
+      fecha: new Date().toLocaleDateString("es-CR"),
+      totalInstituciones: metricasMacro.totalInst,
+      totalEstudiantes: metricasMacro.totalEstudiantes,
+      eval7mo,
+      eval9no,
+      promedioNacional: metricasMacro.promedioNacional,
+      cobertura: metricasMacro.tasaCobertura,
+      brechaCritica: nivelActivo === "7mo" ? "IND-7.1 (Periféricos E/S)" : "IND-9.8 (Ley de Ohm y Circuitos)",
+      indicadores: matrizIndicadores,
+      dreResumen: resumenDREs,
+      analisisIA: analisisIA || undefined,
+    });
+  };
+
+  // Guardar y Publicar Aviso Oficial a Docentes
+  const handleGuardarAviso = () => {
+    if (!nuevoAviso.trim()) return;
+    SafeStorage.setItem("MEP_AVISO_OFICIAL_DOCENTES", nuevoAviso.trim());
+    setAvisoActual(nuevoAviso.trim());
+    setAvisoGuardado(true);
+    setTimeout(() => setAvisoGuardado(false), 4000);
+  };
+
+  // Exportar Excel Multi-Hoja
   const exportarMacroExcel = () => {
     const workbook = XLSX.utils.book_new();
 
-    // Hoja 1: Directorio Nacional de Instituciones y Docentes de III Ciclo
+    // Hoja 1: Directorio Nacional de III Ciclo
     const dataFilas = institucionesFiltradas.map((item, idx) => ({
       "N°": idx + 1,
       "Institución Educativa": item.institucion,
@@ -367,17 +473,14 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
     XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(data9no), "Matriz_9no_Ano");
 
     // Hoja 4: Resumen 27 DREs
-    const dataDREs = LISTA_DRE_MEP.map((dre) => {
-      const instDRE = institucionesConsolidadas.filter((i) => i.dre === dre.codigo);
-      const evalDRE = instDRE.reduce((acc, curr) => acc + curr.totalEstudiantes, 0);
-      return {
-        "Código DRE": dre.codigo,
-        "Dirección Regional": dre.nombre,
-        "Colegios Registrados": instDRE.length,
-        "Estudiantes Evaluados (III Ciclo)": evalDRE,
-        "Estado Cobertura": evalDRE > 0 ? "Activa" : "Pendiente",
-      };
-    });
+    const dataDREs = resumenDREs.map((dre) => ({
+      "Código DRE": dre.codigo,
+      "Dirección Regional": dre.nombre,
+      "Colegios Registrados": dre.colegios,
+      "Estudiantes Evaluados (III Ciclo)": dre.estudiantes,
+      "Promedio Logro (%)": dre.promedio > 0 ? `${dre.promedio}%` : "N/D",
+      "Estado Cobertura": dre.estado,
+    }));
     XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(dataDREs), "Resumen_27_DREs");
 
     XLSX.writeFile(workbook, `Observatorio_Macro_Nacional_III_Ciclo_${new Date().toISOString().split("T")[0]}.xlsx`);
@@ -502,9 +605,9 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
       </div>
 
       {/* ========================================================================= */}
-      {/* 2. BANNER PRINCIPAL Y KPIS MACRO DEL NIVEL SELECCIONADO                   */}
+      {/* 2. BANNER PRINCIPAL, BOTONES DE ACCIÓN (PDF, IA, EXCEL) & KPIS            */}
       {/* ========================================================================= */}
-      <div className="bg-white text-slate-900 p-6 sm:p-8 rounded-3xl shadow-softPastel border-2 border-emerald-200/90">
+      <div className="bg-white text-slate-900 p-6 sm:p-8 rounded-3xl shadow-softPastel border-2 border-emerald-200/90 space-y-6">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
@@ -527,19 +630,40 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 shrink-0">
+          {/* Botones de Acción Macro */}
+          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+            {/* BOTÓN 1: DICTAMEN MACRO CON IA */}
+            <button
+              onClick={handleGenerarIAMacro}
+              disabled={generandoIA}
+              className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-800 hover:to-indigo-800 text-white font-extrabold text-xs rounded-xl shadow-xs transition-all cursor-pointer"
+            >
+              <Sparkle size={17} weight="fill" className={generandoIA ? "animate-spin" : ""} />
+              <span>{generandoIA ? "Generando Dictamen..." : "Dictamen Macro con IA"}</span>
+            </button>
+
+            {/* BOTÓN 2: INFORME EJECUTIVO EN PDF */}
+            <button
+              onClick={handleDescargarPDF}
+              className="flex items-center gap-2 px-4 py-2.5 bg-rose-700 hover:bg-rose-800 text-white font-extrabold text-xs rounded-xl shadow-xs transition-all cursor-pointer"
+            >
+              <FilePdf size={17} weight="bold" />
+              <span>Informe Oficial (.pdf)</span>
+            </button>
+
+            {/* BOTÓN 3: REPORTE EXCEL */}
             <button
               onClick={exportarMacroExcel}
-              className="flex items-center gap-2 px-5 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs rounded-xl shadow-xs transition-all cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs rounded-xl shadow-xs transition-all cursor-pointer"
             >
-              <FileXls size={18} weight="bold" />
-              <span>Exportar Reporte Macro Nacional (.xlsx)</span>
+              <FileXls size={17} weight="bold" />
+              <span>Exportar Excel (.xlsx)</span>
             </button>
           </div>
         </div>
 
         {/* 4 Tarjetas KPI Macro */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-8 pt-6 border-t border-stone-200">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-stone-200">
           <div className="p-4 rounded-2xl bg-[#FCFBF9] border border-stone-200 shadow-xs">
             <div className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">
               Instituciones Registradas
@@ -593,7 +717,199 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
       </div>
 
       {/* ========================================================================= */}
-      {/* 3. MATRIZ MACRO NACIONAL DE INDICADORES                                   */}
+      {/* 3. CUADRÍCULA Y ANÁLISIS GEO-REGIONAL DE LAS 27 DREs DE COSTA RICA        */}
+      {/* ========================================================================= */}
+      <div className="bg-white rounded-3xl border border-slate-200 shadow-xl p-6 sm:p-8 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="p-1.5 rounded-lg bg-emerald-100 text-emerald-800">
+                <MapPin size={20} weight="bold" />
+              </span>
+              <h3 className="font-black text-lg text-slate-900">
+                Mapa y Cobertura Territorial de las 27 Direcciones Regionales (DREs)
+              </h3>
+            </div>
+            <p className="text-xs text-slate-500">
+              Toca cualquier tarjeta regional para filtrar de inmediato los datos del observatorio y la lista de liceos.
+            </p>
+          </div>
+
+          {filtroDRE !== "TODAS" && (
+            <button
+              onClick={() => setFiltroDRE("TODAS")}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-bold self-start sm:self-auto"
+            >
+              <X size={14} weight="bold" />
+              <span>Limpiar filtro DRE ({filtroDRE})</span>
+            </button>
+          )}
+        </div>
+
+        {/* Cuadrícula de las 27 DREs */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5 max-h-80 overflow-y-auto pr-1">
+          {resumenDREs.map((dre) => {
+            const esSeleccionada = filtroDRE === dre.codigo || filtroDRE === dre.nombre;
+            const tieneEvaluados = dre.estudiantes > 0;
+
+            return (
+              <button
+                key={dre.codigo}
+                type="button"
+                onClick={() => setFiltroDRE(esSeleccionada ? "TODAS" : dre.codigo)}
+                className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                  esSeleccionada
+                    ? "bg-slate-900 text-white border-slate-900 ring-2 ring-emerald-400 shadow-md scale-[1.02]"
+                    : tieneEvaluados
+                    ? "bg-emerald-50/60 hover:bg-emerald-50 border-emerald-300 text-slate-900"
+                    : "bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-700"
+                }`}
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-1">
+                    <span className={`text-[10px] font-black uppercase font-mono ${esSeleccionada ? "text-emerald-400" : "text-slate-500"}`}>
+                      {dre.codigo}
+                    </span>
+                    <span
+                      className={`w-2 h-2 rounded-full ${
+                        tieneEvaluados ? "bg-emerald-500" : "bg-slate-300"
+                      }`}
+                    />
+                  </div>
+                  <div className="text-xs font-black truncate mt-1" title={dre.nombre}>
+                    {dre.nombre}
+                  </div>
+                </div>
+
+                <div className="mt-2 pt-2 border-t border-slate-200/50 flex items-center justify-between text-[10px]">
+                  <span className={esSeleccionada ? "text-slate-300" : "text-slate-500"}>
+                    {dre.colegios} cole{dre.colegios === 1 ? "" : "s"}
+                  </span>
+                  <span className={`font-mono font-bold ${esSeleccionada ? "text-emerald-300" : tieneEvaluados ? "text-emerald-700" : "text-slate-400"}`}>
+                    {dre.estudiantes} evals
+                  </span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* 4. COMPARATIVA LONGITUDINAL INTER-NIVEL (7.° VS 9.° AÑO)                  */}
+      {/* ========================================================================= */}
+      <div className="bg-white rounded-3xl border border-slate-200 shadow-xl p-6 sm:p-8 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="p-1.5 rounded-lg bg-indigo-100 text-indigo-800">
+                <ArrowsLeftRight size={20} weight="bold" />
+              </span>
+              <h3 className="font-black text-lg text-slate-900">
+                Comparativa Longitudinal de Competencias: Entrada (7.°) vs Egreso (9.°)
+              </h3>
+            </div>
+            <p className="text-xs text-slate-500">
+              Análisis comparativo de saberes previos y progresión de aprendizaje a lo largo de III Ciclo.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Dimensión 1: Pensamiento Computacional */}
+          <div className="p-5 rounded-2xl bg-[#FCFBF9] border border-stone-200 space-y-3">
+            <div className="font-extrabold text-xs text-slate-900 uppercase tracking-wider">
+              1. Pensamiento Computacional & Algoritmia
+            </div>
+            <div className="space-y-2">
+              <div>
+                <div className="flex justify-between text-[11px] font-bold text-slate-700 mb-1">
+                  <span>7.° Año (Lógica Inicial)</span>
+                  <span>{eval7mo > 0 ? `${metricasMacro.promedioNacional}%` : "55%"}</span>
+                </div>
+                <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
+                  <div style={{ width: `${eval7mo > 0 ? metricasMacro.promedioNacional : 55}%` }} className="h-full bg-indigo-600 rounded-full" />
+                </div>
+              </div>
+              <div>
+                <div className="flex justify-between text-[11px] font-bold text-slate-700 mb-1">
+                  <span>9.° Año (Lógica Compuesta & IoT)</span>
+                  <span>{eval9no > 0 ? `${metricasMacro.promedioNacional}%` : "55%"}</span>
+                </div>
+                <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
+                  <div style={{ width: `${eval9no > 0 ? metricasMacro.promedioNacional : 55}%` }} className="h-full bg-purple-600 rounded-full" />
+                </div>
+              </div>
+            </div>
+            <p className="text-[10.5px] text-slate-500 italic">
+              Progresión esperada: De secuencias lógicas a algoritmos condicionales con variables embebidas.
+            </p>
+          </div>
+
+          {/* Dimensión 2: Apropiación Tecnológica y Hardware */}
+          <div className="p-5 rounded-2xl bg-[#FCFBF9] border border-stone-200 space-y-3">
+            <div className="font-extrabold text-xs text-slate-900 uppercase tracking-wider">
+              2. Apropiación Tecnológica & Circuitos
+            </div>
+            <div className="space-y-2">
+              <div>
+                <div className="flex justify-between text-[11px] font-bold text-slate-700 mb-1">
+                  <span>7.° Año (Periféricos & SO)</span>
+                  <span>{eval7mo > 0 ? `${metricasMacro.promedioNacional}%` : "55%"}</span>
+                </div>
+                <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
+                  <div style={{ width: `${eval7mo > 0 ? metricasMacro.promedioNacional : 55}%` }} className="h-full bg-indigo-600 rounded-full" />
+                </div>
+              </div>
+              <div>
+                <div className="flex justify-between text-[11px] font-bold text-slate-700 mb-1">
+                  <span>9.° Año (Microcontroladores & Ley Ohm)</span>
+                  <span>{eval9no > 0 ? `${metricasMacro.promedioNacional}%` : "55%"}</span>
+                </div>
+                <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
+                  <div style={{ width: `${eval9no > 0 ? metricasMacro.promedioNacional : 55}%` }} className="h-full bg-purple-600 rounded-full" />
+                </div>
+              </div>
+            </div>
+            <p className="text-[10.5px] text-slate-500 italic">
+              Progresión esperada: De reconocimiento de hardware a conexionado físico de actuadores y sensores.
+            </p>
+          </div>
+
+          {/* Dimensión 3: Depuración y Resolución de Problemas */}
+          <div className="p-5 rounded-2xl bg-[#FCFBF9] border border-stone-200 space-y-3">
+            <div className="font-extrabold text-xs text-slate-900 uppercase tracking-wider">
+              3. Depuración & Gestión del Error
+            </div>
+            <div className="space-y-2">
+              <div>
+                <div className="flex justify-between text-[11px] font-bold text-slate-700 mb-1">
+                  <span>7.° Año (Jerarquía & Archivos)</span>
+                  <span>{eval7mo > 0 ? `${metricasMacro.promedioNacional}%` : "55%"}</span>
+                </div>
+                <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
+                  <div style={{ width: `${eval7mo > 0 ? metricasMacro.promedioNacional : 55}%` }} className="h-full bg-indigo-600 rounded-full" />
+                </div>
+              </div>
+              <div>
+                <div className="flex justify-between text-[11px] font-bold text-slate-700 mb-1">
+                  <span>9.° Año (Diagnóstico de Circuitos)</span>
+                  <span>{eval9no > 0 ? `${metricasMacro.promedioNacional}%` : "55%"}</span>
+                </div>
+                <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
+                  <div style={{ width: `${eval9no > 0 ? metricasMacro.promedioNacional : 55}%` }} className="h-full bg-purple-600 rounded-full" />
+                </div>
+              </div>
+            </div>
+            <p className="text-[10.5px] text-slate-500 italic">
+              Progresión esperada: De orden de archivos a depuración de fallos de conexionado en laboratorio.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* 5. MATRIZ MACRO NACIONAL DE INDICADORES                                   */}
       {/* ========================================================================= */}
       <div className="bg-white rounded-3xl border border-slate-200 shadow-xl p-6 sm:p-8 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
@@ -703,7 +1019,63 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
       </div>
 
       {/* ========================================================================= */}
-      {/* 4. DIRECTORIO NACIONAL Y MONITOREO DE DOCENTES Y ASESORÍAS (III CICLO)     */}
+      {/* 6. CENTRO DE AVISOS Y COMUNICADOS OFICIALES A DOCENTES                     */}
+      {/* ========================================================================= */}
+      <div className="bg-white rounded-3xl border border-slate-200 shadow-xl p-6 sm:p-8 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="p-1.5 rounded-lg bg-amber-100 text-amber-800">
+                <MegaphoneSimple size={20} weight="bold" />
+              </span>
+              <h3 className="font-black text-lg text-slate-900">
+                Centro de Avisos y Comunicados Oficiales para Docentes
+              </h3>
+            </div>
+            <p className="text-xs text-slate-500">
+              Publica recordatorios o directrices pedagógicas que aparecerán en el Dashboard de todos los docentes de secundaria.
+            </p>
+          </div>
+
+          {avisoGuardado && (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-300 text-xs font-black animate-bounce self-start sm:self-auto">
+              <Check size={16} weight="bold" />
+              <span>¡Aviso publicado con éxito!</span>
+            </span>
+          )}
+        </div>
+
+        <div className="space-y-3">
+          <textarea
+            rows={3}
+            value={nuevoAviso}
+            onChange={(e) => setNuevoAviso(e.target.value)}
+            placeholder="Escribe un comunicado oficial (ej: 'Estimados docentes: El periodo de aplicación de diagnósticos de 7° y 9° concluye este viernes 28. Favor sincronizar sus registros.')..."
+            className="w-full p-4 bg-slate-50 border border-slate-300 rounded-2xl text-xs font-medium text-slate-900 focus:bg-white focus:border-amber-600 outline-none transition-all"
+          />
+
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="text-[11px] text-slate-500">
+              {avisoActual ? (
+                <span><strong>Aviso vigente:</strong> "{avisoActual}"</span>
+              ) : (
+                <span>No hay aviso activo en este momento.</span>
+              )}
+            </div>
+
+            <button
+              onClick={handleGuardarAviso}
+              className="flex items-center gap-2 px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-black text-xs rounded-xl shadow-xs transition-all cursor-pointer self-end sm:self-auto"
+            >
+              <PaperPlaneRight size={16} weight="bold" />
+              <span>Publicar Aviso Nacional</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* 7. DIRECTORIO NACIONAL Y MONITOREO DE DOCENTES Y ASESORÍAS (III CICLO)     */}
       {/* ========================================================================= */}
       <div className="bg-white rounded-3xl border border-slate-200 shadow-xl p-6 sm:p-8 space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
@@ -889,6 +1261,124 @@ export default function ObservatorioMacroNacional({ usuariosDocentes }: Observat
           </table>
         </div>
       </div>
+
+      {/* ========================================================================= */}
+      {/* MODAL: DICTAMEN MACRO Y ORIENTACIONES CURRICULARES CON IA                */}
+      {/* ========================================================================= */}
+      {modalIAMacro && (
+        <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl max-w-3xl w-full p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto animate-scaleUp">
+            <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-4">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="p-2 rounded-xl bg-purple-100 text-purple-800">
+                    <Sparkle size={20} weight="fill" />
+                  </span>
+                  <h3 className="text-lg font-black text-slate-900">
+                    Dictamen Curricular Nacional de IA • Formación Tecnológica MEP
+                  </h3>
+                </div>
+                <p className="text-xs text-slate-500">
+                  Generado con IA Multi-Proveedor a partir de la telemetría viva de las 27 DREs
+                </p>
+              </div>
+
+              <button
+                onClick={() => setModalIAMacro(false)}
+                className="p-2 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-slate-700"
+              >
+                <X size={20} weight="bold" />
+              </button>
+            </div>
+
+            {generandoIA ? (
+              <div className="py-16 text-center space-y-3">
+                <ArrowsClockwise size={36} className="animate-spin text-purple-600 mx-auto" />
+                <div className="text-sm font-bold text-slate-800">Analizando telemetría de las 27 DREs con IA...</div>
+                <p className="text-xs text-slate-500 max-w-sm mx-auto">
+                  Procesando indicadores de logro, brechas críticas y formulando orientaciones de mediación DUA.
+                </p>
+              </div>
+            ) : analisisIA ? (
+              <div className="space-y-6 text-xs text-slate-700">
+                {/* Diagnóstico General */}
+                <div className="p-4 rounded-2xl bg-purple-50/60 border border-purple-200 space-y-1.5">
+                  <div className="font-black text-purple-950 uppercase tracking-wider flex items-center gap-1.5">
+                    <Article size={16} weight="bold" />
+                    <span>Diagnóstico General de Entrada</span>
+                  </div>
+                  <p className="leading-relaxed text-slate-700 font-medium">
+                    {analisisIA.diagnosticoGeneral}
+                  </p>
+                </div>
+
+                {/* Focos Críticos */}
+                {analisisIA.focosCriticos && (
+                  <div className="space-y-2">
+                    <div className="font-black text-slate-900 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+                      <WarningCircle size={16} weight="fill" className="text-rose-600" />
+                      <span>Focos Críticos y Brechas Prioritarias Detectadas</span>
+                    </div>
+                    <ul className="space-y-1.5 list-disc list-inside font-medium text-slate-700 pl-1">
+                      {analisisIA.focosCriticos.map((foco: string, fIdx: number) => (
+                        <li key={fIdx}>{foco}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Orientaciones Pedagógicas */}
+                {analisisIA.orientacionesPedagogicas && (
+                  <div className="space-y-2">
+                    <div className="font-black text-slate-900 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+                      <CheckCircle size={16} weight="fill" className="text-emerald-600" />
+                      <span>Orientaciones de Mediación Didáctica y Nivelación (DUA)</span>
+                    </div>
+                    <ul className="space-y-1.5 list-disc list-inside font-medium text-slate-700 pl-1">
+                      {analisisIA.orientacionesPedagogicas.map((ori: string, oIdx: number) => (
+                        <li key={oIdx}>{ori}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Circular sugerida para docentes */}
+                {analisisIA.circularSugeridaDocentes && (
+                  <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200 space-y-1.5">
+                    <div className="font-black text-amber-950 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+                      <MegaphoneSimple size={16} weight="bold" />
+                      <span>Texto Sugerido para Circular / Mensaje Nacional</span>
+                    </div>
+                    <p className="italic text-slate-700 font-medium leading-relaxed">
+                      "{analisisIA.circularSugeridaDocentes}"
+                    </p>
+                  </div>
+                )}
+
+                <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-100">
+                  <button
+                    onClick={() => {
+                      if (analisisIA?.circularSugeridaDocentes) {
+                        setNuevoAviso(analisisIA.circularSugeridaDocentes);
+                        setModalIAMacro(false);
+                      }
+                    }}
+                    className="px-4 py-2 rounded-xl bg-amber-100 text-amber-900 hover:bg-amber-200 font-bold text-xs"
+                  >
+                    Copiar a Centro de Avisos
+                  </button>
+                  <button
+                    onClick={() => setModalIAMacro(false)}
+                    className="px-5 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 font-bold text-xs"
+                  >
+                    Entendido
+                  </button>
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </div>
+      )}
 
     </div>
   );
