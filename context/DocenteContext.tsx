@@ -1761,11 +1761,19 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
         const cedClean = (docente?.cedula || "").replace(/[^a-zA-Z0-9]/g, "");
         const claves = [
           "diagnosticos_mep_9no",
+          "diagnostico_9no_mep_bloqueo_entrega",
+          "diagnostico_9no_sesion_activa",
           "nomina_docente_9no_mep",
           "evaluacion_docente_8vo",
           "telemetria_8vo_local",
           "MEP_DOCENTE_8VO_EVALUATIONS",
           "MEP_DOCENTE_7MO_EVALUATIONS",
+          "cyberquest_7mo_evaluations",
+          "cyberquest_7mo_state",
+          "cyberquest_7mo_offline_queue",
+          "MEP_NOTAS_DOCENTE_MAP",
+          "mep_telemetria_cache",
+          "registros_evaluaciones_docente",
           "telemetria_registros",
         ];
         if (cedClean) {
@@ -1776,7 +1784,9 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
         claves.forEach((k) => {
           try {
             localStorage.removeItem(k);
+            SafeStorage.removeItem(k);
             localStorage.setItem(k, JSON.stringify([]));
+            SafeStorage.setItem(k, JSON.stringify([]));
           } catch {}
         });
       }
