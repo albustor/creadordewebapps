@@ -1,0 +1,75 @@
+{
+  "name": "Diagnóstico Secundaria - Formación Tecnológica MEP",
+  "short_name": "Diagnóstico MEP",
+  "description": "Herramienta oficial de evaluación diagnóstica formativa y escáner de datos para Formación Tecnológica MEP Costa Rica.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#002b49",
+  "theme_color": "#002b49",
+  "id": "cr.mep.formaciontecnologica.diagnostico",
+  "categories": ["education", "tools", "productivity"],
+  "lang": "es-CR",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Escáner QR Offline",
+      "short_name": "Escáner",
+      "description": "Escanear QR de telemetría y diagnósticos de estudiantes",
+      "url": "/diagnostico_escaner_datos_locales.html",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Panel Docente",
+      "short_name": "Dashboard",
+      "description": "Nóminas, rúbricas y sistematización formativa MEP",
+      "url": "/dashboard",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Diagnóstico 7° Año",
+      "short_name": "7° Año",
+      "description": "Diagnóstico de 7° Año CyberQuest",
+      "url": "/diagnostico_setimo_ano.html",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    }
+  ]
+}

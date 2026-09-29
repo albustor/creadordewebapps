@@ -31,8 +31,36 @@ export default function ModalInstalacionPWA({
 }: ModalInstalacionPWAProps) {
   const [plataforma, setPlataforma] = useState<"android" | "ios" | "huawei">("android");
   const [copiado, setCopiado] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [instalado, setInstalado] = useState(false);
+
+  React.useEffect(() => {
+    const handler = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener("beforeinstallprompt", handler);
+    window.addEventListener("appinstalled", () => {
+      setInstalado(true);
+      setDeferredPrompt(null);
+    });
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handler);
+    };
+  }, []);
 
   if (!abierto) return null;
+
+  const handleInstalarDirecto = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === "accepted") {
+        setInstalado(true);
+      }
+      setDeferredPrompt(null);
+    }
+  };
 
   const urlFinal =
     urlApp ||
@@ -123,6 +151,28 @@ export default function ModalInstalacionPWA({
         {/* Contenido con Scroll */}
         <div className="p-4 sm:p-6 overflow-y-auto space-y-5 text-slate-800">
           
+          {/* Botón de Instalación Automática 1-Toque si el navegador lo soporta */}
+          {deferredPrompt && (
+            <div className="bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-md animate-fadeIn">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-white/20 flex items-center justify-center shrink-0">
+                  <Sparkle size={20} weight="fill" className="text-amber-300" />
+                </div>
+                <div>
+                  <h4 className="font-extrabold text-sm leading-tight">Instalación Directa Detectada</h4>
+                  <p className="text-xs text-emerald-100">Su dispositivo está listo para instalar la Web App con 1 toque.</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={handleInstalarDirecto}
+                className="w-full sm:w-auto px-4 py-2 bg-white text-emerald-900 font-extrabold text-xs rounded-lg shadow-sm hover:bg-emerald-50 transition-colors cursor-pointer shrink-0"
+              >
+                📲 Instalar App en Android
+              </button>
+            </div>
+          )}
+
           {/* Tarjeta Explicativa de Funcionamiento Offline */}
           <div className="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl p-3.5 sm:p-4 flex items-start gap-3 text-xs leading-relaxed">
             <div className="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
@@ -145,6 +195,21 @@ export default function ModalInstalacionPWA({
                 <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-extrabold border border-emerald-300">
                   Google Chrome • Samsung Internet • Microsoft Edge
                 </span>
+              </div>
+
+              {/* Aclaración visual sobre el menú inferior de Android */}
+              <div className="bg-amber-50/80 border border-amber-200 rounded-xl p-3.5 text-xs text-amber-950 space-y-1.5">
+                <div className="font-bold flex items-center gap-1.5 text-amber-900">
+                  <span>💡</span>
+                  <span>Opciones en el menú de Chrome:</span>
+                </div>
+                <p className="text-amber-900/90 leading-relaxed">
+                  En el diálogo <strong>«Instalar y crear acceso directo»</strong> de Chrome:
+                </p>
+                <ul className="list-disc pl-5 space-y-1 text-slate-700">
+                  <li><strong>«Instalar»</strong>: Instala la app PWA autónoma en pantalla completa.</li>
+                  <li><strong>«Crear acceso directo»</strong>: Crea el icono de acceso directo en tu pantalla de inicio con soporte 100% offline.</li>
+                </ul>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
@@ -171,10 +236,10 @@ export default function ModalInstalacionPWA({
                 <div className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-1.5">
                   <div className="flex items-center gap-2 font-bold text-slate-900">
                     <span className="w-5 h-5 rounded-full bg-[#1B5E59] text-white flex items-center justify-center text-[10px]">3</span>
-                    <span>Instalar o agregar a inicio</span>
+                    <span>Instalar o Crear acceso directo</span>
                   </div>
                   <p className="text-slate-600 pl-7">
-                    Seleccione la opción <strong>«Instalar aplicación»</strong> o <strong>«Agregar a la pantalla principal»</strong>.
+                    Seleccione <strong>«Instalar aplicación»</strong> o <strong>«Agregar a la pantalla principal»</strong>.
                   </p>
                 </div>
 
@@ -184,7 +249,7 @@ export default function ModalInstalacionPWA({
                     <span>Confirmar y listo</span>
                   </div>
                   <p className="text-slate-600 pl-7">
-                    Presione <strong>«Instalar»</strong>. La Web App se ejecutará en pantalla completa con icono directo en su celular.
+                    Presione <strong>«Instalar»</strong> o <strong>«Crear acceso directo»</strong>. La Web App se ejecutará con su icono oficial en su celular.
                   </p>
                 </div>
               </div>
