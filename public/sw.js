@@ -1,5 +1,5 @@
 // Service Worker Oficial - Diagnóstico Secundaria MEP
-const CACHE_NAME = 'mep-diagnostico-v8';
+const CACHE_NAME = 'mep-diagnostico-v9';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
@@ -13,16 +13,16 @@ const STATIC_ASSETS = [
   '/favicon.svg',
   '/favicon.png',
   '/favicon.ico',
+  '/diagnostico_escaner_7mo.html',
+  '/diagnostico_escaner_9no.html',
   '/diagnostico_escaner_v3.html',
   '/diagnostico_escaner_datos_v3.html',
   '/diagnostico_escaner_datos_locales_v3.html',
-  '/diagnostico_7mo_modulo01_desconectado_offline_v3.html',
-  '/diagnostico_8vo_modulo01_desconectado_offline_v3.html',
-  '/diagnostico_9no_modulo01_desconectado_offline_v3.html',
+  '/diagnostico_7mo_modulo01_desconectado_offline.html',
+  '/diagnostico_9no_modulo01_desconectado_offline.html',
+  '/webapps/diagnostico_escaner_7mo.html',
+  '/webapps/diagnostico_escaner_9no.html',
   '/webapps/diagnostico_escaner_v3.html',
-  '/webapps/diagnostico_escaner_datos_v3.html',
-  '/webapps/diagnostico_7mo_modulo01_desconectado_offline_v3.html',
-  '/webapps/diagnostico_8vo_modulo01_desconectado_offline_v3.html',
   '/webapps/diagnostico_9no_modulo01_desconectado_offline_v3.html'
 ];
 

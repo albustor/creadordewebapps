@@ -3324,90 +3324,91 @@ function identityComplete(){
 
 
 function updateStage1Button(){
-
     const button =
         document.getElementById(
             "btnStage1"
         );
 
-
     if(!button){
         return;
     }
 
+    button.disabled = false;
+}
 
-    button.disabled =
-        !identityComplete();
 
+function getPendingQuestions(){
+    const fields = [
+        { id: "q1", num: 1 },
+        { id: "q2", num: 2 },
+        { id: "q3", num: 3 },
+        { id: "q4", num: 4 },
+        { id: "q5", num: 5 },
+        { id: "q6sensor", num: 6, label: "6. Sensor" },
+        { id: "q6actuator", num: 6, label: "6. Actuador" },
+        { id: "q6micro", num: 6, label: "6. Microcontrolador" },
+        { id: "q7", num: 7 },
+        { id: "q8", num: 8 },
+        { id: "q9", num: 9 },
+        { id: "q10", num: 10 }
+    ];
+
+    return fields.filter(
+        f => getRadio(f.id) === null
+    );
 }
 
 
 function cognitiveComplete(){
-
-    const fields = [
-
-        "q1",
-        "q2",
-        "q3",
-        "q4",
-        "q5",
-
-        "q6sensor",
-        "q6actuator",
-        "q6micro",
-
-        "q7",
-        "q8",
-        "q9",
-        "q10"
-
-    ];
-
-
-    return fields.every(
-        field =>
-            getRadio(field) !== null
-    );
-
+    return getPendingQuestions().length === 0;
 }
 
 
 function finishStage1(){
-
     const message =
         document.getElementById(
             "stage1Message"
         );
 
+    const nameField = document.getElementById("studentName");
+    const secField = document.getElementById("section");
+    const instField = document.getElementById("institution");
 
     if(!identityComplete()){
-
-        message.textContent =
-            "Complete el nombre, la sección y el centro educativo antes de continuar.";
-
-        updateStage1Button();
-
+        if(message) {
+            message.className = "notice danger";
+            message.textContent = "⚠️ Por favor complete los datos obligatorios arriba: Nombre, Sección y Centro Educativo.";
+        }
+        if(!nameField.value.trim()) { nameField.focus(); nameField.scrollIntoView({ behavior: "smooth", block: "center" }); return; }
+        if(!secField.value.trim()) { secField.focus(); secField.scrollIntoView({ behavior: "smooth", block: "center" }); return; }
+        if(!instField.value.trim()) { instField.focus(); instField.scrollIntoView({ behavior: "smooth", block: "center" }); return; }
         return;
-
     }
 
+    const pending = getPendingQuestions();
 
-    if(!cognitiveComplete()){
-
-        message.textContent =
-            "Complete las 10 preguntas antes de continuar.";
-
+    if(pending.length > 0){
+        if(message) {
+            message.className = "notice warning";
+            const pText = pending.map(p => p.label || ("Pregunta " + p.num)).slice(0, 3).join(", ");
+            message.innerHTML = `<strong>⚠️ Faltan preguntas por responder:</strong> Complete ${pText}${pending.length > 3 ? '...' : ''} para continuar.`;
+        }
+        const firstPending = document.querySelector(`input[name="${pending[0].id}"]`);
+        if(firstPending) {
+            const cardParent = firstPending.closest('.question') || firstPending;
+            cardParent.scrollIntoView({ behavior: "smooth", block: "center" });
+            cardParent.style.outline = "3px solid #e07a2c";
+            setTimeout(() => { cardParent.style.outline = ""; }, 2500);
+        }
         return;
-
     }
 
-
-    message.textContent =
-        "Datos y preguntas completos.";
-
+    if(message) {
+        message.className = "notice success";
+        message.textContent = "✅ Datos y 10 preguntas cognoscitivas completas.";
+    }
 
     goToStage(2);
-
 }
 
 

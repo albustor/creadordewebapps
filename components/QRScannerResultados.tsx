@@ -292,6 +292,106 @@ export default function QRScannerResultados({
         } catch {
           datos = {};
         }
+      } else if (textoLimpio.startsWith("MEP7|")) {
+        // PROTOCOLO ESTÁNDAR SÉTIMO: MEP7|seccion|c1|c2|psico|cog|socio|global|lvl|hash
+        const partes = textoLimpio.split("|");
+        const sec = (partes[1] || "7-1").replace(/^secci[oó]n\s*/i, '').trim();
+        const c1 = (partes[2] || "Estudiante 1").trim();
+        const c2 = (partes[3] || "Individual").trim();
+        const psico = parseFloat(partes[4]) || 80;
+        const cog = parseFloat(partes[5]) || 80;
+        const socio = parseFloat(partes[6]) || 85;
+        const global = parseFloat(partes[7]) || Math.round((psico + cog + socio) / 3);
+        const lvl = partes[8] || (global >= 80 ? "A" : global >= 60 ? "B" : "C");
+        const hash = partes[9] || `H7-${Date.now()}`;
+
+        const nombreCompuesto = c2 && c2 !== "Individual" && c2 !== "Solo" ? `${c1} & ${c2}` : c1;
+
+        datos = {
+          nom: nombreCompuesto,
+          c1: c1,
+          c2: c2,
+          sec: sec,
+          s: sec,
+          p: Math.round((global / 100) * 10),
+          tot: 10,
+          porc: global,
+          g: global,
+          c: cog,
+          psicoScore: psico,
+          cogScore: cog,
+          socioScore: socio,
+          globalAvg: global,
+          nivelLogro: lvl === "A" ? "Avanzado (A)" : lvl === "B" ? "Intermedio (B)" : "Inicial (C)",
+          lvl: lvl,
+          h: hash,
+          n: "7°",
+          t: "MEP7"
+        };
+      } else if (textoLimpio.startsWith("D2|")) {
+        // PROTOCOLO ESTÁNDAR NOVENO: D2|EST|SEC|CENTRO|FEC|C:...|P:...|S:...|F:...|A:...|R:...|N:...|B:...
+        const partes = textoLimpio.split("|");
+        const est = (partes[1] || "Estudiante 9no").trim();
+        const sec = (partes[2] || "9-1").replace(/^secci[oó]n\s*/i, '').trim();
+        const centro = (partes[3] || "MEP").trim();
+        const fec = (partes[4] || new Date().toLocaleDateString()).trim();
+
+        let aciertos = 8;
+        let total = 10;
+        let porc = 80;
+        let nivelTexto = "Dominio Completo";
+        let saberesC = "";
+        let saberesP = "";
+        let socioS = "";
+        let fortalezas = "";
+        let apoyos = "";
+        let conexiones = "5/5";
+
+        for (let i = 5; i < partes.length; i++) {
+          const seg = partes[i];
+          if (seg.startsWith("R:")) {
+            const rVal = seg.substring(2).trim();
+            const mFrac = rVal.match(/(\d+(?:\.\d+)?)\s*(?:\/\s*(\d+))?/);
+            if (mFrac) {
+              aciertos = parseFloat(mFrac[1]);
+              total = mFrac[2] ? parseInt(mFrac[2], 10) : 10;
+              porc = Math.round((aciertos / total) * 100);
+            }
+          } else if (seg.startsWith("N:")) {
+            nivelTexto = seg.substring(2).trim();
+          } else if (seg.startsWith("C:")) {
+            saberesC = seg.substring(2).trim();
+          } else if (seg.startsWith("P:")) {
+            saberesP = seg.substring(2).trim();
+          } else if (seg.startsWith("S:")) {
+            socioS = seg.substring(2).trim();
+          } else if (seg.startsWith("F:")) {
+            fortalezas = seg.substring(2).trim();
+          } else if (seg.startsWith("A:")) {
+            apoyos = seg.substring(2).trim();
+          } else if (seg.startsWith("B:")) {
+            conexiones = seg.substring(2).trim();
+          }
+        }
+
+        datos = {
+          nom: est,
+          sec: sec,
+          centro: centro,
+          fec: fec,
+          p: aciertos,
+          tot: total,
+          porc: porc,
+          nivelCog: nivelTexto,
+          saberesC: saberesC,
+          saberesP: saberesP,
+          socTexto: socioS,
+          fortalezas: fortalezas,
+          prioridades: apoyos,
+          conexiones: conexiones,
+          n: "9°",
+          t: "MEP9"
+        };
       } else {
         const lineas = textoLimpio.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
         
