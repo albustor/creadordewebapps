@@ -1154,20 +1154,6 @@ export default function PanelDocenteSimplificado() {
         {/* Acciones Rápidas en Cabecera (Lado Derecho) - Solo visibles en modo Desconectado/Offline */}
         {filtroModoEnlaces === "offline" && (
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 animate-fadeIn">
-            <a
-              href={archivoEscanerPWA}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 sm:py-2 rounded-xl text-xs font-black shadow-xs transition-all border ${
-                nivelActivo === "7mo"
-                  ? "bg-blue-50/90 text-[#002b49] border-blue-200 hover:bg-blue-100"
-                  : "bg-emerald-50/90 text-[#1B5E59] border-emerald-200 hover:bg-emerald-100"
-              }`}
-              title={`Abrir Escáner de Datos ${nivelActivo === "7mo" ? "7.° Año" : "9.° Año"} en una pestaña nueva`}
-            >
-              <QrCode size={16} weight="bold" />
-              <span>Escáner {nivelActivo === "7mo" ? "7.° Año" : "9.° Año"}</span>
-            </a>
             {/* Botón de Importación de Lote USB / Archivos JSON o CSV */}
             <label className="inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:py-2 rounded-xl bg-[#1F3F78] hover:bg-[#2E3552] text-white text-xs font-bold shadow-xs transition-all cursor-pointer">
               <DownloadSimple size={16} weight="bold" />
@@ -1763,21 +1749,8 @@ export default function PanelDocenteSimplificado() {
                       ) : (
                         <div className="px-3 pb-2.5 flex items-center justify-between gap-2 text-xs">
                           <span className="text-[#974800] font-bold text-[11px]">
-                            Modo fuera de línea listo
+                            Modo fuera de línea listo (Toca para expandir)
                           </span>
-                          <a
-                            href={archivoEscanerPWA}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={`text-white text-[11px] font-black px-2.5 py-1 rounded-md transition-colors cursor-pointer inline-flex items-center gap-1 shadow-2xs ${
-                              nivelActivo === "7mo"
-                                ? "bg-[#002b49] hover:bg-[#113a60]"
-                                : "bg-[#1B5E59] hover:bg-[#144642]"
-                            }`}
-                          >
-                            <Camera size={12} weight="bold" />
-                            <span>Escáner {nivelActivo === "7mo" ? "7.° Año" : "9.° Año"}</span>
-                          </a>
                         </div>
                       )}
                     </div>
@@ -3461,31 +3434,7 @@ export default function PanelDocenteSimplificado() {
 
       </div>
 
-      {/* ========================================================= */}
-      {/* BOTÓN FLOTANTE (FAB) PARA ESCÁNER QR EN MÓVIL             */}
-      {/* ========================================================= */}
-      <button
-        type="button"
-        onClick={() => setModalEscaner(true)}
-        aria-label={`Abrir escáner de datos ${nivelActivo === "7mo" ? "7.° Año (Séptimo)" : "9.° Año (Noveno)"}`}
-        title={`Abrir escáner de datos ${nivelActivo === "7mo" ? "7.° Año (Séptimo)" : "9.° Año (Noveno)"} (cámara, CSV y métricas)`}
-        className={`md:hidden fixed bottom-20 right-4 z-40 p-3.5 rounded-full shadow-2xl flex items-center justify-center cursor-pointer active:scale-95 transition-all relative ${
-          nivelActivo === "7mo"
-            ? "bg-gradient-to-br from-[#002b49] via-[#0f3458] to-[#1F3F78] text-white ring-4 ring-[#D4AF5A] shadow-[0_8px_25px_rgba(0,43,73,0.5)]"
-            : "bg-gradient-to-br from-[#004641] via-[#1B5E59] to-[#047857] text-white ring-4 ring-emerald-300 shadow-[0_8px_25px_rgba(4,120,87,0.5)]"
-        }`}
-      >
-        <Camera size={25} weight="bold" className={nivelActivo === "7mo" ? "text-amber-300" : "text-emerald-200"} />
-        <span
-          className={`absolute -top-2 -right-1.5 text-[10px] font-black px-1.5 py-0.5 rounded-full shadow-md border-2 border-white ${
-            nivelActivo === "7mo"
-              ? "bg-[#D4AF5A] text-[#002b49] ring-1 ring-[#002b49]/40"
-              : "bg-cyan-600 text-white ring-1 ring-emerald-900/40"
-          }`}
-        >
-          {nivelActivo === "7mo" ? "7.°" : "9.°"}
-        </span>
-      </button>
+
 
       {/* ========================================================= */}
       {/* BARRA DE NAVEGACIÓN INFERIOR FIJA EN MÓVIL (BOTTOM NAV)   */}
