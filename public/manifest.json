@@ -51,10 +51,10 @@
   ],
   "shortcuts": [
     {
-      "name": "Escáner QR Offline",
-      "short_name": "Escáner",
+      "name": "Escáner QR V3 (Universal)",
+      "short_name": "Escáner V3",
       "description": "Escanear QR de telemetría y diagnósticos de estudiantes",
-      "url": "/diagnostico_escaner_datos_locales.html",
+      "url": "/diagnostico_escaner_datos_v3.html",
       "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
     },
     {
