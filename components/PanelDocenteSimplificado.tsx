@@ -277,10 +277,10 @@ export const CRITERIOS_PSICOMOTRICES_MAP: Record<"7mo" | "9no", CriterioPsicomot
       codigo: "P4. Programa",
       titulo: "Programa",
       areaCurricular: "Programación y algoritmos",
-      preguntaGuia: "«¿Comprueba que al bajar la luz (<300 Lux) el microcontrolador activa la salida digital D9?»",
-      desc: "Valida la estructura condicional y asignación de pines: comprueba que al bajar la luz (<300 Lux) el microcontrolador activa la salida digital D9.",
-      escalaA: "Logrado (L): Verifica estados lógicos y umbrales con exactitud técnica en el simulador.",
-      escalaB: "En Desarrollo (ED): Comprende la relación condicional umbral-actuador tras aclaración del docente.",
+      preguntaGuia: "«Debe aplicar el slider a < 300 Lux y energizar el actuador D9. De lo contrario, queda «No Ejecutado».»",
+      desc: "Debe aplicar el slider a < 300 Lux y energizar el actuador D9. De lo contrario, queda «No Ejecutado».",
+      escalaA: "Logrado (L): Aplica el slider a < 300 Lux y energiza el pin digital D9 en el simulador.",
+      escalaB: "En Desarrollo (ED): Interactúa con el slider pero no completa la condición umbral.",
       escalaC: "Requiere Acompañamiento (RA): No asocia el valor del umbral del sensor a la activación del actuador.",
       modalidadEvaluacion: "hibrido",
       etiquetaModalidad: "⚡ Híbrido + Docente",
@@ -730,7 +730,7 @@ export default function PanelDocenteSimplificado() {
 
     registrosSeccion.forEach((r) => {
       const socio = r.socioafectivo || {};
-      const valores = [socio.s1 || "A", socio.s2 || "A", socio.s3 || "A", socio.s4 || "A"];
+      const valores = [socio.s1, socio.s2, socio.s3, socio.s4].filter(Boolean);
       valores.forEach((v) => {
         totalCriteriosEvaluados++;
         if (v === "A") puntosSocioafectivos += 100;
@@ -2262,10 +2262,10 @@ export default function PanelDocenteSimplificado() {
                         <tbody className="divide-y divide-slate-100 font-medium">
                           {registrosSeccion.map((r, i) => {
                             const socio = r.socioafectivo || {};
-                            const s1Val = socio.s1 || "A";
-                            const s2Val = socio.s2 || "A";
-                            const s3Val = socio.s3 || "A";
-                            const s4Val = socio.s4 || "A";
+                            const s1Val = socio.s1;
+                            const s2Val = socio.s2;
+                            const s3Val = socio.s3;
+                            const s4Val = socio.s4;
                             const idKey = r.idResultado || r.estudianteCedula || r.estudianteNombre;
                             const tieneAlerta = (r.telemetria && r.telemetria.anomalias && r.telemetria.anomalias.length > 0) || (r.telemetria && r.telemetria.intentosTotales && r.telemetria.intentosTotales > 10) || (r.intentos && r.intentos > 10);
 
@@ -2852,30 +2852,39 @@ export default function PanelDocenteSimplificado() {
                               let conteoA = 0;
                               let conteoB = 0;
                               let conteoC = 0;
+                              let totalEvaluados = 0;
                               criteriosActuales.forEach((crit) => {
-                                const v = psico[crit.id] || "A";
-                                if (v === "A") conteoA++;
-                                else if (v === "B") conteoB++;
-                                else conteoC++;
+                                const v = psico[crit.id];
+                                if (v === "A") { conteoA++; totalEvaluados++; }
+                                else if (v === "B") { conteoB++; totalEvaluados++; }
+                                else if (v === "C") { conteoC++; totalEvaluados++; }
                               });
 
                               let badgeNivel = {
-                                label: "Nivel A",
-                                desc: "Logrado",
-                                cls: "bg-emerald-100 text-emerald-800 border-emerald-300"
+                                label: "Sin Evaluar",
+                                desc: "No ejecutado",
+                                cls: "bg-slate-100 text-slate-600 border-slate-300"
                               };
-                              if (conteoC >= Math.ceil(criteriosActuales.length * 0.5)) {
-                                badgeNivel = {
-                                  label: "Nivel C",
-                                  desc: "Inicial",
-                                  cls: "bg-rose-100 text-rose-800 border-rose-300"
-                                };
-                              } else if (conteoB > conteoA || conteoA < Math.ceil(criteriosActuales.length * 0.5)) {
-                                badgeNivel = {
-                                  label: "Nivel B",
-                                  desc: "En Proceso",
-                                  cls: "bg-amber-100 text-amber-800 border-amber-300"
-                                };
+                              if (totalEvaluados > 0) {
+                                if (conteoC >= Math.ceil(totalEvaluados * 0.5)) {
+                                  badgeNivel = {
+                                    label: "Nivel C",
+                                    desc: "Inicial",
+                                    cls: "bg-rose-100 text-rose-800 border-rose-300"
+                                  };
+                                } else if (conteoB > conteoA || conteoA < Math.ceil(totalEvaluados * 0.5)) {
+                                  badgeNivel = {
+                                    label: "Nivel B",
+                                    desc: "En Proceso",
+                                    cls: "bg-amber-100 text-amber-800 border-amber-300"
+                                  };
+                                } else {
+                                  badgeNivel = {
+                                    label: "Nivel A",
+                                    desc: "Logrado",
+                                    cls: "bg-emerald-100 text-emerald-800 border-emerald-300"
+                                  };
+                                }
                               }
 
                               const observacionGuardada = notasLocales[idKey] || r.observacionDocente || "";
@@ -2901,7 +2910,7 @@ export default function PanelDocenteSimplificado() {
 
                                   {/* Criterios Dinámicos P1..Pn */}
                                   {criteriosActuales.map((crit) => {
-                                    const val = psico[crit.id] || "A";
+                                    const val = psico[crit.id];
                                     return (
                                       <td key={crit.id} className="py-3 px-2 text-center">
                                         <div className="inline-flex rounded-md border border-slate-200 p-0.5 bg-slate-50 shadow-2xs">

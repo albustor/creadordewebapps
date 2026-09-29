@@ -1189,7 +1189,7 @@
           🔌 Reto 1: Conectar una luz de acuerdo a la intensidad de luz ambiente
         </h3>
         <p style="font-size: 12px; color: #1e293b; line-height: 1.5; margin: 0;">
-          <strong>Instrucción:</strong> Conecta los <strong>5 terminales de polaridad y señal</strong> entre el sensor de luz (VCC, GND, SIG), el microcontrolador (5V, GND, A0, D9) y el actuador de lámpara LED (SIG, GND). Luego varía la luz ambiental con el deslizador para validar que la lámpara encienda automáticamente cuando baje la iluminación (&lt;300 Lux).
+          <strong>Instrucción:</strong> Conecta los <strong>5 terminales de polaridad y señal</strong> entre el sensor de luz (VCC, GND, SIG), el microcontrolador (5V, GND, A0, D9) y el actuador de lámpara LED (SIG, GND). Debe aplicar el slider a &lt; 300 Lux y energizar el actuador D9. De lo contrario, queda «No Ejecutado».
         </p>
       </div>
 
@@ -1745,6 +1745,9 @@
         act_gnd: false
       },
       conexiones: [],
+      socioafectivo: {},
+      simulacionLuxEjecutada: false,
+      actuadorD9Energizado: false,
       subRetoActual: 1,
       reto3Iniciado: false,
       reto3Diagnostico: null,
@@ -2209,7 +2212,7 @@
 
     function seleccionarSocioafectivo(criterio, valor) {
       if (!estado.socioafectivo) {
-        estado.socioafectivo = { s1: 'A', s2: 'A', s3: 'A', s4: 'A' };
+        estado.socioafectivo = {};
       }
       estado.socioafectivo[criterio] = valor;
 
@@ -2279,16 +2282,15 @@
           iniciarAnimacionAula();
         }, 120);
       } else if (num === 4) {
-        // Inicializar selecciones por defecto si aún no han sido tocadas
         if (!estado.socioafectivo) {
-          estado.socioafectivo = { s1: 'A', s2: 'A', s3: 'A', s4: 'A' };
+          estado.socioafectivo = {};
         }
         ['s1', 's2', 's3', 's4'].forEach(function(crit) {
-          var val = estado.socioafectivo[crit] || 'A';
+          var val = estado.socioafectivo[crit];
           ['A', 'B', 'C'].forEach(function(opt) {
             var btn = document.getElementById("btnSocio_" + crit + "_" + opt);
             if (btn) {
-              if (opt === val) btn.className = "opcion-btn seleccionada";
+              if (val && opt === val) btn.className = "opcion-btn seleccionada";
               else btn.className = "opcion-btn";
             }
           });
@@ -2311,6 +2313,61 @@
       return cog;
     }
 
+    function calcularVectorPsicomotor() {
+      var psico = {};
+      var conns = Array.isArray(estado.conexiones) ? estado.conexiones : [];
+      var cablesConectados = conns.length;
+      
+      // Si no ha interactuado en el banco ni en la simulación
+      if (cablesConectados === 0 && !estado.simulacionLuxEjecutada && !estado.reto3Diagnostico && !estado.reto3JustificacionOpc) {
+        return psico;
+      }
+
+      // P1. Polaridad (VCC y GND de LDR y Actuador)
+      if (estado.cables.ldr_vcc && estado.cables.ldr_gnd && estado.cables.act_gnd) {
+        psico.p1 = "A";
+      } else if (estado.cables.ldr_vcc || estado.cables.ldr_gnd || estado.cables.act_gnd) {
+        psico.p1 = "B";
+      } else if (cablesConectados > 0) {
+        psico.p1 = "C";
+      }
+
+      // P2. Entrada Analógica (LDR -> A0)
+      if (estado.cables.ldr_sig) {
+        psico.p2 = "A";
+      } else if (cablesConectados > 0) {
+        psico.p2 = "C";
+      }
+
+      // P3. Actuador Digital (LED/Act -> D9)
+      if (estado.cables.act_sig) {
+        psico.p3 = "A";
+      } else if (cablesConectados > 0) {
+        psico.p3 = "C";
+      }
+
+      // P4. Programa: Debe aplicar el slider a < 300 Lux y energizar el actuador D9. De lo contrario, queda «No Ejecutado».
+      if (estado.simulacionLuxEjecutada && estado.actuadorD9Energizado) {
+        psico.p4 = "A";
+      } else if (estado.simulacionLuxEjecutada) {
+        psico.p4 = "B";
+      }
+
+      // P5. Diagnóstico de Fallas (Reto 3)
+      if (estado.reto3Diagnostico) {
+        psico.p5 = estado.reto3Diagnostico.correcta ? "A" : "B";
+      }
+
+      // P6. Justificación Técnica (Reto 3 Justificación)
+      if (estado.reto3JustificacionOpc === 1 || estado.reto3JustificacionOpc === "1" || estado.reto3JustificacionOpc === "A") {
+        psico.p6 = "A";
+      } else if (estado.reto3JustificacionOpc) {
+        psico.p6 = "B";
+      }
+
+      return psico;
+    }
+
     function enviarProgresoEnTiempoReal() {
       var nombreEst = (estado.estudianteNombre || "").trim();
       var seccionEst = estado.seccionGrupo || "Sección 9-1";
@@ -2327,6 +2384,7 @@
       var horaStr = ahora.toLocaleTimeString("es-CR", { hour: "2-digit", minute: "2-digit" });
       var timeEpoch = ahora.getTime();
       var cogVec = calcularVectorCognitivo();
+      var psicoVec = calcularVectorPsicomotor();
 
       var payload = {
         webAppId: CONFIG.webAppId,
@@ -2352,7 +2410,8 @@
         aciertos: aciertos,
         fallos: totalRespondidas - aciertos,
         cog: cogVec,
-        socioafectivo: estado.socioafectivo || { s1: 'A', s2: 'A', s3: 'A', s4: 'A' },
+        psicomotor: psicoVec,
+        socioafectivo: estado.socioafectivo || {},
         retosPracticos: {
           reto1Conexion: (Object.values(estado.cables || {}).filter(Boolean).length) + "/5 terminales validados",
           reto2Actuador: "LED",
@@ -2723,6 +2782,12 @@
       }
 
       var salidaActiva = circuitoValido && condicionCumplida;
+      if (salidaActiva && estado.luzActual < 300 && (estado.actuadorActual === "LED" || !estado.actuadorActual)) {
+        estado.simulacionLuxEjecutada = true;
+        estado.actuadorD9Energizado = true;
+      } else if (estado.luzActual < 300) {
+        estado.simulacionLuxEjecutada = true;
+      }
 
       var voltA0 = ((estado.luzActual / 850) * 5).toFixed(2);
       document.getElementById("dmmLux").innerText = estado.luzActual + " Lx";
@@ -3339,7 +3404,8 @@
         aciertos: aciertos,
         fallos: CONFIG.totalItems - aciertos,
         cog: calcularVectorCognitivo(),
-        socioafectivo: estado.socioafectivo || { s1: 'A', s2: 'A', s3: 'A', s4: 'A' },
+        psicomotor: calcularVectorPsicomotor(),
+        socioafectivo: estado.socioafectivo || {},
         hashVerificacion: hashToken,
         tokenAntiFraude: hashToken,
         dimensiones: {

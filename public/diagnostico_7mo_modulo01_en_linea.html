@@ -1539,10 +1539,10 @@
         scoreTotal: 0
       },
       socioafectivo: {
-        s1_precision: 3,
-        s2_resiliencia: 3,
-        s3_colaboracion: 3,
-        s4_frustracion: 3
+        s1_precision: null,
+        s2_resiliencia: null,
+        s3_colaboracion: null,
+        s4_frustracion: null
       },
       teacher: null,
       sectionLocked: false,
@@ -3420,11 +3420,13 @@
       const cogCorrect = Object.values(AppState.cognitivo?.answers || {}).filter(a => a.isCorrect).length;
       const cogScore = Math.round((cogCorrect / 10) * 100);
 
-      const s1 = AppState.socioafectivo?.s1_precision || 3;
-      const s2 = AppState.socioafectivo?.s2_resiliencia || 3;
-      const s3 = AppState.socioafectivo?.s3_colaboracion || 3;
-      const s4 = AppState.socioafectivo?.s4_frustracion || 3;
-      const socioScore = Math.round(((s1 + s2 + s3 + s4) / 12) * 100);
+      const sVals = [
+        AppState.socioafectivo?.s1_precision,
+        AppState.socioafectivo?.s2_resiliencia,
+        AppState.socioafectivo?.s3_colaboracion,
+        AppState.socioafectivo?.s4_frustracion
+      ].filter(v => typeof v === 'number');
+      const socioScore = sVals.length > 0 ? Math.round((sVals.reduce((a,b)=>a+b,0) / (sVals.length * 3)) * 100) : 0;
 
       const globalAvg = Math.round((psicoScore * 0.35) + (cogScore * 0.45) + (socioScore * 0.20));
       let globalLevel = 'A';
@@ -3612,6 +3614,22 @@
         socioScore: isCompleted ? metrics.socioScore : null,
         globalAvg: isCompleted ? metrics.globalAvg : null,
         globalLevel: isCompleted ? metrics.globalLevel : 'EN_CURSO',
+        cog: COGNITIVE_QUESTIONS.map(q => {
+          const a = AppState.cognitivo?.answers?.[q.id];
+          return a ? (a.isCorrect ? "L" : "RA") : "ED";
+        }),
+        psicomotor: {
+          p1: p1Data.completed ? (p1Data.score >= 80 ? 'A' : (p1Data.score >= 50 ? 'B' : 'C')) : undefined,
+          p2: p2Data.completed ? (p2Data.score >= 80 ? 'A' : (p2Data.score >= 50 ? 'B' : 'C')) : undefined,
+          p3: p3Data.completed ? (p3Data.score >= 80 ? 'A' : (p3Data.score >= 50 ? 'B' : 'C')) : undefined,
+          p4: p4Data.completed ? (p4Data.score >= 80 ? 'A' : (p4Data.score >= 50 ? 'B' : 'C')) : undefined
+        },
+        socioafectivo: {
+          s1: AppState.socioafectivo?.s1_precision === 3 ? 'A' : (AppState.socioafectivo?.s1_precision === 2 ? 'B' : (AppState.socioafectivo?.s1_precision === 1 ? 'C' : undefined)),
+          s2: AppState.socioafectivo?.s2_resiliencia === 3 ? 'A' : (AppState.socioafectivo?.s2_resiliencia === 2 ? 'B' : (AppState.socioafectivo?.s2_resiliencia === 1 ? 'C' : undefined)),
+          s3: AppState.socioafectivo?.s3_colaboracion === 3 ? 'A' : (AppState.socioafectivo?.s3_colaboracion === 2 ? 'B' : (AppState.socioafectivo?.s3_colaboracion === 1 ? 'C' : undefined)),
+          s4: AppState.socioafectivo?.s4_frustracion === 3 ? 'A' : (AppState.socioafectivo?.s4_frustracion === 2 ? 'B' : (AppState.socioafectivo?.s4_frustracion === 1 ? 'C' : undefined))
+        },
         psicomotorDetalle: {
           p1: { score: p1Data.score !== undefined ? p1Data.score : (p1Data.completed ? 100 : 0), moves: p1State?.moves || 0, errors: p1State?.pathErrors || 0, completed: Boolean(p1Data.completed) },
           p2: { score: p2Data.score !== undefined ? p2Data.score : (p2Data.completed ? 100 : 0), greenHits: p2State?.greenHits || 0, redHits: p2State?.redHits || 0, completed: Boolean(p2Data.completed) },
