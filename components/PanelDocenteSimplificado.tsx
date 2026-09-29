@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useDocente } from "@/context/DocenteContext";
 import { PayloadTelemetria, calcularNivelLogro } from "@/lib/antiFraude";
@@ -58,6 +58,7 @@ import {
   Compass,
   CaretDown,
   CaretUp,
+  CaretLeft,
   CaretRight,
   Globe,
   WifiHigh,
@@ -495,6 +496,30 @@ export default function PanelDocenteSimplificado() {
     try {
       localStorage.setItem("MEP_NOTAS_DOCENTE_MAP", JSON.stringify(nuevoMap));
     } catch {}
+  };
+
+  // Referencias y función de desplazamiento horizontal para tablas amplias
+  const tablaCognitivoRef = useRef<HTMLDivElement>(null);
+  const tablaSocioafectivoRef = useRef<HTMLDivElement>(null);
+  const tablaPsicomotrizRef = useRef<HTMLDivElement>(null);
+  const tablaSistematizacionRef = useRef<HTMLDivElement>(null);
+
+  const scrollTabla = (ref: React.RefObject<HTMLDivElement | null>, posicion: 'inicio' | 'medio1' | 'medio2' | 'final' | 'izq' | 'der') => {
+    if (!ref.current) return;
+    const el = ref.current;
+    if (posicion === 'inicio') {
+      el.scrollTo({ left: 0, behavior: 'smooth' });
+    } else if (posicion === 'final') {
+      el.scrollTo({ left: el.scrollWidth, behavior: 'smooth' });
+    } else if (posicion === 'medio1') {
+      el.scrollTo({ left: el.scrollWidth * 0.35, behavior: 'smooth' });
+    } else if (posicion === 'medio2') {
+      el.scrollTo({ left: el.scrollWidth * 0.65, behavior: 'smooth' });
+    } else if (posicion === 'izq') {
+      el.scrollBy({ left: -360, behavior: 'smooth' });
+    } else if (posicion === 'der') {
+      el.scrollBy({ left: 360, behavior: 'smooth' });
+    }
   };
 
   // Centros Educativos del Docente
@@ -1952,18 +1977,70 @@ export default function PanelDocenteSimplificado() {
                           </p>
                         </div>
                       ) : (
-                        <div className="p-3 sm:p-4 pt-2 space-y-2">
-                          {/* Indicador de desplazamiento horizontal en móvil */}
-                          <div className="text-[11px] font-bold text-slate-600 bg-slate-100/90 border border-slate-200 px-3 py-1.5 rounded-lg flex items-center justify-between gap-2 md:hidden">
-                            <span>👉 Desliza horizontalmente para ver todos los datos</span>
-                            <ArrowsLeftRight size={14} className="text-slate-500 shrink-0" />
+                        <div className="p-3 sm:p-4 pt-2 space-y-3">
+                          {/* Barra de Navegación Rápida y Desplazamiento Horizontal */}
+                          <div className="flex flex-wrap items-center justify-between gap-2 p-2.5 bg-slate-100/90 rounded-xl border border-slate-200">
+                            <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
+                              <ArrowsLeftRight size={16} className="text-[#1B5E59]" weight="bold" />
+                              <span>Navegación rápida de la tabla:</span>
+                            </div>
+                            <div className="flex flex-wrap items-center gap-1.5">
+                              <button
+                                type="button"
+                                onClick={() => scrollTabla(tablaCognitivoRef, "inicio")}
+                                className="px-2.5 py-1 text-xs font-bold bg-white hover:bg-slate-50 text-slate-700 rounded-lg border border-slate-300 shadow-2xs cursor-pointer inline-flex items-center gap-1 transition-all hover:border-[#1B5E59]"
+                              >
+                                <span>⏮️ Estudiantes</span>
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => scrollTabla(tablaCognitivoRef, "izq")}
+                                className="px-2 py-1 text-xs font-bold bg-white hover:bg-slate-50 text-slate-700 rounded-lg border border-slate-300 shadow-2xs cursor-pointer inline-flex items-center gap-0.5 transition-all hover:border-[#1B5E59]"
+                                title="Desplazar a la izquierda"
+                              >
+                                <CaretLeft size={14} weight="bold" />
+                                <span>Desplazar</span>
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => scrollTabla(tablaCognitivoRef, "medio1")}
+                                className="px-2.5 py-1 text-xs font-bold bg-teal-50 hover:bg-teal-100 text-teal-800 rounded-lg border border-teal-200 shadow-2xs cursor-pointer inline-flex items-center gap-1 transition-all"
+                              >
+                                <span>Criterios 1-5</span>
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => scrollTabla(tablaCognitivoRef, "medio2")}
+                                className="px-2.5 py-1 text-xs font-bold bg-teal-50 hover:bg-teal-100 text-teal-800 rounded-lg border border-teal-200 shadow-2xs cursor-pointer inline-flex items-center gap-1 transition-all"
+                              >
+                                <span>Criterios 6-10</span>
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => scrollTabla(tablaCognitivoRef, "der")}
+                                className="px-2 py-1 text-xs font-bold bg-white hover:bg-slate-50 text-slate-700 rounded-lg border border-slate-300 shadow-2xs cursor-pointer inline-flex items-center gap-0.5 transition-all hover:border-[#1B5E59]"
+                                title="Desplazar a la derecha"
+                              >
+                                <span>Desplazar</span>
+                                <CaretRight size={14} weight="bold" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => scrollTabla(tablaCognitivoRef, "final")}
+                                className="px-3 py-1 text-xs font-black bg-[#1B5E59] hover:bg-[#154945] text-white rounded-lg border border-[#1B5E59] shadow-xs cursor-pointer inline-flex items-center gap-1.5 transition-all"
+                              >
+                                <span>🎯 Calificación Final ⏭️</span>
+                              </button>
+                            </div>
                           </div>
 
-                          <div className="overflow-x-auto scrollbar-thin rounded-xl border border-slate-200">
-                            <table className="w-full text-left border-collapse text-xs min-w-[760px]">
+                          <div ref={tablaCognitivoRef} className="overflow-x-auto scrollbar-thin rounded-xl border border-slate-200 shadow-2xs">
+                            <table className="w-full text-left border-collapse text-xs min-w-[1650px]">
                               <thead>
                                 <tr className="bg-slate-50 border-b border-slate-200 text-slate-700 font-bold uppercase tracking-wider text-[11px]">
-                                  <th className="py-3 px-4 w-52 min-w-[180px]">Persona Estudiante</th>
+                                  <th className="py-3 px-4 w-56 min-w-[200px] sticky left-0 bg-slate-100 z-20 shadow-xs border-r-2 border-slate-300">
+                                    Persona Estudiante
+                                  </th>
                                   {(SABERES_COGNITIVOS_MAP[nivelActivo] || SABERES_COGNITIVOS_MAP["9no"]).map((saber) => (
                                     <th key={saber.id} className="py-3 px-2 text-center min-w-[105px]">
                                       <div className="flex flex-col items-center justify-center gap-1">
@@ -1977,17 +2054,21 @@ export default function PanelDocenteSimplificado() {
                                       </div>
                                     </th>
                                   ))}
-                                  <th className="py-3 px-3 text-center min-w-[70px]">Puntaje</th>
-                                  <th className="py-3 px-4 text-center min-w-[110px]">Nivel de Logro</th>
+                                  <th className="py-3 px-3 text-center min-w-[85px] bg-teal-50/50 border-l border-slate-200 font-black text-slate-900">
+                                    Puntaje %
+                                  </th>
+                                  <th className="py-3 px-4 text-center min-w-[130px] bg-teal-50/50 font-black text-slate-900">
+                                    Nivel de Logro
+                                  </th>
                                   <th className="py-3 px-3 text-right min-w-[85px]">Hora</th>
                                   <th className="py-3 px-3 text-center w-20">Acción</th>
                                 </tr>
                               </thead>
                               <tbody className="divide-y divide-slate-100 font-medium">
                                 {registrosSeccion.map((r, i) => (
-                                  <tr key={r.idResultado || r.timestamp || i} className="hover:bg-slate-50/80 transition-colors">
-                                    <td className="py-3 px-4 font-bold text-slate-900">
-                                      {r.estudianteNombre}
+                                  <tr key={r.idResultado || r.timestamp || i} className="hover:bg-slate-50/80 transition-colors group">
+                                    <td className="py-3 px-4 font-bold text-slate-900 sticky left-0 bg-white group-hover:bg-slate-50 z-10 border-r-2 border-slate-200">
+                                      <span className="block truncate">{r.estudianteNombre}</span>
                                       {r.estudianteCedula && (
                                         <span className="block text-[10px] text-slate-400 font-mono font-normal">
                                           {r.estudianteCedula}
@@ -2025,12 +2106,14 @@ export default function PanelDocenteSimplificado() {
                                         </td>
                                       );
                                     })}
-                                    <td className="py-3 px-3 text-center font-black text-slate-900">
-                                      {r.porcentaje || 0}%
+                                    <td className="py-3 px-3 text-center font-black text-slate-900 bg-teal-50/30 border-l border-slate-200">
+                                      <span className="text-xs px-2 py-0.5 rounded bg-slate-100 border border-slate-300">
+                                        {r.porcentaje || 0}%
+                                      </span>
                                     </td>
-                                    <td className="py-3 px-4 text-center">
+                                    <td className="py-3 px-4 text-center bg-teal-50/30">
                                       <span
-                                        className={`inline-block px-2.5 py-1 rounded-full text-[11px] font-bold ${
+                                        className={`inline-block px-2.5 py-1 rounded-full text-[11px] font-bold shadow-2xs ${
                                           (r.nivelLogro as string) === "Avanzado" || (r.nivelLogro as string) === "Logrado"
                                             ? "bg-emerald-100 text-emerald-900 border border-emerald-300"
                                             : (r.nivelLogro as string) === "Intermedio" || (r.nivelLogro as string) === "En Proceso"
@@ -2220,68 +2303,64 @@ export default function PanelDocenteSimplificado() {
                         </div>
                       ) : vistaSocioafectiva === "matriz" ? (
                         <div className="p-3 sm:p-4 pt-2 space-y-2">
-                          {/* Indicador de desplazamiento horizontal en móvil */}
-                          <div className="text-[11px] font-bold text-slate-600 bg-slate-100/90 border border-slate-200 px-3 py-1.5 rounded-lg flex items-center justify-between gap-2 md:hidden">
-                            <span>👉 Desliza horizontalmente para ver todos los criterios</span>
-                            <ArrowsLeftRight size={14} className="text-slate-500 shrink-0" />
-                          </div>
-
-                          <div className="overflow-x-auto scrollbar-thin rounded-xl border border-slate-200">
-                            <table className="w-full text-left border-collapse text-xs min-w-[850px]">
+                          <div ref={tablaSocioafectivoRef} className="overflow-x-auto scrollbar-thin rounded-xl border border-slate-200 shadow-2xs">
+                            <table className="w-full text-left border-collapse text-xs min-w-[1100px]">
                               <thead>
                                 <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
-                                  <th className="py-3 px-4 w-60">Persona Estudiante</th>
-                            <th className="py-3 px-3 text-center w-36">
-                              <div className="flex flex-col items-center gap-1">
-                                <span className="font-bold text-slate-700">S1. Gusto por la precisión</span>
-                                <BadgeModalidadExplicativa modalidad="telemetria" labelPersonalizado="🤖 Telemetría" alineacionHorizontal="left" />
-                              </div>
-                            </th>
-                            <th className="py-3 px-3 text-center w-36">
-                              <div className="flex flex-col items-center gap-1">
-                                <span className="font-bold text-slate-700">S2. Aprender del error</span>
-                                <BadgeModalidadExplicativa modalidad="telemetria" labelPersonalizado="🤖 Telemetría" alineacionHorizontal="center" />
-                              </div>
-                            </th>
-                            <th className="py-3 px-3 text-center w-44">
-                              <div className="flex flex-col items-center gap-1">
-                                <span className="font-bold text-slate-700">S3. Flexibilidad para manejar problemas</span>
-                                <BadgeModalidadExplicativa modalidad="hibrido" labelPersonalizado="⚡ Híbrido + Docente" alineacionHorizontal="center" />
-                              </div>
-                            </th>
-                            <th className="py-3 px-3 text-center w-40">
-                              <div className="flex flex-col items-center gap-1">
-                                <span className="font-bold text-slate-700">S4. Tolerancia a la frustración</span>
-                                <BadgeModalidadExplicativa modalidad="hibrido" labelPersonalizado="⚡ Híbrido + Docente" alineacionHorizontal="right" />
-                              </div>
-                            </th>
-                            <th className="py-3 px-4">Nota Pedagógica del Docente</th>
-                            <th className="py-3 px-3 text-center w-24">Acción</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-100 font-medium">
-                          {registrosSeccion.map((r, i) => {
-                            const socio = r.socioafectivo || {};
-                            const s1Val = socio.s1;
-                            const s2Val = socio.s2;
-                            const s3Val = socio.s3;
-                            const s4Val = socio.s4;
-                            const idKey = r.idResultado || r.estudianteCedula || r.estudianteNombre;
-                            const tieneAlerta = (r.telemetria && r.telemetria.anomalias && r.telemetria.anomalias.length > 0) || (r.telemetria && r.telemetria.intentosTotales && r.telemetria.intentosTotales > 10) || (r.intentos && r.intentos > 10);
+                                  <th className="py-3 px-4 w-60 sticky left-0 bg-slate-100 z-20 shadow-xs border-r-2 border-slate-300">
+                                    Persona Estudiante
+                                  </th>
+                                  <th className="py-3 px-3 text-center w-36">
+                                    <div className="flex flex-col items-center gap-1">
+                                      <span className="font-bold text-slate-700">S1. Gusto por la precisión</span>
+                                      <BadgeModalidadExplicativa modalidad="telemetria" labelPersonalizado="🤖 Telemetría" alineacionHorizontal="left" />
+                                    </div>
+                                  </th>
+                                  <th className="py-3 px-3 text-center w-36">
+                                    <div className="flex flex-col items-center gap-1">
+                                      <span className="font-bold text-slate-700">S2. Aprender del error</span>
+                                      <BadgeModalidadExplicativa modalidad="telemetria" labelPersonalizado="🤖 Telemetría" alineacionHorizontal="center" />
+                                    </div>
+                                  </th>
+                                  <th className="py-3 px-3 text-center w-44">
+                                    <div className="flex flex-col items-center gap-1">
+                                      <span className="font-bold text-slate-700">S3. Flexibilidad para manejar problemas</span>
+                                      <BadgeModalidadExplicativa modalidad="hibrido" labelPersonalizado="⚡ Híbrido + Docente" alineacionHorizontal="center" />
+                                    </div>
+                                  </th>
+                                  <th className="py-3 px-3 text-center w-40">
+                                    <div className="flex flex-col items-center gap-1">
+                                      <span className="font-bold text-slate-700">S4. Tolerancia a la frustración</span>
+                                      <BadgeModalidadExplicativa modalidad="hibrido" labelPersonalizado="⚡ Híbrido + Docente" alineacionHorizontal="right" />
+                                    </div>
+                                  </th>
+                                  <th className="py-3 px-4 min-w-[240px]">Nota Pedagógica del Docente</th>
+                                  <th className="py-3 px-3 text-center w-24">Acción</th>
+                                </tr>
+                              </thead>
+                              <tbody className="divide-y divide-slate-100 font-medium">
+                                {registrosSeccion.map((r, i) => {
+                                  const socio = r.socioafectivo || {};
+                                  const s1Val = socio.s1;
+                                  const s2Val = socio.s2;
+                                  const s3Val = socio.s3;
+                                  const s4Val = socio.s4;
+                                  const idKey = r.idResultado || r.estudianteCedula || r.estudianteNombre;
+                                  const tieneAlerta = (r.telemetria && r.telemetria.anomalias && r.telemetria.anomalias.length > 0) || (r.telemetria && r.telemetria.intentosTotales && r.telemetria.intentosTotales > 10) || (r.intentos && r.intentos > 10);
 
-                            return (
-                              <tr key={r.idResultado || r.timestamp || i} className="hover:bg-slate-50/80 transition-colors">
-                                <td className="py-3 px-4">
-                                  <div className="flex items-center gap-2">
-                                    <span className="font-bold text-slate-900 block">{r.estudianteNombre}</span>
-                                    {tieneAlerta && (
-                                      <span className="text-[9px] font-black text-amber-800 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-200" title="Telemetría detectó reintentos o fluctuación frecuente. Recomendada contención socioafectiva.">
-                                        ⚠️ Foco
-                                      </span>
-                                    )}
-                                  </div>
-                                  <span className="text-[10px] text-slate-400 font-mono">{r.estudianteCedula || "Estudiante"}</span>
-                                </td>
+                                  return (
+                                    <tr key={r.idResultado || r.timestamp || i} className="hover:bg-slate-50/80 transition-colors group">
+                                      <td className="py-3 px-4 sticky left-0 bg-white group-hover:bg-slate-50 z-10 border-r-2 border-slate-200">
+                                        <div className="flex items-center gap-2">
+                                          <span className="font-bold text-slate-900 block truncate">{r.estudianteNombre}</span>
+                                          {tieneAlerta && (
+                                            <span className="text-[9px] font-black text-amber-800 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-200" title="Telemetría detectó reintentos o fluctuación frecuente. Recomendada contención socioafectiva.">
+                                              ⚠️ Foco
+                                            </span>
+                                          )}
+                                        </div>
+                                        <span className="text-[10px] text-slate-400 font-mono">{r.estudianteCedula || "Estudiante"}</span>
+                                      </td>
 
                                 {/* S1 Selector */}
                                 <td className="py-3 px-2 text-center">
@@ -2783,7 +2862,7 @@ export default function PanelDocenteSimplificado() {
 
                   {/* Tabla Principal Dinámica de Registro Psicomotriz */}
                   {acordeonTablaPsico && (
-                    <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden">
+                    <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden p-3 sm:p-4 space-y-3">
                     {registrosSeccion.length === 0 ? (
                       <div className="p-12 text-center space-y-3">
                         <Pulse size={40} className="mx-auto text-slate-300" />
@@ -2795,11 +2874,63 @@ export default function PanelDocenteSimplificado() {
                         </p>
                       </div>
                     ) : (
-                      <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse text-xs">
-                          <thead>
-                            <tr className="bg-slate-50 border-b border-slate-200 text-slate-700 font-bold uppercase tracking-wider text-[11px]">
-                              <th className="py-3 px-4 w-56 min-w-[200px]">Persona Estudiante (Nómina)</th>
+                      <>
+                        {/* Barra de Navegación Rápida Psicomotriz */}
+                        <div className="flex flex-wrap items-center justify-between gap-2 p-2.5 bg-slate-100/90 rounded-xl border border-slate-200">
+                          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
+                            <ArrowsLeftRight size={16} className="text-[#1B5E59]" weight="bold" />
+                            <span>Navegación horizontal de rúbricas:</span>
+                          </div>
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            <button
+                              type="button"
+                              onClick={() => scrollTabla(tablaPsicomotrizRef, "inicio")}
+                              className="px-2.5 py-1 text-xs font-bold bg-white hover:bg-slate-50 text-slate-700 rounded-lg border border-slate-300 shadow-2xs cursor-pointer inline-flex items-center gap-1 transition-all hover:border-[#1B5E59]"
+                            >
+                              <span>⏮️ Estudiantes</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => scrollTabla(tablaPsicomotrizRef, "izq")}
+                              className="px-2 py-1 text-xs font-bold bg-white hover:bg-slate-50 text-slate-700 rounded-lg border border-slate-300 shadow-2xs cursor-pointer inline-flex items-center gap-0.5 transition-all hover:border-[#1B5E59]"
+                              title="Desplazar a la izquierda"
+                            >
+                              <CaretLeft size={14} weight="bold" />
+                              <span>Desplazar</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => scrollTabla(tablaPsicomotrizRef, "medio1")}
+                              className="px-2.5 py-1 text-xs font-bold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-lg border border-emerald-200 shadow-2xs cursor-pointer inline-flex items-center gap-1 transition-all"
+                            >
+                              <span>Criterios P1-P4</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => scrollTabla(tablaPsicomotrizRef, "der")}
+                              className="px-2 py-1 text-xs font-bold bg-white hover:bg-slate-50 text-slate-700 rounded-lg border border-slate-300 shadow-2xs cursor-pointer inline-flex items-center gap-0.5 transition-all hover:border-[#1B5E59]"
+                              title="Desplazar a la derecha"
+                            >
+                              <span>Desplazar</span>
+                              <CaretRight size={14} weight="bold" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => scrollTabla(tablaPsicomotrizRef, "final")}
+                              className="px-3 py-1 text-xs font-black bg-[#1B5E59] hover:bg-[#154945] text-white rounded-lg border border-[#1B5E59] shadow-xs cursor-pointer inline-flex items-center gap-1.5 transition-all"
+                            >
+                              <span>🎯 Nivel Psicomotor ⏭️</span>
+                            </button>
+                          </div>
+                        </div>
+
+                        <div ref={tablaPsicomotrizRef} className="overflow-x-auto scrollbar-thin rounded-xl border border-slate-200 shadow-2xs">
+                          <table className="w-full text-left border-collapse text-xs min-w-[1350px]">
+                            <thead>
+                              <tr className="bg-slate-50 border-b border-slate-200 text-slate-700 font-bold uppercase tracking-wider text-[11px]">
+                                <th className="py-3 px-4 w-56 min-w-[200px] sticky left-0 bg-slate-100 z-20 shadow-xs border-r-2 border-slate-300">
+                                  Persona Estudiante (Nómina)
+                                </th>
                               {criteriosActuales.map((crit, idx) => {
                                 const modalidad: "telemetria" | "hibrido" | "docente" =
                                   crit.modalidadEvaluacion === "telemetria"
@@ -2890,11 +3021,11 @@ export default function PanelDocenteSimplificado() {
                               const observacionGuardada = notasLocales[idKey] || r.observacionDocente || "";
 
                               return (
-                                <tr key={idKey} className="hover:bg-slate-50/80 transition-colors">
+                                <tr key={idKey} className="hover:bg-slate-50/80 transition-colors group">
                                   {/* Nombre y Cédula */}
-                                  <td className="py-3 px-4">
+                                  <td className="py-3 px-4 sticky left-0 bg-white group-hover:bg-slate-50 z-10 border-r-2 border-slate-200">
                                     <div className="flex items-center gap-2">
-                                      <span className="font-bold text-slate-900 block text-xs sm:text-sm">
+                                      <span className="font-bold text-slate-900 block text-xs sm:text-sm truncate">
                                         {r.estudianteNombre}
                                       </span>
                                       {tieneAlerta && (
@@ -2942,8 +3073,8 @@ export default function PanelDocenteSimplificado() {
                                   })}
 
                                   {/* Nivel Psicomotor Consolidado */}
-                                  <td className="py-3 px-3 text-center">
-                                    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black border ${badgeNivel.cls}`}>
+                                  <td className="py-3 px-3 text-center bg-teal-50/20">
+                                    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black border shadow-2xs ${badgeNivel.cls}`}>
                                       <span>{badgeNivel.label}</span>
                                       <span className="font-medium text-[10px]">({badgeNivel.desc})</span>
                                     </span>
@@ -2972,6 +3103,7 @@ export default function PanelDocenteSimplificado() {
                           </tbody>
                         </table>
                       </div>
+                    </>
                     )}
                   </div>
                   )}
@@ -3196,17 +3328,19 @@ export default function PanelDocenteSimplificado() {
                       <p className="text-sm font-bold text-slate-700">Sin datos de sistematización en esta sección</p>
                     </div>
                   ) : (
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-left border-collapse text-xs min-w-[950px]">
+                    <div ref={tablaSistematizacionRef} className="overflow-x-auto scrollbar-thin">
+                      <table className="w-full text-left border-collapse text-xs min-w-[1100px]">
                         <thead>
                           <tr className="bg-slate-100 border-b border-slate-300 text-slate-800 font-bold text-[11px]">
-                            <th className="py-3 px-4 border-r border-slate-300 w-48">Estudiantes</th>
+                            <th className="py-3 px-4 sticky left-0 bg-slate-100 z-20 shadow-xs border-r-2 border-slate-300 w-52 min-w-[190px]">
+                              Estudiantes
+                            </th>
                             {Array.from({ length: 9 }).map((_, idx) => (
                               <th key={idx} className="py-3 px-2 text-center border-r border-slate-300 w-16">
                                 Apr. {idx + 1}
                               </th>
                             ))}
-                            <th className="py-3 px-4">Descripción del desempeño individual o grupal</th>
+                            <th className="py-3 px-4 min-w-[280px]">Descripción del desempeño individual o grupal</th>
                             <th className="py-3 px-3 text-center w-24">Acción</th>
                           </tr>
                         </thead>
@@ -3220,8 +3354,8 @@ export default function PanelDocenteSimplificado() {
                                 : "Requiere acompañamiento personalizado y refuerzo en secuencias lógicas iniciales.";
 
                             return (
-                              <tr key={r.idResultado || r.timestamp || i} className="hover:bg-slate-50 transition-colors">
-                                <td className="py-3 px-4 font-bold text-slate-900 border-r border-slate-200">
+                              <tr key={r.idResultado || r.timestamp || i} className="hover:bg-slate-50 transition-colors group">
+                                <td className="py-3 px-4 font-bold text-slate-900 sticky left-0 bg-white group-hover:bg-slate-50 z-10 border-r-2 border-slate-200 truncate">
                                   {r.estudianteNombre}
                                 </td>
                                 {Array.from({ length: 9 }).map((_, idx) => {
