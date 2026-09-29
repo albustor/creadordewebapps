@@ -1515,7 +1515,7 @@ if ('serviceWorker' in navigator) {
 
     /**
      * =========================================================================
-     * CYBERQUEST 7° - MOTOR DIAGNÓSTICO EN PAREJAS (MEP 2027)
+     * DIAGNÓSTICO FORMACIÓN TECNOLÓGICA 7.° AÑO - MOTOR DIAGNÓSTICO EN PAREJAS (MEP 2027)
      * MODALIDAD DIAGNÓSTICA PURA (SIN REALIMENTACIÓN INMEDIATA)
      * =========================================================================
      */
@@ -3425,7 +3425,7 @@ if ('serviceWorker' in navigator) {
 
       return {
         t: 'MEP7',
-        tipo: 'CYBERQUEST_7MO',
+        tipo: 'DIAGNOSTICO_FT_7MO',
         sec: secClean,
         seccionOGrupo: `Sección ${secClean}`,
         modalidad: isSolo ? 'individual' : 'parejas',
@@ -3562,9 +3562,9 @@ if ('serviceWorker' in navigator) {
       const p4Data = AppState.psicomotriz?.p4_dibujo || {};
 
       const fullData = {
-        tipo: 'CYBERQUEST_7MO',
+        tipo: 'DIAGNOSTICO_FT_7MO',
         idResultado: AppState.sessionHash ? `res-7mo-${AppState.sessionHash}` : `res-7mo-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-        webAppId: 'diagnostico_7mo_modulo01_cyberquest',
+        webAppId: 'diagnostico_7mo_modulo01_desconectado_offline',
         webAppTitulo: 'Diagnóstico Formación Tecnológica 7°: Fundamentos Digitales',
         docenteId: docId,
         docenteNombre: AppState.teacher?.name || 'Alberto Bustos Ortega',

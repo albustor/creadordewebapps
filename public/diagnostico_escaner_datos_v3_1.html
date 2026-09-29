@@ -376,7 +376,7 @@ td { padding: 9px 8px; border-bottom: 1px solid var(--borde); vertical-align: mi
     <div class="form-group">
       <label>Nivel Activo por Defecto:</label>
       <select id="cfgNivelSelect" onchange="cambiarNivelManual(this.value)">
-        <option value="7">7.° Año (CyberQuest — Psicomotriz/Cognitivo)</option>
+        <option value="7">7.° Año (Fundamentos Digitales — Psicomotriz/Cognitivo)</option>
         <option value="9">9.° Año (Circuito y Saberes Técnicos FT)</option>
       </select>
     </div>
@@ -503,15 +503,15 @@ function aplicarTemaNivel(nivel) {
     root.style.setProperty("--nivel-bg", "#f0f9ff");
     root.style.setProperty("--nivel-icono", "'⚡'");
     metaTheme.setAttribute("content", "#0284c7");
-    document.getElementById("txtTituloHeader").textContent = "ESCÁNER DIAGNÓSTICO — 9.° AÑO (V3.1)";
-    document.getElementById("txtSubtituloHeader").textContent = "Instrumento de Formación Tecnológica (D2) • 100% Offline";
+    document.getElementById("txtTituloHeader").textContent = "ESCÁNER UNIVERSAL DE DATOS (V3.1)";
+    document.getElementById("txtSubtituloHeader").textContent = "Capturando 9.° Año (Domótica y Circuitos • D2) • 100% Offline";
   } else {
     root.style.setProperty("--nivel-primario", "#059669");
     root.style.setProperty("--nivel-bg", "#ecfdf5");
     root.style.setProperty("--nivel-icono", "'🌱'");
     metaTheme.setAttribute("content", "#002b49");
-    document.getElementById("txtTituloHeader").textContent = "ESCÁNER DIAGNÓSTICO — 7.° AÑO (V3.1)";
-    document.getElementById("txtSubtituloHeader").textContent = "Módulo 1: Fundamentos Digitales (MEP7) • 100% Offline";
+    document.getElementById("txtTituloHeader").textContent = "ESCÁNER UNIVERSAL DE DATOS (V3.1)";
+    document.getElementById("txtSubtituloHeader").textContent = "Capturando 7.° Año (Fundamentos Digitales • MEP7) • 100% Offline";
   }
   actualizarBadges();
 }
