@@ -1000,7 +1000,7 @@ if ('serviceWorker' in navigator) {
   <header class="hud-header">
     <div class="hud-brand">
       <span class="mep-tag">MEP 2027</span>
-      <div class="cyber-title" id="hudCyberTitle">⚡ Formación Tecnológica 7.° &bull; Misión en parejas</div>
+      <div class="cyber-title" id="hudCyberTitle">⚡ Formación Tecnológica 7.°</div>
     </div>
     <div class="hud-stats">
       <div class="stat-pill leader" id="hudCadet1Pill" style="display: none;">
@@ -2455,9 +2455,7 @@ if ('serviceWorker' in navigator) {
 
       const cyberTitleEl = document.getElementById('hudCyberTitle');
       if (cyberTitleEl) {
-        cyberTitleEl.innerHTML = isIndiv 
-          ? '⚡ Formación Tecnológica 7.° &bull; Misión individual' 
-          : '⚡ Formación Tecnológica 7.° &bull; Misión en parejas';
+        cyberTitleEl.innerHTML = '⚡ Formación Tecnológica 7.°';
       }
 
       const pill1 = document.getElementById('hudCadet1Pill');
