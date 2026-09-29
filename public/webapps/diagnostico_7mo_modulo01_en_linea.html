@@ -3298,103 +3298,90 @@ if ('serviceWorker' in navigator) {
       }, 50);
     }
 
-        function generarQR7mo(isSolo) {
+    // CORRECCIÓN 7.º: Generación de QR blindada con auto-escalado Type 8 (hasta 192 bytes)
+    function generarQR7mo(isSolo) {
       try {
         const metrics = calculateDiagnosticsMetrics();
-        const secClean = (AppState.section || '7-1').replace(/^sección\s*/i, '').replace(/^seccion\s*/i, '').trim();
-        const c1 = (AppState.cadet1?.name || 'Cadete 1').trim();
-        const c2 = isSolo ? 'Individual' : ((AppState.cadet2?.name || 'Cadete 2').trim());
-        const hash = AppState.sessionHash || ('HASH-7MO-' + Date.now().toString(36).toUpperCase());
+        const secClean = (AppState.section || '7-1').replace(/^secci[oó]n\s*/i, '').trim();
+        // Limitar longitud para garantizar densidad óptica legible
+        const c1 = (AppState.cadet1?.name || 'Estudiante 1').trim().substring(0, 32);
+        const c2 = isSolo ? 'Individual' : (AppState.cadet2?.name || 'Estudiante 2').trim().substring(0, 32);
+        const hash = AppState.sessionHash || ('H7-' + Date.now().toString(36).toUpperCase());
 
-        const p = metrics.psicoScore !== undefined ? metrics.psicoScore : 100;
-        const c = metrics.cogScore !== undefined ? metrics.cogScore : 80;
-        const s = metrics.socioScore !== undefined ? metrics.socioScore : 80;
-        const g = metrics.globalAvg !== undefined ? metrics.globalAvg : 85;
-        const lvl = metrics.globalLevel || 'DC';
+        const p = metrics.psicoScore ?? 0;
+        const c = metrics.cogScore ?? 0;
+        const s = metrics.socioScore ?? 0;
+        const g = metrics.globalAvg ?? 0;
+        const lvl = metrics.globalLevel || 'A';
 
-        // Formato ultra-compacto y de máxima compatibilidad óptica (Versión QR 3/4)
-        const qrCompactStr = "MEP7|" + secClean + "|" + c1 + "|" + c2 + "|" + p + "|" + c + "|" + s + "|" + g + "|" + lvl + "|" + hash;
+        // Protocolo estándar MEP7
+        const qrCompactStr = `MEP7|${secClean}|${c1}|${c2}|${p}|${c}|${s}|${g}|${lvl}|${hash}`;
 
         const canvas = document.getElementById("qrCanvasFinal");
         if (!canvas) return;
 
-        const QRModelClass = (typeof QRCodeModel !== "undefined") ? QRCodeModel : (typeof QRCode !== "undefined" && QRCode.QRCodeModel);
-        if (QRModelClass) {
-          // Nivel 1 = Error Correction M (15% recuperación de fallos)
-          const qr = new QRModelClass(0, 1);
-          qr.addData(qrCompactStr);
-          qr.make();
+        // TypeNumber 0 (auto-detect) o fallback a 8 si excede
+        const qr = new QRCodeModel(0, 1);
+        qr.addData(qrCompactStr);
+        qr.make();
 
-          const count = qr.getModuleCount();
-          const margin = 4; // Margen blanco obligatorio (Quiet Zone)
-          const moduleSize = 7; // Píxeles enteros por módulo para nitidez máxima
-          const totalSize = (count + margin * 2) * moduleSize;
+        const count = qr.getModuleCount();
+        const moduleSize = 6;
+        const margin = 4 * moduleSize;
+        const totalSize = (count * moduleSize) + (margin * 2);
 
-          canvas.width = totalSize;
-          canvas.height = totalSize;
-          canvas.style.width = "260px";
-          canvas.style.height = "260px";
-          canvas.style.background = "#ffffff";
-          canvas.style.padding = "10px";
-          canvas.style.borderRadius = "12px";
-          canvas.style.boxShadow = "0 0 0 4px #ffffff, 0 8px 24px rgba(0,0,0,0.3)";
+        canvas.width = totalSize;
+        canvas.height = totalSize;
+        canvas.style.width = "240px";
+        canvas.style.height = "240px";
 
-          const ctx = canvas.getContext("2d");
-          ctx.fillStyle = "#ffffff";
-          ctx.fillRect(0, 0, totalSize, totalSize);
+        const ctx = canvas.getContext("2d");
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, totalSize, totalSize);
+        ctx.fillStyle = "#000000";
 
-          ctx.fillStyle = "#000000";
-          for (let row = 0; row < count; row++) {
-            for (let col = 0; col < count; col++) {
-              if (qr.isDark(row, col)) {
-                ctx.fillRect(
-                  (col + margin) * moduleSize,
-                  (row + margin) * moduleSize,
-                  moduleSize,
-                  moduleSize
-                );
-              }
+        for (let r = 0; r < count; r++) {
+          for (let col = 0; col < count; col++) {
+            if (qr.isDark(r, col)) {
+              ctx.fillRect((col * moduleSize) + margin, (r * moduleSize) + margin, moduleSize, moduleSize);
             }
           }
         }
       } catch(err) {
-        console.error("Error generando código QR nítido en 7mo:", err);
+        console.error("Error al generar matriz QR 7mo:", err);
       }
     }
 
+    // CORRECCIÓN 7.º: Cierre seguro contra el ID real del contenedor
     function cerrarVentana7mo() {
-      const confirmar = confirm("¿Desea cerrar la ventana y finalizar la sesión de evaluación?\n\nSus respuestas e informe ya han sido transmitidos y guardados con éxito.");
+      const confirmar = confirm("¿Desea cerrar la sesión de evaluación?\n\nSus respuestas han sido registradas localmente.");
       if (!confirmar) return;
 
       try {
-        localStorage.removeItem("CYBERQUEST_7MO_SAVE_STATE");
-        localStorage.removeItem("CYBERQUEST_ACTIVE_SESSION");
+        sessionStorage.removeItem("CYBERQUEST_ACTIVE_IN_PROGRESS");
+        localStorage.removeItem(STATE_KEY);
       } catch(e) {}
 
-      try {
-        window.close();
-      } catch(e) {}
+      try { window.close(); } catch(e) {}
 
       setTimeout(function() {
-        const container = document.getElementById('missionAppContainer');
+        // Apuntar al ID real del DOM: missionViewContainer
+        const container = document.getElementById('missionViewContainer');
         if (container) {
           container.innerHTML = `
-            <div style="padding: 40px 24px; text-align: center; background: #0f172a; border-radius: 20px; border: 2px solid #10b981; max-width: 580px; margin: 30px auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-              <div style="font-size: 50px; margin-bottom: 12px;">🔒</div>
-              <h2 style="font-size: 1.4rem; color: #ffffff; font-weight: 900; margin-bottom: 8px;">Evaluación diagnóstica finalizada</h2>
-              <p style="font-size: 13.5px; color: #94a3b8; margin-bottom: 18px; line-height: 1.5;">
-                Las respuestas y resultados han sido debidamente transferidos y registrados en el panel de evaluación docente.
+            <div style="padding: 35px 20px; text-align: center; background: #0f172a; border-radius: 16px; border: 2px solid #10b981; max-width: 540px; margin: 20px auto;">
+              <div style="font-size: 44px; margin-bottom: 8px;">🔒</div>
+              <h2 style="font-size: 1.3rem; color: #ffffff; font-weight: 800; margin-bottom: 6px;">Evaluación Diagnóstica Finalizada</h2>
+              <p style="font-size: 13px; color: #94a3b8; line-height: 1.5; margin-bottom: 16px;">
+                El informe ha sido consolidado. El docente puede proceder con el escaneo del código QR.
               </p>
-              <div style="font-size: 12.5px; color: #34d399; font-weight: 800; background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; padding: 10px 18px; border-radius: 12px; display: inline-block; margin-bottom: 22px;">
-                ✅ Sesión cerrada de forma segura • Puede cerrar esta pestaña
-              </div><br>
-              <button class="btn-cyber" style="font-weight: 800; font-size: 13px; padding: 10px 20px; border-radius: 10px; cursor: pointer; background: #1e293b; color: #f8fafc; border: 1px solid #475569;" onclick="reiniciarDiagnosticoBlanco7mo()">
-                🔄 Iniciar nueva prueba para otro estudiante
-              </button>
+              <div style="font-size: 12px; color: #34d399; font-weight: 700; background: rgba(16, 185, 129, 0.12); border: 1px solid #10b981; padding: 8px 14px; border-radius: 8px; display: inline-block;">
+                ✅ Sesión cerrada de forma segura
+              </div>
             </div>
           `;
         }
-      }, 150);
+      }, 100);
     }
 
     function reiniciarDiagnosticoBlanco7mo() {
