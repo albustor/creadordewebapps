@@ -523,6 +523,54 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
       }
     } catch {}
 
+    // 1b. Cargar evaluaciones locales de 9no (diagnosticos_mep_9no)
+    try {
+      const raw9no = SafeStorage.getItem("diagnosticos_mep_9no");
+      if (raw9no) {
+        const list9no = JSON.parse(raw9no);
+        if (Array.isArray(list9no)) {
+          list9no.forEach((item: any) => {
+            if (item && item.estudianteNombre) {
+              const rec: PayloadTelemetria = {
+                idResultado: item.idResultado || item.id || `eval-9no-${item.timestamp || Date.now()}`,
+                webAppId: item.webAppId || "diagnostico_9no_modulo01_aula_inteligente",
+                webAppTitulo: item.webAppTitulo || "Diagnóstico 9°: Domótica y Sistemas Embebidos",
+                docenteId: item.docenteId || docenteId || doc.idDocente,
+                docenteNombre: item.docenteNombre || doc.nombreCompleto || "Docente Evaluador",
+                institucionNombre: item.institucionNombre || doc.institucionNombre || "Centro Educativo MEP",
+                dreCodigo: item.dreCodigo || doc.dreCodigo || "DRE-01",
+                estudianteNombre: item.estudianteNombre,
+                estudianteCedula: item.estudianteCedula || "",
+                estudianteCorreo: item.estudianteCorreo || "",
+                seccionOGrupo: normalizarSeccion(item.seccionOGrupo),
+                nivel: "9°",
+                puntaje: item.porcentaje ?? item.puntaje ?? 0,
+                puntajeMaximo: 100,
+                porcentaje: item.porcentaje ?? item.puntaje ?? 0,
+                totalReactivos: item.totalReactivos || 10,
+                aciertos: item.aciertos ?? 0,
+                fallos: item.fallos ?? 0,
+                nivelLogro: item.nivelLogro || ((item.porcentaje ?? 0) >= 80 ? "Avanzado" : (item.porcentaje ?? 0) <= 59 ? "Inicial" : "Intermedio"),
+                tiempoSegundos: item.tiempoSegundos || 120,
+                estadoProgreso: item.estadoProgreso || "completado",
+                timestamp: item.timestamp || item.timestampEpoch || Date.now(),
+                fechaIngreso: item.fechaIngreso,
+                fechaHoraRegistro: item.fechaHoraRegistro,
+                fechaEntrega: item.fechaEntrega,
+                horaEntrega: item.horaEntrega,
+                tokenAntiFraude: item.tokenAntiFraude || item.hashVerificacion || `TOKEN-9NO-${item.timestamp || Date.now()}`,
+                cog: item.cog,
+                psicomotor: item.psicomotor,
+                socioafectivo: item.socioafectivo,
+                observacionDocente: item.observacionDocente,
+              };
+              mapa.set(normalizarClave(rec), rec);
+            }
+          });
+        }
+      }
+    } catch {}
+
     // 2. Cargar telemetría del caché local si pertenece
     try {
       const rawTeleCache = cedClean ? SafeStorage.getItem(`telemetria_registros_${cedClean}`) : null;
@@ -531,7 +579,32 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
         if (Array.isArray(listTele)) {
           listTele.forEach((item: PayloadTelemetria) => {
             if (item && item.estudianteNombre) {
-              mapa.set(normalizarClave(item), item);
+              const k = normalizarClave(item);
+              const prev = mapa.get(k);
+              mapa.set(k, {
+                ...(prev || {}),
+                ...item,
+                socioafectivo: { ...(prev?.socioafectivo || {}), ...(item.socioafectivo || {}) },
+                psicomotor: { ...(prev?.psicomotor || {}), ...(item.psicomotor || {}) },
+              });
+            }
+          });
+        }
+      }
+      const rawTeleGlobal = SafeStorage.getItem("telemetria_registros");
+      if (rawTeleGlobal) {
+        const listTeleG = JSON.parse(rawTeleGlobal);
+        if (Array.isArray(listTeleG)) {
+          listTeleG.forEach((item: PayloadTelemetria) => {
+            if (item && item.estudianteNombre) {
+              const k = normalizarClave(item);
+              const prev = mapa.get(k);
+              mapa.set(k, {
+                ...(prev || {}),
+                ...item,
+                socioafectivo: { ...(prev?.socioafectivo || {}), ...(item.socioafectivo || {}) },
+                psicomotor: { ...(prev?.psicomotor || {}), ...(item.psicomotor || {}) },
+              });
             }
           });
         }
@@ -574,15 +647,21 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
               const key = normalizarClave(item);
               const existente = mapa.get(key);
               const secNorm = normalizarSeccion(item.seccionOGrupo);
-              const socioPreservado = existente?.socioafectivo || item.socioafectivo;
-              const psicoPreservado = existente?.psicomotor || item.psicomotor;
+              const socioPreservado = {
+                ...(existente?.socioafectivo || {}),
+                ...(item.socioafectivo || {}),
+              };
+              const psicoPreservado = {
+                ...(existente?.psicomotor || {}),
+                ...(item.psicomotor || {}),
+              };
               const obsPreservada = existente?.observacionDocente || item.observacionDocente;
 
-              const itemNorm = {
+              const itemNorm: PayloadTelemetria = {
                 ...item,
                 seccionOGrupo: secNorm,
-                socioafectivo: socioPreservado,
-                psicomotor: psicoPreservado,
+                socioafectivo: Object.keys(socioPreservado).length > 0 ? socioPreservado : undefined,
+                psicomotor: Object.keys(psicoPreservado).length > 0 ? psicoPreservado : undefined,
                 observacionDocente: obsPreservada,
               };
               if (!existente) {
@@ -599,8 +678,10 @@ export function DocenteProvider({ children }: { children: React.ReactNode }) {
                 } else {
                   mapa.set(key, {
                     ...existente,
-                    socioafectivo: socioPreservado,
-                    psicomotor: psicoPreservado,
+                    ...item,
+                    seccionOGrupo: secNorm,
+                    socioafectivo: Object.keys(socioPreservado).length > 0 ? socioPreservado : existente.socioafectivo,
+                    psicomotor: Object.keys(psicoPreservado).length > 0 ? psicoPreservado : existente.psicomotor,
                     observacionDocente: obsPreservada,
                   });
                 }

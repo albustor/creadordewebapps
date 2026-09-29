@@ -305,6 +305,15 @@ export async function POST(req: NextRequest) {
           ? "En Evaluación"
           : (porcentajeFinal >= 80 ? "Avanzado" : (porcentajeFinal <= 59 ? "Inicial" : "Intermedio"));
 
+        const socioMerged = {
+          ...(existente.socioafectivo || {}),
+          ...(resultadoProcesado.socioafectivo || {}),
+        };
+        const psicoMerged = {
+          ...(existente.psicomotor || {}),
+          ...(resultadoProcesado.psicomotor || {}),
+        };
+
         registrosTelemetriaMemoria[indexExistente] = {
           ...existente,
           ...resultadoProcesado,
@@ -315,8 +324,8 @@ export async function POST(req: NextRequest) {
           fallos: Math.max(0, totReactivos - aciertosFinal),
           cog: cogFinal,
           subareasDetalle: resultadoProcesado.subareasDetalle || existente.subareasDetalle,
-          socioafectivo: resultadoProcesado.socioafectivo || existente.socioafectivo,
-          psicomotor: resultadoProcesado.psicomotor || existente.psicomotor,
+          socioafectivo: Object.keys(socioMerged).length > 0 ? socioMerged : existente.socioafectivo,
+          psicomotor: Object.keys(psicoMerged).length > 0 ? psicoMerged : existente.psicomotor,
           psicomotorDetalle: resultadoProcesado.psicomotorDetalle || existente.psicomotorDetalle,
           nivelLogro: nivelFinal,
           estadoProgreso: esCompletadoFinal ? "completado" : "en_progreso",

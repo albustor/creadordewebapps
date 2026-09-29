@@ -2318,30 +2318,34 @@
       var conns = Array.isArray(estado.conexiones) ? estado.conexiones : [];
       var cablesConectados = conns.length;
       
-      // Si no ha interactuado en el banco ni en la simulación
+      // Si no ha interactuado en el banco ni en la simulación ni en retos
       if (cablesConectados === 0 && !estado.simulacionLuxEjecutada && !estado.reto3Diagnostico && !estado.reto3JustificacionOpc) {
         return psico;
       }
 
-      // P1. Polaridad (VCC y GND de LDR y Actuador)
-      if (estado.cables.ldr_vcc && estado.cables.ldr_gnd && estado.cables.act_gnd) {
+      // P1. Modulariza (identifica y organiza las 3 tarjetas de hardware / conexiones)
+      if (cablesConectados >= 4) {
         psico.p1 = "A";
-      } else if (estado.cables.ldr_vcc || estado.cables.ldr_gnd || estado.cables.act_gnd) {
+      } else if (cablesConectados >= 2) {
         psico.p1 = "B";
       } else if (cablesConectados > 0) {
         psico.p1 = "C";
       }
 
-      // P2. Entrada Analógica (LDR -> A0)
-      if (estado.cables.ldr_sig) {
+      // P2. Reconoce Patrones (Polaridad VCC 5V y GND de LDR y Actuador)
+      if (estado.cables && estado.cables.ldr_vcc && estado.cables.ldr_gnd && estado.cables.act_gnd) {
         psico.p2 = "A";
+      } else if (estado.cables && (estado.cables.ldr_vcc || estado.cables.ldr_gnd || estado.cables.act_gnd)) {
+        psico.p2 = "B";
       } else if (cablesConectados > 0) {
         psico.p2 = "C";
       }
 
-      // P3. Actuador Digital (LED/Act -> D9)
-      if (estado.cables.act_sig) {
+      // P3. Formula Algoritmo (Flujo lógico secuencial y señales A0 / D9)
+      if (estado.cables && estado.cables.ldr_sig && estado.cables.act_sig) {
         psico.p3 = "A";
+      } else if (estado.cables && (estado.cables.ldr_sig || estado.cables.act_sig)) {
+        psico.p3 = "B";
       } else if (cablesConectados > 0) {
         psico.p3 = "C";
       }
@@ -2353,12 +2357,12 @@
         psico.p4 = "B";
       }
 
-      // P5. Diagnóstico de Fallas (Reto 3)
+      // P5. Depura (Diagnóstico de Fallas Reto 3)
       if (estado.reto3Diagnostico) {
         psico.p5 = estado.reto3Diagnostico.correcta ? "A" : "B";
       }
 
-      // P6. Justificación Técnica (Reto 3 Justificación)
+      // P6. Transferencia (Justificación Técnica Reto 3)
       if (estado.reto3JustificacionOpc === 1 || estado.reto3JustificacionOpc === "1" || estado.reto3JustificacionOpc === "A") {
         psico.p6 = "A";
       } else if (estado.reto3JustificacionOpc) {
@@ -2420,7 +2424,7 @@
         }
       };
 
-      // 1. Guardar en localStorage para sincronización instantánea entre pestañas
+      // 1. Guardar en localStorage (diagnosticos_mep_9no y telemetria_registros)
       try {
         var registros = JSON.parse(localStorage.getItem("diagnosticos_mep_9no") || "[]");
         var idx = registros.findIndex(function(r) {
@@ -2432,6 +2436,19 @@
           registros.push(payload);
         }
         localStorage.setItem("diagnosticos_mep_9no", JSON.stringify(registros));
+      } catch(e) {}
+
+      try {
+        var teleLista = JSON.parse(localStorage.getItem("telemetria_registros") || "[]");
+        var idxT = teleLista.findIndex(function(r) {
+          return r && r.estudianteNombre && r.estudianteNombre.toLowerCase().trim() === nombreEst.toLowerCase() && (r.seccionOGrupo || "").toLowerCase().trim() === seccionEst.toLowerCase().trim();
+        });
+        if (idxT >= 0) {
+          teleLista[idxT] = Object.assign({}, teleLista[idxT], payload);
+        } else {
+          teleLista.push(payload);
+        }
+        localStorage.setItem("telemetria_registros", JSON.stringify(teleLista));
       } catch(e) {}
 
       // 2. Transmitir en segundo plano al servidor central
@@ -3462,6 +3479,16 @@
         if (idxP >= 0) registrosPrevios[idxP] = payload;
         else registrosPrevios.push(payload);
         localStorage.setItem("diagnosticos_mep_9no", JSON.stringify(registrosPrevios));
+      } catch(e) {}
+
+      try {
+        var teleListaFin = JSON.parse(localStorage.getItem("telemetria_registros") || "[]");
+        var idxTFin = teleListaFin.findIndex(function(r) {
+          return r && r.estudianteNombre && r.estudianteNombre.toLowerCase().trim() === nombreEst.toLowerCase() && (r.seccionOGrupo || "").toLowerCase().trim() === seccionEst.toLowerCase().trim();
+        });
+        if (idxTFin >= 0) teleListaFin[idxTFin] = Object.assign({}, teleListaFin[idxTFin], payload);
+        else teleListaFin.push(payload);
+        localStorage.setItem("telemetria_registros", JSON.stringify(teleListaFin));
       } catch(e) {}
 
       fetch(CONFIG.urlTelemetria, {
