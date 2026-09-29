@@ -207,10 +207,6 @@ td { padding: 9px 8px; border-bottom: 1px solid var(--borde); vertical-align: mi
       <span style="font-size:16px;">📷</span>
       <span>Escáner</span>
     </button>
-    <button type="button" id="tabNavGenerador" class="nav-tab" onclick="cambiarPestana('generador')">
-      <span style="font-size:16px;">⚡</span>
-      <span>Crear QR</span>
-    </button>
     <button type="button" id="tabNavPadron" class="nav-tab" onclick="cambiarPestana('padron')">
       <span style="font-size:16px;">📋</span>
       <span>Padrón (<span id="badgePadron">0</span>)</span>
@@ -229,7 +225,7 @@ td { padding: 9px 8px; border-bottom: 1px solid var(--borde); vertical-align: mi
   <section id="vistaCamara" class="card">
     <h2>
       <span>📷 Captura Óptica de Fichas</span>
-      <span id="badgeSeccionActiva" class="badge-nivel">Nivel 7.° — Sec: 7-1</span>
+      <span id="badgeSeccionActiva" class="badge-nivel">Reconocimiento Universal 7.° y 9.°</span>
     </h2>
 
     <div id="scannerArea" class="hidden">
@@ -262,58 +258,7 @@ td { padding: 9px 8px; border-bottom: 1px solid var(--borde); vertical-align: mi
     </div>
   </section>
 
-  <!-- VISTA 2: GENERADOR QR UNIVERSAL OFFLINE -->
-  <section id="vistaGenerador" class="card hidden">
-    <h2>⚡ Generador Autónomo de Fichas QR</h2>
-    <p style="font-size:12px; color:var(--texto-muted); margin-top:-6px;">Genera códigos válidos para el instrumento activo sin conexión a internet.</p>
-
-    <div class="grid-2">
-      <div class="form-group">
-        <label>Instrumento de Nivel:</label>
-        <select id="genNivel" onchange="alternarCamposGenerador(this.value)">
-          <option value="7">7.° Año (Fundamentos Digitales — Psicomotriz/Cognitivo)</option>
-          <option value="9">9.° Año (Circuito y Saberes Técnicos)</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Sección:</label>
-        <input type="text" id="genSeccion" value="7-1">
-      </div>
-    </div>
-
-    <div class="grid-2">
-      <div class="form-group">
-        <label>Estudiante 1 (Obligatorio):</label>
-        <input type="text" id="genEstudiante1" placeholder="Nombre completo">
-      </div>
-      <div class="form-group" id="groupGenEst2">
-        <label>Estudiante 2 (Opcional en 7.°):</label>
-        <input type="text" id="genEstudiante2" placeholder="Nombre compañero o 'Individual'">
-      </div>
-    </div>
-
-    <div class="grid-2">
-      <div class="form-group">
-        <label id="lblScore1">Puntaje Psicomotor (%) / Tarjetas:</label>
-        <input type="number" id="genP1" value="100" min="0" max="100">
-      </div>
-      <div class="form-group">
-        <label id="lblScore2">Puntaje Cognitivo (%) / Global:</label>
-        <input type="number" id="genP2" value="90" min="0" max="100">
-      </div>
-    </div>
-
-    <button type="button" class="btn-dinamico" onclick="generarQRManual()">
-      <span>✨ Renderizar Código QR Oficial</span>
-    </button>
-
-    <div id="contenedorQRManual" style="text-align:center; margin-top:16px;" class="hidden">
-      <canvas id="qrManualCanvas" style="border:1px solid var(--borde); border-radius:12px; max-width:240px;"></canvas>
-      <div id="txtHashManual" style="font-family:monospace; font-size:11px; margin-top:6px; color:var(--texto-muted);"></div>
-    </div>
-  </section>
-
-  <!-- VISTA 3: PADRÓN DE ESTUDIANTES -->
+  <!-- VISTA 2: PADRÓN DE ESTUDIANTES -->
   <section id="vistaPadron" class="card hidden">
     <h2>
       <span>📋 Padrón Institucional</span>
@@ -477,7 +422,7 @@ function emitirBeepExito() {
 
 // Navegación entre Pestañas
 function cambiarPestana(tabId) {
-  var pestañas = ["camara", "generador", "padron", "grupo", "config"];
+  var pestañas = ["camara", "padron", "grupo", "config"];
   pestañas.forEach(function(p) {
     var sec = document.getElementById("vista" + p.charAt(0).toUpperCase() + p.slice(1));
     var btn = document.getElementById("tabNav" + p.charAt(0).toUpperCase() + p.slice(1));
@@ -503,22 +448,20 @@ function aplicarTemaNivel(nivel) {
     root.style.setProperty("--nivel-bg", "#f0f9ff");
     root.style.setProperty("--nivel-icono", "'⚡'");
     metaTheme.setAttribute("content", "#0284c7");
-    document.getElementById("txtTituloHeader").textContent = "ESCÁNER UNIVERSAL DE DATOS (V3.1)";
-    document.getElementById("txtSubtituloHeader").textContent = "Capturando 9.° Año (Domótica y Circuitos • D2) • 100% Offline";
   } else {
     root.style.setProperty("--nivel-primario", "#059669");
     root.style.setProperty("--nivel-bg", "#ecfdf5");
     root.style.setProperty("--nivel-icono", "'🌱'");
     metaTheme.setAttribute("content", "#002b49");
-    document.getElementById("txtTituloHeader").textContent = "ESCÁNER UNIVERSAL DE DATOS (V3.1)";
-    document.getElementById("txtSubtituloHeader").textContent = "Capturando 7.° Año (Fundamentos Digitales • MEP7) • 100% Offline";
   }
+  document.getElementById("txtTituloHeader").textContent = "ESCÁNER UNIVERSAL DE DATOS (V3.1)";
+  document.getElementById("txtSubtituloHeader").textContent = "Captura y Registro Universal de Diagnósticos MEP (7.° y 9.° Año) • 100% Offline";
   actualizarBadges();
 }
 
 function actualizarBadges() {
   document.getElementById("badgePadron").textContent = padron.length;
-  document.getElementById("badgeSeccionActiva").textContent = "Nivel " + sesion.nivel + ".° — Sec: " + sesion.seccion;
+  document.getElementById("badgeSeccionActiva").textContent = "Universal — 7.° y 9.° Año (Sec: " + sesion.seccion + ")";
 }
 
 function cambiarNivelManual(nuevoNivel) {
