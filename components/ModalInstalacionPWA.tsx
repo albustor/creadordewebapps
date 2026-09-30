@@ -173,18 +173,69 @@ export default function ModalInstalacionPWA({
             </div>
           )}
 
-          {/* Tarjeta Explicativa de Funcionamiento Offline */}
-          <div className="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl p-3.5 sm:p-4 flex items-start gap-3 text-xs leading-relaxed">
-            <div className="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
-              <WifiSlash size={18} weight="bold" />
+          {/* Orientación Pedagógica y Principio de Equidad */}
+          <div className="bg-gradient-to-br from-[#002b49] via-[#1B5E59] to-[#0f3d39] text-white rounded-xl p-4 sm:p-4.5 shadow-sm space-y-3">
+            <div className="flex items-start gap-3">
+              <div className="w-9 h-9 rounded-lg bg-white/15 flex items-center justify-center shrink-0 mt-0.5 border border-white/20">
+                <Sparkle size={20} weight="fill" className="text-amber-300" />
+              </div>
+              <div className="space-y-1">
+                <h4 className="font-extrabold text-sm sm:text-base leading-tight text-white">
+                  Orientación pedagógica y principio de equidad
+                </h4>
+                <p className="text-xs text-teal-100 leading-relaxed">
+                  Todo el desarrollo está prioritariamente orientado a utilizar las <strong>computadoras del laboratorio institucional</strong> provistas por el centro educativo, garantizando el principio de equidad para todo el estudiantado.
+                </p>
+              </div>
             </div>
-            <div>
-              <h4 className="font-extrabold text-emerald-950 text-xs sm:text-sm">
-                ¿Por qué abrirlo en línea por primera vez?
-              </h4>
-              <p className="text-slate-700 mt-1">
-                Al cargar el enlace con internet por primera vez, el navegador guarda en la memoria caché interna todos los recursos (escáner QR, rúbricas, estilos y lógica). Una vez añadido a la pantalla de inicio, <strong>funciona al 100% sin conexión en cualquier aula o zona rural</strong>.
+
+            <div className="bg-white/10 rounded-lg p-2.5 sm:p-3 text-[11.5px] leading-relaxed border border-white/10 text-teal-50 space-y-1.5">
+              <p>
+                <strong className="text-amber-300 font-bold">📲 Instalación en celulares (a decisión docente):</strong> Si el docente así lo considera oportuno según los criterios técnicos del documento orientador, puede instalar esta plataforma web como aplicación en su teléfono móvil para utilizarla como escáner QR autónomo o visor portátil.
               </p>
+              <p>
+                <strong className="text-emerald-300 font-bold">🔄 Actualización sincronizada:</strong> Al disponer de conexión a internet, la aplicación verifica y sincroniza automáticamente las versiones oficiales más recientes. Sin red, continúa operando al 100 % con los datos guardados en la memoria del dispositivo.
+              </p>
+            </div>
+          </div>
+
+          {/* Modalidades de Aplicación según Conectividad y Equipamiento */}
+          <div className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 sm:p-4 space-y-2.5">
+            <h4 className="text-xs sm:text-sm font-black text-[#002b49] flex items-center gap-2">
+              <span>🎯</span>
+              <span>Modalidades de aplicación según el contexto institucional</span>
+            </h4>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+              <div className="bg-white p-3 rounded-lg border border-teal-200 shadow-2xs space-y-1">
+                <div className="font-bold text-[#1B5E59] flex items-center gap-1.5">
+                  <span>🌐</span>
+                  <span>Acceso en línea</span>
+                </div>
+                <p className="text-slate-600 text-[11px] leading-relaxed">
+                  Para computadoras con internet; las respuestas y avances se transmiten en tiempo real al panel docente.
+                </p>
+              </div>
+
+              <div className="bg-white p-3 rounded-lg border border-amber-200 shadow-2xs space-y-1">
+                <div className="font-bold text-amber-900 flex items-center gap-1.5">
+                  <span>💻</span>
+                  <span>Acceso local (desconectado)</span>
+                </div>
+                <p className="text-slate-600 text-[11px] leading-relaxed">
+                  Los estudiantes abren el archivo en computadoras sin internet. Al finalizar, genera un código QR que el docente escanea con su celular para registrar las notas de inmediato.
+                </p>
+              </div>
+
+              <div className="bg-white p-3 rounded-lg border border-purple-200 shadow-2xs space-y-1">
+                <div className="font-bold text-purple-900 flex items-center gap-1.5">
+                  <span>📄</span>
+                  <span>Opción alternativa impresa</span>
+                </div>
+                <p className="text-slate-600 text-[11px] leading-relaxed">
+                  En ausencia de equipamiento o conectividad, se dispone del instrumento físico descargable en formato PDF para evaluación en papel.
+                </p>
+              </div>
             </div>
           </div>
 

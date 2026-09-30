@@ -4,6 +4,7 @@ import "./globals.css";
 import { DocenteProvider } from "@/context/DocenteContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import DevViewportBar from "@/components/DevViewportBar";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -67,6 +68,7 @@ export default function RootLayout({
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
+          <DevViewportBar />
         </DocenteProvider>
         <script
           dangerouslySetInnerHTML={{
