@@ -1,0 +1,6888 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js').then(function(reg) {
+      console.log('SW PWA registrado correctamente:', reg.scope);
+    }).catch(function(err) {
+      console.log('SW PWA no registrado:', err);
+    });
+  });
+}
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Diagnóstico Formación Tecnológica 9° V3.1 (Offline)</title>
+
+<style>
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+:root{
+    --azul:#17365d;
+    --azul2:#245a94;
+    --azul-claro:#eaf2f8;
+
+    --verde:#16804b;
+    --verde-claro:#e9f7ef;
+
+    --rojo:#b42318;
+    --rojo-claro:#fff0ee;
+
+    --amarillo:#b7791f;
+    --amarillo-claro:#fff8e6;
+
+    --gris:#64748b;
+    --gris-claro:#f1f5f9;
+    --borde:#d9e1ea;
+
+    --texto:#172033;
+    --blanco:#ffffff;
+
+    --sombra:0 8px 24px rgba(15,23,42,.10);
+    --radio:16px;
+}
+
+
+/* =========================================================
+   GENERAL
+========================================================= */
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    background:#f3f6fa;
+    color:var(--texto);
+    font-family:Arial,Helvetica,sans-serif;
+    line-height:1.45;
+}
+
+button,
+input{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.app{
+    width:min(1180px,96%);
+    margin:15px auto 50px;
+}
+
+
+/* =========================================================
+   ENCABEZADO
+========================================================= */
+
+.header{
+    background:linear-gradient(135deg,#17365d,#245a94);
+    color:white;
+    border-radius:20px;
+    padding:22px 24px;
+    box-shadow:var(--sombra);
+}
+
+.header-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+}
+
+.header h1{
+    margin:0 0 5px;
+    font-size:clamp(22px,3vw,32px);
+}
+
+.header p{
+    margin:0;
+    opacity:.92;
+}
+
+.timer{
+    min-width:130px;
+    text-align:center;
+    padding:11px 15px;
+    border-radius:13px;
+    background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.25);
+}
+
+.timer-label{
+    font-size:12px;
+}
+
+#timer{
+    font-size:25px;
+    font-weight:bold;
+}
+
+.progress-wrap{
+    margin-top:18px;
+}
+
+.progress-info{
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    margin-bottom:6px;
+}
+
+.progress{
+    height:9px;
+    background:rgba(255,255,255,.2);
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    width:25%;
+    background:#6fd397;
+    transition:.3s;
+}
+
+
+/* =========================================================
+   ETAPAS
+========================================================= */
+
+.stage{
+    display:none;
+    margin-top:18px;
+}
+
+.stage.active{
+    display:block;
+}
+
+.card{
+    background:white;
+    border-radius:var(--radio);
+    box-shadow:var(--sombra);
+    padding:24px;
+}
+
+.stage-title{
+    color:var(--azul);
+    margin:0 0 5px;
+    font-size:25px;
+}
+
+.stage-subtitle{
+    color:var(--gris);
+}
+
+.section-title{
+    color:var(--azul);
+    border-bottom:2px solid var(--borde);
+    padding-bottom:8px;
+    margin-top:28px;
+}
+
+.notice{
+    padding:13px 15px;
+    border-radius:11px;
+    margin:15px 0;
+}
+
+.notice.info{
+    background:var(--azul-claro);
+    border-left:4px solid var(--azul2);
+}
+
+.notice.warning{
+    background:var(--amarillo-claro);
+    border-left:4px solid var(--amarillo);
+}
+
+.notice.success{
+    background:var(--verde-claro);
+    border-left:4px solid var(--verde);
+}
+
+.notice.danger{
+    background:var(--rojo-claro);
+    border-left:4px solid var(--rojo);
+}
+
+
+/* =========================================================
+   IDENTIFICACIÓN
+========================================================= */
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.form-grid > div{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.form-grid label{
+    font-weight:bold;
+    color:var(--azul);
+}
+
+.form-grid input{
+    border:1px solid #cbd5e1;
+    border-radius:10px;
+    padding:11px;
+    outline:none;
+    background:white;
+}
+
+.form-grid input:focus{
+    border-color:var(--azul2);
+    box-shadow:0 0 0 3px rgba(36,90,148,.12);
+}
+
+
+/* =========================================================
+   PREGUNTAS
+========================================================= */
+
+.question{
+    border:1px solid var(--borde);
+    border-radius:13px;
+    padding:17px;
+    margin:17px 0;
+    background:#fff;
+}
+
+.question-title{
+    font-weight:bold;
+    margin-bottom:12px;
+}
+
+.option{
+    display:flex;
+    align-items:flex-start;
+    gap:9px;
+    padding:8px 10px;
+    border-radius:9px;
+    cursor:pointer;
+}
+
+.option:hover{
+    background:#f8fafc;
+}
+
+.option input{
+    margin-top:4px;
+}
+
+
+/* =========================================================
+   BOTONES
+========================================================= */
+
+.nav-buttons{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-top:22px;
+    flex-wrap:wrap;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-danger,
+.btn-success{
+    border:0;
+    border-radius:10px;
+    padding:11px 18px;
+    font-weight:bold;
+}
+
+.btn-primary{
+    background:var(--azul);
+    color:white;
+}
+
+.btn-secondary{
+    background:#e2e8f0;
+    color:#172033;
+}
+
+.btn-danger{
+    background:var(--rojo);
+    color:white;
+}
+
+.btn-success{
+    background:var(--verde);
+    color:white;
+}
+
+button:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+}
+
+
+/* =========================================================
+   TARJETAS
+========================================================= */
+
+.cards-tray{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    min-height:125px;
+    padding:12px;
+    border:1px solid #e1e7ee;
+    border-radius:13px;
+    background:#fafcff;
+}
+
+.component-card{
+    width:180px;
+    min-height:100px;
+    background:white;
+    border:1px solid #bdc9d8;
+    border-radius:13px;
+    padding:13px;
+    box-shadow:0 4px 12px rgba(15,23,42,.08);
+    cursor:grab;
+    user-select:none;
+}
+
+.component-card:active{
+    cursor:grabbing;
+}
+
+.card-icon{
+    font-size:27px;
+    margin-bottom:5px;
+}
+
+.component-card strong{
+    display:block;
+    color:var(--azul);
+}
+
+.component-card small{
+    display:block;
+    margin-top:4px;
+    color:#475569;
+}
+
+.drop-zones{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:13px;
+    margin-top:16px;
+}
+
+.drop-zone{
+    min-height:145px;
+    border:2px dashed #9eb0c5;
+    border-radius:14px;
+    padding:12px;
+    background:#f9fbfd;
+}
+
+.drop-zone.drag-over{
+    border-color:var(--azul2);
+    background:#eef6ff;
+}
+
+.zone-title{
+    color:var(--azul);
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.zone-content{
+    min-height:90px;
+}
+
+.zone-content .component-card{
+    width:100%;
+}
+
+
+/* =========================================================
+   CONEXIONES
+========================================================= */
+
+.connection-title-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.connection-title-row h3{
+    color:var(--azul);
+    margin-bottom:0;
+}
+
+.connection-instruction{
+    background:var(--azul-claro);
+    border-left:4px solid var(--azul2);
+    border-radius:10px;
+    padding:13px;
+    margin:14px 0;
+    font-size:14px;
+}
+
+.connection-status{
+    text-align:center;
+    background:var(--amarillo-claro);
+    color:#76540f;
+    border-radius:10px;
+    padding:11px;
+    font-weight:bold;
+    margin:12px 0;
+}
+
+
+/* =========================================================
+   CIRCUITO
+========================================================= */
+
+.circuit-wrapper{
+    position:relative;
+    min-height:460px;
+    border:1px solid #d6dee8;
+    border-radius:26px;
+    background:#f8fafc;
+    overflow:hidden;
+    padding:30px;
+}
+
+.connection-svg{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    z-index:1;
+}
+
+.circuit-board{
+    position:relative;
+    z-index:2;
+    display:grid;
+    grid-template-columns:1fr 1.2fr 1fr;
+    align-items:center;
+    gap:45px;
+    min-height:390px;
+}
+
+.device{
+    background:white;
+    border:2px solid #cbd5e1;
+    border-radius:21px;
+    padding:19px;
+    box-shadow:0 7px 20px rgba(15,23,42,.08);
+}
+
+.device.sensor{
+    border-color:#68a7dc;
+}
+
+.device.micro{
+    border-color:#8163c4;
+}
+
+.device.actuator{
+    border-color:#e2a338;
+}
+
+.device-icon{
+    text-align:center;
+    font-size:28px;
+}
+
+.device h4{
+    color:var(--azul);
+    text-align:center;
+    margin:5px 0 15px;
+}
+
+.port-list{
+    display:grid;
+    gap:9px;
+}
+
+
+/*
+   IMPORTANTE:
+   Los puertos NO tienen puntos de colores.
+*/
+
+.port{
+    min-height:43px;
+    border:1px solid #c9d4e1;
+    border-radius:10px;
+    background:#f8fafc;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:13px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.15s;
+}
+
+.port:hover{
+    background:white;
+    border-color:#64748b;
+}
+
+.port.selected{
+    background:#eaf2f8;
+    border:2px solid var(--azul2);
+    box-shadow:0 0 0 3px rgba(36,90,148,.12);
+}
+
+.port.connected{
+    border-color:#4f9b72;
+    background:#f1faf4;
+}
+
+
+/* =========================================================
+   LEYENDA DE CABLES
+========================================================= */
+
+.cable-legend{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:14px;
+    margin-top:15px;
+    font-size:13px;
+}
+
+.legend{
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.legend-line{
+    width:28px;
+    height:5px;
+    border-radius:10px;
+}
+
+.legend-red{
+    background:#dc2626;
+}
+
+.legend-black{
+    background:#111827;
+}
+
+.legend-orange{
+    background:#f97316;
+}
+
+.legend-green{
+    background:#16a34a;
+}
+
+
+/* =========================================================
+   SOCIOAFECTIVA
+========================================================= */
+
+.attitude-item{
+    border:1px solid var(--borde);
+    border-radius:13px;
+    padding:17px;
+    margin:16px 0;
+    background:#fff;
+}
+
+.attitude-title{
+    font-weight:bold;
+    color:var(--azul);
+    font-size:17px;
+    margin-bottom:8px;
+}
+
+.attitude-item p{
+    margin-top:5px;
+    font-weight:bold;
+}
+
+
+/* =========================================================
+   INFORME
+========================================================= */
+
+.summary{
+    background:#fbfdff;
+    border:1px solid #d2dae4;
+    border-radius:14px;
+    padding:20px;
+    white-space:pre-wrap;
+    font-family:"Courier New",monospace;
+    font-size:14px;
+    line-height:1.55;
+    overflow:auto;
+}
+
+.qr-area{
+    margin-top:25px;
+    text-align:center;
+}
+
+#qrcode{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:310px;
+    padding:20px;
+    background:#f8fafc;
+    border:1px solid #d9e1ea;
+    border-radius:14px;
+}
+
+#qrcode svg{
+    width:280px;
+    height:280px;
+    max-width:100%;
+    background:white;
+}
+
+.qr-caption{
+    color:var(--gris);
+    font-size:13px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:850px){
+
+    .header-top{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .timer{
+        width:100%;
+    }
+
+    .form-grid,
+    .drop-zones,
+    .circuit-board{
+        grid-template-columns:1fr;
+    }
+
+    .circuit-wrapper{
+        padding:20px;
+        min-height:auto;
+    }
+
+    .circuit-board{
+        gap:18px;
+    }
+
+    .connection-svg{
+        display:none;
+    }
+}
+
+@media(max-width:600px){
+
+    .card{
+        padding:16px;
+    }
+
+    .component-card{
+        width:100%;
+    }
+
+    .nav-buttons{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .nav-buttons button{
+        width:100%;
+    }
+}
+
+
+/* =========================================================
+   IMPRESIÓN
+========================================================= */
+
+@media print{
+
+    body{
+        background:white;
+    }
+
+    .header,
+    .nav-buttons,
+    .connection-title-row,
+    .circuit-wrapper,
+    .connection-instruction,
+    .connection-status,
+    .qr-area{
+        display:none !important;
+    }
+
+    .stage{
+        display:none !important;
+    }
+
+    #stage4{
+        display:block !important;
+    }
+
+    .card{
+        box-shadow:none;
+        border:0;
+    }
+}
+
+
+
+/* =========================================================
+   INFORME FINAL DEL ESTUDIANTE — MISMA PRESENTACIÓN QUE APP DOCENTE
+========================================================= */
+
+.student-report{
+    background:transparent;
+    border:0;
+    border-radius:0;
+    padding:0;
+    margin:0;
+    font-family:inherit;
+    font-size:inherit;
+    line-height:inherit;
+    overflow:visible;
+    white-space:normal;
+}
+
+.student-report .student-header{
+    background:linear-gradient(135deg,#EDF5FC,#F8FBFE);
+    border:1px solid #D6E4F0;
+    border-radius:14px;
+    padding:18px;
+    margin-bottom:18px;
+}
+
+.student-report .student-meta{
+    margin-bottom:6px;
+    color:#65737D;
+    font-size:12px;
+    line-height:1.4;
+}
+
+.student-report .student-name{
+    font-size:24px;
+    font-weight:bold;
+    color:var(--azul);
+    line-height:1.25;
+    margin-top:3px;
+}
+
+.student-report .student-section{
+    margin-top:5px;
+    color:#53636F;
+    font-size:16px;
+    line-height:1.4;
+}
+
+.student-report .student-section strong{
+    color:var(--azul);
+}
+
+.student-report .report-summary-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.student-report .report-summary-card{
+    border:1px solid var(--borde);
+    border-radius:12px;
+    padding:16px;
+    background:#FAFBFC;
+}
+
+.student-report .report-summary-card .title{
+    font-size:12px;
+    color:#65737E;
+    font-weight:bold;
+}
+
+.student-report .report-summary-card .value{
+    font-size:23px;
+    color:var(--azul);
+    font-weight:bold;
+    margin-top:6px;
+}
+
+.student-report .report-summary-card .sub{
+    font-size:13px;
+    margin-top:5px;
+}
+
+.student-report .level-DC{ color:#126B3A; }
+.student-report .level-EC{ color:#986800; }
+.student-report .level-RC{ color:#A62D22; }
+
+.student-report .table-container{
+    width:100%;
+    overflow-x:auto;
+    margin-bottom:20px;
+}
+
+.student-report table{
+    width:100%;
+    min-width:650px;
+    border-collapse:collapse;
+}
+
+.student-report th,
+.student-report td{
+    border:1px solid var(--borde);
+    padding:10px;
+    text-align:left;
+    vertical-align:middle;
+}
+
+.student-report th{
+    background:var(--azul);
+    color:white;
+}
+
+.student-report tr:nth-child(even){
+    background:#F8F9FA;
+}
+
+.student-report .badge{
+    display:inline-block;
+    border-radius:999px;
+    padding:5px 10px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.student-report .badge-L,
+.student-report .badge-F{
+    background:var(--verde2);
+    color:#176B3A;
+}
+
+.student-report .badge-EP{
+    background:var(--amarillo2);
+    color:#795000;
+}
+
+.student-report .badge-RA{
+    background:var(--rojo2);
+    color:#922B21;
+}
+
+.student-report .badge-NA{
+    background:#ECEFF1;
+    color:#59656D;
+}
+
+.student-report .list-box{
+    border-radius:12px;
+    padding:16px;
+    margin:10px 0 20px;
+}
+
+.student-report .list-box ul{
+    margin:0;
+    padding-left:22px;
+}
+
+.student-report .list-box li{
+    margin:7px 0;
+}
+
+.student-report .strength-box{
+    background:var(--verde2);
+}
+
+.student-report .support-box{
+    background:var(--rojo2);
+}
+
+.student-report .qr-original{
+    background:#F8FAFC;
+    border:1px solid #D9E1EA;
+    border-radius:10px;
+    padding:12px;
+    font-family:Consolas,monospace;
+    font-size:12px;
+    white-space:pre-wrap;
+    word-break:break-word;
+    overflow-wrap:anywhere;
+    margin-top:10px;
+}
+
+@media(max-width:650px){
+    .student-report .student-name{
+        font-size:21px;
+    }
+
+    .student-report .report-summary-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+
+
+/* =========================================================
+   BORRADOR GRÁFICO MEP v3
+   SOLO PRESENTACIÓN VISUAL — NO MODIFICA HTML FUNCIONAL
+========================================================= */
+
+:root{
+    --azul:#2E3552;
+    --azul2:#1F3F78;
+    --azul-claro:#EEF3FA;
+    --dorado:#D4AF5A;
+    --dorado2:#B9923F;
+    --blanco:#FFFFFF;
+    --verde:#2E7D57;
+    --verde-claro:#EEF8F2;
+    --rojo:#A9473D;
+    --rojo-claro:#FCEFED;
+    --amarillo:#A97C2A;
+    --amarillo-claro:#FFF8E7;
+    --gris:#667085;
+    --gris-claro:#F5F7FA;
+    --borde:#D9DFE8;
+    --texto:#20283B;
+    --sombra:0 10px 28px rgba(34,45,76,.10);
+    --radio:16px;
+}
+
+body{
+    background:
+        linear-gradient(180deg,#F5F7FB 0%,#FFFFFF 34%,#F7F8FB 100%);
+    color:var(--texto);
+}
+
+.app{
+    width:min(1180px,96%);
+    margin:20px auto 56px;
+}
+
+/* Encabezado institucional sin recortes */
+.header{
+    position:relative;
+    overflow:hidden;
+    background-color:var(--azul);
+    background-image:
+        linear-gradient(135deg,rgba(30,44,77,.96),rgba(49,62,101,.96)),
+        none;
+    
+    border:1px solid #D6DDE7;
+    border-top:2px solid rgba(212,175,90,.7);
+}
+
+.summary p{margin:0 0 10px;}
+.summary h3{
+    color:var(--azul);
+    border-bottom:2px solid rgba(212,175,90,.6);
+    padding-bottom:6px;
+    margin-top:18px;
+    margin-bottom:10px;
+    font-size:16px;
+}
+
+/* Identidad oficial MEP en pie */
+.mep-footer-brand{
+    margin-top:28px;
+    padding:16px 20px;
+    background:#fff;
+    border:1px solid #D6DDE7;
+    border-top:3px solid var(--dorado);
+    border-radius:14px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    box-shadow:0 6px 18px rgba(34,45,76,.05);
+}
+.mep-footer-brand .brand-txt strong{
+    display:block;
+    color:var(--azul);
+    font-size:13px;
+    font-weight:800;
+}
+.mep-footer-brand .brand-txt span{
+    display:block;
+    color:#5D687C;
+    font-size:12px;
+    margin-top:2px;
+}
+.mep-footer-brand .brand-tag{
+    background:#EEF3FA;
+    border:1px solid #CFD8E5;
+    color:var(--azul2);
+    font-weight:800;
+    font-size:11px;
+    padding:6px 10px;
+    border-radius:8px;
+    white-space:nowrap;
+    text-transform:uppercase;
+    letter-spacing:.3px;
+}
+
+@media(max-width:700px){
+    .mep-footer-brand{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+<!-- =========================================================
+     ENCABEZADO
+========================================================= -->
+
+<header class="header">
+
+    <div class="header-top">
+
+        <div>
+
+            <h1>
+                Diagnóstico de Formación Tecnológica 9° (V3.1)
+            </h1>
+
+            <p>
+                III Ciclo · Modalidad Desconectada / Offline V3.1 · 70 minutos
+            </p>
+
+        </div>
+
+
+        <div class="timer">
+
+            <div class="timer-label">
+                Tiempo disponible
+            </div>
+
+            <div id="timer">
+                70:00
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="progress-wrap">
+
+        <div class="progress-info">
+
+            <span id="stageLabel">
+                Etapa 1 de 4
+            </span>
+
+            <span id="progressPercent">
+                25%
+            </span>
+
+        </div>
+
+
+        <div class="progress">
+
+            <div
+                id="progressBar"
+                class="progress-bar">
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     ETAPA 1 — COGNOSCITIVA
+========================================================= -->
+
+<section
+    id="stage1"
+    class="stage active">
+
+<div class="card">
+
+<h2 class="stage-title">
+    Etapa 1. Área cognoscitiva
+</h2>
+
+
+<div class="notice info">
+
+    <strong>Instrucciones:</strong>
+
+    Complete los datos de identificación y responda
+    las 10 preguntas.
+
+    Debe completar toda esta etapa antes de avanzar.
+
+</div>
+
+
+<div class="form-grid">
+
+    <div>
+
+        <label for="studentName">
+            Nombre completo del estudiante
+        </label>
+
+        <input
+            id="studentName"
+            type="text"
+            placeholder="Escriba el nombre completo">
+
+    </div>
+
+
+    <div>
+
+        <label for="section">
+            Sección
+        </label>
+
+        <input
+            id="section"
+            type="text"
+            placeholder="Ejemplo: 9-4">
+
+    </div>
+
+
+    <div>
+
+        <label for="institution">
+            Centro educativo
+        </label>
+
+        <input
+            id="institution"
+            type="text"
+            placeholder="Nombre del centro educativo">
+
+    </div>
+
+
+    <div>
+
+        <label for="date">
+            Fecha
+        </label>
+
+        <input
+            id="date"
+            type="date">
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     PREGUNTA 1
+===================================================== -->
+
+<div class="question">
+
+<div class="question-title">
+
+1. Microcontrolador.
+
+¿Cuál opción representa mejor la función de un
+microcontrolador dentro de un sistema automatizado?
+
+</div>
+
+
+<label class="option">
+<input type="radio" name="q1" value="A">
+<span>
+A. Almacenar únicamente documentos.
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q1" value="B">
+<span>
+B. Recibir información, procesarla y controlar dispositivos según una programación.
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q1" value="C">
+<span>
+C. Conectarse exclusivamente a Internet.
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q1" value="D">
+<span>
+D. Mostrar imágenes en pantalla.
+</span>
+</label>
+
+</div>
+
+
+<!-- =====================================================
+     PREGUNTA 2
+===================================================== -->
+
+<div class="question">
+
+<div class="question-title">
+
+2. Sensor y actuador.
+
+El __________ permite obtener información del entorno,
+mientras que el __________ ejecuta una acción como respuesta.
+
+</div>
+
+
+<label class="option">
+<input type="radio" name="q2" value="A">
+<span>
+A. actuador / sensor
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q2" value="B">
+<span>
+B. sensor / actuador
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q2" value="C">
+<span>
+C. microcontrolador / sensor
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q2" value="D">
+<span>
+D. actuador / microcontrolador
+</span>
+</label>
+
+</div>
+
+
+<!-- =====================================================
+     PREGUNTA 3
+===================================================== -->
+
+<div class="question">
+
+<div class="question-title">
+
+3. Entrada – proceso – salida.
+
+¿Cuál opción identifica correctamente la entrada,
+el proceso y la salida?
+
+</div>
+
+
+<label class="option">
+<input type="radio" name="q3" value="A">
+<span>
+A. LED / sensor / microcontrolador
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q3" value="B">
+<span>
+B. sensor / microcontrolador / LED
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q3" value="C">
+<span>
+C. microcontrolador / LED / sensor
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q3" value="D">
+<span>
+D. sensor / LED / microcontrolador
+</span>
+</label>
+
+</div>
+
+
+<!-- =====================================================
+     PREGUNTA 4
+===================================================== -->
+
+<div class="question">
+
+<div class="question-title">
+
+4. Algoritmo.
+
+¿Cuál opción presenta el orden más adecuado para
+encender automáticamente una luz cuando hay poca iluminación?
+
+</div>
+
+
+<label class="option">
+<input type="radio" name="q4" value="A">
+<span>
+A. Encender → iniciar → leer → comprobar
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q4" value="B">
+<span>
+B. Leer → iniciar → encender → comprobar
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q4" value="C">
+<span>
+C. Iniciar → leer → comprobar poca iluminación → encender
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q4" value="D">
+<span>
+D. Comprobar → encender → iniciar → leer
+</span>
+</label>
+
+</div>
+
+
+<!-- =====================================================
+     PREGUNTA 5
+===================================================== -->
+
+<div class="question">
+
+<div class="question-title">
+
+5. Condición.
+
+¿Cuál situación requiere utilizar una estructura condicional?
+
+</div>
+
+
+<label class="option">
+<input type="radio" name="q5" value="A">
+<span>
+A. repetir acción 10 veces
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q5" value="B">
+<span>
+B. encender luz si iluminación está por debajo de valor determinado
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q5" value="C">
+<span>
+C. mostrar mensaje siempre
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q5" value="D">
+<span>
+D. ejecutar instrucción una sola vez
+</span>
+</label>
+
+</div>
+
+
+<!-- =====================================================
+     PREGUNTA 6
+===================================================== -->
+
+<div class="question">
+
+<div class="question-title">
+
+6. Identificación de elementos.
+
+Seleccione la función correspondiente a cada elemento.
+
+</div>
+
+
+<p>
+<strong>Sensor:</strong>
+</p>
+
+
+<label class="option">
+<input type="radio" name="q6sensor" value="A">
+<span>
+A. Ejecuta acción.
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q6sensor" value="B">
+<span>
+B. Procesa información.
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q6sensor" value="C">
+<span>
+C. Captura información.
+</span>
+</label>
+
+
+<p>
+<strong>Actuador:</strong>
+</p>
+
+
+<label class="option">
+<input type="radio" name="q6actuator" value="A">
+<span>
+A. Ejecuta acción.
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q6actuator" value="B">
+<span>
+B. Procesa información.
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q6actuator" value="C">
+<span>
+C. Captura información.
+</span>
+</label>
+
+
+<p>
+<strong>Microcontrolador:</strong>
+</p>
+
+
+<label class="option">
+<input type="radio" name="q6micro" value="A">
+<span>
+A. Ejecuta acción.
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q6micro" value="B">
+<span>
+B. Procesa información.
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q6micro" value="C">
+<span>
+C. Captura información.
+</span>
+</label>
+
+</div>
+
+
+<!-- =====================================================
+     PREGUNTA 7
+===================================================== -->
+
+<div class="question">
+
+<div class="question-title">
+
+7. Dato.
+
+Un sensor de iluminación obtiene información del ambiente.
+¿Cuál representa un dato que podría proporcionar?
+
+</div>
+
+
+<label class="option">
+<input type="radio" name="q7" value="A">
+<span>
+A. nombre estudiante
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q7" value="B">
+<span>
+B. nivel iluminación
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q7" value="C">
+<span>
+C. nombre microcontrolador
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q7" value="D">
+<span>
+D. color tarjeta
+</span>
+</label>
+
+</div>
+
+
+<!-- =====================================================
+     PREGUNTA 8
+===================================================== -->
+
+<div class="question">
+
+<div class="question-title">
+
+8. Representación lógica.
+
+Si hay poca iluminación, encender la luz;
+de lo contrario, mantenerla apagada.
+
+¿Qué tipo de estructura representa?
+
+</div>
+
+
+<label class="option">
+<input type="radio" name="q8" value="A">
+<span>
+A. Secuencia simple
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q8" value="B">
+<span>
+B. Condicional
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q8" value="C">
+<span>
+C. Repetitiva
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q8" value="D">
+<span>
+D. Evento únicamente
+</span>
+</label>
+
+</div>
+
+
+<!-- =====================================================
+     PREGUNTA 9
+===================================================== -->
+
+<div class="question">
+
+<div class="question-title">
+
+9. Problema y depuración.
+
+Un estudiante conecta un sensor, pero el actuador nunca responde.
+¿Cuál sería una acción adecuada para comenzar a localizar el problema?
+
+</div>
+
+
+<label class="option">
+<input type="radio" name="q9" value="A">
+<span>
+A. concluir sensor dañado
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q9" value="B">
+<span>
+B. revisar conexiones/alimentación/puertos
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q9" value="C">
+<span>
+C. eliminar componentes
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q9" value="D">
+<span>
+D. cambiar objetivo
+</span>
+</label>
+
+</div>
+
+
+<!-- =====================================================
+     PREGUNTA 10
+===================================================== -->
+
+<div class="question">
+
+<div class="question-title">
+
+10. Datos y almacenamiento.
+
+¿Por qué puede ser importante conservar los datos obtenidos por un sensor?
+
+</div>
+
+
+<label class="option">
+<input type="radio" name="q10" value="A">
+<span>
+A. consultarlos/analizarlos/utilizarlos posteriormente
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q10" value="B">
+<span>
+B. sensor funciona como actuador
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q10" value="C">
+<span>
+C. sustituir microcontrolador
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="q10" value="D">
+<span>
+D. evitar sistema reciba información
+</span>
+</label>
+
+</div>
+
+
+<div
+    id="stage1Message"
+    class="notice warning">
+
+    Complete el nombre, la sección y el centro educativo para continuar. Después complete las 10 preguntas.
+
+</div>
+
+
+<div class="nav-buttons">
+
+    <div></div>
+
+    <button
+        id="btnStage1"
+        class="btn-primary"
+        type="button"
+        onclick="finishStage1()"
+        disabled>
+
+        Continuar diagnóstico →
+
+    </button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     ETAPA 2 — PSICOMOTORA
+========================================================= -->
+
+<section
+    id="stage2"
+    class="stage">
+
+<div class="card">
+
+<h2 class="stage-title">
+    Etapa 2. Área psicomotora
+</h2>
+
+
+<p>
+    Realice las actividades de organización y conexión.
+</p>
+
+
+<!-- =====================================================
+     EJERCICIO 1
+===================================================== -->
+
+<h3 class="section-title">
+    1. Organice las tarjetas
+</h3>
+
+
+<p>
+    Arrastre cada tarjeta hacia el espacio que considere correspondiente.
+</p>
+
+
+<div class="notice info">
+
+    Coloque las tres tarjetas en los espacios
+    <strong>ENTRADA</strong>,
+    <strong>PROCESO</strong> y
+    <strong>SALIDA</strong>.
+
+</div>
+
+
+<div
+    id="cardsTray"
+    class="cards-tray"
+    ondragover="allowDrop(event)"
+    ondrop="dropToTray(event)">
+
+
+    <!-- ORDEN INICIAL DELIBERADAMENTE DESORDENADO -->
+
+    <div
+        id="card-actuator"
+        class="component-card"
+        draggable="true"
+        data-id="actuator"
+        ondragstart="dragStart(event)">
+
+        <div class="card-icon">
+            💡
+        </div>
+
+        <strong>
+            Actuador
+        </strong>
+
+        <small>
+            LED
+        </small>
+
+    </div>
+
+
+    <div
+        id="card-sensor"
+        class="component-card"
+        draggable="true"
+        data-id="sensor"
+        ondragstart="dragStart(event)">
+
+        <div class="card-icon">
+            ☀️
+        </div>
+
+        <strong>
+            Sensor
+        </strong>
+
+        <small>
+            Luz
+        </small>
+
+    </div>
+
+
+    <div
+        id="card-micro"
+        class="component-card"
+        draggable="true"
+        data-id="micro"
+        ondragstart="dragStart(event)">
+
+        <div class="card-icon">
+            🧠
+        </div>
+
+        <strong>
+            Microcontrolador
+        </strong>
+
+        <small>
+            Control
+        </small>
+
+    </div>
+
+</div>
+
+
+<div class="drop-zones">
+
+
+    <div
+        class="drop-zone"
+        data-zone="input"
+        ondragover="allowDrop(event)"
+        ondrop="dropCard(event)">
+
+        <div class="zone-title">
+            ENTRADA
+        </div>
+
+        <div
+            id="zone-input"
+            class="zone-content">
+        </div>
+
+    </div>
+
+
+    <div
+        class="drop-zone"
+        data-zone="process"
+        ondragover="allowDrop(event)"
+        ondrop="dropCard(event)">
+
+        <div class="zone-title">
+            PROCESO
+        </div>
+
+        <div
+            id="zone-process"
+            class="zone-content">
+        </div>
+
+    </div>
+
+
+    <div
+        class="drop-zone"
+        data-zone="output"
+        ondragover="allowDrop(event)"
+        ondrop="dropCard(event)">
+
+        <div class="zone-title">
+            SALIDA
+        </div>
+
+        <div
+            id="zone-output"
+            class="zone-content">
+        </div>
+
+    </div>
+
+</div>
+
+
+<div
+    class="nav-buttons"
+    style="justify-content:flex-start;">
+
+    <button
+        type="button"
+        class="btn-secondary"
+        onclick="resetCards()">
+
+        Reacomodar tarjetas
+
+    </button>
+
+</div>
+
+
+<div
+    id="cardsStatus"
+    class="notice warning">
+
+    Faltan 3 tarjetas por colocar.
+
+</div>
+
+
+<!-- =====================================================
+     EJERCICIO 2
+===================================================== -->
+
+<hr
+    style="
+        margin:32px 0 24px;
+        border:0;
+        border-top:1px solid #dbe2ea;
+    ">
+
+
+<div class="connection-title-row">
+
+    <h3>
+        2. Realice las conexiones
+    </h3>
+
+
+    <button
+        type="button"
+        class="btn-danger"
+        onclick="resetConnections()">
+
+        Reiniciar conexiones
+
+    </button>
+
+</div>
+
+
+<div class="connection-instruction">
+
+    <strong>
+        Seleccione un puerto y luego seleccione el puerto
+        con el que desea conectarlo.
+    </strong>
+
+    <br>
+
+    No se indicará si una conexión es correcta o incorrecta.
+
+</div>
+
+
+<div
+    id="connectionStatus"
+    class="connection-status">
+
+    Faltan 5 puertos por conectar
+
+</div>
+
+
+<div
+    id="circuitWrapper"
+    class="circuit-wrapper">
+
+
+    <svg
+        id="connectionSvg"
+        class="connection-svg">
+    </svg>
+
+
+    <div class="circuit-board">
+
+
+        <!-- SENSOR -->
+
+        <div class="device sensor">
+
+            <div class="device-icon">
+                ☀️
+            </div>
+
+            <h4>
+                Sensor de luz
+            </h4>
+
+
+            <div class="port-list">
+
+                <div
+                    id="port-sensor-vcc"
+                    class="port"
+                    data-device="sensor"
+                    data-port="VCC"
+                    onclick="selectPort(this)">
+
+                    VCC
+
+                </div>
+
+
+                <div
+                    id="port-sensor-gnd"
+                    class="port"
+                    data-device="sensor"
+                    data-port="GND"
+                    onclick="selectPort(this)">
+
+                    GND
+
+                </div>
+
+
+                <div
+                    id="port-sensor-sig"
+                    class="port"
+                    data-device="sensor"
+                    data-port="SIG"
+                    onclick="selectPort(this)">
+
+                    SIG
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- MICROCONTROLADOR -->
+
+        <div class="device micro">
+
+            <div class="device-icon">
+                🧠
+            </div>
+
+            <h4>
+                Microcontrolador
+            </h4>
+
+
+            <div class="port-list">
+
+                <div
+                    id="port-micro-vcc"
+                    class="port"
+                    data-device="micro"
+                    data-port="VCC"
+                    onclick="selectPort(this)">
+
+                    VCC
+
+                </div>
+
+
+                <div
+                    id="port-micro-gnd"
+                    class="port"
+                    data-device="micro"
+                    data-port="GND"
+                    onclick="selectPort(this)">
+
+                    GND
+
+                </div>
+
+
+                <div
+                    id="port-micro-analog"
+                    class="port"
+                    data-device="micro"
+                    data-port="ANALÓGICO"
+                    onclick="selectPort(this)">
+
+                    ANALÓGICO
+
+                </div>
+
+
+                <div
+                    id="port-micro-digital"
+                    class="port"
+                    data-device="micro"
+                    data-port="DIGITAL"
+                    onclick="selectPort(this)">
+
+                    DIGITAL
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACTUADOR -->
+
+        <div class="device actuator">
+
+            <div class="device-icon">
+                💡
+            </div>
+
+            <h4>
+                Actuador LED
+            </h4>
+
+
+            <div class="port-list">
+
+                <div
+                    id="port-led-vcc"
+                    class="port"
+                    data-device="led"
+                    data-port="VCC"
+                    onclick="selectPort(this)">
+
+                    VCC
+
+                </div>
+
+
+                <div
+                    id="port-led-sig"
+                    class="port"
+                    data-device="led"
+                    data-port="SIG"
+                    onclick="selectPort(this)">
+
+                    SIG
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="cable-legend">
+
+    <div class="legend">
+        <span class="legend-line legend-black"></span>
+        GND
+    </div>
+
+    <div class="legend">
+        <span class="legend-line legend-red"></span>
+        VCC
+    </div>
+
+    <div class="legend">
+        <span class="legend-line legend-orange"></span>
+        Señal analógica
+    </div>
+
+    <div class="legend">
+        <span class="legend-line legend-green"></span>
+        Señal digital
+    </div>
+
+</div>
+
+
+<div
+    id="stage2Message"
+    class="notice warning">
+
+    Tarjetas correctamente organizadas: 0/3. Faltan 3 tarjetas por colocar y 5 puertos por conectar.
+
+</div>
+
+
+<div class="nav-buttons">
+
+    <button
+        type="button"
+        class="btn-secondary"
+        onclick="goToStage(1)">
+
+        ← Regresar
+
+    </button>
+
+
+    <button
+        id="btnStage2"
+        type="button"
+        class="btn-primary"
+        onclick="finishStage2()"
+        disabled>
+
+        Completar etapa 2 →
+
+    </button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     ETAPA 3 — SOCIOAFECTIVA
+========================================================= -->
+
+<section
+    id="stage3"
+    class="stage">
+
+<div class="card">
+
+<h2 class="stage-title">
+    Etapa 3. Área socioafectiva
+</h2>
+
+
+<div class="notice info">
+
+    Seleccione la opción que representa mejor su forma
+    habitual de trabajar durante actividades tecnológicas.
+
+</div>
+
+
+<!-- INDICADOR 1 -->
+
+<div class="attitude-item">
+
+<div class="attitude-title">
+1. Gusto por la precisión
+</div>
+
+<p>
+Al realizar las conexiones:
+</p>
+
+
+<label class="option">
+<input type="radio" name="a1" value="L">
+<span>
+Siempre revisé cuidadosamente dónde realizaba cada conexión.
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="a1" value="P">
+<span>
+En algunas ocasiones revisé las conexiones.
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="a1" value="A">
+<span>
+Me resultó difícil trabajar con precisión.
+</span>
+</label>
+
+</div>
+
+
+<!-- INDICADOR 2 -->
+
+<div class="attitude-item">
+
+<div class="attitude-title">
+2. Aprender del error
+</div>
+
+<p>
+Cuando encontré una dificultad:
+</p>
+
+
+<label class="option">
+<input type="radio" name="a2" value="L">
+<span>
+Revisé lo que había hecho y aprendí del error.
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="a2" value="P">
+<span>
+Intenté revisar lo sucedido con algún apoyo.
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="a2" value="A">
+<span>
+Me costó identificar qué podía cambiar.
+</span>
+</label>
+
+</div>
+
+
+<!-- INDICADOR 3 -->
+
+<div class="attitude-item">
+
+<div class="attitude-title">
+3. Flexibilidad para manejar problemas
+</div>
+
+<p>
+Cuando encontré una dificultad:
+</p>
+
+
+<label class="option">
+<input type="radio" name="a3" value="L">
+<span>
+Probé otra forma de realizar la actividad.
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="a3" value="P">
+<span>
+Intenté modificar parte del procedimiento.
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="a3" value="A">
+<span>
+Necesité apoyo para encontrar otra estrategia.
+</span>
+</label>
+
+</div>
+
+
+<!-- INDICADOR 4 -->
+
+<div class="attitude-item">
+
+<div class="attitude-title">
+4. Tolerancia a la frustración
+</div>
+
+<p>
+Cuando algo no salió como esperaba:
+</p>
+
+
+<label class="option">
+<input type="radio" name="a4" value="L">
+<span>
+Continué intentando realizar la actividad.
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="a4" value="P">
+<span>
+Continué, aunque necesité algún apoyo.
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="a4" value="A">
+<span>
+Me resultó difícil continuar.
+</span>
+</label>
+
+</div>
+
+
+<!-- INDICADOR 5 -->
+
+<div class="attitude-item">
+
+<div class="attitude-title">
+5. Manejo de las tecnologías de forma ética y segura
+</div>
+
+<p>
+Durante la actividad:
+</p>
+
+
+<label class="option">
+<input type="radio" name="a5" value="L">
+<span>
+Manipulé los componentes de manera cuidadosa y segura.
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="a5" value="P">
+<span>
+Generalmente trabajé con cuidado.
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="a5" value="A">
+<span>
+Necesité recordatorios para trabajar con seguridad.
+</span>
+</label>
+
+</div>
+
+
+<!-- INDICADOR 6 -->
+
+<div class="attitude-item">
+
+<div class="attitude-title">
+6. Pensamiento creativo
+</div>
+
+<p>
+Para resolver las actividades:
+</p>
+
+
+<label class="option">
+<input type="radio" name="a6" value="L">
+<span>
+Busqué distintas maneras de realizar la actividad.
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="a6" value="P">
+<span>
+Seguí principalmente el procedimiento indicado.
+</span>
+</label>
+
+
+<label class="option">
+<input type="radio" name="a6" value="A">
+<span>
+Necesité apoyo para encontrar una estrategia.
+</span>
+</label>
+
+</div>
+
+
+<div
+    id="stage3Message"
+    class="notice warning">
+
+    Responda los seis indicadores antes de finalizar.
+
+</div>
+
+
+<div class="nav-buttons">
+
+    <button
+        type="button"
+        class="btn-secondary"
+        onclick="goToStage(2)">
+
+        ← Regresar
+
+    </button>
+
+
+    <button
+        id="btnStage3"
+        type="button"
+        class="btn-success"
+        onclick="finishDiagnostic()">
+
+        Finalizar diagnóstico
+
+    </button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     ETAPA 4 — RESULTADOS
+========================================================= -->
+
+<section
+    id="stage4"
+    class="stage">
+
+<div class="card">
+
+<h2 class="stage-title">
+    Resultados del diagnóstico
+</h2>
+
+
+<div class="notice success">
+
+    El diagnóstico ha finalizado.
+    Los resultados se almacenaron localmente en este dispositivo.
+
+</div>
+
+
+<div
+    id="summary"
+    class="student-report">
+</div>
+
+
+<div class="qr-area">
+
+<h3 class="section-title">
+    Código QR del diagnóstico
+</h3>
+
+
+<p>
+    El QR contiene un resumen compacto de los resultados.
+    Se genera directamente en este archivo y no requiere Internet.
+</p>
+
+
+<div id="qrcode">
+
+    <span class="qr-caption">
+        Generando código QR...
+    </span>
+
+</div>
+
+</div>
+
+
+<div class="nav-buttons">
+
+    <button
+        type="button"
+        class="btn-secondary"
+        onclick="window.print()">
+
+        Imprimir informe
+
+    </button>
+
+
+    <button
+        type="button"
+        class="btn-primary"
+        onclick="location.reload()">
+
+        Nuevo diagnóstico
+
+    </button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- PIE OFICIAL INSTITUCIONAL MEP -->
+<footer class="mep-footer-brand">
+    <div class="brand-txt">
+        <strong>MINISTERIO DE EDUCACIÓN PÚBLICA • COSTA RICA</strong>
+        <span>Dirección de Recursos Tecnológicos en Educación • Formación Tecnológica 2027</span>
+    </div>
+    <div class="brand-tag">
+        Instrumento Oficial 9.° Año
+    </div>
+</footer>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   VARIABLES GENERALES
+========================================================= */
+
+const TOTAL_SECONDS = 70 * 60;
+
+let remainingSeconds = TOTAL_SECONDS;
+
+let timerInterval = null;
+
+let currentStage = 1;
+
+let draggedCard = null;
+
+let selectedPort = null;
+
+let connections = [];
+
+
+/* =========================================================
+   RESPUESTAS COGNOSCITIVAS
+========================================================= */
+
+const ANSWERS = {
+
+    q1:"B",
+    q2:"B",
+    q3:"B",
+    q4:"C",
+    q5:"B",
+
+    q6sensor:"C",
+    q6actuator:"A",
+    q6micro:"B",
+
+    q7:"B",
+    q8:"B",
+    q9:"B",
+    q10:"A"
+
+};
+
+
+const cognitiveNames = [
+
+    "Microcontrolador",
+    "Sensor y actuador",
+    "Entrada–proceso–salida",
+    "Algoritmo",
+    "Estructura condicional",
+    "Funciones de sensor, actuador y microcontrolador",
+    "Dato",
+    "Representación condicional",
+    "Depuración",
+    "Almacenamiento de datos"
+
+];
+
+
+const socioNames = [
+
+    "Gusto por la precisión",
+    "Aprender del error",
+    "Flexibilidad para manejar problemas",
+    "Tolerancia a la frustración",
+    "Manejo de las tecnologías de forma ética y segura",
+    "Pensamiento creativo"
+
+];
+
+
+
+/* =========================================================
+   RENDERIZAR INFORME VISUAL — ALINEADO CON APP DOCENTE
+========================================================= */
+
+function escaparHTMLInforme(valor){
+
+    return String(valor ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+function nivelClaseInforme(codigo){
+
+    if(codigo === "DC") return "level-DC";
+    if(codigo === "EC") return "level-EC";
+    if(codigo === "RC") return "level-RC";
+    return "";
+
+}
+
+
+function badgeInforme(estado){
+
+    const codigo = String(estado || "NA")
+        .trim()
+        .toUpperCase();
+
+    const nombres = {
+        L:"Logrado",
+        EP:"En proceso",
+        RA:"Requiere apoyo",
+        F:"Favorable",
+        NA:"No valorado"
+    };
+
+    const clase = ["L","EP","RA","F","NA"].includes(codigo)
+        ? codigo
+        : "NA";
+
+    return `
+        <span class="badge badge-${clase}">
+            ${escaparHTMLInforme(nombres[codigo] || codigo)}
+        </span>
+    `;
+
+}
+
+
+function tablaCognoscitivaInforme(resultados){
+
+    const filas = resultados.map(
+        (resultado,index)=>{
+
+            return `
+                <tr>
+                    <td><strong>C${index+1}</strong></td>
+                    <td>${escaparHTMLInforme(resultado.name)}</td>
+                    <td>${escaparHTMLInforme(
+                        `${resultado.correct}/${resultado.total}`
+                    )}</td>
+                </tr>
+            `;
+
+        }
+    ).join("");
+
+    return `
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Saber conceptual</th>
+                        <th>Resultado</th>
+                    </tr>
+                </thead>
+                <tbody>${filas}</tbody>
+            </table>
+        </div>
+    `;
+
+}
+
+
+function tablaProcedimentalInforme(procedural){
+
+    const resultados = [
+        ["P2","Reconoce patrones",procedural.recognizesPatterns],
+        ["P3","Abstrae",procedural.abstrae],
+        ["P4","Transfiere",procedural.transfiere],
+        ["P5","Modulariza",procedural.modulariza]
+    ];
+
+    const filas = resultados.map(
+        item=>`
+            <tr>
+                <td><strong>${item[0]}</strong></td>
+                <td>${escaparHTMLInforme(item[1])}</td>
+                <td>${badgeInforme(item[2])}</td>
+            </tr>
+        `
+    ).join("");
+
+    return `
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Saber procedimental</th>
+                        <th>Resultado</th>
+                    </tr>
+                </thead>
+                <tbody>${filas}</tbody>
+            </table>
+        </div>
+    `;
+
+}
+
+
+function tablaSocioafectivaInforme(resultados){
+
+    const filas = resultados.map(
+        (resultado,index)=>`
+            <tr>
+                <td><strong>S${index+1}</strong></td>
+                <td>${escaparHTMLInforme(resultado.name)}</td>
+                <td>${badgeInforme(socioCode(resultado.answer))}</td>
+            </tr>
+        `
+    ).join("");
+
+    return `
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Saber socioafectivo</th>
+                        <th>Resultado</th>
+                    </tr>
+                </thead>
+                <tbody>${filas}</tbody>
+            </table>
+        </div>
+    `;
+
+}
+
+
+function listaInforme(items,clase,emptyText){
+
+    if(!items || !items.length){
+
+        return `
+            <div class="list-box ${clase}">
+                ${escaparHTMLInforme(emptyText)}
+            </div>
+        `;
+
+    }
+
+    return `
+        <div class="list-box ${clase}">
+            <ul>
+                ${items.map(
+                    item=>`
+                        <li>${escaparHTMLInforme(item)}</li>
+                    `
+                ).join("")}
+            </ul>
+        </div>
+    `;
+
+}
+
+
+function renderStudentReport(data,qrData){
+
+    const resultado = `${data.score}/10`;
+    const nivel = data.level.code;
+    const nivelTexto = data.level.label;
+
+    return `
+
+        <div class="student-header">
+
+            <div class="student-meta">
+                Centro educativo:
+                <strong>
+                    ${escaparHTMLInforme(data.institution || "—")}
+                </strong>
+            </div>
+
+            <div class="student-name">
+                ${escaparHTMLInforme(data.student || "—")}
+            </div>
+
+            <div class="student-section">
+                Sección:
+                <strong>
+                    ${escaparHTMLInforme(data.section || "—")}
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="report-summary-grid">
+
+            <div class="report-summary-card">
+                <div class="title">RESULTADO COGNOSCITIVO</div>
+                <div class="value">${escaparHTMLInforme(resultado)}</div>
+            </div>
+
+            <div class="report-summary-card">
+                <div class="title">NIVEL</div>
+                <div class="value ${nivelClaseInforme(nivel)}">
+                    ${escaparHTMLInforme(nivel)}
+                </div>
+                <div class="sub">
+                    ${escaparHTMLInforme(nivelTexto)}
+                </div>
+            </div>
+
+        </div>
+
+
+        <h3>COGNOSCITIVA</h3>
+
+        ${tablaCognoscitivaInforme(data.knowledgeResults)}
+
+
+        <h3>EVIDENCIAS DE LA ACTIVIDAD PRÁCTICA</h3>
+
+        <div class="notice info">
+            Estas evidencias corresponden a la actividad práctica
+            realizada durante el diagnóstico. Las conexiones se
+            reportan únicamente cuando son técnicamente correctas.
+        </div>
+
+        <div class="report-summary-grid">
+
+            <div class="report-summary-card">
+                <div class="title">TARJETAS CORRECTAMENTE ORGANIZADAS</div>
+                <div class="value">
+                    ${escaparHTMLInforme(data.procedural.cardsCorrect || "—")}
+                </div>
+            </div>
+
+            <div class="report-summary-card">
+                <div class="title">CONEXIONES TÉCNICAMENTE CORRECTAS</div>
+                <div class="value">
+                    ${escaparHTMLInforme(data.procedural.correctConnections || "—")}
+                </div>
+            </div>
+
+        </div>
+
+
+        <h3>SABERES PROCEDIMENTALES</h3>
+
+        ${tablaProcedimentalInforme(data.procedural)}
+
+
+        <h3>SOCIOAFECTIVA</h3>
+
+        ${tablaSocioafectivaInforme(data.socio)}
+
+
+        <h3>FORTALEZAS</h3>
+
+        ${listaInforme(
+            data.strengths,
+            "strength-box",
+            "No se identificaron fortalezas en este diagnóstico."
+        )}
+
+
+        <h3>APOYO</h3>
+
+        ${listaInforme(
+            data.support,
+            "support-box",
+            "Sin prioridades conceptuales."
+        )}
+
+
+        <h3>INFORMACIÓN QR</h3>
+
+        <div class="qr-original">
+            ${escaparHTMLInforme(qrData || "")}
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   FECHA
+========================================================= */
+
+function setToday(){
+
+    const input =
+        document.getElementById("date");
+
+
+    if(!input.value){
+
+        const d = new Date();
+
+        const y =
+            d.getFullYear();
+
+        const m =
+            String(d.getMonth()+1)
+            .padStart(2,"0");
+
+        const day =
+            String(d.getDate())
+            .padStart(2,"0");
+
+        input.value =
+            `${y}-${m}-${day}`;
+
+    }
+
+}
+
+setToday();
+
+
+/* =========================================================
+   NAVEGACIÓN
+========================================================= */
+
+function goToStage(stage){
+
+    document.querySelectorAll(".stage")
+        .forEach(
+            element =>
+                element.classList.remove("active")
+        );
+
+
+    document.getElementById(
+        "stage"+stage
+    ).classList.add("active");
+
+
+    currentStage = stage;
+
+
+    const percent =
+        stage * 25;
+
+
+    document.getElementById(
+        "stageLabel"
+    ).textContent =
+        `Etapa ${stage} de 4`;
+
+
+    document.getElementById(
+        "progressPercent"
+    ).textContent =
+        percent+"%";
+
+
+    document.getElementById(
+        "progressBar"
+    ).style.width =
+        percent+"%";
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+
+    if(stage === 2){
+
+        setTimeout(
+            drawConnections,
+            100
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   TEMPORIZADOR
+========================================================= */
+
+function startTimer(){
+
+    timerInterval =
+        setInterval(
+            ()=>{
+
+                if(
+                    remainingSeconds <= 0
+                ){
+
+                    clearInterval(
+                        timerInterval
+                    );
+
+                    document.getElementById(
+                        "timer"
+                    ).textContent =
+                        "00:00";
+
+                    return;
+
+                }
+
+
+                remainingSeconds--;
+
+                updateTimer();
+
+            },
+            1000
+        );
+
+
+    updateTimer();
+
+}
+
+
+function updateTimer(){
+
+    const minutes =
+        Math.floor(
+            remainingSeconds/60
+        );
+
+
+    const seconds =
+        remainingSeconds%60;
+
+
+    document.getElementById(
+        "timer"
+    ).textContent =
+
+        String(minutes)
+        .padStart(2,"0")
+
+        +
+
+        ":"
+
+        +
+
+        String(seconds)
+        .padStart(2,"0");
+
+}
+
+
+startTimer();
+
+
+/* =========================================================
+   RADIO
+========================================================= */
+
+function getRadio(name){
+
+    const selected =
+        document.querySelector(
+            `input[name="${name}"]:checked`
+        );
+
+
+    return selected
+        ? selected.value
+        : null;
+
+}
+
+
+/* =========================================================
+   ETAPA 1
+========================================================= */
+
+function identityComplete(){
+
+    const nombre =
+        document.getElementById(
+            "studentName"
+        ).value.trim();
+
+    const section =
+        document.getElementById(
+            "section"
+        ).value.trim();
+
+    const institution =
+        document.getElementById(
+            "institution"
+        ).value.trim();
+
+
+    return (
+
+        nombre !== ""
+
+        &&
+
+        section !== ""
+
+        &&
+
+        institution !== ""
+
+    );
+
+}
+
+
+function updateStage1Button(){
+
+    const button =
+        document.getElementById(
+            "btnStage1"
+        );
+
+
+    if(!button){
+        return;
+    }
+
+
+    button.disabled =
+        !identityComplete();
+
+}
+
+
+function cognitiveComplete(){
+
+    const fields = [
+
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
+
+        "q6sensor",
+        "q6actuator",
+        "q6micro",
+
+        "q7",
+        "q8",
+        "q9",
+        "q10"
+
+    ];
+
+
+    return fields.every(
+        field =>
+            getRadio(field) !== null
+    );
+
+}
+
+
+function finishStage1(){
+
+    const message =
+        document.getElementById(
+            "stage1Message"
+        );
+
+
+    if(!identityComplete()){
+
+        message.textContent =
+            "Complete el nombre, la sección y el centro educativo antes de continuar.";
+
+        updateStage1Button();
+
+        return;
+
+    }
+
+
+    if(!cognitiveComplete()){
+
+        message.textContent =
+            "Complete las 10 preguntas antes de continuar.";
+
+        return;
+
+    }
+
+
+    message.textContent =
+        "Datos y preguntas completos.";
+
+
+    goToStage(2);
+
+}
+
+
+/* =========================================================
+   RESULTADOS COGNOSCITIVOS
+========================================================= */
+
+function getCognitiveResults(){
+
+    const results = [];
+
+
+    const normal = [
+
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5"
+
+    ];
+
+
+    normal.forEach(
+        name => {
+
+            const answer =
+                getRadio(name);
+
+
+            results.push({
+
+                answer:answer,
+
+                correct:
+                    answer ===
+                    ANSWERS[name]
+
+            });
+
+        }
+    );
+
+
+    const q6s =
+        getRadio("q6sensor");
+
+
+    const q6a =
+        getRadio("q6actuator");
+
+
+    const q6m =
+        getRadio("q6micro");
+
+
+    results.push({
+
+        answer:{
+
+            sensor:q6s,
+
+            actuator:q6a,
+
+            micro:q6m
+
+        },
+
+        correct:
+
+            q6s === ANSWERS.q6sensor
+
+            &&
+
+            q6a === ANSWERS.q6actuator
+
+            &&
+
+            q6m === ANSWERS.q6micro
+
+    });
+
+
+    [
+
+        "q7",
+        "q8",
+        "q9",
+        "q10"
+
+    ].forEach(
+        name => {
+
+            const answer =
+                getRadio(name);
+
+
+            results.push({
+
+                answer:answer,
+
+                correct:
+                    answer ===
+                    ANSWERS[name]
+
+            });
+
+        }
+    );
+
+
+    return results;
+
+}
+
+
+function cognitiveScore(results){
+
+    return results.filter(
+        result =>
+            result.correct
+    ).length;
+
+}
+
+
+function cognitiveLevel(score){
+
+    if(score >= 8){
+
+        return {
+
+            code:"DC",
+
+            label:
+                "Dominio conceptual consolidado"
+
+        };
+
+    }
+
+
+    if(score >= 5){
+
+        return {
+
+            code:"EC",
+
+            label:
+                "En proceso de consolidación"
+
+        };
+
+    }
+
+
+    return {
+
+        code:"RC",
+
+        label:
+            "Requiere reforzamiento conceptual"
+
+        };
+
+}
+
+
+/* =========================================================
+   TARJETAS
+========================================================= */
+
+function dragStart(event){
+
+    draggedCard =
+        event.currentTarget;
+
+
+    event.dataTransfer.setData(
+        "text/plain",
+        draggedCard.id
+    );
+
+
+    event.dataTransfer.effectAllowed =
+        "move";
+
+}
+
+
+function allowDrop(event){
+
+    event.preventDefault();
+
+
+    if(
+        event.currentTarget.classList
+    ){
+
+        event.currentTarget
+            .classList.add(
+                "drag-over"
+            );
+
+    }
+
+}
+
+
+document.addEventListener(
+    "dragend",
+    ()=>{
+
+        document.querySelectorAll(
+            ".drop-zone"
+        ).forEach(
+            zone =>
+                zone.classList.remove(
+                    "drag-over"
+                )
+        );
+
+    }
+);
+
+
+function dropCard(event){
+
+    event.preventDefault();
+
+
+    const zone =
+        event.currentTarget;
+
+
+    zone.classList.remove(
+        "drag-over"
+    );
+
+
+    const cardId =
+        event.dataTransfer.getData(
+            "text/plain"
+        );
+
+
+    const card =
+        document.getElementById(
+            cardId
+        );
+
+
+    if(!card){
+        return;
+    }
+
+
+    const content =
+        zone.querySelector(
+            ".zone-content"
+        );
+
+
+    const existing =
+        content.querySelector(
+            ".component-card"
+        );
+
+
+    if(
+        existing &&
+        existing !== card
+    ){
+
+        document.getElementById(
+            "cardsTray"
+        ).appendChild(
+            existing
+        );
+
+    }
+
+
+    content.appendChild(card);
+
+
+    updateCardsStatus();
+
+}
+
+
+function dropToTray(event){
+
+    event.preventDefault();
+
+
+    const cardId =
+        event.dataTransfer.getData(
+            "text/plain"
+        );
+
+
+    const card =
+        document.getElementById(
+            cardId
+        );
+
+
+    if(card){
+
+        document.getElementById(
+            "cardsTray"
+        ).appendChild(
+            card
+        );
+
+    }
+
+
+    updateCardsStatus();
+
+}
+
+
+/*
+   BOTÓN:
+   REACOMODAR TARJETAS
+*/
+
+function resetCards(){
+
+    const tray =
+        document.getElementById(
+            "cardsTray"
+        );
+
+
+    /*
+       Orden inicial:
+       Actuador → Sensor → Microcontrolador
+    */
+
+    tray.appendChild(
+        document.getElementById(
+            "card-actuator"
+        )
+    );
+
+
+    tray.appendChild(
+        document.getElementById(
+            "card-sensor"
+        )
+    );
+
+
+    tray.appendChild(
+        document.getElementById(
+            "card-micro"
+        )
+    );
+
+
+    updateCardsStatus();
+
+}
+
+
+function getCardsPlaced(){
+
+    return document.querySelectorAll(
+        ".zone-content .component-card"
+    ).length;
+
+}
+
+
+function getCardArrangement(){
+
+    function cardId(zone){
+
+        const card =
+            document.querySelector(
+                `#zone-${zone} .component-card`
+            );
+
+
+        return card
+            ? card.dataset.id
+            : null;
+
+    }
+
+
+    return {
+
+        input:
+            cardId("input"),
+
+        process:
+            cardId("process"),
+
+        output:
+            cardId("output")
+
+    };
+
+}
+
+
+function updateCardsStatus(){
+
+    const count =
+        getCardsPlaced();
+
+
+    const missing =
+        3-count;
+
+
+    const message =
+        document.getElementById(
+            "cardsStatus"
+        );
+
+
+    if(missing > 0){
+
+        message.textContent =
+            `Faltan ${missing} tarjetas por colocar.`;
+
+    }else{
+
+        message.textContent =
+            "Las tres tarjetas están colocadas.";
+
+    }
+
+
+    updateStage2Button();
+
+}
+
+
+/* =========================================================
+   CONEXIONES
+========================================================= */
+
+
+/*
+   PUERTOS QUE DEBEN ESTAR CONECTADOS
+   PARA PODER AVANZAR:
+
+   SENSOR:
+   - VCC
+   - GND
+   - SIG
+
+   ACTUADOR:
+   - VCC
+   - SIG
+
+   TOTAL = 5
+
+   Los puertos del microcontrolador pueden participar
+   en conexiones, pero no son necesarios individualmente
+   para desbloquear la etapa.
+*/
+
+const requiredPorts = [
+
+    "port-sensor-vcc",
+    "port-sensor-gnd",
+    "port-sensor-sig",
+
+    "port-led-vcc",
+    "port-led-sig"
+
+];
+
+
+/*
+   CONEXIONES TÉCNICAMENTE ESPERADAS.
+
+   Se almacenan internamente.
+   NO se muestran al estudiante.
+*/
+
+const expectedConnections = [
+
+    [
+        "sensor",
+        "VCC",
+        "micro",
+        "VCC"
+    ],
+
+    [
+        "sensor",
+        "GND",
+        "micro",
+        "GND"
+    ],
+
+    [
+        "sensor",
+        "SIG",
+        "micro",
+        "ANALÓGICO"
+    ],
+
+    [
+        "micro",
+        "VCC",
+        "led",
+        "VCC"
+    ],
+
+    [
+        "micro",
+        "DIGITAL",
+        "led",
+        "SIG"
+    ]
+
+];
+
+
+function getPortInfo(id){
+
+    const element =
+        document.getElementById(id);
+
+
+    if(!element){
+        return null;
+    }
+
+
+    return {
+
+        id:id,
+
+        device:
+            element.dataset.device,
+
+        port:
+            element.dataset.port
+
+    };
+
+}
+
+
+function connectionCorrect(a,b){
+
+    return expectedConnections.some(
+        expected => {
+
+            const direct =
+
+                a.device === expected[0]
+
+                &&
+
+                a.port === expected[1]
+
+                &&
+
+                b.device === expected[2]
+
+                &&
+
+                b.port === expected[3];
+
+
+            const reverse =
+
+                a.device === expected[2]
+
+                &&
+
+                a.port === expected[3]
+
+                &&
+
+                b.device === expected[0]
+
+                &&
+
+                b.port === expected[1];
+
+
+            return direct || reverse;
+
+        }
+    );
+
+}
+
+
+function connectionAlreadyExists(
+    fromId,
+    toId
+){
+
+    return connections.some(
+        connection =>
+
+            (
+
+                connection.from === fromId
+
+                &&
+
+                connection.to === toId
+
+            )
+
+            ||
+
+            (
+
+                connection.from === toId
+
+                &&
+
+                connection.to === fromId
+
+            )
+    );
+
+}
+
+
+function selectPort(element){
+
+    /*
+       Primer puerto.
+    */
+
+    if(selectedPort === null){
+
+        selectedPort =
+            element.id;
+
+
+        element.classList.add(
+            "selected"
+        );
+
+
+        return;
+
+    }
+
+
+    /*
+       Mismo puerto:
+       cancelar selección.
+    */
+
+    if(
+        selectedPort === element.id
+    ){
+
+        element.classList.remove(
+            "selected"
+        );
+
+
+        selectedPort = null;
+
+
+        return;
+
+    }
+
+
+    const first =
+        document.getElementById(
+            selectedPort
+        );
+
+
+    const second =
+        element;
+
+
+    if(!first){
+
+        selectedPort = null;
+
+        return;
+
+    }
+
+
+    /*
+       No crear cables duplicados.
+    */
+
+    if(
+        !connectionAlreadyExists(
+            first.id,
+            second.id
+        )
+    ){
+
+        const infoA =
+            getPortInfo(
+                first.id
+            );
+
+
+        const infoB =
+            getPortInfo(
+                second.id
+            );
+
+
+        connections.push({
+
+            id:
+                createId(),
+
+            from:
+                first.id,
+
+            to:
+                second.id,
+
+            fromDevice:
+                infoA.device,
+
+            fromPort:
+                infoA.port,
+
+            toDevice:
+                infoB.device,
+
+            toPort:
+                infoB.port,
+
+
+            /*
+               INFORMACIÓN INTERNA.
+               NO SE MUESTRA.
+            */
+
+            technicallyCorrect:
+                connectionCorrect(
+                    infoA,
+                    infoB
+                ),
+
+            timestamp:
+                new Date().toISOString()
+
+        });
+
+    }
+
+
+    document.querySelectorAll(
+        ".port"
+    ).forEach(
+        port =>
+            port.classList.remove(
+                "selected"
+            )
+    );
+
+
+    selectedPort = null;
+
+
+    updatePortStatus();
+
+    drawConnections();
+
+    updateConnectionMessage();
+
+    updateStage2Button();
+
+}
+
+
+/*
+   Visualmente solo se indica que el puerto
+   ya participa en una conexión.
+   No se indica si la conexión es correcta.
+*/
+
+function updatePortStatus(){
+
+    document.querySelectorAll(
+        ".port"
+    ).forEach(
+        port => {
+
+            port.classList.remove(
+                "connected"
+            );
+
+
+            const connected =
+                connections.some(
+                    connection =>
+
+                        connection.from ===
+                        port.id
+
+                        ||
+
+                        connection.to ===
+                        port.id
+                );
+
+
+            if(connected){
+
+                port.classList.add(
+                    "connected"
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+/*
+   Cuenta puertos obligatorios conectados.
+*/
+
+function connectedRequiredPorts(){
+
+    return requiredPorts.filter(
+        portId =>
+
+            connections.some(
+                connection =>
+
+                    connection.from ===
+                    portId
+
+                    ||
+
+                    connection.to ===
+                    portId
+            )
+    ).length;
+
+}
+
+
+function missingRequiredPorts(){
+
+    return (
+
+        requiredPorts.length
+        -
+        connectedRequiredPorts()
+
+    );
+
+}
+
+
+/*
+   ÚNICA devolución sobre conexiones.
+*/
+
+function updateConnectionMessage(){
+
+    const missing =
+        missingRequiredPorts();
+
+
+    document.getElementById(
+        "connectionStatus"
+    ).textContent =
+
+        `Faltan ${missing} puertos por conectar`;
+
+}
+
+
+/*
+   REINICIAR CONEXIONES
+*/
+
+function resetConnections(){
+
+    connections = [];
+
+    selectedPort = null;
+
+
+    document.querySelectorAll(
+        ".port"
+    ).forEach(
+        port => {
+
+            port.classList.remove(
+                "selected"
+            );
+
+            port.classList.remove(
+                "connected"
+            );
+
+        }
+    );
+
+
+    document.getElementById(
+        "connectionSvg"
+    ).innerHTML = "";
+
+
+    updateConnectionMessage();
+
+    updateStage2Button();
+
+}
+
+
+/* =========================================================
+   COLOR DE CABLE
+========================================================= */
+
+function getCableColor(a,b){
+
+    const ports = [
+        a.port,
+        b.port
+    ];
+
+
+    if(
+        ports.includes("GND")
+    ){
+
+        return "#111827";
+
+    }
+
+
+    if(
+        ports.includes("VCC")
+    ){
+
+        return "#dc2626";
+
+    }
+
+
+    if(
+        ports.includes("ANALÓGICO")
+    ){
+
+        return "#f97316";
+
+    }
+
+
+    if(
+        ports.includes("DIGITAL")
+    ){
+
+        return "#16a34a";
+
+    }
+
+
+    return "#64748b";
+
+}
+
+
+/* =========================================================
+   DIBUJAR CONEXIONES
+========================================================= */
+
+function drawConnections(){
+
+    const svg =
+        document.getElementById(
+            "connectionSvg"
+        );
+
+
+    if(!svg){
+        return;
+    }
+
+
+    svg.innerHTML = "";
+
+
+    /*
+       En pantalla pequeña se mantienen
+       las conexiones almacenadas, pero no
+       se dibujan sobre dispositivos apilados.
+    */
+
+    if(
+        window.innerWidth <= 850
+    ){
+
+        return;
+
+    }
+
+
+    const wrapper =
+        document.getElementById(
+            "circuitWrapper"
+        );
+
+
+    const wrapperRect =
+        wrapper.getBoundingClientRect();
+
+
+    connections.forEach(
+        connection => {
+
+            const a =
+                document.getElementById(
+                    connection.from
+                );
+
+
+            const b =
+                document.getElementById(
+                    connection.to
+                );
+
+
+            if(!a || !b){
+                return;
+            }
+
+
+            const ra =
+                a.getBoundingClientRect();
+
+
+            const rb =
+                b.getBoundingClientRect();
+
+
+            const x1 =
+                ra.left -
+                wrapperRect.left +
+                ra.width/2;
+
+
+            const y1 =
+                ra.top -
+                wrapperRect.top +
+                ra.height/2;
+
+
+            const x2 =
+                rb.left -
+                wrapperRect.left +
+                rb.width/2;
+
+
+            const y2 =
+                rb.top -
+                wrapperRect.top +
+                rb.height/2;
+
+
+            const infoA =
+                getPortInfo(
+                    connection.from
+                );
+
+
+            const infoB =
+                getPortInfo(
+                    connection.to
+                );
+
+
+            const color =
+                getCableColor(
+                    infoA,
+                    infoB
+                );
+
+
+            const path =
+                document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "path"
+                );
+
+
+            const curve =
+                Math.max(
+                    60,
+                    Math.abs(x2-x1)*.45
+                );
+
+
+            const c1x =
+                x2 >= x1
+                    ? x1+curve
+                    : x1-curve;
+
+
+            const c2x =
+                x2 >= x1
+                    ? x2-curve
+                    : x2+curve;
+
+
+            path.setAttribute(
+                "d",
+                `
+                M ${x1} ${y1}
+                C ${c1x} ${y1},
+                  ${c2x} ${y2},
+                  ${x2} ${y2}
+                `
+            );
+
+
+            path.setAttribute(
+                "fill",
+                "none"
+            );
+
+
+            path.setAttribute(
+                "stroke",
+                color
+            );
+
+
+            path.setAttribute(
+                "stroke-width",
+                "5"
+            );
+
+
+            path.setAttribute(
+                "stroke-linecap",
+                "round"
+            );
+
+
+            svg.appendChild(path);
+
+        }
+    );
+
+}
+
+
+window.addEventListener(
+    "resize",
+    drawConnections
+);
+
+
+/* =========================================================
+   ETAPA 2
+========================================================= */
+
+function updateStage2Button(){
+
+    const cards =
+        getCardsPlaced();
+
+
+    const missingPorts =
+        missingRequiredPorts();
+
+
+    const complete =
+        cards === 3
+        &&
+        missingPorts === 0;
+
+
+    document.getElementById(
+        "btnStage2"
+    ).disabled =
+        !complete;
+
+
+    const message =
+        document.getElementById(
+            "stage2Message"
+        );
+
+
+    const missingCards =
+        3-cards;
+
+    const correctCards =
+        tarjetasCorrectamenteColocadasCount();
+
+
+    if(
+        missingCards > 0 &&
+        missingPorts > 0
+    ){
+
+        message.textContent =
+            `Tarjetas correctamente organizadas: ${correctCards}/3. Faltan ${missingCards} tarjetas por colocar y ${missingPorts} puertos por conectar.`;
+
+        return;
+
+    }
+
+
+    if(
+        missingCards > 0
+    ){
+
+        message.textContent =
+            `Tarjetas correctamente organizadas: ${correctCards}/3. Faltan ${missingCards} tarjetas por colocar.`;
+
+        return;
+
+    }
+
+
+    if(
+        missingPorts > 0
+    ){
+
+        message.textContent =
+            `Tarjetas correctamente organizadas: ${correctCards}/3. Faltan ${missingPorts} puertos por conectar.`;
+
+        return;
+
+    }
+
+
+    message.textContent =
+        `Tarjetas correctamente organizadas: ${correctCards}/3. Las dos actividades están completas.`;
+
+}
+
+
+function finishStage2(){
+
+    const cards =
+        getCardsPlaced();
+
+
+    const missingPorts =
+        missingRequiredPorts();
+
+
+    if(cards < 3){
+
+        const correctCards =
+            tarjetasCorrectamenteColocadasCount();
+
+        document.getElementById(
+            "stage2Message"
+        ).textContent =
+            `Tarjetas correctamente organizadas: ${correctCards}/3. Faltan ${3-cards} tarjetas por colocar.`;
+
+        return;
+
+    }
+
+
+    if(missingPorts > 0){
+
+        document.getElementById(
+            "stage2Message"
+        ).textContent =
+            `Faltan ${missingPorts} puertos por conectar.`;
+
+        return;
+
+    }
+
+
+    goToStage(3);
+
+}
+
+
+/* =========================================================
+   SOCIOAFECTIVA
+========================================================= */
+
+function socioComplete(){
+
+    for(
+        let i=1;
+        i<=6;
+        i++
+    ){
+
+        if(
+            getRadio("a"+i) === null
+        ){
+
+            return false;
+
+        }
+
+    }
+
+
+    return true;
+
+}
+
+
+function getSocioResults(){
+
+    const results = [];
+
+
+    /* CORRECCION 1: solo se vinculan al informe y al QR los cuatro saberes socioafectivos: gusto por la precision, aprender del error, flexibilidad para manejar problemas y tolerancia a la frustracion. Las preguntas 5 y 6 permanecen sin cambios en la actividad, pero no se reportan ni codifican. */
+    for(
+        let i=1;
+        i<=4;
+        i++
+    ){
+
+        results.push({
+
+            name:
+                socioNames[i-1],
+
+            answer:
+                getRadio("a"+i)
+
+        });
+
+    }
+
+
+    return results;
+
+}
+
+
+/* =========================================================
+   PROCEDIMENTAL
+========================================================= */
+
+function tarjetasCorrectamenteColocadasCount(){
+
+    const arrangement =
+        getCardArrangement();
+
+    let correct = 0;
+
+
+    if(
+        arrangement.input === "sensor"
+    ){
+        correct++;
+    }
+
+
+    if(
+        arrangement.process === "micro"
+    ){
+        correct++;
+    }
+
+
+    if(
+        arrangement.output === "actuator"
+    ){
+        correct++;
+    }
+
+
+    return correct;
+
+}
+
+
+function tarjetasCorrectamenteOrganizadas(){
+
+    return
+        tarjetasCorrectamenteColocadasCount() === 3;
+
+}
+
+
+function contarConexionesCorrectas(){
+
+    const indices = new Set();
+
+
+    connections.forEach(
+        connection => {
+
+            const infoA = {
+                device: connection.fromDevice,
+                port: connection.fromPort
+            };
+
+            const infoB = {
+                device: connection.toDevice,
+                port: connection.toPort
+            };
+
+
+            const indice =
+                expectedConnections.findIndex(
+                    expected => {
+
+                        const direct =
+                            infoA.device === expected[0] &&
+                            infoA.port === expected[1] &&
+                            infoB.device === expected[2] &&
+                            infoB.port === expected[3];
+
+
+                        const reverse =
+                            infoA.device === expected[2] &&
+                            infoA.port === expected[3] &&
+                            infoB.device === expected[0] &&
+                            infoB.port === expected[1];
+
+
+                        return direct || reverse;
+
+                    }
+                );
+
+
+            if(indice >= 0){
+                indices.add(indice);
+            }
+
+        }
+    );
+
+
+    return indices.size;
+
+}
+
+
+function getProceduralResults(){
+
+    const cards =
+        getCardsPlaced();
+
+
+    const correctCards =
+        tarjetasCorrectamenteColocadasCount();
+
+
+    const correctConnections =
+        contarConexionesCorrectas();
+
+
+    const cardsCorrect =
+        correctCards === 3;
+
+
+    return {
+
+        cardsCorrect:
+            `${correctCards}/3`,
+
+        recognizesPatterns:
+            cardsCorrect
+                ? "L"
+                : "RA",
+
+        abstrae:
+            cardsCorrect
+                ? "L"
+                : "RA",
+
+        transfiere:
+            correctConnections === expectedConnections.length
+                ? "L"
+                : "RA",
+
+        modulariza:
+            cards === 3
+                ? "L"
+                : "RA",
+
+        correctConnections:
+            `${correctConnections}/${expectedConnections.length}`
+
+    };
+
+}
+
+
+
+/* =========================================================
+   FORTALEZAS
+========================================================= */
+
+function getStrengths(
+    cognitiveResults,
+    procedural
+){
+
+    const strengths = [];
+
+
+    cognitiveResults.forEach(
+        (result,index)=>{
+
+            if(
+                result.correct
+            ){
+
+                strengths.push(
+                    "Dominio conceptual en " +
+                    cognitiveNames[index]
+                        .toLowerCase()
+                );
+
+            }
+
+        }
+    );
+
+
+    if(
+        procedural.modulariza === "L"
+    ){
+
+        strengths.push(
+            "Evidencia procedimental en modulariza"
+        );
+
+    }
+
+
+    return strengths;
+
+}
+
+
+/* =========================================================
+   APOYO
+========================================================= */
+
+function getSupport(
+    cognitiveResults
+){
+
+    const support = [];
+
+
+    cognitiveResults.forEach(
+        (result,index)=>{
+
+            if(
+                !result.correct
+            ){
+
+                support.push(
+                    "Reforzar " +
+                    cognitiveNames[index]
+                        .toLowerCase()
+                );
+
+            }
+
+        }
+    );
+
+
+    return support;
+
+}
+
+
+/* =========================================================
+   CÓDIGOS SOCIOAFECTIVOS
+========================================================= */
+
+function socioCode(value){
+
+    if(value === "L"){
+        return "F";
+    }
+
+    if(value === "P"){
+        return "EP";
+    }
+
+    if(value === "A"){
+        return "RA";
+    }
+
+    return "NA";
+
+}
+
+
+/* =========================================================
+   INFORME
+========================================================= */
+
+function getKnowledgeResults(){
+
+    const q1 =
+        getRadio("q1") === ANSWERS.q1;
+
+    const q2 =
+        getRadio("q2") === ANSWERS.q2;
+
+    const q3 =
+        getRadio("q3") === ANSWERS.q3;
+
+    const q4 =
+        getRadio("q4") === ANSWERS.q4;
+
+    const q6sensor =
+        getRadio("q6sensor") === ANSWERS.q6sensor;
+
+    const q6actuator =
+        getRadio("q6actuator") === ANSWERS.q6actuator;
+
+    const q6micro =
+        getRadio("q6micro") === ANSWERS.q6micro;
+
+    const q7 =
+        getRadio("q7") === ANSWERS.q7;
+
+    const q8 =
+        getRadio("q8") === ANSWERS.q8;
+
+    const q10 =
+        getRadio("q10") === ANSWERS.q10;
+
+
+    const count = values =>
+        values.filter(Boolean).length;
+
+
+    return [
+
+        {
+            code:"AL",
+            name:"Algoritmo",
+            correct:count([q4,q8]),
+            total:2
+        },
+
+        {
+            code:"MC",
+            name:"Microcontrolador",
+            correct:count([q1,q3,q6micro]),
+            total:3
+        },
+
+        {
+            code:"SE",
+            name:"Sensor",
+            correct:count([q2,q3,q6sensor,q7]),
+            total:4
+        },
+
+        {
+            code:"AC",
+            name:"Actuador",
+            correct:count([q2,q3,q6actuator]),
+            total:3
+        },
+
+        {
+            code:"DA",
+            name:"Dato",
+            correct:count([q7]),
+            total:1
+        },
+
+        {
+            code:"AD",
+            name:"Almacenamiento de datos",
+            correct:count([q10]),
+            total:1
+        }
+
+    ];
+
+}
+
+
+/* =========================================================
+   INFORME
+========================================================= */
+
+function buildReport(){
+
+    const student =
+        document.getElementById(
+            "studentName"
+        ).value.trim();
+
+
+    const section =
+        document.getElementById(
+            "section"
+        ).value.trim();
+
+
+    const institution =
+        document.getElementById(
+            "institution"
+        ).value.trim();
+
+
+    const date =
+        document.getElementById(
+            "date"
+        ).value;
+
+
+    const cognitiveResults =
+        getCognitiveResults();
+
+
+    const score =
+        cognitiveScore(
+            cognitiveResults
+        );
+
+
+    const level =
+        cognitiveLevel(score);
+
+
+    /* Misma matriz conceptual que se informa en K: del QR. */
+    const knowledgeResults =
+        getKnowledgeResults();
+
+
+    const procedural =
+        getProceduralResults();
+
+
+    const socio =
+        getSocioResults();
+
+
+    const strengths =
+        getStrengths(
+            cognitiveResults,
+            procedural
+        );
+
+
+    const support =
+        getSupport(
+            cognitiveResults
+        );
+
+
+    let report = "";
+
+
+    report +=
+        "DIAGNOSTICO FT 9NO\n";
+
+
+    report +=
+        "ESTUDIANTE: " +
+        student +
+        "\n";
+
+
+    report +=
+        "SECCION: " +
+        section +
+        "\n";
+
+
+    report +=
+        "CENTRO: " +
+        institution +
+        "\n";
+
+
+    report +=
+        "FECHA: " +
+        formatDate(date) +
+        "\n\n";
+
+
+    report +=
+        "COGNOSCITIVA\n";
+
+
+    report +=
+        "RESULTADO: " +
+        score +
+        "/10\n";
+
+
+    report +=
+        "NIVEL: " +
+        level.label +
+        "\n";
+
+
+    report +=
+        "DESGLOSE POR SABER (no acumulable):\n";
+
+
+    knowledgeResults.forEach(
+        result=>{
+
+            report +=
+                result.name +
+                ": " +
+                result.correct +
+                "/" +
+                result.total +
+                "\n";
+
+        }
+    );
+
+
+    report +=
+        "\nPSICOMOTORA\n";
+
+
+    report +=
+        "TARJETAS CORRECTAMENTE ORGANIZADAS: " +
+        procedural.cardsCorrect +
+        "\n";
+
+
+    report +=
+        "SABERES PROCEDIMENTALES VALORADOS\n";
+
+
+    report +=
+        "Reconoce patrones: " +
+        procedural.recognizesPatterns +
+        "\n";
+
+
+    report +=
+        "Abstrae: " +
+        procedural.abstrae +
+        "\n";
+
+
+    report +=
+        "Transfiere: " +
+        procedural.transfiere +
+        "\n";
+
+
+    report +=
+        "Modulariza: " +
+        procedural.modulariza +
+        "\n";
+
+
+    report +=
+        "CONEXIONES TÉCNICAMENTE CORRECTAS: " +
+        procedural.correctConnections +
+        "\n";
+
+
+    report +=
+        "\nSOCIOAFECTIVA\n";
+
+
+    socio.forEach(
+        result=>{
+
+            report +=
+                result.name +
+                ": " +
+                socioCode(
+                    result.answer
+                ) +
+                "\n";
+
+        }
+    );
+
+
+    report +=
+        "\nFORTALEZAS\n";
+
+
+    if(
+        strengths.length > 0
+    ){
+
+        strengths.forEach(
+            item=>{
+
+                report +=
+                    "- " +
+                    item +
+                    "\n";
+
+            }
+        );
+
+    }else{
+
+        report +=
+            "- En identificación\n";
+
+    }
+
+
+    report +=
+        "\nAPOYO\n";
+
+
+    if(
+        support.length > 0
+    ){
+
+        support.forEach(
+            item=>{
+
+                report +=
+                    "- " +
+                    item +
+                    "\n";
+
+            }
+        );
+
+    }else{
+
+        report +=
+            "- Sin prioridades conceptuales\n";
+
+    }
+
+
+    return {
+
+        report,
+
+        student,
+
+        section,
+
+        institution,
+
+        date,
+
+        cognitiveResults,
+
+        score,
+
+        level,
+
+        knowledgeResults,
+
+        procedural,
+
+        socio,
+
+        strengths,
+
+        support
+
+    };
+
+}
+
+
+/* =========================================================
+   FECHA
+========================================================= */
+
+function formatDate(value){
+
+    if(!value){
+        return "";
+    }
+
+
+    const parts =
+        value.split("-");
+
+
+    if(
+        parts.length !== 3
+    ){
+
+        return value;
+
+    }
+
+
+    return (
+
+        parts[2]
+        +
+        "/"
+        +
+        parts[1]
+        +
+        "/"
+        +
+        parts[0]
+
+    );
+
+}
+
+
+/* =========================================================
+   DATOS PARA QR
+========================================================= */
+
+/*
+   El QR contiene solamente información compacta.
+
+   No se incluyen:
+   - textos largos
+   - preguntas
+   - respuestas completas
+   - conexiones completas
+
+   La información técnica completa de conexiones
+   queda en localStorage.
+*/
+
+function qrSafe(text){
+
+    return String(text)
+        .replace(
+            /[;\n\r|]/g,
+            " "
+        )
+        .trim();
+
+}
+
+
+function qrShort(
+    text,
+    max
+){
+
+    text =
+        qrSafe(text);
+
+
+    if(
+        text.length <= max
+    ){
+
+        return text;
+
+    }
+
+
+    return text.substring(
+        0,
+        max
+    );
+
+}
+
+
+function buildQRData(data){
+
+    /*
+       FORMATO QR DOCENTE — D2
+
+       El QR contiene una representación compacta de la MISMA
+       información diagnóstica que se muestra en pantalla.
+
+       Estructura compacta:
+
+       D2|EST|SEC|CENTRO|FEC|C:6 saberes|P:tarjetas + 4 saberes procedimentales|S:4 socioafectivos|F:fortalezas|A:apoyos|R:resultado global|N:nivel|B:conexiones técnicamente correctas
+
+       C = resultados agrupados por los seis saberes conceptuales
+           que se muestran en el informe.
+           Orden fijo:
+           1 Algoritmo              (q4,q8)
+           2 Microcontrolador       (q1,q3,q6micro)
+           3 Sensor                 (q2,q3,q6sensor,q7)
+           4 Actuador               (q2,q3,q6actuator)
+           5 Dato                   (q7)
+           6 Almacenamiento datos   (q10)
+
+           Estos seis resultados son un desglose pedagógico y NO
+           se suman para reconstruir el resultado global X/10.
+
+           El resultado global X/10 se calcula a partir de las 10
+           preguntas y se incorpora explícitamente al QR mediante R:.
+
+       P = evidencia de actividad práctica + los cuatro saberes
+           procedimentales valorados directamente:
+           P1 Tarjetas correctamente organizadas / 3
+           P2 Reconoce patrones
+           P3 Abstrae
+           P4 Transfiere
+           P5 Modulariza
+
+       B = cantidad de conexiones técnicamente correctas respecto
+           de las 5 conexiones técnicamente esperadas.
+
+       S = los cuatro resultados socioafectivos vinculados.
+           F  = logrado
+           EP = en proceso
+           RA = requiere apoyo
+
+       F = códigos de las fortalezas que aparecen en el informe.
+           MC, SE, EPS, AL, EC, FSA, DA, RC, DE, AD = saberes
+           MOD = evidencia procedimental en modulariza
+
+       A = códigos de los apoyos que aparecen en el informe.
+           MC, SE, EPS, AL, EC, FSA, DA, RC, DE, AD = saberes
+
+       La APP DOCENTE utiliza estos códigos para reconstruir el
+       mismo informe pedagógico, sin almacenar textos largos en QR.
+
+       IMPORTANTE:
+       El contenido del QR se genera exclusivamente con los datos
+       que también alimentan el informe visible. No se cambian
+       preguntas, navegación, colores ni estructura del diagnóstico.
+    */
+
+    const statusCode = result =>
+        result && result.correct
+            ? "L"
+            : "RA";
+
+
+    /* ---------------------------------------------------------
+       RESULTADOS POR LOS 6 SABERES CONCEPTUALES
+       Se utiliza exactamente la misma función que la pantalla.
+
+       El resultado global X/10 NO se duplica dentro del QR; se
+       conserva como cálculo interno de la pantalla.
+       --------------------------------------------------------- */
+
+    const knowledgeResults =
+        getKnowledgeResults()
+            .map(
+                result =>
+                    `${result.correct}/${result.total}`
+            )
+            .join(",");
+
+
+    /* ---------------------------------------------------------
+       PSICOMOTORA
+       --------------------------------------------------------- */
+
+    const procedural = [
+
+        data.procedural.cardsCorrect,
+        data.procedural.recognizesPatterns,
+        data.procedural.abstrae,
+        data.procedural.transfiere,
+        data.procedural.modulariza
+
+    ].join(",");
+
+
+    /* ---------------------------------------------------------
+       SOCIOAFECTIVA
+       --------------------------------------------------------- */
+
+    const socio =
+        data.socio
+            .map(
+                result =>
+                    socioCode(result.answer)
+            )
+            .join(",");
+
+
+    /* ---------------------------------------------------------
+       FORTALEZAS Y APOYOS COMO CÓDIGOS
+       --------------------------------------------------------- */
+
+    const knowledgeCodes = [
+        "MC",   /* Microcontrolador */
+        "SE",   /* Sensor */
+        "EPS",  /* Entrada-proceso-salida */
+        "AL",   /* Algoritmo */
+        "EC",   /* Estructura condicional */
+        "FSA",  /* Funciones sensor/actuador/microcontrolador */
+        "DA",   /* Dato */
+        "RC",   /* Representación condicional */
+        "DE",   /* Depuración */
+        "AD"    /* Almacenamiento de datos */
+    ];
+
+
+    const strengthCodes = [];
+
+    data.cognitiveResults.forEach(
+        (result,index)=>{
+
+            if(result.correct){
+
+                strengthCodes.push(
+                    knowledgeCodes[index]
+                );
+
+            }
+
+        }
+    );
+
+
+    if(
+        data.procedural.modulariza === "L"
+    ){
+
+        strengthCodes.push("MOD");
+
+    }
+
+
+    const supportCodes = [];
+
+    data.cognitiveResults.forEach(
+        (result,index)=>{
+
+            if(!result.correct){
+
+                supportCodes.push(
+                    knowledgeCodes[index]
+                );
+
+            }
+
+        }
+    );
+
+
+    /* ---------------------------------------------------------
+       FORMATO FINAL
+       --------------------------------------------------------- */
+
+    return (
+
+        "D2"
+
+        + "|" +
+        qrShort(data.student,35)
+
+        + "|" +
+        qrShort(data.section,12)
+
+        + "|" +
+        qrShort(data.institution,30)
+
+        + "|" +
+        data.date
+
+        + "|C:" +
+        knowledgeResults
+
+        + "|P:" +
+        procedural
+
+        + "|S:" +
+        socio
+
+        + "|F:" +
+        strengthCodes.join(",")
+
+        + "|A:" +
+        supportCodes.join(",")
+
+        + "|R:" +
+        data.score +
+        "/10"
+
+        + "|N:" +
+        data.level.code
+
+        + "|B:" +
+        data.procedural.correctConnections
+
+    );
+
+}
+
+/* ---------------------------------------------------------
+   MOTOR QR DINÁMICO Y GENERADOR POR CANVAS (ALTA LEGIBILIDAD ÓPTICA)
+--------------------------------------------------------- */
+/**
+ * Standalone ISO/IEC 18004 QR Code Generator Engine (Project Nayuki Reference)
+ * 100% Offline, High-Contrast Canvas Renderer with standard 4-module Quiet Zone.
+ */
+(function (root, factory) {
+  var qrLib = factory();
+  if (typeof module === 'object' && module.exports) {
+    module.exports = qrLib;
+  }
+  if (typeof window !== 'undefined') {
+    window.QRCode = qrLib;
+    window.qrcodegen = qrLib.qrcodegen;
+  }
+  if (root) {
+    root.QRCode = qrLib;
+    root.qrcodegen = qrLib.qrcodegen;
+  }
+}(typeof globalThis !== 'undefined' ? globalThis : (typeof window !== 'undefined' ? window : this), function () {
+  var qrcodegen;
+((qrcodegen2) => {
+  const _QrCode = class _QrCode {
+    /*-- Constructor (low level) and fields --*/
+    // Creates a new QR Code with the given version number,
+    // error correction level, data codeword bytes, and mask number.
+    // This is a low-level API that most users should not use directly.
+    // A mid-level API is the encodeSegments() function.
+    constructor(version, errorCorrectionLevel, dataCodewords, msk) {
+      this.version = version;
+      this.errorCorrectionLevel = errorCorrectionLevel;
+      // The modules of this QR Code (false = light, true = dark).
+      // Immutable after constructor finishes. Accessed through getModule().
+      this.modules = [];
+      // Indicates function modules that are not subjected to masking. Discarded when constructor finishes.
+      this.isFunction = [];
+      if (version < _QrCode.MIN_VERSION || version > _QrCode.MAX_VERSION)
+        throw new RangeError("Version value out of range");
+      if (msk < -1 || msk > 7)
+        throw new RangeError("Mask value out of range");
+      this.size = version * 4 + 17;
+      let row = [];
+      for (let i = 0; i < this.size; i++)
+        row.push(false);
+      for (let i = 0; i < this.size; i++) {
+        this.modules.push(row.slice());
+        this.isFunction.push(row.slice());
+      }
+      this.drawFunctionPatterns();
+      const allCodewords = this.addEccAndInterleave(dataCodewords);
+      this.drawCodewords(allCodewords);
+      if (msk == -1) {
+        let minPenalty = 1e9;
+        for (let i = 0; i < 8; i++) {
+          this.applyMask(i);
+          this.drawFormatBits(i);
+          const penalty = this.getPenaltyScore();
+          if (penalty < minPenalty) {
+            msk = i;
+            minPenalty = penalty;
+          }
+          this.applyMask(i);
+        }
+      }
+      assert(0 <= msk && msk <= 7);
+      this.mask = msk;
+      this.applyMask(msk);
+      this.drawFormatBits(msk);
+      this.isFunction = [];
+    }
+    /*-- Static factory functions (high level) --*/
+    // Returns a QR Code representing the given Unicode text string at the given error correction level.
+    // As a conservative upper bound, this function is guaranteed to succeed for strings that have 738 or fewer
+    // Unicode code points (not UTF-16 code units) if the low error correction level is used. The smallest possible
+    // QR Code version is automatically chosen for the output. The ECC level of the result may be higher than the
+    // ecl argument if it can be done without increasing the version.
+    static encodeText(text, ecl) {
+      const segs = qrcodegen2.QrSegment.makeSegments(text);
+      return _QrCode.encodeSegments(segs, ecl);
+    }
+    // Returns a QR Code representing the given binary data at the given error correction level.
+    // This function always encodes using the binary segment mode, not any text mode. The maximum number of
+    // bytes allowed is 2953. The smallest possible QR Code version is automatically chosen for the output.
+    // The ECC level of the result may be higher than the ecl argument if it can be done without increasing the version.
+    static encodeBinary(data, ecl) {
+      const seg = qrcodegen2.QrSegment.makeBytes(data);
+      return _QrCode.encodeSegments([seg], ecl);
+    }
+    /*-- Static factory functions (mid level) --*/
+    // Returns a QR Code representing the given segments with the given encoding parameters.
+    // The smallest possible QR Code version within the given range is automatically
+    // chosen for the output. Iff boostEcl is true, then the ECC level of the result
+    // may be higher than the ecl argument if it can be done without increasing the
+    // version. The mask number is either between 0 to 7 (inclusive) to force that
+    // mask, or -1 to automatically choose an appropriate mask (which may be slow).
+    // This function allows the user to create a custom sequence of segments that switches
+    // between modes (such as alphanumeric and byte) to encode text in less space.
+    // This is a mid-level API; the high-level API is encodeText() and encodeBinary().
+    static encodeSegments(segs, ecl, minVersion = 1, maxVersion = 40, mask = -1, boostEcl = true) {
+      if (!(_QrCode.MIN_VERSION <= minVersion && minVersion <= maxVersion && maxVersion <= _QrCode.MAX_VERSION) || mask < -1 || mask > 7)
+        throw new RangeError("Invalid value");
+      let version;
+      let dataUsedBits;
+      for (version = minVersion; ; version++) {
+        const dataCapacityBits2 = _QrCode.getNumDataCodewords(version, ecl) * 8;
+        const usedBits = QrSegment.getTotalBits(segs, version);
+        if (usedBits <= dataCapacityBits2) {
+          dataUsedBits = usedBits;
+          break;
+        }
+        if (version >= maxVersion)
+          throw new RangeError("Data too long");
+      }
+      for (const newEcl of [_QrCode.Ecc.MEDIUM, _QrCode.Ecc.QUARTILE, _QrCode.Ecc.HIGH]) {
+        if (boostEcl && dataUsedBits <= _QrCode.getNumDataCodewords(version, newEcl) * 8)
+          ecl = newEcl;
+      }
+      let bb = [];
+      for (const seg of segs) {
+        appendBits(seg.mode.modeBits, 4, bb);
+        appendBits(seg.numChars, seg.mode.numCharCountBits(version), bb);
+        for (const b of seg.getData())
+          bb.push(b);
+      }
+      assert(bb.length == dataUsedBits);
+      const dataCapacityBits = _QrCode.getNumDataCodewords(version, ecl) * 8;
+      assert(bb.length <= dataCapacityBits);
+      appendBits(0, Math.min(4, dataCapacityBits - bb.length), bb);
+      appendBits(0, (8 - bb.length % 8) % 8, bb);
+      assert(bb.length % 8 == 0);
+      for (let padByte = 236; bb.length < dataCapacityBits; padByte ^= 236 ^ 17)
+        appendBits(padByte, 8, bb);
+      let dataCodewords = [];
+      while (dataCodewords.length * 8 < bb.length)
+        dataCodewords.push(0);
+      bb.forEach((b, i) => dataCodewords[i >>> 3] |= b << 7 - (i & 7));
+      return new _QrCode(version, ecl, dataCodewords, mask);
+    }
+    /*-- Accessor methods --*/
+    // Returns the color of the module (pixel) at the given coordinates, which is false
+    // for light or true for dark. The top left corner has the coordinates (x=0, y=0).
+    // If the given coordinates are out of bounds, then false (light) is returned.
+    getModule(x, y) {
+      return 0 <= x && x < this.size && 0 <= y && y < this.size && this.modules[y][x];
+    }
+    // Modified to expose modules for easy access
+    getModules() {
+      return this.modules;
+    }
+    /*-- Private helper methods for constructor: Drawing function modules --*/
+    // Reads this object's version field, and draws and marks all function modules.
+    drawFunctionPatterns() {
+      for (let i = 0; i < this.size; i++) {
+        this.setFunctionModule(6, i, i % 2 == 0);
+        this.setFunctionModule(i, 6, i % 2 == 0);
+      }
+      this.drawFinderPattern(3, 3);
+      this.drawFinderPattern(this.size - 4, 3);
+      this.drawFinderPattern(3, this.size - 4);
+      const alignPatPos = this.getAlignmentPatternPositions();
+      const numAlign = alignPatPos.length;
+      for (let i = 0; i < numAlign; i++) {
+        for (let j = 0; j < numAlign; j++) {
+          if (!(i == 0 && j == 0 || i == 0 && j == numAlign - 1 || i == numAlign - 1 && j == 0))
+            this.drawAlignmentPattern(alignPatPos[i], alignPatPos[j]);
+        }
+      }
+      this.drawFormatBits(0);
+      this.drawVersion();
+    }
+    // Draws two copies of the format bits (with its own error correction code)
+    // based on the given mask and this object's error correction level field.
+    drawFormatBits(mask) {
+      const data = this.errorCorrectionLevel.formatBits << 3 | mask;
+      let rem = data;
+      for (let i = 0; i < 10; i++)
+        rem = rem << 1 ^ (rem >>> 9) * 1335;
+      const bits = (data << 10 | rem) ^ 21522;
+      assert(bits >>> 15 == 0);
+      for (let i = 0; i <= 5; i++)
+        this.setFunctionModule(8, i, getBit(bits, i));
+      this.setFunctionModule(8, 7, getBit(bits, 6));
+      this.setFunctionModule(8, 8, getBit(bits, 7));
+      this.setFunctionModule(7, 8, getBit(bits, 8));
+      for (let i = 9; i < 15; i++)
+        this.setFunctionModule(14 - i, 8, getBit(bits, i));
+      for (let i = 0; i < 8; i++)
+        this.setFunctionModule(this.size - 1 - i, 8, getBit(bits, i));
+      for (let i = 8; i < 15; i++)
+        this.setFunctionModule(8, this.size - 15 + i, getBit(bits, i));
+      this.setFunctionModule(8, this.size - 8, true);
+    }
+    // Draws two copies of the version bits (with its own error correction code),
+    // based on this object's version field, iff 7 <= version <= 40.
+    drawVersion() {
+      if (this.version < 7)
+        return;
+      let rem = this.version;
+      for (let i = 0; i < 12; i++)
+        rem = rem << 1 ^ (rem >>> 11) * 7973;
+      const bits = this.version << 12 | rem;
+      assert(bits >>> 18 == 0);
+      for (let i = 0; i < 18; i++) {
+        const color = getBit(bits, i);
+        const a = this.size - 11 + i % 3;
+        const b = Math.floor(i / 3);
+        this.setFunctionModule(a, b, color);
+        this.setFunctionModule(b, a, color);
+      }
+    }
+    // Draws a 9*9 finder pattern including the border separator,
+    // with the center module at (x, y). Modules can be out of bounds.
+    drawFinderPattern(x, y) {
+      for (let dy = -4; dy <= 4; dy++) {
+        for (let dx = -4; dx <= 4; dx++) {
+          const dist = Math.max(Math.abs(dx), Math.abs(dy));
+          const xx = x + dx;
+          const yy = y + dy;
+          if (0 <= xx && xx < this.size && 0 <= yy && yy < this.size)
+            this.setFunctionModule(xx, yy, dist != 2 && dist != 4);
+        }
+      }
+    }
+    // Draws a 5*5 alignment pattern, with the center module
+    // at (x, y). All modules must be in bounds.
+    drawAlignmentPattern(x, y) {
+      for (let dy = -2; dy <= 2; dy++) {
+        for (let dx = -2; dx <= 2; dx++)
+          this.setFunctionModule(x + dx, y + dy, Math.max(Math.abs(dx), Math.abs(dy)) != 1);
+      }
+    }
+    // Sets the color of a module and marks it as a function module.
+    // Only used by the constructor. Coordinates must be in bounds.
+    setFunctionModule(x, y, isDark) {
+      this.modules[y][x] = isDark;
+      this.isFunction[y][x] = true;
+    }
+    /*-- Private helper methods for constructor: Codewords and masking --*/
+    // Returns a new byte string representing the given data with the appropriate error correction
+    // codewords appended to it, based on this object's version and error correction level.
+    addEccAndInterleave(data) {
+      const ver = this.version;
+      const ecl = this.errorCorrectionLevel;
+      if (data.length != _QrCode.getNumDataCodewords(ver, ecl))
+        throw new RangeError("Invalid argument");
+      const numBlocks = _QrCode.NUM_ERROR_CORRECTION_BLOCKS[ecl.ordinal][ver];
+      const blockEccLen = _QrCode.ECC_CODEWORDS_PER_BLOCK[ecl.ordinal][ver];
+      const rawCodewords = Math.floor(_QrCode.getNumRawDataModules(ver) / 8);
+      const numShortBlocks = numBlocks - rawCodewords % numBlocks;
+      const shortBlockLen = Math.floor(rawCodewords / numBlocks);
+      let blocks = [];
+      const rsDiv = _QrCode.reedSolomonComputeDivisor(blockEccLen);
+      for (let i = 0, k = 0; i < numBlocks; i++) {
+        let dat = data.slice(k, k + shortBlockLen - blockEccLen + (i < numShortBlocks ? 0 : 1));
+        k += dat.length;
+        const ecc = _QrCode.reedSolomonComputeRemainder(dat, rsDiv);
+        if (i < numShortBlocks)
+          dat.push(0);
+        blocks.push(dat.concat(ecc));
+      }
+      let result = [];
+      for (let i = 0; i < blocks[0].length; i++) {
+        blocks.forEach((block, j) => {
+          if (i != shortBlockLen - blockEccLen || j >= numShortBlocks)
+            result.push(block[i]);
+        });
+      }
+      assert(result.length == rawCodewords);
+      return result;
+    }
+    // Draws the given sequence of 8-bit codewords (data and error correction) onto the entire
+    // data area of this QR Code. Function modules need to be marked off before this is called.
+    drawCodewords(data) {
+      if (data.length != Math.floor(_QrCode.getNumRawDataModules(this.version) / 8))
+        throw new RangeError("Invalid argument");
+      let i = 0;
+      for (let right = this.size - 1; right >= 1; right -= 2) {
+        if (right == 6)
+          right = 5;
+        for (let vert = 0; vert < this.size; vert++) {
+          for (let j = 0; j < 2; j++) {
+            const x = right - j;
+            const upward = (right + 1 & 2) == 0;
+            const y = upward ? this.size - 1 - vert : vert;
+            if (!this.isFunction[y][x] && i < data.length * 8) {
+              this.modules[y][x] = getBit(data[i >>> 3], 7 - (i & 7));
+              i++;
+            }
+          }
+        }
+      }
+      assert(i == data.length * 8);
+    }
+    // XORs the codeword modules in this QR Code with the given mask pattern.
+    // The function modules must be marked and the codeword bits must be drawn
+    // before masking. Due to the arithmetic of XOR, calling applyMask() with
+    // the same mask value a second time will undo the mask. A final well-formed
+    // QR Code needs exactly one (not zero, two, etc.) mask applied.
+    applyMask(mask) {
+      if (mask < 0 || mask > 7)
+        throw new RangeError("Mask value out of range");
+      for (let y = 0; y < this.size; y++) {
+        for (let x = 0; x < this.size; x++) {
+          let invert;
+          switch (mask) {
+            case 0:
+              invert = (x + y) % 2 == 0;
+              break;
+            case 1:
+              invert = y % 2 == 0;
+              break;
+            case 2:
+              invert = x % 3 == 0;
+              break;
+            case 3:
+              invert = (x + y) % 3 == 0;
+              break;
+            case 4:
+              invert = (Math.floor(x / 3) + Math.floor(y / 2)) % 2 == 0;
+              break;
+            case 5:
+              invert = x * y % 2 + x * y % 3 == 0;
+              break;
+            case 6:
+              invert = (x * y % 2 + x * y % 3) % 2 == 0;
+              break;
+            case 7:
+              invert = ((x + y) % 2 + x * y % 3) % 2 == 0;
+              break;
+            default:
+              throw new Error("Unreachable");
+          }
+          if (!this.isFunction[y][x] && invert)
+            this.modules[y][x] = !this.modules[y][x];
+        }
+      }
+    }
+    // Calculates and returns the penalty score based on state of this QR Code's current modules.
+    // This is used by the automatic mask choice algorithm to find the mask pattern that yields the lowest score.
+    getPenaltyScore() {
+      let result = 0;
+      for (let y = 0; y < this.size; y++) {
+        let runColor = false;
+        let runX = 0;
+        let runHistory = [0, 0, 0, 0, 0, 0, 0];
+        for (let x = 0; x < this.size; x++) {
+          if (this.modules[y][x] == runColor) {
+            runX++;
+            if (runX == 5)
+              result += _QrCode.PENALTY_N1;
+            else if (runX > 5)
+              result++;
+          } else {
+            this.finderPenaltyAddHistory(runX, runHistory);
+            if (!runColor)
+              result += this.finderPenaltyCountPatterns(runHistory) * _QrCode.PENALTY_N3;
+            runColor = this.modules[y][x];
+            runX = 1;
+          }
+        }
+        result += this.finderPenaltyTerminateAndCount(runColor, runX, runHistory) * _QrCode.PENALTY_N3;
+      }
+      for (let x = 0; x < this.size; x++) {
+        let runColor = false;
+        let runY = 0;
+        let runHistory = [0, 0, 0, 0, 0, 0, 0];
+        for (let y = 0; y < this.size; y++) {
+          if (this.modules[y][x] == runColor) {
+            runY++;
+            if (runY == 5)
+              result += _QrCode.PENALTY_N1;
+            else if (runY > 5)
+              result++;
+          } else {
+            this.finderPenaltyAddHistory(runY, runHistory);
+            if (!runColor)
+              result += this.finderPenaltyCountPatterns(runHistory) * _QrCode.PENALTY_N3;
+            runColor = this.modules[y][x];
+            runY = 1;
+          }
+        }
+        result += this.finderPenaltyTerminateAndCount(runColor, runY, runHistory) * _QrCode.PENALTY_N3;
+      }
+      for (let y = 0; y < this.size - 1; y++) {
+        for (let x = 0; x < this.size - 1; x++) {
+          const color = this.modules[y][x];
+          if (color == this.modules[y][x + 1] && color == this.modules[y + 1][x] && color == this.modules[y + 1][x + 1])
+            result += _QrCode.PENALTY_N2;
+        }
+      }
+      let dark = 0;
+      for (const row of this.modules)
+        dark = row.reduce((sum, color) => sum + (color ? 1 : 0), dark);
+      const total = this.size * this.size;
+      const k = Math.ceil(Math.abs(dark * 20 - total * 10) / total) - 1;
+      assert(0 <= k && k <= 9);
+      result += k * _QrCode.PENALTY_N4;
+      assert(0 <= result && result <= 2568888);
+      return result;
+    }
+    /*-- Private helper functions --*/
+    // Returns an ascending list of positions of alignment patterns for this version number.
+    // Each position is in the range [0,177), and are used on both the x and y axes.
+    // This could be implemented as lookup table of 40 variable-length lists of integers.
+    getAlignmentPatternPositions() {
+      if (this.version == 1)
+        return [];
+      else {
+        const numAlign = Math.floor(this.version / 7) + 2;
+        const step = this.version == 32 ? 26 : Math.ceil((this.version * 4 + 4) / (numAlign * 2 - 2)) * 2;
+        let result = [6];
+        for (let pos = this.size - 7; result.length < numAlign; pos -= step)
+          result.splice(1, 0, pos);
+        return result;
+      }
+    }
+    // Returns the number of data bits that can be stored in a QR Code of the given version number, after
+    // all function modules are excluded. This includes remainder bits, so it might not be a multiple of 8.
+    // The result is in the range [208, 29648]. This could be implemented as a 40-entry lookup table.
+    static getNumRawDataModules(ver) {
+      if (ver < _QrCode.MIN_VERSION || ver > _QrCode.MAX_VERSION)
+        throw new RangeError("Version number out of range");
+      let result = (16 * ver + 128) * ver + 64;
+      if (ver >= 2) {
+        const numAlign = Math.floor(ver / 7) + 2;
+        result -= (25 * numAlign - 10) * numAlign - 55;
+        if (ver >= 7)
+          result -= 36;
+      }
+      assert(208 <= result && result <= 29648);
+      return result;
+    }
+    // Returns the number of 8-bit data (i.e. not error correction) codewords contained in any
+    // QR Code of the given version number and error correction level, with remainder bits discarded.
+    // This stateless pure function could be implemented as a (40*4)-cell lookup table.
+    static getNumDataCodewords(ver, ecl) {
+      return Math.floor(_QrCode.getNumRawDataModules(ver) / 8) - _QrCode.ECC_CODEWORDS_PER_BLOCK[ecl.ordinal][ver] * _QrCode.NUM_ERROR_CORRECTION_BLOCKS[ecl.ordinal][ver];
+    }
+    // Returns a Reed-Solomon ECC generator polynomial for the given degree. This could be
+    // implemented as a lookup table over all possible parameter values, instead of as an algorithm.
+    static reedSolomonComputeDivisor(degree) {
+      if (degree < 1 || degree > 255)
+        throw new RangeError("Degree out of range");
+      let result = [];
+      for (let i = 0; i < degree - 1; i++)
+        result.push(0);
+      result.push(1);
+      let root = 1;
+      for (let i = 0; i < degree; i++) {
+        for (let j = 0; j < result.length; j++) {
+          result[j] = _QrCode.reedSolomonMultiply(result[j], root);
+          if (j + 1 < result.length)
+            result[j] ^= result[j + 1];
+        }
+        root = _QrCode.reedSolomonMultiply(root, 2);
+      }
+      return result;
+    }
+    // Returns the Reed-Solomon error correction codeword for the given data and divisor polynomials.
+    static reedSolomonComputeRemainder(data, divisor) {
+      let result = divisor.map((_) => 0);
+      for (const b of data) {
+        const factor = b ^ result.shift();
+        result.push(0);
+        divisor.forEach((coef, i) => result[i] ^= _QrCode.reedSolomonMultiply(coef, factor));
+      }
+      return result;
+    }
+    // Returns the product of the two given field elements modulo GF(2^8/0x11D). The arguments and result
+    // are unsigned 8-bit integers. This could be implemented as a lookup table of 256*256 entries of uint8.
+    static reedSolomonMultiply(x, y) {
+      if (x >>> 8 != 0 || y >>> 8 != 0)
+        throw new RangeError("Byte out of range");
+      let z = 0;
+      for (let i = 7; i >= 0; i--) {
+        z = z << 1 ^ (z >>> 7) * 285;
+        z ^= (y >>> i & 1) * x;
+      }
+      assert(z >>> 8 == 0);
+      return z;
+    }
+    // Can only be called immediately after a light run is added, and
+    // returns either 0, 1, or 2. A helper function for getPenaltyScore().
+    finderPenaltyCountPatterns(runHistory) {
+      const n = runHistory[1];
+      assert(n <= this.size * 3);
+      const core = n > 0 && runHistory[2] == n && runHistory[3] == n * 3 && runHistory[4] == n && runHistory[5] == n;
+      return (core && runHistory[0] >= n * 4 && runHistory[6] >= n ? 1 : 0) + (core && runHistory[6] >= n * 4 && runHistory[0] >= n ? 1 : 0);
+    }
+    // Must be called at the end of a line (row or column) of modules. A helper function for getPenaltyScore().
+    finderPenaltyTerminateAndCount(currentRunColor, currentRunLength, runHistory) {
+      if (currentRunColor) {
+        this.finderPenaltyAddHistory(currentRunLength, runHistory);
+        currentRunLength = 0;
+      }
+      currentRunLength += this.size;
+      this.finderPenaltyAddHistory(currentRunLength, runHistory);
+      return this.finderPenaltyCountPatterns(runHistory);
+    }
+    // Pushes the given value to the front and drops the last value. A helper function for getPenaltyScore().
+    finderPenaltyAddHistory(currentRunLength, runHistory) {
+      if (runHistory[0] == 0)
+        currentRunLength += this.size;
+      runHistory.pop();
+      runHistory.unshift(currentRunLength);
+    }
+  };
+  /*-- Constants and tables --*/
+  // The minimum version number supported in the QR Code Model 2 standard.
+  _QrCode.MIN_VERSION = 1;
+  // The maximum version number supported in the QR Code Model 2 standard.
+  _QrCode.MAX_VERSION = 40;
+  // For use in getPenaltyScore(), when evaluating which mask is best.
+  _QrCode.PENALTY_N1 = 3;
+  _QrCode.PENALTY_N2 = 3;
+  _QrCode.PENALTY_N3 = 40;
+  _QrCode.PENALTY_N4 = 10;
+  _QrCode.ECC_CODEWORDS_PER_BLOCK = [
+    // Version: (note that index 0 is for padding, and is set to an illegal value)
+    //0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40    Error correction level
+    [-1, 7, 10, 15, 20, 26, 18, 20, 24, 30, 18, 20, 24, 26, 30, 22, 24, 28, 30, 28, 28, 28, 28, 30, 30, 26, 28, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30],
+    // Low
+    [-1, 10, 16, 26, 18, 24, 16, 18, 22, 22, 26, 30, 22, 22, 24, 24, 28, 28, 26, 26, 26, 26, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28],
+    // Medium
+    [-1, 13, 22, 18, 26, 18, 24, 18, 22, 20, 24, 28, 26, 24, 20, 30, 24, 28, 28, 26, 30, 28, 30, 30, 30, 30, 28, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30],
+    // Quartile
+    [-1, 17, 28, 22, 16, 22, 28, 26, 26, 24, 28, 24, 28, 22, 24, 24, 30, 28, 28, 26, 28, 30, 24, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
+    // High
+  ];
+  _QrCode.NUM_ERROR_CORRECTION_BLOCKS = [
+    // Version: (note that index 0 is for padding, and is set to an illegal value)
+    //0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40    Error correction level
+    [-1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 4, 4, 4, 4, 4, 6, 6, 6, 6, 7, 8, 8, 9, 9, 10, 12, 12, 12, 13, 14, 15, 16, 17, 18, 19, 19, 20, 21, 22, 24, 25],
+    // Low
+    [-1, 1, 1, 1, 2, 2, 4, 4, 4, 5, 5, 5, 8, 9, 9, 10, 10, 11, 13, 14, 16, 17, 17, 18, 20, 21, 23, 25, 26, 28, 29, 31, 33, 35, 37, 38, 40, 43, 45, 47, 49],
+    // Medium
+    [-1, 1, 1, 2, 2, 4, 4, 6, 6, 8, 8, 8, 10, 12, 16, 12, 17, 16, 18, 21, 20, 23, 23, 25, 27, 29, 34, 34, 35, 38, 40, 43, 45, 48, 51, 53, 56, 59, 62, 65, 68],
+    // Quartile
+    [-1, 1, 1, 2, 4, 4, 4, 5, 6, 8, 8, 11, 11, 16, 16, 18, 16, 19, 21, 25, 25, 25, 34, 30, 32, 35, 37, 40, 42, 45, 48, 51, 54, 57, 60, 63, 66, 70, 74, 77, 81]
+    // High
+  ];
+  let QrCode = _QrCode;
+  qrcodegen2.QrCode = _QrCode;
+  function appendBits(val, len, bb) {
+    if (len < 0 || len > 31 || val >>> len != 0)
+      throw new RangeError("Value out of range");
+    for (let i = len - 1; i >= 0; i--)
+      bb.push(val >>> i & 1);
+  }
+  function getBit(x, i) {
+    return (x >>> i & 1) != 0;
+  }
+  function assert(cond) {
+    if (!cond)
+      throw new Error("Assertion error");
+  }
+  const _QrSegment = class _QrSegment {
+    /*-- Constructor (low level) and fields --*/
+    // Creates a new QR Code segment with the given attributes and data.
+    // The character count (numChars) must agree with the mode and the bit buffer length,
+    // but the constraint isn't checked. The given bit buffer is cloned and stored.
+    constructor(mode, numChars, bitData) {
+      this.mode = mode;
+      this.numChars = numChars;
+      this.bitData = bitData;
+      if (numChars < 0)
+        throw new RangeError("Invalid argument");
+      this.bitData = bitData.slice();
+    }
+    /*-- Static factory functions (mid level) --*/
+    // Returns a segment representing the given binary data encoded in
+    // byte mode. All input byte arrays are acceptable. Any text string
+    // can be converted to UTF-8 bytes and encoded as a byte mode segment.
+    static makeBytes(data) {
+      let bb = [];
+      for (const b of data)
+        appendBits(b, 8, bb);
+      return new _QrSegment(_QrSegment.Mode.BYTE, data.length, bb);
+    }
+    // Returns a segment representing the given string of decimal digits encoded in numeric mode.
+    static makeNumeric(digits) {
+      if (!_QrSegment.isNumeric(digits))
+        throw new RangeError("String contains non-numeric characters");
+      let bb = [];
+      for (let i = 0; i < digits.length; ) {
+        const n = Math.min(digits.length - i, 3);
+        appendBits(parseInt(digits.substring(i, i + n), 10), n * 3 + 1, bb);
+        i += n;
+      }
+      return new _QrSegment(_QrSegment.Mode.NUMERIC, digits.length, bb);
+    }
+    // Returns a segment representing the given text string encoded in alphanumeric mode.
+    // The characters allowed are: 0 to 9, A to Z (uppercase only), space,
+    // dollar, percent, asterisk, plus, hyphen, period, slash, colon.
+    static makeAlphanumeric(text) {
+      if (!_QrSegment.isAlphanumeric(text))
+        throw new RangeError("String contains unencodable characters in alphanumeric mode");
+      let bb = [];
+      let i;
+      for (i = 0; i + 2 <= text.length; i += 2) {
+        let temp = _QrSegment.ALPHANUMERIC_CHARSET.indexOf(text.charAt(i)) * 45;
+        temp += _QrSegment.ALPHANUMERIC_CHARSET.indexOf(text.charAt(i + 1));
+        appendBits(temp, 11, bb);
+      }
+      if (i < text.length)
+        appendBits(_QrSegment.ALPHANUMERIC_CHARSET.indexOf(text.charAt(i)), 6, bb);
+      return new _QrSegment(_QrSegment.Mode.ALPHANUMERIC, text.length, bb);
+    }
+    // Returns a new mutable list of zero or more segments to represent the given Unicode text string.
+    // The result may use various segment modes and switch modes to optimize the length of the bit stream.
+    static makeSegments(text) {
+      if (text == "")
+        return [];
+      else if (_QrSegment.isNumeric(text))
+        return [_QrSegment.makeNumeric(text)];
+      else if (_QrSegment.isAlphanumeric(text))
+        return [_QrSegment.makeAlphanumeric(text)];
+      else
+        return [_QrSegment.makeBytes(_QrSegment.toUtf8ByteArray(text))];
+    }
+    // Returns a segment representing an Extended Channel Interpretation
+    // (ECI) designator with the given assignment value.
+    static makeEci(assignVal) {
+      let bb = [];
+      if (assignVal < 0)
+        throw new RangeError("ECI assignment value out of range");
+      else if (assignVal < 1 << 7)
+        appendBits(assignVal, 8, bb);
+      else if (assignVal < 1 << 14) {
+        appendBits(2, 2, bb);
+        appendBits(assignVal, 14, bb);
+      } else if (assignVal < 1e6) {
+        appendBits(6, 3, bb);
+        appendBits(assignVal, 21, bb);
+      } else
+        throw new RangeError("ECI assignment value out of range");
+      return new _QrSegment(_QrSegment.Mode.ECI, 0, bb);
+    }
+    // Tests whether the given string can be encoded as a segment in numeric mode.
+    // A string is encodable iff each character is in the range 0 to 9.
+    static isNumeric(text) {
+      return _QrSegment.NUMERIC_REGEX.test(text);
+    }
+    // Tests whether the given string can be encoded as a segment in alphanumeric mode.
+    // A string is encodable iff each character is in the following set: 0 to 9, A to Z
+    // (uppercase only), space, dollar, percent, asterisk, plus, hyphen, period, slash, colon.
+    static isAlphanumeric(text) {
+      return _QrSegment.ALPHANUMERIC_REGEX.test(text);
+    }
+    /*-- Methods --*/
+    // Returns a new copy of the data bits of this segment.
+    getData() {
+      return this.bitData.slice();
+    }
+    // (Package-private) Calculates and returns the number of bits needed to encode the given segments at
+    // the given version. The result is infinity if a segment has too many characters to fit its length field.
+    static getTotalBits(segs, version) {
+      let result = 0;
+      for (const seg of segs) {
+        const ccbits = seg.mode.numCharCountBits(version);
+        if (seg.numChars >= 1 << ccbits)
+          return Infinity;
+        result += 4 + ccbits + seg.bitData.length;
+      }
+      return result;
+    }
+    // Returns a new array of bytes representing the given string encoded in UTF-8.
+    static toUtf8ByteArray(str) {
+      str = encodeURI(str);
+      let result = [];
+      for (let i = 0; i < str.length; i++) {
+        if (str.charAt(i) != "%")
+          result.push(str.charCodeAt(i));
+        else {
+          result.push(parseInt(str.substring(i + 1, i + 3), 16));
+          i += 2;
+        }
+      }
+      return result;
+    }
+  };
+  /*-- Constants --*/
+  // Describes precisely all strings that are encodable in numeric mode.
+  _QrSegment.NUMERIC_REGEX = /^[0-9]*$/;
+  // Describes precisely all strings that are encodable in alphanumeric mode.
+  _QrSegment.ALPHANUMERIC_REGEX = /^[A-Z0-9 $%*+.\/:-]*$/;
+  // The set of all legal characters in alphanumeric mode,
+  // where each character value maps to the index in the string.
+  _QrSegment.ALPHANUMERIC_CHARSET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:";
+  let QrSegment = _QrSegment;
+  qrcodegen2.QrSegment = _QrSegment;
+})(qrcodegen || (qrcodegen = {}));
+((qrcodegen2) => {
+  let QrCode;
+  ((QrCode2) => {
+    const _Ecc = class _Ecc {
+      // The QR Code can tolerate about 30% erroneous codewords
+      /*-- Constructor and fields --*/
+      constructor(ordinal, formatBits) {
+        this.ordinal = ordinal;
+        this.formatBits = formatBits;
+      }
+    };
+    /*-- Constants --*/
+    _Ecc.LOW = new _Ecc(0, 1);
+    // The QR Code can tolerate about  7% erroneous codewords
+    _Ecc.MEDIUM = new _Ecc(1, 0);
+    // The QR Code can tolerate about 15% erroneous codewords
+    _Ecc.QUARTILE = new _Ecc(2, 3);
+    // The QR Code can tolerate about 25% erroneous codewords
+    _Ecc.HIGH = new _Ecc(3, 2);
+    let Ecc = _Ecc;
+    QrCode2.Ecc = _Ecc;
+  })(QrCode = qrcodegen2.QrCode || (qrcodegen2.QrCode = {}));
+})(qrcodegen || (qrcodegen = {}));
+((qrcodegen2) => {
+  let QrSegment;
+  ((QrSegment2) => {
+    const _Mode = class _Mode {
+      /*-- Constructor and fields --*/
+      constructor(modeBits, numBitsCharCount) {
+        this.modeBits = modeBits;
+        this.numBitsCharCount = numBitsCharCount;
+      }
+      /*-- Method --*/
+      // (Package-private) Returns the bit width of the character count field for a segment in
+      // this mode in a QR Code at the given version number. The result is in the range [0, 16].
+      numCharCountBits(ver) {
+        return this.numBitsCharCount[Math.floor((ver + 7) / 17)];
+      }
+    };
+    /*-- Constants --*/
+    _Mode.NUMERIC = new _Mode(1, [10, 12, 14]);
+    _Mode.ALPHANUMERIC = new _Mode(2, [9, 11, 13]);
+    _Mode.BYTE = new _Mode(4, [8, 16, 16]);
+    _Mode.KANJI = new _Mode(8, [8, 10, 12]);
+    _Mode.ECI = new _Mode(7, [0, 0, 0]);
+    let Mode = _Mode;
+    QrSegment2.Mode = _Mode;
+  })(QrSegment = qrcodegen2.QrSegment || (qrcodegen2.QrSegment = {}));
+})(qrcodegen || (qrcodegen = {}));
+var qrcodegen_default = qrcodegen;
+
+// src/index.tsx
+/**
+ * @license qrcode.react
+ * Copyright (c) Paul O'Shannessy
+ * SPDX-License-Identifier: ISC
+ */
+
+
+  function generateToCanvas(targetCanvas, text, options) {
+    if (typeof options === 'number') options = { size: options };
+    options = options || {};
+    var size = options.size || options.width || 250;
+    var levelStr = options.level || options.correctLevel || 'M';
+    var marginModules = (options.margin !== undefined) ? options.margin : 4;
+    var fgColor = options.fgColor || options.foreground || '#000000';
+    var bgColor = options.bgColor || options.background || '#ffffff';
+
+    var ecc = qrcodegen.QrCode.Ecc.MEDIUM;
+    if (levelStr === 'L' || levelStr === 1) ecc = qrcodegen.QrCode.Ecc.LOW;
+    else if (levelStr === 'Q' || levelStr === 3) ecc = qrcodegen.QrCode.Ecc.QUARTILE;
+    else if (levelStr === 'H' || levelStr === 2) ecc = qrcodegen.QrCode.Ecc.HIGH;
+
+    var qr = qrcodegen.QrCode.encodeText(text, ecc);
+    var numModules = qr.size;
+    var totalModules = numModules + (marginModules * 2);
+
+    var canvas = typeof targetCanvas === 'string' ? document.getElementById(targetCanvas) : targetCanvas;
+    if (!canvas) return null;
+
+    var scale = Math.max(2, Math.floor(size / totalModules));
+    var actualCanvasSize = totalModules * scale;
+
+    canvas.width = actualCanvasSize;
+    canvas.height = actualCanvasSize;
+    canvas.style.width = size + 'px';
+    canvas.style.height = size + 'px';
+
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(0, 0, actualCanvasSize, actualCanvasSize);
+
+    ctx.fillStyle = fgColor;
+    for (var y = 0; y < numModules; y++) {
+      for (var x = 0; x < numModules; x++) {
+        if (qr.getModule(x, y)) {
+          ctx.fillRect((x + marginModules) * scale, (y + marginModules) * scale, scale, scale);
+        }
+      }
+    }
+    return qr;
+  }
+
+  function QRCode(targetCanvas, options) {
+    if (typeof options === 'string') options = { text: options };
+    return generateToCanvas(targetCanvas, (options && (options.text || options.value)) || '', options);
+  }
+
+  QRCode.generateToCanvas = generateToCanvas;
+  QRCode.qrcodegen = qrcodegen;
+  return QRCode;
+}));
+
+
+
+// GENERADOR QR UNIVERSAL DE ALTA FIDELIDAD ÓPTICA
+function generateQR(text) {
+  const container = document.getElementById("qrcode");
+  if (!container) return;
+
+  try {
+    container.innerHTML = '<canvas id="qrCanvas9no" style="border-radius:12px; max-width:260px; box-shadow:0 4px 15px rgba(0,0,0,0.1);"></canvas>';
+    const canvas = document.getElementById("qrCanvas9no");
+
+    QRCode.generateToCanvas(canvas, text, {
+      size: 260,
+      level: 'M',
+      margin: 4,
+      fgColor: '#000000',
+      bgColor: '#ffffff'
+    });
+  } catch (err) {
+    console.error("Falla al generar QR en 9no:", err);
+    container.innerHTML = '<div class="notice danger">Error al procesar la matriz visual del QR.</div>';
+  }
+}
+
+
+/* =========================================================
+   LOCAL STORAGE
+========================================================= */
+
+const STORAGE_KEY =
+    "diagnostico_ft_9_resultados";
+
+
+function createId(){
+
+    if(
+        window.crypto &&
+        typeof window.crypto.randomUUID ===
+        "function"
+    ){
+
+        return window.crypto.randomUUID();
+
+    }
+
+
+    return (
+
+        Date.now().toString(36)
+
+        +
+
+        Math.random()
+            .toString(36)
+            .substring(2)
+
+    );
+
+}
+
+
+function saveDiagnostic(
+    data
+){
+
+    let records = [];
+
+
+    try{
+
+        const existing =
+            localStorage.getItem(
+                STORAGE_KEY
+            );
+
+
+        if(existing){
+
+            records =
+                JSON.parse(
+                    existing
+                );
+
+        }
+
+
+        if(
+            !Array.isArray(records)
+        ){
+
+            records = [];
+
+        }
+
+    }catch(error){
+
+        records = [];
+
+    }
+
+
+    const record = {
+
+        id:
+            createId(),
+
+        timestamp:
+            new Date().toISOString(),
+
+
+        student:{
+
+            name:
+                data.student,
+
+            section:
+                data.section,
+
+            institution:
+                data.institution,
+
+            date:
+                data.date
+
+        },
+
+
+        cognitive:{
+
+            score:
+                data.score,
+
+            level:
+                data.level,
+
+            results:
+                data.cognitiveResults
+
+        },
+
+
+        psychomotor:{
+
+            cards:
+                getCardArrangement(),
+
+            cardsPlaced:
+                getCardsPlaced(),
+
+            requiredPortsConnected:
+                connectedRequiredPorts(),
+
+            requiredPortsTotal:
+                requiredPorts.length,
+
+
+            /*
+               INFORMACIÓN INTERNA COMPLETA.
+            */
+
+            connections:
+                connections.map(
+                    connection => ({
+
+                        from:
+                            connection.from,
+
+                        to:
+                            connection.to,
+
+                        fromDevice:
+                            connection.fromDevice,
+
+                        fromPort:
+                            connection.fromPort,
+
+                        toDevice:
+                            connection.toDevice,
+
+                        toPort:
+                            connection.toPort,
+
+                        technicallyCorrect:
+                            connection.technicallyCorrect,
+
+                        timestamp:
+                            connection.timestamp
+
+                    })
+                )
+
+        },
+
+
+        procedural:
+            data.procedural,
+
+
+        socioaffective:
+            data.socio,
+
+
+        strengths:
+            data.strengths,
+
+
+        support:
+            data.support,
+
+
+        report:
+            data.report,
+
+
+        qr:
+            buildQRData(data)
+
+    };
+
+
+    records.push(record);
+
+
+    try{
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(
+                records
+            )
+        );
+
+    }catch(error){
+
+        console.error(
+            "No se pudo guardar el diagnóstico:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   FINALIZAR
+========================================================= */
+
+function finishDiagnostic(){
+
+    const message =
+        document.getElementById(
+            "stage3Message"
+        );
+
+
+    if(
+        !socioComplete()
+    ){
+
+        message.textContent =
+            "Responda los seis indicadores antes de finalizar.";
+
+        return;
+
+    }
+
+
+    const data =
+        buildReport();
+
+
+    const qrData =
+        buildQRData(
+            data
+        );
+
+
+    document.getElementById(
+        "summary"
+    ).innerHTML =
+        renderStudentReport(
+            data,
+            qrData
+        );
+
+
+    /*
+       AQUÍ SE GENERA EL QR
+       DESDE EL PROPIO HTML.
+    */
+
+    generateQR(
+        qrData
+    );
+
+
+    /*
+       Guardar resultados,
+       incluyendo las conexiones técnicas.
+    */
+
+    saveDiagnostic(
+        data
+    );
+
+
+    if(
+        timerInterval
+    ){
+
+        clearInterval(
+            timerInterval
+        );
+
+    }
+
+
+    goToStage(4);
+
+}
+
+
+/* =========================================================
+   INICIALIZACIÓN
+========================================================= */
+
+[
+    "studentName",
+    "section",
+    "institution"
+].forEach(
+    id => {
+
+        const field =
+            document.getElementById(id);
+
+
+        if(field){
+
+            field.addEventListener(
+                "input",
+                updateStage1Button
+            );
+
+        }
+
+    }
+);
+
+
+updateStage1Button();
+
+updateCardsStatus();
+
+updateConnectionMessage();
+
+updateStage2Button();
+
+</script>
+
+</body>
+</html>

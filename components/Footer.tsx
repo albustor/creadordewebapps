@@ -20,7 +20,7 @@ export default function Footer() {
 
           {/* Línea horizontal de nombres con separador | */}
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs sm:text-sm font-bold text-[#002b49]">
-            <span>Heidy María Cascante Cruz</span>
+            <span>Heidi María Cascante Cruz</span>
             <span className="text-slate-300 font-light">|</span>
             <span>Rodolfo Juárez Pérez</span>
             <span className="text-slate-300 font-light">|</span>

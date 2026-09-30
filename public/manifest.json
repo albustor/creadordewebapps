@@ -51,10 +51,10 @@
   ],
   "shortcuts": [
     {
-      "name": "Escáner QR V3.1 (Universal)",
-      "short_name": "Escáner V3.1",
+      "name": "Escáner QR V3.2 (Universal)",
+      "short_name": "Escáner V3.2",
       "description": "Escanear QR de telemetría y diagnósticos de estudiantes",
-      "url": "/diagnostico_escaner_datos_v3_1.html",
+      "url": "/diagnostico_escaner_datos_v3_2.html",
       "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
     },
     {

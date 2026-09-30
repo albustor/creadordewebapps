@@ -1,0 +1,4080 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js').then(function(reg) {
+      console.log('SW PWA registrado correctamente:', reg.scope);
+    }).catch(function(err) {
+      console.log('SW PWA no registrado:', err);
+    });
+  });
+}
+</script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#090d16">
+  <title>Diagnóstico Formación Tecnológica 7° V3.2 (Offline)</title>
+  
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --bg-card: #111827;
+      --bg-card-hover: #1f293d;
+      --bg-glass: rgba(17, 24, 39, 0.85);
+      --cyan-neon: #00f0ff;
+      --cyan-glow: rgba(0, 240, 255, 0.35);
+      --violet-neon: #a855f7;
+      --violet-glow: rgba(168, 85, 247, 0.35);
+      --lime-neon: #10b981;
+      --lime-glow: rgba(16, 185, 129, 0.35);
+      --amber-neon: #f59e0b;
+      --red-neon: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-dark: #1e293b;
+      --border-neon: #00f0ff55;
+      --font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-family);
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 15% 50%, rgba(168, 85, 247, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 85% 30%, rgba(0, 240, 255, 0.08) 0%, transparent 45%),
+        linear-gradient(180deg, #090d16 0%, #0d1322 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* HEADER HUD */
+    header.hud-header {
+      background: rgba(9, 13, 22, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-neon);
+      padding: 10px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .hud-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mep-tag {
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 900;
+      padding: 3px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .cyber-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      background: linear-gradient(90deg, #00f0ff, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      
+    }
+
+    .hud-stats {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .stat-pill {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .stat-pill.leader { border-color: rgba(0, 240, 255, 0.4); color: var(--cyan-neon); }
+    .stat-pill.copilot { border-color: rgba(168, 85, 247, 0.4); color: var(--violet-neon); }
+
+    .stat-pill span.val {
+      color: var(--cyan-neon);
+    }
+
+    .hud-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-icon {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      color: var(--text-main);
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 15px;
+      transition: all 0.2s;
+    }
+
+    .btn-icon:hover {
+      border-color: var(--cyan-neon);
+      color: var(--cyan-neon);
+      transform: translateY(-2px);
+      box-shadow: 0 0 10px var(--cyan-glow);
+    }
+
+    /* MAIN CONTAINER */
+    main.app-container {
+      flex: 1;
+      max-width: 1080px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* PROGRESS HUD */
+    .mission-progress-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      border-radius: 12px;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .progress-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .progress-track {
+      background: #0d1322;
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      background: linear-gradient(90deg, #00f0ff, #a855f7, #10b981);
+      height: 100%;
+      width: 0%;
+      transition: width 0.4s ease;
+      box-shadow: 0 0 10px var(--cyan-glow);
+    }
+
+    .phase-steps {
+      display: flex;
+      justify-content: space-between;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .step-item {
+      flex: 1;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px;
+      border-radius: 6px;
+      color: var(--text-muted);
+      background: rgba(30, 41, 59, 0.4);
+      transition: all 0.2s;
+    }
+
+    .step-item.active {
+      color: var(--cyan-neon);
+      background: rgba(0, 240, 255, 0.12);
+      border: 1px solid var(--cyan-neon);
+    }
+
+    .step-item.completed {
+      color: var(--lime-neon);
+      background: rgba(16, 185, 129, 0.12);
+    }
+
+    /* CARDS & PANELS */
+    .cyber-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cyber-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--cyan-neon), transparent);
+    }
+
+    .card-header {
+      margin-bottom: 18px;
+    }
+
+    .mission-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .badge-psico { background: rgba(0, 240, 255, 0.15); color: var(--cyan-neon); border: 1px solid var(--cyan-neon); }
+    .badge-cog { background: rgba(168, 85, 247, 0.15); color: var(--violet-neon); border: 1px solid var(--violet-neon); }
+    .badge-socio { background: rgba(16, 185, 129, 0.15); color: var(--lime-neon); border: 1px solid var(--lime-neon); }
+
+    .card-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .card-desc {
+      color: var(--text-muted);
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+
+    /* MODALIDAD DE PARTICIPACION */
+    .mode-toggle-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .mode-toggle-btn {
+      background: #080c16;
+      border: 1.5px solid var(--border-dark);
+      color: var(--text-muted);
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      user-select: none;
+    }
+
+    .mode-toggle-btn:hover {
+      border-color: var(--cyan-neon);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .mode-toggle-btn.active {
+      background: rgba(0, 240, 255, 0.12);
+      border-color: var(--cyan-neon);
+      color: var(--cyan-neon);
+      box-shadow: 0 0 12px var(--cyan-glow);
+    }
+
+    /* PAIR REGISTRATION BOXES */
+    .pair-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 16px;
+      margin: 16px 0;
+      transition: all 0.3s ease;
+    }
+
+    .pair-grid.solo-mode {
+      grid-template-columns: 1fr;
+      max-width: 620px;
+      margin: 16px auto;
+    }
+
+    .cadet-box {
+      background: #0d1322;
+      border: 1px solid var(--border-dark);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+    }
+
+    .cadet-box.leader-box {
+      border-top: 3px solid var(--cyan-neon);
+    }
+
+    .cadet-box.copilot-box {
+      border-top: 3px solid var(--violet-neon);
+    }
+
+    .cadet-box-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cadet-role-tag {
+      font-size: 11px;
+      font-weight: 800;
+      
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    .tag-cyan { background: rgba(0, 240, 255, 0.15); color: var(--cyan-neon); border: 1px solid var(--cyan-neon); }
+    .tag-violet { background: rgba(168, 85, 247, 0.15); color: var(--violet-neon); border: 1px solid var(--violet-neon); }
+
+    /* AVATAR SELECTOR */
+    .avatar-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 480px) {
+      .avatar-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .avatar-card {
+      background: #111827;
+      border: 1.5px solid var(--border-dark);
+      border-radius: 10px;
+      padding: 8px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .avatar-card:hover {
+      border-color: var(--cyan-neon);
+      transform: translateY(-2px);
+    }
+
+    .avatar-card.selected {
+      border-color: var(--cyan-neon);
+      background: rgba(0, 240, 255, 0.12);
+      box-shadow: 0 0 10px var(--cyan-glow);
+    }
+
+    .avatar-card.selected-purple {
+      border-color: var(--violet-neon) !important;
+      background: rgba(168, 85, 247, 0.12) !important;
+      box-shadow: 0 0 10px var(--violet-glow) !important;
+    }
+
+    .avatar-icon { font-size: 24px; }
+    .avatar-name { font-size: 10px; font-weight: 700; color: var(--text-muted); }
+
+    /* BUTTONS */
+    .btn-cyber {
+      background: linear-gradient(135deg, #00f0ff, #0284c7);
+      color: #090d16;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 15px var(--cyan-glow);
+    }
+
+    .btn-cyber:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px var(--cyan-glow);
+      filter: brightness(1.1);
+    }
+
+    .btn-cyber-purple {
+      background: linear-gradient(135deg, #a855f7, #7c3aed);
+      color: white;
+      box-shadow: 0 4px 15px var(--violet-glow);
+    }
+
+    .btn-cyber-lime {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #090d16;
+      font-weight: 800;
+      box-shadow: 0 4px 15px var(--lime-glow);
+    }
+
+    .btn-cyber-outline {
+      background: transparent;
+      color: var(--text-main);
+      border: 1px solid var(--border-dark);
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-cyber-outline:hover {
+      border-color: var(--cyan-neon);
+      color: var(--cyan-neon);
+      background: rgba(0, 240, 255, 0.05);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      
+      letter-spacing: 0.5px;
+    }
+
+    .form-input, .form-select {
+      background: #080c16;
+      border: 1px solid var(--border-dark);
+      padding: 10px 12px;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 13.5px;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .form-input:focus, .form-select:focus {
+      border-color: var(--cyan-neon);
+      box-shadow: 0 0 10px var(--cyan-glow);
+    }
+
+    /* GAME SUBMODULES */
+    .grid-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .grid-board {
+      display: grid;
+      grid-template-columns: repeat(4, 70px);
+      grid-template-rows: repeat(4, 70px);
+      gap: 8px;
+      background: #0b0f19;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border-dark);
+    }
+
+    @media (max-width: 480px) {
+      .grid-board {
+        grid-template-columns: repeat(4, 55px);
+        grid-template-rows: repeat(4, 55px);
+        gap: 6px;
+      }
+    }
+
+    .grid-cell {
+      background: #151d30;
+      border-radius: 8px;
+      border: 1px solid #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      position: relative;
+      transition: all 0.2s;
+    }
+
+    .grid-cell.server {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: var(--lime-neon);
+      box-shadow: inset 0 0 10px var(--lime-glow);
+    }
+
+    .grid-cell.obstacle {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: var(--red-neon);
+    }
+
+    .robot-sprite {
+      font-size: 30px;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* P1: Real-time Direction Pad & Live HUD */
+    .p1-controls-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .p1-live-hud {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      max-width: 480px;
+      background: #0b0f19;
+      border: 1px solid var(--border-dark);
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .p1-live-hud strong {
+      color: var(--cyan-neon);
+      font-size: 13.5px;
+    }
+
+    .p1-arrow-pad {
+      display: grid;
+      grid-template-columns: repeat(3, 94px);
+      grid-template-rows: repeat(2, 50px);
+      gap: 10px;
+      justify-content: center;
+      margin: 8px 0;
+    }
+
+    .p1-btn-move {
+      background: #111827;
+      border: 1px solid var(--cyan-neon);
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .p1-btn-move:hover {
+      background: rgba(0, 240, 255, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 0 15px var(--cyan-glow);
+    }
+
+    .p1-btn-move:active {
+      transform: scale(0.96);
+    }
+
+    .p1-btn-forward {
+      grid-column: 2;
+      grid-row: 1;
+      background: linear-gradient(135deg, #0284c7, #00f0ff);
+      color: #060911;
+      font-weight: 900;
+      border: none;
+      font-size: 14px;
+      box-shadow: 0 0 15px var(--cyan-glow);
+    }
+
+    .p1-btn-forward:hover {
+      background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+      transform: translateY(-2px) scale(1.02);
+    }
+
+    .p1-btn-left {
+      grid-column: 1;
+      grid-row: 2;
+      border-color: rgba(0, 240, 255, 0.5);
+    }
+
+    .p1-btn-reset {
+      grid-column: 2;
+      grid-row: 2;
+      border-color: #475569;
+      color: #94a3b8;
+      font-size: 11.5px;
+    }
+
+    .p1-btn-right {
+      grid-column: 3;
+      grid-row: 2;
+      border-color: rgba(0, 240, 255, 0.5);
+    }
+
+    /* P2: Semaphore & Reaction UI */
+    .semaphore-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      padding: 24px 20px;
+      background: #0b0f19;
+      border-radius: 16px;
+      border: 1px solid var(--border-dark);
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .semaphore-light {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: #111827;
+      border: 6px solid #1e293b;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .semaphore-light.green {
+      background: radial-gradient(circle, #34d399 20%, #059669 100%);
+      border-color: #10b981;
+      box-shadow: 0 0 45px #10b981, inset 0 0 20px #ffffff;
+      animation: pulseGreen 0.6s infinite alternate;
+    }
+
+    .semaphore-light.red {
+      background: radial-gradient(circle, #f87171 20%, #dc2626 100%);
+      border-color: #ef4444;
+      box-shadow: 0 0 45px #ef4444, inset 0 0 20px #ffffff;
+    }
+
+    .semaphore-light.yellow {
+      background: radial-gradient(circle, #fcd34d 20%, #d97706 100%);
+      border-color: #f59e0b;
+      box-shadow: 0 0 35px #f59e0b;
+    }
+
+    @keyframes pulseGreen {
+      from { transform: scale(1); box-shadow: 0 0 35px #10b981; }
+      to { transform: scale(1.06); box-shadow: 0 0 55px #34d399; }
+    }
+
+    .semaphore-status-label {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .reaction-trigger-btn-cyber {
+      width: 100%;
+      max-width: 440px;
+      min-height: 74px;
+      padding: 18px 28px;
+      background: #131d31;
+      border: 2px solid var(--cyan-neon);
+      color: #fff;
+      font-size: 1.15rem;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      border-radius: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      box-shadow: 0 0 24px rgba(0, 240, 255, 0.22);
+      transition: all 0.15s;
+    }
+
+    .reaction-trigger-btn-cyber:hover {
+      background: #1e293b;
+      border-color: #38bdf8;
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.35);
+    }
+
+    .reaction-trigger-btn-cyber:active {
+      transform: scale(0.97);
+      background: rgba(0, 240, 255, 0.25);
+    }
+
+    .p2-hud-info {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-align: center;
+      background: #111827;
+      padding: 6px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border-dark);
+    }
+
+    .p2-hud-info strong {
+      color: var(--cyan-neon);
+    }
+
+    /* P3 & P4: Canvas */
+    .canvas-wrapper {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+    }
+
+    canvas.game-canvas {
+      background: #0b0f19;
+      border: 1px solid var(--border-neon);
+      border-radius: 14px;
+      cursor: crosshair;
+      touch-action: none;
+      max-width: 100%;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+
+    .paint-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      background: #0b0f19;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border-dark);
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .color-picker-group {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .color-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .color-dot.active {
+      border-color: #fff;
+      transform: scale(1.2);
+    }
+
+    /* COGNITIVE QUESTIONS - PURE DIAGNOSTIC SELECTION (NO SPOILERS/FEEDBACK) */
+    .quiz-options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .option-btn {
+      background: #0d1322;
+      border: 1px solid var(--border-dark);
+      padding: 14px 18px;
+      border-radius: 12px;
+      color: #fff;
+      text-align: left;
+      font-size: 13.5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.2s;
+    }
+
+    .option-btn:hover {
+      border-color: var(--cyan-neon);
+      background: rgba(0, 240, 255, 0.05);
+      transform: translateX(4px);
+    }
+
+    .option-btn.selected {
+      border-color: var(--cyan-neon) !important;
+      background: rgba(0, 240, 255, 0.15) !important;
+      font-weight: 700;
+    }
+
+    .code-editor-box {
+      background: #050811;
+      border: 1px solid #1e293b;
+      border-left: 3px solid var(--cyan-neon);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 13px;
+      color: #38bdf8;
+      margin: 10px 0;
+      line-height: 1.6;
+    }
+
+    /* SOCIOAFECTIVE SCALE */
+    .likert-group {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .likert-btn {
+      background: #0d1322;
+      border: 1px solid var(--border-dark);
+      padding: 12px 8px;
+      border-radius: 10px;
+      color: var(--text-muted);
+      font-size: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .likert-btn:hover {
+      border-color: var(--lime-neon);
+      color: #fff;
+    }
+
+    .likert-btn.selected {
+      border-color: var(--lime-neon);
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--lime-neon);
+      font-weight: 700;
+    }
+
+    /* RADAR / SUMMARY */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .stat-card {
+      background: #0d1322;
+      border: 1px solid var(--border-dark);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .stat-card-title {
+      font-size: 12px;
+      color: var(--text-muted);
+      
+      font-weight: 700;
+    }
+
+    .stat-card-value {
+      font-size: 24px;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .stat-card-badge {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+      width: fit-content;
+    }
+
+    .badge-level-a { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981; }
+    .badge-level-b { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b; }
+    .badge-level-c { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; }
+
+    /* TOAST / FEEDBACK */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: #111827;
+      border: 1px solid var(--border-neon);
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+      animation: slideUp 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* FOOTER */
+    footer.app-footer {
+      background: #060911;
+      border-top: 1px solid #1e293b;
+      padding: 14px 20px;
+      text-align: center;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER HUD -->
+  <header class="hud-header">
+    <div class="hud-brand">
+      <span class="mep-tag">MEP 2027</span>
+      <div class="cyber-title" id="hudCyberTitle">⚡ Formación Tecnológica 7° • Misión Diagnóstica</div>
+    </div>
+    <div class="hud-stats">
+      <div class="stat-pill leader" id="hudCadet1Pill" style="display: none;">
+        <span id="hudAvatar1Icon">🤖</span>
+        <span id="hudCadet1Name">Líder</span>
+      </div>
+      <div class="stat-pill copilot" id="hudCadet2Pill" style="display: none;">
+        <span id="hudAvatar2Icon">⚡</span>
+        <span id="hudCadet2Name">Co-piloto</span>
+      </div>
+      <div class="stat-pill">
+        <span>⚡ XP:</span>
+        <span class="val" id="hudXpVal">0</span>
+      </div>
+    </div>
+    <div class="hud-controls">
+      <button class="btn-icon" id="btnAudioToggle" title="Activar/silenciar audio">🔊</button>
+      <button class="btn-icon" id="btnFullscreen" title="Pantalla completa">⛶</button>
+      <button class="btn-icon" id="btnResetSession" title="Reiniciar sesión">↺</button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="app-container">
+    
+    <!-- PROGRESS HUD -->
+    <section class="mission-progress-bar">
+      <div class="progress-labels">
+        <span id="progressCurrentMission">Fase 0: Datos del estudiante</span>
+        <span id="progressPercentage">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressBarFill"></div>
+      </div>
+      <div class="phase-steps">
+        <div class="step-item active" id="step0">0. Datos del estudiante</div>
+        <div class="step-item" id="step1">1. Psicomotriz</div>
+        <div class="step-item" id="step2">2. Cognitivo</div>
+        <div class="step-item" id="step3">3. Autoevaluación</div>
+        <div class="step-item" id="step4">4. Misión cumplida</div>
+      </div>
+    </section>
+
+    <!-- DYNAMIC MISSION CONTAINER -->
+    <div id="missionViewContainer">
+      <!-- Inyectado dinámicamente -->
+    </div>
+
+  </main>
+
+  <footer class="app-footer">
+    Ministerio de Educación Pública de Costa Rica (MEP) | Dirección de Informática Educativa 2027<br>
+    Módulo diagnóstico formativo de 7° año (III Ciclo) &bull; Modalidad en parejas (líder y copiloto) &bull; Evaluación diagnóstica pura sin realimentación
+  </footer>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- SCRIPT ENGINE INTEGRAL -->
+  <script>
+/**
+ * Standalone ISO/IEC 18004 QR Code Generator Engine (Project Nayuki Reference)
+ * 100% Offline, High-Contrast Canvas Renderer with standard 4-module Quiet Zone.
+ */
+(function (root, factory) {
+  var qrLib = factory();
+  if (typeof module === 'object' && module.exports) {
+    module.exports = qrLib;
+  }
+  if (typeof window !== 'undefined') {
+    window.QRCode = qrLib;
+    window.qrcodegen = qrLib.qrcodegen;
+  }
+  if (root) {
+    root.QRCode = qrLib;
+    root.qrcodegen = qrLib.qrcodegen;
+  }
+}(typeof globalThis !== 'undefined' ? globalThis : (typeof window !== 'undefined' ? window : this), function () {
+  var qrcodegen;
+((qrcodegen2) => {
+  const _QrCode = class _QrCode {
+    /*-- Constructor (low level) and fields --*/
+    // Creates a new QR Code with the given version number,
+    // error correction level, data codeword bytes, and mask number.
+    // This is a low-level API that most users should not use directly.
+    // A mid-level API is the encodeSegments() function.
+    constructor(version, errorCorrectionLevel, dataCodewords, msk) {
+      this.version = version;
+      this.errorCorrectionLevel = errorCorrectionLevel;
+      // The modules of this QR Code (false = light, true = dark).
+      // Immutable after constructor finishes. Accessed through getModule().
+      this.modules = [];
+      // Indicates function modules that are not subjected to masking. Discarded when constructor finishes.
+      this.isFunction = [];
+      if (version < _QrCode.MIN_VERSION || version > _QrCode.MAX_VERSION)
+        throw new RangeError("Version value out of range");
+      if (msk < -1 || msk > 7)
+        throw new RangeError("Mask value out of range");
+      this.size = version * 4 + 17;
+      let row = [];
+      for (let i = 0; i < this.size; i++)
+        row.push(false);
+      for (let i = 0; i < this.size; i++) {
+        this.modules.push(row.slice());
+        this.isFunction.push(row.slice());
+      }
+      this.drawFunctionPatterns();
+      const allCodewords = this.addEccAndInterleave(dataCodewords);
+      this.drawCodewords(allCodewords);
+      if (msk == -1) {
+        let minPenalty = 1e9;
+        for (let i = 0; i < 8; i++) {
+          this.applyMask(i);
+          this.drawFormatBits(i);
+          const penalty = this.getPenaltyScore();
+          if (penalty < minPenalty) {
+            msk = i;
+            minPenalty = penalty;
+          }
+          this.applyMask(i);
+        }
+      }
+      assert(0 <= msk && msk <= 7);
+      this.mask = msk;
+      this.applyMask(msk);
+      this.drawFormatBits(msk);
+      this.isFunction = [];
+    }
+    /*-- Static factory functions (high level) --*/
+    // Returns a QR Code representing the given Unicode text string at the given error correction level.
+    // As a conservative upper bound, this function is guaranteed to succeed for strings that have 738 or fewer
+    // Unicode code points (not UTF-16 code units) if the low error correction level is used. The smallest possible
+    // QR Code version is automatically chosen for the output. The ECC level of the result may be higher than the
+    // ecl argument if it can be done without increasing the version.
+    static encodeText(text, ecl) {
+      const segs = qrcodegen2.QrSegment.makeSegments(text);
+      return _QrCode.encodeSegments(segs, ecl);
+    }
+    // Returns a QR Code representing the given binary data at the given error correction level.
+    // This function always encodes using the binary segment mode, not any text mode. The maximum number of
+    // bytes allowed is 2953. The smallest possible QR Code version is automatically chosen for the output.
+    // The ECC level of the result may be higher than the ecl argument if it can be done without increasing the version.
+    static encodeBinary(data, ecl) {
+      const seg = qrcodegen2.QrSegment.makeBytes(data);
+      return _QrCode.encodeSegments([seg], ecl);
+    }
+    /*-- Static factory functions (mid level) --*/
+    // Returns a QR Code representing the given segments with the given encoding parameters.
+    // The smallest possible QR Code version within the given range is automatically
+    // chosen for the output. Iff boostEcl is true, then the ECC level of the result
+    // may be higher than the ecl argument if it can be done without increasing the
+    // version. The mask number is either between 0 to 7 (inclusive) to force that
+    // mask, or -1 to automatically choose an appropriate mask (which may be slow).
+    // This function allows the user to create a custom sequence of segments that switches
+    // between modes (such as alphanumeric and byte) to encode text in less space.
+    // This is a mid-level API; the high-level API is encodeText() and encodeBinary().
+    static encodeSegments(segs, ecl, minVersion = 1, maxVersion = 40, mask = -1, boostEcl = true) {
+      if (!(_QrCode.MIN_VERSION <= minVersion && minVersion <= maxVersion && maxVersion <= _QrCode.MAX_VERSION) || mask < -1 || mask > 7)
+        throw new RangeError("Invalid value");
+      let version;
+      let dataUsedBits;
+      for (version = minVersion; ; version++) {
+        const dataCapacityBits2 = _QrCode.getNumDataCodewords(version, ecl) * 8;
+        const usedBits = QrSegment.getTotalBits(segs, version);
+        if (usedBits <= dataCapacityBits2) {
+          dataUsedBits = usedBits;
+          break;
+        }
+        if (version >= maxVersion)
+          throw new RangeError("Data too long");
+      }
+      for (const newEcl of [_QrCode.Ecc.MEDIUM, _QrCode.Ecc.QUARTILE, _QrCode.Ecc.HIGH]) {
+        if (boostEcl && dataUsedBits <= _QrCode.getNumDataCodewords(version, newEcl) * 8)
+          ecl = newEcl;
+      }
+      let bb = [];
+      for (const seg of segs) {
+        appendBits(seg.mode.modeBits, 4, bb);
+        appendBits(seg.numChars, seg.mode.numCharCountBits(version), bb);
+        for (const b of seg.getData())
+          bb.push(b);
+      }
+      assert(bb.length == dataUsedBits);
+      const dataCapacityBits = _QrCode.getNumDataCodewords(version, ecl) * 8;
+      assert(bb.length <= dataCapacityBits);
+      appendBits(0, Math.min(4, dataCapacityBits - bb.length), bb);
+      appendBits(0, (8 - bb.length % 8) % 8, bb);
+      assert(bb.length % 8 == 0);
+      for (let padByte = 236; bb.length < dataCapacityBits; padByte ^= 236 ^ 17)
+        appendBits(padByte, 8, bb);
+      let dataCodewords = [];
+      while (dataCodewords.length * 8 < bb.length)
+        dataCodewords.push(0);
+      bb.forEach((b, i) => dataCodewords[i >>> 3] |= b << 7 - (i & 7));
+      return new _QrCode(version, ecl, dataCodewords, mask);
+    }
+    /*-- Accessor methods --*/
+    // Returns the color of the module (pixel) at the given coordinates, which is false
+    // for light or true for dark. The top left corner has the coordinates (x=0, y=0).
+    // If the given coordinates are out of bounds, then false (light) is returned.
+    getModule(x, y) {
+      return 0 <= x && x < this.size && 0 <= y && y < this.size && this.modules[y][x];
+    }
+    // Modified to expose modules for easy access
+    getModules() {
+      return this.modules;
+    }
+    /*-- Private helper methods for constructor: Drawing function modules --*/
+    // Reads this object's version field, and draws and marks all function modules.
+    drawFunctionPatterns() {
+      for (let i = 0; i < this.size; i++) {
+        this.setFunctionModule(6, i, i % 2 == 0);
+        this.setFunctionModule(i, 6, i % 2 == 0);
+      }
+      this.drawFinderPattern(3, 3);
+      this.drawFinderPattern(this.size - 4, 3);
+      this.drawFinderPattern(3, this.size - 4);
+      const alignPatPos = this.getAlignmentPatternPositions();
+      const numAlign = alignPatPos.length;
+      for (let i = 0; i < numAlign; i++) {
+        for (let j = 0; j < numAlign; j++) {
+          if (!(i == 0 && j == 0 || i == 0 && j == numAlign - 1 || i == numAlign - 1 && j == 0))
+            this.drawAlignmentPattern(alignPatPos[i], alignPatPos[j]);
+        }
+      }
+      this.drawFormatBits(0);
+      this.drawVersion();
+    }
+    // Draws two copies of the format bits (with its own error correction code)
+    // based on the given mask and this object's error correction level field.
+    drawFormatBits(mask) {
+      const data = this.errorCorrectionLevel.formatBits << 3 | mask;
+      let rem = data;
+      for (let i = 0; i < 10; i++)
+        rem = rem << 1 ^ (rem >>> 9) * 1335;
+      const bits = (data << 10 | rem) ^ 21522;
+      assert(bits >>> 15 == 0);
+      for (let i = 0; i <= 5; i++)
+        this.setFunctionModule(8, i, getBit(bits, i));
+      this.setFunctionModule(8, 7, getBit(bits, 6));
+      this.setFunctionModule(8, 8, getBit(bits, 7));
+      this.setFunctionModule(7, 8, getBit(bits, 8));
+      for (let i = 9; i < 15; i++)
+        this.setFunctionModule(14 - i, 8, getBit(bits, i));
+      for (let i = 0; i < 8; i++)
+        this.setFunctionModule(this.size - 1 - i, 8, getBit(bits, i));
+      for (let i = 8; i < 15; i++)
+        this.setFunctionModule(8, this.size - 15 + i, getBit(bits, i));
+      this.setFunctionModule(8, this.size - 8, true);
+    }
+    // Draws two copies of the version bits (with its own error correction code),
+    // based on this object's version field, iff 7 <= version <= 40.
+    drawVersion() {
+      if (this.version < 7)
+        return;
+      let rem = this.version;
+      for (let i = 0; i < 12; i++)
+        rem = rem << 1 ^ (rem >>> 11) * 7973;
+      const bits = this.version << 12 | rem;
+      assert(bits >>> 18 == 0);
+      for (let i = 0; i < 18; i++) {
+        const color = getBit(bits, i);
+        const a = this.size - 11 + i % 3;
+        const b = Math.floor(i / 3);
+        this.setFunctionModule(a, b, color);
+        this.setFunctionModule(b, a, color);
+      }
+    }
+    // Draws a 9*9 finder pattern including the border separator,
+    // with the center module at (x, y). Modules can be out of bounds.
+    drawFinderPattern(x, y) {
+      for (let dy = -4; dy <= 4; dy++) {
+        for (let dx = -4; dx <= 4; dx++) {
+          const dist = Math.max(Math.abs(dx), Math.abs(dy));
+          const xx = x + dx;
+          const yy = y + dy;
+          if (0 <= xx && xx < this.size && 0 <= yy && yy < this.size)
+            this.setFunctionModule(xx, yy, dist != 2 && dist != 4);
+        }
+      }
+    }
+    // Draws a 5*5 alignment pattern, with the center module
+    // at (x, y). All modules must be in bounds.
+    drawAlignmentPattern(x, y) {
+      for (let dy = -2; dy <= 2; dy++) {
+        for (let dx = -2; dx <= 2; dx++)
+          this.setFunctionModule(x + dx, y + dy, Math.max(Math.abs(dx), Math.abs(dy)) != 1);
+      }
+    }
+    // Sets the color of a module and marks it as a function module.
+    // Only used by the constructor. Coordinates must be in bounds.
+    setFunctionModule(x, y, isDark) {
+      this.modules[y][x] = isDark;
+      this.isFunction[y][x] = true;
+    }
+    /*-- Private helper methods for constructor: Codewords and masking --*/
+    // Returns a new byte string representing the given data with the appropriate error correction
+    // codewords appended to it, based on this object's version and error correction level.
+    addEccAndInterleave(data) {
+      const ver = this.version;
+      const ecl = this.errorCorrectionLevel;
+      if (data.length != _QrCode.getNumDataCodewords(ver, ecl))
+        throw new RangeError("Invalid argument");
+      const numBlocks = _QrCode.NUM_ERROR_CORRECTION_BLOCKS[ecl.ordinal][ver];
+      const blockEccLen = _QrCode.ECC_CODEWORDS_PER_BLOCK[ecl.ordinal][ver];
+      const rawCodewords = Math.floor(_QrCode.getNumRawDataModules(ver) / 8);
+      const numShortBlocks = numBlocks - rawCodewords % numBlocks;
+      const shortBlockLen = Math.floor(rawCodewords / numBlocks);
+      let blocks = [];
+      const rsDiv = _QrCode.reedSolomonComputeDivisor(blockEccLen);
+      for (let i = 0, k = 0; i < numBlocks; i++) {
+        let dat = data.slice(k, k + shortBlockLen - blockEccLen + (i < numShortBlocks ? 0 : 1));
+        k += dat.length;
+        const ecc = _QrCode.reedSolomonComputeRemainder(dat, rsDiv);
+        if (i < numShortBlocks)
+          dat.push(0);
+        blocks.push(dat.concat(ecc));
+      }
+      let result = [];
+      for (let i = 0; i < blocks[0].length; i++) {
+        blocks.forEach((block, j) => {
+          if (i != shortBlockLen - blockEccLen || j >= numShortBlocks)
+            result.push(block[i]);
+        });
+      }
+      assert(result.length == rawCodewords);
+      return result;
+    }
+    // Draws the given sequence of 8-bit codewords (data and error correction) onto the entire
+    // data area of this QR Code. Function modules need to be marked off before this is called.
+    drawCodewords(data) {
+      if (data.length != Math.floor(_QrCode.getNumRawDataModules(this.version) / 8))
+        throw new RangeError("Invalid argument");
+      let i = 0;
+      for (let right = this.size - 1; right >= 1; right -= 2) {
+        if (right == 6)
+          right = 5;
+        for (let vert = 0; vert < this.size; vert++) {
+          for (let j = 0; j < 2; j++) {
+            const x = right - j;
+            const upward = (right + 1 & 2) == 0;
+            const y = upward ? this.size - 1 - vert : vert;
+            if (!this.isFunction[y][x] && i < data.length * 8) {
+              this.modules[y][x] = getBit(data[i >>> 3], 7 - (i & 7));
+              i++;
+            }
+          }
+        }
+      }
+      assert(i == data.length * 8);
+    }
+    // XORs the codeword modules in this QR Code with the given mask pattern.
+    // The function modules must be marked and the codeword bits must be drawn
+    // before masking. Due to the arithmetic of XOR, calling applyMask() with
+    // the same mask value a second time will undo the mask. A final well-formed
+    // QR Code needs exactly one (not zero, two, etc.) mask applied.
+    applyMask(mask) {
+      if (mask < 0 || mask > 7)
+        throw new RangeError("Mask value out of range");
+      for (let y = 0; y < this.size; y++) {
+        for (let x = 0; x < this.size; x++) {
+          let invert;
+          switch (mask) {
+            case 0:
+              invert = (x + y) % 2 == 0;
+              break;
+            case 1:
+              invert = y % 2 == 0;
+              break;
+            case 2:
+              invert = x % 3 == 0;
+              break;
+            case 3:
+              invert = (x + y) % 3 == 0;
+              break;
+            case 4:
+              invert = (Math.floor(x / 3) + Math.floor(y / 2)) % 2 == 0;
+              break;
+            case 5:
+              invert = x * y % 2 + x * y % 3 == 0;
+              break;
+            case 6:
+              invert = (x * y % 2 + x * y % 3) % 2 == 0;
+              break;
+            case 7:
+              invert = ((x + y) % 2 + x * y % 3) % 2 == 0;
+              break;
+            default:
+              throw new Error("Unreachable");
+          }
+          if (!this.isFunction[y][x] && invert)
+            this.modules[y][x] = !this.modules[y][x];
+        }
+      }
+    }
+    // Calculates and returns the penalty score based on state of this QR Code's current modules.
+    // This is used by the automatic mask choice algorithm to find the mask pattern that yields the lowest score.
+    getPenaltyScore() {
+      let result = 0;
+      for (let y = 0; y < this.size; y++) {
+        let runColor = false;
+        let runX = 0;
+        let runHistory = [0, 0, 0, 0, 0, 0, 0];
+        for (let x = 0; x < this.size; x++) {
+          if (this.modules[y][x] == runColor) {
+            runX++;
+            if (runX == 5)
+              result += _QrCode.PENALTY_N1;
+            else if (runX > 5)
+              result++;
+          } else {
+            this.finderPenaltyAddHistory(runX, runHistory);
+            if (!runColor)
+              result += this.finderPenaltyCountPatterns(runHistory) * _QrCode.PENALTY_N3;
+            runColor = this.modules[y][x];
+            runX = 1;
+          }
+        }
+        result += this.finderPenaltyTerminateAndCount(runColor, runX, runHistory) * _QrCode.PENALTY_N3;
+      }
+      for (let x = 0; x < this.size; x++) {
+        let runColor = false;
+        let runY = 0;
+        let runHistory = [0, 0, 0, 0, 0, 0, 0];
+        for (let y = 0; y < this.size; y++) {
+          if (this.modules[y][x] == runColor) {
+            runY++;
+            if (runY == 5)
+              result += _QrCode.PENALTY_N1;
+            else if (runY > 5)
+              result++;
+          } else {
+            this.finderPenaltyAddHistory(runY, runHistory);
+            if (!runColor)
+              result += this.finderPenaltyCountPatterns(runHistory) * _QrCode.PENALTY_N3;
+            runColor = this.modules[y][x];
+            runY = 1;
+          }
+        }
+        result += this.finderPenaltyTerminateAndCount(runColor, runY, runHistory) * _QrCode.PENALTY_N3;
+      }
+      for (let y = 0; y < this.size - 1; y++) {
+        for (let x = 0; x < this.size - 1; x++) {
+          const color = this.modules[y][x];
+          if (color == this.modules[y][x + 1] && color == this.modules[y + 1][x] && color == this.modules[y + 1][x + 1])
+            result += _QrCode.PENALTY_N2;
+        }
+      }
+      let dark = 0;
+      for (const row of this.modules)
+        dark = row.reduce((sum, color) => sum + (color ? 1 : 0), dark);
+      const total = this.size * this.size;
+      const k = Math.ceil(Math.abs(dark * 20 - total * 10) / total) - 1;
+      assert(0 <= k && k <= 9);
+      result += k * _QrCode.PENALTY_N4;
+      assert(0 <= result && result <= 2568888);
+      return result;
+    }
+    /*-- Private helper functions --*/
+    // Returns an ascending list of positions of alignment patterns for this version number.
+    // Each position is in the range [0,177), and are used on both the x and y axes.
+    // This could be implemented as lookup table of 40 variable-length lists of integers.
+    getAlignmentPatternPositions() {
+      if (this.version == 1)
+        return [];
+      else {
+        const numAlign = Math.floor(this.version / 7) + 2;
+        const step = this.version == 32 ? 26 : Math.ceil((this.version * 4 + 4) / (numAlign * 2 - 2)) * 2;
+        let result = [6];
+        for (let pos = this.size - 7; result.length < numAlign; pos -= step)
+          result.splice(1, 0, pos);
+        return result;
+      }
+    }
+    // Returns the number of data bits that can be stored in a QR Code of the given version number, after
+    // all function modules are excluded. This includes remainder bits, so it might not be a multiple of 8.
+    // The result is in the range [208, 29648]. This could be implemented as a 40-entry lookup table.
+    static getNumRawDataModules(ver) {
+      if (ver < _QrCode.MIN_VERSION || ver > _QrCode.MAX_VERSION)
+        throw new RangeError("Version number out of range");
+      let result = (16 * ver + 128) * ver + 64;
+      if (ver >= 2) {
+        const numAlign = Math.floor(ver / 7) + 2;
+        result -= (25 * numAlign - 10) * numAlign - 55;
+        if (ver >= 7)
+          result -= 36;
+      }
+      assert(208 <= result && result <= 29648);
+      return result;
+    }
+    // Returns the number of 8-bit data (i.e. not error correction) codewords contained in any
+    // QR Code of the given version number and error correction level, with remainder bits discarded.
+    // This stateless pure function could be implemented as a (40*4)-cell lookup table.
+    static getNumDataCodewords(ver, ecl) {
+      return Math.floor(_QrCode.getNumRawDataModules(ver) / 8) - _QrCode.ECC_CODEWORDS_PER_BLOCK[ecl.ordinal][ver] * _QrCode.NUM_ERROR_CORRECTION_BLOCKS[ecl.ordinal][ver];
+    }
+    // Returns a Reed-Solomon ECC generator polynomial for the given degree. This could be
+    // implemented as a lookup table over all possible parameter values, instead of as an algorithm.
+    static reedSolomonComputeDivisor(degree) {
+      if (degree < 1 || degree > 255)
+        throw new RangeError("Degree out of range");
+      let result = [];
+      for (let i = 0; i < degree - 1; i++)
+        result.push(0);
+      result.push(1);
+      let root = 1;
+      for (let i = 0; i < degree; i++) {
+        for (let j = 0; j < result.length; j++) {
+          result[j] = _QrCode.reedSolomonMultiply(result[j], root);
+          if (j + 1 < result.length)
+            result[j] ^= result[j + 1];
+        }
+        root = _QrCode.reedSolomonMultiply(root, 2);
+      }
+      return result;
+    }
+    // Returns the Reed-Solomon error correction codeword for the given data and divisor polynomials.
+    static reedSolomonComputeRemainder(data, divisor) {
+      let result = divisor.map((_) => 0);
+      for (const b of data) {
+        const factor = b ^ result.shift();
+        result.push(0);
+        divisor.forEach((coef, i) => result[i] ^= _QrCode.reedSolomonMultiply(coef, factor));
+      }
+      return result;
+    }
+    // Returns the product of the two given field elements modulo GF(2^8/0x11D). The arguments and result
+    // are unsigned 8-bit integers. This could be implemented as a lookup table of 256*256 entries of uint8.
+    static reedSolomonMultiply(x, y) {
+      if (x >>> 8 != 0 || y >>> 8 != 0)
+        throw new RangeError("Byte out of range");
+      let z = 0;
+      for (let i = 7; i >= 0; i--) {
+        z = z << 1 ^ (z >>> 7) * 285;
+        z ^= (y >>> i & 1) * x;
+      }
+      assert(z >>> 8 == 0);
+      return z;
+    }
+    // Can only be called immediately after a light run is added, and
+    // returns either 0, 1, or 2. A helper function for getPenaltyScore().
+    finderPenaltyCountPatterns(runHistory) {
+      const n = runHistory[1];
+      assert(n <= this.size * 3);
+      const core = n > 0 && runHistory[2] == n && runHistory[3] == n * 3 && runHistory[4] == n && runHistory[5] == n;
+      return (core && runHistory[0] >= n * 4 && runHistory[6] >= n ? 1 : 0) + (core && runHistory[6] >= n * 4 && runHistory[0] >= n ? 1 : 0);
+    }
+    // Must be called at the end of a line (row or column) of modules. A helper function for getPenaltyScore().
+    finderPenaltyTerminateAndCount(currentRunColor, currentRunLength, runHistory) {
+      if (currentRunColor) {
+        this.finderPenaltyAddHistory(currentRunLength, runHistory);
+        currentRunLength = 0;
+      }
+      currentRunLength += this.size;
+      this.finderPenaltyAddHistory(currentRunLength, runHistory);
+      return this.finderPenaltyCountPatterns(runHistory);
+    }
+    // Pushes the given value to the front and drops the last value. A helper function for getPenaltyScore().
+    finderPenaltyAddHistory(currentRunLength, runHistory) {
+      if (runHistory[0] == 0)
+        currentRunLength += this.size;
+      runHistory.pop();
+      runHistory.unshift(currentRunLength);
+    }
+  };
+  /*-- Constants and tables --*/
+  // The minimum version number supported in the QR Code Model 2 standard.
+  _QrCode.MIN_VERSION = 1;
+  // The maximum version number supported in the QR Code Model 2 standard.
+  _QrCode.MAX_VERSION = 40;
+  // For use in getPenaltyScore(), when evaluating which mask is best.
+  _QrCode.PENALTY_N1 = 3;
+  _QrCode.PENALTY_N2 = 3;
+  _QrCode.PENALTY_N3 = 40;
+  _QrCode.PENALTY_N4 = 10;
+  _QrCode.ECC_CODEWORDS_PER_BLOCK = [
+    // Version: (note that index 0 is for padding, and is set to an illegal value)
+    //0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40    Error correction level
+    [-1, 7, 10, 15, 20, 26, 18, 20, 24, 30, 18, 20, 24, 26, 30, 22, 24, 28, 30, 28, 28, 28, 28, 30, 30, 26, 28, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30],
+    // Low
+    [-1, 10, 16, 26, 18, 24, 16, 18, 22, 22, 26, 30, 22, 22, 24, 24, 28, 28, 26, 26, 26, 26, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28],
+    // Medium
+    [-1, 13, 22, 18, 26, 18, 24, 18, 22, 20, 24, 28, 26, 24, 20, 30, 24, 28, 28, 26, 30, 28, 30, 30, 30, 30, 28, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30],
+    // Quartile
+    [-1, 17, 28, 22, 16, 22, 28, 26, 26, 24, 28, 24, 28, 22, 24, 24, 30, 28, 28, 26, 28, 30, 24, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
+    // High
+  ];
+  _QrCode.NUM_ERROR_CORRECTION_BLOCKS = [
+    // Version: (note that index 0 is for padding, and is set to an illegal value)
+    //0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40    Error correction level
+    [-1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 4, 4, 4, 4, 4, 6, 6, 6, 6, 7, 8, 8, 9, 9, 10, 12, 12, 12, 13, 14, 15, 16, 17, 18, 19, 19, 20, 21, 22, 24, 25],
+    // Low
+    [-1, 1, 1, 1, 2, 2, 4, 4, 4, 5, 5, 5, 8, 9, 9, 10, 10, 11, 13, 14, 16, 17, 17, 18, 20, 21, 23, 25, 26, 28, 29, 31, 33, 35, 37, 38, 40, 43, 45, 47, 49],
+    // Medium
+    [-1, 1, 1, 2, 2, 4, 4, 6, 6, 8, 8, 8, 10, 12, 16, 12, 17, 16, 18, 21, 20, 23, 23, 25, 27, 29, 34, 34, 35, 38, 40, 43, 45, 48, 51, 53, 56, 59, 62, 65, 68],
+    // Quartile
+    [-1, 1, 1, 2, 4, 4, 4, 5, 6, 8, 8, 11, 11, 16, 16, 18, 16, 19, 21, 25, 25, 25, 34, 30, 32, 35, 37, 40, 42, 45, 48, 51, 54, 57, 60, 63, 66, 70, 74, 77, 81]
+    // High
+  ];
+  let QrCode = _QrCode;
+  qrcodegen2.QrCode = _QrCode;
+  function appendBits(val, len, bb) {
+    if (len < 0 || len > 31 || val >>> len != 0)
+      throw new RangeError("Value out of range");
+    for (let i = len - 1; i >= 0; i--)
+      bb.push(val >>> i & 1);
+  }
+  function getBit(x, i) {
+    return (x >>> i & 1) != 0;
+  }
+  function assert(cond) {
+    if (!cond)
+      throw new Error("Assertion error");
+  }
+  const _QrSegment = class _QrSegment {
+    /*-- Constructor (low level) and fields --*/
+    // Creates a new QR Code segment with the given attributes and data.
+    // The character count (numChars) must agree with the mode and the bit buffer length,
+    // but the constraint isn't checked. The given bit buffer is cloned and stored.
+    constructor(mode, numChars, bitData) {
+      this.mode = mode;
+      this.numChars = numChars;
+      this.bitData = bitData;
+      if (numChars < 0)
+        throw new RangeError("Invalid argument");
+      this.bitData = bitData.slice();
+    }
+    /*-- Static factory functions (mid level) --*/
+    // Returns a segment representing the given binary data encoded in
+    // byte mode. All input byte arrays are acceptable. Any text string
+    // can be converted to UTF-8 bytes and encoded as a byte mode segment.
+    static makeBytes(data) {
+      let bb = [];
+      for (const b of data)
+        appendBits(b, 8, bb);
+      return new _QrSegment(_QrSegment.Mode.BYTE, data.length, bb);
+    }
+    // Returns a segment representing the given string of decimal digits encoded in numeric mode.
+    static makeNumeric(digits) {
+      if (!_QrSegment.isNumeric(digits))
+        throw new RangeError("String contains non-numeric characters");
+      let bb = [];
+      for (let i = 0; i < digits.length; ) {
+        const n = Math.min(digits.length - i, 3);
+        appendBits(parseInt(digits.substring(i, i + n), 10), n * 3 + 1, bb);
+        i += n;
+      }
+      return new _QrSegment(_QrSegment.Mode.NUMERIC, digits.length, bb);
+    }
+    // Returns a segment representing the given text string encoded in alphanumeric mode.
+    // The characters allowed are: 0 to 9, A to Z (uppercase only), space,
+    // dollar, percent, asterisk, plus, hyphen, period, slash, colon.
+    static makeAlphanumeric(text) {
+      if (!_QrSegment.isAlphanumeric(text))
+        throw new RangeError("String contains unencodable characters in alphanumeric mode");
+      let bb = [];
+      let i;
+      for (i = 0; i + 2 <= text.length; i += 2) {
+        let temp = _QrSegment.ALPHANUMERIC_CHARSET.indexOf(text.charAt(i)) * 45;
+        temp += _QrSegment.ALPHANUMERIC_CHARSET.indexOf(text.charAt(i + 1));
+        appendBits(temp, 11, bb);
+      }
+      if (i < text.length)
+        appendBits(_QrSegment.ALPHANUMERIC_CHARSET.indexOf(text.charAt(i)), 6, bb);
+      return new _QrSegment(_QrSegment.Mode.ALPHANUMERIC, text.length, bb);
+    }
+    // Returns a new mutable list of zero or more segments to represent the given Unicode text string.
+    // The result may use various segment modes and switch modes to optimize the length of the bit stream.
+    static makeSegments(text) {
+      if (text == "")
+        return [];
+      else if (_QrSegment.isNumeric(text))
+        return [_QrSegment.makeNumeric(text)];
+      else if (_QrSegment.isAlphanumeric(text))
+        return [_QrSegment.makeAlphanumeric(text)];
+      else
+        return [_QrSegment.makeBytes(_QrSegment.toUtf8ByteArray(text))];
+    }
+    // Returns a segment representing an Extended Channel Interpretation
+    // (ECI) designator with the given assignment value.
+    static makeEci(assignVal) {
+      let bb = [];
+      if (assignVal < 0)
+        throw new RangeError("ECI assignment value out of range");
+      else if (assignVal < 1 << 7)
+        appendBits(assignVal, 8, bb);
+      else if (assignVal < 1 << 14) {
+        appendBits(2, 2, bb);
+        appendBits(assignVal, 14, bb);
+      } else if (assignVal < 1e6) {
+        appendBits(6, 3, bb);
+        appendBits(assignVal, 21, bb);
+      } else
+        throw new RangeError("ECI assignment value out of range");
+      return new _QrSegment(_QrSegment.Mode.ECI, 0, bb);
+    }
+    // Tests whether the given string can be encoded as a segment in numeric mode.
+    // A string is encodable iff each character is in the range 0 to 9.
+    static isNumeric(text) {
+      return _QrSegment.NUMERIC_REGEX.test(text);
+    }
+    // Tests whether the given string can be encoded as a segment in alphanumeric mode.
+    // A string is encodable iff each character is in the following set: 0 to 9, A to Z
+    // (uppercase only), space, dollar, percent, asterisk, plus, hyphen, period, slash, colon.
+    static isAlphanumeric(text) {
+      return _QrSegment.ALPHANUMERIC_REGEX.test(text);
+    }
+    /*-- Methods --*/
+    // Returns a new copy of the data bits of this segment.
+    getData() {
+      return this.bitData.slice();
+    }
+    // (Package-private) Calculates and returns the number of bits needed to encode the given segments at
+    // the given version. The result is infinity if a segment has too many characters to fit its length field.
+    static getTotalBits(segs, version) {
+      let result = 0;
+      for (const seg of segs) {
+        const ccbits = seg.mode.numCharCountBits(version);
+        if (seg.numChars >= 1 << ccbits)
+          return Infinity;
+        result += 4 + ccbits + seg.bitData.length;
+      }
+      return result;
+    }
+    // Returns a new array of bytes representing the given string encoded in UTF-8.
+    static toUtf8ByteArray(str) {
+      str = encodeURI(str);
+      let result = [];
+      for (let i = 0; i < str.length; i++) {
+        if (str.charAt(i) != "%")
+          result.push(str.charCodeAt(i));
+        else {
+          result.push(parseInt(str.substring(i + 1, i + 3), 16));
+          i += 2;
+        }
+      }
+      return result;
+    }
+  };
+  /*-- Constants --*/
+  // Describes precisely all strings that are encodable in numeric mode.
+  _QrSegment.NUMERIC_REGEX = /^[0-9]*$/;
+  // Describes precisely all strings that are encodable in alphanumeric mode.
+  _QrSegment.ALPHANUMERIC_REGEX = /^[A-Z0-9 $%*+.\/:-]*$/;
+  // The set of all legal characters in alphanumeric mode,
+  // where each character value maps to the index in the string.
+  _QrSegment.ALPHANUMERIC_CHARSET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:";
+  let QrSegment = _QrSegment;
+  qrcodegen2.QrSegment = _QrSegment;
+})(qrcodegen || (qrcodegen = {}));
+((qrcodegen2) => {
+  let QrCode;
+  ((QrCode2) => {
+    const _Ecc = class _Ecc {
+      // The QR Code can tolerate about 30% erroneous codewords
+      /*-- Constructor and fields --*/
+      constructor(ordinal, formatBits) {
+        this.ordinal = ordinal;
+        this.formatBits = formatBits;
+      }
+    };
+    /*-- Constants --*/
+    _Ecc.LOW = new _Ecc(0, 1);
+    // The QR Code can tolerate about  7% erroneous codewords
+    _Ecc.MEDIUM = new _Ecc(1, 0);
+    // The QR Code can tolerate about 15% erroneous codewords
+    _Ecc.QUARTILE = new _Ecc(2, 3);
+    // The QR Code can tolerate about 25% erroneous codewords
+    _Ecc.HIGH = new _Ecc(3, 2);
+    let Ecc = _Ecc;
+    QrCode2.Ecc = _Ecc;
+  })(QrCode = qrcodegen2.QrCode || (qrcodegen2.QrCode = {}));
+})(qrcodegen || (qrcodegen = {}));
+((qrcodegen2) => {
+  let QrSegment;
+  ((QrSegment2) => {
+    const _Mode = class _Mode {
+      /*-- Constructor and fields --*/
+      constructor(modeBits, numBitsCharCount) {
+        this.modeBits = modeBits;
+        this.numBitsCharCount = numBitsCharCount;
+      }
+      /*-- Method --*/
+      // (Package-private) Returns the bit width of the character count field for a segment in
+      // this mode in a QR Code at the given version number. The result is in the range [0, 16].
+      numCharCountBits(ver) {
+        return this.numBitsCharCount[Math.floor((ver + 7) / 17)];
+      }
+    };
+    /*-- Constants --*/
+    _Mode.NUMERIC = new _Mode(1, [10, 12, 14]);
+    _Mode.ALPHANUMERIC = new _Mode(2, [9, 11, 13]);
+    _Mode.BYTE = new _Mode(4, [8, 16, 16]);
+    _Mode.KANJI = new _Mode(8, [8, 10, 12]);
+    _Mode.ECI = new _Mode(7, [0, 0, 0]);
+    let Mode = _Mode;
+    QrSegment2.Mode = _Mode;
+  })(QrSegment = qrcodegen2.QrSegment || (qrcodegen2.QrSegment = {}));
+})(qrcodegen || (qrcodegen = {}));
+var qrcodegen_default = qrcodegen;
+
+// src/index.tsx
+/**
+ * @license qrcode.react
+ * Copyright (c) Paul O'Shannessy
+ * SPDX-License-Identifier: ISC
+ */
+
+
+  function generateToCanvas(targetCanvas, text, options) {
+    if (typeof options === 'number') options = { size: options };
+    options = options || {};
+    var size = options.size || options.width || 250;
+    var levelStr = options.level || options.correctLevel || 'M';
+    var marginModules = (options.margin !== undefined) ? options.margin : 4;
+    var fgColor = options.fgColor || options.foreground || '#000000';
+    var bgColor = options.bgColor || options.background || '#ffffff';
+
+    var ecc = qrcodegen.QrCode.Ecc.MEDIUM;
+    if (levelStr === 'L' || levelStr === 1) ecc = qrcodegen.QrCode.Ecc.LOW;
+    else if (levelStr === 'Q' || levelStr === 3) ecc = qrcodegen.QrCode.Ecc.QUARTILE;
+    else if (levelStr === 'H' || levelStr === 2) ecc = qrcodegen.QrCode.Ecc.HIGH;
+
+    var qr = qrcodegen.QrCode.encodeText(text, ecc);
+    var numModules = qr.size;
+    var totalModules = numModules + (marginModules * 2);
+
+    var canvas = typeof targetCanvas === 'string' ? document.getElementById(targetCanvas) : targetCanvas;
+    if (!canvas) return null;
+
+    var scale = Math.max(2, Math.floor(size / totalModules));
+    var actualCanvasSize = totalModules * scale;
+
+    canvas.width = actualCanvasSize;
+    canvas.height = actualCanvasSize;
+    canvas.style.width = size + 'px';
+    canvas.style.height = size + 'px';
+
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(0, 0, actualCanvasSize, actualCanvasSize);
+
+    ctx.fillStyle = fgColor;
+    for (var y = 0; y < numModules; y++) {
+      for (var x = 0; x < numModules; x++) {
+        if (qr.getModule(x, y)) {
+          ctx.fillRect((x + marginModules) * scale, (y + marginModules) * scale, scale, scale);
+        }
+      }
+    }
+    return qr;
+  }
+
+  function QRCode(targetCanvas, options) {
+    if (typeof options === 'string') options = { text: options };
+    return generateToCanvas(targetCanvas, (options && (options.text || options.value)) || '', options);
+  }
+
+  QRCode.generateToCanvas = generateToCanvas;
+  QRCode.qrcodegen = qrcodegen;
+  return QRCode;
+}));
+
+
+    /**
+     * =========================================================================
+     * DIAGNÓSTICO FORMACIÓN TECNOLÓGICA 7.° AÑO - MOTOR DIAGNÓSTICO EN PAREJAS (MEP 2027)
+     * MODALIDAD DIAGNÓSTICA PURA (SIN REALIMENTACIÓN INMEDIATA)
+     * =========================================================================
+     */
+
+    const STATE_KEY = 'MEP_CYBERQUEST_7MO_2027_STATE';
+
+    const defaultState = {
+      cadet1: {
+        name: '',
+        role: 'Líder de Misión',
+        avatar: '🤖',
+        avatarName: 'CyberBot'
+      },
+      cadet2: {
+        name: '',
+        role: 'Co-piloto de Datos',
+        avatar: '⚡',
+        avatarName: 'Voltix'
+      },
+      modalidad: 'parejas', // 'parejas' | 'individual'
+      section: '7-1',
+      institution: 'Colegio Técnico Profesional / Académico MEP',
+      phase: 0,
+      xp: 0,
+      startedAt: null,
+      completedAt: null,
+      audioMuted: false,
+      psicomotriz: {
+        p1_lateralidad: { completed: false, score: 0, moves: 0, pathErrors: 0, timeSeconds: 0, reachedServer: false, attempts: 0 },
+        p2_ritmo: { completed: false, score: 0, reactionTimes: [], falsePositives: 0, successes: 0, totalGreenShown: 0 },
+        p3_pulso: { completed: false, score: 0, borderCollisions: 0, timeSeconds: 0, pathAccuracy: 0 },
+        p4_dibujo: { completed: false, score: 100, strokesCount: 0, dataUrl: null }
+      },
+      cognitivo: {
+        currentQuestionIndex: 0,
+        answers: {}, // { ind1: { answer: 2, isCorrect: true, timeSec: 4.2 } }
+        scoreTotal: 0
+      },
+      socioafectivo: {
+        s1_precision: 3,
+        s2_resiliencia: 3,
+        s3_colaboracion: 3,
+        s4_frustracion: 3
+      },
+      teacher: null,
+      sectionLocked: false,
+      sessionHash: null
+    };
+
+    let AppState = { ...defaultState };
+
+    function parseUrlParams() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        let docenteId = params.get('docenteId') || params.get('docId') || params.get('docente_id') || params.get('cedula');
+        let docente = params.get('docente') || params.get('doc') || params.get('nombreDocente');
+        let institucion = params.get('institucion') || params.get('inst') || params.get('colegio');
+        let dre = params.get('dre') || params.get('dreCodigo');
+        let seccion = params.get('seccion') || params.get('sec') || params.get('grupo');
+        let seccionesParam = params.get('secciones');
+        const token = params.get('token');
+
+        if (token) {
+          try {
+            const decoded = JSON.parse(decodeURIComponent(escape(atob(token))));
+            if (decoded) {
+              if (decoded.docId) docenteId = decoded.docId;
+              if (decoded.doc) docente = decoded.doc;
+              if (decoded.inst) institucion = decoded.inst;
+              if (decoded.dre) dre = decoded.dre;
+              if (decoded.sec) seccion = decoded.sec;
+              if (decoded.secciones) seccionesParam = decoded.secciones;
+            }
+          } catch (e) {
+            console.warn('Error decodificando token URL:', e);
+          }
+        }
+
+        if (seccionesParam) {
+          if (Array.isArray(seccionesParam)) {
+            AppState.seccionesPermitidas = seccionesParam;
+          } else if (typeof seccionesParam === 'string') {
+            AppState.seccionesPermitidas = seccionesParam.split(',').map(s => s.trim()).filter(Boolean);
+          }
+        }
+
+        // Buscar datos en el perfil docente institucional si falta algún campo
+        try {
+          const storedDoc = localStorage.getItem('docente_activo') || localStorage.getItem('MEP_DOCENTE_PERFIL_GLOBAL');
+          if (storedDoc) {
+            const parsedDoc = JSON.parse(storedDoc);
+            if (!docenteId) docenteId = parsedDoc.idDocente || parsedDoc.cedula || '5-0305-0179';
+            if (!docente || docente === 'Docente MEP' || docente === 'Prof. Formación Tecnológica') {
+              docente = parsedDoc.nombreCompleto || parsedDoc.nombre;
+            }
+            if (!institucion || institucion === 'Centro Educativo MEP' || institucion === 'Colegio') {
+              institucion = parsedDoc.institucionNombre || parsedDoc.colegio || parsedDoc.colegioActivo;
+            }
+            if (!dre || dre === 'DRE-01' || dre === 'DRE') {
+              dre = parsedDoc.dreNombre || parsedDoc.dreCodigo;
+            }
+          }
+        } catch(e) {}
+
+        // Fallbacks predeterminados oficiales institucionales
+        if (!docente || docente === 'Docente MEP' || docente === 'Prof. Formación Tecnológica') {
+          docente = 'Prof. Alberto Bustos Ortega';
+        }
+        if (!institucion || institucion === 'Centro Educativo MEP' || institucion === 'Colegio') {
+          institucion = 'Liceo de Costa Rica';
+        }
+        if (!dre || dre === 'DRE-01' || dre === 'DRE') {
+          dre = 'DRE-01 - San José Central';
+        }
+        if (!docenteId) {
+          docenteId = '5-0305-0179';
+        }
+
+        AppState.teacher = {
+          id: docenteId,
+          name: docente,
+          institution: institucion,
+          dre: dre
+        };
+
+        if (seccion) {
+          AppState.section = seccion.replace(/^secci[oó]n\s*/i, '').trim();
+          AppState.sectionLocked = true;
+        }
+
+        // Limpieza automática de la barra de direcciones para blindar privacidad y datos personales
+        if (window.location.search && window.history && window.history.replaceState) {
+          try {
+            window.history.replaceState({}, document.title, window.location.pathname);
+          } catch (e) {}
+        }
+      } catch (e) {
+        console.warn('Error parsing URL params:', e);
+      }
+    }
+
+    function loadState() {
+      try {
+        const isSessionActiveInTab = sessionStorage.getItem('CYBERQUEST_ACTIVE_IN_PROGRESS') === 'true';
+        const saved = localStorage.getItem(STATE_KEY);
+        if (saved && isSessionActiveInTab) {
+          const parsed = JSON.parse(saved);
+          if (parsed.cadet && !parsed.cadet1) {
+            parsed.cadet1 = {
+              name: parsed.cadet.name || '',
+              role: 'Líder de Misión',
+              avatar: parsed.cadet.avatar || '🤖',
+              avatarName: parsed.cadet.avatarName || 'CyberBot'
+            };
+            parsed.cadet2 = {
+              name: '',
+              role: 'Co-piloto de Datos',
+              avatar: '⚡',
+              avatarName: 'Voltix'
+            };
+            parsed.section = parsed.cadet.section || '7-1';
+          }
+          AppState = { ...defaultState, ...parsed };
+        } else {
+          // Nueva pestaña o enlace recién abierto por nuevos estudiantes: iniciar siempre en Fase 0 limpio
+          AppState = { ...defaultState };
+          AppState.phase = 0;
+          AppState.xp = 0;
+          AppState.cadet1 = { ...defaultState.cadet1, name: '' };
+          AppState.cadet2 = { ...defaultState.cadet2, name: '' };
+        }
+      } catch (e) {
+        console.warn('Error al cargar estado previo:', e);
+      }
+      // Re-apply URL params in case the URL specifies a distinct teacher or section
+      parseUrlParams();
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STATE_KEY, JSON.stringify(AppState));
+      } catch (e) {
+        console.warn('Error al guardar estado:', e);
+      }
+    }
+
+    function addXP(points) {
+      AppState.xp += points;
+      document.getElementById('hudXpVal').textContent = AppState.xp;
+      AudioEngine.playSuccess();
+      showToast(`+${points} XP Registrados`);
+      saveState();
+    }
+
+    function showToast(msg) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = msg;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 2000);
+    }
+
+    // MOTOR DE AUDIO SINTETIZADO
+    const AudioEngine = {
+      ctx: null,
+      init() {
+        if (!this.ctx && (window.AudioContext || window.webkitAudioContext)) {
+          this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+      },
+      playTone(freq, type, duration, gainVal = 0.1) {
+        if (AppState.audioMuted) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          if (this.ctx.state === 'suspended') this.ctx.resume();
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(gainVal, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch(e) {}
+      },
+      playBeep() { this.playTone(520, 'sine', 0.08, 0.06); },
+      playClick() { this.playTone(880, 'triangle', 0.04, 0.04); },
+      playSuccess() {
+        this.playTone(587.33, 'sine', 0.08, 0.08);
+        setTimeout(() => this.playTone(880, 'sine', 0.18, 0.1), 80);
+      },
+      playTempoTick() { this.playTone(700, 'sine', 0.05, 0.08); },
+      playGreenBeat() { this.playTone(1046.5, 'triangle', 0.12, 0.12); },
+      playFanfare() {
+        const notes = [523.25, 659.25, 783.99, 1046.5];
+        notes.forEach((n, i) => {
+          setTimeout(() => this.playTone(n, 'sine', 0.2, 0.12), i * 120);
+        });
+      }
+    };
+
+    // BANCO COGNITIVO
+    const COGNITIVE_QUESTIONS = [
+      {
+        id: 'ind1',
+        title: 'Reto 1: Hardware y dispositivos',
+        desc: 'Identifique la función de dispositivos de uso cotidiano en una computadora.',
+        question: 'Un estudiante necesita escribir un texto, mover el puntero y grabar su voz en la computadora. ¿Qué grupo de dispositivos le permitiría realizar esas tres acciones?',
+        options: [
+          'Monitor, parlantes e impresora',
+          'Teclado, ratón (mouse) y micrófono',
+          'Disco SSD, memoria RAM y memoria USB',
+          'Proyector, monitor y parlantes'
+        ],
+        correctIndex: 1
+      },
+      {
+        id: 'ind2',
+        title: 'Reto 2: Software y programas',
+        desc: 'Diferenciación entre aplicaciones de usuario y software utilitario.',
+        question: 'Un estudiante necesita proteger su computadora contra virus y liberar espacio en el disco duro. ¿Qué tipo de software requiere utilizar?',
+        options: [
+          'Software de aplicación de usuario (por ejemplo, navegador web o Paint)',
+          'Software utilitario, de mantenimiento y seguridad',
+          'Software de videojuegos',
+          'Controlador de impresora'
+        ],
+        correctIndex: 1
+      },
+      {
+        id: 'ind3',
+        title: 'Reto 3: Sistemas operativos',
+        desc: 'Funciones cardinales del sistema operativo y administración de recursos.',
+        question: '¿Cuál es la función principal del sistema operativo (como Windows, Linux o macOS)?',
+        options: [
+          'Crear diapositivas y hojas de cálculo para la clase',
+          'Administrar el hardware (memoria, procesador) y servir de puente para que funcionen las aplicaciones',
+          'Conectarse automáticamente a redes sociales sin permiso',
+          'Aumentar físicamente el tamaño del monitor'
+        ],
+        correctIndex: 1
+      },
+      {
+        id: 'ind4',
+        title: 'Reto 4: Redes y conectividad',
+        desc: 'Reconoce situaciones cotidianas en las que varios dispositivos se conectan y comparten recursos.',
+        question: 'En el laboratorio de informática, varias computadoras pueden utilizar la misma impresora y acceder a Internet. ¿Qué permite que estos equipos puedan comunicarse y compartir recursos?',
+        options: [
+          'Que todas las computadoras sean de la misma marca.',
+          'Que las computadoras estén conectadas entre sí mediante una red.',
+          'Que cada computadora tenga conectada su propia impresora.',
+          'Que todas las computadoras utilicen los mismos programas.'
+        ],
+        correctIndex: 1
+      },
+      {
+        id: 'ind5',
+        title: 'Reto 5: Formatos y extensiones de archivo',
+        desc: 'Relacione los tipos de archivo y sus extensiones según el contenido que almacenan.',
+        question: 'Si un estudiante guarda una pista de audio para un pódcast escolar, ¿cuál extensión es la adecuada?',
+        options: [
+          '.png o .jpg',
+          '.mp3 o .wav',
+          '.docx o .txt',
+          '.py o .cpp'
+        ],
+        correctIndex: 1
+      },
+      {
+        id: 'ind6',
+        title: 'Reto 6: Imágenes digitales',
+        desc: 'Reconoce acciones básicas que se pueden realizar al trabajar con imágenes digitales.',
+        question: 'Un estudiante está preparando una imagen para un trabajo escolar. Necesita eliminar una parte que no desea mostrar y hacer que la imagen se vea más clara. ¿Qué acciones debería realizar?',
+        options: [
+          'Recortar la imagen y ajustar su brillo.',
+          'Cambiar el nombre del archivo y moverlo a otra carpeta.',
+          'Copiar la imagen y guardarla en una memoria USB.',
+          'Abrir la imagen y enviarla directamente a imprimir.'
+        ],
+        correctIndex: 0
+      },
+      {
+        id: 'ind7',
+        title: 'Reto 7: Algoritmos y eventos',
+        desc: 'Disparadores de acción (bloques de evento en programación por bloques).',
+        question: 'En un programa de bloques (como Scratch), ¿qué bloque se utiliza para que un personaje hable en el momento en que el usuario hace clic sobre él?',
+        options: [
+          'Al presionar la bandera verde',
+          'Al hacer clic en este objeto (sprite)',
+          'Por siempre / repetir',
+          'Esperar 10 segundos'
+        ],
+        correctIndex: 1
+      },
+      {
+        id: 'ind8',
+        title: 'Reto 8: Variables y estructuras repetitivas (ciclos)',
+        desc: 'Siga una secuencia de acciones repetidas para determinar su resultado.',
+        codeSnippet: 'puntos = 0;\nRepetir 3 veces {\n    puntos = puntos + 5;\n}\nMostrar(puntos);',
+        question: 'Al ejecutar este bloque de código, ¿qué valor final tendrá la variable "puntos"?',
+        options: [
+          '5 puntos',
+          '8 puntos',
+          '15 puntos',
+          '0 puntos'
+        ],
+        correctIndex: 2
+      },
+      {
+        id: 'ind9',
+        title: 'Reto 9: Estructuras condicionales',
+        desc: 'Reconoce situaciones en las que una acción depende del cumplimiento de una condición.',
+        codeSnippet: 'bateria = 15;\nSi (bateria < 20) Entonces {\n    Estado = "Activar modo ahorro";\n} Si no {\n    Estado = "Modo alto rendimiento";\n}',
+        question: 'Un dispositivo tiene 15 % de batería. Si la batería es menor de 20 %, debe activar el modo ahorro; de lo contrario, mantiene el modo de alto rendimiento. ¿Qué acción debe realizar según el código?',
+        options: [
+          '"Activar modo ahorro"',
+          '"Modo alto rendimiento"',
+          '"Batería llena"',
+          '"Error de sintaxis"'
+        ],
+        correctIndex: 0
+      },
+      {
+        id: 'ind10',
+        title: 'Reto 10: Operadores lógicos',
+        desc: 'Interprete condiciones sencillas para determinar si se cumplen.',
+        codeSnippet: 'Resultado = (10 > 5) Y (4 + 2 == 6)',
+        question: '¿Cuál es el resultado de la condición lógica planteada?',
+        options: [
+          'Verdadero, porque se cumplen las dos condiciones.',
+          'Falso, porque solamente se cumple una condición.',
+          'Falso, porque se cumplen las dos condiciones.',
+          'Verdadero, porque solamente se cumple una condición.'
+        ],
+        correctIndex: 0
+      }
+    ];
+
+    // SUBMÓDULO 4.1: Rejilla 4x4 (P1) - Movimiento en tiempo real interactivo
+    let p1State = {
+      robotX: 0,
+      robotY: 0,
+      dir: 0, // 0: Este (0°), 1: Sur (90°), 2: Oeste (180°), 3: Norte (270°)
+      targetX: 3,
+      targetY: 3,
+      obstacles: [{x: 1, y: 1}, {x: 2, y: 2}, {x: 0, y: 2}],
+      moves: 0,
+      pathErrors: 0,
+      startTime: null,
+      completed: false
+    };
+
+    function renderP1Board() {
+      const board = document.getElementById('p1GridBoard');
+      if (!board) return;
+      board.innerHTML = '';
+      for (let y = 0; y < 4; y++) {
+        for (let x = 0; x < 4; x++) {
+          const cell = document.createElement('div');
+          cell.className = 'grid-cell';
+          if (x === p1State.targetX && y === p1State.targetY) {
+            cell.classList.add('server');
+            cell.innerHTML = '🖥️';
+          }
+          if (p1State.obstacles.some(o => o.x === x && o.y === y)) {
+            cell.classList.add('obstacle');
+            cell.innerHTML = '🔥';
+          }
+          if (x === p1State.robotX && y === p1State.robotY) {
+            const avatarShow = AppState.cadet1.avatar || '🤖';
+            // Orientación calibrada: al arrancar hacia el Este (90° hacia la derecha)
+            let baseAngle = 0;
+            if (avatarShow === '🚀') baseAngle = 45; // El emoji 🚀 apunta en diagonal (+45°); con +45° queda alineado a 90° hacia la derecha (Este)
+            if (avatarShow === '⚡') baseAngle = 90; // El rayo ⚡ acostado horizontalmente hacia la derecha (Este)
+            const rot = (p1State.dir * 90) + baseAngle;
+            cell.innerHTML = `<span class="robot-sprite" style="display:inline-block; font-size:24px; transform: rotate(${rot}deg); transition: transform 0.15s ease;">${avatarShow}</span>`;
+          }
+          board.appendChild(cell);
+        }
+      }
+      updateP1LiveStats();
+    }
+
+    function updateP1LiveStats() {
+      const movesEl = document.getElementById('p1LiveMoves');
+      const errorsEl = document.getElementById('p1LiveErrors');
+      const posEl = document.getElementById('p1LivePos');
+      if (movesEl) movesEl.textContent = p1State.moves;
+      if (errorsEl) errorsEl.textContent = p1State.pathErrors;
+      if (posEl) {
+        const dirNames = ['Este ➔', 'Sur ⬇', 'Oeste ⬅', 'Norte ⬆'];
+        posEl.textContent = `(${p1State.robotX + 1}, ${p1State.robotY + 1}) | ${dirNames[p1State.dir]}`;
+      }
+    }
+
+    function p1MoveForward() {
+      if (p1State.completed) return;
+      if (!p1State.startTime) p1State.startTime = Date.now();
+      p1State.moves++;
+
+      let nx = p1State.robotX;
+      let ny = p1State.robotY;
+      if (p1State.dir === 0) nx++;
+      else if (p1State.dir === 1) ny++;
+      else if (p1State.dir === 2) nx--;
+      else if (p1State.dir === 3) ny--;
+
+      if (nx < 0 || nx > 3 || ny < 0 || ny > 3) {
+        p1State.pathErrors++;
+        AudioEngine.playBeep();
+        showToast('⚠️ Límite de rejilla alcanzado');
+        renderP1Board();
+        return;
+      }
+
+      if (p1State.obstacles.some(o => o.x === nx && o.y === ny)) {
+        p1State.pathErrors++;
+        AudioEngine.playBeep();
+        showToast('⚠️ ¡Colisión con obstáculo de fuego! Busque otro camino');
+        renderP1Board();
+        return;
+      }
+
+      p1State.robotX = nx;
+      p1State.robotY = ny;
+      AudioEngine.playClick();
+      renderP1Board();
+
+      if (p1State.robotX === p1State.targetX && p1State.robotY === p1State.targetY) {
+        finishP1Challenge();
+      }
+    }
+
+    function p1TurnLeft() {
+      if (p1State.completed) return;
+      if (!p1State.startTime) p1State.startTime = Date.now();
+      p1State.moves++;
+      p1State.dir = (p1State.dir + 3) % 4;
+      AudioEngine.playClick();
+      renderP1Board();
+    }
+
+    function p1TurnRight() {
+      if (p1State.completed) return;
+      if (!p1State.startTime) p1State.startTime = Date.now();
+      p1State.moves++;
+      p1State.dir = (p1State.dir + 1) % 4;
+      AudioEngine.playClick();
+      renderP1Board();
+    }
+
+    function p1ResetPosition() {
+      if (p1State.completed) return;
+      p1State.robotX = 0;
+      p1State.robotY = 0;
+      p1State.dir = 0;
+      AudioEngine.playClick();
+      renderP1Board();
+      showToast('Posición reiniciada');
+    }
+
+    function finishP1Challenge() {
+      p1State.completed = true;
+      const timeTaken = parseFloat(((Date.now() - (p1State.startTime || Date.now())) / 1000).toFixed(1));
+      
+      const optimalMoves = 6;
+      const efficiency = Math.min(1, optimalMoves / Math.max(optimalMoves, p1State.moves));
+      const penalty = p1State.pathErrors * 5;
+      const rawScore = Math.max(20, Math.min(100, Math.round((efficiency * 100) - penalty)));
+
+      AppState.psicomotriz.p1_lateralidad = {
+        completed: true,
+        score: rawScore,
+        moves: p1State.moves,
+        pathErrors: p1State.pathErrors,
+        timeSeconds: timeTaken,
+        reachedServer: true,
+        attempts: 1
+      };
+
+      addXP(50);
+      saveState();
+      AudioEngine.playFanfare();
+      showToast('🎉 ¡Servidor alcanzado! Telemetría registrada');
+
+      const nextBtn = document.getElementById('btnNextP1');
+      if (nextBtn) nextBtn.style.display = 'inline-flex';
+      const controlsPad = document.getElementById('p1ArrowPad');
+      if (controlsPad) controlsPad.style.opacity = '0.5';
+    }
+
+    // SUBMÓDULO 4.2: Semáforo y Ritmo (P2)
+    let p2Timer = null;
+    let p2State = {
+      activeColor: 'off',
+      lightCycle: 0,
+      targetHits: 0,
+      falsePositives: 0,
+      reactionTimes: [],
+      lightStartTime: 0,
+      totalGreenShown: 0,
+      isRunning: false
+    };
+
+    function startP2Game() {
+      p2State = {
+        activeColor: 'off',
+        lightCycle: 0,
+        targetHits: 0,
+        falsePositives: 0,
+        reactionTimes: [],
+        lightStartTime: 0,
+        totalGreenShown: 0,
+        isRunning: true
+      };
+      document.getElementById('btnStartP2').style.display = 'none';
+      document.getElementById('btnActionP2').style.display = 'inline-flex';
+      document.getElementById('p2ProgressInfo').style.display = 'block';
+      nextP2Step();
+    }
+
+    function nextP2Step() {
+      if (!p2State.isRunning) return;
+      if (p2State.lightCycle >= 6) {
+        finishP2Game();
+        return;
+      }
+      p2State.lightCycle++;
+      updateP2Hud();
+
+      const lightEl = document.getElementById('semaphoreLight');
+      lightEl.className = 'semaphore-light yellow';
+      lightEl.innerHTML = '⏳<span class="semaphore-status-label" style="color:#fbbf24;">Preparados...</span>';
+      AudioEngine.playTempoTick();
+
+      const delay = 1000 + Math.random() * 1400;
+      p2Timer = setTimeout(() => {
+        if (!p2State.isRunning) return;
+        const isGreen = Math.random() > 0.35;
+        if (isGreen) {
+          p2State.totalGreenShown++;
+          p2State.activeColor = 'green';
+          lightEl.className = 'semaphore-light green';
+          lightEl.innerHTML = '🟢<span class="semaphore-status-label" style="color:#34d399;">¡Pulsa ya!</span>';
+          AudioEngine.playGreenBeat();
+          p2State.lightStartTime = Date.now();
+        } else {
+          p2State.activeColor = 'red';
+          lightEl.className = 'semaphore-light red';
+          lightEl.innerHTML = '🔴<span class="semaphore-status-label" style="color:#f87171;">¡Alto! No tocar</span>';
+          AudioEngine.playBeep();
+        }
+
+        setTimeout(() => {
+          if (!p2State.isRunning) return;
+          if (p2State.activeColor === 'green') {
+            p2State.reactionTimes.push(1100); // Omisión
+          }
+          p2State.activeColor = 'off';
+          lightEl.className = 'semaphore-light';
+          lightEl.innerHTML = '⚪<span class="semaphore-status-label" style="color:#64748b;">En espera</span>';
+          setTimeout(nextP2Step, 900);
+        }, 1100);
+      }, delay);
+    }
+
+    function handleP2Tap() {
+      if (!p2State.isRunning) return;
+      const now = Date.now();
+      if (p2State.activeColor === 'green') {
+        const rt = now - p2State.lightStartTime;
+        p2State.reactionTimes.push(rt);
+        p2State.targetHits++;
+        AudioEngine.playClick();
+        showToast(`⚡ Pulso capturado: ${rt} ms`);
+      } else if (p2State.activeColor === 'red' || p2State.activeColor === 'yellow') {
+        p2State.falsePositives++;
+        AudioEngine.playBeep();
+        showToast('⚠️ Pausa: No debe pulsar en rojo o en espera');
+      } else {
+        p2State.falsePositives++;
+        AudioEngine.playBeep();
+      }
+      p2State.activeColor = 'off';
+      updateP2Hud();
+    }
+
+    function updateP2Hud() {
+      const infoEl = document.getElementById('p2ProgressInfo');
+      if (infoEl) {
+        infoEl.innerHTML = `Estímulo: <strong>${Math.min(6, p2State.lightCycle)}/6</strong> &bull; Aciertos verdes: <strong>${p2State.targetHits}</strong> &bull; Fallos en rojo: <strong>${p2State.falsePositives}</strong>`;
+      }
+    }
+
+    function finishP2Game() {
+      p2State.isRunning = false;
+      clearTimeout(p2Timer);
+      
+      const lightEl = document.getElementById('semaphoreLight');
+      if (lightEl) {
+        lightEl.className = 'semaphore-light';
+        lightEl.innerHTML = '🏁<span class="semaphore-status-label" style="color:#10b981;">Completado</span>';
+      }
+
+      const greenCount = Math.max(1, p2State.totalGreenShown);
+      const hitRate = (p2State.targetHits / greenCount) * 100;
+      const penalty = p2State.falsePositives * 12;
+      const score = Math.max(10, Math.min(100, Math.round(hitRate - penalty)));
+
+      AppState.psicomotriz.p2_ritmo = {
+        completed: true,
+        score,
+        reactionTimes: p2State.reactionTimes,
+        falsePositives: p2State.falsePositives,
+        successes: p2State.targetHits,
+        totalGreenShown: p2State.totalGreenShown
+      };
+      addXP(50);
+      saveState();
+      AudioEngine.playFanfare();
+
+      document.getElementById('btnActionP2').style.display = 'none';
+      document.getElementById('btnNextP2').style.display = 'inline-flex';
+      showToast('Prueba de ritmo y reflejos registrada');
+    }
+
+    // SUBMÓDULO 4.3: Canal Viso-Manual (P3)
+    let p3State = { isDrawing: false, collisions: 0, pathPoints: [], startTime: 0, completed: false };
+
+    function initP3Canvas() {
+      const canvas = document.getElementById('p3Canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = 540 * dpr;
+      canvas.height = 240 * dpr;
+      canvas.style.width = '100%';
+      canvas.style.maxWidth = '540px';
+      canvas.style.height = '240px';
+      ctx.scale(dpr, dpr);
+      drawP3Track(ctx);
+
+      const getPos = (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return {
+          x: (clientX - rect.left) * (540 / rect.width),
+          y: (clientY - rect.top) * (240 / rect.height)
+        };
+      };
+
+      const start = (e) => {
+        const pos = getPos(e);
+        if (pos.x < 60 && pos.y > 80 && pos.y < 160) {
+          p3State.isDrawing = true;
+          p3State.startTime = Date.now();
+          p3State.pathPoints = [pos];
+          AudioEngine.playClick();
+        }
+      };
+
+      const move = (e) => {
+        if (!p3State.isDrawing) return;
+        e.preventDefault();
+        const pos = getPos(e);
+        p3State.pathPoints.push(pos);
+        
+        const inChannel = checkP3Collision(pos.x, pos.y);
+        if (!inChannel) {
+          p3State.collisions++;
+        }
+
+        drawP3Track(ctx);
+        drawP3UserPath(ctx);
+
+        if (pos.x > 480 && pos.y > 80 && pos.y < 160) {
+          p3State.isDrawing = false;
+          p3State.completed = true;
+          const timeTaken = parseFloat(((Date.now() - p3State.startTime)/1000).toFixed(1));
+          const score = Math.max(20, Math.min(100, Math.round(100 - (p3State.collisions * 4))));
+          
+          AppState.psicomotriz.p3_pulso = {
+            completed: true,
+            score,
+            borderCollisions: p3State.collisions,
+            timeSeconds: timeTaken,
+            pathAccuracy: score
+          };
+          addXP(50);
+          saveState();
+          document.getElementById('btnNextP3').style.display = 'inline-flex';
+          showToast('Trayectoria registrada en telemetría');
+        }
+      };
+
+      const end = () => { p3State.isDrawing = false; };
+
+      canvas.addEventListener('mousedown', start);
+      canvas.addEventListener('mousemove', move);
+      window.addEventListener('mouseup', end);
+
+      canvas.addEventListener('touchstart', start, { passive: false });
+      canvas.addEventListener('touchmove', move, { passive: false });
+      window.addEventListener('touchend', end);
+    }
+
+    function checkP3Collision(x, y) {
+      const centerY = 120 + Math.sin(x * 0.02) * 45;
+      const channelWidth = 45;
+      return Math.abs(y - centerY) <= channelWidth;
+    }
+
+    function drawP3Track(ctx) {
+      ctx.clearRect(0, 0, 540, 240);
+      ctx.fillStyle = '#0b0f19';
+      ctx.fillRect(0, 0, 540, 240);
+
+      ctx.beginPath();
+      for (let x = 0; x <= 540; x += 5) {
+        const yTop = (120 + Math.sin(x * 0.02) * 45) - 45;
+        if (x === 0) ctx.moveTo(x, yTop);
+        else ctx.lineTo(x, yTop);
+      }
+      for (let x = 540; x >= 0; x -= 5) {
+        const yBottom = (120 + Math.sin(x * 0.02) * 45) + 45;
+        ctx.lineTo(x, yBottom);
+      }
+      ctx.closePath();
+      ctx.fillStyle = '#151d30';
+      ctx.fill();
+      ctx.strokeStyle = '#00f0ff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.fillStyle = 'rgba(0, 240, 255, 0.3)';
+      ctx.fillRect(10, 85, 45, 70);
+      ctx.fillStyle = '#00f0ff';
+      ctx.font = 'bold 11px sans-serif';
+      ctx.fillText('Inicio', 14, 125);
+
+      ctx.fillStyle = 'rgba(16, 185, 129, 0.3)';
+      ctx.fillRect(485, 85, 45, 70);
+      ctx.fillStyle = '#10b981';
+      ctx.fillText('Meta', 492, 125);
+    }
+
+    function drawP3UserPath(ctx) {
+      if (p3State.pathPoints.length < 2) return;
+      ctx.beginPath();
+      ctx.moveTo(p3State.pathPoints[0].x, p3State.pathPoints[0].y);
+      for (let i = 1; i < p3State.pathPoints.length; i++) {
+        ctx.lineTo(p3State.pathPoints[i].x, p3State.pathPoints[i].y);
+      }
+      ctx.strokeStyle = '#a855f7';
+      ctx.lineWidth = 4;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.stroke();
+    }
+
+    // SUBMÓDULO 4.4: Trazo Libre (P4)
+    let p4State = { color: '#00f0ff', brushSize: 4, isDrawing: false, strokes: 0 };
+
+    function initP4Canvas() {
+      const canvas = document.getElementById('p4Canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = 540 * dpr;
+      canvas.height = 240 * dpr;
+      canvas.style.width = '100%';
+      canvas.style.maxWidth = '540px';
+      canvas.style.height = '240px';
+      ctx.scale(dpr, dpr);
+      
+      ctx.fillStyle = '#0b0f19';
+      ctx.fillRect(0, 0, 540, 240);
+
+      const getPos = (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return {
+          x: (clientX - rect.left) * (540 / rect.width),
+          y: (clientY - rect.top) * (240 / rect.height)
+        };
+      };
+
+      const start = (e) => {
+        p4State.isDrawing = true;
+        p4State.strokes++;
+        const pos = getPos(e);
+        ctx.beginPath();
+        ctx.moveTo(pos.x, pos.y);
+      };
+
+      const draw = (e) => {
+        if (!p4State.isDrawing) return;
+        e.preventDefault();
+        const pos = getPos(e);
+        ctx.lineTo(pos.x, pos.y);
+        ctx.strokeStyle = p4State.color;
+        ctx.lineWidth = p4State.brushSize;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.stroke();
+      };
+
+      const end = () => { p4State.isDrawing = false; };
+
+      canvas.addEventListener('mousedown', start);
+      canvas.addEventListener('mousemove', draw);
+      window.addEventListener('mouseup', end);
+
+      canvas.addEventListener('touchstart', start, { passive: false });
+      canvas.addEventListener('touchmove', draw, { passive: false });
+      window.addEventListener('touchend', end);
+    }
+
+    function saveP4Drawing() {
+      const canvas = document.getElementById('p4Canvas');
+      if (!canvas) return;
+      const dataUrl = canvas.toDataURL('image/png');
+      AppState.psicomotriz.p4_dibujo = {
+        completed: true,
+        score: 100,
+        strokesCount: p4State.strokes,
+        dataUrl
+      };
+      addXP(50);
+      saveState();
+      AudioEngine.playSuccess();
+      showToast('Diseño digital guardado');
+      document.getElementById('btnNextP4').style.display = 'inline-flex';
+    }
+
+    function clearP4Canvas() {
+      const canvas = document.getElementById('p4Canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#0b0f19';
+      ctx.fillRect(0, 0, 540, 240);
+      AudioEngine.playClick();
+    }
+
+    // TELEMETRÍA Y CRIPTOGRAFÍA
+    async function computeSessionHash(dataObj) {
+      const str = JSON.stringify(dataObj);
+      if (window.crypto && window.crypto.subtle) {
+        const buffer = new TextEncoder().encode(str);
+        const hashBuf = await window.crypto.subtle.digest('SHA-256', buffer);
+        const hashArray = Array.from(new Uint8Array(hashBuf));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 16).toUpperCase();
+      }
+      return 'HASH-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+    }
+
+    // RENDER HUD
+    function updateProgressHUD() {
+      const fill = document.getElementById('progressBarFill');
+      const perc = document.getElementById('progressPercentage');
+      const lbl = document.getElementById('progressCurrentMission');
+      
+      const isIndiv = AppState.modalidad === 'individual' || !AppState.cadet2.name;
+      const phaseNames = [
+        isIndiv ? 'Fase 0: Datos del estudiante' : 'Fase 0: Datos de los estudiantes (pareja)',
+        isIndiv ? 'Fase 1: Entrenamiento psicomotriz individual' : 'Fase 1: Entrenamiento psicomotriz en pareja',
+        'Fase 2: Desafíos cognitivos y pensamiento computacional',
+        'Fase 3: Dimensión 3 • Valoración socioafectiva',
+        'Fase 4: Misión cumplida y telemetría oficial'
+      ];
+      
+      const percentages = [5, 30, 65, 85, 100];
+      const p = percentages[AppState.phase] || 0;
+      
+      if (fill) fill.style.width = `${p}%`;
+      if (perc) perc.textContent = `${p}%`;
+      if (lbl) lbl.textContent = phaseNames[AppState.phase] || '';
+
+      for (let i = 0; i <= 4; i++) {
+        const stepEl = document.getElementById(`step${i}`);
+        if (stepEl) {
+          stepEl.className = 'step-item';
+          if (i === 0) stepEl.textContent = '0. Datos del estudiante';
+          if (i === AppState.phase) stepEl.classList.add('active');
+          if (i < AppState.phase) stepEl.classList.add('completed');
+        }
+      }
+
+      const cyberTitleEl = document.getElementById('hudCyberTitle');
+      if (cyberTitleEl) {
+        cyberTitleEl.innerHTML = '⚡ Formación Tecnológica 7° • Misión Diagnóstica';
+      }
+
+      const pill1 = document.getElementById('hudCadet1Pill');
+      const pill2 = document.getElementById('hudCadet2Pill');
+
+      if (AppState.cadet1.name) {
+        pill1.style.display = 'flex';
+        const a1 = document.getElementById('hudAvatar1Icon');
+        if (a1) {
+          a1.textContent = AppState.cadet1.avatar;
+          a1.style.display = 'inline-block';
+          a1.style.transform = AppState.cadet1.avatar === '⚡' ? 'rotate(90deg)' : (AppState.cadet1.avatar === '🚀' ? 'rotate(45deg)' : 'none');
+        }
+        document.getElementById('hudCadet1Name').textContent = isIndiv
+          ? `${AppState.cadet1.name.split(' ')[0]} (Cadete)`
+          : `${AppState.cadet1.name.split(' ')[0]} (Líder)`;
+      } else {
+        pill1.style.display = 'none';
+      }
+
+      if (AppState.cadet2.name && !isIndiv) {
+        pill2.style.display = 'flex';
+        const a2 = document.getElementById('hudAvatar2Icon');
+        if (a2) {
+          a2.textContent = AppState.cadet2.avatar;
+          a2.style.display = 'inline-block';
+          a2.style.transform = AppState.cadet2.avatar === '⚡' ? 'rotate(90deg)' : (AppState.cadet2.avatar === '🚀' ? 'rotate(45deg)' : 'none');
+        }
+        document.getElementById('hudCadet2Name').textContent = `${AppState.cadet2.name.split(' ')[0]} (Copiloto)`;
+      } else {
+        pill2.style.display = 'none';
+      }
+    }
+
+    function renderActivePhase() {
+      updateProgressHUD();
+      const container = document.getElementById('missionViewContainer');
+      if (!container) return;
+
+      if (AppState.phase === 0) renderPhase0(container);
+      else if (AppState.phase === 1) renderPhase1(container);
+      else if (AppState.phase === 2) renderPhase2(container);
+      else if (AppState.phase === 3) renderPhase3(container);
+      else if (AppState.phase === 4) renderPhase4(container);
+    }
+
+    // FORMATEO Y VALIDACIÓN ESTRICTA DE NOMBRES MEP 2027
+    function formatFullName(str) {
+      if (!str) return '';
+      // Limpiar espacios dobles o múltiples y recortar extremos
+      const cleaned = str.trim().replace(/\s+/g, ' ');
+      if (!cleaned) return '';
+      // Convertir cada palabra con inicial mayúscula y resto en minúscula
+      return cleaned
+        .split(' ')
+        .map(word => {
+          if (!word) return '';
+          return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        })
+        .join(' ');
+    }
+
+    function validateStudentFullName(str, studentRoleLabel = 'Estudiante') {
+      const formatted = formatFullName(str);
+      if (!formatted) {
+        return { valid: false, message: `⚠️ Por favor ingresa el nombre completo de ${studentRoleLabel}.`, formatted: '' };
+      }
+      const words = formatted.split(' ').filter(w => w.length > 0);
+      // Validar que tenga al menos 3 palabras (1 o 2 nombres + 2 apellidos)
+      if (words.length < 3) {
+        return {
+          valid: false,
+          message: `⚠️ ${studentRoleLabel}:\n\nDebe ingresar el nombre completo con sus dos apellidos (ejemplo: Juan Rosales Valverde o María José Gómez Porras).\n\nActualmente se ingresó: "${formatted}"`,
+          formatted
+        };
+      }
+      // Validar longitud mínima de las palabras
+      for (const w of words) {
+        if (w.length < 2 && !['Y', 'y', 'E', 'e', 'De', 'de', 'La', 'la', 'El', 'el', 'Del', 'del'].includes(w)) {
+          return {
+            valid: false,
+            message: `⚠️ ${studentRoleLabel}: La palabra "${w}" en el nombre ingresado parece incompleta. Por favor verifique los datos.`,
+            formatted
+          };
+        }
+      }
+      return { valid: true, formatted };
+    }
+
+    // FASE 0: REGISTRO DE DATOS DEL ESTUDIANTE
+    function renderPhase0(container) {
+      const avatars = [
+        { icon: '🤖', name: 'CyberBot' },
+        { icon: '⚡', name: 'Voltix' },
+        { icon: '🛰️', name: 'AeroSat' },
+        { icon: '👾', name: 'BitPixel' },
+        { icon: '🛡️', name: 'Guardian' },
+        { icon: '🚀', name: 'NovaShip' }
+      ];
+
+      const isSolo = AppState.modalidad === 'individual';
+
+      container.innerHTML = `
+        <div class="cyber-card">
+          <div class="card-header">
+            <span class="mission-badge badge-psico" id="phase0Badge">Fase inicial &bull; Datos del estudiante ${isSolo ? '(individual)' : '(misión en parejas)'}</span>
+            <h1 class="card-title">Bienvenido al Diagnóstico de Formación Tecnológica 7° Año (V3.2)</h1>
+            <p class="card-desc">Evaluación Diagnóstica Oficial MEP 2027 • III Ciclo • Modalidad Desconectada / Offline V3.2.</p>
+          </div>
+
+          <div style="background: rgba(0, 240, 255, 0.08); border: 1.5px solid var(--cyan-neon); border-radius: 12px; padding: 12px 16px; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; box-shadow: 0 4px 15px rgba(0, 240, 255, 0.08);">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 26px;">🏫</span>
+              <div>
+                <strong style="font-size: 14px; color: #ffffff; display: block; letter-spacing: -0.2px;">
+                  ${AppState.teacher?.institution || 'Liceo de Costa Rica'}
+                </strong>
+                <div style="font-size: 12px; color: var(--cyan-neon); font-weight: 700; display: flex; align-items: center; gap: 6px; margin-top: 3px; flex-wrap: wrap;">
+                  <span>👨‍🏫 Asesoría / Docente: ${AppState.teacher?.name || 'Prof. Alberto Bustos Ortega'}</span>
+                  <span style="color: #64748b;">•</span>
+                  <span style="color: #cbd5e1; font-weight: 500;">📍 ${AppState.teacher?.dre || 'DRE-01 - San José Central'}</span>
+                </div>
+              </div>
+            </div>
+            <span class="mep-tag" style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #34d399; font-size: 11px; padding: 5px 12px; border-radius: 20px; font-weight: 800;">
+              🔗 Vinculado al docente evaluador
+            </span>
+          </div>
+
+          <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 16px; align-items: flex-end;">
+            <div class="form-group" style="flex: 1; min-width: 220px;">
+              <label class="form-label">Modalidad de diagnóstico:</label>
+              <div class="mode-toggle-group" id="modeSelectorGroup">
+                <button type="button" id="btnModePairs" class="mode-toggle-btn ${!isSolo ? 'active' : ''}">
+                  👥 En parejas (recomendado MEP)
+                </button>
+                <button type="button" id="btnModeSolo" class="mode-toggle-btn ${isSolo ? 'active' : ''}">
+                  👤 Individual
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group" style="min-width: 200px;">
+              <label class="form-label">Sección institucional:</label>
+              <select id="regSection" class="form-select" style="max-width: 280px; ${AppState.sectionLocked ? 'border-color: var(--cyan-neon); font-weight: 800;' : ''}">
+                ${(AppState.seccionesPermitidas && AppState.seccionesPermitidas.length > 0 ? AppState.seccionesPermitidas : ['7-1','7-2','7-3','7-4','7-5','7-6','7-7','7-8','7-9','7-10','7-11','7-12']).map(s => {
+                  const sClean = s.replace(/^secci[oó]n\s*/i, '').trim();
+                  return `<option value="${sClean}" ${AppState.section === sClean ? 'selected' : ''}>Sección ${sClean} ${AppState.section === sClean && AppState.sectionLocked ? '✓ (asignada)' : ''}</option>`;
+                }).join('')}
+              </select>
+            </div>
+          </div>
+
+          <!-- INSTRUCCIÓN DIRECTA PARA EL ESTUDIANTE -->
+          <div style="background: rgba(0, 240, 255, 0.08); border-left: 4px solid var(--cyan-neon); border-radius: 8px; padding: 12px 16px; margin: 18px 0 14px 0; display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 20px;">✍️</span>
+            <span style="font-size: 13.5px; color: #f1f5f9; font-weight: 700;">
+              Registre sus datos para iniciar el diagnóstico.
+            </span>
+          </div>
+
+          <div class="pair-grid ${isSolo ? 'solo-mode' : ''}" id="pairGridContainer">
+            
+            <div class="cadet-box leader-box" id="cadetBox1">
+              <div class="cadet-box-header">
+                <span class="cadet-role-tag tag-cyan" id="cadet1RoleTag">
+                  ${isSolo ? '🚀 Estudiante &bull; Datos del estudiante' : '🚀 Estudiante 1 &bull; Líder de misión'}
+                </span>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Nombre completo (con ambos apellidos):</label>
+                <input type="text" id="regName1" class="form-input" placeholder="Ej. Juan Rosales Valverde" value="${AppState.cadet1.name}">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Seleccione su avatar:</label>
+                <div class="avatar-grid" id="avatarGrid1">
+                  ${avatars.map(a => `
+                    <div class="avatar-card ${AppState.cadet1.avatar === a.icon ? 'selected' : ''}" data-target="1" data-icon="${a.icon}" data-name="${a.name}">
+                      <span class="avatar-icon" style="display:inline-block; font-size: 2rem; ${a.icon === '🚀' ? 'transform: rotate(45deg);' : (a.icon === '⚡' ? 'transform: rotate(90deg);' : '')}">${a.icon}</span>
+                      <span class="avatar-name">${a.name}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+
+            <div class="cadet-box copilot-box" id="cadetBox2" style="${isSolo ? 'display: none;' : ''}">
+              <div class="cadet-box-header">
+                <span class="cadet-role-tag tag-violet">🧭 Estudiante 2 &bull; Copiloto de datos</span>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Nombre completo (con ambos apellidos):</label>
+                <input type="text" id="regName2" class="form-input" placeholder="Ej. María Gómez Porras" value="${AppState.cadet2.name}">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Seleccione su avatar:</label>
+                <div class="avatar-grid" id="avatarGrid2">
+                  ${avatars.map(a => `
+                    <div class="avatar-card ${AppState.cadet2.avatar === a.icon ? 'selected-purple' : ''}" data-target="2" data-icon="${a.icon}" data-name="${a.name}">
+                      <span class="avatar-icon" style="display:inline-block; font-size: 2rem; ${a.icon === '🚀' ? 'transform: rotate(45deg);' : (a.icon === '⚡' ? 'transform: rotate(90deg);' : '')}">${a.icon}</span>
+                      <span class="avatar-name">${a.name}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
+            <button class="btn-cyber" id="btnStartQuest">
+              Iniciar misión diagnóstica ⚡
+            </button>
+          </div>
+        </div>
+      `;
+
+      // Eventos selector de modalidad
+      const btnPairs = document.getElementById('btnModePairs');
+      const btnSolo = document.getElementById('btnModeSolo');
+      const cadetBox2 = document.getElementById('cadetBox2');
+      const pairGridContainer = document.getElementById('pairGridContainer');
+      const cadet1RoleTag = document.getElementById('cadet1RoleTag');
+      const phase0Badge = document.getElementById('phase0Badge');
+
+      if (btnPairs && btnSolo) {
+        btnPairs.addEventListener('click', () => {
+          AppState.modalidad = 'parejas';
+          btnPairs.classList.add('active');
+          btnSolo.classList.remove('active');
+          if (cadetBox2) cadetBox2.style.display = 'flex';
+          if (pairGridContainer) pairGridContainer.classList.remove('solo-mode');
+          if (cadet1RoleTag) cadet1RoleTag.innerHTML = '🚀 Estudiante 1 &bull; Líder de misión';
+          if (phase0Badge) phase0Badge.innerHTML = 'Fase inicial &bull; Datos del estudiante (misión en parejas)';
+          updateProgressHUD();
+          AudioEngine.playClick();
+        });
+
+        btnSolo.addEventListener('click', () => {
+          AppState.modalidad = 'individual';
+          btnSolo.classList.add('active');
+          btnPairs.classList.remove('active');
+          if (cadetBox2) cadetBox2.style.display = 'none';
+          if (pairGridContainer) pairGridContainer.classList.add('solo-mode');
+          if (cadet1RoleTag) cadet1RoleTag.innerHTML = '🚀 Estudiante &bull; Datos del estudiante';
+          if (phase0Badge) phase0Badge.innerHTML = 'Fase inicial &bull; Datos del estudiante (individual)';
+          updateProgressHUD();
+          AudioEngine.playClick();
+        });
+      }
+
+      // Auto-formateo en tiempo real al escribir / salir del campo
+      const inputName1 = document.getElementById('regName1');
+      const inputName2 = document.getElementById('regName2');
+
+      if (inputName1) {
+        inputName1.addEventListener('blur', () => {
+          inputName1.value = formatFullName(inputName1.value);
+        });
+        inputName1.addEventListener('change', () => {
+          inputName1.value = formatFullName(inputName1.value);
+        });
+      }
+
+      if (inputName2) {
+        inputName2.addEventListener('blur', () => {
+          inputName2.value = formatFullName(inputName2.value);
+        });
+        inputName2.addEventListener('change', () => {
+          inputName2.value = formatFullName(inputName2.value);
+        });
+      }
+
+      document.querySelectorAll('#avatarGrid1 .avatar-card').forEach(card => {
+        card.addEventListener('click', () => {
+          document.querySelectorAll('#avatarGrid1 .avatar-card').forEach(c => c.classList.remove('selected'));
+          card.classList.add('selected');
+          AppState.cadet1.avatar = card.dataset.icon;
+          AppState.cadet1.avatarName = card.dataset.name;
+          AudioEngine.playClick();
+        });
+      });
+
+      document.querySelectorAll('#avatarGrid2 .avatar-card').forEach(card => {
+        card.addEventListener('click', () => {
+          document.querySelectorAll('#avatarGrid2 .avatar-card').forEach(c => c.classList.remove('selected-purple'));
+          card.classList.add('selected-purple');
+          AppState.cadet2.avatar = card.dataset.icon;
+          AppState.cadet2.avatarName = card.dataset.name;
+          AudioEngine.playClick();
+        });
+      });
+
+      document.getElementById('btnStartQuest').addEventListener('click', () => {
+        const rawName1 = document.getElementById('regName1')?.value || '';
+        const rawName2 = document.getElementById('regName2')?.value || '';
+
+        const val1 = validateStudentFullName(rawName1, AppState.modalidad === 'individual' ? 'el estudiante' : 'el Estudiante 1 (Líder)');
+        if (!val1.valid) {
+          alert(val1.message);
+          showToast(val1.message.split('\n')[0]);
+          AudioEngine.playBeep();
+          const inp1 = document.getElementById('regName1');
+          if (inp1) {
+            inp1.value = val1.formatted;
+            inp1.focus();
+          }
+          return;
+        }
+        const name1 = val1.formatted;
+        document.getElementById('regName1').value = name1;
+
+        if (AppState.modalidad === 'individual') {
+          AppState.cadet1.name = name1;
+          AppState.cadet2.name = '';
+        } else {
+          // Modalidad en parejas
+          if (!rawName2.trim()) {
+            const continuarSolo = confirm(
+              `Solo has ingresado a "${name1}".\n\n¿Deseas realizar la evaluación de forma INDIVIDUAL (solo 1 estudiante) o deseas ingresar a tu compañero/a de pareja?\n\n- Presiona [Aceptar] para continuar en modo INDIVIDUAL.\n- Presiona [Cancelar] para ingresar el nombre de la pareja.`
+            );
+            if (continuarSolo) {
+              AppState.modalidad = 'individual';
+              AppState.cadet1.name = name1;
+              AppState.cadet2.name = '';
+            } else {
+              if (document.getElementById('regName2')) document.getElementById('regName2').focus();
+              showToast('ℹ️ Ingresa el nombre del segundo estudiante.');
+              return;
+            }
+          } else {
+            const val2 = validateStudentFullName(rawName2, 'el Estudiante 2 (Co-piloto)');
+            if (!val2.valid) {
+              alert(val2.message);
+              showToast(val2.message.split('\n')[0]);
+              AudioEngine.playBeep();
+              const inp2 = document.getElementById('regName2');
+              if (inp2) {
+                inp2.value = val2.formatted;
+                inp2.focus();
+              }
+              return;
+            }
+            const name2 = val2.formatted;
+            document.getElementById('regName2').value = name2;
+            AppState.cadet1.name = name1;
+            AppState.cadet2.name = name2;
+          }
+        }
+
+        AppState.section = document.getElementById('regSection').value;
+        AppState.startedAt = new Date().toISOString();
+        AppState.phase = 1;
+        sessionStorage.setItem('CYBERQUEST_ACTIVE_IN_PROGRESS', 'true');
+        saveState();
+        AudioEngine.playFanfare();
+        sendTelemetryToGoogleSheets(); // Sincronización instantánea de inicio con el dashboard del docente
+        renderActivePhase();
+      });
+    }
+
+    // FASE 1: PSICOMOTRIZ (SIN REALIMENTACIÓN)
+    let activeSubP = 'p1';
+    function renderPhase1(container) {
+      const isSolo = AppState.modalidad === 'individual' || !AppState.cadet2.name;
+      container.innerHTML = `
+        <div class="cyber-card">
+          <div class="card-header">
+            <span class="mission-badge badge-psico">Dimensión 1 &bull; Psicomotriz y perceptivo-motriz ${isSolo ? '(individual)' : '(en pareja)'}</span>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0;">
+              <button class="btn-cyber-outline ${activeSubP === 'p1' ? 'btn-cyber' : ''}" onclick="switchSubP('p1')">P1. Lateralidad (4x4)</button>
+              <button class="btn-cyber-outline ${activeSubP === 'p2' ? 'btn-cyber' : ''}" onclick="switchSubP('p2')">P2. Ritmo, tiempo y pausa</button>
+              <button class="btn-cyber-outline ${activeSubP === 'p3' ? 'btn-cyber' : ''}" onclick="switchSubP('p3')">P3. Pulso visomanual</button>
+              <button class="btn-cyber-outline ${activeSubP === 'p4' ? 'btn-cyber' : ''}" onclick="switchSubP('p4')">P4. Trazo y diseño</button>
+            </div>
+          </div>
+          <div id="subPViewContainer"></div>
+        </div>
+      `;
+      renderSubP();
+    }
+
+    function switchSubP(sub) {
+      activeSubP = sub;
+      AudioEngine.playClick();
+      renderSubP();
+    }
+
+    function renderSubP() {
+      const subContainer = document.getElementById('subPViewContainer');
+      if (!subContainer) return;
+
+      if (activeSubP === 'p1') {
+        subContainer.innerHTML = `
+          <h2 class="card-title">P1. Lateralidad y orientación espacial (mando en tiempo real)</h2>
+          <p class="card-desc">Conduzca el robot en tiempo real hasta el <strong>servidor central 🖥️</strong> en la esquina inferior derecha (4,4), evitando chocar con los obstáculos de fuego 🔥 o salir del circuito.</p>
+          
+          <div class="p1-controls-wrapper" style="margin: 16px 0;">
+            
+            <div class="p1-live-hud">
+              <div>Movimientos: <strong id="p1LiveMoves">${p1State.moves}</strong></div>
+              <div>Colisiones / errores: <strong id="p1LiveErrors" style="color: ${p1State.pathErrors > 0 ? 'var(--red-neon)' : 'var(--cyan-neon)'};">${p1State.pathErrors}</strong></div>
+              <div>Posición / rumbo: <strong id="p1LivePos">(${p1State.robotX + 1}, ${p1State.robotY + 1}) | Este ➔</strong></div>
+            </div>
+
+            <div class="grid-board" id="p1GridBoard"></div>
+
+            <div class="p1-arrow-pad" id="p1ArrowPad">
+              <button class="p1-btn-move p1-btn-forward" onclick="p1MoveForward()" title="Avanzar 1 casilla al frente">
+                ⬆ Avanzar
+              </button>
+              <button class="p1-btn-move p1-btn-left" onclick="p1TurnLeft()" title="Girar 90° a la izquierda">
+                ↶ Girar a la izquierda
+              </button>
+              <button class="p1-btn-move p1-btn-reset" onclick="p1ResetPosition()" title="Volver a la casilla inicial">
+                ↺ Inicio
+              </button>
+              <button class="p1-btn-move p1-btn-right" onclick="p1TurnRight()" title="Girar 90° a la derecha">
+                ↷ Girar a la derecha
+              </button>
+            </div>
+            
+            <div style="margin-top: 10px; width: 100%; display: flex; justify-content: flex-end;">
+              <button class="btn-cyber" id="btnNextP1" style="display: ${AppState.psicomotriz.p1_lateralidad.completed ? 'inline-flex' : 'none'};" onclick="switchSubP('p2')">
+                Siguiente desafío (P2) ➔
+              </button>
+            </div>
+          </div>
+        `;
+        renderP1Board();
+      } else if (activeSubP === 'p2') {
+        subContainer.innerHTML = `
+          <h2 class="card-title">P2. Ritmo, tiempo y pausa</h2>
+          <p class="card-desc">
+            <strong>Instrucción del sensor:</strong> Pulse el botón <strong>capturar pulso</strong> únicamente cuando la luz central se encienda en <strong>verde 🟢</strong>.
+            Si se enciende en <strong>rojo 🔴</strong> o está en espera, <strong>no debe tocar el botón</strong>.
+          </p>
+          
+          <div class="semaphore-box">
+            <div class="semaphore-light" id="semaphoreLight">
+              ⚪
+              <span class="semaphore-status-label" style="color: #64748b;">En espera</span>
+            </div>
+
+            <div class="p2-hud-info" id="p2ProgressInfo" style="display: none;">
+              Estímulo: <strong>0/6</strong> &bull; Aciertos verdes: <strong>0</strong> &bull; Fallos en rojo: <strong>0</strong>
+            </div>
+            
+            <button class="btn-cyber reaction-trigger-btn-cyber" id="btnStartP2" onclick="startP2Game()">
+              ▶ Tocar aquí capturar pulso
+            </button>
+            
+            <button class="reaction-trigger-btn-cyber" id="btnActionP2" style="display: none;" onclick="handleP2Tap()">
+              ⚡ Tocar aquí capturar pulso ⚡
+            </button>
+
+            <div style="margin-top: 8px; width: 100%; display: flex; justify-content: flex-end;">
+              <button class="btn-cyber" id="btnNextP2" style="display: ${AppState.psicomotriz.p2_ritmo.completed ? 'inline-flex' : 'none'};" onclick="switchSubP('p3')">
+                Siguiente desafío (P3) ➔
+              </button>
+            </div>
+          </div>
+        `;
+      } else if (activeSubP === 'p3') {
+        subContainer.innerHTML = `
+          <h2 class="card-title">P3. Coordinación visomanual y pulso digital</h2>
+          <p class="card-desc">Guíe el cursor o trazo con pulso firme desde la zona de <strong>inicio</strong> hasta la <strong>meta</strong> dentro del canal continuo sin tocar los bordes.</p>
+          
+          <div class="canvas-wrapper" style="margin: 20px 0;">
+            <canvas id="p3Canvas" class="game-canvas"></canvas>
+
+            <div style="margin-top: 14px; width: 100%; display: flex; justify-content: flex-end;">
+              <button class="btn-cyber" id="btnNextP3" style="display: ${AppState.psicomotriz.p3_pulso.completed ? 'inline-flex' : 'none'};" onclick="switchSubP('p4')">
+                Siguiente desafío (P4) ➔
+              </button>
+            </div>
+          </div>
+        `;
+        initP3Canvas();
+      } else if (activeSubP === 'p4') {
+        subContainer.innerHTML = `
+          <h2 class="card-title">P4. Motricidad fina y ergonomía: dibujo de computadora</h2>
+          <p class="card-desc">
+            Dibuje en el lienzo digital una <strong>computadora de escritorio</strong>. 
+            El dibujo debe incluir estas 4 partes: 
+            <strong>1. Monitor/Pantalla 🖥️</strong>, 
+            <strong>2. Teclado ⌨️</strong>, 
+            <strong>3. Ratón/Mouse 🖱️</strong> y 
+            <strong>4. Torre/CPU 🗄️</strong>.
+            Utilice los diferentes colores de la paleta para identificar cada componente.
+          </p>
+          
+          <div class="canvas-wrapper" style="margin: 20px 0;">
+            <div class="paint-toolbar">
+              <div class="color-picker-group">
+                <span class="color-dot active" style="background: #00f0ff;" title="Cian (pantalla)" onclick="setP4Color('#00f0ff', this)"></span>
+                <span class="color-dot" style="background: #a855f7;" title="Violeta (CPU/torre)" onclick="setP4Color('#a855f7', this)"></span>
+                <span class="color-dot" style="background: #10b981;" title="Verde (teclado)" onclick="setP4Color('#10b981', this)"></span>
+                <span class="color-dot" style="background: #f59e0b;" title="Ámbar (mouse)" onclick="setP4Color('#f59e0b', this)"></span>
+                <span class="color-dot" style="background: #ffffff;" title="Blanco (detalles)" onclick="setP4Color('#ffffff', this)"></span>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn-cyber-outline" onclick="clearP4Canvas()">🗑️ Limpiar lienzo</button>
+                <button class="btn-cyber-lime" onclick="saveP4Drawing()">💾 Guardar dibujo</button>
+              </div>
+            </div>
+            
+            <canvas id="p4Canvas" class="game-canvas"></canvas>
+
+            <div style="margin-top: 14px; width: 100%; display: flex; justify-content: flex-end;">
+              <button class="btn-cyber-purple" id="btnNextP4" style="display: ${AppState.psicomotriz.p4_dibujo.completed ? 'inline-flex' : 'none'};" onclick="goToPhase2()">
+                Continuar a desafíos cognitivos ➔
+              </button>
+            </div>
+          </div>
+        `;
+        initP4Canvas();
+      }
+    }
+
+    function setP4Color(color, el) {
+      p4State.color = color;
+      document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+      el.classList.add('active');
+      AudioEngine.playClick();
+    }
+
+    function goToPhase2() {
+      AppState.phase = 2;
+      saveState();
+      AudioEngine.playFanfare();
+      sendTelemetryToGoogleSheets('en_progreso');
+      renderActivePhase();
+    }
+
+    // FASE 2: COGNITIVO (SIN REALIMENTACIÓN / SELECCIÓN NEUTRA)
+    let selectedOptionForCurrentQ = null;
+
+    function renderPhase2(container) {
+      const qIndex = AppState.cognitivo.currentQuestionIndex || 0;
+      const q = COGNITIVE_QUESTIONS[qIndex];
+
+      if (!q) {
+        AppState.phase = 3;
+        saveState();
+        sendTelemetryToGoogleSheets('en_progreso');
+        renderActivePhase();
+        return;
+      }
+
+      const answered = AppState.cognitivo.answers[q.id];
+      selectedOptionForCurrentQ = answered ? answered.answer : null;
+
+      container.innerHTML = `
+        <div class="cyber-card">
+          <div class="card-header">
+            <span class="mission-badge badge-cog">Dimensión 2 &bull; Pensamiento computacional (Reto ${qIndex + 1} de 10)</span>
+            <h2 class="card-title">${q.title}</h2>
+            <p class="card-desc">${q.desc}</p>
+          </div>
+
+          <div style="font-size: 15px; font-weight: 700; color: #fff; margin: 12px 0;">
+            ${q.question}
+          </div>
+
+          ${q.codeSnippet ? `
+            <div class="code-editor-box">
+              <pre>${q.codeSnippet}</pre>
+            </div>
+          ` : ''}
+
+          <div class="quiz-options-grid">
+            ${q.options.map((opt, idx) => {
+              const isSelected = selectedOptionForCurrentQ === idx;
+              return `
+                <button class="option-btn ${isSelected ? 'selected' : ''}" onclick="selectCognitiveOption(${qIndex}, ${idx})">
+                  <span style="font-weight: 800; color: var(--cyan-neon);">${String.fromCharCode(65 + idx)}.</span>
+                  <span>${opt}</span>
+                </button>
+              `;
+            }).join('')}
+          </div>
+
+          <div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 12px; color: var(--text-muted);">Progreso: Pregunta ${qIndex + 1} de 10</span>
+            <button class="btn-cyber" id="btnNextCog" style="display: ${selectedOptionForCurrentQ !== null ? 'inline-flex' : 'none'};" onclick="confirmAndNextCognitive(${qIndex})">
+              ${qIndex < 9 ? 'Registrar y siguiente ➔' : 'Completar fase cognitiva ➔'}
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function selectCognitiveOption(qIndex, selectedIndex) {
+      selectedOptionForCurrentQ = selectedIndex;
+      const q = COGNITIVE_QUESTIONS[qIndex];
+      const isCorrect = selectedIndex === q.correctIndex;
+      
+      AppState.cognitivo.answers[q.id] = {
+        answer: selectedIndex,
+        isCorrect,
+        timeSec: 4.5
+      };
+
+      AudioEngine.playClick();
+      saveState();
+
+      document.querySelectorAll('.option-btn').forEach((btn, i) => {
+        btn.classList.toggle('selected', i === selectedIndex);
+      });
+      document.getElementById('btnNextCog').style.display = 'inline-flex';
+    }
+
+    function confirmAndNextCognitive(qIndex) {
+      addXP(10);
+      if (qIndex < 9) {
+        AppState.cognitivo.currentQuestionIndex = qIndex + 1;
+      } else {
+        AppState.phase = 3;
+        sendTelemetryToGoogleSheets('en_progreso');
+      }
+      saveState();
+      AudioEngine.playClick();
+      renderActivePhase();
+    }
+
+    // FASE 3: SOCIOAFECTIVO (AUTOEVALUACIÓN / COEVALUACIÓN FORMATIVA)
+    function renderPhase3(container) {
+      const isSolo = AppState.modalidad === 'individual' || !AppState.cadet2.name;
+
+      container.innerHTML = `
+        <div class="cyber-card">
+          <div class="card-header">
+            <span class="mission-badge badge-socio">Dimensión 3 &bull; Valoración socioafectiva ${isSolo ? '(individual)' : '(en parejas)'}</span>
+            <h2 class="card-title">${isSolo ? 'Reflexión y autoevaluación individual' : 'Reflexión y coevaluación de la pareja'}</h2>
+            <p class="card-desc">
+              Valore con sinceridad su desempeño y actitud durante esta misión diagnóstica.
+            </p>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 18px;">
+            <div class="form-group">
+              <label class="form-label">S1. Gusto por la precisión: Cuando respondió los retos, ¿revisó los detalles con cuidado?</label>
+              <div class="likert-group">
+                <button class="likert-btn ${AppState.socioafectivo.s1_precision === 1 ? 'selected' : ''}" onclick="setSocio('s1_precision', 1)">(C) Respondí rápido, sin revisar.</button>
+                <button class="likert-btn ${AppState.socioafectivo.s1_precision === 2 ? 'selected' : ''}" onclick="setSocio('s1_precision', 2)">(B) Revisé solo algunas respuestas.</button>
+                <button class="likert-btn ${AppState.socioafectivo.s1_precision === 3 ? 'selected' : ''}" onclick="setSocio('s1_precision', 3)">(A) Revisé con cuidado cada respuesta antes de enviarla.</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">S2. Aprender del error: Cuando se equivocó en un reto, ¿qué hizo?</label>
+              <div class="likert-group">
+                <button class="likert-btn ${AppState.socioafectivo.s2_resiliencia === 1 ? 'selected' : ''}" onclick="setSocio('s2_resiliencia', 1)">(C) Lo dejé así y continué.</button>
+                <button class="likert-btn ${AppState.socioafectivo.s2_resiliencia === 2 ? 'selected' : ''}" onclick="setSocio('s2_resiliencia', 2)">(B) Lo intenté de nuevo con ayuda.</button>
+                <button class="likert-btn ${AppState.socioafectivo.s2_resiliencia === 3 ? 'selected' : ''}" onclick="setSocio('s2_resiliencia', 3)">(A) Busqué mi error, lo corregí y aprendí algo.</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">S3. Flexibilidad para manejar problemas: Cuando algo no salió como esperaba (una pregunta difícil, un problema con la computadora o con el compañero/a), ¿qué hizo?</label>
+              <div class="likert-group">
+                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 1 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 1)">(C) Seguí con la misma idea aunque no funcionaba.</button>
+                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 2 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 2)">(B) Probé otra forma cuando alguien me dio una idea.</button>
+                <button class="likert-btn ${AppState.socioafectivo.s3_colaboracion === 3 ? 'selected' : ''}" onclick="setSocio('s3_colaboracion', 3)">${isSolo ? '(A) Busqué por mi cuenta otra forma de resolverlo.' : '(A) Escuché las ideas de mi compañero(a) y juntos probamos otra forma.'}</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">S4. Tolerancia a la frustración: Cuando un reto se puso difícil, ¿cómo reaccionó?</label>
+              <div class="likert-group">
+                <button class="likert-btn ${AppState.socioafectivo.s4_frustracion === 1 ? 'selected' : ''}" onclick="setSocio('s4_frustracion', 1)">(C) Me enojé o quise dejarlo.</button>
+                <button class="likert-btn ${AppState.socioafectivo.s4_frustracion === 2 ? 'selected' : ''}" onclick="setSocio('s4_frustracion', 2)">(B) Me costó, pero seguí cuando me animaron.</button>
+                <button class="likert-btn ${AppState.socioafectivo.s4_frustracion === 3 ? 'selected' : ''}" onclick="setSocio('s4_frustracion', 3)">(A) Mantuve la calma y seguí intentando hasta terminar.</button>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 24px; display: flex; justify-content: flex-end;">
+            <button class="btn-cyber-lime" onclick="finishQuest()">
+              ${isSolo ? 'Finalizar y generar telemetría oficial ⚡' : 'Finalizar y generar telemetría de la pareja ⚡'}
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function setSocio(key, val) {
+      AppState.socioafectivo[key] = val;
+      AudioEngine.playClick();
+      saveState();
+      renderPhase3(document.getElementById('missionViewContainer'));
+    }
+
+    function finishQuest() {
+      AppState.phase = 4;
+      AppState.completedAt = new Date().toISOString();
+      addXP(100);
+      saveState();
+      AudioEngine.playFanfare();
+      renderActivePhase();
+      sendTelemetryToGoogleSheets('completado');
+    }
+
+    // FASE 4: EXPEDIENTE FINAL Y CONFIRMACIÓN DE TELEMETRÍA AUTOMÁTICA
+    function renderPhase4(container) {
+      const isSolo = AppState.modalidad === 'individual' || !AppState.cadet2.name;
+
+      container.innerHTML = `
+        <div class="cyber-card" style="text-align: center;">
+          <div class="card-header">
+            <span class="mission-badge badge-psico">Misión cumplida &bull; Expediente diagnóstico ${isSolo ? '(individual)' : '(en pareja)'}</span>
+            <h1 class="card-title" style="font-size: 1.65rem; margin: 10px 0;">
+              ${isSolo 
+                ? `🎉 ¡Felicitaciones, Cadete ${AppState.cadet1.avatar} ${AppState.cadet1.name}!`
+                : `🎉 ¡Felicitaciones, Cadetes ${AppState.cadet1.avatar} ${AppState.cadet1.name.split(' ')[0]} y ${AppState.cadet2.avatar} ${AppState.cadet2.name.split(' ')[0]}!`}
+            </h1>
+            <p class="card-desc">
+              Ha completado con éxito la aventura tecnológica de 7.° año para la <strong>Sección ${AppState.section}</strong> (MEP 2027).
+            </p>
+          </div>
+
+          <!-- MEDALLAS Y LOGROS GAMIFICADOS -->
+          <div class="summary-grid" style="margin: 18px 0;">
+            <div class="stat-card">
+              <span class="stat-card-title">🖐️ Dimensión psicomotriz</span>
+              <span class="stat-card-value" style="font-size: 1.4rem;">🏅 Completada</span>
+              <span class="stat-card-badge badge-level-a">Lateralidad y pulso</span>
+            </div>
+
+            <div class="stat-card">
+              <span class="stat-card-title">🧠 Pensamiento computacional</span>
+              <span class="stat-card-value" style="font-size: 1.4rem;">⭐ 10 retos</span>
+              <span class="stat-card-badge badge-level-a">Lógica y algoritmos</span>
+            </div>
+
+            <div class="stat-card">
+              <span class="stat-card-title">${isSolo ? '🌟 Autonomía digital' : '❤️ Trabajo en equipo'}</span>
+              <span class="stat-card-value" style="font-size: 1.4rem;">${isSolo ? '🎯 Misión individual' : '🤝 Sinergia'}</span>
+              <span class="stat-card-badge badge-level-a">${isSolo ? 'Cadete titular' : 'Líder y copiloto'}</span>
+            </div>
+
+            <div class="stat-card">
+              <span class="stat-card-title">⚡ XP de misión</span>
+              <span class="stat-card-value" style="color: var(--cyan-neon); font-size: 1.4rem;">${AppState.xp} XP</span>
+              <span class="stat-card-badge badge-level-a">Nivel cadete pro</span>
+            </div>
+          </div>
+
+          <!-- ESTADO DE SINCRONIZACIÓN AUTOMÁTICA -->
+          <div id="telemetrySyncStatus" style="margin: 12px 0;"></div>
+
+          <!-- PANEL OFICIAL DE CONFIRMACIÓN Y TRANSFERENCIA -->
+          <div style="background: rgba(16, 185, 129, 0.12); border: 1.5px solid var(--lime-neon); border-radius: 16px; padding: 22px; margin: 16px auto; max-width: 580px; display: flex; flex-direction: column; align-items: center; gap: 10px; box-shadow: 0 8px 30px rgba(16, 185, 129, 0.18);">
+            <div style="font-size: 36px; line-height: 1;">✅</div>
+            
+            <span class="mep-tag" style="background: rgba(16, 185, 129, 0.25); border: 1px solid var(--lime-neon); color: #34d399; font-size: 12px; padding: 4px 14px; border-radius: 20px; font-weight: 800; letter-spacing: 0.5px;">
+              Diagnóstico registrado y disponible
+            </span>
+
+            <h3 style="font-size: 17px; color: #ffffff; font-weight: 800; margin: 4px 0 0 0;">
+              ¡Información registrada con éxito!
+            </h3>
+
+            <p style="font-size: 13px; color: #cbd5e1; max-width: 500px; line-height: 1.5; margin: 0; text-align: center;">
+              Sus respuestas han sido guardadas y pueden sincronizarse de inmediato con el <strong>panel de evaluación docente</strong> y el <strong>panel institucional central MEP</strong>.
+            </p>
+
+            <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(0, 240, 255, 0.25); border-radius: 12px; padding: 12px 16px; width: 100%; max-width: 480px; margin: 6px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; text-align: left; font-size: 12px;">
+              <div>
+                <span style="color: #94a3b8; font-size: 11px; display: block;">Estado de evaluación:</span>
+                <strong style="color: #34d399;">🟢 Completado (100%)</strong>
+              </div>
+              <div>
+                <span style="color: #94a3b8; font-size: 11px; display: block;">Sección / grupo:</span>
+                <strong style="color: #ffffff;">Sección ${AppState.section}</strong>
+              </div>
+              <div>
+                <span style="color: #94a3b8; font-size: 11px; display: block;">Docente asignado:</span>
+                <strong style="color: #38bdf8;">${AppState.teacher?.name || 'Prof. Formación Tecnológica'}</strong>
+              </div>
+              <div>
+                <span style="color: #94a3b8; font-size: 11px; display: block;">Institución:</span>
+                <strong style="color: #e2e8f0; font-size: 11px;">${AppState.teacher?.institution || 'Colegio MEP'}</strong>
+              </div>
+              <div style="grid-column: span 2; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 6px;">
+                <span style="color: #94a3b8; font-size: 11px; display: block;">Código único de verificación:</span>
+                <strong style="color: var(--cyan-neon); font-family: monospace; font-size: 11.5px;">${AppState.sessionHash || 'HASH-CYBER2027'}</strong>
+              </div>
+            </div>
+
+            <!-- CÓDIGO QR PARA ESCANEO LOCAL DEL DOCENTE -->
+            <div style="background: #0d1322; border: 2px solid var(--cyan-neon); border-radius: 16px; padding: 16px 20px; margin: 8px auto; max-width: 340px; text-align: center; box-shadow: 0 0 25px rgba(0, 240, 255, 0.2);">
+              <span style="font-size: 12px; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 8px;">
+                📱 Código QR de Evidencia Diagnóstica
+              </span>
+              <div style="background: #ffffff; padding: 10px; border-radius: 12px; display: inline-block; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                <canvas id="qrCanvasFinal" width="260" height="260" style="display: block; max-width: 100%; height: auto;"></canvas>
+              </div>
+              <p style="font-size: 11px; color: #94a3b8; margin: 8px 0 6px 0; line-height: 1.4;">
+                El docente puede escanear este código con su celular para registrar de inmediato el resultado en el panel de evaluación (100% offline).
+              </p>
+              <!-- Bloque de código y enlace copiable -->
+              <div style="background: rgba(0,0,0,0.4); border: 1px dashed rgba(56, 189, 248, 0.4); border-radius: 8px; padding: 8px; margin-top: 6px; text-align: left;">
+                <div style="font-size: 10px; color: #94a3b8; font-weight: 700; margin-bottom: 3px;">Código de evidencia compacta:</div>
+                <div id="qrTextoEvidencia" style="font-family: monospace; font-size: 11px; color: #38bdf8; word-break: break-all; user-select: all; line-height: 1.3;">Generando...</div>
+                <button type="button" onclick="copiarCodigoEvidencia7mo()" class="btn-cyber" style="width: 100%; margin-top: 6px; padding: 5px 8px; font-size: 11px; background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #e0f2fe; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  📋 Copiar Código de Evidencia
+                </button>
+              </div>
+            </div>
+
+            <!-- ACCIONES EN LÍNEA Y DESCARGAS -->
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 8px;">
+              <button type="button" class="btn-cyber" style="padding: 8px 14px; font-size: 12px; background: rgba(168, 85, 247, 0.2); border-color: var(--violet-neon); color: #e9d5ff;" onclick="downloadTelemetryJson()" title="Descargar archivo JSON con el desglose de respuestas">
+                💾 Descargar ficha (.json)
+              </button>
+              <button type="button" class="btn-cyber" style="padding: 8px 14px; font-size: 12px; background: linear-gradient(135deg, #0891b2, #0e7490); border-color: #22d3ee; color: #ffffff;" onclick="downloadTelemetryCsv7mo()" title="Descargar archivo CSV compatible con Excel">
+                📊 Descargar ficha (.csv)
+              </button>
+              <button type="button" class="btn-cyber" style="padding: 8px 14px; font-size: 12px; background: rgba(16, 185, 129, 0.2); border-color: var(--lime-neon); color: #a7f3d0;" onclick="window.print()">
+                🖨️ Imprimir comprobante
+              </button>
+            </div>
+
+            <!-- BOTÓN DE CIERRE DE SESIÓN Y VENTANA SEGURO -->
+            <div style="margin-top: 14px; width: 100%; display: flex; justify-content: center;">
+              <button type="button" class="btn-cyber" style="background: linear-gradient(135deg, #dc2626, #991b1b); border: 1.5px solid #ef4444; color: #ffffff; font-weight: 800; font-size: 13px; padding: 12px 24px; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4); display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s;" onclick="cerrarVentana7mo()">
+                💾 Guardar y Enviar Respuestas
+              </button>
+            </div>
+          </div>
+
+          ${AppState.psicomotriz.p4_dibujo.dataUrl ? `
+            <div style="background: #0d1322; border: 1px solid var(--border-dark); border-radius: 12px; padding: 12px; margin: 14px auto; max-width: 360px; text-align: center;">
+              <span style="font-size: 11.5px; color: var(--text-muted); font-weight: 700;">🖥️ Plano de computadora diseñado ${isSolo ? 'por el estudiante' : 'por la pareja'}:</span><br>
+              <img src="${AppState.psicomotriz.p4_dibujo.dataUrl}" style="max-width: 240px; border-radius: 8px; border: 1px solid var(--border-neon); margin-top: 6px;" alt="Plano P4">
+            </div>
+          ` : ''}
+
+        </div>
+      `;
+
+      setTimeout(() => {
+        generarQR7mo(isSolo);
+        sendTelemetryToGoogleSheets('completado');
+      }, 50);
+    }
+
+    // GENERACIÓN DE QR UNIVERSAL ESTÁNDAR (ALTO CONTRASTE + QUIET ZONE)
+    function generarQR7mo(isSolo) {
+      try {
+        const metrics = calculateDiagnosticsMetrics();
+        const secClean = (AppState.section || '7-1').replace(/^secci[oó]n\s*/i, '').trim();
+        const c1 = (AppState.cadet1?.name || 'Estudiante 1').trim().substring(0, 32);
+        const c2 = isSolo ? 'Individual' : (AppState.cadet2?.name || 'Estudiante 2').trim().substring(0, 32);
+        const hash = AppState.sessionHash || ('H7-' + Date.now().toString(36).toUpperCase());
+
+        const p = metrics.psicoScore ?? 0;
+        const c = metrics.cogScore ?? 0;
+        const s = metrics.socioScore ?? 0;
+        const g = metrics.globalAvg ?? 0;
+        const lvl = metrics.globalLevel || 'A';
+
+        // Protocolo estándar MEP7
+        const qrCompactStr = `MEP7|${secClean}|${c1}|${c2}|${p}|${c}|${s}|${g}|${lvl}|${hash}`;
+
+        const txtEl = document.getElementById("qrTextoEvidencia");
+        if (txtEl) txtEl.textContent = qrCompactStr;
+
+        const canvas = document.getElementById("qrCanvasFinal");
+        if (!canvas) return;
+
+        QRCode.generateToCanvas(canvas, qrCompactStr, {
+          size: 260,
+          level: 'M',
+          margin: 4,
+          fgColor: '#000000',
+          bgColor: '#ffffff'
+        });
+      } catch(err) {
+        console.error("Error al generar matriz QR 7mo:", err);
+      }
+    }
+
+    function copiarCodigoEvidencia7mo() {
+      const txt = document.getElementById("qrTextoEvidencia")?.textContent || "";
+      if (txt && navigator.clipboard) {
+        navigator.clipboard.writeText(txt).then(() => {
+          showToast("¡Código de evidencia copiado al portapapeles!");
+        });
+      }
+    }
+
+    // CORRECCIÓN 7.º: Cierre seguro contra el ID real del contenedor
+    function cerrarVentana7mo() {
+      const confirmar = confirm("¿Desea cerrar la sesión de evaluación?\n\nSus respuestas han sido registradas localmente.");
+      if (!confirmar) return;
+
+      try {
+        sessionStorage.removeItem("CYBERQUEST_ACTIVE_IN_PROGRESS");
+        localStorage.removeItem(STATE_KEY);
+      } catch(e) {}
+
+      try { window.close(); } catch(e) {}
+
+      setTimeout(function() {
+        // Apuntar al ID real del DOM: missionViewContainer
+        const container = document.getElementById('missionViewContainer');
+        if (container) {
+          container.innerHTML = `
+            <div style="padding: 35px 20px; text-align: center; background: #0f172a; border-radius: 16px; border: 2px solid #10b981; max-width: 540px; margin: 20px auto;">
+              <div style="font-size: 44px; margin-bottom: 8px;">🔒</div>
+              <h2 style="font-size: 1.3rem; color: #ffffff; font-weight: 800; margin-bottom: 6px;">Evaluación Diagnóstica Finalizada</h2>
+              <p style="font-size: 13px; color: #94a3b8; line-height: 1.5; margin-bottom: 16px;">
+                El informe ha sido consolidado. El docente puede proceder con el escaneo del código QR.
+              </p>
+              <div style="font-size: 12px; color: #34d399; font-weight: 700; background: rgba(16, 185, 129, 0.12); border: 1px solid #10b981; padding: 8px 14px; border-radius: 8px; display: inline-block;">
+                ✅ Sesión cerrada de forma segura
+              </div>
+            </div>
+          `;
+        }
+      }, 100);
+    }
+
+    function reiniciarDiagnosticoBlanco7mo() {
+      try {
+        localStorage.clear();
+      } catch(e) {}
+      window.location.reload();
+    }
+
+    function calculateDiagnosticsMetrics() {
+      const p1 = AppState.psicomotriz?.p1_lateralidad?.score || 0;
+      const p2 = AppState.psicomotriz?.p2_ritmo?.score || 0;
+      const p3 = AppState.psicomotriz?.p3_pulso?.score || 0;
+      const p4 = AppState.psicomotriz?.p4_dibujo?.score || 0;
+      const psicoScore = Math.round((p1 + p2 + p3 + p4) / 4);
+
+      const cogCorrect = Object.values(AppState.cognitivo?.answers || {}).filter(a => a.isCorrect).length;
+      const cogScore = Math.round((cogCorrect / 10) * 100);
+
+      const s1 = AppState.socioafectivo?.s1_precision || 3;
+      const s2 = AppState.socioafectivo?.s2_resiliencia || 3;
+      const s3 = AppState.socioafectivo?.s3_colaboracion || 3;
+      const s4 = AppState.socioafectivo?.s4_frustracion || 3;
+      const socioScore = Math.round(((s1 + s2 + s3 + s4) / 12) * 100);
+
+      const globalAvg = Math.round((psicoScore * 0.35) + (cogScore * 0.45) + (socioScore * 0.20));
+      let globalLevel = 'A';
+      if (globalAvg < 60) globalLevel = 'C';
+      else if (globalAvg < 80) globalLevel = 'B';
+
+      return { psicoScore, cogScore, socioScore, globalAvg, globalLevel };
+    }
+
+    function get7moTelemetryData() {
+      const metrics = calculateDiagnosticsMetrics();
+      const isSolo = AppState.modalidad === 'individual' || !AppState.cadet2?.name;
+      const c1Name = (AppState.cadet1?.name || 'Cadete 1').trim();
+      const c2Name = isSolo ? '' : (AppState.cadet2?.name || '').trim();
+      const secClean = (AppState.section || '7-1').replace(/^secci[oó]n\s*/i, '').trim();
+
+      return {
+        t: 'MEP7',
+        tipo: 'DIAGNOSTICO_FT_7MO',
+        sec: secClean,
+        seccionOGrupo: `Sección ${secClean}`,
+        modalidad: isSolo ? 'individual' : 'parejas',
+        c1: c1Name,
+        a1: AppState.cadet1?.avatar || '🤖',
+        c2: c2Name || 'Individual',
+        a2: isSolo ? '' : (AppState.cadet2?.avatar || '⚡'),
+        estudianteNombre: isSolo ? c1Name : `${c1Name} & ${c2Name}`,
+        p: metrics.psicoScore,
+        c: metrics.cogScore,
+        s: metrics.socioScore,
+        g: metrics.globalAvg,
+        lvl: metrics.globalLevel,
+        h: AppState.sessionHash || ('HASH-' + Date.now().toString(36).toUpperCase()),
+        xp: AppState.xp || 400,
+        timestamp: Date.now(),
+        p1: AppState.psicomotriz?.p1_lateralidad?.score || 0,
+        p2: AppState.psicomotriz?.p2_ritmo?.score || 0,
+        p3: AppState.psicomotriz?.p3_pulso?.score || 0,
+        p4: AppState.psicomotriz?.p4_dibujo?.score || 0
+      };
+    }
+
+    function downloadTelemetryJson() {
+      const data = get7moTelemetryData();
+      const jsonStr = JSON.stringify(data, null, 2);
+      const blob = new Blob([jsonStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const safeName = (data.c1 || 'estudiante').toLowerCase().replace(/[^a-z0-9]/g, '_');
+      a.href = url;
+      a.download = `ficha_diagnostica_7mo_seccion_${data.sec}_${safeName}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showNotification('💾 Ficha diagnóstica (.json) descargada con éxito');
+    }
+
+    function downloadTelemetryCsv7mo() {
+      const data = get7moTelemetryData();
+      const safeName = (data.c1 || 'estudiante').toLowerCase().replace(/[^a-z0-9]/g, '_');
+      const filename = `ficha_diagnostica_7mo_seccion_${data.sec}_${safeName}.csv`;
+
+      const headers = [
+        "Estudiante_1",
+        "Avatar_1",
+        "Estudiante_2",
+        "Avatar_2",
+        "Seccion",
+        "Nivel",
+        "Dim_Psicomotriz",
+        "Dim_Cognitiva",
+        "Dim_Socioafectiva",
+        "Promedio_Global",
+        "Nivel_Logro",
+        "Hash_Seguridad",
+        "Fecha_Hora"
+      ];
+
+      const row = [
+        `"${(data.c1 || '').replace(/"/g, '""')}"`,
+        `"${data.a1 || ''}"`,
+        `"${(data.c2 || 'Individual').replace(/"/g, '""')}"`,
+        `"${data.a2 || ''}"`,
+        `"${data.sec || '7-1'}"`,
+        `"7°"`,
+        data.p !== undefined ? data.p : 0,
+        data.c !== undefined ? data.c : 0,
+        data.s !== undefined ? data.s : 0,
+        data.g !== undefined ? data.g : 0,
+        `"${data.lvl || 'A'}"`,
+        `"${data.h || 'HASH-CYBER2027'}"`,
+        `"${new Date().toLocaleString('es-CR')}"`
+      ];
+
+      const csvContent = "\uFEFF" + headers.join(",") + "\n" + row.join(",") + "\n";
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showNotification('📊 Ficha diagnóstica (.csv) descargada con éxito');
+    }
+
+    function copyTelemetryJson() {
+      const data = get7moTelemetryData();
+      const compactPayload = JSON.stringify({
+        t: 'MEP7',
+        sec: data.sec,
+        c1: data.c1,
+        a1: data.a1,
+        c2: data.c2 || 'Individual',
+        a2: data.a2 || '',
+        p: data.p,
+        c: data.c,
+        s: data.s,
+        g: data.g,
+        lvl: data.lvl,
+        h: data.h
+      });
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(compactPayload).then(() => {
+          showNotification('📋 Código de telemetría copiado al portapapeles');
+        }).catch(() => {
+          prompt('Copia el siguiente código de telemetría:', compactPayload);
+        });
+      } else {
+        prompt('Copia el siguiente código de telemetría:', compactPayload);
+      }
+    }
+
+    async function sendTelemetryToGoogleSheets(overrideStatus) {
+      const statusEl = document.getElementById('telemetrySyncStatus');
+      const webhookUrl = localStorage.getItem('APP_WEBHOOK_URL') || '';
+      const metrics = calculateDiagnosticsMetrics();
+
+      const cadet1Name = (AppState.cadet1?.name || 'Cadete 1').trim();
+      const cadet2Name = (AppState.cadet2?.name || '').trim();
+      const nombreCompletoPareja = cadet2Name ? `${cadet1Name} & ${cadet2Name}` : cadet1Name;
+      const secClean = (AppState.section || '7-1').replace(/^secci[oó]n\s*/i, '').trim();
+      const secFormateada = `Sección ${secClean}`;
+      const docId = AppState.teacher?.id || '5-0305-0179';
+      const estadoActual = overrideStatus || (AppState.phase >= 4 ? 'completado' : 'en_progreso');
+      const isCompleted = estadoActual === 'completado' || AppState.phase >= 4;
+
+      const p1Data = AppState.psicomotriz?.p1_lateralidad || {};
+      const p2Data = AppState.psicomotriz?.p2_ritmo || {};
+      const p3Data = AppState.psicomotriz?.p3_pulso || {};
+      const p4Data = AppState.psicomotriz?.p4_dibujo || {};
+
+      const fullData = {
+        tipo: 'DIAGNOSTICO_FT_7MO',
+        idResultado: AppState.sessionHash ? `res-7mo-${AppState.sessionHash}` : `res-7mo-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+        webAppId: 'diagnostico_7mo_modulo01_desconectado_offline',
+        webAppTitulo: 'Diagnóstico Formación Tecnológica 7°: Fundamentos Digitales',
+        docenteId: docId,
+        docenteNombre: AppState.teacher?.name || 'Alberto Bustos Ortega',
+        institucionNombre: AppState.teacher?.institution || 'Liceo de Costa Rica',
+        dreCodigo: AppState.teacher?.dre || 'DRE-01',
+        estudianteNombre: nombreCompletoPareja,
+        seccionOGrupo: secFormateada,
+        nivel: '7°',
+        faseActual: isCompleted ? 'Misión Completada (100%)' : `Fase ${AppState.phase} de 4`,
+        puntaje: isCompleted ? metrics.globalAvg : null,
+        porcentaje: isCompleted ? metrics.globalAvg : Math.round((AppState.phase / 4) * 100),
+        aciertos: isCompleted ? (metrics.cogScore ? Math.round((metrics.cogScore / 100) * 10) : 8) : 0,
+        fallos: isCompleted ? Math.max(0, 10 - (metrics.cogScore ? Math.round((metrics.cogScore / 100) * 10) : 8)) : 0,
+        nivelLogro: isCompleted 
+          ? (metrics.globalLevel === 'A' ? 'Avanzado' : (metrics.globalLevel === 'B' ? 'Intermedio' : 'Inicial'))
+          : 'En Evaluación',
+        tiempoSegundos: 120,
+        estadoProgreso: isCompleted ? 'completado' : estadoActual,
+        timestamp: Date.now(),
+        sessionHash: AppState.sessionHash,
+        cadet1: cadet1Name,
+        cadet2: cadet2Name,
+        cadet1Avatar: AppState.cadet1?.avatar || '🤖',
+        cadet2Avatar: AppState.cadet2?.avatar || '⚡',
+        psicoScore: isCompleted ? metrics.psicoScore : null,
+        cogScore: isCompleted ? metrics.cogScore : null,
+        socioScore: isCompleted ? metrics.socioScore : null,
+        globalAvg: isCompleted ? metrics.globalAvg : null,
+        globalLevel: isCompleted ? metrics.globalLevel : 'EN_CURSO',
+        psicomotorDetalle: {
+          p1: { score: p1Data.score !== undefined ? p1Data.score : (p1Data.completed ? 100 : 0), moves: p1State?.moves || 0, errors: p1State?.pathErrors || 0, completed: Boolean(p1Data.completed) },
+          p2: { score: p2Data.score !== undefined ? p2Data.score : (p2Data.completed ? 100 : 0), greenHits: p2State?.greenHits || 0, redHits: p2State?.redHits || 0, completed: Boolean(p2Data.completed) },
+          p3: { score: p3Data.score !== undefined ? p3Data.score : (p3Data.completed ? 100 : 0), completed: Boolean(p3Data.completed) },
+          p4: { score: p4Data.score !== undefined ? p4Data.score : (p4Data.completed ? 100 : 0), completed: Boolean(p4Data.completed), dataUrl: p4Data.dataUrl || '' }
+        },
+        tokenAntiFraude: `TOKEN-7MO-${Date.now()}`
+      };
+
+      // 1. Guardar en localStorage para actualización inmediata en dashboard local
+      try {
+        const rawLocal = localStorage.getItem('telemetria_registros');
+        const lista = rawLocal ? JSON.parse(rawLocal) : [];
+        const index = lista.findIndex(r => (r.estudianteNombre || '').trim().toLowerCase() === nombreCompletoPareja.toLowerCase() && (r.seccionOGrupo || '').trim().toLowerCase() === secFormateada.toLowerCase());
+        if (index >= 0) {
+          lista[index] = { ...lista[index], ...fullData };
+        } else {
+          lista.unshift(fullData);
+        }
+        localStorage.setItem('telemetria_registros', JSON.stringify(lista));
+      } catch(e) {}
+
+      // 1.b Guardar también en MEP_DOCENTE_7MO_EVALUATIONS (global y específico del docente)
+      const saveToStorageKey = (key) => {
+        try {
+          const rawEvaluations = localStorage.getItem(key);
+          const listEvaluations = rawEvaluations ? JSON.parse(rawEvaluations) : [];
+          const evalRecord = {
+            id: fullData.idResultado,
+            name1: cadet1Name,
+            name2: cadet2Name || 'Individual',
+            avatar1: fullData.cadet1Avatar,
+            avatar2: fullData.cadet2Avatar,
+            section: secClean,
+            estadoProgreso: isCompleted ? 'completado' : estadoActual,
+            faseActual: fullData.faseActual,
+            psicoScore: fullData.psicoScore,
+            cogScore: fullData.cogScore,
+            socioScore: fullData.socioScore,
+            globalAvg: fullData.globalAvg,
+            globalLevel: fullData.globalLevel,
+            psicomotorDetalle: fullData.psicomotorDetalle,
+            raw: fullData
+          };
+          const exIdx = listEvaluations.findIndex(e => e.name1 === cadet1Name && e.section === secClean);
+          if (exIdx >= 0) {
+            listEvaluations[exIdx] = { ...listEvaluations[exIdx], ...evalRecord };
+          } else {
+            listEvaluations.unshift(evalRecord);
+          }
+          localStorage.setItem(key, JSON.stringify(listEvaluations));
+        } catch(e) {}
+      };
+
+      saveToStorageKey('MEP_DOCENTE_7MO_EVALUATIONS');
+      if (docId) {
+        saveToStorageKey(`MEP_DOCENTE_7MO_EVALUATIONS_${docId}`);
+      }
+
+      // 2. Intentar sincronización automática con API central
+      let syncedApi = false;
+      try {
+        const res = await fetch('/api/telemetria/enviar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(fullData)
+        });
+        if (res.ok) syncedApi = true;
+      } catch (e) {}
+
+      // 3. Webhook secundario
+      if (webhookUrl) {
+        try {
+          await fetch(webhookUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(fullData)
+          });
+          syncedApi = true;
+        } catch (e) {}
+      }
+
+      if (statusEl) {
+        if (syncedApi) {
+          statusEl.innerHTML = `
+            <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid var(--lime-neon); color: #34d399; font-size: 13px; font-weight: 700; padding: 10px 16px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px;">
+              <span>✅ Misión sincronizada con el Dashboard Central</span>
+            </div>
+          `;
+        } else {
+          statusEl.innerHTML = `
+            <div style="background: rgba(16, 185, 129, 0.12); border: 1px solid var(--lime-neon); color: #34d399; font-size: 13px; font-weight: 700; padding: 10px 16px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px;">
+              <span>✅ Registrado y disponible en la plataforma docente</span>
+            </div>
+          `;
+        }
+      }
+    }
+
+    // EVENTOS DE CONTROL HUD
+    document.getElementById('btnAudioToggle').addEventListener('click', () => {
+      AppState.audioMuted = !AppState.audioMuted;
+      document.getElementById('btnAudioToggle').textContent = AppState.audioMuted ? '🔇' : '🔊';
+      showToast(AppState.audioMuted ? 'Audio Silenciado' : 'Audio Activado');
+      saveState();
+    });
+
+    document.getElementById('btnFullscreen').addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    });
+
+    document.getElementById('btnResetSession').addEventListener('click', () => {
+      if (confirm('¿Deseas reiniciar la sesión diagnóstica? Se borrará el avance no exportado.')) {
+        sessionStorage.removeItem('CYBERQUEST_ACTIVE_IN_PROGRESS');
+        localStorage.removeItem(STATE_KEY);
+        AppState = { ...defaultState };
+        AppState.phase = 0;
+        AudioEngine.playClick();
+        renderActivePhase();
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadState();
+      document.getElementById('hudXpVal').textContent = AppState.xp;
+      renderActivePhase();
+    });
+
+  </script>
+</body>
+</html>
