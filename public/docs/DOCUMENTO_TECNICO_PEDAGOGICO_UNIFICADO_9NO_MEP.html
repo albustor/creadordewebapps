@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documento Técnico-Pedagógico Unificado — 9.° Año (MEP 2027)</title>
+  <style>
+    :root {
+      --primary: #002b49;
+      --secondary: #0d9488;
+      --accent: #d97706;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 2rem 1rem;
+    }
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      background: var(--surface);
+      border-radius: 1.5rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      padding: 3rem;
+    }
+    @media (max-width: 768px) {
+      .container { padding: 1.5rem; border-radius: 1rem; }
+    }
+    .header {
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .badge-bar {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 0.3rem 0.75rem;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-primary { background: #e0e7ff; color: #3730a3; }
+    .badge-secondary { background: #ccfbf1; color: #0f766e; }
+    .badge-accent { background: #fef3c7; color: #b45309; }
+    h1 {
+      font-size: 1.85rem;
+      font-weight: 900;
+      color: var(--primary);
+      line-height: 1.25;
+      margin-bottom: 0.5rem;
+    }
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 2rem 0 1rem 0;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--secondary);
+      margin: 1.5rem 0 0.5rem 0;
+    }
+    p { margin-bottom: 1rem; color: #334155; }
+    ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+    li { margin-bottom: 0.4rem; }
+    .highlight-card {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 1rem;
+      padding: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    .alert-card {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 1rem;
+      padding: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.9rem;
+    }
+    th, td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+    th {
+      background: #f1f5f9;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    tr:nth-child(even) { background: #f8fafc; }
+    .footer-credits {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 2px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .btn-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: #001f35; }
+    .btn-outline { background: #fff; color: var(--primary); border: 1px solid var(--border); }
+    .btn-outline:hover { background: #f1f5f9; }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .container { box-shadow: none; border: none; padding: 0; max-width: 100%; }
+      .btn-actions { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="badge-bar">
+        <span class="badge badge-primary">MEP • DRTE • IDI</span>
+        <span class="badge badge-secondary">Versión V3.2 Oficial</span>
+        <span class="badge badge-accent">Febrero 2027</span>
+      </div>
+      <h1>Documento Técnico-Pedagógico Unificado</h1>
+      <p style="font-size: 1.05rem; font-weight: 600; color: var(--secondary);">
+        Arquitectura Dual-QR, Simulador 2D, Telemetría y Sistematización — 9.° Año
+      </p>
+      <div class="btn-actions">
+        <a href="/docs/diagnostico_9no_imprimible.pdf" class="btn btn-primary" target="_blank" download>
+          📄 Descargar Guía Imprimible Oficial (9.° Año)
+        </a>
+        <button class="btn btn-outline" onclick="window.print()">
+          🖨️ Imprimir / Guardar como PDF
+        </button>
+      </div>
+    </div>
+
+    <h2>1. Resumen Ejecutivo y Enfoque en Sistemas Embebidos</h2>
+    <p>
+      En <strong>9.° año</strong>, la Formación Tecnológica se orienta al estudio de <strong>sistemas embebidos, prototipado electrónico y control algorítmico</strong>. La arquitectura diagnóstica integra la validación práctica en protoboard 2D, el registro telemétrico de resolución y la sistematización grupal inmediata por sección.
+    </p>
+
+    <h2>2. Principio Rector de Equidad Pedagógica y Uso de Dispositivos</h2>
+    <div class="highlight-card">
+      <h3 style="margin-top: 0; color: #15803d;">Orientación al Laboratorio Institucional</h3>
+      <p>
+        La experiencia diagnóstica y el simulador interactivo de circuitos están concebidos prioritariamente para ser utilizados en las <strong>computadoras del laboratorio institucional</strong> provistas por el MEP, asegurando igualdad de condiciones y ergonomía visual para el cableado virtual.
+      </p>
+      <p>
+        El uso en dispositivos móviles mediante la aplicación es <strong>estrictamente optativo</strong> a juicio técnico del docente, garantizando además el acceso offline y mediante material físico impreso en caso de ausencia de conectividad o equipamiento.
+      </p>
+    </div>
+
+    <h2>3. Arquitectura de Dos Códigos QR y Tri-Modalidad</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Componente</th>
+          <th>Función Técnica y Pedagógica</th>
+          <th>Mecanismo de Captura</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>📱 QR 1: Estudiante</strong></td>
+          <td>Aplicativo interactivo autónomo con 10 reactivos cognoscitivos, Simulador 2D de Protoboard y Reflexión Metacognitiva Parte C.</td>
+          <td>Genera código QR individual y código de evidencia con botón de copiado rápido.</td>
+        </tr>
+        <tr>
+          <td><strong>💻 QR 2: Docente</strong></td>
+          <td>Instrumento y Sistematizador: Asistente de nómina, Escáner Digital, Rúbrica de 6 ítems psicomotores y 7 socioafectivos.</td>
+          <td>Escaneo con cámara o carga de imagen y exportación directa a hoja de cálculo.</td>
+        </tr>
+        <tr>
+          <td><strong>📄 Guía Imprimible</strong></td>
+          <td>Formato físico oficial para centros sin infraestructura tecnológica inmediata.</td>
+          <td>Resolución manual y tabulación docente.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>4. Desglose de Dimensiones Evaluadas en 9.° Año</h2>
+
+    <h3>🧠 Dimensión Cognoscitiva (10 Criterios Digitales)</h3>
+    <p>
+      <em>Fuentes de energía, Circuito simple, Conductores y aislantes, Ley de Ohm cualitativa, Polaridad de actuadores (LED, servo, buzzer), Sensores analógicos y LDR, Tarjeta de desarrollo/microcontrolador, Control algorítmico (si... entonces), Seguridad de circuito y Protocolo de desconexión</em>.
+    </p>
+
+    <h3>🖐️ Dimensión Psicomotora y Procedimental</h3>
+    <p>
+      <strong>Simulador Interactivo:</strong> Cableado en protoboard virtual con verificación de polaridad, continuidad y respuesta de sensores.<br>
+      <strong>Observación en Aula:</strong> Manejo seguro de instrumentos, conexionado físico libre de cortocircuitos, ensamble en protoboard, seguimiento de esquemas, orden y autonomía.
+    </p>
+
+    <h3>❤️ Dimensión Socioafectiva (7 Indicadores Triangulados)</h3>
+    <p>
+      <em>Trabajo colaborativo, Respeto a normas de seguridad, Cuidado de materiales, Resiliencia ante fallos técnicos, Ética digital, Comunicación asertiva y Puntualidad</em>.
+    </p>
+
+    <h2>5. Telemetría y Sistematización Inmediata</h2>
+    <div class="alert-card">
+      <p>
+        El sistema procesa los datos capturados y genera en tiempo real el <strong>Semáforo de Logro por Sección</strong> y el <strong>Consolidado Estadístico por Reactivo</strong>, permitiendo exportar la nómina completa evaluada para alimentar los planes de nivelación pedagógica.
+      </p>
+    </div>
+
+    <div class="footer-credits">
+      <p><strong>Ministerio de Educación Pública de Costa Rica (MEP)</strong></p>
+      <p>Dirección de Recursos Tecnológicos en Educación (DRTE) • Departamento de IDI</p>
+      <p><strong>Autora Curricular Oficial:</strong> Heidi María Cascante Cruz (Asesoría Nacional de Formación Tecnológica)</p>
+      <p><strong>Integración Tecnológica y Telemetría:</strong> Allan Morera Araya • Alberto Bustos Ortega</p>
+      <p><strong>Fecha Oficial:</strong> Febrero 2027. • Versión V3.2</p>
+    </div>
+  </div>
+</body>
+</html>

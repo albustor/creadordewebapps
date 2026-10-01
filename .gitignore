@@ -38,3 +38,4 @@ next-env.d.ts
 /scripts/
 *.zip
 /stitch_panel_docente_multifuncional/
+.~lock.*

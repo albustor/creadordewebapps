@@ -1,0 +1,218 @@
+<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Center"/>
+   <Borders/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="11" ss:Color="#000000"/>
+   <Interior/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="HeaderStyle">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D97706"/>
+   </Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="11" ss:Color="#FFFFFF" ss:Bold="1"/>
+   <Interior ss:Color="#1E293B" ss:Pattern="Solid"/>
+  </Style>
+ </Styles>
+
+ <Worksheet ss:Name="Fútbol">
+  <Table ss:DefaultRowHeight="20">
+   <Column ss:Width="110"/>
+   <Column ss:Width="190"/>
+   <Column ss:Width="90"/>
+   <Column ss:Width="120"/>
+   <Column ss:Width="180"/>
+   <Column ss:Width="120"/>
+   <Column ss:Width="180"/>
+   <Column ss:Width="120"/>
+   <Column ss:Width="70"/>
+   <Column ss:Width="100"/>
+   <Column ss:Width="160"/>
+   <Column ss:Width="150"/>
+<Row ss:StyleID="HeaderStyle">
+  <Cell><Data ss:Type="String">Colegio ID</Data></Cell>
+  <Cell><Data ss:Type="String">Institución</Data></Cell>
+  <Cell><Data ss:Type="String">Deporte</Data></Cell>
+  <Cell><Data ss:Type="String">Categoría ID</Data></Cell>
+  <Cell><Data ss:Type="String">Nombre Categoría</Data></Cell>
+  <Cell><Data ss:Type="String">Número de Jugador</Data></Cell>
+  <Cell><Data ss:Type="String">Nombre Completo</Data></Cell>
+  <Cell><Data ss:Type="String">Posición</Data></Cell>
+  <Cell><Data ss:Type="String">Capitán</Data></Cell>
+  <Cell><Data ss:Type="String">Año Nacimiento</Data></Cell>
+  <Cell><Data ss:Type="String">Entrenador Principal</Data></Cell>
+  <Cell><Data ss:Type="String">Asistente Técnico</Data></Cell>
+</Row>
+<Row>
+  <Cell><Data ss:Type="String">cria</Data></Cell>
+  <Cell><Data ss:Type="String">Costa Rica International Academy</Data></Cell>
+  <Cell><Data ss:Type="String">futbol</Data></Cell>
+  <Cell><Data ss:Type="String">cat-fem-futbol</Data></Cell>
+  <Cell><Data ss:Type="String">Fútbol Femenino Abierto</Data></Cell>
+  <Cell><Data ss:Type="Number">10</Data></Cell>
+  <Cell><Data ss:Type="String">Ejemplo Atleta 1</Data></Cell>
+  <Cell><Data ss:Type="String">Delantera</Data></Cell>
+  <Cell><Data ss:Type="String">SI</Data></Cell>
+  <Cell><Data ss:Type="Number">2009</Data></Cell>
+  <Cell><Data ss:Type="String">Prof. Entrenador Principal</Data></Cell>
+  <Cell><Data ss:Type="String">Asistente Técnico</Data></Cell>
+</Row>
+<Row>
+  <Cell><Data ss:Type="String">cria</Data></Cell>
+  <Cell><Data ss:Type="String">Costa Rica International Academy</Data></Cell>
+  <Cell><Data ss:Type="String">futbol</Data></Cell>
+  <Cell><Data ss:Type="String">cat-c-futbol</Data></Cell>
+  <Cell><Data ss:Type="String">Fútbol Masculino Categoría C</Data></Cell>
+  <Cell><Data ss:Type="Number">7</Data></Cell>
+  <Cell><Data ss:Type="String">Ejemplo Atleta 2</Data></Cell>
+  <Cell><Data ss:Type="String">Mediocampista</Data></Cell>
+  <Cell><Data ss:Type="String">NO</Data></Cell>
+  <Cell><Data ss:Type="Number">2010</Data></Cell>
+  <Cell><Data ss:Type="String">Prof. Entrenador Principal</Data></Cell>
+  <Cell><Data ss:Type="String">Asistente Técnico</Data></Cell>
+</Row>
+<Row>
+  <Cell><Data ss:Type="String">cria</Data></Cell>
+  <Cell><Data ss:Type="String">Costa Rica International Academy</Data></Cell>
+  <Cell><Data ss:Type="String">futbol</Data></Cell>
+  <Cell><Data ss:Type="String">cat-d-futbol</Data></Cell>
+  <Cell><Data ss:Type="String">Fútbol Masculino Categoría D</Data></Cell>
+  <Cell><Data ss:Type="Number">4</Data></Cell>
+  <Cell><Data ss:Type="String">Ejemplo Atleta 3</Data></Cell>
+  <Cell><Data ss:Type="String">Defensa</Data></Cell>
+  <Cell><Data ss:Type="String">NO</Data></Cell>
+  <Cell><Data ss:Type="Number">2012</Data></Cell>
+  <Cell><Data ss:Type="String">Prof. Entrenador Principal</Data></Cell>
+  <Cell><Data ss:Type="String">Asistente Técnico</Data></Cell>
+</Row>
+
+  </Table>
+ </Worksheet>
+ <Worksheet ss:Name="Voleibol">
+  <Table ss:DefaultRowHeight="20">
+   <Column ss:Width="110"/>
+   <Column ss:Width="190"/>
+   <Column ss:Width="90"/>
+   <Column ss:Width="120"/>
+   <Column ss:Width="180"/>
+   <Column ss:Width="120"/>
+   <Column ss:Width="180"/>
+   <Column ss:Width="120"/>
+   <Column ss:Width="70"/>
+   <Column ss:Width="100"/>
+   <Column ss:Width="160"/>
+   <Column ss:Width="150"/>
+<Row ss:StyleID="HeaderStyle">
+  <Cell><Data ss:Type="String">Colegio ID</Data></Cell>
+  <Cell><Data ss:Type="String">Institución</Data></Cell>
+  <Cell><Data ss:Type="String">Deporte</Data></Cell>
+  <Cell><Data ss:Type="String">Categoría ID</Data></Cell>
+  <Cell><Data ss:Type="String">Nombre Categoría</Data></Cell>
+  <Cell><Data ss:Type="String">Número de Jugador</Data></Cell>
+  <Cell><Data ss:Type="String">Nombre Completo</Data></Cell>
+  <Cell><Data ss:Type="String">Posición</Data></Cell>
+  <Cell><Data ss:Type="String">Capitán</Data></Cell>
+  <Cell><Data ss:Type="String">Año Nacimiento</Data></Cell>
+  <Cell><Data ss:Type="String">Entrenador Principal</Data></Cell>
+  <Cell><Data ss:Type="String">Asistente Técnico</Data></Cell>
+</Row>
+<Row>
+  <Cell><Data ss:Type="String">cria</Data></Cell>
+  <Cell><Data ss:Type="String">Costa Rica International Academy</Data></Cell>
+  <Cell><Data ss:Type="String">voleibol</Data></Cell>
+  <Cell><Data ss:Type="String">cat-c-voleibol</Data></Cell>
+  <Cell><Data ss:Type="String">Voleibol Femenino Categoría C</Data></Cell>
+  <Cell><Data ss:Type="Number">5</Data></Cell>
+  <Cell><Data ss:Type="String">Ejemplo Atleta 1</Data></Cell>
+  <Cell><Data ss:Type="String">Armadora</Data></Cell>
+  <Cell><Data ss:Type="String">SI</Data></Cell>
+  <Cell><Data ss:Type="Number">2010</Data></Cell>
+  <Cell><Data ss:Type="String">Prof. Entrenador Principal</Data></Cell>
+  <Cell><Data ss:Type="String">Asistente Técnico</Data></Cell>
+</Row>
+<Row>
+  <Cell><Data ss:Type="String">cria</Data></Cell>
+  <Cell><Data ss:Type="String">Costa Rica International Academy</Data></Cell>
+  <Cell><Data ss:Type="String">voleibol</Data></Cell>
+  <Cell><Data ss:Type="String">cat-d-voleibol</Data></Cell>
+  <Cell><Data ss:Type="String">Voleibol Femenino Categoría D</Data></Cell>
+  <Cell><Data ss:Type="Number">9</Data></Cell>
+  <Cell><Data ss:Type="String">Ejemplo Atleta 2</Data></Cell>
+  <Cell><Data ss:Type="String">Rematadora</Data></Cell>
+  <Cell><Data ss:Type="String">NO</Data></Cell>
+  <Cell><Data ss:Type="Number">2013</Data></Cell>
+  <Cell><Data ss:Type="String">Prof. Entrenador Principal</Data></Cell>
+  <Cell><Data ss:Type="String">Asistente Técnico</Data></Cell>
+</Row>
+
+  </Table>
+ </Worksheet>
+ <Worksheet ss:Name="Baloncesto">
+  <Table ss:DefaultRowHeight="20">
+   <Column ss:Width="110"/>
+   <Column ss:Width="190"/>
+   <Column ss:Width="90"/>
+   <Column ss:Width="120"/>
+   <Column ss:Width="180"/>
+   <Column ss:Width="120"/>
+   <Column ss:Width="180"/>
+   <Column ss:Width="120"/>
+   <Column ss:Width="70"/>
+   <Column ss:Width="100"/>
+   <Column ss:Width="160"/>
+   <Column ss:Width="150"/>
+<Row ss:StyleID="HeaderStyle">
+  <Cell><Data ss:Type="String">Colegio ID</Data></Cell>
+  <Cell><Data ss:Type="String">Institución</Data></Cell>
+  <Cell><Data ss:Type="String">Deporte</Data></Cell>
+  <Cell><Data ss:Type="String">Categoría ID</Data></Cell>
+  <Cell><Data ss:Type="String">Nombre Categoría</Data></Cell>
+  <Cell><Data ss:Type="String">Número de Jugador</Data></Cell>
+  <Cell><Data ss:Type="String">Nombre Completo</Data></Cell>
+  <Cell><Data ss:Type="String">Posición</Data></Cell>
+  <Cell><Data ss:Type="String">Capitán</Data></Cell>
+  <Cell><Data ss:Type="String">Año Nacimiento</Data></Cell>
+  <Cell><Data ss:Type="String">Entrenador Principal</Data></Cell>
+  <Cell><Data ss:Type="String">Asistente Técnico</Data></Cell>
+</Row>
+<Row>
+  <Cell><Data ss:Type="String">cria</Data></Cell>
+  <Cell><Data ss:Type="String">Costa Rica International Academy</Data></Cell>
+  <Cell><Data ss:Type="String">baloncesto</Data></Cell>
+  <Cell><Data ss:Type="String">cat-c-baloncesto</Data></Cell>
+  <Cell><Data ss:Type="String">Baloncesto Masculino Categoría C</Data></Cell>
+  <Cell><Data ss:Type="Number">23</Data></Cell>
+  <Cell><Data ss:Type="String">Ejemplo Atleta 1</Data></Cell>
+  <Cell><Data ss:Type="String">Base / Armador</Data></Cell>
+  <Cell><Data ss:Type="String">SI</Data></Cell>
+  <Cell><Data ss:Type="Number">2011</Data></Cell>
+  <Cell><Data ss:Type="String">Prof. Entrenador Principal</Data></Cell>
+  <Cell><Data ss:Type="String">Asistente Técnico</Data></Cell>
+</Row>
+<Row>
+  <Cell><Data ss:Type="String">cria</Data></Cell>
+  <Cell><Data ss:Type="String">Costa Rica International Academy</Data></Cell>
+  <Cell><Data ss:Type="String">baloncesto</Data></Cell>
+  <Cell><Data ss:Type="String">cat-d-baloncesto</Data></Cell>
+  <Cell><Data ss:Type="String">Baloncesto Masculino Categoría D</Data></Cell>
+  <Cell><Data ss:Type="Number">11</Data></Cell>
+  <Cell><Data ss:Type="String">Ejemplo Atleta 2</Data></Cell>
+  <Cell><Data ss:Type="String">Alero</Data></Cell>
+  <Cell><Data ss:Type="String">NO</Data></Cell>
+  <Cell><Data ss:Type="Number">2013</Data></Cell>
+  <Cell><Data ss:Type="String">Prof. Entrenador Principal</Data></Cell>
+  <Cell><Data ss:Type="String">Asistente Técnico</Data></Cell>
+</Row>
+
+  </Table>
+ </Worksheet>
+</Workbook>

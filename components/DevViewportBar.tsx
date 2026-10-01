@@ -11,6 +11,12 @@ import {
   QrCode,
   X,
   Eye,
+  TerminalWindow,
+  Copy,
+  Check,
+  Brain,
+  ShieldCheck,
+  Sparkle,
 } from "@phosphor-icons/react";
 
 export default function DevViewportBar() {
@@ -18,15 +24,21 @@ export default function DevViewportBar() {
   const [esLocalhost, setEsLocalhost] = useState(false);
   const [enIframe, setEnIframe] = useState(false);
   const [mostrarModalQR, setMostrarModalQR] = useState(false);
+  const [mostrarModalComandos, setMostrarModalComandos] = useState(false);
   const [ipLocal, setIpLocal] = useState("localhost");
   const [puerto, setPuerto] = useState("3001");
   const [minimizado, setMinimizado] = useState(false);
+  const [copiadoId, setCopiadoId] = useState<string | null>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const host = window.location.hostname;
       const port = window.location.port || "3000";
-      const isLocal = host === "localhost" || host === "127.0.0.1" || host.startsWith("192.168.") || host.startsWith("10.");
+      const isLocal =
+        host === "localhost" ||
+        host === "127.0.0.1" ||
+        host.startsWith("192.168.") ||
+        host.startsWith("10.");
       const insideIframe = window.self !== window.top;
 
       setEsLocalhost(isLocal);
@@ -36,12 +48,84 @@ export default function DevViewportBar() {
     }
   }, []);
 
+  // Manejo de tecla Escape para cerrar modales
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMostrarModalQR(false);
+        setMostrarModalComandos(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   // No renderizar en producción ni dentro del simulador iframe
   if (!esLocalhost || enIframe) return null;
 
   const urlActual = typeof window !== "undefined" ? window.location.href : "";
   const rutaRelativa = pathname || "/dashboard";
   const urlPreview = `/preview?url=${encodeURIComponent(rutaRelativa)}`;
+
+  const comandosRapidos = [
+    {
+      id: "auditar_publicar",
+      comando: "AUDITAR Y PUBLICAR",
+      descripcion: "Ejecuta auditoría completa (0 errores) y despliega automáticamente a Vercel con reporte en vivo.",
+      categoria: "Despliegue",
+      badgeColor: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
+    },
+    {
+      id: "auditar",
+      comando: "AUDITAR",
+      descripcion: "Revisión implacable de TypeScript, DOM vs JS, offline y compilación limpia sin modificar código.",
+      categoria: "Auditoría",
+      badgeColor: "bg-amber-500/20 text-amber-300 border-amber-500/30",
+    },
+    {
+      id: "publicar",
+      comando: "PUBLICAR",
+      descripcion: "Compilación de producción, commit semántico, push a GitHub y verificación en Vercel.",
+      categoria: "Despliegue",
+      badgeColor: "bg-teal-500/20 text-teal-300 border-teal-500/30",
+    },
+    {
+      id: "sincronizar",
+      comando: "SINCRONIZAR MEMORIA",
+      descripcion: "Audita versiones, commits y estado del proyecto para regenerar MEMORIA.md y AGENT.md.",
+      categoria: "Memoria",
+      badgeColor: "bg-sky-500/20 text-sky-300 border-sky-500/30",
+    },
+    {
+      id: "memoria_item",
+      comando: "MEMORIA: [Dato técnico, versión o decisión curricular]",
+      descripcion: "Guarda inmediatamente un registro histórico o técnico en MEMORIA.md.",
+      categoria: "Memoria",
+      badgeColor: "bg-purple-500/20 text-purple-300 border-purple-500/30",
+    },
+    {
+      id: "regla_item",
+      comando: "REGLA: [Directriz inmutable de desarrollo o diseño]",
+      descripcion: "Añade una regla obligatoria e inmutable a las salvaguardas de AGENT.md.",
+      categoria: "Reglas",
+      badgeColor: "bg-rose-500/20 text-rose-300 border-rose-500/30",
+    },
+    {
+      id: "aprendizaje_item",
+      comando: "APRENDIZAJE: [Falla detectada] -> [Solución aplicada]",
+      descripcion: "Documenta el error y la solución en la bitácora y en la matriz de prevención de fallos.",
+      categoria: "Aprendizaje",
+      badgeColor: "bg-indigo-500/20 text-indigo-300 border-indigo-500/30",
+    },
+  ];
+
+  const copiarAlPortapapeles = (texto: string, id: string) => {
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(texto);
+      setCopiadoId(id);
+      setTimeout(() => setCopiadoId(null), 2000);
+    }
+  };
 
   return (
     <>
@@ -94,6 +178,16 @@ export default function DevViewportBar() {
               <span>Simulador</span>
             </a>
 
+            {/* Botón de Palabras Clave y Comandos del Agente */}
+            <button
+              onClick={() => setMostrarModalComandos(true)}
+              className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-purple-950/80 hover:bg-purple-900 text-purple-200 hover:text-white text-xs font-black transition-all border border-purple-500/40 cursor-pointer shadow-xs"
+              title="Ver guía y palabras clave del Agente IA (AUDITAR, PUBLICAR, MEMORIA, REGLAS)"
+            >
+              <TerminalWindow size={16} weight="bold" className="text-purple-400" />
+              <span className="hidden lg:inline">Comandos IA</span>
+            </button>
+
             {/* Recargar Página */}
             <button
               onClick={() => window.location.reload()}
@@ -135,9 +229,101 @@ export default function DevViewportBar() {
         )}
       </div>
 
+      {/* Modal de Comandos y Palabras Clave del Agente */}
+      {mostrarModalComandos && (
+        <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fadeIn font-sans">
+          <div className="bg-slate-900 border border-slate-700 text-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl space-y-5 max-h-[90vh] flex flex-col">
+            {/* Encabezado del Modal */}
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 rounded-xl bg-purple-500/20 text-purple-400 border border-purple-500/30">
+                  <TerminalWindow size={22} weight="bold" />
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-base text-slate-100 flex items-center gap-2">
+                    <span>Palabras Clave y Comandos del Agente IA</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-mono">
+                      AGENT.md • MEMORIA.md
+                    </span>
+                  </h3>
+                  <p className="text-xs text-slate-400">
+                    Escribe estas palabras en el chat para disparar acciones inmediatas y sincronizadas.
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setMostrarModalComandos(false)}
+                className="p-1.5 rounded-xl hover:bg-slate-800 text-slate-400 hover:text-white transition-colors cursor-pointer"
+                title="Cerrar (Esc)"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Lista de Comandos */}
+            <div className="flex-1 overflow-y-auto pr-1 space-y-3">
+              {comandosRapidos.map((c) => (
+                <div
+                  key={c.id}
+                  className="bg-slate-950/80 p-3.5 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all flex items-start justify-between gap-3 group"
+                >
+                  <div className="space-y-1.5 flex-1">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="font-mono font-black text-sm text-amber-300 bg-amber-950/40 px-2.5 py-0.5 rounded-lg border border-amber-500/30 select-all">
+                        {c.comando}
+                      </span>
+                      <span
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-md border ${c.badgeColor}`}
+                      >
+                        {c.categoria}
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-300 leading-relaxed">
+                      {c.descripcion}
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={() => copiarAlPortapapeles(c.comando, c.id)}
+                    className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white transition-all cursor-pointer flex items-center gap-1 shrink-0 text-xs font-bold"
+                    title="Copiar comando"
+                  >
+                    {copiadoId === c.id ? (
+                      <>
+                        <Check size={16} weight="bold" className="text-emerald-400" />
+                        <span className="text-emerald-400 text-[11px]">Copiado</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy size={16} />
+                        <span className="hidden sm:inline text-[11px]">Copiar</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* Pie del Modal con Instrucción y Cierre */}
+            <div className="pt-3 border-t border-slate-800 flex items-center justify-between gap-3 flex-wrap">
+              <div className="flex items-center gap-2 text-xs text-slate-400">
+                <Brain size={16} className="text-purple-400" />
+                <span>Las directrices quedan guardadas de forma permanente en el proyecto.</span>
+              </div>
+              <button
+                onClick={() => setMostrarModalComandos(false)}
+                className="px-4 py-2 bg-[#1B5E59] hover:bg-[#144642] text-white text-xs font-bold rounded-xl transition-colors cursor-pointer"
+              >
+                Entendido
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Modal QR para Pruebas en Hardware Real */}
       {mostrarModalQR && (
-        <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fadeIn">
+        <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fadeIn font-sans">
           <div className="bg-slate-900 border border-slate-700 text-white rounded-2xl max-w-sm w-full p-5 shadow-2xl space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -146,7 +332,8 @@ export default function DevViewportBar() {
               </div>
               <button
                 onClick={() => setMostrarModalQR(false)}
-                className="p-1 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
+                className="p-1 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition-colors cursor-pointer"
+                title="Cerrar (Esc)"
               >
                 <X size={18} />
               </button>
@@ -157,7 +344,6 @@ export default function DevViewportBar() {
             </p>
 
             <div className="bg-white p-3.5 rounded-xl flex items-center justify-center shadow-inner">
-              {/* Render de QR Dinámico usando API nativa SVG rápida */}
               <img
                 src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(urlActual)}`}
                 alt="Código QR de prueba local"
