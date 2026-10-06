@@ -398,11 +398,40 @@ export const LISTA_DOCENTES_INICIALES: DocenteData[] = [
   DOCENTE_PRUEBA_4,
 ];
 
+import {
+  TODAS_LAS_PRUEBAS_AUTOMATIZADAS,
+  PRUEBAS_AUTOMATIZADAS_7MO,
+  PRUEBAS_AUTOMATIZADAS_9NO,
+} from "@/lib/telemetriaPruebasData";
+
 export function generarTelemetriaInicialParaDocente(doc?: DocenteData): PayloadTelemetria[] {
+  if (!doc) return [];
+  const nom = (doc.nombreCompleto || "").toLowerCase();
+  const id = (doc.idDocente || "").toLowerCase();
+  const ced = (doc.cedula || "").toLowerCase();
+  const cor = (doc.correoInstitucional || "").toLowerCase();
+
+  // Activar exclusivamente para la cuenta de pruebas / demostración
+  const esCuentaPrueba =
+    nom.includes("prueba") ||
+    id.includes("prueba") ||
+    id === "5-0305-0179" ||
+    ced === "5-0305-0179" ||
+    cor.includes("alberto.bustos.ortega") ||
+    cor.includes("prueba.docente");
+
+  if (esCuentaPrueba) {
+    return TODAS_LAS_PRUEBAS_AUTOMATIZADAS.map((p) => ({
+      ...p,
+      docenteId: doc.idDocente || "DOC-PRUEBA-001",
+      docenteNombre: doc.nombreCompleto || "Docente Prueba",
+      institucionNombre: doc.institucionNombre || "Liceo de Costa Rica",
+    }));
+  }
   return [];
 }
 
-export const SAMPLE_TELEMETRIA: PayloadTelemetria[] = [];
+export const SAMPLE_TELEMETRIA: PayloadTelemetria[] = TODAS_LAS_PRUEBAS_AUTOMATIZADAS;
 
 export function DocenteProvider({ children }: { children: React.ReactNode }) {
   const [docente, setDocente] = useState<DocenteData | null>(null);

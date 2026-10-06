@@ -7,6 +7,11 @@ import {
   validarTokenAntiFraude,
   validarCompletitudValoracion,
 } from "@/lib/antiFraude";
+import {
+  PRUEBAS_AUTOMATIZADAS_9NO,
+  PRUEBAS_AUTOMATIZADAS_7MO,
+  TODAS_LAS_PRUEBAS_AUTOMATIZADAS,
+} from "@/lib/telemetriaPruebasData";
 
 export const dynamic = "force-dynamic";
 
@@ -70,14 +75,11 @@ function deduplicarRegistrosEnMemoria() {
   );
 }
 
-const REGISTROS_DEFAULT_INICIALES_9NO: any[] = [];
+const REGISTROS_DEFAULT_INICIALES_9NO: any[] = PRUEBAS_AUTOMATIZADAS_9NO;
 
-const REGISTROS_DEFAULT_INICIALES_7MO: any[] = [];
+const REGISTROS_DEFAULT_INICIALES_7MO: any[] = PRUEBAS_AUTOMATIZADAS_7MO;
 
-const TODOS_LOS_REGISTROS_DEFAULT: any[] = [
-  ...REGISTROS_DEFAULT_INICIALES_9NO,
-  ...REGISTROS_DEFAULT_INICIALES_7MO
-];
+const TODOS_LOS_REGISTROS_DEFAULT: any[] = TODAS_LAS_PRUEBAS_AUTOMATIZADAS;
 
 function cargarRegistrosServidor() {
   try {

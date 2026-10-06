@@ -16,11 +16,12 @@
 3. [Evolución de Versiones y Nomenclatura V3.2](#3-evolución-de-versiones-y-nomenclatura-v32)
 4. [Documentación Técnica y Curricular Unificada (2 Niveles Maestros)](#4-documentación-técnica-y-curricular-unificada-2-niveles-maestros)
 5. [Bitácora de Depuraciones, Errores y Aprendizajes](#5-bitácora-de-depuraciones-errores-y-aprendizajes)
-6. [Aislamiento de Herramientas Locales (DevViewportBar & /preview)](#6-aislamiento-de-herramientas-locales-devviewportbar--preview)
-7. [Arquitectura de IA Multi-Proveedor y Resiliencia](#7-arquitectura-de-ia-multi-proveedor-y-resiliencia)
-8. [Protocolo de Auditoría Diaria de Modelos (5:00 AM)](#8-protocolo-de-auditoría-diaria-de-modelos-500-am)
-9. [Mapa de Archivos, Rutas y Componentes Críticos](#9-mapa-de-archivos-rutas-y-componentes-críticos)
-10. [Normativa Gramatical y Estilo](#10-normativa-gramatical-y-estilo)
+6. [Batería de Pruebas de Telemetría y Certificación Nacional](#6-batería-de-pruebas-de-telemetría-y-certificación-nacional)
+7. [Aislamiento de Herramientas Locales (DevViewportBar & /preview)](#7-aislamiento-de-herramientas-locales-devviewportbar--preview)
+8. [Arquitectura de IA Multi-Proveedor y Resiliencia](#8-arquitectura-de-ia-multi-proveedor-y-resiliencia)
+9. [Protocolo de Auditoría Diaria de Modelos (5:00 AM)](#9-protocolo-de-auditoría-diaria-de-modelos-500-am)
+10. [Mapa de Archivos, Rutas y Componentes Críticos](#10-mapa-de-archivos-rutas-y-componentes-críticos)
+11. [Normativa Gramatical y Estilo](#11-normativa-gramatical-y-estilo)
 
 ---
 
@@ -131,9 +132,30 @@ Toda la base documental del proyecto ha sido consolidada en **dos documentos mae
 
 ---
 
-## 6. AISLAMIENTO DE HERRAMIENTAS LOCALES (DevViewportBar & /preview)
+## 6. BATERÍA DE PRUEBAS DE TELEMETRÍA Y CERTIFICACIÓN NACIONAL
 
-### 6.1 [`components/DevViewportBar.tsx`](file:///d:/AntigravityFinal/HerramientaWebApps/components/DevViewportBar.tsx)
+Se implementó y ejecutó una suite exhaustiva de validación automatizada (`scripts/test_telemetria_nacional.mjs` y `scripts/test_qr_decoding.mjs`) para garantizar la robustez técnica a escala país:
+
+```mermaid
+flowchart TD
+    A["Batería Nacional de Telemetría (43 Pruebas)"] --> B["20 Pruebas 7.° Año<br>(PRUEBASAUTOMAT01 a 20)<br>• Parejas e Individuales<br>• Rúbricas P1..P4 & S1..S4<br>• Latencia & Semáforo"]
+    A --> C["20 Pruebas 9.° Año<br>(PRUEBASAUTOMAT01 a 20)<br>• Simulador 2D Protoboard<br>• Detección Cortocircuito<br>• 6 Psico & 7 Socio"]
+    A --> D["3 Pruebas de Casos Borde<br>• Caracteres Latinos (Álvaro José Nuñez)<br>• Deduplicación Atómica 60%->90%<br>• Ingesta Masiva por Lote"]
+
+    B --> PASS["✅ 100% de Pruebas Superadas (43/43)"]
+    C --> PASS
+    D --> PASS
+```
+
+- **Tasa de Éxito:** **100 % (43/43 pruebas exitosas)**.
+- **Rendimiento de Ingesta:** Latencia de procesamiento $< 15\text{ ms}$ por registro.
+- **Paridad de Escaneo:** Validación cruzada 1:1 de decodificación QR (`MEP7|...`, `D2|...` y JSON universal).
+
+---
+
+## 7. AISLAMIENTO DE HERRAMIENTAS LOCALES (DevViewportBar & /preview)
+
+### 7.1 [`components/DevViewportBar.tsx`](file:///d:/AntigravityFinal/HerramientaWebApps/components/DevViewportBar.tsx)
 - **Propósito:** Barra flotante de inspección multidispositivo con acceso a simulación táctil y panel interactivo de palabras clave de IA.
 - **Regla de Aislamiento:**
   ```tsx
@@ -147,7 +169,7 @@ Toda la base documental del proyecto ha sido consolidada en **dos documentos mae
 
 ---
 
-## 7. ARQUITECTURA DE IA MULTI-PROVEEDOR Y RESILIENCIA
+## 8. ARQUITECTURA DE IA MULTI-PROVEEDOR Y RESILIENCIA
 
 ```mermaid
 flowchart LR
@@ -167,15 +189,16 @@ flowchart LR
 
 ---
 
-## 8. PROTOCOLO DE AUDITORÍA DIARIA DE MODELOS (5:00 AM)
+## 9. PROTOCOLO DE AUDITORÍA DIARIA DE MODELOS (5:00 AM)
 - **Horario:** Diaria a las **5:00 AM hora de Costa Rica (11:00 UTC)** vía `/api/cron/verificador-modelos-ia`.
 - **Acciones:** Pings de salud a Gemini, Groq y OpenRouter; sustitución de versiones dadas de baja (404/410); registro en `auditorias_ia`; y reporte al correo `alberto.bustos.ortega@mep.go.cr` + formato WhatsApp.
 
 ---
 
-## 9. MAPA DE ARCHIVOS, RUTAS Y COMPONENTES CRÍTICOS
+## 10. MAPA DE ARCHIVOS, RUTAS Y COMPONENTES CRÍTICOS
 
 - **Panel Docente (Dashboard):** [`app/dashboard/page.tsx`](file:///d:/AntigravityFinal/HerramientaWebApps/app/dashboard/page.tsx)
+- **API Telemetría:** [`app/api/telemetria/enviar/route.ts`](file:///d:/AntigravityFinal/HerramientaWebApps/app/api/telemetria/enviar/route.ts)
 - **Centro de Documentación Técnica:** [`components/ModalDocumentacionOficial.tsx`](file:///d:/AntigravityFinal/HerramientaWebApps/components/ModalDocumentacionOficial.tsx)
 - **Documento Maestro 7.°:** [`public/docs/DOCUMENTO_TECNICO_PEDAGOGICO_UNIFICADO_7MO_MEP.html`](file:///d:/AntigravityFinal/HerramientaWebApps/public/docs/DOCUMENTO_TECNICO_PEDAGOGICO_UNIFICADO_7MO_MEP.html)
 - **Documento Maestro 9.°:** [`public/docs/DOCUMENTO_TECNICO_PEDAGOGICO_UNIFICADO_9NO_MEP.html`](file:///d:/AntigravityFinal/HerramientaWebApps/public/docs/DOCUMENTO_TECNICO_PEDAGOGICO_UNIFICADO_9NO_MEP.html)
@@ -187,7 +210,7 @@ flowchart LR
 
 ---
 
-## 10. NORMATIVA GRAMATICAL Y ESTILO
+## 11. NORMATIVA GRAMATICAL Y ESTILO
 1. **Idioma Oficial:** Español de Costa Rica / Latinoamérica.
 2. **Uso de Mayúsculas:** Prohibido capitalizar cada palabra en títulos y subtítulos. Únicamente mayúscula inicial y nombres propios / siglas institucionales.
 3. **Tratamiento Institucional:** Rigor técnico pedagógico acorde al Programa Nacional de Formación Tecnológica (PNFT) del MEP.

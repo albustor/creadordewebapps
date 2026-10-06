@@ -113,6 +113,17 @@ export default function ModalDocumentacionOficial({
               </a>
 
               <a
+                href="/docs/DOCUMENTO_TECNICO_PEDAGOGICO_UNIFICADO_7MO_MEP.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                download="DOCUMENTO_TECNICO_PEDAGOGICO_UNIFICADO_7MO_MEP.pdf"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
+              >
+                <FilePdf size={16} weight="bold" />
+                <span>Descargar Documento Técnico (PDF)</span>
+              </a>
+
+              <a
                 href="/docs/diagnostico_7mo_imprimible.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -120,17 +131,7 @@ export default function ModalDocumentacionOficial({
                 className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
               >
                 <FilePdf size={16} weight="bold" />
-                <span>Guía Oficial Imprimible (17 Págs PDF)</span>
-              </a>
-
-              <a
-                href="/docs/DOCUMENTO_TECNICO_PEDAGOGICO_UNIFICADO_7MO_MEP.md"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-teal-50 text-teal-900 border border-teal-300 text-xs font-bold shadow-2xs transition-all cursor-pointer"
-              >
-                <FileText size={15} weight="bold" />
-                <span>Markdown (.md)</span>
+                <span>Guía Imprimible Oficial (17 Págs)</span>
               </a>
             </div>
           </div>
@@ -172,6 +173,17 @@ export default function ModalDocumentacionOficial({
               </a>
 
               <a
+                href="/docs/DOCUMENTO_TECNICO_PEDAGOGICO_UNIFICADO_9NO_MEP.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                download="DOCUMENTO_TECNICO_PEDAGOGICO_UNIFICADO_9NO_MEP.pdf"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-indigo-700 hover:bg-indigo-800 text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
+              >
+                <FilePdf size={16} weight="bold" />
+                <span>Descargar Documento Técnico (PDF)</span>
+              </a>
+
+              <a
                 href="/docs/diagnostico_9no_imprimible.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -179,17 +191,7 @@ export default function ModalDocumentacionOficial({
                 className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
               >
                 <FilePdf size={16} weight="bold" />
-                <span>Guía Oficial Imprimible (9.° Año PDF)</span>
-              </a>
-
-              <a
-                href="/docs/DOCUMENTO_TECNICO_PEDAGOGICO_UNIFICADO_9NO_MEP.md"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-indigo-50 text-indigo-900 border border-indigo-300 text-xs font-bold shadow-2xs transition-all cursor-pointer"
-              >
-                <FileText size={15} weight="bold" />
-                <span>Markdown (.md)</span>
+                <span>Guía Imprimible Oficial (9.° Año)</span>
               </a>
             </div>
           </div>

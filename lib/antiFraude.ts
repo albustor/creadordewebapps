@@ -62,6 +62,7 @@ export interface PayloadTelemetria {
     tiempoTotal?: number;
     tiempoPromedioRespuesta?: number;
     ajustesRapidos?: number;
+    latenciaMs?: number;
   };
 }
 
