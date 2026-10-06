@@ -150,6 +150,7 @@ flowchart TD
 - **Tasa de Éxito:** **100 % (43/43 pruebas exitosas)**.
 - **Rendimiento de Ingesta:** Latencia de procesamiento $< 15\text{ ms}$ por registro.
 - **Paridad de Escaneo:** Validación cruzada 1:1 de decodificación QR (`MEP7|...`, `D2|...` y JSON universal).
+- **Aislamiento en Cuenta Única de Demostración:** Los 40 registros de pruebas automatizadas y los datos de prueba históricos se asocian exclusivamente a la cuenta oficial de pruebas `Docente Prueba` (`0-0000-0001` / `prueba.docente1.docente.1@mep.go.cr` / PIN: `110011`). La pantalla de inicio de sesión presenta exclusivamente este botón único de autocompletado en singular, manteniendo limpias e independientes todas las cuentas de docentes reales.
 
 ---
 
