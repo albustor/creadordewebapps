@@ -404,6 +404,86 @@ import {
   PRUEBAS_AUTOMATIZADAS_9NO,
 } from "@/lib/telemetriaPruebasData";
 
+export function normalizarRegistroTelemetria(r: PayloadTelemetria): PayloadTelemetria {
+  if (!r) return r;
+  const score = r.porcentaje ?? r.puntaje ?? 80;
+  const esPareja = Boolean(r.estudianteNombre && r.estudianteNombre.includes("&"));
+  const es7mo = Boolean(
+    r.nivel === "7°" ||
+    (r.seccionOGrupo && /7-/i.test(r.seccionOGrupo)) ||
+    (r.webAppId && r.webAppId.includes("7mo"))
+  );
+
+  const normalizarABC = (val?: any): "A" | "B" | "C" | undefined => {
+    if (!val) return undefined;
+    if (val === "A" || val === "B" || val === "C") return val;
+    if (val === 3 || val === "3" || val === "Logrado" || val === "Avanzado" || val === "L") return "A";
+    if (val === 2 || val === "2" || val === "En Proceso" || val === "Intermedio" || val === "En Desarrollo" || val === "ED") return "B";
+    if (val === 1 || val === "1" || val === "Inicial" || val === "Requiere Acompañamiento" || val === "RA") return "C";
+    return undefined;
+  };
+
+  const socio = { ...(r.socioafectivo || {}) };
+  const s1 = normalizarABC(socio.s1 ?? socio.s1_precision ?? socio.s1_colaborativo ?? socio.s1_gusto_precision) || (score >= 80 ? "A" : score >= 60 ? "B" : "C");
+  const s2 = normalizarABC(socio.s2 ?? socio.s2_error ?? socio.s2_resiliencia ?? socio.s2_seguridad) || (score >= 75 ? "A" : score >= 55 ? "B" : "C");
+  const s3 = normalizarABC(socio.s3 ?? socio.s3_colaboracion ?? socio.s3_colaborativo ?? socio.s3_cuidado_equipo ?? socio.s3_flexibilidad) || (esPareja ? (score >= 70 ? "A" : "B") : "A");
+  const s4 = normalizarABC(socio.s4 ?? socio.s4_frustracion ?? socio.s4_perseverancia ?? socio.s4_tolerancia) || "A";
+
+  const socioFinal: Record<string, string> = {
+    ...socio,
+    s1,
+    s2,
+    s3,
+    s4,
+    s1_precision: socio.s1_precision || s1,
+    s2_error: socio.s2_error || s2,
+    s3_colaborativo: socio.s3_colaborativo || s3,
+    s4_frustracion: socio.s4_frustracion || s4,
+  };
+
+  const psico = { ...(r.psicomotor || {}) };
+  const p1 = normalizarABC(psico.p1 ?? psico.p1_orientacion ?? psico.p1_herramientas ?? psico.p1_modulariza) || (score >= 70 ? "A" : "B");
+  const p2 = normalizarABC(psico.p2 ?? psico.p2_ritmo ?? psico.p2_conexion_segura ?? psico.p2_patrones) || (score >= 80 ? "A" : score >= 60 ? "B" : "C");
+  const p3 = normalizarABC(psico.p3 ?? psico.p3_pulso ?? psico.p3_protoboard ?? psico.p3_algoritmo) || (score >= 60 ? "A" : "B");
+  const p4 = normalizarABC(psico.p4 ?? psico.p4_motricidad ?? psico.p4_diagramas ?? psico.p4_programa) || "A";
+  const p5 = normalizarABC(psico.p5 ?? psico.p5_orden ?? psico.p5_depura) || "A";
+  const p6 = normalizarABC(psico.p6 ?? psico.p6_autonomia ?? psico.p6_transferencia) || (score >= 75 ? "A" : "B");
+
+  const psicoFinal: Record<string, string> = es7mo
+    ? {
+        ...psico,
+        p1,
+        p2,
+        p3,
+        p4,
+        p1_orientacion: psico.p1_orientacion || p1,
+        p2_ritmo: psico.p2_ritmo || p2,
+        p3_pulso: psico.p3_pulso || p3,
+        p4_motricidad: psico.p4_motricidad || p4,
+      }
+    : {
+        ...psico,
+        p1,
+        p2,
+        p3,
+        p4,
+        p5,
+        p6,
+        p1_herramientas: psico.p1_herramientas || (p1 === "A" ? "Logrado" : "En Proceso"),
+        p2_conexion_segura: psico.p2_conexion_segura || (p2 === "A" ? "Logrado" : "En Proceso"),
+        p3_protoboard: psico.p3_protoboard || (p3 === "A" ? "Logrado" : "En Proceso"),
+        p4_diagramas: psico.p4_diagramas || (p4 === "A" ? "Logrado" : "En Proceso"),
+        p5_orden: psico.p5_orden || "Logrado",
+        p6_autonomia: psico.p6_autonomia || (p6 === "A" ? "Logrado" : "En Proceso"),
+      };
+
+  return {
+    ...r,
+    socioafectivo: socioFinal,
+    psicomotor: psicoFinal,
+  };
+}
+
 export function generarTelemetriaInicialParaDocente(doc?: DocenteData): PayloadTelemetria[] {
   if (!doc) return [];
   const nom = (doc.nombreCompleto || "").toLowerCase();
@@ -421,17 +501,19 @@ export function generarTelemetriaInicialParaDocente(doc?: DocenteData): PayloadT
     cor.includes("prueba.docente");
 
   if (esCuentaPrueba) {
-    return TODAS_LAS_PRUEBAS_AUTOMATIZADAS.map((p) => ({
-      ...p,
-      docenteId: doc.idDocente || "DOC-PRUEBA-001",
-      docenteNombre: doc.nombreCompleto || "Docente Prueba",
-      institucionNombre: doc.institucionNombre || "Liceo de Costa Rica",
-    }));
+    return TODAS_LAS_PRUEBAS_AUTOMATIZADAS.map((p) =>
+      normalizarRegistroTelemetria({
+        ...p,
+        docenteId: doc.idDocente || "DOC-PRUEBA-001",
+        docenteNombre: doc.nombreCompleto || "Docente Prueba",
+        institucionNombre: doc.institucionNombre || "Liceo de Costa Rica",
+      })
+    );
   }
   return [];
 }
 
-export const SAMPLE_TELEMETRIA: PayloadTelemetria[] = TODAS_LAS_PRUEBAS_AUTOMATIZADAS;
+export const SAMPLE_TELEMETRIA: PayloadTelemetria[] = TODAS_LAS_PRUEBAS_AUTOMATIZADAS.map(normalizarRegistroTelemetria);
 
 export function DocenteProvider({ children }: { children: React.ReactNode }) {
   const [docente, setDocente] = useState<DocenteData | null>(null);

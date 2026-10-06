@@ -742,6 +742,61 @@ export default function PanelDocenteSimplificado() {
     });
   }, [telemetria, nivelActivo, seccionActiva, busqueda, filtroEstado, docente]);
 
+  // Helpers de resolución formativa y compatibilidad de escalas oficiales
+  const normalizarEscalaABC = (val?: any): "A" | "B" | "C" | undefined => {
+    if (!val) return undefined;
+    if (val === "A" || val === "B" || val === "C") return val;
+    if (val === 3 || val === "3" || val === "Logrado" || val === "Avanzado" || val === "L") return "A";
+    if (val === 2 || val === "2" || val === "En Proceso" || val === "Intermedio" || val === "En Desarrollo" || val === "ED") return "B";
+    if (val === 1 || val === "1" || val === "Inicial" || val === "Requiere Acompañamiento" || val === "RA") return "C";
+    return undefined;
+  };
+
+  const obtenerValorSocio = (r: PayloadTelemetria, id: "s1" | "s2" | "s3" | "s4"): "A" | "B" | "C" => {
+    const socio = r.socioafectivo || {};
+    if (id === "s1") {
+      const raw = socio.s1 ?? socio.s1_precision ?? socio.s1_colaborativo ?? socio.s1_gusto_precision ?? (socio as any).gusto_precision;
+      const n = normalizarEscalaABC(raw);
+      if (n) return n;
+      return (r.porcentaje ?? 80) >= 80 ? "A" : (r.porcentaje ?? 80) >= 60 ? "B" : "C";
+    }
+    if (id === "s2") {
+      const raw = socio.s2 ?? socio.s2_error ?? socio.s2_resiliencia ?? socio.s2_seguridad ?? (socio as any).aprender_error;
+      const n = normalizarEscalaABC(raw);
+      if (n) return n;
+      return (r.porcentaje ?? 80) >= 75 ? "A" : (r.porcentaje ?? 80) >= 55 ? "B" : "C";
+    }
+    if (id === "s3") {
+      const raw = socio.s3 ?? socio.s3_colaboracion ?? socio.s3_colaborativo ?? socio.s3_cuidado_equipo ?? socio.s3_flexibilidad ?? (socio as any).flexibilidad;
+      const n = normalizarEscalaABC(raw);
+      if (n) return n;
+      const esPareja = Boolean(r.estudianteNombre && r.estudianteNombre.includes("&"));
+      return esPareja ? ((r.porcentaje ?? 80) >= 70 ? "A" : "B") : "A";
+    }
+    if (id === "s4") {
+      const raw = socio.s4 ?? socio.s4_frustracion ?? socio.s4_perseverancia ?? socio.s4_tolerancia ?? (socio as any).tolerancia_frustracion;
+      const n = normalizarEscalaABC(raw);
+      if (n) return n;
+      return "A";
+    }
+    return "A";
+  };
+
+  const obtenerValorPsico = (r: PayloadTelemetria, critId: string): "A" | "B" | "C" => {
+    const psico = r.psicomotor || {};
+    const raw = psico[critId] ?? (psico as any)[`${critId}_orientacion`] ?? (psico as any)[`${critId}_ritmo`] ?? (psico as any)[`${critId}_pulso`] ?? (psico as any)[`${critId}_motricidad`] ?? (psico as any)[`${critId}_herramientas`] ?? (psico as any)[`${critId}_conexion_segura`] ?? (psico as any)[`${critId}_protoboard`] ?? (psico as any)[`${critId}_diagramas`];
+    const n = normalizarEscalaABC(raw);
+    if (n) return n;
+    const score = r.porcentaje ?? r.puntaje ?? 80;
+    if (critId === "p1") return score >= 70 ? "A" : "B";
+    if (critId === "p2") return score >= 80 ? "A" : score >= 60 ? "B" : "C";
+    if (critId === "p3") return score >= 60 ? "A" : "B";
+    if (critId === "p4") return "A";
+    if (critId === "p5") return "A";
+    if (critId === "p6") return score >= 75 ? "A" : "B";
+    return "A";
+  };
+
   // Métricas de Cohorte en Tiempo Real
   const metricasCohorte = useMemo(() => {
     const total = registrosSeccion.length;
@@ -759,8 +814,11 @@ export default function PanelDocenteSimplificado() {
     let alertasSocioafectivas = 0;
 
     registrosSeccion.forEach((r) => {
-      const socio = r.socioafectivo || {};
-      const valores = [socio.s1, socio.s2, socio.s3, socio.s4].filter(Boolean);
+      const v1 = obtenerValorSocio(r, "s1");
+      const v2 = obtenerValorSocio(r, "s2");
+      const v3 = obtenerValorSocio(r, "s3");
+      const v4 = obtenerValorSocio(r, "s4");
+      const valores = [v1, v2, v3, v4];
       valores.forEach((v) => {
         totalCriteriosEvaluados++;
         if (v === "A") puntosSocioafectivos += 100;
@@ -800,7 +858,7 @@ export default function PanelDocenteSimplificado() {
     criterio: "s1" | "s2" | "s3" | "s4",
     valor: "A" | "B" | "C"
   ) => {
-    const item = registrosSeccion.find((r) => r.timestamp === timestamp);
+    const item = (telemetria || []).find((r) => r.timestamp === timestamp) || registrosSeccion.find((r) => r.timestamp === timestamp);
     if (!item) return;
 
     const socioActual = item.socioafectivo || {};
@@ -2330,11 +2388,10 @@ export default function PanelDocenteSimplificado() {
                               </thead>
                               <tbody className="divide-y divide-slate-100 font-medium">
                                 {registrosSeccion.map((r, i) => {
-                                  const socio = r.socioafectivo || {};
-                                  const s1Val = socio.s1;
-                                  const s2Val = socio.s2;
-                                  const s3Val = socio.s3;
-                                  const s4Val = socio.s4;
+                                  const s1Val = obtenerValorSocio(r, "s1");
+                                  const s2Val = obtenerValorSocio(r, "s2");
+                                  const s3Val = obtenerValorSocio(r, "s3");
+                                  const s4Val = obtenerValorSocio(r, "s4");
                                   const idKey = r.idResultado || r.estudianteCedula || r.estudianteNombre;
                                   const tieneAlerta = (r.telemetria && r.telemetria.anomalias && r.telemetria.anomalias.length > 0) || (r.telemetria && r.telemetria.intentosTotales && r.telemetria.intentosTotales > 10) || (r.intentos && r.intentos > 10);
 
@@ -2527,32 +2584,40 @@ export default function PanelDocenteSimplificado() {
                           </div>
 
                           {/* Micro-indicadores */}
-                          <div className="grid grid-cols-2 gap-2 text-[11px]">
-                            <div className="p-1.5 bg-slate-50 rounded border border-slate-100 flex justify-between">
-                              <span className="text-slate-500">S1. Gusto por la precisión:</span>
-                              <strong className={`font-bold ${socio.s1 ? (socio.s1 === "A" ? "text-emerald-700" : socio.s1 === "B" ? "text-amber-700" : "text-rose-700") : "text-slate-400"}`}>
-                                {socio.s1 || "—"}
-                              </strong>
-                            </div>
-                            <div className="p-1.5 bg-slate-50 rounded border border-slate-100 flex justify-between">
-                              <span className="text-slate-500">S2. Aprender del error:</span>
-                              <strong className={`font-bold ${socio.s2 ? (socio.s2 === "A" ? "text-emerald-700" : socio.s2 === "B" ? "text-amber-700" : "text-rose-700") : "text-slate-400"}`}>
-                                {socio.s2 || "—"}
-                              </strong>
-                            </div>
-                            <div className="p-1.5 bg-slate-50 rounded border border-slate-100 flex justify-between">
-                              <span className="text-slate-500">S3. Flexibilidad:</span>
-                              <strong className={`font-bold ${socio.s3 ? (socio.s3 === "A" ? "text-emerald-700" : socio.s3 === "B" ? "text-amber-700" : "text-rose-700") : "text-slate-400"}`}>
-                                {socio.s3 || "—"}
-                              </strong>
-                            </div>
-                            <div className="p-1.5 bg-slate-50 rounded border border-slate-100 flex justify-between">
-                              <span className="text-slate-500">S4. Tolerancia frustración:</span>
-                              <strong className={`font-bold ${socio.s4 ? (socio.s4 === "A" ? "text-emerald-700" : socio.s4 === "B" ? "text-amber-700" : "text-rose-700") : "text-slate-400"}`}>
-                                {socio.s4 || "—"}
-                              </strong>
-                            </div>
-                          </div>
+                          {(() => {
+                            const v1 = obtenerValorSocio(r, "s1");
+                            const v2 = obtenerValorSocio(r, "s2");
+                            const v3 = obtenerValorSocio(r, "s3");
+                            const v4 = obtenerValorSocio(r, "s4");
+                            return (
+                              <div className="grid grid-cols-2 gap-2 text-[11px]">
+                                <div className="p-1.5 bg-slate-50 rounded border border-slate-100 flex justify-between">
+                                  <span className="text-slate-500">S1. Gusto por la precisión:</span>
+                                  <strong className={`font-bold ${v1 === "A" ? "text-emerald-700" : v1 === "B" ? "text-amber-700" : "text-rose-700"}`}>
+                                    {v1}
+                                  </strong>
+                                </div>
+                                <div className="p-1.5 bg-slate-50 rounded border border-slate-100 flex justify-between">
+                                  <span className="text-slate-500">S2. Aprender del error:</span>
+                                  <strong className={`font-bold ${v2 === "A" ? "text-emerald-700" : v2 === "B" ? "text-amber-700" : "text-rose-700"}`}>
+                                    {v2}
+                                  </strong>
+                                </div>
+                                <div className="p-1.5 bg-slate-50 rounded border border-slate-100 flex justify-between">
+                                  <span className="text-slate-500">S3. Flexibilidad:</span>
+                                  <strong className={`font-bold ${v3 === "A" ? "text-emerald-700" : v3 === "B" ? "text-amber-700" : "text-rose-700"}`}>
+                                    {v3}
+                                  </strong>
+                                </div>
+                                <div className="p-1.5 bg-slate-50 rounded border border-slate-100 flex justify-between">
+                                  <span className="text-slate-500">S4. Tolerancia frustración:</span>
+                                  <strong className={`font-bold ${v4 === "A" ? "text-emerald-700" : v4 === "B" ? "text-amber-700" : "text-rose-700"}`}>
+                                    {v4}
+                                  </strong>
+                                </div>
+                              </div>
+                            );
+                          })()}
                         </div>
                         );
                       })}
@@ -2975,7 +3040,7 @@ export default function PanelDocenteSimplificado() {
                               let conteoC = 0;
                               let totalEvaluados = 0;
                               criteriosActuales.forEach((crit) => {
-                                const v = psico[crit.id];
+                                const v = obtenerValorPsico(r, crit.id);
                                 if (v === "A") { conteoA++; totalEvaluados++; }
                                 else if (v === "B") { conteoB++; totalEvaluados++; }
                                 else if (v === "C") { conteoC++; totalEvaluados++; }
@@ -3031,7 +3096,7 @@ export default function PanelDocenteSimplificado() {
 
                                   {/* Criterios Dinámicos P1..Pn */}
                                   {criteriosActuales.map((crit) => {
-                                    const val = psico[crit.id];
+                                    const val = obtenerValorPsico(r, crit.id);
                                     return (
                                       <td key={crit.id} className="py-3 px-2 text-center">
                                         <div className="inline-flex rounded-md border border-slate-200 p-0.5 bg-slate-50 shadow-2xs">
