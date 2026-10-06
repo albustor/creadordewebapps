@@ -150,7 +150,7 @@ export const DOCENTE_DEFAULT: DocenteData = {
 
 export const DOCENTE_PRUEBA_1: DocenteData = {
   idDocente: "DOC-PRUEBA-001",
-  nombreCompleto: "Docente Prueba San José",
+  nombreCompleto: "Docente Prueba",
   correoInstitucional: "prueba.docente1.docente.1@mep.go.cr",
   pin: "110011",
   contrasena: "110011",

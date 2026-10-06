@@ -87,87 +87,15 @@ export default function HomePage() {
     }
   };
 
-  // Lista de usuarios de prueba para acceso y validación temporal
+  // Usuario de prueba para acceso y validación
   const USUARIOS_PRUEBA_DEMO = [
     {
-      nombre: "Docente Prueba San José",
-      tag: "Docente San José",
+      nombre: "Docente Prueba",
+      tag: "Docente Prueba",
       correo: "prueba.docente1.docente.1@mep.go.cr",
       cedula: "0-0000-0001",
       pin: "110011",
-      colorTag: "bg-teal-50 text-teal-900 border-teal-300 hover:bg-teal-100",
-    },
-    {
-      nombre: "Docente Prueba Alajuela",
-      tag: "Docente Alajuela",
-      correo: "prueba.docente2.docente.2@mep.go.cr",
-      cedula: "0-0000-0002",
-      pin: "221111",
-      colorTag: "bg-indigo-50 text-indigo-900 border-indigo-300 hover:bg-indigo-100",
-    },
-    {
-      nombre: "Docente Prueba Cartago",
-      tag: "Docente Cartago",
-      correo: "prueba.docente3.docente.3@mep.go.cr",
-      cedula: "0-0000-0003",
-      pin: "332211",
-      colorTag: "bg-amber-50 text-amber-900 border-amber-300 hover:bg-amber-100",
-    },
-    {
-      nombre: "Docente Prueba Heredia",
-      tag: "Docente Heredia",
-      correo: "prueba.docente4.docente.4@mep.go.cr",
-      cedula: "0-0000-0004",
-      pin: "443311",
-      colorTag: "bg-emerald-50 text-emerald-900 border-emerald-300 hover:bg-emerald-100",
-    },
-    {
-      nombre: "Docente Prueba Guanacaste",
-      tag: "Docente Guanacaste",
-      correo: "prueba.docente5.docente.5@mep.go.cr",
-      cedula: "0-0000-0005",
-      pin: "554411",
-      colorTag: "bg-sky-50 text-sky-900 border-sky-300 hover:bg-sky-100",
-    },
-    {
-      nombre: "Docente Prueba Puntarenas",
-      tag: "Docente Puntarenas",
-      correo: "prueba.docente6.docente.6@mep.go.cr",
-      cedula: "0-0000-0006",
-      pin: "665511",
-      colorTag: "bg-orange-50 text-orange-900 border-orange-300 hover:bg-orange-100",
-    },
-    {
-      nombre: "Docente Prueba Limón",
-      tag: "Docente Limón",
-      correo: "prueba.docente7.docente.7@mep.go.cr",
-      cedula: "0-0000-0007",
-      pin: "776611",
-      colorTag: "bg-lime-50 text-lime-900 border-lime-300 hover:bg-lime-100",
-    },
-    {
-      nombre: "Docente Prueba Pérez Zeledón",
-      tag: "Docente Pérez Zeledón",
-      correo: "prueba.docente8.docente.8@mep.go.cr",
-      cedula: "0-0000-0008",
-      pin: "887711",
-      colorTag: "bg-purple-50 text-purple-900 border-purple-300 hover:bg-purple-100",
-    },
-    {
-      nombre: "Docente Prueba San Carlos",
-      tag: "Docente San Carlos",
-      correo: "prueba.docente9.docente.9@mep.go.cr",
-      cedula: "0-0000-0009",
-      pin: "998811",
-      colorTag: "bg-rose-50 text-rose-900 border-rose-300 hover:bg-rose-100",
-    },
-    {
-      nombre: "Docente Prueba Occidente",
-      tag: "Docente Occidente",
-      correo: "prueba.docente10.docente.10@mep.go.cr",
-      cedula: "0-0000-0010",
-      pin: "100911",
-      colorTag: "bg-cyan-50 text-cyan-900 border-cyan-300 hover:bg-cyan-100",
+      colorTag: "bg-[#EEF8F2] text-[#2E7D57] border-[#bbf7d0] hover:bg-[#dcfce7]",
     },
   ];
 
@@ -768,25 +696,25 @@ export default function HomePage() {
               )}
             </div>
 
-            {/* Cuentas de Prueba de Acceso Rápido (Formato Resumido y Horizontal) */}
-            <div className="bg-stone-50/90 border border-stone-200/90 rounded-2xl p-3 text-center space-y-2">
-              <div className="flex items-center justify-center gap-1.5 text-[11px] font-extrabold text-stone-600">
-                <Key size={13} className="text-amber-600" weight="fill" />
-                <span>Cuentas de prueba (clic para autocompletar e ingresar):</span>
+            {/* Cuenta de Prueba de Acceso Rápido (Formato Resumido y Horizontal) */}
+            <div className="bg-[#F9FAFB] border border-[#D9DFE8] rounded-2xl p-3.5 text-center space-y-2">
+              <div className="flex items-center justify-center gap-1.5 text-xs font-extrabold text-[#20283B]">
+                <Key size={14} className="text-amber-600" weight="fill" />
+                <span>Cuenta de prueba (clic para autocompletar e ingresar):</span>
               </div>
 
-              <div className="flex flex-wrap items-center justify-center gap-1.5">
+              <div className="flex flex-wrap items-center justify-center gap-2">
                 {USUARIOS_PRUEBA_DEMO.map((u) => (
                   <button
                     key={u.correo}
                     type="button"
                     onClick={() => seleccionarUsuarioPrueba(u.correo, u.pin)}
                     title={`Autocompletar ${u.nombre} (${u.correo})`}
-                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-[11px] font-bold border transition-all cursor-pointer shadow-2xs active:scale-95 ${u.colorTag}`}
+                    className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer shadow-xs active:scale-95 ${u.colorTag}`}
                   >
-                    <span className="font-extrabold">{u.tag}</span>
-                    <span className="text-[10px] opacity-75 font-mono">({u.cedula})</span>
-                    <span className="bg-white/90 text-slate-900 text-[10px] font-black px-1.5 py-0.5 rounded-md font-mono border border-stone-200">
+                    <span className="font-extrabold text-[#2E7D57]">{u.tag}</span>
+                    <span className="text-[11px] opacity-75 font-mono text-[#2E7D57]">({u.cedula})</span>
+                    <span className="bg-white text-[#20283B] text-[11px] font-black px-2 py-0.5 rounded-md font-mono border border-[#bbf7d0]">
                       PIN: {u.pin}
                     </span>
                   </button>

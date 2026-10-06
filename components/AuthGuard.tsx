@@ -95,95 +95,15 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     }
   };
 
-  // Lista de usuarios y docentes predefinidos para pruebas oficiales
+  // Usuario de prueba para acceso y validación
   const USUARIOS_PRUEBA_DEMO = [
     {
-      nombre: "Prof. Alberto Bustos Ortega",
-      tag: "Asesor / Super Admin",
-      correo: "alberto.bustos.ortega@mep.go.cr",
-      cedula: "5-0305-0179",
-      pin: "2617",
-      colorTag: "bg-emerald-100 text-emerald-950 border-emerald-400 hover:bg-emerald-200",
-    },
-    {
-      nombre: "Docente Prueba San José",
-      tag: "San José Central",
+      nombre: "Docente Prueba",
+      tag: "Docente Prueba",
       correo: "prueba.docente1.docente.1@mep.go.cr",
       cedula: "0-0000-0001",
       pin: "110011",
-      colorTag: "bg-teal-50 text-teal-900 border-teal-300 hover:bg-teal-100",
-    },
-    {
-      nombre: "Docente Prueba Alajuela",
-      tag: "Alajuela",
-      correo: "prueba.docente2.docente.2@mep.go.cr",
-      cedula: "0-0000-0002",
-      pin: "221111",
-      colorTag: "bg-indigo-50 text-indigo-900 border-indigo-300 hover:bg-indigo-100",
-    },
-    {
-      nombre: "Docente Prueba Cartago",
-      tag: "Cartago",
-      correo: "prueba.docente3.docente.3@mep.go.cr",
-      cedula: "0-0000-0003",
-      pin: "332211",
-      colorTag: "bg-amber-50 text-amber-900 border-amber-300 hover:bg-amber-100",
-    },
-    {
-      nombre: "Docente Prueba Heredia",
-      tag: "Heredia",
-      correo: "prueba.docente4.docente.4@mep.go.cr",
-      cedula: "0-0000-0004",
-      pin: "443311",
-      colorTag: "bg-emerald-50 text-emerald-900 border-emerald-300 hover:bg-emerald-100",
-    },
-    {
-      nombre: "Docente Prueba Guanacaste",
-      tag: "Liberia",
-      correo: "prueba.docente5.docente.5@mep.go.cr",
-      cedula: "0-0000-0005",
-      pin: "554411",
-      colorTag: "bg-sky-50 text-sky-900 border-sky-300 hover:bg-sky-100",
-    },
-    {
-      nombre: "Docente Prueba Puntarenas",
-      tag: "Puntarenas",
-      correo: "prueba.docente6.docente.6@mep.go.cr",
-      cedula: "0-0000-0006",
-      pin: "665511",
-      colorTag: "bg-orange-50 text-orange-900 border-orange-300 hover:bg-orange-100",
-    },
-    {
-      nombre: "Docente Prueba Limón",
-      tag: "Limón",
-      correo: "prueba.docente7.docente.7@mep.go.cr",
-      cedula: "0-0000-0007",
-      pin: "776611",
-      colorTag: "bg-lime-50 text-lime-900 border-lime-300 hover:bg-lime-100",
-    },
-    {
-      nombre: "Docente Prueba Pérez Zeledón",
-      tag: "Pérez Zeledón",
-      correo: "prueba.docente8.docente.8@mep.go.cr",
-      cedula: "0-0000-0008",
-      pin: "887711",
-      colorTag: "bg-purple-50 text-purple-900 border-purple-300 hover:bg-purple-100",
-    },
-    {
-      nombre: "Docente Prueba San Carlos",
-      tag: "San Carlos",
-      correo: "prueba.docente9.docente.9@mep.go.cr",
-      cedula: "0-0000-0009",
-      pin: "998811",
-      colorTag: "bg-rose-50 text-rose-900 border-rose-300 hover:bg-rose-100",
-    },
-    {
-      nombre: "Docente Prueba Occidente",
-      tag: "Occidente",
-      correo: "prueba.docente10.docente.10@mep.go.cr",
-      cedula: "0-0000-0010",
-      pin: "100911",
-      colorTag: "bg-cyan-50 text-cyan-900 border-cyan-300 hover:bg-cyan-100",
+      colorTag: "bg-[#EEF8F2] text-[#2E7D57] border-[#bbf7d0] hover:bg-[#dcfce7]",
     },
   ];
 
